@@ -31,6 +31,7 @@ final class LineStream
      * @var LineInterface[]
      */
     private array $lines = [];
+    protected int $currentIndex = -1;
 
     /**
      * Create a source string from given token lines. This is used in backend
@@ -74,5 +75,38 @@ final class LineStream
         foreach ($this->lines as $child) {
             yield $child;
         }
+    }
+
+    /**
+     * Reset current pointer. Typically, call this before iterating with getNext().
+     */
+    public function reset(): self
+    {
+        $this->currentIndex = -1;
+        return $this;
+    }
+
+    /**
+     * Get next line and raise pointer.
+     *
+     * Methods getNext(), peekNext() and reset() are an alternative to
+     * getNextLine() which allow peek of the next line, which getNextLine()
+     * does not. The disadvantage is that these methods create internal
+     * state in $this->currentIndex, which getNextLine() does not. Use
+     * getNext() iteration only if peekNext() is needed to avoid creating
+     * useless state.
+     */
+    public function getNext(): ?LineInterface
+    {
+        $this->currentIndex ++;
+        return $this->lines[$this->currentIndex] ?? null;
+    }
+
+    /**
+     * Get next line but do not raise pointer.
+     */
+    public function peekNext(): ?LineInterface
+    {
+        return $this->lines[$this->currentIndex + 1] ?? null;
     }
 }

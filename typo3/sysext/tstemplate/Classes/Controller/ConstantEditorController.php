@@ -19,17 +19,23 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
+use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
+use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstConstantCommentVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor;
 
 /**
  * TypoScript Constant editor
@@ -37,34 +43,56 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 class ConstantEditorController extends AbstractTemplateModuleController
 {
-    protected array $categories = [
-        // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features.
-        //The most basic constants, which you would almost always want to configure.
-        'basic' => [],
-        // Menu setup. This includes fontfiles, sizes, background images. Depending on the menutype.
-        'menu' => [],
-        // All constants related to the display of pagecontent elements
-        'content' => [],
-        // General configuration like metatags, link targets
-        'page' => [],
-        // Advanced functions, which are used very seldom.
-        'advanced' => [],
-        'all' => [],
-    ];
-
-    protected ExtendedTemplateService $templateService;
-    protected array $constants = [];
-
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly ConstantConfigurationParser $constantParser,
+        private readonly TreeBuilder $treeBuilder,
+        private readonly IncludeTreeTraverser $treeTraverser,
+        private readonly AstTraverser $astTraverser,
+        private readonly AstBuilderInterface $astBuilder,
+        private readonly LosslessTokenizer $losslessTokenizer,
     ) {
+        $this->treeBuilder->setTokenizer($losslessTokenizer);
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        if ($pageUid === 0) {
+            // Redirect to template record overview if on page 0.
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+
+        if (($parsedBody['action'] ?? '') === 'createExtensionTemplate') {
+            return $this->createExtensionTemplateAction($request, 'web_typoscript_constanteditor');
+        }
+        if (($parsedBody['action'] ?? '') === 'createNewWebsiteTemplate') {
+            return $this->createNewWebsiteTemplateAction($request, 'web_typoscript_constanteditor');
+        }
+        if (($parsedBody['_savedok'] ?? false) === '1') {
+            return $this->saveAction($request);
+        }
+
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        if (empty($allTemplatesOnPage)) {
+            return $this->noTemplateAction($request);
+        }
+
+        return $this->showAction($request);
+    }
+
+    private function showAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
+
+        $pageUid = (int)($queryParams['id'] ?? 0);
 
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
@@ -73,364 +101,352 @@ class ConstantEditorController extends AbstractTemplateModuleController
             $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
-        $pageId = (int)($request->getQueryParams()['id'] ?? 0);
-        if ($pageId === 0) {
-            // Redirect to template record overview if on page 0.
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+
+        // Template selection handling for this page
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        $selectedTemplateFromModuleData = (array)$moduleData->get('selectedTemplatePerPage');
+        $selectedTemplateUid = (int)($parsedBody['selectedTemplate'] ?? $selectedTemplateFromModuleData[$pageUid] ?? 0);
+        if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
+            $selectedTemplateUid = (int)($allTemplatesOnPage[0]['uid'] ?? 0);
         }
-        $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
+        if (($moduleData->get('selectedTemplatePerPage')[$pageUid] ?? 0) !== $selectedTemplateUid) {
+            $selectedTemplateFromModuleData[$pageUid] = $selectedTemplateUid;
+            $moduleData->set('selectedTemplatePerPage', $selectedTemplateFromModuleData);
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        }
+        $templateTitle = '';
+        $currentTemplateConstants = '';
+        foreach ($allTemplatesOnPage as $templateRow) {
+            if ((int)$templateRow['uid'] === $selectedTemplateUid) {
+                $templateTitle = $templateRow['title'];
+                $currentTemplateConstants = $templateRow['constants'] ?? '';
+            }
+        }
 
-        $this->createTemplateIfRequested($request, $pageId);
+        // Build the constant include tree
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $constantIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'constants', false, $selectedTemplateUid);
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($constantAstBuilderVisitor);
+        $this->treeTraverser->traverse($constantIncludeTree);
+        $constantAst = $constantAstBuilderVisitor->getAst();
+        $astConstantCommentVisitor = GeneralUtility::makeInstance(AstConstantCommentVisitor::class);
+        $currentTemplateFlatConstants = $this->astBuilder->build($this->losslessTokenizer->tokenize($currentTemplateConstants), new RootNode())->flatten();
+        $astConstantCommentVisitor->setCurrentTemplateFlatConstants($currentTemplateFlatConstants);
+        $this->astTraverser->resetVisitors();
+        $this->astTraverser->addVisitor($astConstantCommentVisitor);
+        $this->astTraverser->traverse($constantAst);
 
-        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageId);
-        if ($moduleData->clean('templatesOnPage', array_column($allTemplatesOnPage, 'uid') ?: [0])) {
+        $constants = $astConstantCommentVisitor->getConstants();
+        $categories = $astConstantCommentVisitor->getCategories();
+
+        $relevantCategories = [];
+        foreach ($categories as $categoryKey => $aCategory) {
+            if ($aCategory['usageCount'] > 0) {
+                $relevantCategories[$categoryKey] = $aCategory;
+            }
+        }
+        $selectedCategory = array_key_first($relevantCategories) ?? '';
+        $selectedCategoryFromModuleData = (string)$moduleData->get('selectedCategory');
+        if (array_key_exists($selectedCategoryFromModuleData, $relevantCategories)) {
+            $selectedCategory = $selectedCategoryFromModuleData;
+        }
+        if (($parsedBody['selectedCategory'] ?? '') && array_key_exists($parsedBody['selectedCategory'], $relevantCategories)) {
+            $selectedCategory = (string)$parsedBody['selectedCategory'];
+        }
+        if ($selectedCategory && $selectedCategory !== $selectedCategoryFromModuleData) {
+            $moduleData->set('selectedCategory', $selectedCategory);
             $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
-        $selectedTemplateRecord = (int)$moduleData->get('templatesOnPage');
-        $templateRow = $this->parseTemplate($pageId, $selectedTemplateRecord);
-
-        if ($request->getParsedBody()['_savedok'] ?? false) {
-            // Update template with new data on save
-            $constantsHaveChanged = $this->templateService->ext_procesInput($request->getParsedBody(), $this->constants);
-            if ($constantsHaveChanged) {
-                $saveId = empty($templateRow['_ORIG_uid']) ? $templateRow['uid'] : $templateRow['_ORIG_uid'];
-                $recordData = [];
-                $recordData['sys_template'][$saveId]['constants'] = implode(LF, $this->templateService->raw);
-                $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                $dataHandler->start($recordData, []);
-                $dataHandler->process_datamap();
-                // Re-init template state as constants have changed
-                $this->parseTemplate($pageId, $selectedTemplateRecord);
+        $displayConstants = [];
+        foreach ($constants as $constant) {
+            if ($constant['cat'] === $selectedCategory) {
+                $displayConstants[$constant['subcat_sorting_first']]['label'] = $constant['subcat_label'];
+                $displayConstants[$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']] = $constant;
             }
+        }
+        ksort($displayConstants);
+        foreach ($displayConstants as &$constant) {
+            ksort($constant['items']);
         }
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $this->addPreviewButtonToDocHeader($view, $pageId, (int)$pageRecord['doktype']);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageId);
-        $this->addSaveButtonToDocHeader($view, $moduleData, $pageId);
-        $view->makeDocHeaderModuleMenu(['id' => $pageId]);
-        $availableCategories = $this->getCategoryLabels($this->categories);
-        $currentCategory = (string)$moduleData->get('constant_editor_cat');
-        if (!empty($availableCategories)) {
-            if ($currentCategory === '') {
-                $currentCategory = array_key_first($availableCategories);
-            }
-            $view->assign('constantsMenu', BackendUtility::getDropdownMenu($pageId, 'constant_editor_cat', $currentCategory, $availableCategories, '', '', ['id' => 'constant_editor_cat']));
+        $this->addPreviewButtonToDocHeader($view, $pageUid, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        if (!empty($relevantCategories)) {
+            $this->addSaveButtonToDocHeader($view);
         }
+        $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
-            'pageId' => $pageId,
-            'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageId),
-            'moduleIdentifier' => $currentModuleIdentifier,
-            'editorFields' => $this->printFields($this->constants, $this->categories, $currentCategory),
-            'templateRecord' => $templateRow,
-            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageId, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
+            'templateTitle' => $templateTitle,
+            'pageUid' => $pageUid,
+            'allTemplatesOnPage' => $allTemplatesOnPage,
+            'selectedTemplateUid' => $selectedTemplateUid,
+            'relevantCategories' => $relevantCategories,
+            'selectedCategory' => $selectedCategory,
+            'displayConstants' => $displayConstants,
         ]);
-        return $view->renderResponse('ConstantEditor');
+        return $view->renderResponse('ConstantEditorMain');
     }
 
-    /**
-     * Set $this->templateService with parsed template and set $this->constants.
-     */
-    protected function parseTemplate(int $pageId, int $selectedTemplateRecord): ?array
+    private function saveAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        // Get the row of the first *visible* template of the page. where clause like in frontend.
-        $templateRow = $this->getFirstTemplateRecordOnPage($pageId, $selectedTemplateRecord);
-        if (is_array($templateRow)) {
-            // If there is a template
-            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-            // Generate constants/config + hierarchy info for the template.
-            $this->templateService->runThroughTemplates($rootLine, $selectedTemplateRecord);
-            // Editable constants are returned in an array.
-            $this->constants = $this->templateService->generateConfig_constants();
-            // Returned constants are sorted in categories, that goes into the $tmpl->categories array
-            $this->categories = $this->categorizeEditableConstants($this->categories, $this->constants);
-            // This array contains key=[expanded constant name], value=line number in template.
-            $this->templateService->ext_regObjectPositions((string)$templateRow['constants']);
+        $queryParams = $request->getQueryParams();
+        $moduleData = $request->getAttribute('moduleData');
+
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        if ($pageUid === 0) {
+            throw new \RuntimeException('No proper page uid given', 1661333862);
         }
-        return $templateRow ?: null;
+
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        $selectedTemplateFromModuleData = (array)$moduleData->get('selectedTemplatePerPage');
+        $selectedTemplateUid = (int)($selectedTemplateFromModuleData[$pageUid] ?? 0);
+        $templateRow = null;
+        foreach ($allTemplatesOnPage as $template) {
+            if ($selectedTemplateUid === (int)$template['uid']) {
+                $templateRow = $template;
+            }
+        }
+        if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
+            $templateRow = $allTemplatesOnPage[0] ?? [];
+            $selectedTemplateUid = (int)($templateRow['uid'] ?? 0);
+        }
+        if ($selectedTemplateUid < 1) {
+            throw new \RuntimeException('No template found on page', 1661350211);
+        }
+
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $constantIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'constants', false, $selectedTemplateUid);
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($constantAstBuilderVisitor);
+        $this->treeTraverser->traverse($constantIncludeTree);
+        $constantAst = $constantAstBuilderVisitor->getAst();
+        $astConstantCommentVisitor = GeneralUtility::makeInstance(AstConstantCommentVisitor::class);
+        $this->astTraverser->resetVisitors();
+        $this->astTraverser->addVisitor($astConstantCommentVisitor);
+        $this->astTraverser->traverse($constantAst);
+
+        $constants = $astConstantCommentVisitor->getConstants();
+        $updatedTemplateConstantsArray = $this->updateTemplateConstants($request, $constants, $templateRow['constants'] ?? '');
+        if ($updatedTemplateConstantsArray) {
+            $templateUid = empty($templateRow['_ORIG_uid']) ? $templateRow['uid'] : $templateRow['_ORIG_uid'];
+            $recordData = [];
+            $recordData['sys_template'][$templateUid]['constants'] = implode(LF, $updatedTemplateConstantsArray);
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->start($recordData, []);
+            $dataHandler->process_datamap();
+        }
+
+        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_constanteditor', ['id' => $pageUid]));
     }
 
-    /**
-     * Create editor HTML.
-     */
-    protected function printFields(array $theConstants, array $categories, string $category): array
+    private function noTemplateAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        reset($theConstants);
-        $groupedOutput = [];
-        $subcat = '';
-        if (!empty($categories[$category]) && is_array($categories[$category])) {
-            asort($categories[$category]);
-            $categoryLoop = 0;
-            foreach ($categories[$category] as $name => $type) {
-                $params = $theConstants[$name];
-                if (is_array($params)) {
-                    if ($subcat !== (string)($params['subcat_name'] ?? '')) {
-                        $categoryLoop++;
-                        $subcat = (string)($params['subcat_name'] ?? '');
-                        $subcat_name = $subcat ? (string)($this->constantParser->getSubCategories()[$subcat][0] ?? '') : 'Others';
-                        $groupedOutput[$categoryLoop] = [
-                            'label' => $subcat_name,
-                            'fields' => [],
-                        ];
-                    }
-                    $label = $languageService->sL($params['label']);
-                    $label_parts = explode(':', $label, 2);
-                    if (count($label_parts) === 2) {
-                        $head = trim($label_parts[0]);
-                        $body = trim($label_parts[1]);
-                    } else {
-                        $head = trim($label_parts[0]);
-                        $body = '';
-                    }
-                    $typeDat = $this->templateService->ext_getTypeData($params['type']);
-                    $p_field = '';
-                    $fragmentName = substr(md5($params['name']), 0, 10);
-                    $fragmentNameEscaped = htmlspecialchars($fragmentName);
-                    [$fN, $fV, $params, $idName] = $this->fNandV($params);
-                    $idName = htmlspecialchars($idName);
-                    $hint = '';
-                    switch ($typeDat['type']) {
-                        case 'int':
-                        case 'int+':
-                            $additionalAttributes = '';
-                            if ($typeDat['paramstr'] ?? false) {
-                                $hint = ' Range: ' . $typeDat['paramstr'];
-                            } elseif ($typeDat['type'] === 'int+') {
-                                $hint = ' Range: 0 - ';
-                                $typeDat['min'] = 0;
-                            } else {
-                                $hint = ' (Integer)';
-                            }
+        $currentModule = $request->getAttribute('module');
+        $currentModuleIdentifier = $currentModule->getIdentifier();
+        $pageUid = (int)($request->getQueryParams()['id'] ?? 0);
+        if ($pageUid === 0) {
+            throw new \RuntimeException('No proper page uid given', 1661365944);
+        }
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addPreviewButtonToDocHeader($view, $pageUid, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
+        $view->assignMultiple([
+            'pageUid' => $pageUid,
+            'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageUid),
+        ]);
+        return $view->renderResponse('ConstantEditorNoTemplate');
+    }
 
-                            if (isset($typeDat['min'])) {
-                                $additionalAttributes .= ' min="' . (int)$typeDat['min'] . '" ';
-                            }
-                            if (isset($typeDat['max'])) {
-                                $additionalAttributes .= ' max="' . (int)$typeDat['max'] . '" ';
-                            }
+    private function updateTemplateConstants(ServerRequestInterface $request, array $constantDefinitions, string $rawTemplateConstants): ?array
+    {
+        $rawTemplateConstantsArray = explode(LF, $rawTemplateConstants);
+        $constantPositions = $this->calculateConstantPositions($rawTemplateConstantsArray);
 
-                            $p_field =
-                                '<input class="form-control" id="' . $idName . '" type="number"'
-                                . ' name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '" ' . $additionalAttributes . ' />';
-                            break;
-                        case 'color':
-                            $p_field = '
-                                <input class="form-control t3js-color-input" type="text" id="input-' . $idName . '" rel="' . $idName .
-                                '" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '"/>';
-                            break;
-                        case 'wrap':
-                            $wArr = explode('|', $fV);
-                            $p_field = '<div class="input-group">
-                                            <input class="form-control form-control-adapt" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />
-                                            <span class="input-group-addon input-group-icon">|</span>
-                                            <input class="form-control form-control-adapt" type="text" name="W' . $fN . '" value="' . $wArr[1] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />
-                                         </div>';
-                            break;
-                        case 'offset':
-                            $wArr = explode(',', $fV);
-                            $labels = GeneralUtility::trimExplode(',', $typeDat['paramstr']);
-                            $p_field = '<span class="input-group-addon input-group-icon">' . ($labels[0] ?: 'x') . '</span><input type="text" class="form-control form-control-adapt" name="' . $fN . '" value="' . $wArr[0] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                            $p_field .= '<span class="input-group-addon input-group-icon">' . ($labels[1] ?: 'y') . '</span><input type="text" name="W' . $fN . '" value="' . $wArr[1] . '" class="form-control form-control-adapt" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                            $labelsCount = count($labels);
-                            for ($aa = 2; $aa < $labelsCount; $aa++) {
-                                if ($labels[$aa]) {
-                                    $p_field .= '<span class="input-group-addon input-group-icon">' . $labels[$aa] . '</span><input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" class="form-control form-control-adapt" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                                } else {
-                                    $p_field .= '<input type="hidden" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" />';
-                                }
-                            }
-                            $p_field = '<div class="input-group">' . $p_field . '</div>';
-                            break;
-                        case 'options':
-                            if (is_array($typeDat['params'])) {
-                                $p_field = '';
-                                foreach ($typeDat['params'] as $val) {
-                                    $vParts = explode('=', $val, 2);
-                                    $label = $vParts[0];
-                                    $val = $vParts[1] ?? $vParts[0];
-                                    // option tag:
-                                    $sel = '';
-                                    if ($val === $params['value']) {
-                                        $sel = ' selected';
-                                    }
-                                    $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $languageService->sL($label) . '</option>';
-                                }
-                                $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
-                            }
-                            break;
-                        case 'boolean':
-                            $sel = $fV ? 'checked' : '';
-                            $p_field =
-                                '<input type="hidden" name="' . $fN . '" value="0" />'
-                                . '<div class="form-check form-check-type-icon-toggle">'
-                                . '<input type="checkbox" name="' . $fN . '" id="' . $idName . '" class="form-check-input" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
-                                . '<label class="form-check-label" for="' . $idName . '">'
-                                . '<span class="form-check-label-icon">'
-                                . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '</span>'
-                                . '</label>'
-                                . '</div>';
-                            break;
-                        case 'comment':
-                            $sel = $fV ? '' : 'checked';
-                            $p_field =
-                                '<input type="hidden" name="' . $fN . '" value="0" />'
-                                . '<div class="form-check form-check-type-icon-toggle">'
-                                . '<input type="checkbox" name="' . $fN . '" id="' . $idName . '" class="form-check-input" value="1" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
-                                . '<label class="form-check-label" for="' . $idName . '">'
-                                . '<span class="form-check-label-icon">'
-                                . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '</span>'
-                                . '</label>'
-                                . '</div>';
-                            break;
-                        case 'file':
-                            // extensionlist
-                            $extList = $typeDat['paramstr'];
-                            if ($extList === 'IMAGE_EXT') {
-                                $extList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
-                            }
-                            $p_field = '<option value="">(' . $extList . ')</option>';
-                            if (trim($params['value'])) {
-                                $val = $params['value'];
-                                $p_field .= '<option value=""></option>';
-                                $p_field .= '<option value="' . htmlspecialchars($val) . '" selected>' . $val . '</option>';
-                            }
-                            $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
-                            break;
-                        case 'user':
-                            $userFunction = $typeDat['paramstr'];
-                            $userFunctionParams = ['fieldName' => $fN, 'fieldValue' => $fV];
-                            $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
-                            break;
-                        default:
-                            $p_field = '<input class="form-control" id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                    }
-                    // Define default names and IDs
-                    $userTyposcriptID = 'userTS-' . $idName;
-                    $defaultTyposcriptID = 'defaultTS-' . $idName;
-                    $userTyposcriptStyle = '';
-                    // Set the default styling options
-                    if (isset($this->templateService->objReg[$params['name']])) {
-                        $checkboxValue = 'checked';
-                        $defaultTyposcriptStyle = 'style="display:none;"';
-                    } else {
-                        $checkboxValue = '';
-                        $userTyposcriptStyle = 'style="display:none;"';
-                        $defaultTyposcriptStyle = '';
-                    }
-                    $deleteIconHTML =
-                        '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
-                        . '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')) . '">'
-                        . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render()
-                        . '</span>'
-                        . '</button>';
-                    $editIconHTML =
-                        '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
-                        . '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')) . '">'
-                        . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
-                        . '</span>'
-                        . '</button>';
-                    $constantCheckbox = '<input type="hidden" name="check[' . $params['name'] . ']" id="check-' . $idName . '" value="' . $checkboxValue . '"/>';
-                    // If there's no default value for the field, use a static label.
-                    if (!$params['default_value']) {
-                        $params['default_value'] = '[Empty]';
-                    }
-                    $constantDefaultRow =
-                        '<div class="input-group defaultTS" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>'
-                        . '<span class="input-group-btn">' . $editIconHTML . '</span>'
-                        . '<input class="form-control" type="text" placeholder="' . htmlspecialchars($params['default_value']) . '" readonly>'
-                        . '</div>';
-                    $constantEditRow =
-                        '<div class="input-group userTS" id="' . $userTyposcriptID . '" ' . $userTyposcriptStyle . '>'
-                        . '<span class="input-group-btn">' . $deleteIconHTML . '</span>'
-                        . $p_field
-                        . '</div>';
-                    $constantData =
-                        $constantCheckbox
-                        . $constantEditRow
-                        . $constantDefaultRow;
+        $parsedBody = $request->getParsedBody();
+        $data = $parsedBody['data'] ?? null;
+        $check = $parsedBody['check'] ?? [];
 
-                    $groupedOutput[$categoryLoop]['items'][] = [
-                        'identifier' => $fragmentName,
-                        'label' => $head,
-                        'name' => $params['name'],
-                        'description' => $body,
-                        'hint' => $hint,
-                        'data' => $constantData,
-                    ];
+        $valuesHaveChanged = false;
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (!isset($constantDefinitions[$key])) {
+                    // Ignore if there is no constant definition for this constant key
+                    continue;
+                }
+                if (!isset($check[$key]) || ($check[$key] !== 'checked' && isset($constantPositions[$key]))) {
+                    // Remove value if the checkbox is not set, indicating "value to be dropped from template"
+                    $rawTemplateConstantsArray = $this->removeValueFromConstantsArray($rawTemplateConstantsArray, $constantPositions, $key);
+                    $valuesHaveChanged = true;
+                    continue;
+                }
+                if ($check[$key] !== 'checked') {
+                    // Don't process if this value is not set
+                    continue;
+                }
+                $constantDefinition = $constantDefinitions[$key];
+                switch ($constantDefinition['type']) {
+                    case 'int':
+                        $min = $constantDefinition['typeIntMin'] ?? PHP_INT_MIN;
+                        $max = $constantDefinition['typeIntMax'] ?? PHP_INT_MAX;
+                        $value = (string)MathUtility::forceIntegerInRange((int)$value, (int)$min, (int)$max);
+                        break;
+                    case 'int+':
+                        $min = $constantDefinition['typeIntMin'] ?? 0;
+                        $max = $constantDefinition['typeIntMax'] ?? PHP_INT_MAX;
+                        $value = (string)MathUtility::forceIntegerInRange((int)$value, (int)$min, (int)$max);
+                        break;
+                    case 'color':
+                        $col = [];
+                        if ($value) {
+                            $value = preg_replace('/[^A-Fa-f0-9]*/', '', $value) ?? '';
+                            $useFulHex = strlen($value) > 3;
+                            $col[] = (int)hexdec($value[0]);
+                            $col[] = (int)hexdec($value[1]);
+                            $col[] = (int)hexdec($value[2]);
+                            if ($useFulHex) {
+                                $col[] = (int)hexdec($value[3]);
+                                $col[] = (int)hexdec($value[4]);
+                                $col[] = (int)hexdec($value[5]);
+                            }
+                            $value = substr('0' . dechex($col[0]), -1) . substr('0' . dechex($col[1]), -1) . substr('0' . dechex($col[2]), -1);
+                            if ($useFulHex) {
+                                $value .= substr('0' . dechex($col[3]), -1) . substr('0' . dechex($col[4]), -1) . substr('0' . dechex($col[5]), -1);
+                            }
+                            $value = '#' . strtoupper($value);
+                        }
+                        break;
+                    case 'comment':
+                        if ($value) {
+                            $value = '';
+                        } else {
+                            $value = '#';
+                        }
+                        break;
+                    case 'wrap':
+                        if (($data[$key]['left'] ?? false) || $data[$key]['right']) {
+                            $value = $data[$key]['left'] . '|' . $data[$key]['right'];
+                        } else {
+                            $value = '';
+                        }
+                        break;
+                    case 'offset':
+                        $value = rtrim(implode(',', $value), ',');
+                        if (trim($value, ',') === '') {
+                            $value = '';
+                        }
+                        break;
+                    case 'boolean':
+                        if ($value) {
+                            $value = ($constantDefinition['trueValue'] ?? false) ?: '1';
+                        }
+                        break;
+                }
+                if ((string)($constantDefinition['value'] ?? '') !== (string)$value) {
+                    // Put value in, if changed.
+                    $rawTemplateConstantsArray = $this->addOrUpdateValueInConstantsArray($rawTemplateConstantsArray, $constantPositions, $key, $value);
+                    $valuesHaveChanged = true;
+                }
+            }
+        }
+        if ($valuesHaveChanged) {
+            return $rawTemplateConstantsArray;
+        }
+        return null;
+    }
+
+    private function calculateConstantPositions(
+        array $rawTemplateConstantsArray,
+        array &$constantPositions = [],
+        string $prefix = '',
+        int $braceLevel = 0,
+        int &$lineCounter = 0
+    ): array {
+        while (isset($rawTemplateConstantsArray[$lineCounter])) {
+            $line = ltrim($rawTemplateConstantsArray[$lineCounter]);
+            $lineCounter++;
+            if (!$line || $line[0] === '[') {
+                // Ignore empty lines and conditions
+                continue;
+            }
+            if (strcspn($line, '}#/') !== 0) {
+                $operatorPosition = strcspn($line, ' {=<');
+                $key = substr($line, 0, $operatorPosition);
+                $line = ltrim(substr($line, $operatorPosition));
+                if ($line[0] === '=') {
+                    $constantPositions[$prefix . $key] = $lineCounter - 1;
+                } elseif ($line[0] === '{') {
+                    $braceLevel++;
+                    $this->calculateConstantPositions($rawTemplateConstantsArray, $constantPositions, $prefix . $key . '.', $braceLevel, $lineCounter);
+                }
+            } elseif ($line[0] === '}') {
+                $braceLevel--;
+                if ($braceLevel < 0) {
+                    $braceLevel = 0;
                 } else {
-                    debug('Error. Constant did not exist. Should not happen.');
+                    // Leaving this brace level: Force return to caller recursion
+                    break;
                 }
             }
         }
-        return $groupedOutput;
+        return $constantPositions;
     }
 
-    protected function fNandV(array $params): array
+    /**
+     * Update a constant value in current template constants if key exists already,
+     * or add key/value at the end if it does not exist yet.
+     */
+    private function addOrUpdateValueInConstantsArray(array $templateConstantsArray, array $constantPositions, string $constantKey, string $value): array
     {
-        $fN = 'data[' . $params['name'] . ']';
-        $idName = str_replace('.', '-', $params['name']);
-        $fV = $params['value'];
-        // Values entered from the constants edit cannot be constants!	230502; removed \{ and set {
-        if (preg_match('/^{[\\$][a-zA-Z0-9\\.]*}$/', trim($fV), $reg)) {
-            $fV = '';
+        $theValue = ' ' . trim($value);
+        if (isset($constantPositions[$constantKey])) {
+            $lineNum = $constantPositions[$constantKey];
+            $parts = explode('=', $templateConstantsArray[$lineNum], 2);
+            if (count($parts) === 2) {
+                $parts[1] = $theValue;
+            }
+            $templateConstantsArray[$lineNum] = implode('=', $parts);
+        } else {
+            $templateConstantsArray[] = $constantKey . ' =' . $theValue;
         }
-        $fV = htmlspecialchars($fV);
-        return [$fN, $fV, $params, $idName];
+        return $templateConstantsArray;
     }
 
-    protected function categorizeEditableConstants(array $categories, array $editConstArray): array
+    /**
+     * Remove a key from constant array.
+     */
+    private function removeValueFromConstantsArray(array $templateConstantsArray, array $constantPositions, string $constantKey): array
     {
-        // Runs through the available constants and fills the categories array with pointers and priority-info
-        foreach ($editConstArray as $constName => $constData) {
-            if (!$constData['type']) {
-                $constData['type'] = 'string';
-            }
-            $cats = explode(',', $constData['cat']);
-            // if = only one category, while allows for many. We have agreed on only one category is the most basic way...
-            foreach ($cats as $theCat) {
-                $theCat = trim($theCat);
-                if ($theCat) {
-                    $categories[$theCat][$constName] = $constData['subcat'];
-                }
-            }
+        if (isset($constantPositions[$constantKey])) {
+            $lineNum = $constantPositions[$constantKey];
+            unset($templateConstantsArray[$lineNum]);
         }
-        return $categories;
+        return $templateConstantsArray;
     }
 
-    protected function getCategoryLabels(array $categories): array
-    {
-        // Returns array used for labels in the menu.
-        $retArr = [];
-        foreach ($categories as $k => $v) {
-            if (!empty($v)) {
-                $retArr[$k] = strtoupper($k) . ' (' . count($v) . ')';
-            }
-        }
-        return $retArr;
-    }
-
-    protected function addSaveButtonToDocHeader(ModuleTemplate $view, ModuleData $moduleData, int $pageId): void
+    private function addSaveButtonToDocHeader(ModuleTemplate $view): void
     {
         $languageService = $this->getLanguageService();
-        if ($pageId && !empty($moduleData->get('constant_editor_cat'))) {
-            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-            $saveButton = $buttonBar->makeInputButton()
-                ->setName('_savedok')
-                ->setValue('1')
-                ->setForm('TypoScriptConstantEditorController')
-                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
-                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                ->setShowLabelText(true);
-            $buttonBar->addButton($saveButton);
-        }
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+        $saveButton = $buttonBar->makeInputButton()
+            ->setName('_savedok')
+            ->setValue('1')
+            ->setForm('TypoScriptConstantEditorController')
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+            ->setShowLabelText(true);
+        $buttonBar->addButton($saveButton);
     }
 }

@@ -1296,11 +1296,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php
 
 		-
-			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/ViewHelpers/Form/TypoScriptConstantsViewHelper.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Authentication/Mfa/MfaProviderPropertyManagerTest.php

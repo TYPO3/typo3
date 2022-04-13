@@ -1,6 +1,7 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:ts="http://typo3.org/ns/TYPO3/CMS/Tstemplate/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -66,6 +67,19 @@
             <f:if condition="{child.referenceSourceStream}">
                 =< <span class="list-tree-value {f:if(condition: child.searchMatchInValue, then:'text-danger')}">{child.referenceSourceStream}</span>
             </f:if>
+            <f:if condition="{displayComments} && {child.comments}">
+                <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
+                    <br />
+                </f:if>
+                <span class="diff-item-result diff-item-result-inline text-monospace text-normal p-0 ps-4">
+                    <f:for each="{child.comments}" as="comment" iteration="iterator">
+                        <f:if condition="!{iterator.isFirst}">
+                            <br />
+                        </f:if>
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:comment" /> <ts:trim>{comment}</ts:trim>
+                    </f:for>
+                </span>
+            </f:if>
         </span>
         <f:if condition="{child.children} && {child.expanded}">
             <ul class="list-tree text-monospace">
@@ -76,7 +90,8 @@
                         tree: child,
                         pageUid: pageUid,
                         currentObjectPath: currentObjectPath,
-                        displayConstantSubstitutions: displayConstantSubstitutions
+                        displayConstantSubstitutions: displayConstantSubstitutions,
+                        displayComments: displayComments
                     }"
                 />
             </ul>

@@ -18,12 +18,18 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\AST;
 
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AstBuilderTest extends FunctionalTestCase
+/**
+ * This tests AstBuilder and CommentAwareAstBuilder
+ */
+class AstBuilderInterfaceTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['tstemplate'];
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event',
     ];
@@ -36,6 +42,18 @@ class AstBuilderTest extends FunctionalTestCase
         $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
         /** @var AstBuilder $astBuilder */
         $astBuilder = $this->get(AstBuilder::class);
+        $ast = $astBuilder->build($tokens, new RootNode());
+        self::assertNull($ast->getChildByName('foo')->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function notModifiedValueKeepsNullValueCommentAware(): void
+    {
+        $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
+        /** @var CommentAwareAstBuilder $astBuilder */
+        $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
     }
@@ -58,6 +76,21 @@ class AstBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function notModifiedValueKeepsOriginalValueCommentAware(): void
+    {
+        $tokens = (new LosslessTokenizer())->tokenize(
+            "foo = originalValue\n" .
+            'foo := doesNotExistFunction()'
+        );
+        /** @var CommentAwareAstBuilder $astBuilder */
+        $astBuilder = $this->get(CommentAwareAstBuilder::class);
+        $ast = $astBuilder->build($tokens, new RootNode());
+        self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
+    }
+
+    /**
+     * @test
+     */
     public function modifiedValueUpdatesOriginalValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
@@ -66,6 +99,21 @@ class AstBuilderTest extends FunctionalTestCase
         );
         /** @var AstBuilder $astBuilder */
         $astBuilder = $this->get(AstBuilder::class);
+        $ast = $astBuilder->build($tokens, new RootNode());
+        self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function modifiedValueUpdatesOriginalValueCommentAware(): void
+    {
+        $tokens = (new LosslessTokenizer())->tokenize(
+            "foo = originalValue\n" .
+            'foo := testFunction(modifierArgument)'
+        );
+        /** @var CommentAwareAstBuilder $astBuilder */
+        $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
     }

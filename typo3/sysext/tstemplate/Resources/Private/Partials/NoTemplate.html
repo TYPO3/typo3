@@ -10,85 +10,77 @@
     }"
 />
 
-<form
-    action="{f:be.uri(route: 'web_ts', parameters: '{id: pageId, template: \'all\'}')}"
-    method="post"
-    enctype="multipart/form-data"
-    id="TypoScriptTemplateModuleController"
-    name="editForm"
-    class="form"
->
-    <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
-    <f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:noTemplate')}" state="-1">
+<f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:noTemplate')}" state="-1">
+    <p>
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:noTemplateDescription" />
+        <br />
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:createTemplateToEditConfiguration" />
+    </p>
+    <f:if condition="{previousPage}">
         <p>
-            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:noTemplateDescription" />
-            <br />
-            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:createTemplateToEditConfiguration" />
+            <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosest" /></strong><br>
+            <f:translate
+                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosestDescription"
+                arguments="{0: previousPage.title, 1: previousPage.uid}"
+            />
         </p>
-        <f:if condition="{previousPage}">
-            <p>
-                <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosest" /></strong><br>
-                <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosestDescription"
-                    arguments="{0: previousPage.title, 1: previousPage.uid}"
-                />
-            </p>
-            <f:be.link
-                route="{moduleIdentifier}"
-                parameters="{id: previousPage.uid}"
-                class="btn btn-default"
-            >
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosestAction" />
-            </f:be.link>
-        </f:if>
+        <f:be.link
+            route="{moduleIdentifier}"
+            parameters="{id: previousPage.uid}"
+            class="btn btn-default"
+        >
+            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosestAction" />
+        </f:be.link>
+    </f:if>
+</f:be.infobox>
 
-    </f:be.infobox>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsite" /></h2>
-                    <div class="card-text">
-                        <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsiteDescription" /></p>
-                        <div>
-                            <input type="hidden" name="createStandard" value="" />
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsite" /></h2>
+                <div class="card-text">
+                    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsiteDescription" /></p>
+                    <div>
+                        <form action="{f:be.uri(route: 'web_ts', parameters: '{id: pageUid}')}" method="post">
+                            <input type="hidden" name="action" value="createNewWebsiteTemplate" />
                             <input
                                 class="btn btn-primary"
                                 type="submit"
-                                form="TypoScriptTemplateModuleController"
                                 name="newWebsite"
                                 value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsiteAction')}"
                             />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplate" />
-                    </h2>
-                    <div class="card-text">
-                        <p>
-                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateDescription" />
-                        </p>
-                        <div>
-                            <input
-                                class="btn btn-default"
-                                type="submit"
-                                form="TypoScriptTemplateModuleController"
-                                name="createExtension"
-                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateAction')}"
-                            />
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplate" />
+                </h2>
+                <div class="card-text">
+                    <p>
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateDescription" />
+                    </p>
+                    <div>
+                        <form action="{f:be.uri(route: 'web_ts', parameters: '{id: pageUid}')}" method="post">
+                            <input type="hidden" name="action" value="createExtensionTemplate" />
+                            <input
+                                class="btn btn-default"
+                                type="submit"
+                                name="createExtension"
+                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateAction')}"
+                            />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>

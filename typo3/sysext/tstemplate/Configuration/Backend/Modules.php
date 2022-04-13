@@ -38,11 +38,11 @@ return [
             ],
         ],
         'moduleData' => [
-            'templatesOnPage' => 0,
-            'constant_editor_cat' => '',
+            'selectedTemplatePerPage' => [],
+            'selectedCategory' => '',
         ],
     ],
-    'web_typoscript_overview' => [
+    'web_typoscript_infomodify' => [
         'parent' => 'web_ts',
         'access' => 'admin',
         'path' => '/module/web/typoscript/overview',
@@ -75,6 +75,7 @@ return [
         'moduleData' => [
             'sortAlphabetically' => true,
             'displayConstantSubstitutions' => true,
+            'displayComments' => true,
             'searchValue' => '',
             'selectedTemplatePerPage' => [],
             'constantConditions' => [],

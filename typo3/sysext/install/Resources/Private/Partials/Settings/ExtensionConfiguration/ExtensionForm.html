@@ -1,14 +1,15 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-        xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers"
-        xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-        data-namespace-typo3-fluid="true">
+    xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <div class="panel panel-default searchhit">
     <div class="panel-heading" role="tab" id="heading-{extensionKey}">
         <h3 class="panel-title">
             <a role="button" data-bs-toggle="collapse" href="#collapse-{extensionKey}" aria-expanded="false" aria-controls="collapse-{extensionKey}" class="collapsed">
                 <span class="caret"></span>
-                <strong>{extensionData.packageInfo.packageKey}</strong>
+                <strong>{extensionKey}</strong>
             </a>
         </h3>
     </div>
@@ -16,7 +17,7 @@
         <div class="panel-body">
             <div role="tabpanel">
                 <ul class="nav nav-tabs" role="tablist">
-                    <f:for each="{extensionData.configuration}" as="category" key="categoryName" iteration="iteration">
+                    <f:for each="{extensionData}" as="category" key="categoryName" iteration="iteration">
                         <f:if condition="{categoryName}">
                             <li role="presentation" class="nav-item">
                                 <a class="nav-link text-capitalize {f:if(condition:'{iteration.isFirst}', then:'active')}" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-bs-toggle="tab">{categoryName}</a>
@@ -26,33 +27,124 @@
                 </ul>
 
                 <form action="#" name="configurationform" autocomplete="off" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
+
                     <div class="tab-content">
-                        <f:for each="{extensionData.configuration}" as="subcategories" key="categoryName" iteration="iteration">
-                            <div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
+                        <f:for each="{extensionData}" as="subcategories" key="categoryName" iteration="iterator">
+                            <div role="tabpanel" class="tab-pane {f:if(condition:'{iterator.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
                                 <f:for each="{subcategories}" as="subcategory">
                                     <div class="form-section">
-                                        <f:for each="{subcategory}" as="configurationItem" iteration="itemIterator">
+                                        <f:for each="{subcategory.items}" as="configurationItem" iteration="itemIterator">
                                             <f:if condition="{itemIterator.isFirst}">
                                                 <h2 class="h4 form-section-headline">{configurationItem.subcat_label}</h2>
                                             </f:if>
                                             <div class="form-group form-group-dashed">
-                                                <label for="em-{configurationItem.extensionKey}-{configurationItem.name}">
-                                                    {configurationItem.labels.0}
+                                                <label for="em-{extensionKey}-{configurationItem.name}">
+                                                    <span>{configurationItem.label}</span><code>({categoryName}.{configurationItem.name} [{configurationItem.type}])</code>
                                                 </label>
-                                                <p>
-                                                    {categoryName}.{configurationItem.name}
-                                                    <f:if condition="{configurationItem.type} != 'user'">
-                                                        <f:if condition="{configurationItem.type}">
-                                                            ({configurationItem.type})
-                                                        </f:if>
-                                                    </f:if>
-                                                </p>
-                                                <div class="form-control-wrap">
-                                                    <core:form.typoScriptConstants configuration="{configurationItem}"/>
-                                                </div>
-                                                <f:if condition="{configurationItem.labels.1}">
-                                                    <div class="help-block">{configurationItem.labels.1 -> f:format.nl2br()}</div>
+                                                <f:if condition="{configurationItem.description}">
+                                                    <div class="help-block">{configurationItem.description -> f:format.nl2br()}</div>
                                                 </f:if>
+                                                <f:if condition="{configurationItem.typeHint}">
+                                                    <p><span class="text-muted">{configurationItem.typeHint}</span></p>
+                                                </f:if>
+                                                <div class="form-control-wrap">
+                                                    <f:switch expression="{configurationItem.type}">
+
+                                                        <f:case value="int+">
+                                                            <input
+                                                                class="form-control"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                type="number"
+                                                                name="{configurationItem.name}"
+                                                                value="{configurationItem.value}"
+                                                                {f:if(condition: '{configurationItem.typeIntPlusMin} || {configurationItem.typeIntPlusMin == 0}', then: 'min="{configurationItem.typeIntPlusMin}"')}
+                                                                {f:if(condition: configurationItem.typeIntPlusMax, then: 'max="{configurationItem.typeIntPlusMax}"')}
+                                                            >
+                                                        </f:case>
+                                                        <f:case value="int">
+                                                            <input
+                                                                class="form-control"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                type="number"
+                                                                name="{configurationItem.name}"
+                                                                value="{configurationItem.value}"
+                                                                {f:if(condition: '{configurationItem.typeIntMin} || {configurationItem.typeIntMin == 0}', then: 'min="{configurationItem.typeIntMin}"')}
+                                                                {f:if(condition: '{configurationItem.typeIntMax} || {configurationItem.typeIntMax == 0}', then: 'max="{configurationItem.typeIntMax}"')}
+                                                            >
+                                                        </f:case>
+                                                        <f:case value="string">
+                                                            <input
+                                                                class="form-control"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                type="text"
+                                                                name="{configurationItem.name}"
+                                                                value="{configurationItem.value}"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="color">
+                                                            <input
+                                                                class="form-control t3js-color-input formengine-colorpickerelement t3js-color-picker"
+                                                                type="text"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                name="{configurationItem.name}"
+                                                                value="{configurationItem.value}"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="wrap">
+                                                            <input
+                                                                class="form-control t3js-emconf-wrap"
+                                                                type="text"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                name="{configurationItem.name}"
+                                                                value="{configurationItem.value}"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="offset">
+                                                            <input
+                                                                type="text"
+                                                                class="form-control t3js-emconf-offset"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                name="{configurationItem.name}"
+                                                                value="{configurationItem.value}"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="options">
+                                                            <select
+                                                                class="form-select"
+                                                                id="em-{extensionKey}-{configurationItem.name}"
+                                                                name="{configurationItem.name}"
+                                                            >
+                                                                <f:for each="{configurationItem.labelValueArray}" as="labelAndValue">
+                                                                    <option value="{labelAndValue.value}" {f:if(condition: '{labelAndValue.value} == {configurationItem.value}', then: 'selected')}>
+                                                                        {labelAndValue.label}
+                                                                    </option>
+                                                                </f:for>
+                                                            </select>
+                                                        </f:case>
+                                                        <f:case value="boolean">
+                                                            <div class="form-check">
+                                                                <input
+                                                                    type="hidden"
+                                                                    name="{configurationItem.name}"
+                                                                    value="0"
+                                                                />
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="{configurationItem.name}"
+                                                                    id="em-{extensionKey}-{configurationItem.name}"
+                                                                    class="form-check-input"
+                                                                    value="{configurationItem.trueValue}"
+                                                                    {f:if(condition: '{configurationItem.value} == {configurationItem.trueValue}', then: 'checked')}
+                                                                />
+                                                            </div>
+                                                        </f:case>
+                                                        <f:case value="user">
+                                                            {configurationItem.html -> f:format.raw()}
+                                                        </f:case>
+
+                                                    </f:switch>
+
+                                                </div>
                                             </div>
                                         </f:for>
                                     </div>
@@ -60,8 +152,11 @@
                             </div>
                         </f:for>
                     </div>
+
                     <button type="submit" class="btn btn-default" name="save">Save "{extensionKey}" configuration</button>
+
                 </form>
+
             </div>
         </div>
     </div>

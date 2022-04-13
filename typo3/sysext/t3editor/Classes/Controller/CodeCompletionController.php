@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
@@ -63,17 +63,14 @@ class CodeCompletionController
      */
     protected function getMergedTemplates($pageId)
     {
-        $tsParser = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        // Gets the rootLine
+        $tsParser = GeneralUtility::makeInstance(TemplateService::class);
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
         // This generates the constants/config + hierarchy info for the template.
         $tsParser->runThroughTemplates($rootLine);
         // ts-setup & ts-constants of the currently edited template should not be included
-        // therefor we have to delete the last template from the stack
+        // therefore we have to delete the last template from the stack
         array_pop($tsParser->config);
         array_pop($tsParser->constants);
-        $tsParser->linkObjects = true;
-        $tsParser->ext_regLinenumbers = false;
         $tsParser->generateConfig();
         $result = $this->treeWalkCleanup($tsParser->setup);
         return $result;

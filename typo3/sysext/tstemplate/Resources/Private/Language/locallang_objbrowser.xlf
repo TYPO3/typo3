@@ -93,6 +93,9 @@
 			<trans-unit id="setConditions" resname="setConditions">
 				<source>Set conditions</source>
 			</trans-unit>
+			<trans-unit id="comment" resname="comment">
+				<source>Comment:</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

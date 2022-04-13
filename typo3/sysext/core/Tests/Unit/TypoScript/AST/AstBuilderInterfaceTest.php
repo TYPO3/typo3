@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST;
 
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -27,20 +28,17 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\ConstantAwareTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierToken;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AstBuilderTest extends UnitTestCase
+/**
+ * This tests AstBuilder and CommentAwareAstBuilder
+ */
+class AstBuilderInterfaceTest extends UnitTestCase
 {
     public function buildDataProvider(): \Generator
     {
-        $expectedAst = new RootNode();
-        yield 'ignore comment line' => [
-            '# comment',
-            $expectedAst,
-            [],
-        ];
-
         $expectedAst = new RootNode();
         yield 'ignore invalid line' => [
             'invalid',
@@ -96,36 +94,6 @@ class AstBuilderTest extends UnitTestCase
             [
                 'foo.' => [
                     'bar' => 'baz',
-                ],
-            ],
-        ];
-
-        $expectedAst = new RootNode();
-        $objectNode = new ChildNode('foo');
-        $objectNode->setValue('bar2');
-        $expectedAst->addChild($objectNode);
-        yield 'override simple value assignment' => [
-            "foo = bar\n" .
-            'foo = bar2',
-            $expectedAst,
-            [
-                'foo' => 'bar2',
-            ],
-        ];
-
-        $expectedAst = new RootNode();
-        $nestedObjectNode = new ChildNode('bar');
-        $nestedObjectNode->setValue('baz2');
-        $objectNode = new ChildNode('foo');
-        $objectNode->addChild($nestedObjectNode);
-        $expectedAst->addChild($objectNode);
-        yield 'override nested value assignment' => [
-            "foo.bar = baz\n" .
-            'foo.bar = baz2',
-            $expectedAst,
-            [
-                'foo.' => [
-                    'bar' => 'baz2',
                 ],
             ],
         ];
@@ -210,53 +178,6 @@ class AstBuilderTest extends UnitTestCase
                     'foobar' => 'foobar1',
                     'foobar.' => [
                         'foobaz' => 'foobaz1',
-                    ],
-                ],
-            ],
-        ];
-
-        $expectedAst = new RootNode();
-        $bazNode = new ChildNode('baz');
-        $bazNode->setValue('baz2');
-        $barNode = new ChildNode('bar');
-        $barNode->setValue('bar1');
-        $barNode->addChild($bazNode);
-        $foobazNode = new ChildNode('foobaz');
-        $foobazNode->setValue('foobaz2');
-        $foobarNode = new ChildNode('foobar');
-        $foobarNode->setValue('foobar1');
-        $foobarNode->addChild($foobazNode);
-        $fooNode = new ChildNode('foo');
-        $fooNode->setValue('foo2');
-        $fooNode->addChild($barNode);
-        $fooNode->addChild($foobarNode);
-        $expectedAst->addChild($fooNode);
-        yield 'nested curly brackets assignments with re-assignments' => [
-            "foo = foo1\n" .
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "  bar {\n" .
-            "    baz = baz1\n" .
-            "  }\n" .
-            "  bar.baz = baz2\n" .
-            "  foobar = foobar1\n" .
-            "  foobar {\n" .
-            "    foobaz = foobaz1\n" .
-            "  }\n" .
-            "  foobar.foobaz = foobaz2\n" .
-            "}\n" .
-            'foo = foo2',
-            $expectedAst,
-            [
-                'foo' => 'foo2',
-                'foo.' => [
-                    'bar' => 'bar1',
-                    'bar.' => [
-                        'baz' => 'baz2',
-                    ],
-                    'foobar' => 'foobar1',
-                    'foobar.' => [
-                        'foobaz' => 'foobaz2',
                     ],
                 ],
             ],
@@ -646,68 +567,6 @@ class AstBuilderTest extends UnitTestCase
                 'level1Second' => 'level1SecondValue',
                 'level1Second.' => [
                     'level2Second' => 'level2FirstValue',
-                ],
-            ],
-        ];
-
-        $expectedAst = new RootNode();
-        $bar1Node = new ChildNode('bar');
-        $bar1Node->setValue('barChanged');
-        $fooNode = new ChildNode('foo');
-        $fooNode->setValue('foo1');
-        $fooNode->addChild($bar1Node);
-        $bar2Node = new ChildNode('bar');
-        $bar2Node->setValue('bar1');
-        $bazNode = new ChildNode('baz');
-        $bazNode->setValue('foo1');
-        $bazNode->addChild($bar2Node);
-        $expectedAst->addChild($fooNode);
-        $expectedAst->addChild($bazNode);
-        yield 'copy operator copies tree and dereferences child when changing source tree' => [
-            "foo = foo1\n" .
-            "foo.bar = bar1\n" .
-            "baz < foo\n" .
-            'foo.bar = barChanged',
-            $expectedAst,
-            [
-                'foo' => 'foo1',
-                'foo.' => [
-                    'bar' => 'barChanged',
-                ],
-                'baz' => 'foo1',
-                'baz.' => [
-                    'bar' => 'bar1',
-                ],
-            ],
-        ];
-
-        $expectedAst = new RootNode();
-        $bar1Node = new ChildNode('bar');
-        $bar1Node->setValue('bar1');
-        $fooNode = new ChildNode('foo');
-        $fooNode->setValue('foo1');
-        $fooNode->addChild($bar1Node);
-        $bar2Node = new ChildNode('bar');
-        $bar2Node->setValue('barChanged');
-        $bazNode = new ChildNode('baz');
-        $bazNode->setValue('foo1');
-        $bazNode->addChild($bar2Node);
-        $expectedAst->addChild($fooNode);
-        $expectedAst->addChild($bazNode);
-        yield 'copy operator copies tree and dereferences child when changing target tree' => [
-            "foo = foo1\n" .
-            "foo.bar = bar1\n" .
-            "baz < foo\n" .
-            'baz.bar = barChanged',
-            $expectedAst,
-            [
-                'foo' => 'foo1',
-                'foo.' => [
-                    'bar' => 'bar1',
-                ],
-                'baz' => 'foo1',
-                'baz.' => [
-                    'bar' => 'barChanged',
                 ],
             ],
         ];
@@ -1340,12 +1199,225 @@ class AstBuilderTest extends UnitTestCase
      * @test
      * @dataProvider buildDataProvider
      */
+    public function buildCommentAware(string $source, RootNode $expectedAst): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
+    }
+
+    /**
+     * @test
+     * @dataProvider buildDataProvider
+     */
     public function buildCompatArray(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
         $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
+    }
+
+    /**
+     * @test
+     * @dataProvider buildDataProvider
+     */
+    public function buildCompatArrayCommentAware(string $source, RootNode $_, array $expectedArray): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedArray, $ast->toArray());
+    }
+
+    public function buildWithPreviousValueDataProvider(): \Generator
+    {
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar2');
+        $expectedAst->addChild($objectNode);
+        $expectedCommentAwareAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar2');
+        $objectNode->setPreviousValue('bar');
+        $expectedCommentAwareAst->addChild($objectNode);
+        yield 'override simple value assignment' => [
+            "foo = bar\n" .
+            'foo = bar2',
+            $expectedAst,
+            $expectedCommentAwareAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $nestedObjectNode = new ChildNode('bar');
+        $nestedObjectNode->setValue('baz2');
+        $objectNode = new ChildNode('foo');
+        $objectNode->addChild($nestedObjectNode);
+        $expectedAst->addChild($objectNode);
+        $expectedCommentAwareAst = new RootNode();
+        $nestedObjectNode = new ChildNode('bar');
+        $nestedObjectNode->setValue('baz2');
+        $nestedObjectNode->setPreviousValue('baz');
+        $objectNode = new ChildNode('foo');
+        $objectNode->addChild($nestedObjectNode);
+        $expectedCommentAwareAst->addChild($objectNode);
+        yield 'override nested value assignment' => [
+            "foo.bar = baz\n" .
+            'foo.bar = baz2',
+            $expectedAst,
+            $expectedCommentAwareAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $bazNode = new ChildNode('baz');
+        $bazNode->setValue('baz2');
+        $barNode = new ChildNode('bar');
+        $barNode->setValue('bar1');
+        $barNode->addChild($bazNode);
+        $foobazNode = new ChildNode('foobaz');
+        $foobazNode->setValue('foobaz2');
+        $foobarNode = new ChildNode('foobar');
+        $foobarNode->setValue('foobar1');
+        $foobarNode->addChild($foobazNode);
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo2');
+        $fooNode->addChild($barNode);
+        $fooNode->addChild($foobarNode);
+        $expectedAst->addChild($fooNode);
+        $expectedCommentAwareAst = new RootNode();
+        $bazNode = new ChildNode('baz');
+        $bazNode->setValue('baz2');
+        $bazNode->setPreviousValue('baz1');
+        $barNode = new ChildNode('bar');
+        $barNode->setValue('bar1');
+        $barNode->addChild($bazNode);
+        $foobazNode = new ChildNode('foobaz');
+        $foobazNode->setValue('foobaz2');
+        $foobazNode->setPreviousValue('foobaz1');
+        $foobarNode = new ChildNode('foobar');
+        $foobarNode->setValue('foobar1');
+        $foobarNode->addChild($foobazNode);
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo2');
+        $fooNode->setPreviousValue('foo1');
+        $fooNode->addChild($barNode);
+        $fooNode->addChild($foobarNode);
+        $expectedCommentAwareAst->addChild($fooNode);
+        yield 'nested curly brackets assignments with re-assignments' => [
+            "foo = foo1\n" .
+            "foo {\n" .
+            "  bar = bar1\n" .
+            "  bar {\n" .
+            "    baz = baz1\n" .
+            "  }\n" .
+            "  bar.baz = baz2\n" .
+            "  foobar = foobar1\n" .
+            "  foobar {\n" .
+            "    foobaz = foobaz1\n" .
+            "  }\n" .
+            "  foobar.foobaz = foobaz2\n" .
+            "}\n" .
+            'foo = foo2',
+            $expectedAst,
+            $expectedCommentAwareAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $bar1Node = new ChildNode('bar');
+        $bar1Node->setValue('barChanged');
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo1');
+        $fooNode->addChild($bar1Node);
+        $bar2Node = new ChildNode('bar');
+        $bar2Node->setValue('bar1');
+        $bazNode = new ChildNode('baz');
+        $bazNode->setValue('foo1');
+        $bazNode->addChild($bar2Node);
+        $expectedAst->addChild($fooNode);
+        $expectedAst->addChild($bazNode);
+        $expectedCommentAwareAst = new RootNode();
+        $bar1Node = new ChildNode('bar');
+        $bar1Node->setValue('barChanged');
+        $bar1Node->setPreviousValue('bar1');
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo1');
+        $fooNode->addChild($bar1Node);
+        $bar2Node = new ChildNode('bar');
+        $bar2Node->setValue('bar1');
+        $bazNode = new ChildNode('baz');
+        $bazNode->setValue('foo1');
+        $bazNode->addChild($bar2Node);
+        $expectedCommentAwareAst->addChild($fooNode);
+        $expectedCommentAwareAst->addChild($bazNode);
+        yield 'copy operator copies tree and dereferences child when changing source tree' => [
+            "foo = foo1\n" .
+            "foo.bar = bar1\n" .
+            "baz < foo\n" .
+            'foo.bar = barChanged',
+            $expectedAst,
+            $expectedCommentAwareAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $bar1Node = new ChildNode('bar');
+        $bar1Node->setValue('bar1');
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo1');
+        $fooNode->addChild($bar1Node);
+        $bar2Node = new ChildNode('bar');
+        $bar2Node->setValue('barChanged');
+        $bazNode = new ChildNode('baz');
+        $bazNode->setValue('foo1');
+        $bazNode->addChild($bar2Node);
+        $expectedAst->addChild($fooNode);
+        $expectedAst->addChild($bazNode);
+        $expectedCommentAwareAst = new RootNode();
+        $bar1Node = new ChildNode('bar');
+        $bar1Node->setValue('bar1');
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo1');
+        $fooNode->addChild($bar1Node);
+        $bar2Node = new ChildNode('bar');
+        $bar2Node->setValue('barChanged');
+        $bar2Node->setPreviousValue('bar1');
+        $bazNode = new ChildNode('baz');
+        $bazNode->setValue('foo1');
+        $bazNode->addChild($bar2Node);
+        $expectedCommentAwareAst->addChild($fooNode);
+        $expectedCommentAwareAst->addChild($bazNode);
+        yield 'copy operator copies tree and dereferences child when changing target tree' => [
+            "foo = foo1\n" .
+            "foo.bar = bar1\n" .
+            "baz < foo\n" .
+            'baz.bar = barChanged',
+            $expectedAst,
+            $expectedCommentAwareAst,
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider buildWithPreviousValueDataProvider
+     */
+    public function buildWithPreviousValue(string $source, RootNode $expectedAst): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
+    }
+
+    /**
+     * @test
+     * @dataProvider buildWithPreviousValueDataProvider
+     */
+    public function buildWithPreviousValueCommentAware(string $source, RootNode $_, RootNode $expectedAst): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
     }
 
     public function buildReferenceDataProvider(): \Generator
@@ -1503,11 +1575,35 @@ class AstBuilderTest extends UnitTestCase
      * @test
      * @dataProvider buildReferenceDataProvider
      */
+    public function buildReferenceCommentAware(string $source, RootNode $expectedAst): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
+    }
+
+    /**
+     * @test
+     * @dataProvider buildReferenceDataProvider
+     */
     public function buildReferenceArray(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
         $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedArray, $ast->toArray());
+    }
+
+    /**
+     * @test
+     * @dataProvider buildReferenceDataProvider
+     */
+    public function buildReferenceArrayCommentAware(string $source, RootNode $_, array $expectedArray): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1648,11 +1744,35 @@ class AstBuilderTest extends UnitTestCase
      * @test
      * @dataProvider buildConstantDataProvider
      */
+    public function buildConstantCommentAware(string $source, array $constants, RootNode $expectedAst): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        self::assertEquals($expectedAst, $ast);
+    }
+
+    /**
+     * @test
+     * @dataProvider buildConstantDataProvider
+     */
     public function buildConstantCompatArray(string $source, array $constants, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
         $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        self::assertEquals($expectedArray, $ast->toArray());
+    }
+
+    /**
+     * @test
+     * @dataProvider buildConstantDataProvider
+     */
+    public function buildConstantCompatArrayCommentAware(string $source, array $constants, RootNode $_, array $expectedArray): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1686,6 +1806,36 @@ class AstBuilderTest extends UnitTestCase
         self::assertEquals($expectedArray, $resultAst->toArray());
     }
 
+    /**
+     * @test
+     */
+    public function buildExtendsGivenAstCommentAware(): void
+    {
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo1');
+        $inputAst = new RootNode();
+        $inputAst->addChild($fooNode);
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('foo1');
+        $barNode = new ChildNode('bar');
+        $barNode->setValue('bar1');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        $expectedAst->addChild($barNode);
+
+        $expectedArray = [
+            'foo' => 'foo1',
+            'bar' => 'bar1',
+        ];
+
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize('bar = bar1');
+        $resultAst = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, $inputAst, []);
+        self::assertEquals($expectedAst, $resultAst);
+        self::assertEquals($expectedArray, $resultAst->toArray());
+    }
+
     public function functionSortListThrowsSortingNonNumericListNumericDataProvider(): \Generator
     {
         yield 'non-numeric list numeric' => [
@@ -1710,6 +1860,19 @@ class AstBuilderTest extends UnitTestCase
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
         (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+    }
+
+    /**
+     * @test
+     * @dataProvider functionSortListThrowsSortingNonNumericListNumericDataProvider
+     */
+    public function functionSortListThrowsSortingNonNumericListNumericCommentAware(string $source): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1650893781);
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
     }
 
     public function functionGetEnvDataProvider(): \Generator
@@ -1802,15 +1965,26 @@ class AstBuilderTest extends UnitTestCase
         }
     }
 
+    /**
+     * @test
+     * @dataProvider functionGetEnvDataProvider
+     */
+    public function functionGetEnvCommentAware(?string $envVarName, ?string $envVarValue, $source, RootNode $expectedAst): void
+    {
+        if ($envVarName) {
+            putenv($envVarName . '=' . $envVarValue);
+        }
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
+        if ($envVarName) {
+            putenv($envVarName);
+        }
+    }
+
     public function flattenDataProvider(): \Generator
     {
-        $noopEventDispatcher = new NoopEventDispatcher();
-
-        yield 'empty' => [
-            new RootNode(),
-            [],
-        ];
-
         $typoscript =
             "first = firstValue\n" .
             "second = secondValue\n";
@@ -1819,7 +1993,7 @@ class AstBuilderTest extends UnitTestCase
             'second' => 'secondValue',
         ];
         yield 'one level' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
 
@@ -1829,7 +2003,7 @@ class AstBuilderTest extends UnitTestCase
             'first' => '',
         ];
         yield 'empty string as value is kept' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
 
@@ -1839,7 +2013,7 @@ class AstBuilderTest extends UnitTestCase
             'first' => '0',
         ];
         yield 'zero as value is kept' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
 
@@ -1851,7 +2025,7 @@ class AstBuilderTest extends UnitTestCase
             'second.secondSub' => 'secondSubValue',
         ];
         yield 'two levels' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
 
@@ -1867,7 +2041,7 @@ class AstBuilderTest extends UnitTestCase
             'second.secondSub' => 'secondSubValue',
         ];
         yield 'two levels with values on first level' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
 
@@ -1883,7 +2057,7 @@ class AstBuilderTest extends UnitTestCase
             'second.secondSub.secondSubSub' => 'secondSubSubValue',
         ];
         yield 'three levels, partially with values' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
 
@@ -1893,7 +2067,7 @@ class AstBuilderTest extends UnitTestCase
             'first.firstSub\.firstSubSub' => 'firstSubSubValue',
         ];
         yield 'two levels with quoted dote' => [
-            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            $typoscript,
             $expected,
         ];
     }
@@ -1902,8 +2076,410 @@ class AstBuilderTest extends UnitTestCase
      * @test
      * @dataProvider flattenDataProvider
      */
-    public function flatten(RootNode $ast, array $expected)
+    public function flatten(string $typoscript, array $expected)
     {
+        $ast = (new AstBuilder(new NoopEventDispatcher()))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode());
         self::assertSame($expected, $ast->flatten());
+    }
+
+    /**
+     * @test
+     * @dataProvider flattenDataProvider
+     */
+    public function flattenCommentAware(string $typoscript, array $expected)
+    {
+        $ast = (new CommentAwareAstBuilder(new NoopEventDispatcher()))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode());
+        self::assertSame($expected, $ast->flatten());
+    }
+
+    public function buildWithCommentsDataProvider(): \Generator
+    {
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+        );
+        yield 'root node comment' => [
+            '# a root node comment',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+        );
+        yield 'root node comment with final linebreak' => [
+            "# a root node comment\n",
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+        );
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 1, 0))
+        );
+        yield 'two root node comments' => [
+            "# a root node comment\n" .
+            '# another root node comment',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+        );
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 1, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 27))
+        );
+        yield 'two root node comments with linebreak' => [
+            "# a root node comment\n" .
+            "# another root node comment\n",
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+        );
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 2, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 27))
+        );
+        yield 'two root node comments with multiple linebreaks' => [
+            "# a root node comment\n" .
+            "\n" .
+            "# another root node comment\n" .
+            "\n",
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar');
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 11))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'single object assignment with previous line comment' => [
+            "# a comment\n" .
+            'foo = bar',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar');
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_DOUBLESLASH, '// a comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 12))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'single object assignment with previous line doubleslash comment' => [
+            "// a comment\n" .
+            'foo = bar',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar');
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 0))
+                ->append(new Token(TokenType::T_VALUE, ' a comment ', 0, 2))
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 0, 13))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 15))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'single object assignment with previous line multiline single comment' => [
+            "/* a comment */\n" .
+            'foo = bar',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar');
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 0))
+                ->append(new Token(TokenType::T_VALUE, ' a comment line 1', 0, 2))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 19))
+                ->append(new Token(TokenType::T_VALUE, '   a comment line 2 ', 1, 0))
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 20))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 22))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'single object assignment with previous line multiline multi comment' => [
+            "/* a comment line 1\n" .
+            "   a comment line 2 */\n" .
+            'foo = bar',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar');
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 11))
+        );
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 1, 0))
+                ->append(new Token(TokenType::T_VALUE, ' another comment line 1', 1, 2))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 25))
+                ->append(new Token(TokenType::T_VALUE, '   another comment line 2 ', 2, 0))
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 2, 26))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 28))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'single object assignment with two comments' => [
+            "# a comment\n" .
+            "/* another comment line 1\n" .
+            "   another comment line 2 */\n" .
+            'foo = bar',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+        );
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bar');
+        $objectNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 2, 0))
+                ->append(new Token(TokenType::T_VALUE, ' another comment line 1', 2, 2))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 25))
+                ->append(new Token(TokenType::T_VALUE, '   another comment line 2 ', 3, 0))
+                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 3, 26))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 28))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'comment for root node and comment for sub node' => [
+            "# a root node comment\n" .
+            "\n" .
+            "/* another comment line 1\n" .
+            "   another comment line 2 */\n" .
+            'foo = bar',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $fooNode = new ChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $barNode = new ChildNode('bar');
+        $fooNode->addChild($barNode);
+        $barNode->setValue('baz');
+        $barNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 20))
+        );
+        yield 'comment is added to sub node' => [
+            "# a sub node comment\n" .
+            'foo.bar = baz',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $fooNode = new ChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $barNode = new ChildNode('bar');
+        $fooNode->addChild($barNode);
+        $barNode->setValue('baz');
+        $barNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 20))
+        );
+        $barNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another sub node comment', 1, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 26))
+        );
+        yield 'multiple comments are added to sub node' => [
+            "# a sub node comment\n" .
+            "# another sub node comment\n" .
+            'foo.bar = baz',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+        );
+        $expectedAst->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 8, 0))
+        );
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('fooValue');
+        $fooNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub node comment', 2, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 20))
+        );
+        $expectedAst->addChild($fooNode);
+        $barNode = new ChildNode('bar');
+        $fooNode->addChild($barNode);
+        $barNode->setValue('barValue');
+        $barNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_BLANK, '  ', 5, 0))
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub sub node comment', 5, 2))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 5, 26))
+        );
+        yield 'root comment, sub node comments, sub sub node comments in brackets, root comment' => [
+            "# a root node comment\n" .
+            "\n" .
+            "# a sub node comment\n" .
+            "foo = fooValue\n" .
+            "foo {\n" .
+            "  # a sub sub node comment\n" .
+            "  bar = barValue\n" .
+            "}\n" .
+            '# another root node comment',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('fooValue');
+        $fooNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to foo node', 1, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 32))
+        );
+        $expectedAst->addChild($fooNode);
+        $barNode = new ChildNode('bar');
+        $fooNode->addChild($barNode);
+        $barNode->setValue('barValue');
+        $barNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_BLANK, '  ', 3, 0))
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to bar node', 3, 2))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 34))
+        );
+        yield 'comment line on opening bracket' => [
+            "foo = fooValue\n" .
+            "# a comment attached to foo node\n" .
+            "foo {\n" .
+            "  # a comment attached to bar node\n" .
+            "  bar = barValue\n" .
+            "}\n",
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('fooValue');
+        $expectedAst->addChild($fooNode);
+        $barNode = new ChildNode('bar');
+        $fooNode->addChild($barNode);
+        $barNode->setValue('fooValue');
+        $barNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_BLANK, '  ', 2, 0))
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to bar node', 2, 2))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 34))
+        );
+        yield 'comment on copy line' => [
+            "foo = fooValue\n" .
+            "foo {\n" .
+            "  # a comment attached to bar node\n" .
+            "  bar < foo\n" .
+            "}\n",
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('fooValue');
+        $expectedAst->addChild($fooNode);
+        $fooNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to foo node', 1, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 32))
+        );
+        yield 'comment on value modifier line' => [
+            "foo = fooValue\n" .
+            "# a comment attached to foo node\n" .
+            'foo := prependString()',
+            $expectedAst,
+        ];
+
+        $expectedAst = new RootNode();
+        $fooNode = new ReferenceChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $fooNode->setReferenceSourceStream(
+            (new IdentifierTokenStream())
+                ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar', 1, 7))
+        );
+        $fooNode->addComment(
+            (new TokenStream())
+                ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to foo node', 0, 0))
+                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 32))
+        );
+        yield 'comment on reference line' => [
+            "# a comment attached to foo node\n" .
+            'foo =< bar',
+            $expectedAst,
+        ];
+    }
+
+    /**
+     * This is for CommentAwareAstBuilder only, AstBuilder ignores comments.
+     *
+     * @test
+     * @dataProvider buildWithCommentsDataProvider
+     */
+    public function buildWithComments(string $source, RootNode $expectedAst): void
+    {
+        $noopEventDispatcher = new NoopEventDispatcher();
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
+    }
+
+    /**
+     * @test
+     */
+    public function buildWithCommentsSetsPreviousValue(): void
+    {
+        $source = "foo = fooValue1\n" .
+            'foo = fooValue2';
+        $expectedAst = new RootNode();
+        $fooNode = new ChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $fooNode->setValue('fooValue2');
+        $fooNode->setPreviousValue('fooValue1');
+        $tokens = (new LosslessTokenizer())->tokenize($source);
+        $ast = (new CommentAwareAstBuilder(new NoopEventDispatcher()))->build($tokens, new RootNode());
+        self::assertEquals($expectedAst, $ast);
     }
 }

@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Tstemplate\TypoScript\AST\Visitor\AstExpandStateVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\AST\Visitor\AstSearchVisitor;
+use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 
@@ -130,6 +131,10 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
         $displayConstantSubstitutions = $moduleData->get('displayConstantSubstitutions');
+        if ($moduleData->clean('displayComments', [true, false])) {
+            $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        }
+        $displayComments = $moduleData->get('displayComments');
         $searchValue = $moduleData->get('searchValue');
 
         // Build the constant include tree
@@ -138,11 +143,12 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
+        // @todo: $conditionEnforcerVisitor and $constantAstBuilderVisitor can be combined into one run?
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
         $this->treeTraverser->traverse($constantIncludeTree);
         // Build the constant AST
-        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverserConditionVerdictAware->resetVisitors();
         $this->treeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
         $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree);
@@ -196,7 +202,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
         $this->treeTraverser->traverse($setupIncludeTree);
         // Build the setup AST
-        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $setupAstBuilderVisitor->setFlatConstants($flattenedConstants);
         $this->treeTraverserConditionVerdictAware->resetVisitors();
         $this->treeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
@@ -256,6 +262,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             'searchValue' => $searchValue,
             'sortAlphabetically' => $sortAlphabetically,
             'displayConstantSubstitutions' => $displayConstantSubstitutions,
+            'displayComments' => $displayComments,
             'constantCurrentObjectPath' => new CurrentObjectPath(),
             'constantConditions' => $constantConditions,
             'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),

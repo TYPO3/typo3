@@ -61,6 +61,13 @@ interface NodeInterface
     public function isValueNull(): bool;
 
     /**
+     * Previous value is only set by comment aware ast builder. It is used in
+     * constant editor to see if a value has been changed.
+     */
+    public function setPreviousValue(?string $value): void;
+    public function getPreviousValue(): ?string;
+
+    /**
      * Helper method mostly for backend object browser to retrieve the original
      * stream when a constant substitution happened.
      */
@@ -81,6 +88,17 @@ interface NodeInterface
     public function hasSearchMatchInName(): bool;
     public function setSearchMatchInValue(): void;
     public function hasSearchMatchInValue(): bool;
+
+    /**
+     * Helper methods to attach TypoScript tokens to a node.
+     * This is used in ext:tstemplate "Constant Editor" and "Object Browser" and handled
+     * by CommentAwareAstBuilder.
+     */
+    public function addComment(TokenStreamInterface $tokenStream): void;
+    /**
+     * @return TokenStreamInterface[]
+     */
+    public function getComments(): array;
 
     /**
      * b/w compat method to turn AST into an array.

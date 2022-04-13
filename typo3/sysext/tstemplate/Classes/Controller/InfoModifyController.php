@@ -19,11 +19,9 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
@@ -39,8 +37,59 @@ class InfoModifyController extends AbstractTemplateModuleController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        if ($pageUid === 0) {
+            // Redirect to template record overview if on page 0.
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+
+        if (($parsedBody['action'] ?? '') === 'createExtensionTemplate') {
+            return $this->createExtensionTemplateAction($request, 'web_typoscript_infomodify');
+        }
+        if (($parsedBody['action'] ?? '') === 'createNewWebsiteTemplate') {
+            return $this->createNewWebsiteTemplateAction($request, 'web_typoscript_infomodify');
+        }
+
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        if (empty($allTemplatesOnPage)) {
+            return $this->noTemplateAction($request);
+        }
+
+        return $this->mainAction($request, $pageUid, $allTemplatesOnPage);
+    }
+
+    private function noTemplateAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $languageService = $this->getLanguageService();
+        $currentModule = $request->getAttribute('module');
+        $currentModuleIdentifier = $currentModule->getIdentifier();
+        $pageUid = (int)($request->getQueryParams()['id'] ?? 0);
+        if ($pageUid === 0) {
+            throw new \RuntimeException('No proper page uid given', 1661769346);
+        }
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addPreviewButtonToDocHeader($view, $pageUid, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
+        $view->assignMultiple([
+            'pageUid' => $pageUid,
+            'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageUid),
+        ]);
+        return $view->renderResponse('InfoModifyNoTemplate');
+    }
+
+    private function mainAction(ServerRequestInterface $request, int $pageUid, array $allTemplatesOnPage): ResponseInterface
+    {
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
+
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
 
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
@@ -49,65 +98,27 @@ class InfoModifyController extends AbstractTemplateModuleController
             $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
 
-        $pageId = (int)($request->getQueryParams()['id'] ?? 0);
-        if ($pageId === 0) {
-            // Redirect to template record overview if on page 0.
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
-        }
-        $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
-
-        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageId);
         if ($moduleData->clean('templatesOnPage', array_column($allTemplatesOnPage, 'uid') ?: [0])) {
             $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
         $selectedTemplateRecord = (int)$moduleData->get('templatesOnPage');
-        $templateRow = $this->getFirstTemplateRecordOnPage($pageId, $selectedTemplateRecord);
-
-        $saveId = 0;
-        if ($templateRow) {
-            $saveId = empty($templateRow['_ORIG_uid']) ? $templateRow['uid'] : $templateRow['_ORIG_uid'];
-        }
-        $newId = $this->createTemplateIfRequested($request, $pageId, (int)$saveId);
-        if ($newId) {
-            // Redirect to created template.
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_overview', ['id' => $pageId, 'templatesOnPage' => $newId]));
-        }
+        $templateRow = $this->getFirstTemplateRecordOnPage($pageUid, $selectedTemplateRecord);
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $this->addPreviewButtonToDocHeader($view, $pageId, (int)$pageRecord['doktype']);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageId);
-        $this->addNewButtonToDocHeader($view, $currentModuleIdentifier, $pageId);
-        $view->makeDocHeaderModuleMenu(['id' => $pageId]);
+        $this->addPreviewButtonToDocHeader($view, $pageUid, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
-            'moduleIdentifier' => $currentModuleIdentifier,
-            'pageId' => $pageId,
-            'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageId),
+            'pageUid' => $pageUid,
+            'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageUid),
             'templateRecord' => $templateRow,
-            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageId, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
+            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageUid, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
             'numberOfConstantsLines' => trim((string)($templateRow['constants'] ?? '')) ? count(explode(LF, (string)$templateRow['constants'])) : 0,
             'numberOfSetupLines' => trim((string)($templateRow['config'] ?? '')) ? count(explode(LF, (string)$templateRow['config'])) : 0,
         ]);
-        return $view->renderResponse('InfoModify');
-    }
-
-    protected function addNewButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, int $pageId): void
-    {
-        $languageService = $this->getLanguageService();
-        if ($pageId) {
-            $urlParameters = [
-                'id' => $pageId,
-                'template' => 'all',
-                'createExtension' => 'new',
-            ];
-            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-            $newButton = $buttonBar->makeLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier, $urlParameters))
-                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
-                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
-            $buttonBar->addButton($newButton);
-        }
+        return $view->renderResponse('InfoModifyMain');
     }
 }

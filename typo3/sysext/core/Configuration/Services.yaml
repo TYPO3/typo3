@@ -294,6 +294,9 @@ services:
       $hashCache: '@cache.assets'
       $runtimeCache: '@cache.runtime'
 
+  TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface:
+    alias: TYPO3\CMS\Core\TypoScript\AST\AstBuilder
+
   TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder:
     public: true
     arguments:

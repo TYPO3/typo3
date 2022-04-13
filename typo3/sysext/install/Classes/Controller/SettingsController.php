@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Environment;
@@ -34,11 +35,15 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
+use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstConstantCommentVisitor;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
-use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
 
 /**
@@ -47,29 +52,13 @@ use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
  */
 class SettingsController extends AbstractController
 {
-    /**
-     * @var PackageManager
-     */
-    private $packageManager;
-
-    /**
-     * @var ExtensionConfigurationService
-     */
-    private $extensionConfigurationService;
-
-    /**
-     * @var LanguageServiceFactory
-     */
-    private $languageServiceFactory;
-
     public function __construct(
-        PackageManager $packageManager,
-        ExtensionConfigurationService $extensionConfigurationService,
-        LanguageServiceFactory $languageServiceFactory
+        private readonly PackageManager $packageManager,
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly CommentAwareAstBuilder $astBuilder,
+        private readonly LosslessTokenizer $losslessTokenizer,
+        private readonly AstTraverser $astTraverser,
     ) {
-        $this->packageManager = $packageManager;
-        $this->extensionConfigurationService = $extensionConfigurationService;
-        $this->languageServiceFactory = $languageServiceFactory;
     }
 
     /**
@@ -413,12 +402,45 @@ class SettingsController extends AbstractController
         $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
         $extensionsWithConfigurations = [];
         $activePackages = $this->packageManager->getActivePackages();
+        $extensionConfiguration = new ExtensionConfiguration();
         foreach ($activePackages as $extensionKey => $activePackage) {
             if (@file_exists($activePackage->getPackagePath() . 'ext_conf_template.txt')) {
-                $extensionsWithConfigurations[$extensionKey] = [
-                    'packageInfo' => $activePackage,
-                    'configuration' => $this->extensionConfigurationService->getConfigurationPreparedForView($extensionKey),
-                ];
+                $ast = $this->astBuilder->build(
+                    $this->losslessTokenizer->tokenize(file_get_contents($activePackage->getPackagePath() . 'ext_conf_template.txt')),
+                    new RootNode()
+                );
+                $astConstantCommentVisitor = new (AstConstantCommentVisitor::class);
+                $this->astTraverser->resetVisitors();
+                $this->astTraverser->addVisitor($astConstantCommentVisitor);
+                $this->astTraverser->traverse($ast);
+                $constants = $astConstantCommentVisitor->getConstants();
+                // @todo: It would be better to fetch all LocalConfiguration settings of an extension at once
+                //        and feed it as pseudo-TS to the AST builder. This way the full AstConstantCommentVisitor
+                //        preparation magic would kick in and the JS-side processing in extension-configuration.ts
+                //        could be removed (especially the 'wrap' and 'offset' stuff) by handling it in fluid directly.
+                foreach ($constants as $constantName => &$constantDetails) {
+                    try {
+                        $valueFromLocalConfiguration = $extensionConfiguration->get($extensionKey, str_replace('.', '/', $constantName));
+                        $constantDetails['value'] = $valueFromLocalConfiguration;
+                    } catch (ExtensionConfigurationPathDoesNotExistException $e) {
+                        // Deliberately empty - it can happen at runtime that a written config does not return
+                        // back all values (eg. saltedpassword with its userFuncs), which then miss in the written
+                        // configuration and are only synced after next install tool run. This edge case is
+                        // taken care of here.
+                    }
+                }
+                $displayConstants = [];
+                foreach ($constants as $constant) {
+                    $displayConstants[$constant['cat']][$constant['subcat_sorting_first']]['label'] = $constant['subcat_label'];
+                    $displayConstants[$constant['cat']][$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']] = $constant;
+                }
+                foreach ($displayConstants as &$constantCategory) {
+                    ksort($constantCategory);
+                    foreach ($constantCategory as &$constantDetailItems) {
+                        ksort($constantDetailItems['items']);
+                    }
+                }
+                $extensionsWithConfigurations[$extensionKey] = $displayConstants;
             }
         }
         ksort($extensionsWithConfigurations);

@@ -45,13 +45,14 @@
     <f:render
         partial="ObjectBrowserOptions"
         arguments="{
-        allTemplatesOnPage: allTemplatesOnPage,
-        pageUid: pageUid,
-        selectedTemplateUid: selectedTemplateUid,
-        searchValue: searchValue,
-        displayConstantSubstitutions: displayConstantSubstitutions,
-        sortAlphabetically: sortAlphabetically
-    }"
+            allTemplatesOnPage: allTemplatesOnPage,
+            pageUid: pageUid,
+            selectedTemplateUid: selectedTemplateUid,
+            searchValue: searchValue,
+            displayConstantSubstitutions: displayConstantSubstitutions,
+            displayComments: displayComments,
+            sortAlphabetically: sortAlphabetically
+        }"
     />
 
     <f:comment>
@@ -61,20 +62,21 @@
         <f:render
             partial="ObjectBrowserConditions"
             arguments="{
-            pageUid: pageUid,
-            type: 'constant',
-            conditions: constantConditions,
-            conditionActiveCount: constantConditionsActiveCount
-        }"
+                pageUid: pageUid,
+                type: 'constant',
+                conditions: constantConditions,
+                conditionActiveCount: constantConditionsActiveCount
+            }"
         />
         <f:render
             partial="ObjectBrowserTreePanel"
             arguments="{
-            type: 'constant',
-            tree: constantAst,
-            pageUid: pageUid,
-            currentObjectPath: constantCurrentObjectPath
-        }"
+                type: 'constant',
+                tree: constantAst,
+                pageUid: pageUid,
+                currentObjectPath: constantCurrentObjectPath,
+                displayComments: displayComments
+            }"
         />
     </div>
 
@@ -85,22 +87,23 @@
         <f:render
             partial="ObjectBrowserConditions"
             arguments="{
-            pageUid: pageUid,
-            type: 'setup',
-            conditions: setupConditions,
-            conditionActiveCount: setupConditionsActiveCount,
-            displayConstantSubstitutions: displayConstantSubstitutions
-        }"
+                pageUid: pageUid,
+                type: 'setup',
+                conditions: setupConditions,
+                conditionActiveCount: setupConditionsActiveCount,
+                displayConstantSubstitutions: displayConstantSubstitutions
+            }"
         />
         <f:render
             partial="ObjectBrowserTreePanel"
             arguments="{
-            type: 'setup',
-            tree: setupAst,
-            pageUid: pageUid,
-            currentObjectPath: setupCurrentObjectPath,
-            displayConstantSubstitutions: displayConstantSubstitutions
-        }"
+                type: 'setup',
+                tree: setupAst,
+                pageUid: pageUid,
+                currentObjectPath: setupCurrentObjectPath,
+                displayConstantSubstitutions: displayConstantSubstitutions,
+                displayComments: displayComments
+            }"
         />
     </div>
 

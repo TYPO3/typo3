@@ -92,8 +92,10 @@ class ServiceProvider extends AbstractServiceProvider
             Service\FlexFormService::class => [ static::class, 'getFlexFormService' ],
             Service\OpcodeCacheService::class => [ static::class, 'getOpcodeCacheService' ],
             TimeTracker\TimeTracker::class => [ static::class, 'getTimeTracker' ],
-            TypoScript\Parser\ConstantConfigurationParser::class => [ static::class, 'getTypoScriptConstantConfigurationParser' ],
             TypoScript\TypoScriptService::class => [ static::class, 'getTypoScriptService' ],
+            TypoScript\AST\Traverser\AstTraverser::class => [ static::class, 'getAstTraverser' ],
+            TypoScript\AST\CommentAwareAstBuilder::class => [ static::class, 'getCommentAwareAstBuilder' ],
+            TypoScript\Tokenizer\LosslessTokenizer::class => [ static::class, 'getLosslessTokenizer'],
             'globalPageTsConfig' => [ static::class, 'getGlobalPageTsConfig' ],
             'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
@@ -473,14 +475,26 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, TimeTracker\TimeTracker::class);
     }
 
-    public static function getTypoScriptConstantConfigurationParser(ContainerInterface $container): TypoScript\Parser\ConstantConfigurationParser
-    {
-        return self::new($container, TypoScript\Parser\ConstantConfigurationParser::class);
-    }
-
     public static function getTypoScriptService(ContainerInterface $container): TypoScript\TypoScriptService
     {
         return self::new($container, TypoScript\TypoScriptService::class);
+    }
+
+    public static function getAstTraverser(ContainerInterface $container): TypoScript\AST\Traverser\AstTraverser
+    {
+        return self::new($container, TypoScript\AST\Traverser\AstTraverser::class);
+    }
+
+    public static function getCommentAwareAstBuilder(ContainerInterface $container): TypoScript\AST\CommentAwareAstBuilder
+    {
+        return self::new($container, TypoScript\AST\CommentAwareAstBuilder::class, [
+            $container->get(EventDispatcherInterface::class),
+        ]);
+    }
+
+    public static function getLosslessTokenizer(ContainerInterface $container): TypoScript\Tokenizer\LosslessTokenizer
+    {
+        return self::new($container, TypoScript\Tokenizer\LosslessTokenizer::class);
     }
 
     public static function getBackendEntryPointResolver(ContainerInterface $container): Routing\BackendEntryPointResolver

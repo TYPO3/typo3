@@ -3,11 +3,17 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="editConstants" resname="editConstants">
-				<source>Edit constants for template</source>
+			<trans-unit id="objectBrowserTitleWithTemplate" resname="objectBrowserTitleWithTemplate">
+				<source>Constant Editor for template "%s"</source>
+			</trans-unit>
+			<trans-unit id="options" resname="options">
+				<source>Options</source>
+			</trans-unit>
+			<trans-unit id="selectedTemplate" resname="selectedTemplate">
+				<source>Selected template</source>
 			</trans-unit>
 			<trans-unit id="category" resname="category">
-				<source>Category</source>
+				<source>Selected category</source>
 			</trans-unit>
 			<trans-unit id="noConstants" resname="noConstants">
 				<source>No constants available</source>

@@ -84,6 +84,25 @@
                         </form>
                         <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
                             <div class="form-check form-switch">
+                                <label class="form-check-label" for="displayComments">
+                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayComments" />
+                                </label>
+                                <input type="hidden" name="displayComments" value="0" />
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="displayComments"
+                                    id="displayComments"
+                                    value="1"
+                                    {f:if(condition: displayComments, then:'checked="checked"')}
+                                    data-global-event="change"
+                                    data-action-submit="$form"
+                                    data-value-selector="input[name='displayComments']"
+                                />
+                            </div>
+                        </form>
+                        <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
+                            <div class="form-check form-switch">
                                 <label class="form-check-label" for="sortAlphabetically">
                                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sortAlphabetically" />
                                 </label>

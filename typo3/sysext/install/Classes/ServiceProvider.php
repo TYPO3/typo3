@@ -39,7 +39,9 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
+use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
+use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
 
@@ -66,7 +68,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\ClearCacheService::class => [ static::class, 'getClearCacheService' ],
             Service\CoreUpdateService::class => [ static::class, 'getCoreUpdateService' ],
             Service\CoreVersionService::class => [ static::class, 'getCoreVersionService' ],
-            Service\ExtensionConfigurationService::class => [ static::class, 'getExtensionConfigurationService' ],
             Service\LanguagePackService::class => [ static::class, 'getLanguagePackService' ],
             Service\LateBootService::class => [ static::class, 'getLateBootService' ],
             Service\LoadTcaService::class => [ static::class, 'getLoadTcaService' ],
@@ -138,14 +139,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getCoreVersionService(ContainerInterface $container): Service\CoreVersionService
     {
         return new Service\CoreVersionService();
-    }
-
-    public static function getExtensionConfigurationService(ContainerInterface $container): Service\ExtensionConfigurationService
-    {
-        return new Service\ExtensionConfigurationService(
-            $container->get(PackageManager::class),
-            $container->get(ConstantConfigurationParser::class)
-        );
     }
 
     public static function getLanguagePackService(ContainerInterface $container): Service\LanguagePackService
@@ -270,8 +263,10 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Controller\SettingsController(
             $container->get(PackageManager::class),
-            $container->get(Service\ExtensionConfigurationService::class),
-            $container->get(LanguageServiceFactory::class)
+            $container->get(LanguageServiceFactory::class),
+            $container->get(CommentAwareAstBuilder::class),
+            $container->get(LosslessTokenizer::class),
+            $container->get(AstTraverser::class),
         );
     }
 

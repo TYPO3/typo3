@@ -49,7 +49,7 @@
             <f:if condition="{page}">
                 <f:if condition="{page._templates}">
                     <f:then>
-                        <a href="{f:be.uri(route: 'web_typoscript_overview', parameters:'{id: page.uid}')}"
+                        <a href="{f:be.uri(route: 'web_typoscript_infomodify', parameters:'{id: page.uid}')}"
                             title="ID: {page.uid}">
                             <core:IconForRecord table="pages" row="{page}" />
                             {page.title -> f:format.crop(maxCharacters: maxCharacters)}
@@ -66,7 +66,7 @@
         </td>
         <td>
             <f:if condition="{template}">
-                <a href="{f:be.uri(route: 'web_typoscript_overview', parameters:'{id: template.pid, templatesOnPage: template.uid}')}"
+                <a href="{f:be.uri(route: 'web_typoscript_infomodify', parameters:'{id: template.pid, templatesOnPage: template.uid}')}"
                     title="ID: {template.uid}">
                     <core:IconForRecord table="sys_template" row="{template}" />
                     {template.title -> f:format.crop(maxCharacters: maxCharacters)}

@@ -29,6 +29,7 @@ abstract class AbstractNode implements NodeInterface
 {
     protected string $name;
     private ?string $value = null;
+    private ?string $previousValue = null;
 
     /**
      * @var array<string, ChildNodeInterface>
@@ -38,6 +39,7 @@ abstract class AbstractNode implements NodeInterface
     private ?TokenStreamInterface $originalValueTokenStream = null;
     private bool $searchMatchInName = false;
     private bool $searchMatchInValue = false;
+    private array $comments = [];
 
     /**
      * This forces $this->name NOT to be readonly.
@@ -106,6 +108,16 @@ abstract class AbstractNode implements NodeInterface
         return $this->value === null;
     }
 
+    public function setPreviousValue(?string $value): void
+    {
+        $this->previousValue = $value;
+    }
+
+    public function getPreviousValue(): ?string
+    {
+        return $this->previousValue;
+    }
+
     public function setOriginalValueTokenStream(?TokenStreamInterface $tokenStream): void
     {
         $this->originalValueTokenStream = $tokenStream;
@@ -144,5 +156,18 @@ abstract class AbstractNode implements NodeInterface
     public function hasSearchMatchInValue(): bool
     {
         return $this->searchMatchInValue;
+    }
+
+    public function addComment(TokenStreamInterface $tokenStream): void
+    {
+        $this->comments[] = $tokenStream;
+    }
+
+    /**
+     * @return TokenStreamInterface[]
+     */
+    public function getComments(): array
+    {
+        return $this->comments;
     }
 }
