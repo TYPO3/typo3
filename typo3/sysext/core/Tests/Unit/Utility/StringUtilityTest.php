@@ -44,8 +44,6 @@ class StringUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $selector
-     * @param string $expectedValue
      * @dataProvider escapeCssSelectorDataProvider
      */
     public function escapeCssSelector(string $selector, string $expectedValue): void
@@ -53,9 +51,6 @@ class StringUtilityTest extends UnitTestCase
         self::assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
     }
 
-    /**
-     * @return array
-     */
     public function escapeCssSelectorDataProvider(): array
     {
         return [
@@ -68,8 +63,6 @@ class StringUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $input
-     * @param string $expectedValue
      * @test
      * @dataProvider removeByteOrderMarkDataProvider
      */
@@ -79,9 +72,6 @@ class StringUtilityTest extends UnitTestCase
         self::assertSame($expectedValue, StringUtility::removeByteOrderMark(hex2bin($input)));
     }
 
-    /**
-     * @return array
-     */
     public function removeByteOrderMarkDataProvider(): array
     {
         return [
@@ -151,8 +141,6 @@ class StringUtilityTest extends UnitTestCase
 
     /**
      * Data provider for uniqueListUnifiesCommaSeparatedList
-     *
-     * @return \Generator
      */
     public function uniqueListUnifiesCommaSeparatedListDataProvider(): \Generator
     {
@@ -169,10 +157,6 @@ class StringUtilityTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $initialList
-     * @param string $unifiedList
-     *
      * @dataProvider uniqueListUnifiesCommaSeparatedListDataProvider
      */
     public function uniqueListUnifiesCommaSeparatedList(string $initialList, string $unifiedList): void
@@ -182,8 +166,6 @@ class StringUtilityTest extends UnitTestCase
 
     /**
      * Data provider for multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings
-     *
-     * @return \Generator
      */
     public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider(): \Generator
     {
@@ -203,16 +185,10 @@ class StringUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     *
      * Tests that StringUtility::multibyteStringPad() returns the same value as \str_pad()
      * for ASCII strings.
      *
-     * @param string $string
-     * @param int $length
-     * @param string $pad_string
-     * @param int $pad_type
-     *
+     * @test
      * @dataProvider multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider
      */
     public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings(string $string, int $length, string $pad_string, int $pad_type): void
@@ -242,13 +218,6 @@ class StringUtilityTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $expectedResult
-     * @param string $string
-     * @param int $length
-     * @param string $pad_string
-     * @param int $pad_type
-     *
      * @dataProvider multibyteStringPadReturnsCorrectResultsMultibyteDataProvider
      */
     public function multibyteStringPadReturnsCorrectResultsMultibyte(string $expectedResult, string $string, int $length, string $pad_string, int $pad_type): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,12 +24,9 @@ class StringUtility
 {
     /**
      * This function generates a unique id by using the more entropy parameter.
-     * Furthermore the dots are removed so the id can be used inside HTML attributes e.g. id.
-     *
-     * @param string $prefix
-     * @return string
+     * Furthermore, the dots are removed so the id can be used inside HTML attributes e.g. id.
      */
-    public static function getUniqueId($prefix = '')
+    public static function getUniqueId(string $prefix = ''): string
     {
         $uniqueId = uniqid($prefix, true);
         return str_replace('.', '', $uniqueId);
@@ -38,9 +37,6 @@ class StringUtility
      *
      * This method takes care to escape any CSS selector meta character.
      * The result may be used to query the DOM like $('#' + escapedSelector)
-     *
-     * @param string $selector
-     * @return string
      */
     public static function escapeCssSelector(string $selector): string
     {
@@ -48,10 +44,9 @@ class StringUtility
     }
 
     /**
-     * Removes the Byte Order Mark (BOM) from the input string. This method supports UTF-8 encoded strings only!
+     * Removes the Byte Order Mark (BOM) from the input string.
      *
-     * @param string $input
-     * @return string
+     * This method supports UTF-8 encoded strings only!
      */
     public static function removeByteOrderMark(string $input): string
     {
@@ -69,7 +64,7 @@ class StringUtility
      * @param string $needle The string to find in $haystack
      * @return bool Returns TRUE if $needle matches or is found in (according to wildcards) $haystack. E.g. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns TRUE.
      */
-    public static function searchStringWildcard($haystack, $needle): bool
+    public static function searchStringWildcard(string $haystack, string $needle): bool
     {
         $result = false;
         if ($haystack === $needle) {
@@ -93,7 +88,7 @@ class StringUtility
      * Takes a comma-separated list and removes all duplicates.
      * If a value in the list is trim(empty), the value is ignored.
      *
-     * @param string $list Accept a comma-separated list of values.
+     * @param string $list A comma-separated list of values.
      * @return string Returns the list without any duplicates of values, space around values are trimmed.
      */
     public static function uniqueList(string $list): string
@@ -104,13 +99,6 @@ class StringUtility
     /**
      * Works the same as str_pad() except that it correctly handles strings with multibyte characters
      * and takes an additional optional argument $encoding.
-     *
-     * @param string $string
-     * @param int $length
-     * @param string $pad_string
-     * @param int $pad_type
-     * @param string $encoding
-     * @return string
      */
     public static function multibyteStringPad(string $string, int $length, string $pad_string = ' ', int $pad_type = STR_PAD_RIGHT, string $encoding = 'UTF-8'): string
     {

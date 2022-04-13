@@ -21,6 +21,7 @@ expectations and existing behavior.
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility`
 - :php:`\TYPO3\CMS\Core\Utility\RootlineUtility`
+- :php:`\TYPO3\CMS\Core\Utility\StringUtility`
 - :php:`\TYPO3\CMS\Core\Utility\VersionNumberUtility`
 
 The following PHP classes have added public class property types:
