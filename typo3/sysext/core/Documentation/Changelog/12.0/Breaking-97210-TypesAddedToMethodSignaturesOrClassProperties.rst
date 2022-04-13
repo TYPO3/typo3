@@ -20,6 +20,7 @@ expectations and existing behavior.
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility`
 - :php:`\TYPO3\CMS\Core\Utility\DiffUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility`
+- :php:`\TYPO3\CMS\Core\Utility\MailUtility`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility`
 - :php:`\TYPO3\CMS\Core\Utility\RootlineUtility`

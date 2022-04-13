@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for the \TYPO3\CMS\Core\Utility\MailUtility class.
+ * @covers \TYPO3\CMS\Core\Utility\MailUtility
  */
 class MailUtilityTest extends UnitTestCase
 {
@@ -87,8 +87,6 @@ class MailUtilityTest extends UnitTestCase
 
     /**
      * Data provider for parseAddressesTest
-     *
-     * @return array Data sets
      */
     public function parseAddressesProvider(): array
     {
@@ -116,15 +114,12 @@ class MailUtilityTest extends UnitTestCase
      * @test
      * @dataProvider parseAddressesProvider
      */
-    public function parseAddressesTest($source, $addressList): void
+    public function parseAddressesTest(string $source, array $addressList): void
     {
         $returnArray = MailUtility::parseAddresses($source);
         self::assertEquals($addressList, $returnArray);
     }
 
-    /**
-     * @return array
-     */
     public function replyToProvider(): array
     {
         return [

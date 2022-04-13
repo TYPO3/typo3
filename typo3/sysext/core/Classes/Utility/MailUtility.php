@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -27,9 +29,14 @@ class MailUtility
      *
      * Ready to be passed to $mail->setFrom()
      *
-     * @return array key=Valid email address which can be used as sender, value=Valid name which can be used as a sender. NULL if no address is configured
+     * This method can return three different variants:
+     * 1. An assoc. array: key => Valid email address which can be used as sender; value => Valid name which can be used as a sender
+     * 2. A numeric array with one entry: Valid email address which can be used as sender
+     * 3. Null, if no address is configured
+     *
+     * @return array<string|int, string>|null
      */
-    public static function getSystemFrom()
+    public static function getSystemFrom(): ?array
     {
         $address = self::getSystemFromAddress();
         $name = self::getSystemFromName();
@@ -47,14 +54,13 @@ class MailUtility
      *
      * As configured in Install Tool.
      *
-     * @return string The name (unquoted, unformatted). NULL if none is set
+     * @return string|null The name (unquoted, unformatted). NULL if none is set or an invalid non-string value.
      */
-    public static function getSystemFromName()
+    public static function getSystemFromName(): ?string
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
-            return $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'];
-        }
-        return null;
+        $name = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ?? null;
+
+        return (!empty($name) && is_string($name)) ? $name : null;
     }
 
     /**
@@ -70,11 +76,11 @@ class MailUtility
      *
      * @return string An email address
      */
-    public static function getSystemFromAddress()
+    public static function getSystemFromAddress(): string
     {
-        // default, first check the localconf setting
-        $address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
-        if (!GeneralUtility::validEmail($address)) {
+        $address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? null;
+
+        if (!is_string($address) || !GeneralUtility::validEmail($address)) {
             // still nothing, get host name from server
             $address = 'no-reply@' . php_uname('n');
             if (!GeneralUtility::validEmail($address)) {
@@ -90,12 +96,18 @@ class MailUtility
      *
      * Ready to be passed to $mail->setReplyTo()
      *
-     * @return array List of email-addresses. Specifying a realname can be done in the form of "replyToName <replyTo@example.com>".
+     * This method returns a list of email addresses, but depending on the existence of "defaultMailReplyToName"
+     * the array can have a different shape:
+     *
+     * 1. An assoc. array: key => a valid reply-to address which can be used as sender; value => a valid reply-to name which can be used as a sender
+     * 2. A numeric array with one entry: a valid reply-to address which can be used as sender
+     *
+     * @return array<string|int, string>
      */
     public static function getSystemReplyTo(): array
     {
-        $mailConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-        $replyToAddress = $mailConfiguration['defaultMailReplyToAddress'];
+        $mailConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'] ?? [];
+        $replyToAddress = $mailConfiguration['defaultMailReplyToAddress'] ?? null;
         if (empty($replyToAddress) || !GeneralUtility::validEmail($replyToAddress)) {
             return [];
         }
@@ -118,14 +130,14 @@ class MailUtility
      * @param int $lineWidth The line width
      * @return string Reformatted text
      */
-    public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76)
+    public static function breakLinesForEmail(string $str, string $newlineChar = LF, int $lineWidth = 76): string
     {
         $lines = [];
         $substrStart = 0;
         while (strlen($str) > $substrStart) {
             $substr = substr($str, $substrStart, $lineWidth);
             // has line exceeded (reached) the maximum width?
-            if (strlen($substr) == $lineWidth) {
+            if (strlen($substr) === $lineWidth) {
                 // find last space-char
                 $spacePos = strrpos(rtrim($substr), ' ');
                 // space-char found?
@@ -168,7 +180,7 @@ class MailUtility
      * @param string $rawAddresses Comma separated list of email addresses (optionally with display name)
      * @return array Parsed list of addresses.
      */
-    public static function parseAddresses($rawAddresses)
+    public static function parseAddresses(string $rawAddresses): array
     {
         /** @var \TYPO3\CMS\Core\Mail\Rfc822AddressesParser $addressParser */
         $addressParser = GeneralUtility::makeInstance(
