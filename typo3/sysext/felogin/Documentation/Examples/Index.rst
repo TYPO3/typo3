@@ -35,7 +35,7 @@ original page:
 
 .. code-block:: typoscript
 
-   plugin.tx_felogin_login.settings.redirectMode = referer
+   plugin.tx_felogin_login.settings.redirectMode = getpost
 
 (This option can also be set in the flexform configuration of the
 felogin content element)
