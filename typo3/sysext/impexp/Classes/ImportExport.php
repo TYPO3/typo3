@@ -1371,7 +1371,7 @@ abstract class ImportExport
                 if (isset($importRecord[$fieldName])) {
                     if (trim((string)$databaseRecord[$fieldName]) !== trim((string)$importRecord[$fieldName])) {
                         $diffFieldHtml = $this->getDiffUtility()->makeDiffDisplay(
-                            BackendUtility::getProcessedValue(
+                            (string)BackendUtility::getProcessedValue(
                                 $table,
                                 $fieldName,
                                 !$inverse ? $importRecord[$fieldName] : $databaseRecord[$fieldName],
@@ -1379,7 +1379,7 @@ abstract class ImportExport
                                 true,
                                 true
                             ),
-                            BackendUtility::getProcessedValue(
+                            (string)BackendUtility::getProcessedValue(
                                 $table,
                                 $fieldName,
                                 !$inverse ? $databaseRecord[$fieldName] : $importRecord[$fieldName],

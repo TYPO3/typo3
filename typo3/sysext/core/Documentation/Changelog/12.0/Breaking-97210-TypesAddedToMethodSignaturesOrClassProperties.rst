@@ -1,8 +1,8 @@
 .. include:: /Includes.rst.txt
 
-===================================================
-Breaking: #97210 - Types added to method signatures
-===================================================
+=======================================================================
+Breaking: #97210 - Types added to method signatures or class properties
+=======================================================================
 
 See :issue:`97210`
 
@@ -16,8 +16,12 @@ expectations and existing behavior.
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ClassNamingUtility`
 - :php:`\TYPO3\CMS\Core\Utility\CommandUtility`
+- :php:`\TYPO3\CMS\Core\Utility\DiffUtility`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 
+The following PHP classes have added public class property types:
+
+- :php:`\TYPO3\CMS\Core\Utility\DiffUtility`
 
 Impact
 ======

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,19 +27,13 @@ class DiffUtility
 {
     /**
      * If set, the HTML tags are stripped from the input strings first.
-     *
-     * @var bool
      */
-    public $stripTags = true;
+    public bool $stripTags = true;
 
     /**
-     * This will produce a color-marked-up diff output in HTML from the input strings.
-     *
-     * @param string $str1 String 1
-     * @param string $str2 String 2
-     * @return string Formatted output.
+     * Returns a color-marked-up diff output in HTML from the input strings.
      */
-    public function makeDiffDisplay($str1, $str2)
+    public function makeDiffDisplay(string $str1, string $str2): string
     {
         if ($this->stripTags) {
             $str1 = strip_tags($str1);
