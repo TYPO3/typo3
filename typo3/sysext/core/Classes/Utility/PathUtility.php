@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,18 +27,17 @@ class PathUtility
 {
     /**
      * Gets the relative path from the current used script to a given directory.
-     * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
      *
-     * @param string $targetPath Absolute target path
-     * @return string|null
+     * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
      */
-    public static function getRelativePathTo($targetPath)
+    public static function getRelativePathTo(string $absolutePath): ?string
     {
-        return self::getRelativePath(self::dirname(Environment::getCurrentScript()), $targetPath);
+        return self::getRelativePath(self::dirname(Environment::getCurrentScript()), $absolutePath);
     }
 
     /**
      * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
+     *
      * TODO: And this exactly is a big issue as it mixes file system paths with (relative) URLs
      * TODO: Additionally it depends on the current request and can not do its job on CLI
      * TODO: deprecate entirely and replace with stricter API
@@ -48,7 +49,7 @@ class PathUtility
      * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which are subject to removal.
      * @return string something like "/mysite/typo3conf/ext/myext/myfile.js"
      */
-    public static function getAbsoluteWebPath($targetPath, bool $prefixWithSitePath = true)
+    public static function getAbsoluteWebPath(string $targetPath, bool $prefixWithSitePath = true): string
     {
         if (static::hasProtocolAndScheme($targetPath)) {
             return $targetPath;
@@ -92,7 +93,7 @@ class PathUtility
      *
      * @internal This method should not be used for now except for TYPO3 core. It may be removed or be changed any time
      * @param string $resourcePath
-     * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which are subject to removal.
+     * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which is subject to removal.
      * @return string
      */
     public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
@@ -131,7 +132,7 @@ class PathUtility
      * @param string $targetPath Absolute target path
      * @return string|null
      */
-    public static function getRelativePath($sourcePath, $targetPath)
+    public static function getRelativePath(string $sourcePath, string $targetPath): ?string
     {
         $relativePath = null;
         $sourcePath = rtrim(GeneralUtility::fixWindowsFilePath($sourcePath), '/');
@@ -165,10 +166,10 @@ class PathUtility
      * + /var/www/domain.com/typo3/sysext/file/
      * = /var/www/domain.com/typo3/sysext/
      *
-     * @param array $paths Paths to be processed
+     * @param array<string> $paths Paths to be processed
      * @return string|null
      */
-    public static function getCommonPrefix(array $paths)
+    public static function getCommonPrefix(array $paths): ?string
     {
         $paths = array_map([GeneralUtility::class, 'fixWindowsFilePath'], $paths);
         $commonPath = null;
@@ -181,7 +182,7 @@ class PathUtility
             foreach ($parts as $part) {
                 $comparePath .= $part . '/';
                 foreach ($paths as $path) {
-                    if (strpos($path . '/', $comparePath) !== 0) {
+                    if (!str_starts_with($path . '/', $comparePath)) {
                         $break = true;
                         break;
                     }
@@ -199,31 +200,33 @@ class PathUtility
     }
 
     /**
-     * Sanitizes a trailing separator.
+     * Normalizes a trailing separator.
+     *
      * (e.g. 'some/path' -> 'some/path/')
      *
      * @param string $path The path to be sanitized
      * @param string $separator The separator to be used
      * @return string
      */
-    public static function sanitizeTrailingSeparator($path, $separator = '/')
+    public static function sanitizeTrailingSeparator(string $path, string $separator = '/'): string
     {
         return rtrim($path, $separator) . $separator;
     }
 
     /**
      * Returns trailing name component of path
+     *
      * Since basename() is locale dependent we need to access
      * the filesystem with the same locale of the system, not
      * the rendering context.
-     * @see http://www.php.net/manual/en/function.basename.php
      *
+     * @see http://www.php.net/manual/en/function.basename.php
      *
      * @param string $path
      *
      * @return string
      */
-    public static function basename($path)
+    public static function basename(string $path): string
     {
         $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
         if (empty($targetLocale)) {
@@ -238,17 +241,18 @@ class PathUtility
 
     /**
      * Returns parent directory's path
+     *
      * Since dirname() is locale dependent we need to access
      * the filesystem with the same locale of the system, not
      * the rendering context.
-     * @see http://www.php.net/manual/en/function.dirname.php
      *
+     * @see http://www.php.net/manual/en/function.dirname.php
      *
      * @param string $path
      *
      * @return string
      */
-    public static function dirname($path)
+    public static function dirname(string $path): string
     {
         $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
         if (empty($targetLocale)) {
@@ -263,44 +267,42 @@ class PathUtility
 
     /**
      * Returns parent directory's path
-     * Since dirname() is locale dependent we need to access
+     *
+     * Since pathinfo() is locale dependent we need to access
      * the filesystem with the same locale of the system, not
      * the rendering context.
-     * @see http://www.php.net/manual/en/function.dirname.php
      *
+     * The valid flags for $options are the same as for the built-in
+     * phpinfo() function.
      *
-     * @param string $path
-     * @param int $options
+     * @see http://www.php.net/manual/en/function.pathinfo.php
      *
      * @return string|string[]
      */
-    public static function pathinfo($path, $options = null)
+    public static function pathinfo(string $path, int $options = PATHINFO_ALL): string|array
     {
         $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
         if (empty($targetLocale)) {
-            return $options === null ? pathinfo($path) : pathinfo($path, $options);
+            return pathinfo($path, $options);
         }
         $currentLocale = (string)setlocale(LC_CTYPE, '0');
         setlocale(LC_CTYPE, $targetLocale);
-        $pathinfo = $options == null ? pathinfo($path) : pathinfo($path, $options);
+        $pathinfo = pathinfo($path, $options);
         setlocale(LC_CTYPE, $currentLocale);
         return $pathinfo;
     }
 
     /**
      * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
-     *
-     * @param string $path File path to evaluate
-     * @return bool
      */
-    public static function isAbsolutePath($path)
+    public static function isAbsolutePath(string $path): bool
     {
         // On Windows also a path starting with a drive letter is absolute: X:/
         if (Environment::isWindows() && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
             return true;
         }
         // Path starting with a / is always absolute, on every system, VFS is needed for tests
-        return substr($path, 0, 1) === '/' || substr($path, 0, 6) === 'vfs://';
+        return str_starts_with($path, '/') || str_starts_with($path, 'vfs://');
     }
 
     /**
@@ -326,14 +328,13 @@ class PathUtility
      * @param string $includeFileName The name of the file that is included in the file
      * @return string The (absolute) path of the include file
      */
-    public static function getAbsolutePathOfRelativeReferencedFileOrPath($baseFilenameOrPath, $includeFileName)
+    public static function getAbsolutePathOfRelativeReferencedFileOrPath(string $baseFilenameOrPath, string $includeFileName): string
     {
         $fileName = static::basename($includeFileName);
-        $basePath = substr($baseFilenameOrPath, -1) === '/' ? $baseFilenameOrPath : static::dirname($baseFilenameOrPath);
+        $basePath = str_ends_with($baseFilenameOrPath, '/') ? $baseFilenameOrPath : static::dirname($baseFilenameOrPath);
         $newDir = static::getCanonicalPath($basePath . '/' . static::dirname($includeFileName));
         // Avoid double slash on empty path
-        $result = (($newDir !== '/') ? $newDir : '') . '/' . $fileName;
-        return $result;
+        return (($newDir !== '/') ? $newDir : '') . '/' . $fileName;
     }
 
     /**
@@ -346,7 +347,7 @@ class PathUtility
      *
      * @return string Path without trailing slash
      */
-    public static function dirnameDuringBootstrap($path): string
+    public static function dirnameDuringBootstrap(string $path): string
     {
         return preg_replace('#(.*)(/|\\\\)([^\\\\/]+)$#', '$1', $path);
     }
@@ -361,7 +362,7 @@ class PathUtility
      *
      * @return string
      */
-    public static function basenameDuringBootstrap($path): string
+    public static function basenameDuringBootstrap(string $path): string
     {
         return preg_replace('#.*[/\\\\]([^\\\\/]+)$#', '$1', $path);
     }
@@ -377,7 +378,7 @@ class PathUtility
      * @param string $path Input string
      * @return string Canonical path, always without trailing slash
      */
-    public static function getCanonicalPath($path)
+    public static function getCanonicalPath(string $path): string
     {
         // Replace backslashes with slashes to work with Windows paths if given
         $path = trim(str_replace('\\', '/', $path));
@@ -402,6 +403,7 @@ class PathUtility
 
         $theDirParts = explode('/', $path);
         $theDirPartsCount = count($theDirParts);
+        // This cannot use a foreach() as some steps skip ahead multiple elements.
         for ($partCount = 0; $partCount < $theDirPartsCount; $partCount++) {
             // double-slashes in path: remove element
             if ($theDirParts[$partCount] === '') {
@@ -438,11 +440,9 @@ class PathUtility
     /**
      * Strip first part of a path, equal to the length of public web path including trailing slash
      *
-     * @param string $path
-     * @return string
      * @internal
      */
-    public static function stripPathSitePrefix($path)
+    public static function stripPathSitePrefix(string $path): string
     {
         return substr($path, strlen(Environment::getPublicPath() . '/'));
     }
@@ -462,6 +462,6 @@ class PathUtility
      */
     public static function hasProtocolAndScheme(string $path): bool
     {
-        return strpos($path, '//') === 0 || strpos($path, '://') > 0;
+        return str_starts_with($path, '//') || strpos($path, '://') > 0;
     }
 }
