@@ -529,8 +529,13 @@ class PageRouter implements RouterInterface
             return $enhancer->buildResult($route, $results, $remainingQueryParameters);
         }
         $page = $route->getOption('_page');
-        $pageId = (int)(isset($page['t3ver_oid']) && $page['t3ver_oid'] > 0 ? $page['t3ver_oid'] : $page['uid']);
-        $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $pageId);
+        if ((int)($page['l10n_parent'] ?? 0) > 0) {
+            $pageId = (int)$page['l10n_parent'];
+        } elseif ((int)($page['t3ver_oid'] ?? 0) > 0) {
+            $pageId = (int)$page['t3ver_oid'];
+        } else {
+            $pageId = (int)($page['uid'] ?? 0);
+        }
         $type = $this->resolveType($route, $remainingQueryParameters);
         // See PageSlugCandidateProvider where this is added.
         if ($page['MPvar'] ?? '') {
