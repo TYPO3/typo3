@@ -291,6 +291,21 @@ services:
       $hashCache: '@cache.assets'
       $runtimeCache: '@cache.runtime'
 
+  TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder:
+    public: true
+    arguments:
+      $cache: '@cache.typoscript'
+    # TreeBuilder has state and should not be re-used
+    shared: false
+
+  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor:
+    public: true
+    # Ast builder visitor creates state and should not be re-used
+    shared: false
+
+  TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface:
+    alias: TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer
+
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:
@@ -327,6 +342,11 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['l10n']
+
+  cache.typoscript:
+    class: TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['typoscript']
 
   # Interface implementations
   Psr\Container\ContainerInterface:

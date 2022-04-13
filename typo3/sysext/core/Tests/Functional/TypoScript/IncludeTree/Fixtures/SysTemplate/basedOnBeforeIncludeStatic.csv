@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug"
+,1,0,256,0,0,0,0,0,0,"FunctionalTest","/"
+,2,1,256,0,0,0,0,0,0,"Sub","/sub"
+"sys_template"
+,"uid","pid","sorting","deleted","hidden","starttime","endtime","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","root","clear","include_static_file","constants","config","basedOn","includeStaticAfterBasedOn","static_file_mode"
+,1,1,256,0,0,0,0,0,0,0,0,0,1,3,"EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/SysTemplate","foo=fooValue","","2",1,0
+,2,2,256,0,0,0,0,0,0,0,0,0,0,0,"","bar=loadedByBasedOn","","",0,0

@@ -244,6 +244,11 @@ return [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'groups' => ['system'],
                 ],
+                'typoscript' => [
+                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                    'groups' => ['pages'],
+                ],
             ],
         ],
         'htmlSanitizer' => [
