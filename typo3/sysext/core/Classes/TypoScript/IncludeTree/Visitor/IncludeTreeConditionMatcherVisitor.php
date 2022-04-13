@@ -35,9 +35,20 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
 {
     private ConditionMatcherInterface $conditionMatcher;
 
+    private array $conditionList = [];
+
     public function setConditionMatcher(ConditionMatcherInterface $conditionMatcher)
     {
         $this->conditionMatcher = $conditionMatcher;
+    }
+
+    /**
+     * A list of all handled conditions with their verdicts.
+     * This is used in FE since condition verdicts influence page caches.
+     */
+    public function getConditionList(): array
+    {
+        return $this->conditionList;
     }
 
     public function visitBeforeChildren(IncludeInterface $include, int $currentDepth): void
@@ -48,6 +59,7 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         $conditionValue = $include->getConditionToken()->getValue();
         // @todo: This bracket handling is stupid, it's removed in matcher again ...
         $verdict = $this->conditionMatcher->match('[' . $conditionValue . ']');
+        $this->conditionList[$conditionValue] = $verdict;
         $include->setConditionVerdict($verdict);
     }
 

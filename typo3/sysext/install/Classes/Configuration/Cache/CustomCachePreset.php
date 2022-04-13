@@ -31,7 +31,6 @@ class CustomCachePreset extends AbstractCustomPreset implements CustomPresetInte
     protected $configurationValues = [
         'SYS/caching/cacheConfigurations/hash/backend' => Typo3DatabaseBackend::class,
         'SYS/caching/cacheConfigurations/pages/backend' => Typo3DatabaseBackend::class,
-        'SYS/caching/cacheConfigurations/pagesection/backend' => Typo3DatabaseBackend::class,
         'SYS/caching/cacheConfigurations/imagesizes/backend' => Typo3DatabaseBackend::class,
         'SYS/caching/cacheConfigurations/rootline/backend' => Typo3DatabaseBackend::class,
     ];

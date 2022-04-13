@@ -9179,7 +9179,7 @@ class DataHandler implements LoggerAwareInterface
      * Clears cache for the page pointed to by $cacheCmd (an integer).
      *
      * $cacheCmd='cacheTag:[string]'
-     * Flush page and pagesection cache by given tag
+     * Flush page cache by given tag
      *
      * $cacheCmd='cacheId:[string]'
      * Removes cache identifier from page and page section cache

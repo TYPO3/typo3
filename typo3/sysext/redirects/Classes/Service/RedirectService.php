@@ -350,6 +350,12 @@ class RedirectService implements LoggerAwareInterface
      * - TSFE->cObj
      *
      * So a link to a page can be generated.
+     *
+     * @todo: This messes quite a bit with dependencies here. RedirectService is called by an early middleware
+     *        *before* TSFE has been set up at all. The code thus has to hop through various loops later middlewares
+     *        would usually do. The overall scenario of needing a partially set up TSFE for target redirect calculation
+     *        is quite unfortunate here and should be sorted out differently by further refactoring the link building
+     *        and reducing TSFE dependencies.
      */
     protected function bootFrontendController(SiteInterface $site, array $queryParams, ServerRequestInterface $originalRequest): TypoScriptFrontendController
     {
@@ -363,7 +369,8 @@ class RedirectService implements LoggerAwareInterface
         );
         $controller->determineId($originalRequest);
         $controller->calculateLinkVars($queryParams);
-        $controller->getConfigArray($originalRequest);
+        $controller->getFromCache($originalRequest);
+        $controller->releaseLocks();
         $controller->newCObj($originalRequest);
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE'] = $controller;

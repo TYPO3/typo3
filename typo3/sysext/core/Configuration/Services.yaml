@@ -303,6 +303,9 @@ services:
   TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface:
     alias: TYPO3\CMS\Core\TypoScript\AST\AstBuilder
 
+  TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository:
+    public: true
+
   TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder:
     public: true
     arguments:
@@ -313,6 +316,11 @@ services:
   TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor:
     public: true
     # Ast builder visitor creates state and should not be re-used
+    shared: false
+
+  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor:
+    public: true
+    # This visitor creates state and should not be re-used
     shared: false
 
   TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface:
@@ -329,11 +337,6 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['pages']
-
-  cache.pagesection:
-    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments: ['pagesection']
 
   cache.runtime:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface

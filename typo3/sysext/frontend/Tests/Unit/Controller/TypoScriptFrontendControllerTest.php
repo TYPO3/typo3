@@ -25,6 +25,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -279,6 +280,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
     /**
      * @test
+     * @todo: Turn into functional test or drop.
      */
     public function pageRendererLanguageIsSetToSiteLanguageTypo3LanguageInConstructor(): void
     {
@@ -289,6 +291,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cachePhpFrontendProphecy = $this->prophesize(PhpFrontend::class);
+        $cacheManagerProphecy->getCache('typoscript')->willReturn($cachePhpFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -318,6 +322,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
     /**
      * @test
+     * @todo: Turn into functional test or drop
      */
     public function languageServiceIsSetUpWithSiteLanguageTypo3LanguageInConstructor(): void
     {
@@ -328,6 +333,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cachePhpFrontendProphecy = $this->prophesize(PhpFrontend::class);
+        $cacheManagerProphecy->getCache('typoscript')->willReturn($cachePhpFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -362,6 +369,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
     /**
      * @test
+     * @todo: Turn into functional test or drop
      */
     public function mountPointParameterContainsOnlyValidMPValues(): void
     {
@@ -372,6 +380,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cachePhpFrontendProphecy = $this->prophesize(PhpFrontend::class);
+        $cacheManagerProphecy->getCache('typoscript')->willReturn($cachePhpFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);

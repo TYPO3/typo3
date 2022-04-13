@@ -25,10 +25,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstConstantCommentVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -45,6 +47,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
 {
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly TreeBuilder $treeBuilder,
         private readonly IncludeTreeTraverser $treeTraverser,
         private readonly AstTraverser $astTraverser,
@@ -126,7 +129,10 @@ class ConstantEditorController extends AbstractTemplateModuleController
 
         // Build the constant include tree
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-        $constantIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'constants', false, $selectedTemplateUid);
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $site, $selectedTemplateUid);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($constantAstBuilderVisitor);
@@ -222,7 +228,10 @@ class ConstantEditorController extends AbstractTemplateModuleController
         }
 
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-        $constantIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'constants', false, $selectedTemplateUid);
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $site, $selectedTemplateUid);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($constantAstBuilderVisitor);

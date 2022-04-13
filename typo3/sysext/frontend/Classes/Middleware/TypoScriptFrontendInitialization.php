@@ -38,18 +38,13 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  * In addition, determineId builds up the rootline based on a valid frontend-user authentication and
  * Backend permissions if previewing.
  *
- * @internal this middleware might get removed in TYPO3 v11.0.
+ * @internal this middleware might get removed later.
  */
-class TypoScriptFrontendInitialization implements MiddlewareInterface
+final class TypoScriptFrontendInitialization implements MiddlewareInterface
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    public function __construct(Context $context)
-    {
-        $this->context = $context;
+    public function __construct(
+        private readonly Context $context
+    ) {
     }
 
     /**

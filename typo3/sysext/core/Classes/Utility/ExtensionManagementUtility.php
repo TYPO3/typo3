@@ -1159,31 +1159,35 @@ tt_content.' . $key . $suffix . ' {
     }
 
     /**
-     * Adds $content to the default TypoScript setup code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_setup']
-     * Prefixed with a [GLOBAL] line
+     * Adds $content to the default TypoScript setup code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_setup'].
+     * NOT prefixed with a [GLOBAL] line, other calls MUST properly close their conditions!
      * FOR USE IN ext_localconf.php FILES
      *
      * @param string $content TypoScript Setup string
      */
     public static function addTypoScriptSetup(string $content): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= '
-[GLOBAL]
-' . $content;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] ??= '';
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= LF;
+        }
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= $content;
     }
 
     /**
      * Adds $content to the default TypoScript constants code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_constants']
-     * Prefixed with a [GLOBAL] line
+     * NOT prefixed with a [GLOBAL] line, other calls MUST properly close their conditions!
      * FOR USE IN ext_localconf.php FILES
      *
      * @param string $content TypoScript Constants string
      */
     public static function addTypoScriptConstants(string $content): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= '
-[GLOBAL]
-' . $content;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] ??= '';
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= LF;
+        }
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= $content;
     }
 
     /**

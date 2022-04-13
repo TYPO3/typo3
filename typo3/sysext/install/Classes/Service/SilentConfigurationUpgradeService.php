@@ -180,6 +180,8 @@ class SilentConfigurationUpgradeService
         // Please note that further migrations in this file are kept in order to remove the setting at the very end
         // #97797
         'GFX/processor_path_lzw',
+        // #98503
+        'SYS/caching/cacheConfigurations/pagesection',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)

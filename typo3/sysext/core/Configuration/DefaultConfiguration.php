@@ -177,15 +177,6 @@ return [
                     ],
                     'groups' => ['pages'],
                 ],
-                'pagesection' => [
-                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => [
-                        'compression' => true,
-                        'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
-                    ],
-                    'groups' => ['pages'],
-                ],
                 'runtime' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,

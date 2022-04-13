@@ -57,6 +57,13 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -66,7 +73,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
-use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
@@ -129,6 +136,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Page will not be cached. Write only TRUE. Never clear value (some other
      * code might have reasons to set it TRUE).
      * @var bool
+     * @internal
      */
     public $no_cache = false;
 
@@ -251,6 +259,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The TypoScript template object. Used to parse the TypoScript template
      *
      * @var TemplateService
+     * @internal: Will get a proper deprecation in v12.x.
+     * @deprecated: TemplateService is kept for b/w compat in v12 but will be removed in v13.
      */
     public $tmpl;
 
@@ -264,6 +274,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Set if cached content was fetched from the cache.
+     * @internal
      */
     protected bool $pageContentWasLoadedFromCache = false;
 
@@ -274,24 +285,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected int $cacheExpires = 0;
 
     /**
-     * Used by template fetching system. This array is an identification of
-     * the template. If $this->all is empty it's because the template-data is not
-     * cached, which it must be.
-     * @var array
-     * @internal
-     */
-    public $all = [];
-
-    /**
-     * Toplevel - objArrayName, eg 'page'
-     * @var string
-     * @internal should only be used by TYPO3 Core
-     */
-    public $sPre = '';
-
-    /**
-     * TypoScript configuration of the page-object pointed to by sPre.
-     * $this->tmpl->setup[$this->sPre.'.']
+     * TypoScript configuration of the page-object.
      * @var array|string
      * @internal should only be used by TYPO3 Core
      */
@@ -575,7 +569,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function initCaches()
     {
-        $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        $this->pageCache = $cacheManager->getCache('pages');
     }
 
     /**
@@ -1119,89 +1114,389 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * See if page is in cache and get it if so, populates the page content to $this->content.
-     * Also fetches the raw cached pagesection information (TypoScript information) before.
+     * This is a central and quite early method called by PrepareTypoScriptFrontendRendering middleware:
+     * This code is *always* executed for *every* frontend call if a general page rendering has to be done,
+     * if there is no early redirect or eid call or similar.
      *
-     * @param ServerRequestInterface $request
+     * The goal is to calculate dependencies up to a point to see if a possible page cache can be used,
+     * and to prepare TypoScript as far as really needed.
+     *
+     * @throws PropagateResponseException
+     * @throws AbstractServerErrorException
+     *
+     * @internal This method may vanish from TypoScriptFrontendController without further notice.
+     * @todo: This method is typically called by PrepareTypoScriptFrontendRendering middleware.
+     *        However, the RedirectService of (earlier) ext:redirects RedirectHandler middleware
+     *        calls this as well. We may want to put this code into some helper class, reduce class
+     *        state as much as possible and carry really needed state as request attributes around?!
      */
-    public function getFromCache(ServerRequestInterface $request)
+    public function getFromCache(ServerRequestInterface $request): void
     {
-        // clearing the content-variable, which will hold the pagecontent
+        // Reset some state.
+        // @todo: Find out which resets are really needed here - Since this is called from a
+        //        relatively early middleware, we can expect these properties to be not set already?!
         $this->content = '';
-        // Unsetting the lowlevel config
         $this->config = [];
         $this->pageContentWasLoadedFromCache = false;
 
-        if ($this->no_cache) {
-            return;
+        // Very first thing, *always* executed: TypoScript is one factor that influences page content.
+        // There can be multiple cache entries per page, when TypoScript conditions on the same page
+        // create different TypoScript. We thus need the sys_template rows relevant for this page.
+        // @todo: Even though all rootline sys_template records are fetched with only one query
+        //        in below implementation, we could potentially join or sub select sys_template
+        //        records already when pages rootline is queried. This will safe one query
+        //        and needs an implementation in getPageAndRootline() which is called via determineId()
+        //        in TypoScriptFrontendInitialization. This could be done when getPageAndRootline()
+        //        switches to a CTE query instead of using RootlineUtility.
+        $sysTemplateRepository = GeneralUtility::makeInstance(SysTemplateRepository::class);
+        $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($this->rootLine, $this->getSite());
+
+        // Early exception if there is no sys_template at all.
+        if (empty($sysTemplateRows)) {
+            $message = 'No TypoScript template found!';
+            $this->logger->alert($message);
+            try {
+                $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
+                    $request,
+                    $message,
+                    ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
+                );
+                throw new PropagateResponseException($response, 1533931380);
+            } catch (AbstractServerErrorException $e) {
+                $exceptionClass = get_class($e);
+                throw new $exceptionClass($message, 1294587218);
+            }
         }
 
         if (!$this->tmpl instanceof TemplateService) {
+            // @todo: Well, TemplateService should be deprecated entirely, soon. We're essentially not
+            //        using the old parser anymore and some properties are later just set for b/w compat
+            //        reasons. The if() probably only exists to allow early setting of this property to
+            //        something in tests, other than that, we could expect it to be null at
+            //        this point in the middleware stack.
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 
-        $pageSectionCacheContent = $this->tmpl->getCurrentPageData($this->id, (string)$this->MP);
-        if (!is_array($pageSectionCacheContent)) {
-            // Nothing in the cache, we acquire an "exclusive lock" for the key now.
-            // We use the Registry to store this lock centrally,
-            // but we protect the access again with a global exclusive lock to avoid race conditions
-
-            $this->acquireLock('pagesection', $this->id . '::' . $this->MP);
-            //
-            // from this point on we're the only one working on that page ($key)
-            //
-
-            // query the cache again to see if the page data are there meanwhile
-            $pageSectionCacheContent = $this->tmpl->getCurrentPageData($this->id, (string)$this->MP);
-            if (is_array($pageSectionCacheContent)) {
-                // we have the content, nice that some other process did the work for us already
-                $this->releaseLock('pagesection');
-            }
-            // We keep the lock set, because we are the ones generating the page now and filling the cache.
-            // This indicates that we have to release the lock later in releaseLocks()
+        if ($this->no_cache) {
+            // $this->no_cache = true might have been set by earlier TypoScriptFrontendInitialization middleware.
+            // This means we don't do any fancy cache stuff, calculate full TypoScript and ignore page cache.
+            $this->prepareUncachedRendering($request, $sysTemplateRows);
+            return;
         }
 
-        if (is_array($pageSectionCacheContent)) {
-            // BE CAREFUL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
-            // If this hash is not the same in here in this section and after page-generation, then the page will not be properly cached!
-            // This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
-            $pageSectionCacheContent = $this->tmpl->matching($pageSectionCacheContent);
-            ksort($pageSectionCacheContent);
-            $this->all = $pageSectionCacheContent;
-        }
+        // We *always* need the TypoScript constants, one way or the other: Setup conditions can use constants,
+        // so we need the constants to substitute their values within setup conditions.
+        // @todo: This is currently a rather naive approach - we simply always create the full constant AST plus
+        //        $flatConstants. This shouldn't be *that* bad since the include tree is already fetched from cache,
+        //        so "only" the AST parsing is done, and constants are typically at least an order of magnitude smaller
+        //        than setup and thus relatively quick to parse.
+        //        There are however further optimization opportunities: The constant AST only depends on sys_template
+        //        rows (which have to be *always* queried anyways), plus condition verdicts, plus maybe SIM_ACCESS_TIME?!
+        //        We could thus fetch only the IncludeTree and have a traverser that calculates and gathers conditions verdicts.
+        //        Then hash $sysTemplateRows together with conditions list and it's verdicts, and use that as cache identifier.
+        //        We could then cache the constant AST, flat constants and maybe even the AST as array in one cache entry
+        //        with this identifier. Potential improvement: A relatively small cache entry for the constants, no AST
+        //        parsing, re-usable for many pages that have the same sys_template combination and condition verdicts.
+        //        So probably not too many cache entries, either. This may squeeze some time out of this construct and is
+        //        beneficial since the code below is *always* executed even in full cached context.
+        $treeBuilder = GeneralUtility::makeInstance(TreeBuilder::class);
+        $includeTreeTraverser = GeneralUtility::makeInstance(ConditionVerdictAwareIncludeTreeTraverser::class);
+        $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->getSite());
+        $includeTreeTraverser->resetVisitors();
+        $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $conditionMatcherVisitor->setConditionMatcher(GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine));
+        $includeTreeTraverser->addVisitor($conditionMatcherVisitor);
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $includeTreeTraverser->addVisitor($constantAstBuilderVisitor);
+        $includeTreeTraverser->traverse($constantIncludeTree);
+        $constantAst = $constantAstBuilderVisitor->getAst();
+        $constantConditionList = $conditionMatcherVisitor->getConditionList();
+        $flatConstants = $constantAst->flatten();
 
-        // Look for page in cache only if a shift-reload is not sent to the server.
-        $lockHash = $this->getLockHash();
-        if ($this->shouldAcquireCacheData($request) && $this->all) {
-            // we got page section information (TypoScript), so lets see if there is also a cached version
-            // of this page in the pages cache.
-            $this->newHash = $this->getHash();
+        // Next step: We have constants and fetch the setup include tree now. We then calculate setup condition verdicts
+        // and set the constants to allow substitution of constants within conditions. We then traverse the include tree
+        // to calculate conditions verdicts and gather them along the way. A hash of these conditions with their verdicts
+        // is then part of the page cache identifier hash: When a condition on a page creates a different result, the hash
+        // is different from an existing page cache entry and a new one is created later.
+        // @todo: There is quite some optimization potential here: First, we don't need the tokenized TS streams from the
+        //        IncludeTree cache entries here. We could thus create an IncludeTree cache entry that does not have
+        //        the token streams. This will create a significantly smaller cache entry that is quicker to require and has
+        //        a better chance to end up in opcache, too. We could also cache the final AST and maybe the array representation
+        //        with an identifier created from the constant hash plus the condition hash. This would allow us to not parse AST
+        //        at all, but just require the final AST in many cases directly. Both above strategies would be caches shared and
+        //        re-usable between multiple different pages when constants and conditions resolve identical, which will safe a ton
+        //        of time in both not-yet-cached-page and user-int scenarios since AST parsing is gone.
+        $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->getSite());
+        $includeTreeTraverser->resetVisitors();
+        $setupConditionConstantSubstitutionVisitor = GeneralUtility::makeInstance(IncludeTreeSetupConditionConstantSubstitutionVisitor::class);
+        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
+        $includeTreeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        // @todo: Maybe split IncludeTreeConditionMatcherVisitor into two implementations? One that gathers conditions and one that does not?
+        $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $setupMatcherVisitor->setConditionMatcher(GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine));
+        $includeTreeTraverser->addVisitor($setupMatcherVisitor);
+        $includeTreeTraverser->traverse($setupIncludeTree);
+        $setupConditionList = $setupMatcherVisitor->getConditionList();
+
+        $lockHash = $this->createLockHash();
+        $this->newHash = $this->id . '_' . md5($this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList));
+        if ($this->shouldAcquireCacheData($request)) {
+            // Try to get a page cache row.
             $this->getTimeTracker()->push('Cache Row');
-            $row = $this->getFromCache_queryRow();
-            if (!is_array($row)) {
-                // nothing in the cache, we acquire an exclusive lock now
+            $pageCacheRow = $this->getFromCache_queryRow();
+            if (!is_array($pageCacheRow)) {
+                // Nothing in the cache, we acquire an exclusive lock now.
+                // There are two scenarios when locking: We're either the first process acquiring this lock. This means we'll
+                // "immediately" get it and can continue with page rendering. Or, another process acquired the lock already. In
+                // this case, the below call will wait until the lock is released again. The other process then probably wrote
+                // a page cache entry, which we can use.
+                // To handle the second case - if our process had to wait for another one creating the content for us - we
+                // simply query the page cache again to see if there is a page cache now. This has the drawback that the page
+                // cache is queried twice if the lock did not had to wait for another process ... Maybe we could suppress this?
                 $this->acquireLock('pages', $lockHash);
-                //
-                // from this point on we're the only one working on that page ($lockHash)
-                //
-
-                // query the cache again to see if the data are there meanwhile
-                $row = $this->getFromCache_queryRow();
-                if (is_array($row)) {
-                    // we have the content, nice that some other process did the work for us
+                // From this point on we're the only one working on that page ($lockHash).
+                // Query the cache again to see if the data is there meanwhile.
+                $pageCacheRow = $this->getFromCache_queryRow();
+                if (is_array($pageCacheRow)) {
+                    // We have the content, some other process did the work for us, release our lock again.
                     $this->releaseLock('pages');
                 }
                 // We keep the lock set, because we are the ones generating the page now and filling the cache.
-                // This indicates that we have to release the lock later in releaseLocks()
+                // This indicates that we have to release the lock later in releaseLocks()!
             }
-            if (is_array($row)) {
-                $this->populatePageDataFromCache($row);
+            if (is_array($pageCacheRow)) {
+                // Note this especially populates $this->config!
+                $this->populatePageDataFromCache($pageCacheRow);
             }
             $this->getTimeTracker()->pull();
         } else {
-            // the user forced rebuilding the page cache or there was no pagesection information
-            // get a lock for the page content so other processes will not interrupt the regeneration
+            // User forced page cache rebuilding. Get a lock for the page content so other processes can't interfere.
             $this->acquireLock('pages', $lockHash);
+        }
+
+        if (empty($this->config) || $this->isINTincScript() || $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing')) {
+            // We don't have a cache entry for this page, or the user force TS parsing (do we really need this feature?), or
+            // (more importantly), the cache page row contains "INT" objects. In these cases, we have to boot up the rest of
+            // TypoScript: We need the full AST / array!
+            // Since we get the IncludeTree above already, and calculated condition verdicts (that's not very expensive anyways),
+            // We just need to reset $includeTreeTraverser visitors and only add the AST builder visitor to create the final AST.
+            // @todo: This code part should change as soon as the above mentioned "more effective setup AST building"
+            //        strategy is implemented: We could still fetch the final AST from cache without parsing here.
+            $includeTreeTraverser->resetVisitors();
+            $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+            $setupAstBuilderVisitor->setFlatConstants($flatConstants);
+            $includeTreeTraverser->addVisitor($setupAstBuilderVisitor);
+            $includeTreeTraverser->traverse($setupIncludeTree);
+            $setupAst = $setupAstBuilderVisitor->getAst();
+
+            // Create top-level setup AST 'types' node from all top-level PAGE objects.
+            // This is essentially a preparation for type-lookup below and should vanish later.
+            // Previously, TemplateService->generateConfig() did that.
+            $typesNode = new ChildNode('types');
+            $gotTypeNumZero = false;
+            foreach ($setupAst->getNextChild() as $setupChild) {
+                if ($setupChild->getValue() === 'PAGE') {
+                    $typeNumChild = $setupChild->getChildByName('typeNum');
+                    if ($typeNumChild) {
+                        $typeNumValue = $typeNumChild->getValue();
+                        $typesSubNode = new ChildNode($typeNumValue);
+                        $typesSubNode->setValue($setupChild->getName());
+                        $typesNode->addChild($typesSubNode);
+                        if ($typeNumValue === '0') {
+                            $gotTypeNumZero = true;
+                        }
+                    } elseif (!$gotTypeNumZero) {
+                        // The first PAGE node that has no typeNum = 0 is considered
+                        // '0' automatically.
+                        $typesSubNode = new ChildNode('0');
+                        $typesSubNode->setValue($setupChild->getName());
+                        $typesNode->addChild($typesSubNode);
+                        $gotTypeNumZero = true;
+                    }
+                }
+            }
+            if ($typesNode->hasChildren()) {
+                $setupAst->addChild($typesNode);
+            }
+
+            $setupAstArray = $setupAst->toArray();
+
+            $typoScriptPageTypeName = $setupAstArray['types.'][$this->type] ?? '';
+            $this->pSetup = $setupAstArray[$typoScriptPageTypeName . '.'] ?? '';
+
+            if (!is_array($this->pSetup)) {
+                $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
+                try {
+                    $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
+                        $request,
+                        $message,
+                        ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
+                    );
+                    throw new PropagateResponseException($response, 1533931374);
+                } catch (AbstractServerErrorException $e) {
+                    $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
+                    $exceptionClass = get_class($e);
+                    throw new $exceptionClass($message . ' ' . $explanation, 1294587217);
+                }
+            }
+
+            if (!isset($this->config['config'])) {
+                $this->config['config'] = [];
+            }
+            // Filling the config-array, first with the main "config." part
+            if (is_array($setupAstArray['config.'] ?? null)) {
+                $setupAstArray['config.'] = array_replace_recursive($setupAstArray['config.'], $this->config['config']);
+                $this->config['config'] = $setupAstArray['config.'];
+            }
+            // override it with the page/type-specific "config."
+            if (is_array($this->pSetup['config.'] ?? null)) {
+                $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
+            }
+            // Processing for the config_array:
+            $this->config['rootLine'] = array_reverse($this->rootLine);
+
+            // b/w compat, especially for bootstrap_package which does a lot of magic with constants
+            $this->tmpl->setup = $setupAstArray;
+            $this->tmpl->loaded = true;
+            $this->tmpl->rootLine = array_reverse($this->rootLine);
+            $this->tmpl->flatSetup = $flatConstants;
+        }
+
+        // @todo: To phase out TemplateService, we should attach $constantAst and $setupAst (and maybe their array
+        //        representations as well for a transition phase) as attributes to the request here and also below
+        //        in prepareUncachedRendering().
+
+        // Set $this->no_cache TRUE if the config.no_cache value is set!
+        if ($this->config['config']['no_cache'] ?? false) {
+            $this->set_no_cache('config.no_cache is set', true);
+        }
+
+        // Auto-configure settings when a site is configured
+        $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
+
+        // Hook for postProcessing the configuration array
+        $params = ['config' => &$this->config['config']];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
+            GeneralUtility::callUserFunction($funcRef, $params, $this);
+        }
+    }
+
+    /**
+     * An early method branching within getFromCache() if caching has been disabled.
+     * @todo: This is currently not cleaned up well and duplicates code from getFromCache().
+     *        This should be cleaned up and merged with getFromCache() in a more efficient way, for
+     *        now it is a simple solution to keep the scenarios apart.
+     */
+    private function prepareUncachedRendering(ServerRequestInterface $request, array $sysTemplateRows): void
+    {
+        $includeTreeTraverser = GeneralUtility::makeInstance(ConditionVerdictAwareIncludeTreeTraverser::class);
+        $treeBuilder = GeneralUtility::makeInstance(TreeBuilder::class);
+        $treeBuilder->disableCache();
+
+        $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->getSite());
+        $includeTreeTraverser->resetVisitors();
+        $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $conditionMatcherVisitor->setConditionMatcher(GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine));
+        $includeTreeTraverser->addVisitor($conditionMatcherVisitor);
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $includeTreeTraverser->addVisitor($constantAstBuilderVisitor);
+        $includeTreeTraverser->traverse($constantIncludeTree);
+
+        $constantAst = $constantAstBuilderVisitor->getAst();
+        $flatConstants = $constantAst->flatten();
+
+        $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->getSite());
+        $includeTreeTraverser->resetVisitors();
+        $setupConditionConstantSubstitutionVisitor = GeneralUtility::makeInstance(IncludeTreeSetupConditionConstantSubstitutionVisitor::class);
+        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
+        $includeTreeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $setupMatcherVisitor->setConditionMatcher(GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine));
+        $includeTreeTraverser->addVisitor($setupMatcherVisitor);
+        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $setupAstBuilderVisitor->setFlatConstants($flatConstants);
+        $includeTreeTraverser->addVisitor($setupAstBuilderVisitor);
+        $includeTreeTraverser->traverse($setupIncludeTree);
+        $setupAst = $setupAstBuilderVisitor->getAst();
+
+        // Create top-level setup AST 'types' node from all top-level PAGE objects.
+        // This is essentially a preparation for type-lookup below and should vanish later.
+        // Previously, TemplateService->generateConfig() did this.
+        $typesNode = new ChildNode('types');
+        $gotTypeNumZero = false;
+        foreach ($setupAst->getNextChild() as $setupChild) {
+            if ($setupChild->getValue() === 'PAGE') {
+                $typeNumChild = $setupChild->getChildByName('typeNum');
+                if ($typeNumChild) {
+                    $typeNumValue = $typeNumChild->getValue();
+                    $typesSubNode = new ChildNode($typeNumValue);
+                    $typesSubNode->setValue($setupChild->getName());
+                    $typesNode->addChild($typesSubNode);
+                    if ($typeNumValue === '0') {
+                        $gotTypeNumZero = true;
+                    }
+                } elseif (!$gotTypeNumZero) {
+                    // The first PAGE node that has no typeNum = 0 is considered '0' automatically.
+                    $typesSubNode = new ChildNode('0');
+                    $typesSubNode->setValue($setupChild->getName());
+                    $typesNode->addChild($typesSubNode);
+                    $gotTypeNumZero = true;
+                }
+            }
+        }
+        if ($typesNode->hasChildren()) {
+            $setupAst->addChild($typesNode);
+        }
+
+        $setupAstArray = $setupAst->toArray();
+
+        $typoScriptPageTypeName = $setupAstArray['types.'][$this->type] ?? '';
+        $this->pSetup = $setupAstArray[$typoScriptPageTypeName . '.'] ?? '';
+
+        if (!is_array($this->pSetup)) {
+            $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
+            try {
+                $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
+                $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
+                    $request,
+                    $message,
+                    ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
+                );
+                // @todo: use the timestamp from above same call when extracting this to a method.
+                throw new PropagateResponseException($response, 1664672015);
+            } catch (AbstractServerErrorException $e) {
+                $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
+                $exceptionClass = get_class($e);
+                throw new $exceptionClass($message . ' ' . $explanation, 1664672036);
+            }
+        }
+
+        $this->config['config'] = [];
+        // Filling the config-array, first with the main "config." part
+        if (is_array($setupAstArray['config.'] ?? null)) {
+            $setupAstArray['config.'] = array_replace_recursive($setupAstArray['config.'], $this->config['config']);
+            $this->config['config'] = $setupAstArray['config.'];
+        }
+        // override it with the page/type-specific "config."
+        if (is_array($this->pSetup['config.'] ?? null)) {
+            $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
+        }
+        // Processing for the config_array:
+        $this->config['rootLine'] = array_reverse($this->rootLine);
+        // Auto-configure settings when a site is configured
+        $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
+
+        // b/w compat, especially for bootstrap_package which does a lot of magic with constants
+        $this->tmpl->setup = $setupAstArray;
+        $this->tmpl->loaded = true;
+        $this->tmpl->rootLine = array_reverse($this->rootLine);
+        $this->tmpl->flatSetup = $flatConstants;
+
+        // Hook for postProcessing the configuration array
+        $params = ['config' => &$this->config['config']];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
+            GeneralUtility::callUserFunction($funcRef, $params, $this);
         }
     }
 
@@ -1209,13 +1504,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Returning the cached version of page with hash = newHash
      *
      * @return array Cached row, if any. Otherwise void.
+     * @internal
      */
     public function getFromCache_queryRow()
     {
-        $this->getTimeTracker()->push('Cache Query');
-        $row = $this->pageCache->get($this->newHash);
-        $this->getTimeTracker()->pull();
-        return $row;
+        return $this->pageCache->get($this->newHash);
     }
 
     /**
@@ -1227,6 +1520,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see getFromCache()
      * @see setPageCacheContent()
      * @param array $cachedData
+     * @internal
      */
     protected function populatePageDataFromCache(array $cachedData): void
     {
@@ -1268,6 +1562,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
      *
      * @return bool If shift-reload in client browser has been clicked, disable getting cached page and regenerate the page content.
+     * @internal
      */
     protected function shouldAcquireCacheData(ServerRequestInterface $request): bool
     {
@@ -1285,31 +1580,43 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Calculates the cache-hash
-     * This hash is unique to the template, the variables ->id, ->type, list of fe user groups, ->MP (Mount Points) and cHash array
-     * Used to get and later store the cached data.
-     *
-     * @return string MD5 hash of serialized hash base from createHashBase(), prefixed with page id
-     * @see getFromCache()
-     * @see getLockHash()
+     * This creates a hash used to lock generation for a specific page: When multiple requests try
+     * to render the same page, this lock allows creating by one request which typically puts the result
+     * into page cache, while the other requests wait until this finished and re-use the result.
+     * This method is similar to createHashBase() which is used as identifier for the page cache entry,
+     * with the exception that it does not include TypoScript constant and constant / setup condition
+     * results. This means multiple "different" calls to the same page still block each other when their
+     * TypoScript conditions verdicts are different.
+     * @todo: Find out if we couldn't simply use createHashBase() instead. Why should different calls to
+     *        the same page that will lead to different page cache entries block each other?
      */
-    protected function getHash(): string
+    private function createLockHash(): string
     {
-        return $this->id . '_' . md5($this->createHashBase(false));
-    }
-
-    /**
-     * Calculates the lock-hash
-     * This hash is unique to the above hash, except that it doesn't contain the template information in $this->all.
-     *
-     * @return string MD5 hash prefixed with page id
-     * @see getFromCache()
-     * @see getHash()
-     */
-    protected function getLockHash(): string
-    {
-        $lockHash = $this->createHashBase(true);
-        return $this->id . '_' . md5($lockHash);
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
+        $hashParameters = [
+            'id' => $this->id,
+            'type' => $this->type,
+            'groupIds' => (string)implode(',', $userAspect->getGroupIds()),
+            'MP' => (string)$this->MP,
+            'site' => $this->site->getIdentifier(),
+            // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
+            // is not cached properly as we don't have any language-specific conditions anymore
+            'siteBase' => (string)$this->language->getBase(),
+            // additional variation trigger for static routes
+            'staticRouteArguments' => $this->pageArguments->getStaticArguments(),
+            // dynamic route arguments (if route was resolved)
+            'dynamicArguments' => $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments),
+        ];
+        // Call hook to influence the hash calculation
+        $_params = [
+            'hashParameters' => &$hashParameters,
+            'createLockHashBase' => true,
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        }
+        return $this->id . '_' . md5(serialize($hashParameters));
     }
 
     /**
@@ -1319,10 +1626,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * ->MP (Mount Points) and cHash array
      * Used to get and later store the cached data.
      *
-     * @param bool $createLockHashBase Whether to create the lock hash, which doesn't contain the "this->all" (the template information)
      * @return string the serialized hash base
      */
-    protected function createHashBase($createLockHashBase = false)
+    protected function createHashBase(array $sysTemplateRows, array $constantConditionList, array $setupConditionList): string
     {
         // Fetch the list of user groups
         /** @var UserAspect $userAspect */
@@ -1340,114 +1646,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'staticRouteArguments' => $this->pageArguments->getStaticArguments(),
             // dynamic route arguments (if route was resolved)
             'dynamicArguments' => $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments),
+            'sysTemplateRows' => $sysTemplateRows,
+            'constantConditionList' => $constantConditionList,
+            'setupConditionList' => $setupConditionList,
         ];
-        // Include the template information if we shouldn't create a lock hash
-        if (!$createLockHashBase) {
-            $hashParameters['all'] = $this->all;
-        }
         // Call hook to influence the hash calculation
         $_params = [
             'hashParameters' => &$hashParameters,
-            'createLockHashBase' => $createLockHashBase,
+            'createLockHashBase' => false,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return serialize($hashParameters);
-    }
-
-    /**
-     * Checks if config-array exists already but if not, gets it
-     *
-     * @param ServerRequestInterface $request
-     * @throws \TYPO3\CMS\Core\Error\Http\InternalServerErrorException
-     * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
-     */
-    public function getConfigArray(ServerRequestInterface $request): void
-    {
-        if (!$this->tmpl instanceof TemplateService) {
-            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
-        }
-
-        // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
-        if (empty($this->config) || $this->isINTincScript() || $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing')) {
-            $timeTracker = $this->getTimeTracker();
-            $timeTracker->push('Parse template');
-            // Start parsing the TS template. Might return cached version.
-            $this->tmpl->start($this->rootLine);
-            $timeTracker->pull();
-            // At this point we have a valid pagesection_cache (generated in $this->tmpl->start()),
-            // so let all other processes proceed now. (They are blocked at the pagessection_lock in getFromCache())
-            $this->releaseLock('pagesection');
-            if ($this->tmpl->loaded) {
-                $timeTracker->push('Setting the config-array');
-                // toplevel - objArrayName
-                $typoScriptPageTypeName = $this->tmpl->setup['types.'][$this->type] ?? '';
-                $this->sPre = $typoScriptPageTypeName;
-                $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'] ?? '';
-                if (!is_array($this->pSetup)) {
-                    $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
-                    try {
-                        $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
-                            $request,
-                            $message,
-                            ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
-                        );
-                        throw new PropagateResponseException($response, 1533931374);
-                    } catch (AbstractServerErrorException $e) {
-                        $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
-                        $exceptionClass = get_class($e);
-                        throw new $exceptionClass($message . ' ' . $explanation, 1294587217);
-                    }
-                } else {
-                    if (!isset($this->config['config'])) {
-                        $this->config['config'] = [];
-                    }
-                    // Filling the config-array, first with the main "config." part
-                    if (is_array($this->tmpl->setup['config.'] ?? null)) {
-                        $this->tmpl->setup['config.'] = array_replace_recursive($this->tmpl->setup['config.'], $this->config['config']);
-                        $this->config['config'] = $this->tmpl->setup['config.'];
-                    }
-                    // override it with the page/type-specific "config."
-                    if (is_array($this->pSetup['config.'] ?? null)) {
-                        $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
-                    }
-                    // Processing for the config_array:
-                    $this->config['rootLine'] = $this->tmpl->rootLine;
-                }
-                $timeTracker->pull();
-            } else {
-                $message = 'No TypoScript template found!';
-                $this->logger->alert($message);
-                try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
-                        $request,
-                        $message,
-                        ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
-                    );
-                    throw new PropagateResponseException($response, 1533931380);
-                } catch (AbstractServerErrorException $e) {
-                    $exceptionClass = get_class($e);
-                    throw new $exceptionClass($message, 1294587218);
-                }
-            }
-        }
-
-        // No cache
-        // Set $this->no_cache TRUE if the config.no_cache value is set!
-        if ($this->config['config']['no_cache'] ?? false) {
-            $this->set_no_cache('config.no_cache is set', true);
-        }
-
-        // Auto-configure settings when a site is configured
-        $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
-
-        // Hook for postProcessing the configuration array
-        $params = ['config' => &$this->config['config']];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
-            GeneralUtility::callUserFunction($funcRef, $params, $this);
-        }
     }
 
     /********************************************
@@ -1779,7 +1990,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function releaseLocks()
     {
-        $this->releaseLock('pagesection');
         $this->releaseLock('pages');
     }
 
@@ -1812,10 +2022,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function generatePage_preProcessing()
     {
-        // Same codeline as in getFromCache(). But $this->all has been changed by
-        // \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
-        $this->newHash = $this->getHash();
-
         // Used as a safety check in case a PHP script is falsely disabling $this->no_cache during page generation.
         $this->no_cacheBeforePageGen = $this->no_cache;
     }
@@ -2401,7 +2607,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPagesTSconfig(): array
     {
         if (!is_array($this->pagesTSconfig)) {
-            $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, $this->context, $this->id, $this->rootLine);
+            $matcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine);
             $this->pagesTSconfig = GeneralUtility::makeInstance(PageTsConfig::class)
                 ->getForRootLine(
                     array_reverse($this->rootLine),
@@ -2573,7 +2779,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $key
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @internal
      */
     protected function acquireLock($type, $key)
     {
@@ -2618,7 +2824,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $type
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @internal
      */
     protected function releaseLock($type)
     {

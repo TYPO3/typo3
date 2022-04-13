@@ -30,7 +30,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
 
 /**
- * The TypoScript parser
+ * The TypoScript parser.
+ *
+ * @deprecated This class should not be used anymore, last core usages will be removed during v12.
+ *             Using methods or properties of this class will start logging deprecation messages.
  */
 class TypoScriptParser
 {

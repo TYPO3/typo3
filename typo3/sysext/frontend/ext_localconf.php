@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Frontend\Controller\ShowImageController;
 use TYPO3\CMS\Frontend\Hooks\TreelistCacheUpdateHooks;
@@ -10,6 +12,17 @@ defined('TYPO3') or die();
 
 // Register eID provider for showpic
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_cms_showpic'] = ShowImageController::class . '::processRequest';
+
+// Register TypoScript caching
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['typoscript'] ?? null)) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['typoscript'] = [
+        'frontend' => PhpFrontend::class,
+        'backend' => SimpleFileBackend::class,
+        'groups' => [
+            'pages',
+        ],
+    ];
+}
 
 ExtensionManagementUtility::addUserTSConfig('
   options.saveDocView = 1

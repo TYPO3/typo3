@@ -38,8 +38,6 @@ class FileCachePreset extends AbstractPreset
         'SYS/caching/cacheConfigurations/hash/backend' => FileBackend::class,
         'SYS/caching/cacheConfigurations/pages/backend' => FileBackend::class,
         'SYS/caching/cacheConfigurations/pages/options/compression' => '__UNSET',
-        'SYS/caching/cacheConfigurations/pagesection/backend' => FileBackend::class,
-        'SYS/caching/cacheConfigurations/pagesection/options/compression' => '__UNSET',
         'SYS/caching/cacheConfigurations/imagesizes/backend' => SimpleFileBackend::class,
         'SYS/caching/cacheConfigurations/imagesizes/options/compression' => '__UNSET',
         'SYS/caching/cacheConfigurations/rootline/backend' => FileBackend::class,

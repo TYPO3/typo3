@@ -25,7 +25,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
@@ -50,6 +52,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
     public function __construct(
         private readonly PageRenderer $pageRenderer,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly IncludeTreeTraverser $treeTraverser,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
         private readonly TreeBuilder $treeBuilder,
@@ -107,8 +110,12 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
         }
 
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $site, $selectedTemplateUid);
+
         // Build the constant include tree
-        $constantIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'constants', false, $selectedTemplateUid);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -124,8 +131,8 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $constantAst = $constantAstBuilderVisitor->getAst();
         $flattenedConstants = $constantAst->flatten();
 
-        // Build the setup include tree, note this uses the 'cached' variant from the constant run above to suppress db calls.
-        $setupIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'setup', true);
+        // Build the setup include tree
+        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $site);
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);

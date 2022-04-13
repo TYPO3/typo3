@@ -136,7 +136,7 @@ class RequestHandler implements RequestHandlerInterface
 
             // Content generation
             $this->timeTracker->incStackPointer();
-            $this->timeTracker->push($controller->sPre, 'PAGE');
+            $this->timeTracker->push('Page generation PAGE object');
 
             $controller->content = $this->generatePageContent($controller, $request);
 

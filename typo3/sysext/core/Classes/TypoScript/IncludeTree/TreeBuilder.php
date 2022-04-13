@@ -17,18 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptMagicKeyInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ExtensionStaticInclude;
@@ -45,7 +42,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Create a tree representing all TypoScript includes.
@@ -103,29 +99,13 @@ final class TreeBuilder
     private array $includedSysTemplateUids = [];
 
     /**
-     * Site of given rootline if possible. Used to resolve site based default constants.
-     */
-    private ?SiteInterface $site = null;
-
-    /**
      * Either 'constants' or 'setup'
      */
     private string $type;
 
-    /**
-     * To calculate full setup TypoScript, this class needs to be called twice: Once to retrieve
-     * "constants", and a second time to retrieve "setup" include tree. To suppress identical DB
-     * calls for the second cycle, getTreeByRootline() can be called with $cached argument.
-     */
-    private bool $cached;
-
-    private array $sysTemplateRows;
-    private array $basedOnTemplateRows;
-
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly PackageManager $packageManager,
-        private readonly SiteFinder $siteFinder,
         private readonly Context $context,
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
         private TokenizerInterface $tokenizer,
@@ -141,8 +121,17 @@ final class TreeBuilder
     public function setTokenizer(TokenizerInterface $tokenizer): void
     {
         $this->tokenizer = $tokenizer;
-        $this->cache = null;
+        $this->disableCache();
         $this->treeFromTokenStreamBuilder->setTokenizer($tokenizer);
+    }
+
+    /**
+     * Used in FE in no_cache = true context.
+     * @todo: Maybe change this and simply hand over a cache to getTreeBySysTemplateRowsAndSite() when needed?
+     */
+    public function disableCache(): void
+    {
+        $this->cache = null;
     }
 
     /**
@@ -153,31 +142,15 @@ final class TreeBuilder
         $this->forceProcessExtensionStatics = true;
     }
 
-    /**
-     * @param array $rootline The "reversed" rootline as coming from RootlineUtility: Deepest page with
-     *                        the highest key as first entry, site-root page with key 0 as last entry.
-     */
-    public function getTreeByRootline(array $rootline, string $type, bool $cached, int $templateUidOnDeepestRootline = 0): RootInclude
+    public function getTreeBySysTemplateRowsAndSite(string $type, array $sysTemplateRows, ?SiteInterface $site = null): RootInclude
     {
         if (!in_array($type, ['constants', 'setup'])) {
             throw new \RuntimeException('type must be either constants or setup', 1653737656);
         }
 
         $this->type = $type;
-        $this->cached = $cached;
         $this->includedSysTemplateUids = [];
         $this->extensionStaticsProcessed = false;
-
-        if ($cached) {
-            // Note this fatales if calling getTreeByRootline() with $cached=true when it has not
-            // been called with $cached=false before. This is intended: We don't need check-code if
-            // it simply fatales on broken use.
-            $sysTemplateRows = $this->sysTemplateRows;
-        } else {
-            $this->site = $this->determineSite($rootline);
-            $sysTemplateRows = $this->getRootlineSysTemplateRowsFromDatabase($rootline, $templateUidOnDeepestRootline);
-            $this->sysTemplateRows = $sysTemplateRows;
-        }
 
         $includeTree = new RootInclude();
 
@@ -210,21 +183,22 @@ final class TreeBuilder
             ) {
                 $includeNode->setClear(true);
             }
-            $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow);
+            $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow, $site);
             $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type);
             $this->cache?->set($identifier, $this->prepareNodeForCache($includeNode));
             $includeTree->addChild($includeNode);
         }
 
-        // @todo: b/w compat hook hack tailored for testing-framework TyposcriptInstruction runThroughTemplatesPostProcessing
-        //        hook. Substitute with an event and look at usages like ext:bolt when doing this.
-        //        Note we also don't cache this hook result, which we either won't want at all and rely on "sub-caches" by
-        //        TreeFromLineStreamBuilder, or implement it? Unsure.
+        // @todo: b/w compat hook hack tailored for testing-framework TyposcriptInstruction runThroughTemplatesPostProcessing hook.
+        //        This hook has already been marked as removed in v12. We should drop it without further notice in v12
+        //        stabilization phase and make TF cope with it, probably by switching to AfterTemplatesHaveBeenDeterminedEvent.
+        // @deprecated hook runThroughTemplatesPostProcessing, will vanish in v12.
         $hookParameters = [];
         $templateService = new TemplateService();
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'] ?? [] as $listener) {
             GeneralUtility::callUserFunction($listener, $hookParameters, $templateService);
             if (!empty($templateService->constants)) {
+                // @todo: Aehm, we should check $this->type here, shouldn't we?
                 $node = new DefaultTypoScriptInclude();
                 $node->setIdentifier('hook-constants');
                 $node->setName('Hook constants');
@@ -232,6 +206,7 @@ final class TreeBuilder
                 $includeTree->addChild($node);
             }
             if (!empty($templateService->config)) {
+                // @todo: Aehm, we should check $this->type here, shouldn't we?
                 $node = new DefaultTypoScriptInclude();
                 $node->setIdentifier('hook-setup');
                 $node->setName('Hook setup');
@@ -244,7 +219,7 @@ final class TreeBuilder
             // Extbase hack: See property description above.
             if ($this->type === 'constants') {
                 $this->addDefaultTypoScriptFromGlobals($includeTree);
-                $this->addDefaultTypoScriptConstantsFromSite($includeTree);
+                $this->addDefaultTypoScriptConstantsFromSite($includeTree, $site);
             } else {
                 $this->addDefaultTypoScriptFromGlobals($includeTree);
             }
@@ -257,7 +232,7 @@ final class TreeBuilder
     /**
      * Add includes defined in a sys_template record.
      */
-    private function handleSysTemplateRecordInclude(IncludeInterface $parentNode, array $row): void
+    private function handleSysTemplateRecordInclude(IncludeInterface $parentNode, array $row, ?SiteInterface $site): void
     {
         $this->includedSysTemplateUids[] = (int)$row['uid'];
 
@@ -269,7 +244,7 @@ final class TreeBuilder
 
         if ($this->type === 'constants' && $clearConstants) {
             $this->addDefaultTypoScriptFromGlobals($parentNode);
-            $this->addDefaultTypoScriptConstantsFromSite($parentNode);
+            $this->addDefaultTypoScriptConstantsFromSite($parentNode, $site);
         }
         if ($this->type === 'setup' && $clearSetup) {
             $this->addDefaultTypoScriptFromGlobals($parentNode);
@@ -281,7 +256,7 @@ final class TreeBuilder
             $this->handleIncludeStaticFileArray($parentNode, (string)$row['include_static_file']);
         }
         if (!empty($row['basedOn'])) {
-            $this->handleIncludeBasedOnTemplates($parentNode, (string)$row['basedOn']);
+            $this->handleIncludeBasedOnTemplates($parentNode, (string)$row['basedOn'], $site);
         }
         if ($includeStaticAfterBasedOn) {
             $this->handleIncludeStaticFileArray($parentNode, (string)$row['include_static_file']);
@@ -330,7 +305,7 @@ final class TreeBuilder
      * Warning: Calls handleSysTemplateRecordInclude() recursive when another basedOn templates
      *          record includes things again!
      */
-    private function handleIncludeBasedOnTemplates(IncludeInterface $parentNode, string $basedOnList): void
+    private function handleIncludeBasedOnTemplates(IncludeInterface $parentNode, string $basedOnList, ?SiteInterface $site): void
     {
         $basedOnTemplateUids = GeneralUtility::intExplode(',', $basedOnList, true);
         // Filter uids that have been handled already.
@@ -339,12 +314,7 @@ final class TreeBuilder
             return;
         }
 
-        if ($this->cached) {
-            $basedOnTemplateRows = $this->basedOnTemplateRows[implode('-', $basedOnTemplateUids)];
-        } else {
-            $basedOnTemplateRows = $this->getBasedOnSysTemplateRowsFromDatabase($basedOnTemplateUids);
-            $this->basedOnTemplateRows[implode('-', $basedOnTemplateUids)] = $basedOnTemplateRows;
-        }
+        $basedOnTemplateRows = $this->getBasedOnSysTemplateRowsFromDatabase($basedOnTemplateUids);
 
         foreach ($basedOnTemplateUids as $basedOnTemplateUid) {
             if (is_array($basedOnTemplateRows[$basedOnTemplateUid] ?? false)) {
@@ -372,7 +342,7 @@ final class TreeBuilder
                     $includeNode->setClear(true);
                 }
                 $parentNode->addChild($includeNode);
-                $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow);
+                $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow, $site);
             }
         }
     }
@@ -509,13 +479,13 @@ final class TreeBuilder
     /**
      * Load default TS constants from site configuration if that page has a site in rootline.
      */
-    private function addDefaultTypoScriptConstantsFromSite(IncludeInterface $parentConstantNode): void
+    private function addDefaultTypoScriptConstantsFromSite(IncludeInterface $parentConstantNode, ?SiteInterface $site): void
     {
-        if (!$this->site instanceof Site) {
+        if (!$site instanceof Site) {
             return;
         }
         $siteConstants = '';
-        $siteSettings = $this->site->getConfiguration()['settings'] ?? [];
+        $siteSettings = $site->getConfiguration()['settings'] ?? [];
         if (empty($siteSettings)) {
             return;
         }
@@ -533,7 +503,7 @@ final class TreeBuilder
         }
         $node = new SiteInclude();
         $node->setIdentifier($identifier);
-        $node->setName('Site constants settings of site ' . $this->site->getIdentifier());
+        $node->setName('Site constants settings of site ' . $site->getIdentifier());
         $node->setLineStream($this->tokenizer->tokenize($siteConstants));
         $this->cache?->set($identifier, $this->prepareNodeForCache($node));
         $parentConstantNode->addChild($node);
@@ -567,103 +537,6 @@ final class TreeBuilder
                 $parentNode->addChild($node);
             }
         }
-    }
-
-    /**
-     * Note this takes the rootline array from 'lowest' up to page tree root: Deepest page
-     * first on key 0, higher page 1, and so on.
-     */
-    private function determineSite(array $rootline): ?SiteInterface
-    {
-        if ($this->getTypoScriptFrontendController() instanceof TypoScriptFrontendController) {
-            return $this->getTypoScriptFrontendController()->getSite();
-        }
-        $possibleRoots = array_filter($rootline, static function (array $page) {
-            return $page['is_siteroot'] === 1;
-        });
-        $possibleRoots[] = end($rootline);
-        foreach ($possibleRoots as $possibleRoot) {
-            try {
-                return $this->siteFinder->getSiteByPageId((int)($possibleRoot['uid'] ?? 0));
-            } catch (SiteNotFoundException $_) {
-                // continue
-            }
-        }
-        return null;
-    }
-
-    /**
-     * getTreeByRootline() receives the rootline of a page. To calculate the TS include tree, we have
-     * to find sys_template rows attached to all rootline pages.
-     * When there are multiple active sys_template rows on a page, we pick the one with the lower sorting
-     * value. Additionally, the backend 'template' module allows selecting a sys_template record on the
-     * deepest page, if there is more than one.
-     * The query implementation below does that with *one* query for all rootline pages at once, not
-     * one query per page. To handle the capabilities mentioned above, the query is a bit nifty, but
-     * the implementation should scale nearly O(1) instead of O(n) with the rootline depth.
-     *
-     * @todo: It's potentially possible to further optimize using a recursive CTE. Benefit
-     *        won't be *that* huge though, and there are much more important CTE targets first.
-     */
-    private function getRootlineSysTemplateRowsFromDatabase(array $rootline, int $templateUidOnDeepestRootline): array
-    {
-        // Site-root node first!
-        $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
-        $templatePidOnDeepestRootline = $rootline[array_key_first($rootline)]['uid'];
-        $sysTemplateRows = [];
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
-        $queryBuilder->setRestrictions($this->getSysTemplateQueryRestrictionContainer());
-        $queryBuilder->select('sys_template.*')->from('sys_template');
-        if ($templateUidOnDeepestRootline && $templatePidOnDeepestRootline) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->neq('sys_template.pid', $queryBuilder->createNamedParameter($templatePidOnDeepestRootline, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->and(
-                        $queryBuilder->expr()->eq('sys_template.pid', $queryBuilder->createNamedParameter($templatePidOnDeepestRootline, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq('sys_template.uid', $queryBuilder->createNamedParameter($templateUidOnDeepestRootline, \PDO::PARAM_INT)),
-                    ),
-                ),
-            );
-        }
-        // Build a value list as joined table to have sorting based on list sorting
-        $valueList = [];
-        // @todo: Use type/int cast from expression builder to handle this dbms aware
-        //        when support for this has been extracted from CTE PoC patch (sbuerk).
-        $isPostgres = $queryBuilder->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform;
-        $pattern = $isPostgres ? '%s::int as uid, %s::int as sorting' : '%s as uid, %s as sorting';
-        foreach ($rootLinePageIds as $sorting => $rootLinePageId) {
-            $valueList[] = sprintf(
-                $pattern,
-                $queryBuilder->createNamedParameter($rootLinePageId, \PDO::PARAM_INT),
-                $queryBuilder->createNamedParameter($sorting, \PDO::PARAM_INT)
-            );
-        }
-        $valueList = 'SELECT ' . implode(' UNION ALL SELECT ', $valueList);
-        $queryBuilder->getConcreteQueryBuilder()->innerJoin(
-            $queryBuilder->quoteIdentifier('sys_template'),
-            sprintf('(%s)', $valueList),
-            $queryBuilder->quoteIdentifier('pidlist'),
-            '(' . $queryBuilder->expr()->eq(
-                'sys_template.pid',
-                $queryBuilder->quoteIdentifier('pidlist.uid')
-            ) . ')'
-        );
-        // Sort by rootline determined depth as sort criteria
-        $queryBuilder->orderBy('pidlist.sorting', 'ASC')
-            ->addOrderBy('sys_template.root', 'DESC')
-            ->addOrderBy('sys_template.sorting', 'ASC');
-        $lastPid = null;
-        $queryResult = $queryBuilder->executeQuery();
-        while ($sysTemplateRow = $queryResult->fetchAssociative()) {
-            // We're retrieving *all* templates per pid, but need the first one only. The
-            // order restriction above at least takes care they're after-each-other per pid.
-            if ($lastPid === (int)$sysTemplateRow['pid']) {
-                continue;
-            }
-            $lastPid = (int)$sysTemplateRow['pid'];
-            $sysTemplateRows[] = $sysTemplateRow;
-        }
-        return $sysTemplateRows;
     }
 
     /**
@@ -730,19 +603,5 @@ final class TreeBuilder
             $restrictionContainer->removeByType(HiddenRestriction::class);
         }
         return $restrictionContainer;
-    }
-
-    /**
-     * It's ugly this class has this dependency.
-     * It is used within 'addDefaultTypoScriptConstantsFromSite()' to find the current site object.
-     *
-     * @todo: It would be better if site is either set() from outside, or the SiteFinder is used to grab
-     *        current site. But SiteFinder looks expensive to call in FE scope?! So this get()'er is a
-     *        shortcut? Note we currently *do* have the rootline available in this class ...
-     *        Call for help here @benni, old reference: TemplateService->addDefaultTypoScript()
-     */
-    private function getTypoScriptFrontendController(): ?TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 }

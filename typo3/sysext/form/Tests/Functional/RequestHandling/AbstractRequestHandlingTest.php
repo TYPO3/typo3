@@ -64,10 +64,6 @@ abstract class AbstractRequestHandlingTest extends FunctionalTestCase
                         'backend' => Typo3DatabaseBackend::class,
                         'frontend' => VariableFrontend::class,
                     ],
-                    'pagesection' => [
-                        'backend' => Typo3DatabaseBackend::class,
-                        'frontend' => VariableFrontend::class,
-                    ],
                     'rootline' => [
                         'backend' => Typo3DatabaseBackend::class,
                         'frontend' => VariableFrontend::class,

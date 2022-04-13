@@ -29,26 +29,17 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Do all necessary preparation steps for rendering
  *
- * @internal this middleware might get removed in TYPO3 v10.x.
+ * @internal this middleware might get removed later.
  */
-class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
+final class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 {
-    /**
-     * @var TimeTracker
-     */
-    protected $timeTracker;
-
-    public function __construct(TimeTracker $timeTracker)
-    {
-        $this->timeTracker = $timeTracker;
+    public function __construct(
+        private readonly TimeTracker $timeTracker
+    ) {
     }
 
     /**
      * Initialize TypoScriptFrontendController to the point right before rendering of the page is triggered
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -58,14 +49,11 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         // as long as TSFE throws errors with the global object, this needs to be set, but
         // should be removed later-on once TypoScript Condition Matcher is built with the current request object.
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        // Get from cache
+
         $this->timeTracker->push('Get Page from cache');
-        // Locks may be acquired here
+        // Get from cache. Locks may be acquired here. After this, we should have a valid config-array ready.
         $controller->getFromCache($request);
         $this->timeTracker->pull();
-        // Get config if not already gotten
-        // After this, we should have a valid config-array ready
-        $controller->getConfigArray($request);
 
         $response = $handler->handle($request);
 
