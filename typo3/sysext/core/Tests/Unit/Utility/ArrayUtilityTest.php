@@ -1270,6 +1270,24 @@ class ArrayUtilityTest extends UnitTestCase
                     'second.secondSub' => 2,
                 ],
             ],
+            'nested array of 2 levels and values on first level' => [
+                [
+                    'first' => 'first',
+                    'first.' => [
+                        'firstSub' => 1,
+                    ],
+                    'second' => 'second',
+                    'second.' => [
+                        'secondSub' => 2,
+                    ],
+                ],
+                [
+                    'first' => 'first',
+                    'first.firstSub' => 1,
+                    'second' => 'second',
+                    'second.secondSub' => 2,
+                ],
+            ],
             'nested array of 2 levels with faulty dots' => [
                 [
                     'first.' => [
