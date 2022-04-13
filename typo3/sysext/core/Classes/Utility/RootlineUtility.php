@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -36,47 +38,29 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class RootlineUtility
 {
-    /**
-     * @var int
-     */
-    protected $pageUid;
+    protected int $pageUid;
+
+    protected string $mountPointParameter;
 
     /**
-     * @var string
+     * @var int[]
      */
-    protected $mountPointParameter;
+    protected array $parsedMountPointParameters = [];
 
-    /**
-     * @var array
-     */
-    protected $parsedMountPointParameters = [];
+    protected int $languageUid = 0;
 
-    /**
-     * @var int
-     */
-    protected $languageUid = 0;
+    protected int $workspaceUid = 0;
 
-    /**
-     * @var int
-     */
-    protected $workspaceUid = 0;
+    protected static FrontendInterface $cache;
 
-    /**
-     * @var FrontendInterface
-     */
-    protected static $cache;
-
-    /**
-     * @var array
-     */
-    protected static $localCache = [];
+    protected static array $localCache = [];
 
     /**
      * Fields to fetch when populating rootline data
      *
-     * @var array
+     * @var string[]
      */
-    protected static $rootlineFields = [
+    protected static array $rootlineFields = [
         'pid',
         'uid',
         't3ver_oid',
@@ -102,56 +86,39 @@ class RootlineUtility
 
     /**
      * Database Query Object
-     *
-     * @var PageRepository
      */
-    protected $pageRepository;
+    protected PageRepository $pageRepository;
 
     /**
      * Query context
-     *
-     * @var Context
      */
-    protected $context;
+    protected Context $context;
+
+    protected string $cacheIdentifier;
+
+    protected static array $pageRecordCache = [];
 
     /**
-     * @var string
-     */
-    protected $cacheIdentifier;
-
-    /**
-     * @var array
-     */
-    protected static $pageRecordCache = [];
-
-    /**
-     * @param int $uid
-     * @param string $mountPointParameter
-     * @param Context $context
      * @throws MountPointsDisabledException
      */
-    public function __construct($uid, $mountPointParameter = '', $context = null)
+    public function __construct(int $uid, string $mountPointParameter = '', ?Context $context = null)
     {
-        $this->mountPointParameter = trim((string)$mountPointParameter);
-        if (!($context instanceof Context)) {
-            $context = GeneralUtility::makeInstance(Context::class);
-        }
-        $this->context = $context;
+        $this->mountPointParameter = trim($mountPointParameter);
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
         $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
         $this->workspaceUid = (int)$this->context->getPropertyFromAspect('workspace', 'id', 0);
         if ($this->mountPointParameter !== '') {
-            if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
+            if (!($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ?? false)) {
                 throw new MountPointsDisabledException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
             }
             $this->parseMountPointParameter();
         }
 
-        $this->pageUid = $this->resolvePageId((int)$uid);
-        if (self::$cache === null) {
-            self::$cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
-        }
+        $this->pageUid = $this->resolvePageId($uid);
+        self::$cache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
+
         self::$rootlineFields = array_merge(self::$rootlineFields, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], true));
         self::$rootlineFields = array_unique(self::$rootlineFields);
 
@@ -163,7 +130,7 @@ class RootlineUtility
      *
      * @internal only used in EXT:core, no public API
      */
-    public static function purgeCaches()
+    public static function purgeCaches(): void
     {
         self::$localCache = [];
         self::$pageRecordCache = [];
@@ -171,11 +138,8 @@ class RootlineUtility
 
     /**
      * Constructs the cache Identifier
-     *
-     * @param int $otherUid
-     * @return string
      */
-    public function getCacheIdentifier($otherUid = null)
+    public function getCacheIdentifier(int $otherUid = null): string
     {
         $mountPointParameter = (string)$this->mountPointParameter;
         if ($mountPointParameter !== '' && str_contains($mountPointParameter, ',')) {
@@ -183,7 +147,7 @@ class RootlineUtility
         }
 
         return implode('_', [
-            $otherUid !== null ? (int)$otherUid : $this->pageUid,
+            $otherUid ?? $this->pageUid,
             $mountPointParameter,
             $this->languageUid,
             $this->workspaceUid,
@@ -193,10 +157,8 @@ class RootlineUtility
 
     /**
      * Returns the actual rootline without the tree root (uid=0), including the page with $this->pageUid
-     *
-     * @return array
      */
-    public function get()
+    public function get(): array
     {
         if ($this->pageUid === 0) {
             // pageUid 0 has no root line, return empty array right away
@@ -234,9 +196,10 @@ class RootlineUtility
      *
      * @param int $uid Page id
      * @throws PageNotFoundException
-     * @return array
+     * @return array<string, string|int|float|null>
+     *   The array will contain the fields listed in the $rootlineFields static property.
      */
-    protected function getRecordArray($uid)
+    protected function getRecordArray(int $uid): array
     {
         $currentCacheIdentifier = $this->getCacheIdentifier($uid);
         if (!isset(self::$pageRecordCache[$currentCacheIdentifier])) {
@@ -272,11 +235,11 @@ class RootlineUtility
      * Resolve relations as defined in TCA and add them to the provided $pageRecord array.
      *
      * @param int $uid page ID
-     * @param array $pageRecord Page record (possibly overlaid) to be extended with relations
+     * @param array<string, string|int|float|null> $pageRecord Page record (possibly overlaid) to be extended with relations
      * @throws PagePropertyRelationNotFoundException
-     * @return array $pageRecord with additional relations
+     * @return array<string, string|int|float|null> $pageRecord with additional relations
      */
-    protected function enrichWithRelationFields($uid, array $pageRecord)
+    protected function enrichWithRelationFields(int $uid, array $pageRecord): array
     {
         if (!isset($GLOBALS['TCA']['pages']['columns']) || !is_array($GLOBALS['TCA']['pages']['columns'])) {
             return $pageRecord;
@@ -319,7 +282,7 @@ class RootlineUtility
      * @param array $configuration TCA configuration to check
      * @return bool TRUE, if it describes a non-CSV relation
      */
-    protected function columnHasRelationToResolve(array $configuration)
+    protected function columnHasRelationToResolve(array $configuration): bool
     {
         $configuration = $configuration['config'] ?? [];
         if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'group'])) {
@@ -339,7 +302,7 @@ class RootlineUtility
      *
      * @throws CircularRootLineException
      */
-    protected function generateRootlineCache()
+    protected function generateRootlineCache(): void
     {
         $page = $this->getRecordArray($this->pageUid);
         // If the current page is a mounted (according to the MP parameter) handle the mount-point
@@ -378,10 +341,8 @@ class RootlineUtility
     /**
      * Checks whether the current Page is a Mounted Page
      * (according to the MP-URL-Parameter)
-     *
-     * @return bool
      */
-    public function isMountedPage()
+    public function isMountedPage(): bool
     {
         return array_key_exists($this->pageUid, $this->parsedMountPointParameters);
     }
@@ -389,16 +350,16 @@ class RootlineUtility
     /**
      * Enhances with mount point information or replaces the node if needed
      *
-     * @param array $mountedPageData page record array of mounted page
-     * @param array $mountPointPageData page record array of mount point page
+     * @param array<string, string|int|float|null> $mountedPageData page record array of mounted page
+     * @param array<string, string|int|float|null> $mountPointPageData page record array of mount point page
      * @throws BrokenRootLineException
-     * @return array
+     * @return array<string, string|int|float|null>
      */
-    protected function processMountedPage(array $mountedPageData, array $mountPointPageData)
+    protected function processMountedPage(array $mountedPageData, array $mountPointPageData): array
     {
         $mountPid = $mountPointPageData['mount_pid'] ?? null;
         $uid = $mountedPageData['uid'] ?? null;
-        if ($mountPid != $uid) {
+        if ((int)$mountPid !== (int)$uid) {
             throw new BrokenRootLineException('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPid . ') does not match page uid (' . $uid . ').', 1343464100);
         }
         // Current page replaces the original mount-page
@@ -424,7 +385,7 @@ class RootlineUtility
      * Splits the MP-Param via "," for several nested mountpoints
      * and afterwords registers the mountpoint configurations
      */
-    protected function parseMountPointParameter()
+    protected function parseMountPointParameter(): void
     {
         $mountPoints = GeneralUtility::trimExplode(',', $this->mountPointParameter);
         foreach ($mountPoints as $mP) {
@@ -434,11 +395,10 @@ class RootlineUtility
     }
 
     /**
-     * Fetches the UID of the page, but if the page was moved in a workspace, actually returns the UID
-     * of the moved version in the workspace.
+     * Fetches the UID of the page.
      *
-     * @param int $pageId
-     * @return int
+     * If the page was moved in a workspace, actually returns the UID
+     * of the moved version in the workspace.
      */
     protected function resolvePageId(int $pageId): int
     {
@@ -455,10 +415,6 @@ class RootlineUtility
         return $movePointerId ?: $pageId;
     }
 
-    /**
-     * @param int $pageId
-     * @return array|null
-     */
     protected function resolvePageRecord(int $pageId): ?array
     {
         $queryBuilder = $this->createQueryBuilder('pages');
@@ -483,9 +439,6 @@ class RootlineUtility
 
     /**
      * Fetched the UID of the versioned record if the live record has been moved in a workspace.
-     *
-     * @param int $liveId
-     * @return int|null
      */
     protected function resolveMovePointerId(int $liveId): ?int
     {
@@ -517,10 +470,6 @@ class RootlineUtility
         return $movePointerId ? (int)$movePointerId : null;
     }
 
-    /**
-     * @param string $tableName
-     * @return QueryBuilder
-     */
     protected function createQueryBuilder(string $tableName): QueryBuilder
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)
