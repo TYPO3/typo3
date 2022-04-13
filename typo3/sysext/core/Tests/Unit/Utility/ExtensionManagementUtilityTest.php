@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -34,31 +35,21 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
+ * @covers \TYPO3\CMS\Core\Utility\ExtensionManagementUtility
  */
 class ExtensionManagementUtilityTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
-
     protected ?PackageManager $backUpPackageManager;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->backUpPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
@@ -66,12 +57,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @param string $packageKey
-     * @param array $packageMethods
-     * @return PackageManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function createMockPackageManagerWithMockPackage(string $packageKey, array $packageMethods = ['getPackagePath', 'getPackageKey'])
+    protected function createMockPackageManagerWithMockPackage(string $packageKey, array $packageMethods = ['getPackagePath', 'getPackageKey']): MockObject&PackageManager
     {
         $packagePath = Environment::getVarPath() . '/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);
@@ -180,7 +166,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param string $table name of the table, must not be empty
      * @return array generated TCA for the given table, will not be empty
      */
-    private function generateTCAForTable($table): array
+    private function generateTCAForTable(string $table): array
     {
         $tca = [];
         $tca[$table] = [];
@@ -204,8 +190,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
     /**
      * Data provider for getClassNamePrefixForExtensionKey.
-     *
-     * @return array
      */
     public function extensionKeyDataProvider(): array
     {
@@ -231,8 +215,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $extensionName
-     * @param string $expectedPrefix
      * @dataProvider extensionKeyDataProvider
      */
     public function getClassNamePrefixForExtensionKey(string $extensionName, string $expectedPrefix): void
@@ -244,7 +226,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     // Tests concerning addToAllTCAtypes
     //////////////////////////////////////
     /**
-     * Tests whether fields can be add to all TCA types and duplicate fields are considered.
+     * Tests whether fields can be added to all TCA types and duplicate fields are considered.
      *
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
@@ -261,7 +243,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether fields can be add to all TCA types and duplicate fields are considered.
+     * Tests whether fields can be added to all TCA types and duplicate fields are considered.
      *
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
@@ -278,7 +260,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether fields can be add to all TCA types and duplicate fields are considered.
+     * Tests whether fields can be added to all TCA types and duplicate fields are considered.
      *
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
@@ -294,7 +276,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether fields can be add to all TCA types and fields in pallets are respected.
+     * Tests whether fields can be added to all TCA types and fields in pallets are respected.
      *
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
@@ -309,7 +291,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether fields can be add to a TCA type before existing ones
+     * Tests whether fields can be added to a TCA type before existing ones
      *
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
@@ -326,7 +308,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether fields can be add to a TCA type after existing ones
+     * Tests whether fields can be added to a TCA type after existing ones
      *
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
@@ -435,9 +417,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
     }
 
-    /**
-     * @return array
-     */
     public function removeDuplicatesForInsertionRemovesDuplicatesDataProvider(): array
     {
         return [
@@ -983,7 +962,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
     /**
      * Data provider for executePositionedStringInsertionTrimsCorrectCharacters
-     * @return array
      */
     public function executePositionedStringInsertionTrimsCorrectCharactersDataProvider(): array
     {
@@ -1029,49 +1007,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /////////////////////////////////////////
     // Tests concerning addTcaSelectItem
     /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1303236963);
-
-        ExtensionManagementUtility::addTcaSelectItem([], 'foo', []);
-    }
-
-    /**
-     * @test
-     */
-    public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1303236964);
-
-        ExtensionManagementUtility::addTcaSelectItem('foo', [], []);
-    }
-
-    /**
-     * @test
-     */
-    public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1303236965);
-
-        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', [], []);
-    }
-
-    /**
-     * @test
-     */
-    public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1303236966);
-
-        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', [], 'foo', []);
-    }
 
     /**
      * @test
@@ -1550,32 +1485,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /////////////////////////////////////////
     // Tests concerning getExtensionVersion
     /////////////////////////////////////////
-    /**
-     * Data provider for negative getExtensionVersion() tests.
-     *
-     * @return array
-     */
-    public function getExtensionVersionFaultyDataProvider(): array
-    {
-        return [
-            [''],
-            [0],
-            [new \stdClass()],
-            [true],
-        ];
-    }
 
     /**
      * @test
-     * @dataProvider getExtensionVersionFaultyDataProvider
      * @throws \TYPO3\CMS\Core\Package\Exception
      */
-    public function getExtensionVersionForFaultyExtensionKeyThrowsException(mixed $key): void
+    public function getExtensionVersionForEmptyExtensionKeyThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1294586096);
 
-        ExtensionManagementUtility::getExtensionVersion($key);
+        ExtensionManagementUtility::getExtensionVersion('');
     }
 
     /**
@@ -1696,17 +1616,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
     }
 
-    /**
-     * @test
-     */
-    public function addPluginThrowsExceptionForMissingExtkey(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1404068038);
-
-        ExtensionManagementUtility::addPlugin('test');
-    }
-
     public function addTcaSelectItemGroupAddsGroupDataProvider(): array
     {
         return [
@@ -1805,11 +1714,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $groupId
-     * @param string $groupLabel
-     * @param string $position
-     * @param array|null $existingGroups
-     * @param array $expectedGroups
      * @dataProvider addTcaSelectItemGroupAddsGroupDataProvider
      */
     public function addTcaSelectItemGroupAddsGroup(string $groupId, string $groupLabel, ?string $position, ?array $existingGroups, array $expectedGroups): void

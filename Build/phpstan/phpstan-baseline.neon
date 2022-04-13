@@ -2251,31 +2251,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/TypoScript/Parser/TypoScriptParserTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$itemArray of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addPlugin\\(\\) expects array, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$table of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addTcaSelectItem\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$field of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addTcaSelectItem\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^Parameter \\#4 \\$relativeToField of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addTcaSelectItem\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^Parameter \\#5 \\$relativePosition of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addTcaSelectItem\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
