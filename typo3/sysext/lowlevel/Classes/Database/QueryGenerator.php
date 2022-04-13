@@ -860,7 +860,7 @@ class QueryGenerator
                 $valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, $conf, ';');
             }
         }
-        return CsvUtility::csvValues($valueArray, $delim, $quote);
+        return CsvUtility::csvValues($valueArray, (string)$delim, (string)$quote);
     }
 
     /**

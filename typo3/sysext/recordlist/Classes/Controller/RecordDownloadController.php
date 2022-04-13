@@ -200,8 +200,8 @@ class RecordDownloadController
         array $records
     ): ResponseInterface {
         // Fetch csv related format options
-        $csvDelimiter = $this->getFormatOption($request, 'delimiter');
-        $csvQuote = $this->getFormatOption($request, 'quote');
+        $csvDelimiter = (string)$this->getFormatOption($request, 'delimiter');
+        $csvQuote = (string)$this->getFormatOption($request, 'quote');
 
         // Create result
         $result[] = CsvUtility::csvValues($headerRow, $csvDelimiter, $csvQuote);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -49,7 +51,7 @@ class CsvUtility
      * @param int $maximumColumns The maximum amount of columns
      * @return array
      */
-    public static function csvToArray($input, $fieldDelimiter = ',', $fieldEnclosure = '"', $maximumColumns = 0)
+    public static function csvToArray(string $input, string $fieldDelimiter = ',', string $fieldEnclosure = '"', int $maximumColumns = 0): array
     {
         $multiArray = [];
         $maximumCellCount = 0;
@@ -97,33 +99,30 @@ class CsvUtility
      * @param int $type Output behaviour concerning potentially harmful control literals
      * @return string A single line of CSV
      */
-    public static function csvValues(array $row, string $delim = ',', string $quote = '"', int $type = self::TYPE_REMOVE_CONTROLS)
+    public static function csvValues(array $row, string $delim = ',', string $quote = '"', int $type = self::TYPE_REMOVE_CONTROLS): string
     {
         $resource = fopen('php://temp', 'w');
         if (!is_resource($resource)) {
             throw new \RuntimeException('Cannot open temporary data stream for writing', 1625556521);
         }
         $modifier = CsvStreamFilter::applyStreamFilter($resource, false);
-        array_map([self::class, 'assertCellValueType'], $row);
+        array_map(self::assertCellValueType(...), $row);
         if ($type === self::TYPE_REMOVE_CONTROLS) {
-            $row = array_map([self::class, 'removeControlLiterals'], $row);
+            $row = array_map(self::removeControlLiterals(...), $row);
         } elseif ($type === self::TYPE_PREFIX_CONTROLS) {
-            $row = array_map([self::class, 'prefixControlLiterals'], $row);
+            $row = array_map(self::prefixControlLiterals(...), $row);
         }
         fputcsv($resource, $modifier($row), $delim, $quote);
         fseek($resource, 0);
-        $content = stream_get_contents($resource);
-        return $content;
+        return stream_get_contents($resource);
     }
 
     /**
      * Prefixes control literals at the beginning of a cell value with a single quote
-     * (e.g. `=+value` --> `'=+value`)
      *
-     * @param mixed $cellValue
-     * @return bool|int|float|string|null
+     * (e.g. `=+value` --> `'=+value`)
      */
-    protected static function prefixControlLiterals($cellValue)
+    protected static function prefixControlLiterals(bool|int|float|string|null $cellValue): bool|int|float|string|null
     {
         if (!self::shallFilterValue($cellValue)) {
             return $cellValue;
@@ -134,12 +133,10 @@ class CsvUtility
 
     /**
      * Removes control literals from the beginning of a cell value
-     * (e.g. `=+value` --> `value`)
      *
-     * @param mixed $cellValue
-     * @return bool|int|float|string|null
+     * (e.g. `=+value` --> `value`)
      */
-    protected static function removeControlLiterals($cellValue)
+    protected static function removeControlLiterals(bool|int|float|string|null $cellValue): bool|int|float|string|null
     {
         if (!self::shallFilterValue($cellValue)) {
             return $cellValue;
@@ -150,10 +147,8 @@ class CsvUtility
 
     /**
      * Asserts scalar or null types for given cell value.
-     *
-     * @param mixed $cellValue
      */
-    protected static function assertCellValueType($cellValue): void
+    protected static function assertCellValueType(mixed $cellValue): void
     {
         // int, float, string, bool, null
         if ($cellValue === null || is_scalar($cellValue)) {
@@ -166,13 +161,12 @@ class CsvUtility
     }
 
     /**
-     * Whether cell value shall be filtered, applies to everything
-     * that is not or cannot be represented as boolean, integer or float.
+     * Whether cell value shall be filtered.
      *
-     * @param mixed $cellValue
-     * @return bool
+     * This applies to everything that is not or cannot be represented
+     * as boolean, integer or float.
      */
-    protected static function shallFilterValue($cellValue): bool
+    protected static function shallFilterValue(bool|int|float|string|null $cellValue): bool
     {
         return $cellValue !== null
             && !is_bool($cellValue)

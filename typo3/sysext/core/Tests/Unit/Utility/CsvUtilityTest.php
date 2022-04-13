@@ -92,7 +92,7 @@ class CsvUtilityTest extends UnitTestCase
      * @dataProvider csvToArrayDataProvider
      * @test
      */
-    public function csvToArraySplitsAsExpected($input, $fieldDelimiter, $fieldEnclosure, $maximumColumns, $expectedResult): void
+    public function csvToArraySplitsAsExpected(string $input, string $fieldDelimiter, string $fieldEnclosure, int $maximumColumns, array $expectedResult): void
     {
         self::assertEquals($expectedResult, CsvUtility::csvToArray($input, $fieldDelimiter, $fieldEnclosure, $maximumColumns));
     }
@@ -163,7 +163,7 @@ class CsvUtilityTest extends UnitTestCase
      * @dataProvider csvValuesDataProvider
      * @test
      */
-    public function csvValuesReturnsExpectedResult($row, $delimiter, $quote, $expectedResult, $flag): void
+    public function csvValuesReturnsExpectedResult(array $row, string $delimiter, string $quote, string $expectedResult, int $flag): void
     {
         self::assertEquals($expectedResult, CsvUtility::csvValues($row, $delimiter, $quote, $flag));
     }
