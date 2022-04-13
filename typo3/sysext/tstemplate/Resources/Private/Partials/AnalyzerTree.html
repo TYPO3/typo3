@@ -1,0 +1,100 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:ts="http://typo3.org/ns/TYPO3/CMS/Tstemplate/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:comment>
+    This is a template that calls itself recursive for sub nodes.
+</f:comment>
+
+<f:if condition="{tree.children}">
+    <f:variable name="childrenCounter" value="0" />
+    <f:variable name="depth" value="{depth + 1}" />
+    <f:for each="{tree.nextChild}" as="child">
+        <f:if condition="{child.children}">
+            <ts:if.isInstanceOf value="{child}" class="\TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface">
+                <f:then>
+                    <f:if condition="{restrictIncludesToMatchingConditionsEnabled}">
+                        <f:then>
+                            <f:if condition="{child.conditionVerdict}">
+                                <f:render partial="AnalyzerTree" arguments="{type: type, pageUid: pageUid, tree: child, depth: depth, restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled}" />
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <f:render partial="AnalyzerTree" arguments="{type: type, pageUid: pageUid, tree: child, depth: depth, restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled}" />
+                        </f:else>
+                    </f:if>
+                </f:then>
+                <f:else>
+                    <f:render partial="AnalyzerTree" arguments="{type: type, pageUid: pageUid, tree: child, depth: depth, restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled}" />
+                </f:else>
+            </ts:if.isInstanceOf>
+        </f:if>
+        <tr>
+            <td>
+                <ts:for from="2" to="{depth}">
+                    <span class="treeline-icon treeline-icon-line"></span>
+                </ts:for>
+                <f:if condition="{childrenCounter} == 0 && {depth} > 1">
+                    <f:then>
+                        <span class="treeline-icon treeline-icon-jointop"></span>
+                    </f:then>
+                </f:if>
+                <f:if condition="{childrenCounter} != 0 && {depth} > 1">
+                    <f:then>
+                        <span class="treeline-icon treeline-icon-join"></span>
+                    </f:then>
+                </f:if>
+                <f:if condition="{child.sysTemplateRecord}">
+                    <f:then>
+                        <core:iconForRecord table="sys_template" row="{root:child.root}" size="small" />
+                    </f:then>
+                    <f:else>
+                        <core:icon identifier="mimetypes-x-content-template-static" size="small" />
+                    </f:else>
+                </f:if>
+                <f:be.link route="web_typoscript_analyzer" parameters="{id: pageUid, includeType: type, includeIdentifier: child.identifier}">
+                    {child.name}
+                </f:be.link>
+            </td>
+            <td>
+                <f:comment>
+                    Hand over to f:translate and add locallang.xlf entries when Include classes stabilized.
+                </f:comment>
+                <ts:if.isInstanceOf value="{child}" class="\TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface">
+                    <f:then>
+                        <f:if condition="{child.conditionVerdict}">
+                            <f:then>
+                                <div title="[{child.conditionToken.value}]" class="text-success">{child.type}</div>
+                            </f:then>
+                            <f:else>
+                                <div title="[{child.conditionToken.value}]" class="text-warning">{child.type}</div>
+                            </f:else>
+                        </f:if>
+                    </f:then>
+                    <f:else>
+                        {child.type}
+                    </f:else>
+                </ts:if.isInstanceOf>
+            </td>
+            <td>
+                <f:if condition="{child.root}">
+                    <core:icon identifier="status-status-checked" />
+                </f:if>
+            </td>
+            <td>
+                <f:if condition="{child.clear}">
+                    <core:icon identifier="status-status-checked" />
+                </f:if>
+            </td>
+            <td>
+                {child.pid}
+            </td>
+            <f:variable name="childrenCounter" value="{childrenCounter + 1}" />
+        </tr>
+    </f:for>
+</f:if>
+
+</html>

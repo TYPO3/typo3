@@ -1,0 +1,72 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:ts="http://typo3.org/ns/TYPO3/CMS/Tstemplate/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{conditions}">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <h2 class="panel-title" id="template-analyzer-{type}-conditions-heading">
+                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#template-analyzer-{type}-conditions-body" aria-expanded="false" aria-controls="template-analyzer-{type}-conditions-body">
+                    <span class="caret"></span>
+                    <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:{type}Conditions" /></strong>
+                    <f:if condition="{conditionActiveCount}">
+                        <span class="badge badge-warning">
+                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:conditionActiveCount" arguments="{0: conditionActiveCount}"/>
+                        </span>
+                    </f:if>
+                </a>
+            </h2>
+        </div>
+        <div class="collapse" id="template-analyzer-{type}-conditions-body" data-persist-collapse-state="true" role="tabpanel" aria-labelledby="template-analyzer-{type}-conditions-heading">
+            <div class="panel-body">
+                <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
+                    <div class="row">
+                        <div class="col-auto">
+                            <f:for each="{conditions}" as="condition">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label" for="condition{condition.hash}">
+                                        <f:if condition="{condition.originalValue}">
+                                            <f:then>
+                                                <span style="display: inline;">
+                                                    <span class="text-monospace">[{condition.value}]</span>
+                                                    <span class="diff-item-result diff-item-result-inline text-monospace p-0">
+                                                        <f:format.raw>
+                                                            <f:translate
+                                                                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:conditionWithConstant"
+                                                                arguments="{
+                                                                    0: '{ts:fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                                }"
+                                                            />
+                                                        </f:format.raw>
+                                                    </span>
+                                                </span>
+                                            </f:then>
+                                            <f:else>
+                                                <span class="text-monospace">[{condition.value}]</span>
+                                            </f:else>
+                                        </f:if>
+                                    </label>
+                                    <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="{type}Conditions[{condition.hash}]"
+                                        value="1"
+                                        {f:if(condition: condition.active, then:'checked="checked"')}
+                                        data-global-event="change"
+                                        data-action-submit="$form"
+                                        data-value-selector="input[name='{type}Conditions[{condition.hash}]']"
+                                    />
+                                </div>
+                            </f:for>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</f:if>
+
+</html>

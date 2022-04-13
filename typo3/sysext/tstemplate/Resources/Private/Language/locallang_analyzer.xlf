@@ -3,29 +3,35 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="currentTemplate" resname="currentTemplate">
-				<source>Current template</source>
+			<trans-unit id="analyzerTitle" resname="analyzerTitle">
+				<source>Template Analyzer</source>
+			</trans-unit>
+			<trans-unit id="analyzerTitleWithTemplate" resname="analyzerTitleWithTemplate">
+				<source>Template Analyzer for template "%s"</source>
+			</trans-unit>
+			<trans-unit id="selectedTemplate" resname="selectedTemplate">
+				<source>Selected template</source>
 			</trans-unit>
 			<trans-unit id="title" resname="title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="type" resname="type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="root" resname="root">
+				<source>Root</source>
+			</trans-unit>
 			<trans-unit id="rootlevel" resname="rootlevel">
 				<source>Rootlevel</source>
 			</trans-unit>
-			<trans-unit id="clearSetup" resname="clearSetup">
-				<source>Clear Setup</source>
-			</trans-unit>
-			<trans-unit id="clearConstants" resname="clearConstants">
-				<source>Clear Constants</source>
+			<trans-unit id="clear" resname="clear">
+				<source>Clear</source>
 			</trans-unit>
 			<trans-unit id="pid" resname="pid">
 				<source>PID</source>
 			</trans-unit>
-			<trans-unit id="rootline" resname="rootline">
-				<source>Rootline</source>
-			</trans-unit>
-			<trans-unit id="templateHierarchy" resname="templateHierarchy">
-				<source>Template hierarchy</source>
+			<trans-unit id="options" resname="options">
+				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="constants" resname="constants">
 				<source>Constants</source>
@@ -33,8 +39,32 @@
 			<trans-unit id="setup" resname="setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="viewCompleteTS" resname="viewCompleteTS">
-				<source>View the complete TS Listing</source>
+			<trans-unit id="constantConditions" resname="constantConditions">
+				<source>Constants conditions</source>
+			</trans-unit>
+			<trans-unit id="setupConditions" resname="setupConditions">
+				<source>Setup conditions</source>
+			</trans-unit>
+			<trans-unit id="conditionWithConstant" resname="conditionWithConstant">
+				<source>Constant usage: [%s]</source>
+			</trans-unit>
+			<trans-unit id="constantTree" resname="constantTree">
+				<source>Constants include tree</source>
+			</trans-unit>
+			<trans-unit id="constantSource" resname="constantSource">
+				<source>Selected constants source</source>
+			</trans-unit>
+			<trans-unit id="setupTree" resname="setupTree">
+				<source>Setup include tree</source>
+			</trans-unit>
+			<trans-unit id="setupSource" resname="setupSource">
+				<source>Selected setup source</source>
+			</trans-unit>
+			<trans-unit id="conditionActiveCount" resname="conditionActiveCount">
+				<source>%s active condition(s)</source>
+			</trans-unit>
+			<trans-unit id="restrictIncludesToMatchingConditions" resname="restrictIncludesToMatchingConditions">
+				<source>Restrict includes to matching conditions</source>
 			</trans-unit>
 		</body>
 	</file>

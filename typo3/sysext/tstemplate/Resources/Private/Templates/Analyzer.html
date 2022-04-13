@@ -10,71 +10,107 @@
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
-            1: '@typo3/backend/element/immediate-action-element.js'
+            1: '@typo3/backend/element/immediate-action-element.js',
+            2: '@typo3/backend/utility/collape-state-persister.js'
         }"
     />
 
-    <f:variable name="args" value="{0: 'web', 1: pageId}" />
+    <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
+    <f:comment>
+        Heading
+    </f:comment>
+    <h1>
+        <f:if condition="{templateTitle}">
+            <f:then>
+                <f:translate
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:analyzerTitleWithTemplate"
+                    arguments="{
+                        0: '{templateTitle}'
+                    }"
+                />
+            </f:then>
+            <f:else>
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:analyzerTitle" />
+            </f:else>
+        </f:if>
+    </h1>
 
-    <f:if condition="{templateRecord}">
-        <div class="row row-cols-auto g-3 align-items-center">
-            <f:if condition="{manyTemplatesMenu}">
-                <div class="col">
-                    <f:format.raw>
-                        {manyTemplatesMenu}
-                    </f:format.raw>
-                </div>
-            </f:if>
-            <div class="col mb-3">
-                <core:iconForRecord table="sys_template" row="{templateRecord}"/>
-                <strong>
-                    <f:be.link route="web_typoscript_overview" parameters="{id: pageId}">{templateRecord.title}</f:be.link>
-                </strong>
-            </div>
-        </div>
-    </f:if>
+    <f:comment>
+        General options
+    </f:comment>
+    <f:render
+        partial="AnalyzerOptions"
+        arguments="{
+            allTemplatesOnPage: allTemplatesOnPage,
+            pageUid: pageUid,
+            selectedTemplateUid: selectedTemplateUid,
+            restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled
+        }"
+    />
 
-    <div class="row">
-        <div class="col-auto">
-            <f:be.link route="web_typoscript_analyzer" parameters="{id: pageUid, template: 'all'}" class="btn btn-default">
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:viewCompleteTS"/>
-            </f:be.link>
-        </div>
+    <f:comment>
+        Constant conditions, source and tree
+    </f:comment>
+    <div class="panel-group mt-3">
+        <f:render
+            partial="AnalyzerConditions"
+            arguments="{
+                pageUid: pageUid,
+                type: 'constant',
+                conditions: constantConditions,
+                conditionActiveCount: constantConditionsActiveCount
+            }"
+        />
+        <f:render
+            partial="AnalyzerSource"
+            arguments="{
+                type: 'constant',
+                source: constantSource
+            }"
+        />
+        <f:render
+            partial="AnalyzerTreePanel"
+            arguments="{
+                type: 'constant',
+                tree: constantIncludeTree,
+                pageUid: pageUid,
+                restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled
+            }"
+        />
     </div>
 
-    <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:templateHierarchy"/></h2>
-    <div class="table-fit">
-        <table class="table table-striped table-hover" id="ts-analyzer">
-            <thead>
-            <tr>
-                <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:title"/></th>
-                <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:rootlevel"/></th>
-                <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:clearSetup"/></th>
-                <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:clearConstants"/></th>
-                <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:pid"/></th>
-                <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:rootline"/></th>
-            </tr>
-            </thead>
-            <f:format.raw>{hierarchy}</f:format.raw>
-        </table>
+    <f:comment>
+        Setup conditions, source and tree
+    </f:comment>
+    <div class="panel-group mt-3">
+        <f:render
+            partial="AnalyzerConditions"
+            arguments="{
+                pageUid: pageUid,
+                type: 'setup',
+                conditions: setupConditions,
+                conditionActiveCount: setupConditionsActiveCount
+            }"
+        />
+        <f:render
+            partial="AnalyzerSource"
+            arguments="{
+                type: 'setup',
+                source: setupSource
+            }"
+        />
+        <f:render
+            partial="AnalyzerTreePanel"
+            arguments="{
+                type: 'setup',
+                tree: setupIncludeTree,
+                pageUid: pageUid,
+                restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled
+            }"
+        />
     </div>
-
-    <f:if condition="{constants}">
-        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:constants"/></h2>
-        <f:for each="{constants}" as="constant">
-            <f:format.raw>{constant}</f:format.raw>
-        </f:for>
-    </f:if>
-    <f:if condition="{setups}">
-        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:setup"/></h2>
-        <f:for each="{setups}" as="setup">
-            <f:format.raw>{setup}</f:format.raw>
-        </f:for>
-    </f:if>
-
 </f:section>
 
 </html>

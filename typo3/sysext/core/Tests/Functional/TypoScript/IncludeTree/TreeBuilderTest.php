@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
@@ -27,10 +28,35 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TreeBuilderTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    /**
+     * @var array
+     */
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
     public function setUp(): void
     {
         parent::setUp();
         $this->get(CacheManager::class)->getCache('typoscript')->flush();
+        $this->writeSiteConfiguration(
+            'website-local',
+            [
+                'rootPageId' => 1,
+                'base' => 'http://localhost/',
+                'settings' => [
+                    'testConstantFromSite' => 'testValueFromSite',
+                    'nestedConfiguration' => [
+                        'foo' => 'bar',
+                    ],
+                ],
+            ],
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ]
+        );
     }
 
     /**
@@ -73,6 +99,26 @@ class TreeBuilderTest extends FunctionalTestCase
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function singleRootTemplateLoadConstantFromSite(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
+        $rootline = [
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+        /** @var TreeBuilder $treeBuilder */
+        $treeBuilder = $this->get(TreeBuilder::class);
+        $includeTree = $treeBuilder->getTreeByRootline($rootline, 'constants', false);
+        $ast = $this->getAst($includeTree);
+        self::assertSame('testValueFromSite', $ast->getChildByName('testConstantFromSite')->getValue());
     }
 
     /**

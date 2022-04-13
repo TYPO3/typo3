@@ -520,7 +520,7 @@ final class TreeBuilder
         if (empty($siteSettings)) {
             return;
         }
-        $identifier = 'site-constants-' . sha1($siteSettings);
+        $identifier = 'site-constants-' . sha1(json_encode($siteSettings, JSON_THROW_ON_ERROR));
         if ($this->cache) {
             $node = $this->cache->require($identifier);
             if ($node) {

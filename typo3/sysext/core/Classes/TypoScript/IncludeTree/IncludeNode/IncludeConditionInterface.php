@@ -38,8 +38,11 @@ interface IncludeConditionInterface
 
     /**
      * Conditions may use constants: "[foo = {$bar}]". This getter/setter
-     * allows storing the original condition token string. Relevant in
-     * backend only.
+     * allows storing the original condition token string.
+     * This is set in backend only in case a constant substitution has taken
+     * place. Otherwise, the "vanilla" condition token is identical,
+     * getOriginalConditionToken() returns null and the condition token should
+     * be fetched from getConditionToken().
      */
     public function setOriginalConditionToken(Token $token): void;
     public function getOriginalConditionToken(): ?Token;

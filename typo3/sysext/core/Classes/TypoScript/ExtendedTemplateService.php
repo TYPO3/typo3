@@ -450,31 +450,6 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * Processes the flat array from TemplateService->hierarchyInfo
-     * and turns it into a hierarchical array to show dependencies (used by TemplateAnalyzer)
-     *
-     * @param array $depthDataArr (empty array on external call)
-     * @param int $pointer Element number (1! to count()) of $this->hierarchyInfo that should be processed.
-     * @return array Processed hierachyInfo.
-     */
-    public function ext_process_hierarchyInfo(array $depthDataArr, &$pointer)
-    {
-        $parent = $this->hierarchyInfo[$pointer - 1]['templateParent'];
-        while ($pointer > 0 && $this->hierarchyInfo[$pointer - 1]['templateParent'] == $parent) {
-            $pointer--;
-            $row = $this->hierarchyInfo[$pointer];
-            $depthDataArr[$row['templateID']] = $row;
-            unset($this->clearList_setup_temp[$row['templateID']]);
-            unset($this->clearList_const_temp[$row['templateID']]);
-            $this->templateTitles[$row['templateID']] = $row['title'];
-            if ($row['templateID'] == ($this->hierarchyInfo[$pointer - 1]['templateParent'] ?? '')) {
-                $depthDataArr[$row['templateID'] . '.'] = $this->ext_process_hierarchyInfo([], $pointer);
-            }
-        }
-        return $depthDataArr;
-    }
-
-    /**
      * @param string $type
      * @return array
      */
@@ -715,13 +690,5 @@ class ExtendedTemplateService extends TemplateService
             }
         }
         return $valuesHaveChanged;
-    }
-
-    /**
-     * Is set by runThroughTemplates(), previously set via TemplateAnalyzerModuleFunctionController from the outside
-     */
-    public function getRootLine(): array
-    {
-        return $this->absoluteRootLine;
     }
 }

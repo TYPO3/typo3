@@ -95,7 +95,10 @@ return [
             ],
         ],
         'moduleData' => [
-            'templatesOnPage' => 0,
+            'restrictIncludesToMatchingConditions' => false,
+            'selectedTemplatePerPage' => [],
+            'constantConditions' => [],
+            'setupConditions' => [],
         ],
     ],
     'web_typoscript_recordsoverview' => [

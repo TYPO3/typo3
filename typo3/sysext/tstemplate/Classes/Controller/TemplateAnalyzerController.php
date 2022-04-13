@@ -19,29 +19,42 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
+use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
+use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 
 /**
- * TypoScript template analyzer
+ * TypoScript template analyzer.
+ * Show TypoScript constants and setup include tree of current page.
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TemplateAnalyzerController extends AbstractTemplateModuleController
+final class TemplateAnalyzerController extends AbstractTemplateModuleController
 {
-    protected ExtendedTemplateService $templateService;
-
     public function __construct(
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly PageRenderer $pageRenderer,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly IncludeTreeTraverser $treeTraverser,
+        private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
+        private readonly TreeBuilder $treeBuilder,
+        LosslessTokenizer $losslessTokenizer,
     ) {
+        $this->treeBuilder->setTokenizer($losslessTokenizer);
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -50,45 +63,44 @@ class TemplateAnalyzerController extends AbstractTemplateModuleController
         $languageService = $this->getLanguageService();
 
         $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
 
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
         $moduleData = $request->getAttribute('moduleData');
-        if ($moduleData->cleanUp([])) {
-            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        }
 
-        $pageId = (int)($queryParams['id'] ?? 0);
-        if ($pageId === 0) {
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        if ($pageUid === 0) {
             // Redirect to template record overview if on page 0.
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
         }
-        $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
 
-        // Set if user clicked on one template to show content of this specific one
-        $selectedTemplate = (string)($queryParams['template'] ?? '');
-        // The template object browser shows info boxes with parser errors and links to template analyzer to highlight
-        // affected line. Increased by one if set to avoid an off-by-one error.
-        $highlightLine = (int)($queryParams['highlightLine'] ?? 0);
-        // 'const' or 'setup' or not set
-        $highlightType = (string)($queryParams['highlightType'] ?? '');
-
-        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageId);
-        if ($moduleData->clean('templatesOnPage', array_column($allTemplatesOnPage, 'uid') ?: [0])) {
-            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        // Force restrictIncludesToMatchingConditions to bool
+        if ($moduleData->clean('restrictIncludesToMatchingConditions', [true, false])) {
+            $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
-        $templateUid = (int)$moduleData->get('templatesOnPage');
+        // Template selection handling for this page
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        $selectedTemplateFromModuleData = (array)$moduleData->get('selectedTemplatePerPage');
+        $selectedTemplateUid = (int)($parsedBody['selectedTemplate'] ?? $selectedTemplateFromModuleData[$pageUid] ?? 0);
+        if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
+            $selectedTemplateUid = (int)($allTemplatesOnPage[0]['uid'] ?? 0);
+        }
+        if (($moduleData->get('selectedTemplatePerPage')[$pageUid] ?? 0) !== $selectedTemplateUid) {
+            $selectedTemplateFromModuleData[$pageUid] = $selectedTemplateUid;
+            $moduleData->set('selectedTemplatePerPage', $selectedTemplateFromModuleData);
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        }
+        $templateTitle = '';
+        foreach ($allTemplatesOnPage as $templateRow) {
+            if ((int)$templateRow['uid'] === $selectedTemplateUid) {
+                $templateTitle = $templateRow['title'];
+            }
+        }
 
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-        $templateRow = $this->getFirstTemplateRecordOnPage($pageId, $templateUid);
-
-        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $this->templateService->runThroughTemplates($rootLine, $templateUid);
-        $this->templateService->clearList_const_temp = array_flip($this->templateService->clearList_const);
-        $this->templateService->clearList_setup_temp = array_flip($this->templateService->clearList_setup);
-        $pointer = count($this->templateService->hierarchyInfo);
-        $hierarchyInfo = $this->templateService->ext_process_hierarchyInfo([], $pointer);
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
 
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             // @todo: Let EXT:t3editor add the deps via events in the render-loops above
@@ -97,192 +109,191 @@ class TemplateAnalyzerController extends AbstractTemplateModuleController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
+        // Build the constant include tree
+        $constantIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'constants', false, $selectedTemplateUid);
+        // Set enabled conditions in constant include tree
+        $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
+        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $this->treeTraverser->traverse($constantIncludeTree);
+        // Build the constant AST and flatten it. Needed for setup include tree to substitute constants in setup conditions.
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $this->treeTraverserConditionVerdictAware->resetVisitors();
+        $this->treeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
+        $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree);
+        $constantAst = $constantAstBuilderVisitor->getAst();
+        $flattenedConstants = $constantAst->flatten();
+
+        // Build the setup include tree, note this uses the 'cached' variant from the constant run above to suppress db calls.
+        $setupIncludeTree = $this->treeBuilder->getTreeByRootline($rootLine, 'setup', true);
+        // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
+        $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
+        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $this->treeTraverser->traverse($setupIncludeTree);
+
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->assign('moduleIdentifier', $currentModuleIdentifier);
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $this->addPreviewButtonToDocHeader($view, $pageId, (int)$pageRecord['doktype']);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageId);
-        $view->assign('pageId', $pageId);
-        $view->makeDocHeaderModuleMenu(['id' => $pageId]);
+        $this->addPreviewButtonToDocHeader($view, $pageUid, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
-            'pageUid' => $pageId,
-            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageId, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
-            'templateRecord' => $templateRow,
-            'hierarchy' => implode('', array_reverse($this->getTemplateHierarchyArr($currentModuleIdentifier, $pageId, $selectedTemplate, $hierarchyInfo, '', [], true))),
-            'constants' =>  $this->renderTemplates($this->templateService->constants, $selectedTemplate, $highlightType === 'const', $highlightLine),
-            'setups' =>  $this->renderTemplates($this->templateService->config, $selectedTemplate, $highlightType === 'setup', $highlightLine),
+            'pageUid' => $pageUid,
+            'allTemplatesOnPage' => $allTemplatesOnPage,
+            'selectedTemplateUid' => $selectedTemplateUid,
+            'templateTitle' => $templateTitle,
+            'restrictIncludesToMatchingConditionsEnabled' => $moduleData->get('restrictIncludesToMatchingConditions'),
+            'constantConditions' => $constantConditions,
+            'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),
+            'constantIncludeTree' => $constantIncludeTree,
+            'constantSource' => $this->getSourceString('constant', $constantIncludeTree, $queryParams),
+            'setupConditions' => $setupConditions,
+            'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn ($condition) => $condition['active'])),
+            'setupIncludeTree' => $setupIncludeTree,
+            'setupSource' => $this->getSourceString('setup', $setupIncludeTree, $queryParams),
         ]);
 
         return $view->renderResponse('Analyzer');
     }
 
     /**
-     * Render constants or setup templates using t3editor or plain textarea
+     * Align module data active constant conditions with toggled conditions from POST,
+     * write updated active conditions to user's module data if needed and
+     * prepare a list of active conditions for view.
      */
-    protected function renderTemplates(array $templates, string $selectedTemplate, bool $highlight, int $highlightLine): array
+    protected function handleToggledConstantConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody): array
     {
-        $templatesMarkup = [];
-        $totalLines = 0;
-        foreach ($templates as $templateContent) {
-            $totalLines += 1 + count(explode(LF, $templateContent));
-        }
-        $thisLineOffset = $nextLineOffset = 0;
-        foreach ($templates as $templateNumber => $templateContent) {
-            $templateId = $this->templateService->hierarchyInfo[$templateNumber]['templateID'] ?? null;
-            $templateTitle = $this->templateService->hierarchyInfo[$templateNumber]['title'] ?? 'Template';
-            // Prefix content with '[GLOBAL]' even for empty strings, the TemplateService does that, too.
-            // Not replicating this leads to shifted line numbers when parser errors are reported in FE and object browser.
-            // @todo: Locate where TemplateService hard prefixes this for empty strings and drop it.
-            $templateContent = '[GLOBAL]' . LF . $templateContent;
-            $linesInTemplate = count(explode(LF, $templateContent));
-            $nextLineOffset += $linesInTemplate;
-            if ($selectedTemplate === 'all'
-                || $templateId === $selectedTemplate
-                || ($highlight && $highlightLine && $highlightLine > $thisLineOffset && $highlightLine <= $nextLineOffset)
-            ) {
-                if (ExtensionManagementUtility::isLoaded('t3editor')) {
-                    // @todo: Fire event and let EXT:t3editor fill the markup
-                    $templatesMarkup[] = $this->getCodeMirrorMarkup(
-                        $templateTitle,
-                        $thisLineOffset,
-                        $linesInTemplate,
-                        $totalLines,
-                        $highlight ? $highlightLine : 0,
-                        $templateContent
-                    );
-                } else {
-                    $templatesMarkup[] = $this->getTextareaMarkup($templateTitle, $linesInTemplate, $templateContent);
-                }
+        $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
+        $this->treeTraverser->traverse($constantTree);
+        $constantConditions = $conditionAggregatorVisitor->getConditions();
+        $conditionsFromPost = $parsedBody['constantConditions'] ?? [];
+        $conditionsFromModuleData = array_flip((array)$moduleData->get('constantConditions'));
+        $typoscriptConditions = [];
+        foreach ($constantConditions as $condition) {
+            $conditionHash = sha1($condition['value']);
+            $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
+            // Note we're not feeding the post values directly to module data, but filter
+            // them through available conditions to prevent polluting module data with
+            // manipulated post values.
+            if (($conditionsFromPost[$conditionHash] ?? null) === '0') {
+                unset($conditionsFromModuleData[$conditionHash]);
+                $conditionActive = false;
+            } elseif (($conditionsFromPost[$conditionHash] ?? null) === '1') {
+                $conditionsFromModuleData[$conditionHash] = true;
+                $conditionActive = true;
             }
-            $thisLineOffset = $nextLineOffset;
+            $typoscriptConditions[] = [
+                'value' => $condition['value'],
+                'hash' => $conditionHash,
+                'active' => $conditionActive,
+            ];
         }
-        return $templatesMarkup;
+        if ($conditionsFromPost) {
+            $moduleData->set('constantConditions', array_keys($conditionsFromModuleData));
+            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        return $typoscriptConditions;
     }
 
-    protected function getCodeMirrorMarkup(string $label, int $lineOffset, int $lines, int $totalLines, int $highlightLine, string $content): string
+    /**
+     * Align module data active setup conditions with toggled conditions from POST,
+     * write updated active conditions to user's module data if needed and
+     * prepare a list of active conditions for view.
+     */
+    protected function handleToggledSetupConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
-        $codeMirrorConfig = [
-            'label' => $label,
-            'panel' => 'top',
-            'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
-            'autoheight' => 'true',
-            'nolazyload' => 'true',
-            'linedigits' => (string)strlen((string)$totalLines),
-            'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'readOnly' => true,
-                'format' => 'typoscript',
-                'rows' => 'auto',
-                'firstLineNumber' => $lineOffset + 1,
-            ], false),
-        ];
-        $textareaAttributes = [
-            'rows' => (string)$lines,
-            'readonly' => 'readonly',
-        ];
-
-        // If we want to highlight
-        if ($highlightLine && $highlightLine >= $lineOffset && $highlightLine <= ($lineOffset + $lines)) {
-            // Scroll to affected line and highlight line if requested
-            $targetLineInTemplate = $highlightLine - $lineOffset;
-            $codeMirrorConfig['scrollto'] = (string)$targetLineInTemplate;
-            $codeMirrorConfig['marktext'] = GeneralUtility::jsonEncodeForHtmlAttribute([
-                [
-                    'from' => [
-                        'line' => $targetLineInTemplate - 1,
-                        'ch' => 0,
-                    ],
-                    'to' => [
-                        'line' => $targetLineInTemplate - 1,
-                        // Arbitrary high value to match full line
-                        'ch' => 10000,
-                    ],
-                ],
-            ], false);
+        $this->treeTraverser->resetVisitors();
+        $setupConditionConstantSubstitutionVisitor = GeneralUtility::makeInstance(IncludeTreeSetupConditionConstantSubstitutionVisitor::class);
+        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
+        $this->treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
+        $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
+        $this->treeTraverser->traverse($constantTree);
+        $setupConditions = $conditionAggregatorVisitor->getConditions();
+        $conditionsFromPost = $parsedBody['setupConditions'] ?? [];
+        $conditionsFromModuleData = array_flip((array)$moduleData->get('setupConditions'));
+        $typoscriptConditions = [];
+        foreach ($setupConditions as $condition) {
+            $conditionHash = sha1($condition['value']);
+            $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
+            // Note we're not feeding the post values directly to module data, but filter
+            // them through available conditions to prevent polluting module data with
+            // manipulated post values.
+            if (($conditionsFromPost[$conditionHash] ?? null) === '0') {
+                unset($conditionsFromModuleData[$conditionHash]);
+                $conditionActive = false;
+            } elseif (($conditionsFromPost[$conditionHash] ?? null) === '1') {
+                $conditionsFromModuleData[$conditionHash] = true;
+                $conditionActive = true;
+            }
+            $typoscriptConditions[] = [
+                'value' => $condition['value'],
+                'originalValue' => $condition['originalValue'],
+                'hash' => $conditionHash,
+                'active' => $conditionActive,
+            ];
         }
-
-        $code = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
-        $code .= '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
-        $code .= '</typo3-t3editor-codemirror>';
-
-        return $code;
+        if ($conditionsFromPost) {
+            $moduleData->set('setupConditions', array_keys($conditionsFromModuleData));
+            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        return $typoscriptConditions;
     }
 
-    protected function getTextareaMarkup(string $title, int $linesInTemplate, string $content): string
+    /**
+     * Render constants or setup source using t3editor or plain textarea
+     */
+    protected function renderSource(string $source): string
     {
-        return htmlspecialchars($title)
-            . '<textarea class="form-control" rows="' . ($linesInTemplate + 1) . '" disabled>'
-            . htmlspecialchars($content)
-            . '</textarea>';
+        $numberOfLines = count(explode(LF, $source));
+        if (ExtensionManagementUtility::isLoaded('t3editor')) {
+            // @todo: Fire event and let EXT:t3editor fill the markup
+            $codeMirrorConfig = [
+                'panel' => 'top',
+                'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
+                'autoheight' => 'true',
+                'nolazyload' => 'true',
+                'linedigits' => (string)strlen((string)$numberOfLines),
+                'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                    'readOnly' => true,
+                    'format' => 'typoscript',
+                    'rows' => 'auto',
+                ], false),
+            ];
+            $textareaAttributes = [
+                'rows' => (string)$numberOfLines,
+                'readonly' => 'readonly',
+            ];
+            return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
+                . '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($source) . '</textarea>'
+                . '</typo3-t3editor-codemirror>';
+        }
+        return '<textarea class="form-control" rows="' . ($numberOfLines + 1) . '" disabled>'
+                . htmlspecialchars($source)
+                . '</textarea>';
     }
 
-    protected function getTemplateHierarchyArr(string $moduleIdentifier, int $pageId, string $selectedTemplate, array $arr, string $depthData, array $keyArray, bool $first = false): array
+    /**
+     * Get source string if requested for either 'constant' or 'setup' and a specific include.
+     */
+    protected function getSourceString(string $type, RootInclude $includeTree, array $queryParams): string
     {
-        $keyArr = [];
-        foreach ($arr as $key => $value) {
-            $key = preg_replace('/\\.$/', '', $key) ?? '';
-            if (!str_ends_with($key, '.')) {
-                $keyArr[$key] = 1;
-            }
+        if (($queryParams['includeType'] ?? null) === $type && !empty($queryParams['includeIdentifier'])) {
+            $sourceAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeSourceAggregatorVisitor::class);
+            $sourceAggregatorVisitor->setStartNodeIdentifier($queryParams['includeIdentifier']);
+            $this->treeTraverser->resetVisitors();
+            $this->treeTraverser->addVisitor($sourceAggregatorVisitor);
+            $this->treeTraverser->traverse($includeTree);
+            return $this->renderSource($sourceAggregatorVisitor->getSource());
         }
-        $a = 0;
-        $c = count($keyArr);
-        foreach ($keyArr as $key => $value) {
-            $HTML = '';
-            $a++;
-            $deeper = is_array($arr[$key . '.'] ?? false);
-            $row = $arr[$key];
-            $LN = $a == $c ? 'blank' : 'line';
-            $BTM = $a == $c ? 'top' : '';
-            $HTML .= $depthData;
-            $alttext = '[' . $row['templateID'] . ']';
-            $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], '1=1', 20) : '';
-            $icon = str_starts_with($row['templateID'], 'sys')
-                ? '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
-                : '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
-            if (in_array($row['templateID'], $this->templateService->clearList_const) || in_array($row['templateID'], $this->templateService->clearList_setup)) {
-                $urlParameters = [
-                    'id' => $pageId,
-                    'template' => $row['templateID'],
-                ];
-                $aHref = (string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier, $urlParameters);
-                $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
-                $A_E = '</a>';
-                if ($selectedTemplate === $row['templateID']) {
-                    $A_B = '<strong>' . $A_B;
-                    $A_E .= '</strong>';
-                }
-            } else {
-                $A_B = '';
-                $A_E = '';
-            }
-            $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . ' ' . $A_B
-                . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$GLOBALS['BE_USER']->uc['titleLen']))
-                . $A_E . '&nbsp;&nbsp;';
-
-            $rootLineNumber = -1;
-            if ((int)$row['pid']) {
-                foreach ($this->templateService->getRootLine() as $rootlineKey => $rootlineArray) {
-                    if ((int)$rootlineArray['uid'] === (int)$row['pid']) {
-                        $rootLineNumber = (int)$rootlineKey;
-                    }
-                }
-            }
-
-            $statusCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-            $keyArray[] =
-                '<tr>' .
-                    '<td class="nowrap">' . $HTML . '</td>' .
-                    '<td>' . ($row['root'] ? $statusCheckedIcon : '') . '</td>' .
-                    '<td>' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>' .
-                    '<td>' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>' .
-                    '<td>' . ($row['pid'] ?: '') . '</td>' .
-                    '<td>' . ($rootLineNumber >= 0 ? $rootLineNumber : '') . '</td>' .
-                '</tr>';
-            if ($deeper) {
-                $keyArray = $this->getTemplateHierarchyArr($moduleIdentifier, $pageId, $selectedTemplate, $arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);
-            }
-        }
-        return $keyArray;
+        return '';
     }
 }
