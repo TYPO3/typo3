@@ -36,7 +36,7 @@ original page:
 
 ::
 
-   plugin.tx_felogin_pi1.redirectMode = referer
+   plugin.tx_felogin_pi1.redirectMode = getpost
 
 (This option can also be set in the flexform configuration of the
 felogin content element)
