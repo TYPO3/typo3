@@ -14,7 +14,7 @@
     <f:variable name="depth" value="{depth + 1}" />
     <f:for each="{tree.nextChild}" as="child">
         <f:if condition="{child.children}">
-            <ts:if.isInstanceOf value="{child}" class="\TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface">
+            <f:if condition="{child.conditionToken}">
                 <f:then>
                     <f:if condition="{restrictIncludesToMatchingConditionsEnabled}">
                         <f:then>
@@ -30,7 +30,7 @@
                 <f:else>
                     <f:render partial="AnalyzerTree" arguments="{type: type, pageUid: pageUid, tree: child, depth: depth, restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled}" />
                 </f:else>
-            </ts:if.isInstanceOf>
+            </f:if>
         </f:if>
         <tr>
             <td>
@@ -63,7 +63,7 @@
                 <f:comment>
                     Hand over to f:translate and add locallang.xlf entries when Include classes stabilized.
                 </f:comment>
-                <ts:if.isInstanceOf value="{child}" class="\TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface">
+                <f:if condition="{child.conditionToken}">
                     <f:then>
                         <f:if condition="{child.conditionVerdict}">
                             <f:then>
@@ -77,7 +77,7 @@
                     <f:else>
                         {child.type}
                     </f:else>
-                </ts:if.isInstanceOf>
+                </f:if>
             </td>
             <td>
                 <f:if condition="{child.root}">

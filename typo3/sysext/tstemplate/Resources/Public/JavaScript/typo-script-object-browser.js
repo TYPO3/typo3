@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import"@typo3/backend/input/clearable.js";class TypoScriptObjectBrowser{constructor(){this.searchField=document.querySelector('input[name="search_field"]'),this.searchResultShown=""!==this.searchField.value,this.searchField.clearable({onClear:e=>{this.searchResultShown&&e.closest("form").submit()}}),self.location.hash&&window.scrollTo(window.pageXOffset,window.pageYOffset-40)}}export default new TypoScriptObjectBrowser;
+import"@typo3/backend/input/clearable.js";class TypoScriptObjectBrowser{constructor(){this.searchField=document.querySelector('input[name="searchValue"]'),this.searchResultShown=""!==this.searchField.value,this.searchField.clearable({onClear:e=>{this.searchResultShown&&e.closest("form").submit()}})}}export default new TypoScriptObjectBrowser;

@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath;
 
 use TYPO3\CMS\Core\TypoScript\AST\Node\NodeInterface;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 
 /**
  * Internal state class to track the current hierarchy in tree.
  * This is important in combination with block open "{" and block
  * close "}" brackets.
+ * Also used in BE Template Object Browser tree rendering.
  *
  * @internal: Internal AST structure.
  */
@@ -49,6 +51,30 @@ final class CurrentObjectPath
     public function getAll(): array
     {
         return $this->path;
+    }
+
+    /**
+     * Turn current object path into a string. Quote dots in keys.
+     * Used in BE Template Object Browser tree, expand and search handling.
+     * Not implementing __toString() here since Fluid can't call this.
+     *
+     * Example:
+     * page.10.foo\.bar.baz
+     */
+    public function getPathAsString(): string
+    {
+        $flatArray = [];
+        foreach ($this->getAll() as $pathNode) {
+            if ($pathNode instanceof RootNode) {
+                continue;
+            }
+            $name = $pathNode->getName();
+            if ($name === '') {
+                throw new \RuntimeException('Node names must not be empty string', 1658578645);
+            }
+            $flatArray[] = addcslashes($name, '.');
+        }
+        return implode('.', $flatArray);
     }
 
     public function getFirst(): NodeInterface

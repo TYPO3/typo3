@@ -1100,7 +1100,6 @@ class TemplateService
      *
      * @param array $matches Regular expression matches
      * @return string Replacement
-     * @see substituteConstants()
      * @internal
      */
     public function substituteConstantsCallBack($matches)

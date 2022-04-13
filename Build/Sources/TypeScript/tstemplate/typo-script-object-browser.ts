@@ -23,7 +23,7 @@ class TypoScriptObjectBrowser {
   private readonly searchResultShown: boolean;
 
   constructor() {
-    this.searchField = document.querySelector('input[name="search_field"]');
+    this.searchField = document.querySelector('input[name="searchValue"]');
     this.searchResultShown = ('' !== this.searchField.value);
 
     this.searchField.clearable({
@@ -33,10 +33,6 @@ class TypoScriptObjectBrowser {
         }
       },
     });
-
-    if (self.location.hash) {
-      window.scrollTo(window.pageXOffset, window.pageYOffset - 40);
-    }
   }
 }
 

@@ -15,9 +15,9 @@
         </div>
         <div id="template-analyzer-options-body" class="collapse" data-persist-collapse-state="true" aria-labelledby="template-analyzer-options-heading" role="tabpanel">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-auto">
-                        <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
+                <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
+                    <div class="row">
+                        <div class="col-auto">
                             <div class="row row-cols-auto">
                                 <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
                                     <div class="col">
@@ -44,11 +44,11 @@
                                     </div>
                                 </form>
                             </div>
-                        </f:if>
+                        </div>
                     </div>
-                </div>
+                </f:if>
                 <div class="row">
-                    <div class="col-auto">
+                    <div class="col-12">
                         <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
                             <div class="form-check form-switch">
                                 <label class="form-check-label" for="restrictIncludesToMatchingConditions">

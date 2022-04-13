@@ -1,0 +1,111 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <h3 class="panel-title" id="object-browser-options-heading">
+                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#object-browser-options-body" aria-expanded="false" aria-controls="object-browser-options-body">
+                    <span class="caret"></span>
+                    <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:options"/></strong>
+                </a>
+            </h3>
+        </div>
+        <div id="object-browser-options-body" class="collapse" data-persist-collapse-state="true" aria-labelledby="object-browser-options-heading" role="tabpanel">
+            <div class="panel-body">
+                <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="row row-cols-auto">
+                                <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
+                                    <div class="col">
+                                        <label class="form-select-label" for="selectedTemplate">
+                                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:selectedTemplate" />
+                                        </label>
+                                        <select
+                                            name="selectedTemplate"
+                                            id="selectedTemplate"
+                                            class="form-select mb-3"
+                                            data-global-event="change"
+                                            data-action-navigate="$data=~s/$value/"
+                                            data-action-submit="$form"
+                                        >
+                                            <f:for each="{allTemplatesOnPage}" as="template">
+                                                <option
+                                                    value="{template.uid}"
+                                                    {f:if(condition:'{selectedTemplateUid} == {template.uid}', then:'selected="selected"')}
+                                                >
+                                                    {template.title}
+                                                </option>
+                                            </f:for>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </f:if>
+                <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
+                    <div class="row row-cols-auto align-items-end g-1">
+                        <div class="col">
+                            <label class="form-label" for="searchValue">
+                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:search"/>
+                            </label>
+                            <input class="form-control" type="text" name="searchValue" id="searchValue" value="{searchValue}"/>
+                        </div>
+                        <div class="col">
+                            <input class="btn btn-default" type="submit" name="search" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')}"/>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row mt-3">
+                    <div class="col">
+                        <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="displayConstantSubstitutions">
+                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayConstantsSubstitutions" />
+                                </label>
+                                <input type="hidden" name="displayConstantSubstitutions" value="0" />
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="displayConstantSubstitutions"
+                                    id="displayConstantSubstitutions"
+                                    value="1"
+                                    {f:if(condition: displayConstantSubstitutions, then:'checked="checked"')}
+                                    data-global-event="change"
+                                    data-action-submit="$form"
+                                    data-value-selector="input[name='displayConstantSubstitutions']"
+                                />
+                            </div>
+                        </form>
+                        <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="sortAlphabetically">
+                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sortAlphabetically" />
+                                </label>
+                                <input type="hidden" name="sortAlphabetically" value="0" />
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="sortAlphabetically"
+                                    id="sortAlphabetically"
+                                    value="1"
+                                    {f:if(condition: sortAlphabetically, then:'checked="checked"')}
+                                    data-global-event="change"
+                                    data-action-submit="$form"
+                                    data-value-selector="input[name='sortAlphabetically']"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

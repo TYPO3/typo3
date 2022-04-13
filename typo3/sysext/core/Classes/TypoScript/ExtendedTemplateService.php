@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -151,7 +150,6 @@ class ExtendedTemplateService extends TemplateService
      *
      * @param array $matches Regular expression matches
      * @return string Replacement
-     * @see substituteConstants()
      */
     public function substituteConstantsCallBack($matches)
     {
@@ -170,29 +168,6 @@ class ExtendedTemplateService extends TemplateService
                 $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? $this->flatSetup[$matches[1]] : $matches[0];
         }
         return $ret_val;
-    }
-
-    /**
-     * Substitute markers added in substituteConstantsCallBack()
-     * with ##6chars_B##value1##6chars_M##value2##6chars_E##
-     *
-     * @param string $all
-     * @return string
-     */
-    public function substituteCMarkers($all)
-    {
-        switch ($this->constantMode) {
-            case 'const':
-            case 'subst':
-                $all = preg_replace(
-                    '/##[a-z0-9]{6}_B##(.*?)##[a-z0-9]{6}_M##(.*?)##[a-z0-9]{6}_E##/',
-                    '<strong class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" data-title="$1" title="$1">$2</strong>',
-                    $all
-                );
-                break;
-            default:
-        }
-        return $all;
     }
 
     /**
@@ -379,74 +354,6 @@ class ExtendedTemplateService extends TemplateService
         }
 
         return implode('; ', $lnArr);
-    }
-
-    /**
-     * @param array $arr
-     * @param string $depth_in
-     * @param string $searchString
-     * @param array $keyArray
-     * @return array
-     * @throws Exception
-     */
-    public function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
-    {
-        $keyArr = [];
-        foreach ($arr as $key => $value) {
-            $key = preg_replace('/\\.$/', '', $key) ?? '';
-            if (substr($key, -1) !== '.') {
-                $keyArr[$key] = 1;
-            }
-        }
-        if ($depth_in) {
-            $depth_in = $depth_in . '.';
-        }
-        $searchPattern = '';
-        if ($this->regexMode) {
-            $searchPattern = '/' . addcslashes($searchString, '/') . '/';
-            $matchResult = @preg_match($searchPattern, '');
-            if ($matchResult === false) {
-                throw new Exception(sprintf('Error evaluating regular expression "%s".', $searchPattern), 1446559458);
-            }
-        }
-        foreach ($keyArr as $key => $value) {
-            $depth = $depth_in . $key;
-            if ($this->regexMode) {
-                // The value has matched
-                if (($arr[$key] ?? false) && preg_match($searchPattern, $arr[$key])) {
-                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 2;
-                }
-                // The key has matched
-                if (preg_match($searchPattern, $key)) {
-                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 4;
-                }
-                // Just open this subtree if the parent key has matched the search
-                if (preg_match($searchPattern, $depth_in)) {
-                    $this->tsbrowser_searchKeys[$depth] = 1;
-                }
-            } else {
-                // The value has matched
-                if (($arr[$key] ?? false) && stripos($arr[$key], $searchString) !== false) {
-                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 2;
-                }
-                // The key has matches
-                if (stripos($key, $searchString) !== false) {
-                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 4;
-                }
-                // Just open this subtree if the parent key has matched the search
-                if (stripos($depth_in, $searchString) !== false) {
-                    $this->tsbrowser_searchKeys[$depth] = 1;
-                }
-            }
-            if (is_array($arr[$key . '.'] ?? null)) {
-                $cS = count($this->tsbrowser_searchKeys);
-                $keyArray = $this->ext_getSearchKeys($arr[$key . '.'], $depth, $searchString, $keyArray);
-                if ($cS !== count($this->tsbrowser_searchKeys)) {
-                    $keyArray[$depth] = 1;
-                }
-            }
-        }
-        return $keyArray;
     }
 
     /**

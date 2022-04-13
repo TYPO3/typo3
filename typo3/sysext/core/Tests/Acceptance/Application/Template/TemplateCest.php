@@ -112,11 +112,10 @@ class TemplateCest
 
         $I->wantTo('change the template within the TypoScript Object Browser');
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
-        $I->waitForText('CONSTANTS ROOT');
-        $I->selectOption('//select[@name="ts_browser_type"]', 'Setup');
-        $I->waitForText('SETUP ROOT');
+        $I->waitForText('Setup Tree');
+        $I->click('Setup Tree');
         // find and open [page] in tree
-        $I->see('[page] = PAGE');
+        $I->waitForText('[page] = PAGE');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../a');
         // find and open [page][10] in tree
         $I->waitForText('[10] = TEXT');
@@ -125,10 +124,10 @@ class TemplateCest
         $I->waitForText('[value] = Hello Acceptance Test!');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'10\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'value\']');
         $I->waitForText('page.10.value =');
-        $I->fillField('//input[@name="data[page.10.value][value]"]', 'HELLO WORLD!');
-        $I->click('//input[@name="update_value"]');
+        $I->fillField('//input[@name="value"]', 'HELLO WORLD!');
+        $I->click('//input[@name="updateValue"]');
         $I->wait(2);
-        $I->waitForText('Value updated');
+        $I->waitForText('Line added to current template');
         $I->see('page.10.value = HELLO WORLD!');
         $I->see('[value] = HELLO WORLD!');
     }
@@ -200,12 +199,13 @@ class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
-        $I->waitForText('CONSTANTS ROOT');
-
+        $I->waitForText('Options');
+        $I->click('Options');
+        $I->waitForText('Search');
         $I->amGoingTo('type "styles" into the search field and submit.');
-        $I->fillField('#search_field', 'styles');
+        $I->fillField('#searchValue', 'styles');
         $I->click("//input[@name='search']");
-        $I->waitForText('CONSTANTS ROOT');
+        $I->waitForText('Constants Tree');
         $I->seeInSource('<strong class="text-danger">styles</strong>');
     }
 }

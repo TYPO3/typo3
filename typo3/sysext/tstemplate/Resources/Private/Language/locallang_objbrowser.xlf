@@ -3,59 +3,44 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="constants" resname="constants">
-				<source>Constants</source>
+			<trans-unit id="objectBrowserTitle" resname="objectBrowserTitle">
+				<source>Object Browser</source>
 			</trans-unit>
-			<trans-unit id="setup" resname="setup">
-				<source>Setup</source>
+			<trans-unit id="objectBrowserTitleWithTemplate" resname="objectBrowserTitleWithTemplate">
+				<source>Object Browser for template "%s"</source>
 			</trans-unit>
-			<trans-unit id="all" resname="all">
-				<source>All</source>
+			<trans-unit id="objectBrowserEditTitle" resname="objectBrowserEditTitle">
+				<source>Edit single properties</source>
 			</trans-unit>
-			<trans-unit id="plainSubstitution" resname="plainSubstitution">
-				<source>Plain substitution (default)</source>
+			<trans-unit id="objectBrowserEditTitleWithTemplate" resname="objectBrowserEditTitleWithTemplate">
+				<source>Edit single properties in template "%s"</source>
 			</trans-unit>
-			<trans-unit id="substitutedGreen" resname="substitutedGreen">
-				<source>Substituted constants in green</source>
+			<trans-unit id="selectedTemplate" resname="selectedTemplate">
+				<source>Selected template</source>
 			</trans-unit>
-			<trans-unit id="unsubstitutedGreen" resname="unsubstitutedGreen">
-				<source>UN-substituted constants in green</source>
-			</trans-unit>
-			<trans-unit id="currentTemplate" resname="currentTemplate">
-				<source>Current template</source>
-			</trans-unit>
-			<trans-unit id="badProperty" resname="badProperty">
-				<source>Bad property!</source>
+			<trans-unit id="options" resname="options">
+				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="noSpaces" resname="noSpaces">
-				<source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+				<source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
 			</trans-unit>
-			<trans-unit id="nothingUpdated" resname="nothingUpdated">
-				<source>Nothing was updated!</source>
+			<trans-unit id="lineAdded" resname="lineAdded">
+				<source>Line added to current template</source>
 			</trans-unit>
-			<trans-unit id="propertyAdded" resname="propertyAdded">
-				<source>Property added</source>
-			</trans-unit>
-			<trans-unit id="valueUpdated" resname="valueUpdated">
-				<source>Value updated</source>
-			</trans-unit>
-			<trans-unit id="objectCleared" resname="objectCleared">
-				<source>Object cleared</source>
+			<trans-unit id="lineNotAdded" resname="lineNotAdded">
+				<source>No line added to current template</source>
 			</trans-unit>
 			<trans-unit id="updateButton" resname="updateButton">
 				<source>Update</source>
 			</trans-unit>
 			<trans-unit id="editProperty" resname="editProperty">
-				<source>Edit object/property value</source>
+				<source>Edit current value</source>
 			</trans-unit>
 			<trans-unit id="addButton" resname="addButton">
 				<source>Add</source>
 			</trans-unit>
 			<trans-unit id="addProperty" resname="addProperty">
-				<source>Add object property</source>
-			</trans-unit>
-			<trans-unit id="clear" resname="clear">
-				<source>Clear?</source>
+				<source>Add or override child property</source>
 			</trans-unit>
 			<trans-unit id="clearButton" resname="clearButton">
 				<source>Clear</source>
@@ -63,83 +48,50 @@
 			<trans-unit id="clearObject" resname="clearObject">
 				<source>Clear object</source>
 			</trans-unit>
-			<trans-unit id="edit" resname="edit">
-				<source>Edit</source>
+			<trans-unit id="noCurrentTemplateTitle" resname="noCurrentTemplateTitle">
+				<source>No template on page</source>
 			</trans-unit>
 			<trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
-				<source>You cannot edit properties and values, if there's no current template.</source>
-			</trans-unit>
-			<trans-unit id="back" resname="back">
-				<source>Back</source>
-			</trans-unit>
-			<trans-unit id="browse" resname="browse">
-				<source>Browse</source>
+				<source>You cannot edit properties and values if there is no current template. Please create an extension template in "Info/Modify" first.</source>
 			</trans-unit>
 			<trans-unit id="search" resname="search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="regExp" resname="regExp">
-				<source>Regular expressions</source>
-			</trans-unit>
-			<trans-unit id="errorsWarnings" resname="errorsWarnings">
-				<source>Errors and warnings</source>
-			</trans-unit>
-			<trans-unit id="errorShowDetails" resname="errorShowDetails">
-				<source>Show details</source>
-			</trans-unit>
 			<trans-unit id="setupRoot" resname="setupRoot">
-				<source>setup root</source>
+				<source>Setup Tree</source>
 			</trans-unit>
 			<trans-unit id="constantRoot" resname="constantRoot">
-				<source>constants root</source>
+				<source>Constants Tree</source>
+			</trans-unit>
+			<trans-unit id="constantConditions" resname="constantConditions">
+				<source>Constants conditions</source>
+			</trans-unit>
+			<trans-unit id="setupConditions" resname="setupConditions">
+				<source>Setup conditions</source>
+			</trans-unit>
+			<trans-unit id="conditionWithConstant" resname="conditionWithConstant">
+				<source>Constant usage: [%s]</source>
+			</trans-unit>
+			<trans-unit id="conditionActiveCount" resname="conditionActiveCount">
+				<source>%s active condition(s)</source>
+			</trans-unit>
+			<trans-unit id="valueWithConstant" resname="valueWithConstant">
+				<source>Constant usage: %s</source>
 			</trans-unit>
 			<trans-unit id="displayComments" resname="displayComments">
 				<source>Display comments</source>
 			</trans-unit>
 			<trans-unit id="sortAlphabetically" resname="sortAlphabetically">
-				<source>Sort alphabetically</source>
+				<source>Sort keys alphabetically</source>
 			</trans-unit>
-			<trans-unit id="cropLines" resname="cropLines">
-				<source>Crop lines</source>
-			</trans-unit>
-			<trans-unit id="displayConstants" resname="displayConstants">
-				<source>Display constants</source>
+			<trans-unit id="displayConstantsSubstitutions" resname="displayConstantsSubstitutions">
+				<source>Display constants substitutions</source>
 			</trans-unit>
 			<trans-unit id="displayOptions" resname="displayOptions">
 				<source>Display options</source>
 			</trans-unit>
-			<trans-unit id="conditions" resname="conditions">
-				<source>Conditions</source>
-			</trans-unit>
-			<trans-unit id="activeConditions" resname="activeConditions">
-				<source>%s active condition(s)</source>
-			</trans-unit>
 			<trans-unit id="setConditions" resname="setConditions">
 				<source>Set conditions</source>
-			</trans-unit>
-			<trans-unit id="severity.1" resname="severity.1">
-				<source>Info</source>
-			</trans-unit>
-			<trans-unit id="severity.2" resname="severity.2">
-				<source>Warning</source>
-			</trans-unit>
-			<trans-unit id="severity.3" resname="severity.3">
-				<source>Error</source>
-			</trans-unit>
-			<trans-unit id="severity.info" resname="severity.info">
-				<source>Info</source>
-			</trans-unit>
-			<trans-unit id="severity.notice" resname="severity.notice">
-				<source>Notice</source>
-			</trans-unit>
-			<trans-unit id="severity.warning" resname="severity.warning">
-				<source>Warning</source>
-			</trans-unit>
-			<trans-unit id="severity.error" resname="severity.error">
-				<source>Error</source>
-			</trans-unit>
-			<trans-unit id="error.1446559458" resname="error.1446559458">
-				<source>Error evaluating regular expression "%s".</source>
 			</trans-unit>
 		</body>
 	</file>

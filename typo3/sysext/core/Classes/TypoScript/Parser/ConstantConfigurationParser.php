@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Basic TypoScript parsing is delegated to the TypoScriptParser which returns with comments intact.
  * These comments are then parsed by this class to prepare/set display related options. The Constant
  * Editor renders fields itself whereas the extension settings are rendered by fluid.
+ *
+ * @internal This is only used for the TYPO3 internal TypoScript comment parsing, which should not be used in Extensions
  */
 class ConstantConfigurationParser
 {
