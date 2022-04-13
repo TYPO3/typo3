@@ -434,7 +434,7 @@ class ActionHandler
         if (!is_object($parameters->affects) || empty($parameters->affects)) {
             throw new \InvalidArgumentException('Missing "affected items" in $parameters array.', 1319488195);
         }
-        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), $parameters->additional, $stageId);
+        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $stageId);
         foreach ($parameters->affects as $tableName => $items) {
             foreach ($items as $item) {
                 // Publishing uses live id in command map
@@ -510,7 +510,7 @@ class ActionHandler
         $uid = $parameters->affects->uid;
         $t3ver_oid = $parameters->affects->t3ver_oid;
 
-        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), $parameters->additional, $setStageId);
+        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
         if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
             $cmdArray[$table][$t3ver_oid]['version']['action'] = 'publish';
             $cmdArray[$table][$t3ver_oid]['version']['swapWith'] = $uid;
@@ -552,7 +552,7 @@ class ActionHandler
         $table = $parameters->affects->table;
         $uid = $parameters->affects->uid;
 
-        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), $parameters->additional, $setStageId);
+        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
         $cmdArray[$table][$uid]['version']['action'] = 'setStage';
         $cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
         $cmdArray[$table][$uid]['version']['comment'] = $comments;
@@ -592,7 +592,7 @@ class ActionHandler
         $setStageId = (int)$parameters->affects->nextStage;
         $comments = $parameters->comments;
         $elements = $parameters->affects->elements;
-        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), $parameters->additional, $setStageId);
+        $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
         foreach ($elements as $element) {
             // Avoid any action on records that have already been published to live
             $elementRecord = BackendUtility::getRecord($element->table, $element->uid);
@@ -791,11 +791,11 @@ class ActionHandler
         $view->assignMultiple([
             'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
             'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),
-            'enableDiscardStageButton' => is_array($nextStage) && !empty($nextStage) || is_array($previousStage) && !empty($previousStage),
-            'nextStage' => $nextStage['title'],
-            'nextStageId' => $nextStage['uid'],
-            'prevStage' => $previousStage['title'],
-            'prevStageId' => $previousStage['uid'],
+            'enableDiscardStageButton' => (is_array($nextStage) && !empty($nextStage)) || (is_array($previousStage) && !empty($previousStage)),
+            'nextStage' => $nextStage['title'] ?? '',
+            'nextStageId' => $nextStage['uid'] ?? 0,
+            'prevStage' => $previousStage['title'] ?? '',
+            'prevStageId' => $previousStage['uid'] ?? 0,
         ]);
         $renderedView = $view->render();
         return $renderedView;
