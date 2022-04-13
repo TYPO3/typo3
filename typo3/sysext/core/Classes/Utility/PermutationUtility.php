@@ -31,14 +31,20 @@ class PermutationUtility
      *
      * @param array[] $payload Distinct array that should be melted
      * @param string $previousResult Previous item results
-     * @return array
+     * @return string[]
      */
     public static function meltStringItems(array $payload, string $previousResult = ''): array
     {
         $results = [];
         $items = static::nextItems($payload);
         foreach ($items as $item) {
-            $resultItem = $previousResult . static::asString($item);
+            if (!(is_string($item) || $item instanceof \Stringable)) {
+                throw new \LogicException(
+                    sprintf('Expected string, got %s', gettype($item)),
+                    1578164102
+                );
+            }
+            $resultItem = $previousResult . $item;
             if (!empty($payload)) {
                 $results = array_merge(
                     $results,
@@ -61,7 +67,7 @@ class PermutationUtility
      *
      * @param array[] $payload Distinct items that should be melted
      * @param array $previousResult Previous item results
-     * @return array
+     * @return array[]
      */
     public static function meltArrayItems(array $payload, array $previousResult = []): array
     {
@@ -91,20 +97,6 @@ class PermutationUtility
         throw new \LogicException(
             sprintf('Expected iterable, got %s', gettype($items)),
             1578164101
-        );
-    }
-
-    protected static function asString($item): string
-    {
-        if (is_string($item)) {
-            return $item;
-        }
-        if (is_object($item) && method_exists($item, '__toString')) {
-            return (string)$item;
-        }
-        throw new \LogicException(
-            sprintf('Expected string, got %s', gettype($item)),
-            1578164102
         );
     }
 }
