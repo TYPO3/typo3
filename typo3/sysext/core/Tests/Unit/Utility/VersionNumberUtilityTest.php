@@ -111,7 +111,7 @@ class VersionNumberUtilityTest extends UnitTestCase
      * @test
      * @dataProvider convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider
      */
-    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange($versionString, $expectedResult): void
+    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange(string $versionString, array $expectedResult): void
     {
         $versions = VersionNumberUtility::convertVersionsStringToVersionNumbers($versionString);
         self::assertEquals($expectedResult, $versions);

@@ -70,13 +70,11 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'compatVersion',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
-            static function ($arguments, $str) {
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, mixed $str) {
                 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
                 return VersionNumberUtility::convertVersionNumberToInteger($typo3Version->getBranch()) >=
-                   VersionNumberUtility::convertVersionNumberToInteger($str);
+                   VersionNumberUtility::convertVersionNumberToInteger((string)$str);
             }
         );
     }

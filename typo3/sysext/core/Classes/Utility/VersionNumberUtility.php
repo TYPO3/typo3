@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -28,7 +30,7 @@ class VersionNumberUtility
      * @param string $versionNumber Version number on format x.x.x
      * @return int Integer version of version number (where each part can count to 999)
      */
-    public static function convertVersionNumberToInteger($versionNumber)
+    public static function convertVersionNumberToInteger(string $versionNumber): int
     {
         $versionParts = explode('.', $versionNumber);
         $version = $versionParts[0];
@@ -45,10 +47,8 @@ class VersionNumberUtility
     /**
      * Removes -dev -alpha -beta -RC states (also without '-' prefix) from a version number
      * and replaces them by .0 and normalizes to a three part version number
-     *
-     * @return string
      */
-    public static function getNumericTypo3Version()
+    public static function getNumericTypo3Version(): string
     {
         $t3version = static::getCurrentTypo3Version();
         $t3version = preg_replace('/-?(dev|alpha|beta|RC).*$/', '', $t3version);
@@ -62,10 +62,8 @@ class VersionNumberUtility
     /**
      * Wrapper function for the static TYPO3 version to
      * make functions using the constant unit testable.
-     *
-     * @return string
      */
-    public static function getCurrentTypo3Version()
+    public static function getCurrentTypo3Version(): string
     {
         return (string)GeneralUtility::makeInstance(Typo3Version::class);
     }
@@ -75,18 +73,16 @@ class VersionNumberUtility
      * (like array('4.2.0', '4.4.99'). It also forces each version part to be between
      * 0 and 999
      *
-     * @param string $versionsString
-     * @return array
+     * @param string $versionsString A string in the form 'x.x.x-y.y.y'
+     * @return string[]
      */
-    public static function convertVersionsStringToVersionNumbers($versionsString)
+    public static function convertVersionsStringToVersionNumbers(string $versionsString): array
     {
         $versions = GeneralUtility::trimExplode('-', $versionsString);
-        $versionsCount = count($versions);
-        for ($i = 0; $i < $versionsCount; $i++) {
-            $cleanedVersion = GeneralUtility::trimExplode('.', $versions[$i]);
-            $cleanedVersionCount = count($cleanedVersion);
-            for ($j = 0; $j < $cleanedVersionCount; $j++) {
-                $cleanedVersion[$j] = MathUtility::forceIntegerInRange((int)$cleanedVersion[$j], 0, 999);
+        foreach ($versions as $i => $version) {
+            $cleanedVersion = GeneralUtility::trimExplode('.', $version);
+            foreach ($cleanedVersion as $j => $cleaned) {
+                $cleanedVersion[$j] = MathUtility::forceIntegerInRange((int)$cleaned, 0, 999);
             }
             $cleanedVersionString = implode('.', $cleanedVersion);
             if (static::convertVersionNumberToInteger($cleanedVersionString) === 0) {
@@ -101,10 +97,10 @@ class VersionNumberUtility
      * Parses the version number x.x.x and returns an array with the various parts.
      * It also forces each … 0 to 999
      *
-     * @param string $version Version code, x.x.x
-     * @return array
+     * @param string $version Version string, in the format x.x.x
+     * @return array<string, int|string>
      */
-    public static function convertVersionStringToArray($version)
+    public static function convertVersionStringToArray(string $version): array
     {
         $parts = GeneralUtility::intExplode('.', $version . '..');
         $parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);
