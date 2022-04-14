@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -331,12 +330,9 @@ class FileList
                 }
             }
 
-            $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum, true, false, trim($this->sort), (bool)$this->sortRev);
-            $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false, trim($this->sort), (bool)$this->sortRev);
+            $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum);
+            $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false);
             $this->totalItems = $foldersCount + $filesCount;
-
-            // Adds the code of files/dirs
-            $folders = ListUtility::resolveSpecialFolderNames($folders);
         }
 
         $iOut = '';
@@ -357,6 +353,9 @@ class FileList
         foreach ($this->fieldArray as $fieldName) {
             if ($fieldName === '_SELECTOR_') {
                 $theData[$fieldName] = $this->renderCheckboxActions();
+            } elseif ($fieldName === '_CONTROL_') {
+                // Special case: The control column header should not be wrapped into a sort link
+                $theData[$fieldName] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_');
             } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
                 $theData[$fieldName] = $this->linkWrapSort($fieldName, $specialLabel);
             } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
@@ -481,7 +480,7 @@ class FileList
     public function formatDirList(array $folders)
     {
         $out = '';
-        foreach ($folders as $folderName => $folderObject) {
+        foreach (ListUtility::resolveSpecialFolderNames($this->sortFolders($folders)) as $folderName => $folderObject) {
             $role = $folderObject->getRole();
             if ($role === FolderInterface::ROLE_PROCESSING) {
                 // don't show processing-folder
@@ -547,7 +546,7 @@ class FileList
                             $theData[$field] = $this->makeCheckbox($folderObject);
                             break;
                         case '_REF_':
-                            $theData[$field] = $this->makeRef($folderObject);
+                            $theData[$field] = '-';
                             break;
                         case '_PATH_':
                             $theData[$field] = $this->makePath($folderObject);
@@ -635,13 +634,12 @@ class FileList
     public function formatFileList(array $files)
     {
         $out = '';
-        foreach ($files as $fileObject) {
+        foreach ($this->sortFiles($files) as $fileObject) {
             // Initialization
             $this->counter++;
             $this->totalbytes += $fileObject->getSize();
             $ext = $fileObject->getExtension();
             $fileUid = $fileObject->getUid();
-            $fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
             $fileName = trim($fileObject->getName());
             // Preparing and getting the data-array
             $theData = [];
@@ -705,11 +703,11 @@ class FileList
                         }
                         break;
                     case 'crdate':
-                        $crdate = (int)($fileInfo['ctime'] ?? 0);
+                        $crdate = $fileObject->getCreationTime();
                         $theData[$field] = $crdate ? BackendUtility::datetime($crdate) : '-';
                         break;
                     case 'tstamp':
-                        $tstamp = (int)($fileInfo['mtime'] ?? 0);
+                        $tstamp = $fileObject->getModificationTime();
                         $theData[$field] = $tstamp ? BackendUtility::datetime($tstamp) : '-';
                         break;
                     default:
@@ -1150,39 +1148,28 @@ class FileList
     }
 
     /**
-     * Make reference count
-     *
-     * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard panel for the listing.
-     * @return string HTML
+     * Make reference count. Wraps the count into a button to
+     * open the element information in case references exists.
      */
-    public function makeRef($fileOrFolderObject)
+    public function makeRef(File $file): string
     {
-        if ($fileOrFolderObject instanceof FolderInterface) {
+        $referenceCount = $this->getFileReferenceCount($file);
+        if (!$referenceCount) {
             return '-';
         }
-        // Look up the file in the sys_refindex.
-        // Exclude sys_file_metadata records as these are no use references
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $referenceCount = $queryBuilder->count('*')
-            ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'ref_table',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'ref_uid',
-                    $queryBuilder->createNamedParameter($fileOrFolderObject->getUid(), \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->neq(
-                    'tablename',
-                    $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
-                )
-            )
-            ->executeQuery()
-            ->fetchOne();
 
-        return $this->generateReferenceToolTip($referenceCount, $fileOrFolderObject);
+        $attributes = [
+            'type' => 'button',
+            'class' => 'btn btn-link p-0',
+            'data-filelist-show-item-type' => '_FILE',
+            'data-filelist-show-item-identifier' => $file->getCombinedIdentifier(),
+            'title' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' . $referenceCount . ')',
+        ];
+
+        return '
+            <button ' . GeneralUtility::implodeAttributes($attributes, true) . '">
+                ' . $referenceCount . '
+            </button>';
     }
 
     /**
@@ -1299,32 +1286,6 @@ class FileList
             </div>' : '';
     }
 
-    /**
-     * Generates HTML code for a Reference tooltip out of
-     * sys_refindex records you hand over
-     *
-     * @param int $references number of records from sys_refindex table
-     * @param AbstractFile $fileObject
-     * @return string
-     */
-    protected function generateReferenceToolTip($references, $fileObject)
-    {
-        if (!$references) {
-            return '-';
-        }
-        $attributes = [
-            'data-filelist-show-item-type' => '_FILE',
-            'data-filelist-show-item-identifier' => $fileObject->getCombinedIdentifier(),
-            'title' => $this->getLanguageService()
-                ->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references')
-                . ' (' . $references . ')',
-        ];
-        $htmlCode = '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '">';
-        $htmlCode .= $references;
-        $htmlCode .= '</a>';
-        return $htmlCode;
-    }
-
     protected function isEditMetadataAllowed(File $file): bool
     {
         return $file->isIndexed()
@@ -1433,6 +1394,134 @@ class FileList
     protected function fileDownloadEnabled(): bool
     {
         return (bool)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true);
+    }
+
+    /**
+     * @param File[] $files
+     * @return File[]
+     */
+    protected function sortFiles(array $files): array
+    {
+        if (trim($this->sort) === '') {
+            // Early return in case no sorting is requested
+            return $files;
+        }
+
+        $sortedFiles = [];
+        foreach ($files as $file) {
+            switch ($this->sort) {
+                case 'fileext':
+                    $sortingKey = $file->getExtension();
+                    break;
+                case 'size':
+                    $sortingKey = '0' . $file->getSize() . 's';
+                    break;
+                case 'rw':
+                    $sortingKey = ($file->checkActionPermission('read') ? 'R' : '')
+                        . ($file->checkActionPermission('write') ? 'W' : '');
+                    break;
+                case '_REF_':
+                    $sortingKey = '0' . $this->getFileReferenceCount($file) . 'ref';
+                    break;
+                case 'tstamp':
+                    $sortingKey = $file->getModificationTime() . 't';
+                    break;
+                case 'crdate':
+                    $sortingKey = $file->getCreationTime() . 'c';
+                    break;
+                default:
+                    $sortingKey = $file->hasProperty($this->sort) ? (string)$file->getProperty($this->sort) : '';
+            }
+            $i = 0;
+            while (isset($sortedFiles[$sortingKey . $i])) {
+                $i++;
+            }
+            $sortedFiles[$sortingKey . $i] = $file;
+        }
+        uksort($sortedFiles, 'strnatcasecmp');
+
+        if ($this->sortRev) {
+            $sortedFiles = array_reverse($sortedFiles);
+        }
+
+        return $sortedFiles;
+    }
+
+    /**
+     * @param Folder[] $folders
+     * @return Folder[]
+     */
+    protected function sortFolders(array $folders): array
+    {
+        if (trim($this->sort) === '' || !in_array($this->sort, ['size', 'rw', 'name'], true)) {
+            // Early return in case no sorting is requested or sorting field is not
+            // supported on folders. Latter is important to prevent jumping of folders.
+            return $folders;
+        }
+
+        $sortedFolders = [];
+        foreach ($folders as $folder) {
+            switch ($this->sort) {
+                case 'size':
+                    try {
+                        $fileCount = $folder->getFileCount();
+                    } catch (InsufficientFolderAccessPermissionsException $e) {
+                        $fileCount = 0;
+                    }
+                    $sortingKey = '0' . $fileCount . 's';
+                    break;
+                case 'rw':
+                    $sortingKey = ($folder->checkActionPermission('read') ? 'R' : '')
+                        . ($folder->checkActionPermission('write') ? 'W' : '');
+                    break;
+                case 'name':
+                    $sortingKey = $folder->getName();
+                    break;
+                default:
+                    $sortingKey = '';
+            }
+            $i = 0;
+            while (isset($sortedFolders[$sortingKey . $i])) {
+                $i++;
+            }
+            $sortedFolders[$sortingKey . $i] = $folder;
+        }
+        uksort($sortedFolders, 'strnatcasecmp');
+
+        if ($this->sortRev) {
+            $sortedFolders = array_reverse($sortedFolders);
+        }
+
+        return $sortedFolders;
+    }
+
+    /**
+     * Counts how often the given file is referenced. This is done by
+     * looking up the file in the "sys_refindex" table, while excluding
+     * sys_file_metadata relations as these are no such references.
+     */
+    protected function getFileReferenceCount(File $file): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        return (int)$queryBuilder
+            ->count('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter('sys_file')
+                ),
+                $queryBuilder->expr()->eq(
+                    'ref_uid',
+                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter('sys_file_metadata')
+                )
+            )
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /**
