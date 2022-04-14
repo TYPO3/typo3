@@ -69,6 +69,7 @@ class TcaMigration
         $tca = $this->migrateRootUidToStartingPoints($tca);
         $tca = $this->migrateInternalTypeFolderToTypeFolder($tca);
         $tca = $this->migrateRequiredFlag($tca);
+        $tca = $this->migrateNullFlag($tca);
         $tca = $this->migrateEmailFlagToEmailType($tca);
         $tca = $this->migrateTypeNoneColsToSize($tca);
         $tca = $this->migrateRenderTypeInputLinkToTypeLink($tca);
@@ -603,6 +604,45 @@ class TcaMigration
     }
 
     /**
+     * Migrates [config][eval] = 'null' to [config][nullable] = true and removes 'null' from [config][eval].
+     * If [config][eval] becomes empty, it will be removed completely.
+     */
+    protected function migrateNullFlag(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (!GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
+                    continue;
+                }
+
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+                // Remove "null" from $evalList
+                $evalList = array_filter($evalList, static function (string $eval) {
+                    return $eval !== 'null';
+                });
+                if ($evalList !== []) {
+                    // Write back filtered 'eval'
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = implode(',', $evalList);
+                } else {
+                    // 'eval' is empty, remove whole configuration
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $tca[$table]['columns'][$fieldName]['config']['nullable'] = true;
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . '"null" in its "eval" list. This is not evaluated anymore and should be replaced '
+                    . ' by `\'nullable\' => true`.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
      * Migrates [config][eval] = 'email' to [config][type] = 'email' and removes 'email' from [config][eval].
      * If [config][eval] contains 'trim', it will also be removed. If [config][eval] becomes empty, the option
      * will be removed completely.
@@ -627,8 +667,8 @@ class TcaMigration
 
                 $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
                 $evalList = array_filter($evalList, static function (string $eval) {
-                    // Remove anything except "unique", "uniqueInPid" and "null" from eval
-                    return in_array($eval, ['unique', 'uniqueInPid', 'null'], true);
+                    // Remove anything except "unique" and "uniqueInPid" from eval
+                    return in_array($eval, ['unique', 'uniqueInPid'], true);
                 });
 
                 if ($evalList !== []) {
@@ -677,7 +717,7 @@ class TcaMigration
     /**
      * Migrates [config][renderType] = 'inputLink' to [config][type] = 'link'.
      * Migrates the [config][fieldConfig][linkPopup] to type specific configuration.
-     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][eval].
      * Removes option [config][max], if set.
      * Removes option [config][softref], if set to "typolink".
      */
@@ -699,10 +739,11 @@ class TcaMigration
                 // Set the TCA type to "link"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'link';
 
-                // Unset "renderType" and "max"
+                // Unset "renderType", "max" and "eval"
                 unset(
                     $tca[$table]['columns'][$fieldName]['config']['max'],
-                    $tca[$table]['columns'][$fieldName]['config']['renderType']
+                    $tca[$table]['columns'][$fieldName]['config']['renderType'],
+                    $tca[$table]['columns'][$fieldName]['config']['eval'],
                 );
 
                 // Unset "softref" if set to "typolink"
@@ -756,13 +797,6 @@ class TcaMigration
                     unset($tca[$table]['columns'][$fieldName]['config']['fieldControl']);
                 }
 
-                if (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
-                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=link
-                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
-                } else {
-                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
-                }
-
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
                     . 'renderType="inputLink". The field has therefore been migrated to the TCA type \'link\'. '
                     . 'This includes corresponding configuration of the "linkPopup", as well as obsolete field '
@@ -776,7 +810,7 @@ class TcaMigration
     /**
      * Migrates [config][eval] = 'password' and [config][eval] = 'saltedPassword' to [config][type] = 'password'
      * Sets option "hashed" to FALSE if "saltedPassword" is not set for "password"
-     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][eval].
      * Removes option [config][max], if set.
      * Removes option [config][search], if set.
      */
@@ -799,10 +833,11 @@ class TcaMigration
                 // Set the TCA type to "password"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'password';
 
-                // Unset "renderType" and "max"
+                // Unset "renderType", "max" and "eval"
                 unset(
                     $tca[$table]['columns'][$fieldName]['config']['max'],
-                    $tca[$table]['columns'][$fieldName]['config']['search']
+                    $tca[$table]['columns'][$fieldName]['config']['search'],
+                    $tca[$table]['columns'][$fieldName]['config']['eval'],
                 );
 
                 $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
@@ -810,13 +845,6 @@ class TcaMigration
                 // Disable password hashing, if eval=password is used standalone
                 if (in_array('password', $evalList, true) && !in_array('saltedPassword', $evalList, true)) {
                     $tca[$table]['columns'][$fieldName]['config']['hashed'] = false;
-                }
-
-                if (in_array('null', $evalList, true)) {
-                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=password
-                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
-                } else {
-                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
                 }
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
@@ -832,7 +860,7 @@ class TcaMigration
     /**
      * Migrates [config][renderType] = 'inputDateTime' to [config][type] = 'datetime'.
      * Migrates "date", "time" and "timesec" from [config][eval] to [config][format].
-     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][eval].
      * Removes option [config][max], if set.
      * Removes option [config][format], if set.
      * Removes option [config][default], if the default is the native "empty" value
@@ -855,14 +883,15 @@ class TcaMigration
                 // Set the TCA type to "datetime"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'datetime';
 
-                // Unset "renderType" and "max"
+                // Unset "renderType", "max" and "eval"
                 // Note: Also unset "format". This option had been documented but was actually
                 //       never used in the FormEngine element. This migration will set it according
                 //       to the corresponding "eval" value.
                 unset(
                     $tca[$table]['columns'][$fieldName]['config']['max'],
                     $tca[$table]['columns'][$fieldName]['config']['renderType'],
-                    $tca[$table]['columns'][$fieldName]['config']['format']
+                    $tca[$table]['columns'][$fieldName]['config']['format'],
+                    $tca[$table]['columns'][$fieldName]['config']['eval'],
                 );
 
                 $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'] ?? '', true);
@@ -875,13 +904,6 @@ class TcaMigration
                     $tca[$table]['columns'][$fieldName]['config']['format'] = 'time';
                 } elseif (in_array('timesec', $evalList, true)) {
                     $tca[$table]['columns'][$fieldName]['config']['format'] = 'timesec';
-                }
-
-                if (in_array('null', $evalList, true)) {
-                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=datetime
-                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
-                } else {
-                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
                 }
 
                 if (isset($fieldConfig['config']['default'])) {
@@ -916,7 +938,7 @@ class TcaMigration
 
     /**
      * Migrates [config][renderType] = 'colorpicker' to [config][type] = 'color'.
-     * Removes anything except for "null" from [config][eval].
+     * Removes [config][eval].
      * Removes option [config][max], if set.
      */
     protected function migrateRenderTypeColorpickerToTypeColor(array $tca): array
@@ -937,18 +959,12 @@ class TcaMigration
                 // Set the TCA type to "link"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'color';
 
-                // Unset "renderType" and "max"
+                // Unset "renderType", "max" and "eval"
                 unset(
                     $tca[$table]['columns'][$fieldName]['config']['max'],
-                    $tca[$table]['columns'][$fieldName]['config']['renderType']
+                    $tca[$table]['columns'][$fieldName]['config']['renderType'],
+                    $tca[$table]['columns'][$fieldName]['config']['eval'],
                 );
-
-                if (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
-                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=link
-                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
-                } else {
-                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
-                }
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
                     . 'renderType="colorpicker". The field has therefore been migrated to the TCA type \'color\'. '
@@ -1044,7 +1060,7 @@ class TcaMigration
      * Migrates [config][eval] = 'int' and [config][eval] = 'double2' to [config][type] = 'number'.
      * The migration only applies to fields without a renderType defined.
      * Adds [config][format] = "decimal" if [config][eval] = double2
-     * Removes anything except for "null" from [config][eval].
+     * Removes [config][eval].
      * Removes option [config][max], if set.
      */
     protected function migrateEvalIntAndDouble2ToTypeNumber(array $tca): array
@@ -1071,8 +1087,11 @@ class TcaMigration
                 // Set the TCA type to "number"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'number';
 
-                // Unset "max"
-                unset($tca[$table]['columns'][$fieldName]['config']['max']);
+                // Unset "max" and "eval"
+                unset(
+                    $tca[$table]['columns'][$fieldName]['config']['max'],
+                    $tca[$table]['columns'][$fieldName]['config']['eval'],
+                );
 
                 $numberType = '';
                 $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
@@ -1083,13 +1102,6 @@ class TcaMigration
                     $tca[$table]['columns'][$fieldName]['config']['format'] = 'decimal';
                 } elseif (in_array('int', $evalList, true)) {
                     $numberType = 'int';
-                }
-
-                if (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
-                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=link
-                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
-                } else {
-                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
                 }
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' in table \'' . $table . '\'" defines '

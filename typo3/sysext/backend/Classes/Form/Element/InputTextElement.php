@@ -125,6 +125,10 @@ class InputTextElement extends AbstractFormElement
             }
         }
 
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
+
         $attributes = [
             'value' => '',
             'id' => $fieldId,

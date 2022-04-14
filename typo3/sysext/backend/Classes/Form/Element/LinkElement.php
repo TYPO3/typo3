@@ -125,11 +125,11 @@ class LinkElement extends AbstractFormElement
         $fieldId = StringUtility::getUniqueId('formengine-input-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
-        // Get filtered eval list, while always adding "trim"
-        $evalList = array_merge(array_filter(
-            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => $value === 'null'
-        ), ['trim']);
+        // Always adding "trim".
+        $evalList = ['trim'];
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
 
         $attributes = [
             'value' => '',

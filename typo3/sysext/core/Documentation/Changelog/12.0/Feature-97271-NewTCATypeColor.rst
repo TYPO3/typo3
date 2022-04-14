@@ -22,11 +22,11 @@ The TCA type :php:`color` features the following column configuration:
 
 - :php:`behaviour`: :php:`allowLanguageSynchronization`
 - :php:`default`
-- :php:`eval`: :php:`null`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
 - :php:`mode`
+- :php:`nullable`
 - :php:`placeholder`
 - :php:`readOnly`
 - :php:`required`
@@ -38,8 +38,7 @@ The TCA type :php:`color` features the following column configuration:
 
    The value of TCA type :php:`color` columns is automatically trimmed before
    being stored in the database. Therefore, the :php:`eval=trim` option is no
-   longer needed and should be removed from the TCA configuration. The only
-   valid option for :php:`eval` is :php:`null`.
+   longer needed and should be removed from the TCA configuration.
 
 .. note::
 

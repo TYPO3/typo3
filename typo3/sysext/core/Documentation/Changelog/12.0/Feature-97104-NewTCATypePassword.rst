@@ -28,11 +28,11 @@ The TCA type :php:`password` features the following column configuration:
 - :php:`autocomplete`
 - :php:`behaviour`: :php:`allowLanguageSynchronization`
 - :php:`default`
-- :php:`eval`: :php:`null`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
 - :php:`mode`
+- :php:`nullable`
 - :php:`placeholder`
 - :php:`readOnly`
 - :php:`required`

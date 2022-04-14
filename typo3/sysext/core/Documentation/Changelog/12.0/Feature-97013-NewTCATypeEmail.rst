@@ -23,11 +23,12 @@ The TCA type :php:`email` features the following column configuration:
 - :php:`autocomplete`
 - :php:`behaviour`: :php:`allowLanguageSynchronization`
 - :php:`default`
-- :php:`eval`: :php:`null`, :php:`unique` and :php:`uniqueInPid`
+- :php:`eval`: :php:`unique` and :php:`uniqueInPid`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
 - :php:`mode`
+- :php:`nullable`
 - :php:`placeholder`
 - :php:`readOnly`
 - :php:`required`

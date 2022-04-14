@@ -117,11 +117,11 @@ class NumberElement extends AbstractFormElement
         $fieldId = StringUtility::getUniqueId('formengine-input-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
-        // Get filtered eval list, while always adding the format
-        $evalList = array_merge([$format], array_filter(
-            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => $value === 'null'
-        ));
+        // Always add the format.
+        $evalList = [$format];
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
 
         $attributes = [
             'value' => '',

@@ -25,11 +25,11 @@ The TCA type :php:`link` features the following column configuration:
 - :php:`autocomplete`
 - :php:`behaviour`: :php:`allowLanguageSynchronization`
 - :php:`default`
-- :php:`eval`: :php:`null`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
 - :php:`mode`
+- :php:`nullable`
 - :php:`placeholder`
 - :php:`readOnly`
 - :php:`required`
@@ -46,8 +46,7 @@ The TCA type :php:`link` features the following column configuration:
 
    The value of TCA type :php:`link` columns is automatically trimmed before
    being stored in the database. Therefore, the :php:`eval=trim` option is no
-   longer needed and should be removed from the TCA configuration. The only
-   valid option for :php:`eval` is :php:`null`.
+   longer needed and should be removed from the TCA configuration.
 
 The following column configuration can be overwritten by Page TSconfig:
 
@@ -98,9 +97,10 @@ looks like the following:
             'type' => 'input',
             'renderType' => 'inputLink',
             'required' => true,
+            'nullable' => true,
             'size' => 20,
             'max' => 1024,
-            'eval' => 'trim,null',
+            'eval' => 'trim',
             'fieldControl' => [
                 'linkPopup' => [
                     'disabled' => true,
@@ -123,8 +123,8 @@ looks like the following:
         'config' => [
             'type' => 'link',
             'required' => true,
+            'nullable' => true,
             'size' => 20,
-            'eval' => 'null',
             'allowedTypes' => ['page', 'url', 'record'],
             'appearance' => [
                 'enableBrowser' => false,

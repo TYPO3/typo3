@@ -1322,7 +1322,7 @@ class TcaMigrationTest extends UnitTestCase
 
     public function requiredFlagIsMigratedDataProvider(): iterable
     {
-        yield 'field contains eval=require' => [
+        yield 'field contains eval=required' => [
             'tca' => [
                 'aTable' => [
                     'columns' => [
@@ -1349,7 +1349,7 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        yield 'field contains eval=trim,require' => [
+        yield 'field contains eval=trim,required' => [
             'tca' => [
                 'aTable' => [
                     'columns' => [
@@ -1377,7 +1377,7 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        yield 'field does not contain eval with require' => [
+        yield 'field does not contain eval with required' => [
             'tca' => [
                 'aTable' => [
                     'columns' => [
@@ -1440,6 +1440,128 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
+    private function evalNullMigratedToNullableOptionDataProvider(): iterable
+    {
+        yield 'field contains eval=null' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'null',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'nullable' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field contains eval=trim,null' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,null',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim',
+                                'nullable' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field does not contain eval with null' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field does not contain eval' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider evalNullMigratedToNullableOptionDataProvider
+     * @test
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $expected
+     */
+    public function evalNullMigratedToNullableOption(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
+
     private function evalEmailMigratedToTypeDataProvider(): iterable
     {
         yield 'eval=email migrated to type=email' => [
@@ -1449,8 +1571,9 @@ class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'input',
-                                'eval' => 'email,trim,unique,uniqueInPid,null',
+                                'eval' => 'email,trim,unique,uniqueInPid',
                                 'required' => true,
+                                'nullable' => true,
                             ],
                         ],
                         'bColumn' => [
@@ -1486,8 +1609,9 @@ class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'email',
-                                'eval' => 'unique,uniqueInPid,null',
+                                'eval' => 'unique,uniqueInPid',
                                 'required' => true,
+                                'nullable' => true,
                             ],
                         ],
                         'bColumn' => [
@@ -1612,9 +1736,10 @@ class TcaMigrationTest extends UnitTestCase
                                 'type' => 'input',
                                 'renderType' => 'inputLink',
                                 'required' => true,
+                                'nullable' => true,
                                 'size' => 21,
                                 'max' => 1234,
-                                'eval' => 'trim,null',
+                                'eval' => 'trim',
                                 'fieldControl' => [
                                     'linkPopup' => [
                                         'disabled' => true,
@@ -1639,8 +1764,8 @@ class TcaMigrationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'link',
                                 'required' => true,
+                                'nullable' => true,
                                 'size' => 21,
-                                'eval' => 'null',
                                 'allowedTypes' => ['page', 'url', 'record'], // Ensures mail=>email str_replace works
                                 'appearance' => [
                                     'enableBrowser' => false,
@@ -1870,8 +1995,9 @@ class TcaMigrationTest extends UnitTestCase
                         'fullMigration' => [
                             'config' => [
                                 'type' => 'input',
-                                'eval' => 'trim,password,saltedPassword,null,int',
+                                'eval' => 'trim,password,saltedPassword,int',
                                 'required' => true,
+                                'nullable' => true,
                                 'max' => 1234,
                                 'search' => [
                                     'andWhere' => '{#CType}=\'text\' OR {#CType}=\'textpic\' OR {#CType}=\'textmedia\'',
@@ -1923,8 +2049,8 @@ class TcaMigrationTest extends UnitTestCase
                         'fullMigration' => [
                             'config' => [
                                 'type' => 'password',
-                                'eval' => 'null',
                                 'required' => true,
+                                'nullable' => true,
                             ],
                         ],
                         'differentColumn' => [
@@ -1972,10 +2098,11 @@ class TcaMigrationTest extends UnitTestCase
                                 'renderType' => 'inputDateTime',
                                 'format' => 'date',
                                 'required' => true,
+                                'nullable' => true,
                                 'readOnly' => true,
                                 'size' => 20,
                                 'max' => 1234,
-                                'eval' => 'trim,null,time,int',
+                                'eval' => 'trim,time,int',
                             ],
                         ],
                     ],
@@ -1988,9 +2115,9 @@ class TcaMigrationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'datetime',
                                 'required' => true,
+                                'nullable' => true,
                                 'readOnly' => true,
                                 'size' => 20,
-                                'eval' => 'null',
                                 'format' => 'time',
                             ],
                         ],
@@ -2666,9 +2793,10 @@ class TcaMigrationTest extends UnitTestCase
                                 'type' => 'input',
                                 'renderType' => 'colorpicker',
                                 'required' => true,
+                                'nullable' => true,
                                 'size' => 20,
                                 'max' => 1234,
-                                'eval' => 'trim,null',
+                                'eval' => 'trim',
                                 'valuePicker' => [
                                     'items' => [
                                         [ 'typo3 orange', '#FF8700'],
@@ -2686,8 +2814,8 @@ class TcaMigrationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'color',
                                 'required' => true,
+                                'nullable' => true,
                                 'size' => 20,
-                                'eval' => 'null',
                                 'valuePicker' => [
                                     'items' => [
                                         ['typo3 orange', '#FF8700'],
@@ -2749,8 +2877,9 @@ class TcaMigrationTest extends UnitTestCase
                                 'size' => 10,
                                 'max' => 20,
                                 'required' => true,
+                                'nullable' => true,
                                 'default' => 40,
-                                'eval' => 'trim,double2,null',
+                                'eval' => 'trim,double2',
                                 'range' => [
                                     'lower' => 0,
                                 ],
@@ -2770,8 +2899,8 @@ class TcaMigrationTest extends UnitTestCase
                                 'type' => 'number',
                                 'size' => 10,
                                 'required' => true,
+                                'nullable' => true,
                                 'default' => 40,
-                                'eval' => 'null',
                                 'range' => [
                                     'lower' => 0,
                                 ],

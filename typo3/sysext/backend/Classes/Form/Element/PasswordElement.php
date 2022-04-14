@@ -79,11 +79,11 @@ class PasswordElement extends AbstractFormElement
         $fieldId = StringUtility::getUniqueId('formengine-input-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
-        // Get filtered eval list, while always adding "trim" and "password" (required for JS validation)
-        $evalList = array_merge(array_filter(
-            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => $value === 'null'
-        ), ['trim', 'password']);
+        // Always add "trim" and "password" (required for JS validation)
+        $evalList = ['trim', 'password'];
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
 
         $attributes = [
             'value' => '',

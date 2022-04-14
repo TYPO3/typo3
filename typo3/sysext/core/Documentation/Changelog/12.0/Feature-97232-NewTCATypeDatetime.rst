@@ -24,12 +24,12 @@ The TCA type :php:`datetime` features the following column configuration:
 - :php:`dbType`: :php:`date`, :php:`time`, :php:`datetime`
 - :php:`default`
 - :php:`disableAgeDisplay`
-- :php:`eval`: :php:`null`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
 - :php:`format`: :php:`datetime` (default), :php:`date`, :php:`time`, :php:`timesec`
 - :php:`mode`
+- :php:`nullable`
 - :php:`placeholder`
 - :php:`range`: :php:`lower`, :php:`upper`
 - :php:`readOnly`
@@ -41,8 +41,7 @@ The TCA type :php:`datetime` features the following column configuration:
 
    The :php:`eval=int` option is now automatically set for the element in
    case no specific :php:`dbType` has been defined. It should therefore be
-   removed from the TCA configuration. The only valid option for :php:`eval`
-   is :php:`null`.
+   removed from the TCA configuration.
 
 .. note::
 

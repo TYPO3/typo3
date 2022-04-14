@@ -1497,7 +1497,7 @@ class DataHandler implements LoggerAwareInterface
      * And hey, there's a good thing about the method arguments: 13 is prime :-P
      *
      * @param array $res The result array. The processed value (if any!) is set in the "value" key.
-     * @param string $value The value to set.
+     * @param string|null $value The value to set.
      * @param array $tcaFieldConf Field configuration from $GLOBALS['TCA']
      * @param string $table Table name
      * @param int $id UID of record
@@ -1514,7 +1514,7 @@ class DataHandler implements LoggerAwareInterface
     public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, array $additionalData = null)
     {
         // Convert to NULL value if defined in TCA
-        if ($value === null && !empty($tcaFieldConf['eval']) && GeneralUtility::inList($tcaFieldConf['eval'], 'null')) {
+        if ($value === null && ($tcaFieldConf['nullable'] ?? false)) {
             $res = ['value' => null];
             return $res;
         }
@@ -8237,7 +8237,7 @@ class DataHandler implements LoggerAwareInterface
             // Unset the fields which are similar:
             foreach ($fieldArray as $col => $val) {
                 $fieldConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'] ?? [];
-                $isNullField = (!empty($fieldConfiguration['eval']) && GeneralUtility::inList($fieldConfiguration['eval'], 'null'));
+                $isNullField = $fieldConfiguration['nullable'] ?? false;
 
                 // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
                 // In general this avoids to store superfluous data which also will be visualized in the editing history.
@@ -8266,13 +8266,13 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Determines whether submitted values and stored values are equal.
      * This prevents from adding superfluous field changes which would be shown in the record history as well.
-     * For NULL fields (see accordant TCA definition 'eval' = 'null'), a special handling is required since
+     * For NULL fields (see accordant TCA definition 'nullable'), a special handling is required since
      * (!strcmp(NULL, '')) would be a false-positive.
      *
      * @param mixed $submittedValue Value that has submitted (e.g. from a backend form)
      * @param mixed $storedValue Value that is currently stored in the database
      * @param string $storedType SQL type of the stored value column (see mysql_field_type(), e.g 'int', 'string',  ...)
-     * @param bool $allowNull Whether NULL values are allowed by accordant TCA definition ('eval' = 'null')
+     * @param bool $allowNull Whether NULL values are allowed by accordant TCA definition ('nullable')
      * @return bool Whether both values are considered to be equal
      */
     protected function isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull = false)

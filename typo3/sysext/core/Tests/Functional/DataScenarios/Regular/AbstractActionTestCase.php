@@ -220,7 +220,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContentWithLanguageSynchronizationHavingNullValue(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['eval'] = 'null';
+        $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['nullable'] = true;
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['bodytext' => null]);
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;

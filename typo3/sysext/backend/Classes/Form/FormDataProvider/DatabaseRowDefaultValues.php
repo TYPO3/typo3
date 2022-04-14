@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle TCA default values on row. This affects existing rows as well as new rows.
@@ -44,8 +43,8 @@ class DatabaseRowDefaultValues implements FormDataProviderInterface
                 continue;
             }
 
-            // Special handling for eval null
-            if (!empty($fieldConfig['config']['eval']) && GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
+            // Special handling for nullable fields
+            if ($fieldConfig['config']['nullable'] ?? false) {
                 if (// Field exists and is set to NULL
                     array_key_exists($fieldName, $databaseRow)
                     // Default NULL is set, and this is a new record!

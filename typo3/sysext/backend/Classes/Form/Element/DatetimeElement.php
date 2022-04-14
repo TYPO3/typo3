@@ -122,11 +122,11 @@ class DatetimeElement extends AbstractFormElement
         $fieldId = StringUtility::getUniqueId('formengine-input-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
-        // Get filtered eval list, while always adding the format
-        $evalList = array_merge([$format], array_filter(
-            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => $value === 'null'
-        ));
+        // Always add the format to the eval list.
+        $evalList = [$format];
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
 
         // Always add "integer" eval in case non or an invalid dbType is specified (Used for JS processing)
         if (!in_array($config['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {

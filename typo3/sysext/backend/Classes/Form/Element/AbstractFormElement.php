@@ -144,8 +144,7 @@ abstract class AbstractFormElement extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
         $mode = $parameterArray['fieldConf']['config']['mode'] ?? '';
         if (empty($this->data['flexFormDataStructureIdentifier'])
-            && !empty($parameterArray['fieldConf']['config']['eval'])
-            && GeneralUtility::inList($parameterArray['fieldConf']['config']['eval'], 'null')
+            && ($parameterArray['fieldConf']['config']['nullable'] ?? false)
             && ($mode !== 'useOrOverridePlaceholder')
         ) {
             $hasNullCheckboxNoPlaceholder = true;
@@ -179,8 +178,7 @@ abstract class AbstractFormElement extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
         $mode = $parameterArray['fieldConf']['config']['mode'] ?? '';
         if (empty($this->data['flexFormDataStructureIdentifier'])
-            && !empty($parameterArray['fieldConf']['config']['eval'])
-            && GeneralUtility::inList($parameterArray['fieldConf']['config']['eval'], 'null')
+            && ($parameterArray['fieldConf']['config']['nullable'] ?? false)
             && ($mode === 'useOrOverridePlaceholder')
         ) {
             $hasNullCheckboxWithPlaceholder = true;

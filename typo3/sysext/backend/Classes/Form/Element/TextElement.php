@@ -149,6 +149,10 @@ class TextElement extends AbstractFormElement
             }
         }
 
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
+
         $fieldId = StringUtility::getUniqueId('formengine-textarea-');
 
         $attributes = array_merge(

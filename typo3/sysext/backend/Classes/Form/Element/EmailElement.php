@@ -105,8 +105,12 @@ class EmailElement extends AbstractFormElement
         // Get filtered eval list, while always adding "trim"
         $evalList = array_merge(array_filter(
             GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => in_array($value, ['unique', 'uniqueInPid', 'null'], true)
+            static fn ($value) => in_array($value, ['unique', 'uniqueInPid'], true)
         ), ['trim']);
+
+        if ($config['nullable'] ?? false) {
+            $evalList[] = 'null';
+        }
 
         $attributes = [
             'value' => '',

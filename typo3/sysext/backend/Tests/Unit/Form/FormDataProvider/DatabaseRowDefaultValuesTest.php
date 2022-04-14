@@ -65,7 +65,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'eval' => 'null',
+                            'nullable' => true,
                         ],
                     ],
                 ],
@@ -86,7 +86,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'eval' => 'null',
+                            'nullable' => true,
                             'default' => null,
                         ],
                     ],
@@ -109,7 +109,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'eval' => 'null',
+                            'nullable' => true,
                             'default' => 'foo',
                         ],
                     ],

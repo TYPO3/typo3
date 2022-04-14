@@ -26,12 +26,12 @@ The TCA type :php:`number` features the following column configuration:
 - :php:`autocomplete`
 - :php:`behaviour`: :php:`allowLanguageSynchronization`
 - :php:`default`
-- :php:`eval`: :php:`null`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
 - :php:`format`: :php:`integer`, :php:`decimal`
 - :php:`mode`
+- :php:`nullable`
 - :php:`placeholder`
 - :php:`range`: :php:`lower`, :php:`upper`
 - :php:`readOnly`
