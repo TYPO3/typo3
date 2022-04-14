@@ -40,7 +40,7 @@ class HistoryService implements SingletonInterface
     protected $historyEntries = [];
 
     /**
-     * @var DiffUtility
+     * @var DiffUtility|null
      */
     protected $differencesObject;
 

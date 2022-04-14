@@ -5025,8 +5025,3 @@ parameters:
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\HistoryService\\:\\:\\$differencesObject \\(TYPO3\\\\CMS\\\\Core\\\\Utility\\\\DiffUtility\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Service/HistoryService.php
-
