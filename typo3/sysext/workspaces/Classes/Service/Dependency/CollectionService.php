@@ -36,12 +36,12 @@ class CollectionService implements SingletonInterface
     protected $dataHandler;
 
     /**
-     * @var Dependency\ElementEntityProcessor
+     * @var Dependency\ElementEntityProcessor|null
      */
     protected $elementEntityProcessor;
 
     /**
-     * @var Dependency\DependencyResolver
+     * @var Dependency\DependencyResolver|null
      */
     protected $dependencyResolver;
 

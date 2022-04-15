@@ -83,7 +83,7 @@ class GridDataService implements LoggerAwareInterface
     protected $workspacesCache;
 
     /**
-     * @var IntegrityService
+     * @var IntegrityService|null
      */
     protected $integrityService;
 

@@ -4856,94 +4856,9 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Controller\\\\Remote\\\\RemoteServer\\:\\:\\$differenceHandler \\(TYPO3\\\\CMS\\\\Core\\\\Utility\\\\DiffUtility\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/RemoteServer.php
-
-		-
 			message: "#^Parameter \\#2 \\$id of method TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyResolver\\:\\:addElement\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/DataHandler/CommandMap.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\DataHandler\\\\CommandMap\\:\\:\\$elementEntityProcessor \\(TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntityProcessor\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/DataHandler/CommandMap.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyResolver\\:\\:\\$factory \\(TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyEntityFactory\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/DependencyResolver.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyResolver\\:\\:\\$outerMostParents \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/DependencyResolver.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntity\\:\\:\\$children \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntity\\:\\:\\$nestedChildren \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntity\\:\\:\\$outerMostParent \\(TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntity\\|false\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntity\\:\\:\\$parents \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntityProcessor\\:\\:\\$dataHandler \\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntityProcessor.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Model\\\\DatabaseRecord\\:\\:\\$row \\(array\\) on left side of \\?\\?\\= is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Model/DatabaseRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord\\:\\:\\$allRecipients \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/StageRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord\\:\\:\\$defaultRecipients \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/StageRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord\\:\\:\\$preselectedRecipients \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/StageRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord\\:\\:\\$responsiblePersons \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/StageRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\WorkspaceRecord\\:\\:\\$members \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\WorkspaceRecord\\:\\:\\$owners \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\WorkspaceRecord\\:\\:\\$stages \\(array\\<TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord\\>\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -4976,16 +4891,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\Dependency\\\\CollectionService\\:\\:\\$dependencyResolver \\(TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyResolver\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Service/Dependency/CollectionService.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\Dependency\\\\CollectionService\\:\\:\\$elementEntityProcessor \\(TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\ElementEntityProcessor\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Service/Dependency/CollectionService.php
-
-		-
 			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
@@ -4993,10 +4898,5 @@ parameters:
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\GridDataService\\:\\:\\$integrityService \\(TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\IntegrityService\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 

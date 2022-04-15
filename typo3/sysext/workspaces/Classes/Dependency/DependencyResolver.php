@@ -28,7 +28,7 @@ class DependencyResolver
     protected $workspace = 0;
 
     /**
-     * @var DependencyEntityFactory
+     * @var DependencyEntityFactory|null
      */
     protected $factory;
 
@@ -48,7 +48,7 @@ class DependencyResolver
     protected $outerMostParentsRequireReferences = false;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $outerMostParents;
 

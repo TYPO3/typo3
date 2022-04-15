@@ -66,7 +66,7 @@ class RemoteServer
     protected $workspaceService;
 
     /**
-     * @var DiffUtility
+     * @var DiffUtility|null
      */
     protected $differenceHandler;
 
