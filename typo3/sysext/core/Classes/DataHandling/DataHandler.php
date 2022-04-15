@@ -4371,7 +4371,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Record Table
      * @param int $uid Record UID
      * @param int $destPid Position to move to
-     * @param string $originalRecordDestinationPid Position to move the original record to
+     * @param int $originalRecordDestinationPid Position to move the original record to
      * @internal should only be used from within DataHandler
      */
     public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid)
