@@ -1878,7 +1878,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // calculate the absolute path prefix
         if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
             if ($this->absRefPrefix === 'auto') {
-                $this->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+                $normalizedParams = $request->getAttribute('normalizedParams');
+                $this->absRefPrefix = $normalizedParams->getSitePath();
             }
         }
         // linkVars
