@@ -41,7 +41,7 @@ class PostgreSql extends AbstractPlatform
      *
      * @var string
      */
-    protected $minimumPostgreSQLVerion = '9.2';
+    protected $minimumPostgreSQLVerion = '10.0';
 
     /**
      * Minimum supported libpq version

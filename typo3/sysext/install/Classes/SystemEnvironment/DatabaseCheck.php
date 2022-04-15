@@ -17,16 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\SystemEnvironment;
 
-use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\IBMDB2\Driver as DB2Driver;
 use Doctrine\DBAL\Driver\Mysqli\Driver as DoctrineMysqliDriver;
 use Doctrine\DBAL\Driver\OCI8\Driver as DoctrineOCI8Driver;
 use Doctrine\DBAL\Driver\PDO\OCI\Driver as DoctrinePDOOCIDriver;
-use Doctrine\DBAL\Driver\SQLSrv\Driver as DoctrineSQLSrvDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as TYPO3PDOMySqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as TYPO3PDOPgSqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as TYPO3PDOSqliteDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOSqlsrv\Driver as TYPO3PDOSqlSrvDriver;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Exception;
@@ -34,12 +31,9 @@ use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\Mysqli as DatabaseC
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\PdoMysql as DatabaseCheckDriverPdoMysql;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\PDOPgSql as DatabaseCheckDriverPDOPgSql;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\PDOSqlite as DatabaseCheckDriverPDOSqlite;
-use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\PDOSqlsrv as DatabaseCheckDriverPDOSqlsrv;
-use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\SQLSrv as DatabaseCheckDriverSQLSrv;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform\MySql as DatabaseCheckPlatformMysql;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform\PostgreSql as DatabaseCheckPlatformPostgreSql;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform\Sqlite as DatabaseCheckPlatformSqlite;
-use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform\SqlSrv as DatabaseCheckPlatformSqlSrv;
 
 /**
  * Check database configuration status
@@ -88,8 +82,6 @@ class DatabaseCheck implements CheckInterface
         DoctrineMysqliDriver::class => DatabaseCheckPlatformMysql::class,
         TYPO3PDOMySqlDriver::class => DatabaseCheckPlatformMysql::class,
         TYPO3PDOPgSqlDriver::class => DatabaseCheckPlatformPostgreSql::class,
-        DoctrineSQLSrvDriver::class => DatabaseCheckPlatformSqlSrv::class,
-        TYPO3PDOSqlSrvDriver::class => DatabaseCheckPlatformSqlSrv::class,
         TYPO3PDOSqliteDriver::class => DatabaseCheckPlatformSqlite::class,
     ];
 
@@ -103,9 +95,7 @@ class DatabaseCheck implements CheckInterface
         'pdo_oci' => DoctrinePDOOCIDriver::class,
         'oci8' => DoctrineOCI8Driver::class,
         'ibm_db2' => DB2Driver::class,
-        'pdo_sqlsrv' => TYPO3PDOSqlSrvDriver::class,
         'mysqli' => DoctrineMysqliDriver::class,
-        'sqlsrv' => DoctrineSQLSrvDriver::class,
     ];
 
     /**
@@ -117,8 +107,6 @@ class DatabaseCheck implements CheckInterface
         DoctrineMysqliDriver::class => DatabaseCheckDriverMysqli::class,
         TYPO3PDOMySqlDriver::class => DatabaseCheckDriverPdoMysql::class,
         TYPO3PDOPgSqlDriver::class => DatabaseCheckDriverPDOPgSql::class,
-        DoctrineSQLSrvDriver::class => DatabaseCheckDriverSQLSrv::class,
-        TYPO3PDOSqlSrvDriver::class => DatabaseCheckDriverPDOSqlsrv::class,
         TYPO3PDOSqliteDriver::class => DatabaseCheckDriverPDOSqlite::class,
     ];
 
@@ -247,14 +235,6 @@ class DatabaseCheck implements CheckInterface
             $installedDrivers[] = TYPO3PDOSqliteDriver::class;
         }
 
-        if (static::isPdoSqlSrv()) {
-            $installedDrivers[] = TYPO3PDOSqlSrvDriver::class;
-        }
-
-        if (static::isSqlSrv()) {
-            $installedDrivers[] = Driver\SQLSrv\Driver::class;
-        }
-
         return $installedDrivers;
     }
 
@@ -317,15 +297,5 @@ class DatabaseCheck implements CheckInterface
     public static function isPdoSqlite(): bool
     {
         return extension_loaded('pdo_sqlite');
-    }
-
-    public static function isPdoSqlSrv(): bool
-    {
-        return extension_loaded('pdo_sqlsrv');
-    }
-
-    public static function isSqlSrv(): bool
-    {
-        return extension_loaded('sqlsrv');
     }
 }

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -36,12 +37,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MySql extends AbstractPlatform
 {
+    protected const PLATFORM_MYSQL = 'mysql';
+    protected const PLATFORM_MARIADB = 'mariadb';
+
     /**
      * Minimum supported MySQL version
      *
-     * @var string
+     * @var array<string, string>
      */
-    protected $minimumMySQLVersion = '5.5.0';
+    protected array $minimumVersion = [
+        self::PLATFORM_MYSQL => '8.0.0',
+        self::PLATFORM_MARIADB => '10.3.0',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected array $platformLabel = [
+        self::PLATFORM_MYSQL => 'MySQL',
+        self::PLATFORM_MARIADB => 'MariaDB',
+    ];
 
     /**
      * List of MySQL modes that are incompatible with TYPO3 CMS
@@ -84,7 +99,7 @@ class MySql extends AbstractPlatform
         if (!str_starts_with($defaultConnection->getServerVersion(), 'MySQL')) {
             return $this->messageQueue;
         }
-        $this->checkMysqlVersion($defaultConnection);
+        $this->checkMySQLOrMariaDBVersion($defaultConnection);
         $this->checkInvalidSqlModes($defaultConnection);
         $this->checkDefaultDatabaseCharset($defaultConnection);
         $this->checkDefaultDatabaseServerCharset($defaultConnection);
@@ -123,21 +138,23 @@ class MySql extends AbstractPlatform
      *
      * @param Connection $connection to the database to be checked
      */
-    protected function checkMysqlVersion(Connection $connection)
+    protected function checkMySQLOrMariaDBVersion(Connection $connection): void
     {
+        $platformLabel = $this->getPlatformLabel($connection);
+        $minimumVersion = $this->getMinimumVersion($connection);
         preg_match('/MySQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getServerVersion(), $match);
         $currentMysqlVersion = $match[1];
-        if (version_compare($currentMysqlVersion, $this->minimumMySQLVersion, '<')) {
+        if (version_compare($currentMysqlVersion, $minimumVersion, '<')) {
             $this->messageQueue->enqueue(new FlashMessage(
-                'Your MySQL version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run'
-                    . ' with this version. Update to at least MySQL ' . $this->minimumMySQLVersion,
-                'MySQL version too low',
+                'Your ' . $platformLabel . ' version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run'
+                    . ' with this version. Update to at least ' . $platformLabel . ' ' . $minimumVersion,
+                $platformLabel . ' version too low',
                 FlashMessage::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 '',
-                'MySQL version is fine'
+                $platformLabel . ' version is fine'
             ));
         }
     }
@@ -162,6 +179,7 @@ class MySql extends AbstractPlatform
             ->executeQuery()
             ->fetchOne();
 
+        $platformLabel = $this->getPlatformLabel($connection);
         if (!in_array($defaultDatabaseCharset, $this->databaseCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(
                 sprintf(
@@ -169,13 +187,13 @@ class MySql extends AbstractPlatform
                     $defaultDatabaseCharset,
                     implode(' or ', $this->databaseCharsetToCheck)
                 ),
-                'MySQL database character set check failed',
+                $platformLabel . ' database character set check failed',
                 FlashMessage::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 '',
-                sprintf('MySQL database uses %s. All good.', implode(' or ', $this->databaseCharsetToCheck))
+                sprintf('%s database uses %s. All good.', $platformLabel, implode(' or ', $this->databaseCharsetToCheck))
             ));
         }
     }
@@ -200,7 +218,7 @@ class MySql extends AbstractPlatform
     public function checkDefaultDatabaseServerCharset(Connection $connection): void
     {
         $defaultServerCharset = $connection->executeQuery('SHOW VARIABLES LIKE \'character_set_server\'')->fetchAssociative();
-
+        $platformLabel = $this->getPlatformLabel($connection);
         if (!in_array($defaultServerCharset['Value'], $this->databaseServerCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(
                 sprintf(
@@ -208,13 +226,13 @@ class MySql extends AbstractPlatform
                     $defaultServerCharset['Value'],
                     implode(' or ', $this->databaseServerCharsetToCheck)
                 ),
-                'MySQL database server character set check failed',
+                $platformLabel . ' database server character set check failed',
                 FlashMessage::INFO
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 '',
-                sprintf('MySQL server default uses %s. All good.', implode(' or ', $this->databaseCharsetToCheck))
+                sprintf('%s server default uses %s. All good.', $platformLabel, implode(' or ', $this->databaseCharsetToCheck))
             ));
         }
     }
@@ -244,5 +262,25 @@ class MySql extends AbstractPlatform
                 FlashMessage::ERROR
             )
         );
+    }
+
+    protected function getMinimumVersion(Connection $connection): string
+    {
+        return $this->minimumVersion[$this->getPlatformType($connection)];
+    }
+
+    protected function getPlatformType(Connection $connection): string
+    {
+        return $this->isMariaDb($connection) ? self::PLATFORM_MARIADB : self::PLATFORM_MYSQL;
+    }
+
+    protected function getPlatformLabel(Connection $connection): string
+    {
+        return $this->platformLabel[$this->getPlatformType($connection)];
+    }
+
+    protected function isMariaDb(Connection $connection): bool
+    {
+        return $connection->getDatabasePlatform() instanceof MariaDBPlatform;
     }
 }

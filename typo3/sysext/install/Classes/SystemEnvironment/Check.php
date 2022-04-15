@@ -270,7 +270,7 @@ class Check implements CheckInterface
      */
     protected function checkPhpVersion()
     {
-        $minimumPhpVersion = '7.2.0';
+        $minimumPhpVersion = '8.1.0';
         $currentPhpVersion = PHP_VERSION;
         if (version_compare($currentPhpVersion, $minimumPhpVersion) < 0) {
             $this->messageQueue->enqueue(new FlashMessage(
