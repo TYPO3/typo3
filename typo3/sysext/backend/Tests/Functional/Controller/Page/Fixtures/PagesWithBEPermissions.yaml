@@ -52,13 +52,13 @@ entities:
         - self: {id: *idAcmeFirstPage, title: 'EN: Welcome', slug: '/welcome', subtitle: 'hello-and-welcome'}
         - self: {id: 1200, title: 'EN: Features', slug: '/features'}
           children:
-            - self: {id: 1210, title: 'EN: Frontend Editing', slug: '/features/frontend-editing', perms_userid: 9, perms_groupid: 1, description: "accessible for user, but not for group"}
+            - self: {id: 1210, title: 'EN: Frontend Editing', slug: '/features/frontend-editing', perms_userid: 9, perms_groupid: 1, description: 'accessible for user, but not for group'}
               versionVariants:
                 - version: { workspace: 1 }
                   actions:
                     - { action: 'delete' }
-            - self: {id: 1220, title: 'EN: Managing backend', slug: '/features/managing-backend', perms_userid: 1, perms_groupid: 1, description: "not accessible"}
-            - self: {id: 1230, title: 'EN: Managing content', slug: '/features/managing-content', perms_userid: 9, perms_groupid: 9, description: "accessible for user and group"}
+            - self: {id: 1220, title: 'EN: Managing backend', slug: '/features/managing-backend', perms_userid: 1, perms_groupid: 1, description: 'not accessible'}
+            - self: {id: 1230, title: 'EN: Managing content', slug: '/features/managing-content', perms_userid: 9, perms_groupid: 9, description: 'accessible for user and group'}
             - version: {id: 1240, title: 'EN: Managing data', slug: '/features/managing-data', workspace: 1}
               children:
                 - version: {id: 124010, title: 'EN: Managing complex data', slug: '/features/managing-data/complex', workspace: 1}
@@ -81,7 +81,7 @@ entities:
                 - version: {title: 'EN: Teams modified', workspace: 1}
         - self: {id: 1500, title: 'Internal', slug: '/my-acme'}
           children:
-            - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true, slug: '/my-acme/whitepapers', perms_userid: 1, perms_groupid: 1, description: "not accessible"}
+            - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true, slug: '/my-acme/whitepapers', perms_userid: 1, perms_groupid: 1, description: 'not accessible'}
               children:
                 - self: {id: 1511, title: 'Products', slug: '/my-acme/whitepapers/products'}
                   children:
@@ -102,7 +102,7 @@ entities:
             - self: {id: 1530, title: 'Reports', visitorGroups: 20, extendToSubpages: true, slug: '/my-acme/reports'}
           languageVariants:
             - version: {title: 'FR: Interne', workspace: 1, language: 1, slug: '/my-acme'}
-        - self: {id: 1600, title: 'About us', slug: '/about', perms_userid: 1, perms_groupid: 1, description: "not accessible"}
+        - self: {id: 1600, title: 'About us', slug: '/about', perms_userid: 1, perms_groupid: 1, description: 'not accessible'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 404, title: 'Page not found', slug: '/404'}
           entities:

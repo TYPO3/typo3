@@ -3,17 +3,17 @@
 editor:
   config:
     # the CSS file to be used inside the editor
-    contentsCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
+    contentsCss: 'EXT:rte_ckeditor/Resources/Public/Css/contents.css'
     # will be overridden by the record (if a language is set)
-    defaultContentLanguage: "en"
-    defaultLanguage: "en"
+    defaultContentLanguage: 'en'
+    defaultLanguage: 'en'
     # Allow any class or any data attribute in any tag
-    extraAllowedContent: "*(*)[data-*]"
+    extraAllowedContent: '*(*)[data-*]'
     height: 300
-    width: "auto"
-    toolbar: "Basic"
-    uiColor: "#F8F8F8"
-    removeDialogTabs: "image:advanced;link:advanced"
+    width: 'auto'
+    toolbar: 'Basic'
+    uiColor: '#F8F8F8'
+    removeDialogTabs: 'image:advanced;link:advanced'
     # Ensure that special characters are not converted to HTML entities
     entities_latin: false
     entities: false

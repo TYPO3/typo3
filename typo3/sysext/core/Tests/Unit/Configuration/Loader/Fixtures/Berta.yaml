@@ -1,6 +1,6 @@
 # This is the main file
 imports:
-  - { resource: "Subfolder/BaseTestInclusion.yaml" }
+  - { resource: 'Subfolder/BaseTestInclusion.yaml' }
 
 enable:
   backend: true

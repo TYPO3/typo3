@@ -1,12 +1,12 @@
 # Register custom plugins for ckeditor
 editor:
   externalPlugins:
-    typo3link: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/typo3link.js", route: "rteckeditor_wizard_browse_links" }
-    showbrokenlinks: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/showbrokenlinks/plugin.js"}
+    typo3link: { resource: 'EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/typo3link.js', route: 'rteckeditor_wizard_browse_links' }
+    showbrokenlinks: { resource: 'EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/showbrokenlinks/plugin.js'}
     # This is a plugin, found here: https://github.com/ufdada/quicktable
-    quicktable: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/quicktable/plugin.js" }
-    autolinking: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/autolinking.js" }
+    quicktable: { resource: 'EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/quicktable/plugin.js' }
+    autolinking: { resource: 'EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/autolinking.js' }
     # softhyphen plugin for adding ctrl+dash support to insert a conditional word break
     softhyphen:
-      resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/softhyphen/"
+      resource: 'EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/softhyphen/'
       enableShortcut: true
