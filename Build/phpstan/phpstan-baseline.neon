@@ -116,44 +116,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 3
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: "#^Offset 'header' on array\\{header\\: array\\{icon\\: string, title\\: mixed\\}, items\\: array\\<int, array\\{id\\: string, name\\: non\\-empty\\-string, value\\: mixed, checked\\: bool, icon\\: string, title\\: mixed, help\\: string\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Offset 'header' on array\\{header\\: array\\{title\\: mixed, disabled\\?\\: false\\}, items\\: non\\-empty\\-array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\}\\>\\} in isset\\(\\) always exists and is not nullable\\.$#"
+			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<'disabled'\\|'title'\\|int, mixed\\> and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Offset 'items' on array\\{header\\: array\\{title\\: mixed, disabled\\?\\: false\\}, items\\: array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Offset 'header' on array\\{header\\: array\\{title\\: mixed\\}, items\\: non\\-empty\\-array\\<int, array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
-
-		-
-			message: "#^Offset 'title' on array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
-
-		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
 			message: "#^Right side of && is always true\\.$#"
@@ -1746,11 +1711,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'values' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\>\\>, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
@@ -1909,11 +1869,6 @@ parameters:
 			message: "#^Binary operation \"\\+\\=\" between string and 0\\|4000 results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedPatternMapperTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Service\\\\Archive\\\\ZipServiceTest\\:\\:\\$vfs is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Service/Archive/ZipServiceTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$checkPid_value \\(int\\|string\\) does not accept null\\.$#"
@@ -4176,6 +4131,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
 		-
+			message: "#^Offset 'extTarget' on array\\<'parameter', mixed\\> in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
+
+		-
 			message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:parseFunc\\(\\) expects non\\-empty\\-array\\<string, mixed\\>\\|null, array given\\.$#"
 			count: 5
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
@@ -4789,6 +4749,21 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\FileLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, mixed\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/FileLinkHandler.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\PageLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/PageLinkHandler.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\RecordLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/RecordLinkHandler.php
 
 		-
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
