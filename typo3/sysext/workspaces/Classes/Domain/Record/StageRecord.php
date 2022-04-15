@@ -33,22 +33,22 @@ class StageRecord extends AbstractRecord
     protected $internal = false;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $responsiblePersons;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $defaultRecipients;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $preselectedRecipients;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $allRecipients;
 

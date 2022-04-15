@@ -79,7 +79,7 @@ class CommandMap
     protected $scopes;
 
     /**
-     * @var ElementEntityProcessor
+     * @var ElementEntityProcessor|null
      */
     protected $elementEntityProcessor;
 

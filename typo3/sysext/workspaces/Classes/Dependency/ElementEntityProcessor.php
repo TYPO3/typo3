@@ -31,7 +31,7 @@ class ElementEntityProcessor
     protected $workspace;
 
     /**
-     * @var DataHandler
+     * @var DataHandler|null
      */
     protected $dataHandler;
 

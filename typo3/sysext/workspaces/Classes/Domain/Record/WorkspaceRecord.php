@@ -52,17 +52,17 @@ class WorkspaceRecord extends AbstractRecord
     ];
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $owners;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $members;
 
     /**
-     * @var StageRecord[]
+     * @var StageRecord[]|null
      */
     protected $stages;
 

@@ -61,12 +61,12 @@ class ElementEntity
     protected $dependency;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $children;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $parents;
 
@@ -76,12 +76,12 @@ class ElementEntity
     protected $traversingParents = false;
 
     /**
-     * @var ElementEntity|false
+     * @var ElementEntity|false|null
      */
     protected $outerMostParent;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $nestedChildren;
 
