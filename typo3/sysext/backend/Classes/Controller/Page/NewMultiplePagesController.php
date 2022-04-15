@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -136,30 +137,30 @@ class NewMultiplePagesController
             }
         }
 
-        $commandArray = [];
+        $dataMap = [];
         $firstRecord = true;
         $previousIdentifier = '';
         foreach ($newPagesData as $identifier => $data) {
             if (!trim($data['title'])) {
                 continue;
             }
-            $commandArray['pages'][$identifier]['hidden'] = (int)$hidePages;
-            $commandArray['pages'][$identifier]['nav_hide'] = (int)$hidePagesInMenu;
-            $commandArray['pages'][$identifier]['title'] = $data['title'];
-            $commandArray['pages'][$identifier]['doktype'] = $data['doktype'];
+            $dataMap['pages'][$identifier]['hidden'] = (int)$hidePages;
+            $dataMap['pages'][$identifier]['nav_hide'] = (int)$hidePagesInMenu;
+            $dataMap['pages'][$identifier]['title'] = $data['title'];
+            $dataMap['pages'][$identifier]['doktype'] = $data['doktype'];
             if ($firstRecord) {
                 $firstRecord = false;
-                $commandArray['pages'][$identifier]['pid'] = $firstPid;
+                $dataMap['pages'][$identifier]['pid'] = $firstPid;
             } else {
-                $commandArray['pages'][$identifier]['pid'] = '-' . $previousIdentifier;
+                $dataMap['pages'][$identifier]['pid'] = '-' . $previousIdentifier;
             }
             $previousIdentifier = $identifier;
         }
 
-        if (!empty($commandArray)) {
+        if (!empty($dataMap)) {
             $pagesCreated = true;
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start($commandArray, []);
+            $dataHandler->start($dataMap, []);
             $dataHandler->process_datamap();
             BackendUtility::setUpdateSignal('updatePageTree');
         }
@@ -169,11 +170,8 @@ class NewMultiplePagesController
 
     /**
      * Page selector type data
-     *
-     * @param int $pageUid Page Uid
-     * @return array
      */
-    protected function getTypeSelectData(int $pageUid)
+    protected function getTypeSelectData(int $pageUid): array
     {
         $tsConfig = BackendUtility::getPagesTSconfig($pageUid);
         $pagesTsConfig = $tsConfig['TCEFORM.']['pages.'] ?? [];
@@ -182,11 +180,11 @@ class NewMultiplePagesController
         $types = $GLOBALS['PAGES_TYPES'];
         unset($types['default']);
         $types = array_keys($types);
-        $types[] = 1; // default
-        $types[] = 3; // link
-        $types[] = 4; // shortcut
-        $types[] = 7; // mount point
-        $types[] = 199; // spacer
+        $types[] = PageRepository::DOKTYPE_DEFAULT;
+        $types[] = PageRepository::DOKTYPE_LINK;
+        $types[] = PageRepository::DOKTYPE_SHORTCUT;
+        $types[] = PageRepository::DOKTYPE_MOUNTPOINT;
+        $types[] = PageRepository::DOKTYPE_SPACER;
 
         if (!$this->getBackendUser()->isAdmin() && isset($this->getBackendUser()->groupData['pagetypes_select'])) {
             $types = GeneralUtility::trimExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
