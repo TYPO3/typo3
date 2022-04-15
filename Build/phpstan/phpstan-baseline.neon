@@ -4886,11 +4886,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
 
 		-
-			message: "#^Parameter \\#4 \\$originalRecordDestinationPid of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:moveL10nOverlayRecords\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
-
-		-
 			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
