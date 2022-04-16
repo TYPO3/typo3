@@ -126,44 +126,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/InputLinkElement.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 3
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: "#^Offset 'header' on array\\{header\\: array\\{icon\\: string, title\\: mixed\\}, items\\: array\\<int, array\\{id\\: string, name\\: non\\-empty\\-string, value\\: mixed, checked\\: bool, icon\\: string, title\\: mixed, help\\: string\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Offset 'header' on array\\{header\\: array\\{title\\: mixed, disabled\\?\\: false\\}, items\\: non\\-empty\\-array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\}\\>\\} in isset\\(\\) always exists and is not nullable\\.$#"
+			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<'disabled'\\|'title'\\|int, mixed\\> and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Offset 'items' on array\\{header\\: array\\{title\\: mixed, disabled\\?\\: false\\}, items\\: array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Offset 'header' on array\\{header\\: array\\{title\\: mixed\\}, items\\: non\\-empty\\-array\\<int, array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
-
-		-
-			message: "#^Offset 'title' on array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
-
-		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
 			message: "#^Right side of && is always true\\.$#"
@@ -1008,11 +973,6 @@ parameters:
 		-
 			message: "#^Cannot assign offset 'type' to string\\.$#"
 			count: 2
-			path: ../../typo3/sysext/core/Classes/Database/QueryGenerator.php
-
-		-
-			message: "#^Cannot assign offset 'userFunc' to string\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/QueryGenerator.php
 
 		-
@@ -2051,11 +2011,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'values' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\>\\>, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
@@ -2224,11 +2179,6 @@ parameters:
 			message: "#^Binary operation \"\\+\\=\" between string and 0\\|4000 results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedPatternMapperTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Service\\\\Archive\\\\ZipServiceTest\\:\\:\\$vfs is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Service/Archive/ZipServiceTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$checkPid_value \\(int\\|string\\) does not accept null\\.$#"
@@ -3211,12 +3161,12 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileObject\\(\\) expects int, string given\\.$#"
+			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileObject\\(\\) expects int, \\(string\\|false\\) given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, string given\\.$#"
+			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, \\(string\\|false\\) given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
 
@@ -4559,11 +4509,6 @@ parameters:
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Exception\\\\StopActionException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Functional\\\\Mvc\\\\Validation\\\\MimeTypeValidatorTest\\:\\:\\$tmp is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Mvc/Validation/MimeTypeValidatorTest.php
 
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"
