@@ -35,8 +35,8 @@ class ModuleLoader
     /**
      * Validates, sorts and initiates the registered modules
      *
-     * @param array $modules
-     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[]
+     * @param array<string, mixed> $modules
+     * @return array<string, ModuleInterface>
      * @throws \RuntimeException
      */
     public function validateSortAndInitializeModules(array $modules): array

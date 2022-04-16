@@ -45,53 +45,31 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class MainController implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[]
+     * @var array<string, ModuleInterface>
      */
-    protected $modules = [];
+    protected array $modules = [];
 
-    /**
-     * @var ModuleLoader
-     */
-    protected $moduleLoader;
+    protected ModuleLoader $moduleLoader;
+    protected UriBuilder $uriBuilder;
+    protected ConfigurationService $configurationService;
+    protected array $adminPanelModuleConfiguration;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
-
-    /**
-     * @var array
-     */
-    protected $adminPanelModuleConfiguration;
-
-    /**
-     * @param ModuleLoader $moduleLoader
-     * @param UriBuilder $uriBuilder
-     * @param ConfigurationService $configurationService
-     */
     public function __construct(
-        ModuleLoader $moduleLoader = null,
-        UriBuilder $uriBuilder = null,
-        ConfigurationService $configurationService = null
+        ?ModuleLoader $moduleLoader = null,
+        ?UriBuilder $uriBuilder = null,
+        ?ConfigurationService $configurationService = null
     ) {
         $this->moduleLoader = $moduleLoader ?? GeneralUtility::makeInstance(ModuleLoader::class);
         $this->uriBuilder = $uriBuilder ?? GeneralUtility::makeInstance(UriBuilder::class);
         $this->configurationService = $configurationService
-                                      ??
-                                      GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
+                                      ?? GeneralUtility::makeInstance(ConfigurationService::class);
+        $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
+        $this->adminPanelModuleConfiguration = is_array($adminPanelModuleConfiguration)
+            ? $adminPanelModuleConfiguration : [];
     }
 
     /**
      * Initializes settings for the admin panel.
-     *
-     * @param ServerRequestInterface $request
-     * @return ServerRequestInterface
      */
     public function initialize(ServerRequestInterface $request): ServerRequestInterface
     {
@@ -109,8 +87,6 @@ class MainController implements SingletonInterface
      * Renders the admin panel - Called in PSR-15 Middleware
      *
      * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelRenderer
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return string
      */
     public function render(ServerRequestInterface $request): string
     {
@@ -135,12 +111,12 @@ class MainController implements SingletonInterface
             $requestId = $request->getAttribute('adminPanelRequestId');
             $data = $cache->get($requestId);
             $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules);
-            $settingsModules = array_filter($this->modules, static function (ModuleInterface $module) {
+            $settingsModules = array_filter($this->modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
             });
             $parentModules = array_filter(
                 $this->modules,
-                static function (ModuleInterface $module) {
+                static function (ModuleInterface $module): bool {
                     return $module instanceof SubmoduleProviderInterface && $module instanceof ShortInfoProviderInterface;
                 }
             );
@@ -179,7 +155,7 @@ class MainController implements SingletonInterface
      * Stores data for admin panel in cache - Called in PSR-15 Middleware
      *
      * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelDataPersister
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function storeData(ServerRequestInterface $request): void
@@ -198,9 +174,6 @@ class MainController implements SingletonInterface
 
     /**
      * Generate a url to a backend route
-     *
-     * @param string $route
-     * @return string
      */
     protected function generateBackendUrl(string $route): string
     {
@@ -208,9 +181,7 @@ class MainController implements SingletonInterface
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
-     * @return \Psr\Http\Message\ServerRequestInterface
+     * @param array<string, ModuleInterface> $modules
      */
     protected function initializeModules(ServerRequestInterface $request, array $modules): ServerRequestInterface
     {
@@ -232,10 +203,7 @@ class MainController implements SingletonInterface
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
-     * @param ModuleDataStorageCollection $data
-     * @return ModuleDataStorageCollection
+     * @param array<string, ModuleInterface> $modules
      */
     protected function storeDataPerModule(ServerRequestInterface $request, array $modules, ModuleDataStorageCollection $data): ModuleDataStorageCollection
     {

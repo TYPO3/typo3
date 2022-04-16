@@ -31,26 +31,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AjaxController
 {
-    /**
-     * @var array
-     */
-    protected $adminPanelModuleConfiguration;
+    protected array $adminPanelModuleConfiguration;
+    protected ModuleLoader $moduleLoader;
+    private ConfigurationService $configurationService;
 
-    /**
-     * @var ModuleLoader
-     */
-    protected $moduleLoader;
-
-    /**
-     * @var ConfigurationService
-     */
-    private $configurationService;
-
-    /**
-     * @param ConfigurationService $configurationService
-     * @param ModuleLoader $moduleLoader
-     */
-    public function __construct(ConfigurationService $configurationService = null, ModuleLoader $moduleLoader = null)
+    public function __construct(?ConfigurationService $configurationService = null, ?ModuleLoader $moduleLoader = null)
     {
         $this->configurationService = $configurationService
                                       ??
@@ -61,9 +46,6 @@ class AjaxController
 
     /**
      * Save adminPanel data
-     *
-     * @param ServerRequestInterface $request
-     * @return JsonResponse
      */
     public function saveDataAction(ServerRequestInterface $request): JsonResponse
     {
@@ -76,8 +58,6 @@ class AjaxController
 
     /**
      * Toggle admin panel active state via UC
-     *
-     * @return JsonResponse
      */
     public function toggleActiveState(): JsonResponse
     {
