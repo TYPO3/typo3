@@ -3101,11 +3101,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Validation/Validator/TaskValidator.php
 
 		-
-			message: "#^Comparison operation \"\\>\" between 1 and 0 is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php

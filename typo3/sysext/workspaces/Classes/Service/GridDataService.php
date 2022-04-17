@@ -362,7 +362,7 @@ class GridDataService implements LoggerAwareInterface
         $cacheEntry = false;
         $hash = $this->calculateHash($versions, $filterTxt);
         $content = $this->workspacesCache->get($hash);
-        if ($content !== false) {
+        if (is_array($content)) {
             $this->dataArray = $content;
             $cacheEntry = true;
         }
@@ -398,35 +398,28 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function sortDataArray()
     {
-        if (is_array($this->dataArray)) {
-            switch ($this->sort) {
-                case 'uid':
-                case 'change':
-                case 'workspace_Tstamp':
-                case 't3ver_oid':
-                case 'liveid':
-                case 'livepid':
-                case 'languageValue':
-                    uasort($this->dataArray, [$this, 'intSort']);
-                    break;
-                case 'label_Workspace':
-                case 'label_Live':
-                case 'label_Stage':
-                case 'workspace_Title':
-                case 'path_Live':
-                    // case 'path_Workspace': This is the first sorting attribute
-                    uasort($this->dataArray, [$this, 'stringSort']);
-                    break;
-                default:
-                    // Do nothing
-            }
-        } else {
-            $this->logger->critical('Trying to sort by {field} in "{class}::{method}" but $this->dataArray is empty! This might be the bug #26422 which could not be reproduced yet.', [
-                'field' => $this->sort,
-                'class' => __CLASS__,
-                'method' => __FUNCTION__,
-            ]);
+        switch ($this->sort) {
+            case 'uid':
+            case 'change':
+            case 'workspace_Tstamp':
+            case 't3ver_oid':
+            case 'liveid':
+            case 'livepid':
+            case 'languageValue':
+                uasort($this->dataArray, [$this, 'intSort']);
+                break;
+            case 'label_Workspace':
+            case 'label_Live':
+            case 'label_Stage':
+            case 'workspace_Title':
+            case 'path_Live':
+                // case 'path_Workspace': This is the first sorting attribute
+                uasort($this->dataArray, [$this, 'stringSort']);
+                break;
+            default:
+                // Do nothing
         }
+
         // Trigger an event for extensibility
         $event = new SortVersionedDataEvent($this, $this->dataArray, $this->sort, $this->sortDir);
         $this->eventDispatcher->dispatch($event);
@@ -447,25 +440,24 @@ class GridDataService implements LoggerAwareInterface
         if (!$this->isSortable($a, $b)) {
             return 0;
         }
+
         // First sort by using the page-path in current workspace
-        $path_cmp = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
-        if ($path_cmp < 0) {
-            return $path_cmp;
+        $pathSortingResult = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
+        if ($pathSortingResult !== 0) {
+            return $pathSortingResult;
         }
-        if ($path_cmp == 0) {
-            if ($a[$this->sort] == $b[$this->sort]) {
-                return 0;
-            }
-            if ($this->sortDir === 'ASC') {
-                return $a[$this->sort] < $b[$this->sort] ? -1 : 1;
-            }
-            if ($this->sortDir === 'DESC') {
-                return $a[$this->sort] > $b[$this->sort] ? -1 : 1;
-            }
-        } elseif ($path_cmp > 0) {
-            return $path_cmp;
+
+        if ($a[$this->sort] == $b[$this->sort]) {
+            $sortingResult = 0;
+        } elseif ($this->sortDir === 'ASC') {
+            $sortingResult= $a[$this->sort] < $b[$this->sort] ? -1 : 1;
+        } elseif ($this->sortDir === 'DESC') {
+            $sortingResult = $a[$this->sort] > $b[$this->sort] ? -1 : 1;
+        } else {
+            $sortingResult = 0;
         }
-        return 0;
+
+        return $sortingResult;
     }
 
     /**
@@ -480,24 +472,24 @@ class GridDataService implements LoggerAwareInterface
         if (!$this->isSortable($a, $b)) {
             return 0;
         }
-        $path_cmp = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
-        if ($path_cmp < 0) {
-            return $path_cmp;
+
+        // First sort by using the page-path in current workspace
+        $pathSortingResult = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
+        if ($pathSortingResult !== 0) {
+            return $pathSortingResult;
         }
-        if ($path_cmp == 0) {
-            if ($a[$this->sort] == $b[$this->sort]) {
-                return 0;
-            }
-            if ($this->sortDir === 'ASC') {
-                return strcasecmp($a[$this->sort], $b[$this->sort]);
-            }
-            if ($this->sortDir === 'DESC') {
-                return strcasecmp($a[$this->sort], $b[$this->sort]) * -1;
-            }
-        } elseif ($path_cmp > 0) {
-            return $path_cmp;
+
+        if ($a[$this->sort] == $b[$this->sort]) {
+            $sortingResult = 0;
+        } elseif ($this->sortDir === 'ASC') {
+            $sortingResult = strcasecmp($a[$this->sort], $b[$this->sort]);
+        } elseif ($this->sortDir === 'DESC') {
+            $sortingResult = strcasecmp($a[$this->sort], $b[$this->sort]) * -1;
+        } else {
+            $sortingResult = 0;
         }
-        return 0;
+
+        return $sortingResult;
     }
 
     /**
