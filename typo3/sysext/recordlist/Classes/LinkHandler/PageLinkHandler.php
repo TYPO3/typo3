@@ -238,18 +238,18 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function modifyLinkAttributes(array $fieldDefinitions)
     {
         $configuration = $this->linkBrowser->getConfiguration();
-        // Depending where the configuration is set it can be 'pageIdSelector' (CKEditor yaml) or 'pageIdSelector.' (TSconfig)
+        // Depending on where the configuration is set it can be 'pageIdSelector' (CKEditor yaml) or 'pageIdSelector.' (TSconfig)
         if (!empty($configuration['pageIdSelector']['enabled']) || !empty($configuration['pageIdSelector.']['enabled'])) {
             $this->linkAttributes[] = 'pageIdSelector';
             $fieldDefinitions['pageIdSelector'] = '
-				<form class="form-horizontal"><div class="form-group form-group-sm">
-					<label class="col-4 control-label">
+				<form><div class="row mt-3">
+					<label class="col-3 col-form-label">
 						' . htmlspecialchars($this->getLanguageService()->getLL('page_id')) . '
 						</label>
 					<div class="col-2">
 						<input type="number" size="6" name="luid" id="luid" class="form-control" />
 					</div>
-					<div class="col-6">
+					<div class="col-7">
 						<input class="btn btn-default t3js-pageLink" type="submit" value="' . htmlspecialchars($this->getLanguageService()->getLL('setLink')) . '" />
 					</div>
 				</div></form>';

@@ -111,10 +111,8 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
                 folders = _formManagerApp.getAccessibleFormStorageFolders();
                 if (folders.length === 0) {
                   html = '<div class="new-form-modal">'
-                    + '<div class="form-horizontal">'
-                    + '<div>'
-                    + '<label class="control-label">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</label>'
-                    + '</div>'
+                    + '<div class="row">'
+                    + '<label class="col col-form-label">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</label>'
                     + '</div>'
                     + '</div>';
 
@@ -587,17 +585,15 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           }
 
           html = '<div class="duplicate-form-modal">'
-            + '<div class="form-horizontal">'
-            + '<div>'
-            + '<label class="control-label">' + TYPO3.lang['formManager.new_form_name'] + '</label>'
-            + '<input class="duplicate-form-name form-control has-error" data-identifier="duplicateFormName" />';
+            + '<div class="row mb-3">'
+            + '<label class="col-4 col-form-label">' + TYPO3.lang['formManager.new_form_name'] + '</label>'
+            + '<div class="col-8"><input class="duplicate-form-name form-control has-error" data-identifier="duplicateFormName" /></div>';
 
           if (savePathSelect) {
-            html += '<label class="control-label">' + TYPO3.lang['formManager.form_save_path'] + '</label>' + $(savePathSelect)[0].outerHTML;
+            html += '<label class="col col-form-label">' + TYPO3.lang['formManager.form_save_path'] + '</label>' + $(savePathSelect)[0].outerHTML;
           }
 
           html += '</div>'
-            + '</div>'
             + '</div>';
 
           slide.html(html);
@@ -651,8 +647,8 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
                 nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
                 html = '<div class="new-form-modal">'
-                  + '<div class="form-horizontal">'
-                  + '<div>';
+                  + '<div class="row">'
+                  + '<div class="col">';
 
                 html += '<div class="mb-3">'
                   + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h5>'

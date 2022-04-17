@@ -17,8 +17,8 @@
         Configuring custom hash settings is for advanced users who know exactly what they are doing. Refer to the
         core documentation for details.</p>
     <f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
+        <div class="row mb-3">
+            <label class="col-sm-6 col-form-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
             <div class="col-sm-6">
                 <input
                     id="{feature.name}{preset.name}{configurationKey}"

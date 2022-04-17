@@ -458,7 +458,7 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions = [];
         $fieldRenderingDefinitions['target'] = '
             <!-- Selecting target for link: -->
-            <form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
+            <form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
                 <div class="row mb-3" id="typo3-linkTarget">
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
                     <div class="col-sm-4">
@@ -477,7 +477,7 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions['title'] = '
             <!-- Selecting title for link: -->
-            <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
+            <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
                 <div class="row mb-3" id="typo3-linkTitle">
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
                     <div class="col-sm-9">
@@ -489,7 +489,7 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions['class'] = '
             <!-- Selecting class for link: -->
-            <form action="" name="lclassform" id="lclassform" class="t3js-dummyform form-horizontal">
+            <form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
                 <div class="row mb-3" id="typo3-linkClass">
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
                     <div class="col-sm-9">
@@ -501,8 +501,8 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions['params'] = '
             <!-- Selecting params for link: -->
-            <form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform form-horizontal">
-                <div class="row mb-3" id="typo3-linkParams">
+            <form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform">
+                <div class="row" id="typo3-linkParams">
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
                     <div class="col-sm-9">
                         <input type="text" name="lparams" class="form-control"
