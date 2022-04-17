@@ -67,3 +67,30 @@ shown.
 
 In case no pages are selected, the menu will be rendered from the
 current page where the menu is put on.
+
+Styling of the current page in a menu
+======================================
+
+.. versionadded:: 12.0
+    All menu content elements related to page navigation reflect the "current"
+    state of a page now.
+
+If the current page is displayed within a menu the aria attribute
+:html:`aria-current="page"` is added to the a-tag of a menu-item.
+
+For styling with CSS the attribute of the link can be used:
+
+.. code-block:: css
+    :caption: EXT:site_package/Public/Css/menu.css
+
+    [aria-current="page"] {
+       /* Special style for the current page link */
+    }
+    [aria-current="page"]:hover {
+       /* Special style for the current page link when hovered */
+    }
+    [aria-current="page"]::before {
+       /* Special virtual element for additions like chevrons, etc. */
+    }
+
+The default styling of contains no style for the current page.
