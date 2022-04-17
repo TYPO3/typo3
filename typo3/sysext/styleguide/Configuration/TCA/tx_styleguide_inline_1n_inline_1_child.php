@@ -108,11 +108,11 @@ return [
         ],
         'input_3' => [
             'label' => 'input_3',
-            'description' => 'placeholder=__row|input_1 mode=useOrOverridePlaceholder eval=null default=null',
+            'description' => 'placeholder=__row|input_1 mode=useOrOverridePlaceholder nullable=true default=null',
             'config' => [
                 'type' => 'input',
                 'placeholder' => '__row|input_1',
-                'eval' => 'null',
+                'nullable' => true,
                 'default' => null,
                 'mode' => 'useOrOverridePlaceholder',
             ],

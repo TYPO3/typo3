@@ -156,10 +156,10 @@ return [
         ],
         'input_14' => [
             'label' => 'input_14',
-            'description' => 'eval=null',
+            'description' => 'nullable=true',
             'config' => [
                 'type' => 'input',
-                'eval' => 'null',
+                'nullable' => true,
             ],
         ],
         'input_15' => [
@@ -236,11 +236,11 @@ return [
         ],
         'input_28' => [
             'label' => 'input_28',
-            'description' => 'placeholder=__row|input_26 mode=useOrOverridePlaceholder eval=null default=null',
+            'description' => 'placeholder=__row|input_26 mode=useOrOverridePlaceholder nullable=true default=null',
             'config' => [
                 'type' => 'input',
                 'placeholder' => '__row|input_26',
-                'eval' => 'null',
+                'nullable' => true,
                 'default' => null,
                 'mode' => 'useOrOverridePlaceholder',
             ],
@@ -712,11 +712,11 @@ return [
         ],
         'text_14' => [
             'label' => 'text_14',
-            'description' => 'placeholder=__row|text_12, mode=useOrOverridePlaceholder, eval=null',
+            'description' => 'placeholder=__row|text_12, mode=useOrOverridePlaceholder, nullable=true',
             'config' => [
                 'type' => 'text',
                 'placeholder' => '__row|text_12',
-                'eval' => 'null',
+                'nullable' => true,
                 'mode' => 'useOrOverridePlaceholder',
             ],
         ],
@@ -755,10 +755,10 @@ return [
         ],
         'text_18' => [
             'label' => 'text_18',
-            'description' => 'eval=null',
+            'description' => 'nullable=true',
             'config' => [
                 'type' => 'text',
-                'eval' => 'null',
+                'nullable' => true,
             ],
         ],
         'text_19' => [

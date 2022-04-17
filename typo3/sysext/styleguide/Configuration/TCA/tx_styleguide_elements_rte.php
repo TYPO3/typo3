@@ -95,10 +95,10 @@ return [
             ],
         ],
         'rte_3' => [
-            'label' => 'rte_3 eval=null',
+            'label' => 'rte_3 nullable=true',
             'config' => [
                 'type' => 'text',
-                'eval' => 'null',
+                'nullable' => true,
                 'enableRichtext' => true,
             ],
         ],
