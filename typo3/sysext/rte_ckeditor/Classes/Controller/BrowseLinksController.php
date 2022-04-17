@@ -383,7 +383,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-            <form action="" name="lrelform" id="lrelform" class="t3js-dummyform form-horizontal">
+            <form action="" name="lrelform" id="lrelform" class="t3js-dummyform">
                  <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">' .
                         htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
@@ -423,7 +423,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
+				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
                     <div class="row mb-3" ' . ($disabled ? ' style="display: none;"' : '') . '>
                         <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
 						<div class="col-sm-4">
@@ -460,7 +460,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $title = $this->classesAnchorClassTitle[$currentClass] ?? $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?? '';
         }
         return '
-                <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
+                <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">
                             ' . htmlspecialchars($this->getLanguageService()->getLL('title')) . '
@@ -484,7 +484,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $selectClass = '';
         if (isset($this->classesAnchorJSOptions[$this->displayedLinkHandlerId])) {
             $selectClass = '
-                <form action="" name="lclassform" id="lclassform" class="t3js-dummyform form-horizontal">
+                <form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">
                             ' . htmlspecialchars($this->getLanguageService()->getLL('class')) . '

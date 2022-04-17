@@ -99,10 +99,6 @@ $elementbrowser-breakpoint: 600px;
     padding: ($grid-gutter-width / 2);
     background-color: #fafafa;
     border-bottom: 1px solid #ddd;
-
-    > .form-horizontal:last-child .form-group {
-        margin-bottom: 0;
-    }
 }
 
 .element-browser-main {

@@ -15,8 +15,8 @@
     <p>Custom configuration mixture if no other preset fits.</p>
 
     <f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
+        <div class="row mb-3">
+            <label class="col-sm-4 col-form-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
             <div class="col-sm-8">
                 <input
                     id="{feature.name}{preset.name}{configurationKey}"

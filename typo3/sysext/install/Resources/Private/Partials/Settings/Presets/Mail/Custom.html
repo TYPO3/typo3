@@ -14,8 +14,8 @@
     </label>
     <p>Custom mail settings:</p>
     <f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
+        <div class="row mb-3">
+            <label class="col-sm-6 col-form-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
             <div class="col-sm-6">
                 <input
                     id="{feature.name}{preset.name}{configurationKey}"

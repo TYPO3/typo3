@@ -11,7 +11,7 @@
 </p>
 
 <div class="t3js-module-content" data-presets-activate-token="{presetsActivateToken}" data-presets-content-token="{presetsGetContentToken}">
-    <form method="post" class="form-horizontal">
+    <form method="post">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <f:for each="{presetFeatures}" as="feature">
                 <f:render partial="Settings/Presets/{feature.name}" arguments="{_all}"/>
