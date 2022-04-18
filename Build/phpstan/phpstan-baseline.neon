@@ -2881,16 +2881,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Object/Container/Container.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\:\\:get\\(\\) should return object&T but returns object\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Classes/Object/ObjectManager.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\:\\:getEmptyObject\\(\\) should return object&T but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Object/ObjectManager.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_isDirty\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php

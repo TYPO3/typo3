@@ -30,12 +30,12 @@ interface ObjectManagerInterface extends SingletonInterface
     /**
      * Returns a fresh or existing instance of the class specified by $className.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $className the name of the class to return an instance of
      * @param array ...$constructorArguments
      *
-     * @return object&T the class instance
+     * @return T the class instance
      *
      * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
@@ -44,11 +44,11 @@ interface ObjectManagerInterface extends SingletonInterface
     /**
      * Creates an instance of $className without calling its constructor.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $className the name of the class to return an instance of
      *
-     * @return object&T the class instance
+     * @return T the class instance
      */
     public function getEmptyObject(string $className): object;
 }

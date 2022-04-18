@@ -90,12 +90,12 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Returns a fresh or existing instance of the class specified by $className.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $className the name of the class to return an instance of
      * @param array ...$constructorArguments
      *
-     * @return object&T the class instance
+     * @return T the class instance
      *
      * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
@@ -123,11 +123,11 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Creates an instance of $className without calling its constructor.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $className the name of the class to return an instance of
      *
-     * @return object&T the class instance
+     * @return T the class instance
      *
      * @deprecated since v11, will be removed in v12. Does NOT log, has a v11 deprecation.rst file.
      *      Used in DataMapper, will be removed as breaking change in v12. Also drop doctrine/instantiator.
