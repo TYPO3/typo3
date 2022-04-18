@@ -123,13 +123,14 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns the current storage entry.
      *
-     * @return TEntity The object at the current iterator position.
+     * @return TEntity|null The object at the current iterator position.
      */
     #[\ReturnTypeWillChange]
     public function current()
     {
         $item = current($this->storage);
-        return $item['obj'];
+
+        return $item['obj'] ?? null;
     }
 
     /**
@@ -265,7 +266,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     public function getInfo()
     {
         $item = current($this->storage);
-        return $item['inf'];
+
+        return $item['inf'] ?? null;
     }
 
     /**

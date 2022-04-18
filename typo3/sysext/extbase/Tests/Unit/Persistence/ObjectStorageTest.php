@@ -28,6 +28,30 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
+    public function currentForAnEmptyStorageReturnsNull(): void
+    {
+        $objectStorage = new ObjectStorage();
+
+        $result = $objectStorage->current();
+
+        self::assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function getInfoForAnEmptyStorageReturnsNull(): void
+    {
+        $objectStorage = new ObjectStorage();
+
+        $result = $objectStorage->getInfo();
+
+        self::assertNull($result);
+    }
+
+    /**
+     * @test
+     */
     public function anObjectCanBeAttached(): void
     {
         $objectStorage = new ObjectStorage();

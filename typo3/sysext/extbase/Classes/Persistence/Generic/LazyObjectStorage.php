@@ -180,7 +180,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @return TEntity The object at the current iterator position.
+     * @return TEntity|null The object at the current iterator position.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
      */
