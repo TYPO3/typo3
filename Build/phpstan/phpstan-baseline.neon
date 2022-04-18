@@ -5771,11 +5771,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Controller/PreviewController.php
 
 		-
-			message: "#^Argument of an invalid type stdClass supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
