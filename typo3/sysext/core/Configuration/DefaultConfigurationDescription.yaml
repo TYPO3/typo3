@@ -278,6 +278,9 @@ BE:
         loginRateLimitIpExcludeList:
           type: list
           description: 'IP-numbers (with *-wildcards) that are excluded from rate limiting. Syntax similar to [BE][IPmaskList]. An empty value disables the exclude list check.'
+        passwordPolicy:
+          type: text
+          description: 'Name of the password policy to use.'
         lockIP:
             type: int
             allowedValues:
@@ -417,6 +420,9 @@ FE:
         loginRateLimitIpExcludeList:
           type: list
           description: 'IP-numbers (with *-wildcards) that are excluded from rate limiting. Syntax similar to [BE][IPmaskList]. An empty value disables the exclude list check.'
+        passwordPolicy:
+          type: text
+          description: 'Name of the password policy to use.'
         lockIP:
             type: int
             allowedValues:

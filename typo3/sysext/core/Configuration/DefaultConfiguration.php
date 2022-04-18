@@ -1240,6 +1240,28 @@ return [
                 ],
             ],
         ],
+        'passwordPolicies' => [
+            'default' => [
+                'validators' => [
+                    \TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator::class => [
+                        'options' => [
+                            'minimumLength' => 8,
+                            'upperCaseCharacterRequired' => true,
+                            'lowerCaseCharacterRequired' => true,
+                            'digitCharacterRequired' => true,
+                            'specialCharacterRequired' => true,
+                        ],
+                        'excludeActions' => [],
+                    ],
+                    \TYPO3\CMS\Core\PasswordPolicy\Validator\NotCurrentPasswordValidator::class => [
+                        'options' => [],
+                        'excludeActions' => [
+                            \TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction::NEW_USER_PASSWORD,
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ],
     'EXT' => [ // Options related to the Extension Management
         'excludeForPackaging' => '(?:\\.(?!htaccess$).*|.*~|.*\\.swp|.*\\.bak|node_modules|bower_components)',
@@ -1328,6 +1350,7 @@ return [
             'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
             'options' => [],
         ],
+        'passwordPolicy' => 'default',
     ],
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',
@@ -1384,6 +1407,7 @@ return [
             'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
             'options' => [],
         ],
+        'passwordPolicy' => 'default',
         'exposeRedirectInformation' => false,
     ],
     'MAIL' => [ // Mail configurations to tune how \TYPO3\CMS\Core\Mail\ classes will send their mails.

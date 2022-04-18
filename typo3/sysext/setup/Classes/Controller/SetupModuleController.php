@@ -40,6 +40,9 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SysLog\Action\Setting as SystemLogSettingAction;
@@ -60,6 +63,7 @@ class SetupModuleController
     protected const PASSWORD_UPDATED = 1;
     protected const PASSWORD_NOT_THE_SAME = 2;
     protected const PASSWORD_OLD_WRONG = 3;
+    protected const PASSWORD_POLICY_FAILED = 4;
 
     protected array $overrideConf = [];
     protected bool $languageUpdate = false;
@@ -71,6 +75,7 @@ class SetupModuleController
     protected bool $settingsAreResetToDefault = false;
 
     protected AbstractFormProtection $formProtection;
+    protected PasswordPolicyValidator $passwordPolicyValidator;
 
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
@@ -83,6 +88,12 @@ class SetupModuleController
         protected readonly UriBuilder $uriBuilder,
     ) {
         $this->formProtection = FormProtectionFactory::get();
+        $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
+        $this->passwordPolicyValidator = GeneralUtility::makeInstance(
+            PasswordPolicyValidator::class,
+            PasswordPolicyAction::UPDATE_USER_PASSWORD,
+            is_string($passwordPolicy) ? $passwordPolicy : ''
+        );
     }
 
     /**
@@ -213,6 +224,21 @@ class SetupModuleController
                 }
                 $this->passwordIsSubmitted = (string)$be_user_data['password'] !== '';
                 $passwordIsConfirmed = $this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2'];
+
+                // Validate password against password policy
+                $contextData = new ContextData(
+                    loginMode: 'BE',
+                    currentPasswordHash: $this->getBackendUser()->user['password'],
+                    newUserFullName: $be_user_data['realName']
+                );
+                $passwordValid = true;
+                if ($passwordIsConfirmed &&
+                    !$this->passwordPolicyValidator->isValidPassword($be_user_data['password'], $contextData)
+                ) {
+                    $passwordValid = false;
+                    $this->passwordIsUpdated = self::PASSWORD_POLICY_FAILED;
+                }
+
                 // Update the real name:
                 if (isset($be_user_data['realName']) && $be_user_data['realName'] !== $backendUser->user['realName']) {
                     $backendUser->user['realName'] = ($storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80));
@@ -222,7 +248,7 @@ class SetupModuleController
                     $backendUser->user['email'] = ($storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 255));
                 }
                 // Update the password:
-                if ($passwordIsConfirmed) {
+                if ($passwordIsConfirmed && $passwordValid) {
                     if ($backendUser->isAdmin()) {
                         $passwordOk = true;
                     } else {
@@ -243,6 +269,8 @@ class SetupModuleController
                     } else {
                         $this->passwordIsUpdated = self::PASSWORD_OLD_WRONG;
                     }
+                } elseif ($passwordIsConfirmed) {
+                    $this->passwordIsUpdated = self::PASSWORD_POLICY_FAILED;
                 } else {
                     $this->passwordIsUpdated = self::PASSWORD_NOT_THE_SAME;
                 }
@@ -392,6 +420,13 @@ class SetupModuleController
                         'value="' . htmlspecialchars((string)$value) . '" ' .
                         $more .
                         ' />';
+
+                    if ($fieldName === 'password' && $this->passwordPolicyValidator->isEnabled() && $this->passwordPolicyValidator->hasRequirements()) {
+                        $description = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:passwordRequirements.description');
+                        $html .= '<p class="mt-2 mb-1 text-muted">' . htmlspecialchars($description) . '</p>';
+                        $html .= '<ul class="mb-0"><li class="text-muted">' . implode('</li><li class="text-muted">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul>';
+                    }
+
                     break;
                 case 'check':
                     $html = $label . '<div class="form-check form-switch"><input id="field_' . htmlspecialchars($fieldName) . '"
@@ -834,6 +869,9 @@ class SetupModuleController
                     break;
                 case self::PASSWORD_UPDATED:
                     $view->addFlashMessage($languageService->getLL('newPassword_ok'), $languageService->getLL('newPassword'));
+                    break;
+                case self::PASSWORD_POLICY_FAILED:
+                    $view->addFlashMessage($languageService->getLL('passwordPolicyFailed'), $languageService->getLL('newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;
             }
         }
