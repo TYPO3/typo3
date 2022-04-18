@@ -308,7 +308,12 @@ class InstallUtilityTest extends UnitTestCase
             SiteConfiguration::class,
             new SiteConfiguration(
                 Environment::getConfigPath() . '/sites',
-                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new class() implements EventDispatcherInterface {
+                    public function dispatch(object $event)
+                    {
+                        return $event;
+                    }
+                },
                 new NullFrontend('core')
             )
         );
@@ -388,7 +393,12 @@ class InstallUtilityTest extends UnitTestCase
             SiteConfiguration::class,
             new SiteConfiguration(
                 Environment::getConfigPath() . '/sites',
-                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new class() implements EventDispatcherInterface {
+                    public function dispatch(object $event)
+                    {
+                        return $event;
+                    }
+                },
                 new NullFrontend('core')
             )
         );
