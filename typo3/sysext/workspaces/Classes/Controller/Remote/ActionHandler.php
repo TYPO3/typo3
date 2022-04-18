@@ -176,7 +176,7 @@ class ActionHandler
     /**
      * Saves the selected columns to be shown to the preferences of the current backend user.
      *
-     * @param \stdClass $model
+     * @param array<\stdClass> $model
      */
     public function saveColumnModel($model)
     {
