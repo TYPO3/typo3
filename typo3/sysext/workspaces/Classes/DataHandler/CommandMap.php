@@ -419,7 +419,7 @@ class CommandMap
      *
      * @param DependencyResolver $dependency
      * @param string $table
-     * @param string $versionId
+     * @param int $versionId
      * @param array $properties
      */
     protected function addWorkspacesSetStageElements(DependencyResolver $dependency, $table, $versionId, array $properties)
