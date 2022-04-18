@@ -374,7 +374,7 @@ class DataHandlerHook
         // Workspace destination check:
         // All records can be inserted if $recordMustNotBeVersionized is true.
         // Only new versions can be inserted if $recordMustNotBeVersionized is FALSE.
-        if (!($recordMustNotBeVersionized || $canMoveRecord && !$recordMustNotBeVersionized)) {
+        if (!($recordMustNotBeVersionized || $canMoveRecord)) {
             $workspaceAccessBlocked['dest1'] = 'Could not insert record from table "' . $table . '" in destination PID "' . $resolvedPid . '" ';
         }
 
