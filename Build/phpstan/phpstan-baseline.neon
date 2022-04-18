@@ -1986,26 +1986,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) should return object&T but returns TYPO3\\\\CMS\\\\Core\\\\SingletonInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) should return object&T but returns object\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstanceForDi\\(\\) should return object&T but returns TYPO3\\\\CMS\\\\Core\\\\SingletonInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstanceForDi\\(\\) should return object&T but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Offset 'ch' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
