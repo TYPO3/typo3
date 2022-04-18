@@ -4796,11 +4796,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
 
 		-
-			message: "#^Parameter \\#2 \\$id of method TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyResolver\\:\\:addElement\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/DataHandler/CommandMap.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
