@@ -5386,11 +5386,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Controller/PreviewController.php
 
 		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
-
-		-
 			message: "#^Offset 0 does not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#"
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php

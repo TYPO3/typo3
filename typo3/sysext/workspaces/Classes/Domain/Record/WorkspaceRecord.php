@@ -78,9 +78,8 @@ class WorkspaceRecord extends AbstractRecord
         } elseif (empty($record)) {
             $record = static::fetch('sys_workspace', $uid);
         }
-        // [phpstan] Unsafe usage of new static()
-        // todo: Either mark this class or its constructor final or use new self instead.
-        return new static($record);
+
+        return GeneralUtility::makeInstance(self::class, $record);
     }
 
     /**
