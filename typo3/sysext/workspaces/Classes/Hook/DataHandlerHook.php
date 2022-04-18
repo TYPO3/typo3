@@ -83,7 +83,7 @@ class DataHandlerHook
      * @param string $command the command to be executed
      * @param string $table the table of the record
      * @param int $id the ID of the record
-     * @param mixed $value the value containing the data
+     * @param array $value the value containing the data
      * @param bool $commandIsProcessed can be set so that other hooks or
      * @param DataHandler $dataHandler reference to the main DataHandler object
      */
@@ -910,17 +910,17 @@ class DataHandlerHook
         if (!empty($liveRelations->itemArray)) {
             $dataHandler->addRemapAction(
                 $tableName,
-                $liveData['uid'],
+                (int)$liveData['uid'],
                 [$this, 'updateInlineForeignFieldSorting'],
-                [$liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace]
+                [(int)$liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace]
             );
         }
         if (!empty($versionRelations->itemArray)) {
             $dataHandler->addRemapAction(
                 $tableName,
-                $liveData['uid'],
+                (int)$liveData['uid'],
                 [$this, 'updateInlineForeignFieldSorting'],
-                [$liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0]
+                [(int)$liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0]
             );
         }
     }
@@ -1084,14 +1084,14 @@ class DataHandlerHook
      * Sorting fields ("sortby") are not modified during the
      * workspace publishing/swapping process directly.
      *
-     * @param string $parentId
+     * @param int $parentId
      * @param string $foreignTableName
      * @param int[] $foreignIds
      * @param array $configuration
      * @param int $targetWorkspaceId
      * @internal
      */
-    public function updateInlineForeignFieldSorting($parentId, $foreignTableName, $foreignIds, array $configuration, $targetWorkspaceId)
+    public function updateInlineForeignFieldSorting(int $parentId, $foreignTableName, $foreignIds, array $configuration, $targetWorkspaceId)
     {
         $remappedIds = [];
         // Use remapped ids (live id <-> version id)
