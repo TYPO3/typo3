@@ -742,7 +742,7 @@ class SetupModuleController
      * Set avatar fileUid for backend user
      *
      * @param int $beUserId
-     * @param int $fileUid
+     * @param numeric-string|''|'delete' $fileUid either a file UID, an empty string, or `delete`
      * @param array $storeRec
      */
     protected function setAvatarFileUid($beUserId, $fileUid, array &$storeRec)
@@ -788,11 +788,10 @@ class SetupModuleController
         }
 
         // Create new reference
-        if ($fileUid) {
-
+        if ((int)$fileUid > 0) {
             // Get file object
             try {
-                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$fileUid);
             } catch (FileDoesNotExistException $e) {
                 $file = false;
             }

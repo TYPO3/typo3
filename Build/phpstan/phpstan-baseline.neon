@@ -4331,16 +4331,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and 'delete' will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
