@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
@@ -47,11 +46,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\PharStreamWrapper\Behavior;
-use TYPO3\PharStreamWrapper\Interceptor\ConjunctionInterceptor;
-use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
-use TYPO3\PharStreamWrapper\Manager;
-use TYPO3\PharStreamWrapper\PharStreamWrapper;
 
 /**
  * This class encapsulates bootstrap related methods.
@@ -100,7 +94,6 @@ class Bootstrap
         GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
 
         static::initializeErrorHandling();
-        static::initializeIO();
 
         $disableCaching = $failsafe ? true : false;
         $coreCache = static::createCache('core', $disableCaching);
@@ -426,27 +419,6 @@ class Bootstrap
         if (!empty($exceptionHandlerClassName)) {
             // Registering the exception handler is done in the constructor
             GeneralUtility::makeInstance($exceptionHandlerClassName);
-        }
-    }
-
-    /**
-     * Initializes IO and stream wrapper related behavior.
-     */
-    protected static function initializeIO()
-    {
-        if (in_array('phar', stream_get_wrappers())) {
-            // destroy and re-initialize PharStreamWrapper for TYPO3 core
-            Manager::destroy();
-            Manager::initialize(
-                (new Behavior())
-                    ->withAssertion(new ConjunctionInterceptor([
-                        new PharStreamWrapperInterceptor(),
-                        new PharMetaDataInterceptor(),
-                    ]))
-            );
-
-            stream_wrapper_unregister('phar');
-            stream_wrapper_register('phar', PharStreamWrapper::class);
         }
     }
 

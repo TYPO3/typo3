@@ -1826,16 +1826,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PhpError.php
 
 		-
-			message: "#^Call to function file_get_contents\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/IO/PharStreamWrapperInterceptorTest.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectation$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/IO/PharStreamWrapperInterceptorTest.php
-
-		-
 			message: "#^Parameter \\#3 \\$compress of method TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:addCssInlineBlock\\(\\) expects bool, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Page/PageRendererTest.php
