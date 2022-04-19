@@ -69,7 +69,7 @@ class ImageContentObject extends AbstractContentObject
             $source = $info[3];
         }
         // Remove file objects for AssetCollector, as it only allows to store scalar values
-        $infoOriginalFile = $info['originalFile'];
+        $infoOriginalFile = $info['originalFile'] ?? null;
         unset($info['originalFile'], $info['processedFile']);
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $source,
