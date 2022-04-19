@@ -49,10 +49,12 @@ class VimeoHelper extends AbstractOEmbedHelper
         $temporaryFileName = $this->getTempFolderPath() . 'vimeo_' . md5($videoId) . '.jpg';
         if (!file_exists($temporaryFileName)) {
             $oEmbedData = $this->getOEmbedData($videoId);
-            $previewImage = GeneralUtility::getUrl($oEmbedData['thumbnail_url']);
-            if ($previewImage !== false) {
-                file_put_contents($temporaryFileName, $previewImage);
-                GeneralUtility::fixPermissions($temporaryFileName);
+            if (!empty($oEmbedData['thumbnail_url'])) {
+                $previewImage = GeneralUtility::getUrl($oEmbedData['thumbnail_url']);
+                if ($previewImage !== false) {
+                    file_put_contents($temporaryFileName, $previewImage);
+                    GeneralUtility::fixPermissions($temporaryFileName);
+                }
             }
         }
         return $temporaryFileName;

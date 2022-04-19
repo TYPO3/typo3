@@ -65,13 +65,16 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
      */
     protected function getOEmbedData($mediaId)
     {
-        $oEmbed = GeneralUtility::getUrl(
+        $oEmbed = (string)GeneralUtility::getUrl(
             $this->getOEmbedUrl($mediaId)
         );
-        if ($oEmbed) {
+        if ($oEmbed !== '') {
             $oEmbed = json_decode($oEmbed, true);
+            if (is_array($oEmbed)) {
+                return $oEmbed;
+            }
         }
-        return $oEmbed;
+        return null;
     }
 
     /**
@@ -87,7 +90,7 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
 
         $oEmbed = $this->getOEmbedData($this->getOnlineMediaId($file));
 
-        if ($oEmbed) {
+        if (is_array($oEmbed) && $oEmbed !== []) {
             $metadata['width'] = (int)$oEmbed['width'];
             $metadata['height'] = (int)$oEmbed['height'];
             if (empty($file->getProperty('title'))) {
