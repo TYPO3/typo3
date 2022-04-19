@@ -520,7 +520,7 @@ class SetupModuleController
                         $value = '';
                         $noAutocomplete = 'autocomplete="new-password" ';
                     }
-                    $html = '<input aria-labelledby="label_' . htmlspecialchars($fieldName) . '" id="field_' . htmlspecialchars($fieldName) . '"
+                    $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
                         type="' . htmlspecialchars($type) . '"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
                         $noAutocomplete .
@@ -532,7 +532,6 @@ class SetupModuleController
                     $html = $label . '<div class="form-check form-switch"><input id="field_' . htmlspecialchars($fieldName) . '"
                         type="checkbox"
                         class="form-check-input"
-                        aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                         ($value ? ' checked="checked"' : '') .
                         $more .
@@ -547,7 +546,6 @@ class SetupModuleController
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this);
                     } else {
                         $html = '<select id="field_' . htmlspecialchars($fieldName) . '"
-                            aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
                             name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                             $more . '>' . LF;
                         foreach ($config['items'] as $key => $optionLabel) {
@@ -560,12 +558,12 @@ class SetupModuleController
                     $html = GeneralUtility::callUserFunction($config['userFunc'], $config, $this);
                     break;
                 case 'button':
+                    $label = $this->getLabel($config['label'] ?? '');
                     if (!empty($config['clickData'])) {
                         $clickData = $config['clickData'];
                         $buttonAttributes = [
                             'type' => 'button',
                             'class' => 'btn btn-default',
-                            'aria-labelledby' => 'label_' . htmlspecialchars($fieldName),
                             'value' => $this->getLabel($config['buttonlabel'], '', false),
                         ];
                         if (isset($clickData['eventName'])) {
@@ -654,6 +652,7 @@ class SetupModuleController
                             . '</button></div>';
                     break;
                 case 'mfa':
+                    $label = $this->getLabel($config['label'] ?? '');
                     $html = '';
                     $lang = $this->getLanguageService();
                     $hasActiveProviders = $this->mfaProviderRegistry->hasActiveProviders($backendUser);
@@ -729,7 +728,7 @@ class SetupModuleController
                 $content .= '<option value="' . $languageCode . '"' . ($currentSelectedLanguage === $languageCode ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
             }
         }
-        $content = '<select aria-labelledby="label_lang" id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
+        $content = '<select id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
         if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
             $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->getLL('languageUnavailable'), $languageService->getLL('lang_' . $currentSelectedLanguage))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($languageService->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
             $content = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $content;
@@ -772,7 +771,7 @@ class SetupModuleController
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
             }
         }
-        return '<select id="field_startModule" aria-labelledby="label_startModule" name="data[startModule]" class="form-select">' . $startModuleSelect . '</select>';
+        return '<select id="field_startModule" name="data[startModule]" class="form-select">' . $startModuleSelect . '</select>';
     }
 
     /**
@@ -818,7 +817,11 @@ class SetupModuleController
             $out = '<span style="color:#999999">' . $out . '</span>';
         }
         if ($addLabelTag) {
-            $out = '<label>' . $out . '</label>';
+            if ($key !== '') {
+                $out = '<label for="field_' . htmlspecialchars($key) . '">' . $out . '</label>';
+            } else {
+                $out = '<label>' . $out . '</label>';
+            }
         }
         return $out;
     }
