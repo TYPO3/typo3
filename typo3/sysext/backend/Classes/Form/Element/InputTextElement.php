@@ -161,7 +161,7 @@ class InputTextElement extends AbstractFormElement
         if (is_array($config['valuePicker']['items'] ?? false)) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
+                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
             ];
             $valuePickerAttributes = array_merge(
                 [
@@ -195,7 +195,7 @@ class InputTextElement extends AbstractFormElement
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';

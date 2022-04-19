@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Site;
 
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\Remote\RemoteWebElement;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -174,7 +172,7 @@ class SiteModuleCest
         $I->amGoingTo('Add the PAGE object');
         $I->click('Edit the whole template record');
         $I->waitForElement('#EditDocumentController');
-        $I->fillField($this->getInputByLabel($I, 'Template Title'), 'Default Title');
+        $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[title]")]', 'Default Title');
         $I->click("//button[@name='_savedok']");
         $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
@@ -186,7 +184,7 @@ page.shortcutIcon = fileadmin/styleguide/bus_lane.jpg
 page.10 = TEXT
 page.10.value = This is a default text for default rendering without dynamic content creation
 ';
-        $I->fillField($this->getInputByLabel($I, 'Setup', 'textarea'), $config);
+        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
         $I->click('//button[@name="_savedok"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
 
@@ -283,22 +281,5 @@ page.10.value = This is a default text for default rendering without dynamic con
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Site Configuration', 'h1');
         $I->canSee('SitesTestIdentifier');
-    }
-
-    /**
-     * Find input field by label name
-     */
-    protected function getInputByLabel(ApplicationTester $I, string $labelName, string $tag = 'input[@type="text"]'): RemoteWebElement
-    {
-        $I->comment('Get input for label "' . $labelName . '"');
-        return $I->executeInSelenium(
-            static function (RemoteWebDriver $webDriver) use ($labelName, $tag) {
-                return $webDriver->findElement(
-                    \Facebook\WebDriver\WebDriverBy::xpath(
-                        '//label[contains(text(),"' . $labelName . '")]/following-sibling::div//' . $tag
-                    )
-                );
-            }
-        );
     }
 }

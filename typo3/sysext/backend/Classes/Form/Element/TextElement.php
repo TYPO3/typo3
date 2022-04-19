@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,7 +24,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of TCEform elements of the type "text"
+ * General type=text element
+ *
+ * The InputTextElement renders a html textarea field.
  */
 class TextElement extends AbstractFormElement
 {
@@ -73,34 +77,28 @@ class TextElement extends AbstractFormElement
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
-        $languageService = $this->getLanguageService();
-        $backendUser = $this->getBackendUserAuthentication();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $width = null;
         if ($config['cols'] ?? false) {
             $width = $this->formMaxWidth(MathUtility::forceIntegerInRange($config['cols'], $this->minimumInputWidth, $this->maxInputWidth));
         }
-        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
 
         // Setting number of rows
         $rows = MathUtility::forceIntegerInRange(($config['rows'] ?? 5) ?: 5, 1, 20);
         $originalRows = $rows;
         $itemFormElementValueLength = strlen((string)$itemValue);
-        if ($itemFormElementValueLength > $this->charactersPerRow * 2) {
+        if ($itemFormElementValueLength > ($this->charactersPerRow * 2)) {
             $rows = MathUtility::forceIntegerInRange(
                 (int)round($itemFormElementValueLength / $this->charactersPerRow),
-                count(explode(LF, $itemValue)),
+                count(explode(LF, (string)$itemValue)),
                 20
             );
             if ($rows < $originalRows) {
@@ -120,7 +118,7 @@ class TextElement extends AbstractFormElement
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
             $html[] =               '<textarea class="form-control" rows="' . $rows . '" disabled>';
-            $html[] =                   htmlspecialchars($itemValue);
+            $html[] =                   htmlspecialchars((string)$itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
             $html[] =       '</div>';
@@ -130,7 +128,14 @@ class TextElement extends AbstractFormElement
             return $resultArray;
         }
 
-        // @todo: The whole eval handling is a mess and needs refactoring
+        $languageService = $this->getLanguageService();
+        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
+        $itemName = (string)$parameterArray['itemFormElName'];
+
+        // @todo: The whole eval handling is a mess and needs refactoring - Especially for this element,
+        //        since the resolved $evalList is currently not used at all, because FormEngineValidation
+        //        does not support eval for <textarea> elements.
+        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         foreach ($evalList as $func) {
             // @todo: This is ugly: The code should find out on it's own whether an eval definition is a
             // @todo: keyword like "date", or a class reference. The global registration could be dropped then
@@ -153,14 +158,12 @@ class TextElement extends AbstractFormElement
             $evalList[] = 'null';
         }
 
-        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
-
         $attributes = array_merge(
             [
                 'id' => $fieldId,
-                'name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'name' => $itemName,
                 'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-                'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'data-formengine-input-name' => $itemName,
                 'rows' => (string)$rows,
                 'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
             ],
@@ -178,7 +181,7 @@ class TextElement extends AbstractFormElement
             $classes[] = 't3js-enable-tab';
         }
         $attributes['class'] = implode(' ', $classes);
-        $maximumHeight = (int)$backendUser->uc['resizeTextareas_MaxHeight'];
+        $maximumHeight = (int)$this->getBackendUserAuthentication()->uc['resizeTextareas_MaxHeight'];
         if ($maximumHeight > 0) {
             // add the max-height from the users' preference to it
             $attributes['style'] = 'max-height: ' . $maximumHeight . 'px';
@@ -187,14 +190,14 @@ class TextElement extends AbstractFormElement
             $attributes['maxlength'] = (string)(int)$config['max'];
         }
         if (!empty($config['placeholder'])) {
-            $attributes['placeholder'] = htmlspecialchars(trim($config['placeholder']));
+            $attributes['placeholder'] = trim($config['placeholder']);
         }
 
         $valuePickerHtml = [];
-        if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
+        if (is_array($config['valuePicker']['items'] ?? false)) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
+                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
             ];
             $valuePickerAttributes = array_merge(
                 [
@@ -245,6 +248,8 @@ class TextElement extends AbstractFormElement
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);
+
+        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $this->data['databaseRow']['uid'] . '][' . $fieldName . ']');
 
         $fullElement = $mainFieldHtml;
         if ($this->hasNullCheckboxButNoPlaceholder()) {
@@ -309,10 +314,15 @@ class TextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            '@typo3/backend/form-engine/element/text-element.js'
-        )->instance($fieldId);
-        $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
+        $resultArray['html'] = '
+             <typo3-formengine-element-text recordFieldId="' . htmlspecialchars($fieldId) . '">
+                <div class="formengine-field-item t3js-formengine-field-item">
+                    ' . $fieldInformationHtml . $fullElement . '
+                </div>
+            </typo3-formengine-element-color>';
+
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/text-element.js');
+
         return $resultArray;
     }
 

@@ -13,19 +13,33 @@
 
 import {Resizable} from './modifier/resizable';
 import {Tabbable} from './modifier/tabbable';
-import DocumentService from '@typo3/core/document-service';
 
-class TextElement {
+/**
+ * Module: @typo3/backend/form-engine/element/text-element
+ *
+ * Functionality for the text element
+ *
+ * @example
+ * <typo3-formengine-element-text recordFieldId="some-id">
+ *   ...
+ * </typo3-formengine-element-text>
+ *
+ * This is based on W3C custom elements ("web components") specification, see
+ * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+ */
+class TextElement extends HTMLElement {
   private element: HTMLTextAreaElement = null;
 
-  constructor(elementId: string) {
-    DocumentService.ready().then((): void => {
-      this.element = <HTMLTextAreaElement>document.getElementById(elementId);
+  public connectedCallback(): void {
+    this.element = document.getElementById((this.getAttribute('recordFieldId') || '' as string)) as HTMLTextAreaElement;
 
-      Resizable.enable(this.element);
-      Tabbable.enable(this.element);
-    });
+    if (!this.element) {
+      return;
+    }
+
+    Resizable.enable(this.element);
+    Tabbable.enable(this.element);
   }
 }
 
-export default TextElement;
+window.customElements.define('typo3-formengine-element-text', TextElement);
