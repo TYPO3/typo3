@@ -133,10 +133,12 @@ are used for file (and image) uploads.
                            label: '1:/user_upload/'
                  properties:
                    saveToFileMount: '1:/user_upload/'
-               ImageUpload
-                 properties:
-                   saveToFileMount: '1:/user_upload/'
-                  editors:
+               ImageUpload:
+                 formEditor:
+                   predefinedDefaults:
+                     properties:
+                       saveToFileMount: '1:/user_upload/'
+                   editors:
                      400:
                        selectOptions:
                          10:
