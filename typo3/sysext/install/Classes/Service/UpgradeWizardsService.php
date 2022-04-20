@@ -465,8 +465,17 @@ class UpgradeWizardsService
      */
     protected function assertIdentifierIsValid(string $identifier): void
     {
-        if ($identifier === '' || (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier]) && !is_subclass_of($identifier, RowUpdaterInterface::class))) {
-            throw new \RuntimeException('No valid wizard identifier given', 1502721731);
+        if ($identifier === '') {
+            throw new \RuntimeException('Empty upgrade wizard identifier given', 1650579934);
+        }
+        if (
+            !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])
+            && !is_subclass_of($identifier, RowUpdaterInterface::class)
+        ) {
+            throw new \RuntimeException(
+                'The upgrade wizard identifier "' . $identifier . '" must either be found in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/install\'][\'update\'] or it must implement TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface',
+                1650546252
+            );
         }
     }
 }
