@@ -674,7 +674,7 @@ class Uri implements UriInterface
      */
     protected function sanitizeQuery($query)
     {
-        if (!empty($query) && strpos($query, '?') === 0) {
+        if (!empty($query) && str_starts_with($query, '?')) {
             $query = substr($query, 1);
         }
 
@@ -718,7 +718,7 @@ class Uri implements UriInterface
             $fragment = '';
         }
 
-        if (!empty($fragment) && strpos($fragment, '#') === 0) {
+        if (!empty($fragment) && str_starts_with($fragment, '#')) {
             $fragment = substr($fragment, 1);
         }
 

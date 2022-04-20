@@ -644,8 +644,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             // Wrapping the line in <p> tags if not already wrapped and does not contain an hr tag and is not allowed outside of paragraphs.
             if (!in_array($partFirstTagName, $this->allowedTagsOutsideOfParagraphs, true) && !preg_match('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', $partFirstTagName)) {
                 $testStr = strtolower(trim($parts[$k]));
-                if (strpos($testStr, '<div') !== 0 || substr($testStr, -6) !== '</div>') {
-                    if (strpos($testStr, '<p') !== 0 || substr($testStr, -4) !== '</p>') {
+                if (!str_starts_with($testStr, '<div') || !str_ends_with($testStr, '</div>')) {
+                    if (!str_starts_with($testStr, '<p') || !str_ends_with($testStr, '</p>')) {
                         // Only set p-tags if there is not already div or p tags:
                         $parts[$k] = '<p>' . $parts[$k] . '</p>';
                     }

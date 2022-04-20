@@ -56,7 +56,7 @@ final class RegularExpressionValidator extends AbstractValidator
     {
         $errorMessage = (string)($this->options['errorMessage'] ?? '');
         // if custom message is no locallang reference
-        if ($errorMessage !== '' && strpos($errorMessage, 'LLL') !== 0) {
+        if ($errorMessage !== '' && !str_starts_with($errorMessage, 'LLL')) {
             return $errorMessage;
         }
         if ($errorMessage === '') {

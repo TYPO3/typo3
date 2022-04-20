@@ -100,7 +100,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
                 if (($pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) > 0) {
                     $pid = (int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
                 }
-            } elseif (strpos($pid, 'NEW') !== 0) {
+            } elseif (!str_starts_with($pid, 'NEW')) {
                 throw new \RuntimeException(
                     'inlineFirstPid should either be an integer or a "NEW..." string',
                     1521220141
@@ -139,7 +139,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $result['databaseRow'][$fieldName] = implode(',', $connectedUids);
         if ($result['inlineCompileExistingChildren']) {
             foreach ($connectedUids as $uid) {
-                if (strpos((string)$uid, 'NEW') !== 0) {
+                if (!str_starts_with((string)$uid, 'NEW')) {
                     $compiledChild = $this->compileChild($result, $fieldName, (int)$uid);
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }

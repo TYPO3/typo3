@@ -69,7 +69,7 @@ class LocalPath
             $this->absolute = PathUtility::getCanonicalPath($publicPath . $value) . '/';
         } elseif ($type === self::TYPE_ABSOLUTE) {
             $this->absolute = $value;
-            $this->relative = strpos($value, $publicPath) === 0
+            $this->relative = str_starts_with($value, $publicPath)
                 ? substr($value, strlen($publicPath))
                 : null;
         }

@@ -720,7 +720,7 @@ class UpgradeController extends AbstractController
         foreach ($restFiles as $restFile) {
             // Skip files in "8.x" directory
             /** @var SplFileInfo $restFile */
-            if (strpos($restFile->getRelativePath(), '8') === 0) {
+            if (str_starts_with($restFile->getRelativePath(), '8')) {
                 continue;
             }
 

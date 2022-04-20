@@ -155,7 +155,9 @@ class ExtensionManagementUtility
      */
     public static function getCN($key)
     {
-        return strpos($key, 'user_') === 0 ? 'user_' . str_replace('_', '', substr($key, 5)) : 'tx_' . str_replace('_', '', $key);
+        return str_starts_with($key, 'user_')
+            ? 'user_' . str_replace('_', '', substr($key, 5))
+            : 'tx_' . str_replace('_', '', $key);
     }
 
     /**
@@ -374,7 +376,7 @@ class ExtensionManagementUtility
                 }
                 if (
                     isset($fieldArrayWithOptions[$fieldNumber + 1])
-                    && strpos($fieldArrayWithOptions[$fieldNumber + 1], '--palette--') === 0
+                    && str_starts_with($fieldArrayWithOptions[$fieldNumber + 1], '--palette--')
                 ) {
                     // Match for $field and next field is a palette - add fields to this one
                     $paletteName = GeneralUtility::trimExplode(';', $fieldArrayWithOptions[$fieldNumber + 1]);

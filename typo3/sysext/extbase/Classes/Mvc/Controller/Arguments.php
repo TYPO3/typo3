@@ -230,7 +230,7 @@ class Arguments extends \ArrayObject
      */
     public function __call($methodName, array $arguments)
     {
-        if (strpos($methodName, 'set') !== 0) {
+        if (!str_starts_with($methodName, 'set')) {
             throw new \LogicException('Unknown method "' . $methodName . '".', 1210858451);
         }
         $firstLowerCaseArgumentName = $this->translateToLongArgumentName(strtolower($methodName[3]) . substr($methodName, 4));

@@ -317,7 +317,7 @@ class VariableProcessor
                 if ($hash) {
                     $value = $this->resolveHash($value);
                 }
-                if (!empty($namespacePrefix) && strpos($value, $namespacePrefix) === 0) {
+                if (!empty($namespacePrefix) && str_starts_with($value, $namespacePrefix)) {
                     $value = substr($value, strlen($namespacePrefix));
                 }
                 $value = $this->resolveNestedValue($value);
@@ -395,7 +395,7 @@ class VariableProcessor
     protected function inflateNestedValue(string $value, ?string $namespace, array $arguments): string
     {
         $namespacePrefix = $namespace ? $namespace . static::LEVEL_DELIMITER : '';
-        if (!empty($namespace) && strpos($value, $namespacePrefix) !== 0) {
+        if (!empty($namespace) && !str_starts_with($value, $namespacePrefix)) {
             return $value;
         }
         $arguments = array_map('strval', $arguments);

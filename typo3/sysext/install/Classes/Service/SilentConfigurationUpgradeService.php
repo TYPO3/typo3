@@ -1040,7 +1040,7 @@ class SilentConfigurationUpgradeService
             $newConfig = [];
             $hasBeenModified = false;
             foreach ($cacheConfigurations as $identifier => $cacheConfiguration) {
-                if (strpos($identifier, 'cache_') === 0) {
+                if (str_starts_with($identifier, 'cache_')) {
                     $identifier = substr($identifier, 6);
                     $hasBeenModified = true;
                 }

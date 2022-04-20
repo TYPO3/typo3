@@ -463,7 +463,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             // A display condition on a flex form sheet. Relatively simple: fieldName is either
             // "parentRec.fieldName" pointing to a databaseRow field name, or "sheetName.fieldName" pointing
             // to a field value from a neighbor field.
-            if (strpos($givenFieldName, 'parentRec.') === 0) {
+            if (str_starts_with($givenFieldName, 'parentRec.')) {
                 $fieldName = substr($givenFieldName, 10);
                 if (array_key_exists($fieldName, $databaseRow)) {
                     $fieldValue = $databaseRow[$fieldName];
@@ -493,7 +493,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             // A display condition on a flex field. Handle "parentRec." similar to sheet conditions,
             // get a list of "local" field names and see if they are used as reference, else see if a
             // "sheetName.fieldName" field reference is given
-            if (strpos($givenFieldName, 'parentRec.') === 0) {
+            if (str_starts_with($givenFieldName, 'parentRec.')) {
                 $fieldName = substr($givenFieldName, 10);
                 if (array_key_exists($fieldName, $databaseRow)) {
                     $fieldValue = $databaseRow[$fieldName];
@@ -532,7 +532,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             // A display condition on a flex form section container element. Handle "parentRec.", compare to a
             // list of local field names, compare to a list of field names from same sheet, compare to a list
             // of sheet fields from other sheets.
-            if (strpos($givenFieldName, 'parentRec.') === 0) {
+            if (str_starts_with($givenFieldName, 'parentRec.')) {
                 $fieldName = substr($givenFieldName, 10);
                 if (array_key_exists($fieldName, $databaseRow)) {
                     $fieldValue = $databaseRow[$fieldName];

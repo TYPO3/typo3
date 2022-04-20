@@ -72,7 +72,7 @@ class SqlSrv extends AbstractPlatform
     {
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (strpos($defaultConnection->getServerVersion(), 'mssql') !== 0) {
+        if (!str_starts_with($defaultConnection->getServerVersion(), 'mssql')) {
             return $this->messageQueue;
         }
 

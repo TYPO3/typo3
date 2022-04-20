@@ -319,7 +319,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
 
         foreach ($expectations as $type => $expectation) {
             $shallExist = true;
-            if (strpos($type, '!') === 0) {
+            if (str_starts_with($type, '!')) {
                 $shallExist = false;
                 $type = substr($type, 1);
             }
@@ -330,7 +330,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 array_filter(
                     array_keys($this->resolvedResources),
                     static function (string $candidateKey) use ($type) {
-                        return strpos($candidateKey, $type) === 0;
+                        return str_starts_with($candidateKey, $type);
                     }
                 )
             );

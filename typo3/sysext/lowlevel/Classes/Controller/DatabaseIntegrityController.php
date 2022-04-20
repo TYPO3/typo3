@@ -163,7 +163,7 @@ class DatabaseIntegrityController
         }
         $setLimitToStart = false;
         foreach ($OLD_MOD_SETTINGS as $key => $val) {
-            if (strpos($key, 'query') === 0 && $this->MOD_SETTINGS[$key] != $val && $key !== 'queryLimit' && $key !== 'use_listview') {
+            if (str_starts_with($key, 'query') && $this->MOD_SETTINGS[$key] != $val && $key !== 'queryLimit' && $key !== 'use_listview') {
                 $setLimitToStart = true;
                 $addConditionCheck = (bool)($parsedBody['qG_ins'] ?? $queryParams['qG_ins'] ?? false);
                 if ($key === 'queryTable' && !$addConditionCheck) {

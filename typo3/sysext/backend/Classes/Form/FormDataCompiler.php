@@ -85,7 +85,7 @@ class FormDataCompiler
                 }
             }
             if ($dataKey === 'vanillaUid') {
-                if (!MathUtility::canBeInterpretedAsInteger($dataValue) && strpos($dataValue, 'NEW') !== 0) {
+                if (!MathUtility::canBeInterpretedAsInteger($dataValue) && !str_starts_with($dataValue, 'NEW')) {
                     throw new \InvalidArgumentException('$vanillaUid is not an integer or "NEW..." string ID', 1437654247);
                 }
                 if (isset($initialData['command']) && $initialData['command'] === 'edit' && $dataValue < 0) {

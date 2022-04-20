@@ -390,7 +390,7 @@ class RedirectService implements LoggerAwareInterface
             foreach ($matches as $key => $val) {
                 // Unsafe regexp captching group may lead to adding query parameters to result url, which we need
                 // to prevent here, thus throwing everything beginning with ? away
-                if (strpos($val, '?') !== false) {
+                if (str_contains($val, '?')) {
                     $val = explode('?', $val, 2)[0] ?? '';
                     $this->logger->warning(
                         sprintf(

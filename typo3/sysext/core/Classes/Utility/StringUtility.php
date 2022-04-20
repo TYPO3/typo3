@@ -55,7 +55,7 @@ class StringUtility
      */
     public static function removeByteOrderMark(string $input): string
     {
-        if (strpos($input, "\xef\xbb\xbf") === 0) {
+        if (str_starts_with($input, "\xef\xbb\xbf")) {
             $input = substr($input, 3);
         }
 

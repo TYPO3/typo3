@@ -309,7 +309,7 @@ class GeneralUtility
                     $maskIntModulo = $maskInt % 8;
                     $numFullCharactersUntilBoundary = (int)($maskInt / 8);
                     $substring = (string)substr($baseIPBin, 0, $numFullCharactersUntilBoundary);
-                    if (strpos($testBin, $substring) !== 0) {
+                    if (!str_starts_with($testBin, $substring)) {
                         $success = false;
                     } elseif ($maskIntModulo > 0) {
                         // If not an 8-bit-boundary, check bits of last character
@@ -1414,7 +1414,7 @@ class GeneralUtility
                 $documentTag = $tagName;
             }
             // Test for name space:
-            $tagName = $NSprefix && strpos($tagName, $NSprefix) === 0 ? substr($tagName, strlen($NSprefix)) : $tagName;
+            $tagName = $NSprefix && str_starts_with($tagName, $NSprefix) ? substr($tagName, strlen($NSprefix)) : $tagName;
             // Test for numeric tag, encoded on the form "nXXX":
             $testNtag = substr($tagName, 1);
             // Closing tag.
@@ -2041,12 +2041,12 @@ class GeneralUtility
      */
     public static function locationHeaderUrl($path)
     {
-        if (strpos($path, '//') === 0) {
+        if (str_starts_with($path, '//')) {
             return $path;
         }
 
         // relative to HOST
-        if (strpos($path, '/') === 0) {
+        if (str_starts_with($path, '/')) {
             return self::getIndpEnv('TYPO3_REQUEST_HOST') . $path;
         }
 
@@ -2677,16 +2677,16 @@ class GeneralUtility
             $testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
             // Pass if URL is on the current host:
             if (self::isValidUrl($decodedUrl)) {
-                if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL')) === 0) {
+                if (self::isOnCurrentHost($decodedUrl) && str_starts_with($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL'))) {
                     $sanitizedUrl = $url;
                 }
             } elseif (PathUtility::isAbsolutePath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
                 $sanitizedUrl = $url;
-            } elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/' &&
+            } elseif (str_starts_with($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) && $decodedUrl[0] === '/' &&
                 substr($decodedUrl, 0, 2) !== '//'
             ) {
                 $sanitizedUrl = $url;
-            } elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0
+            } elseif (empty($parsedUrl['scheme']) && str_starts_with($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH'))
                 && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\')
             ) {
                 $sanitizedUrl = $url;

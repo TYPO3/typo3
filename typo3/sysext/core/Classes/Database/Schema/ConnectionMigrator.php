@@ -667,7 +667,7 @@ class ConnectionMigrator
             // Skip tables that are not being renamed or where the new name isn't prefixed
             // with the deletion marker.
             if ($tableDiff->getNewName() === false
-                || strpos($tableDiff->getNewName()->getName(), $this->deletedPrefix) !== 0
+                || !str_starts_with($tableDiff->getNewName()->getName(), $this->deletedPrefix)
             ) {
                 continue;
             }
@@ -908,7 +908,7 @@ class ConnectionMigrator
     protected function migrateUnprefixedRemovedTablesToRenames(SchemaDiff $schemaDiff): SchemaDiff
     {
         foreach ($schemaDiff->removedTables as $index => $removedTable) {
-            if (strpos($removedTable->getName(), $this->deletedPrefix) === 0) {
+            if (str_starts_with($removedTable->getName(), $this->deletedPrefix)) {
                 continue;
             }
             $tableDiff = new TableDiff(
@@ -953,7 +953,7 @@ class ConnectionMigrator
             }
 
             foreach ($changedTable->removedColumns as $columnIndex => $removedColumn) {
-                if (strpos($removedColumn->getName(), $this->deletedPrefix) === 0) {
+                if (str_starts_with($removedColumn->getName(), $this->deletedPrefix)) {
                     continue;
                 }
 
@@ -1094,7 +1094,7 @@ class ConnectionMigrator
                 // If the tablename has a deleted prefix strip it of before comparing
                 // it against the list of valid table names so that drop operations
                 // don't get removed.
-                if (strpos($tableName, $this->deletedPrefix) === 0) {
+                if (str_starts_with($tableName, $this->deletedPrefix)) {
                     $tableName = substr($tableName, strlen($this->deletedPrefix));
                 }
                 return in_array($tableName, $validTableNames, true)

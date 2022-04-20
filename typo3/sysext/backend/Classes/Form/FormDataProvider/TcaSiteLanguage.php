@@ -134,7 +134,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
 
         $pid = $result['databaseRow']['pid'] ?? 0;
 
-        if (!MathUtility::canBeInterpretedAsInteger($pid) || strpos($pid, 'NEW') !== 0) {
+        if (!MathUtility::canBeInterpretedAsInteger($pid) || !str_starts_with($pid, 'NEW')) {
             throw new \RuntimeException(
                 'inlineFirstPid should either be an integer or a "NEW..." string',
                 1624310264
@@ -176,7 +176,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         if ($result['inlineCompileExistingChildren']) {
             foreach ($connectedUids as $uid) {
                 // Compile existing (persisted) site languages
-                if (strpos((string)$uid, 'NEW') !== 0) {
+                if (!str_starts_with((string)$uid, 'NEW')) {
                     $compiledChild = $this->compileChild($result, $fieldName, $uid);
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }
@@ -325,7 +325,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
                     if ($language->getDirection() !== '') {
                         $defaultDatabaseRow['direction'] = $language->getDirection();
                     }
-                    if (strpos($language->getFlagIdentifier(), 'flags-') === 0) {
+                    if (str_starts_with($language->getFlagIdentifier(), 'flags-')) {
                         $flagIdentifier = str_replace('flags-', '', $language->getFlagIdentifier());
                         $defaultDatabaseRow['flag'] = ($flagIdentifier === 'multiple') ? 'global' : $flagIdentifier;
                     }

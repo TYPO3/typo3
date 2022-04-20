@@ -179,7 +179,7 @@ class DataMapFactory implements SingletonInterface
         $className = ltrim($className, '\\');
         $classNameParts = explode('\\', $className);
         // Skip vendor and product name for core classes
-        if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+        if (str_starts_with($className, 'TYPO3\\CMS\\')) {
             $classPartsToSkip = 2;
         } else {
             $classPartsToSkip = 1;

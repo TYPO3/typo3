@@ -108,7 +108,7 @@ class FilePathSanitizer
 
         // Check if the found file is in the allowed paths
         foreach ($this->allowedPaths as $allowedPath) {
-            if (strpos($relativePath, $allowedPath) === 0) {
+            if (str_starts_with($relativePath, $allowedPath)) {
                 return $relativePath;
             }
         }

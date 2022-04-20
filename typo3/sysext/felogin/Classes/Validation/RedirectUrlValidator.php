@@ -80,8 +80,8 @@ class RedirectUrlValidator implements LoggerAwareInterface
         if (is_array($siteUrlWithoutSchema)) {
             $siteUrlWithoutSchema = $siteUrlWithoutSchema[0];
         }
-        return strpos($urlWithoutSchema . '/', $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getHttpHost() . '/') === 0
-            && strpos($urlWithoutSchema, $siteUrlWithoutSchema) === 0;
+        return str_starts_with($urlWithoutSchema . '/', $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getHttpHost() . '/')
+            && str_starts_with($urlWithoutSchema, $siteUrlWithoutSchema);
     }
 
     /**

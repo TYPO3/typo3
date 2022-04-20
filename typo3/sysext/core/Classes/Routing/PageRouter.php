@@ -434,7 +434,7 @@ class PageRouter implements RouterInterface
             // Slug prefixes are taken from the beginning of the array, where as the parts to be removed
             // Are taken from the end.
             $replacement = array_shift($slugPrefixesToAdd);
-            if ($prefixToRemove !== '' && strpos($pagePath, $prefixToRemove) === 0) {
+            if ($prefixToRemove !== '' && str_starts_with($pagePath, $prefixToRemove)) {
                 $pagePath = substr($pagePath, strlen($prefixToRemove));
             }
             $pagePath = $replacement . ($pagePath !== '/' ? '/' . ltrim($pagePath, '/') : '');

@@ -88,7 +88,7 @@ class InternalLinktype extends AbstractLinktype
             $anchor = $parts[1];
         } elseif (
             $table === 'tt_content'
-            && strpos($softRefEntry['row'][$softRefEntry['field']], 't3://') === 0
+            && str_starts_with($softRefEntry['row'][$softRefEntry['field']], 't3://')
         ) {
             $parsedTypoLinkUrl = @parse_url($softRefEntry['row'][$softRefEntry['field']]);
             if ($parsedTypoLinkUrl['host'] === 'page') {

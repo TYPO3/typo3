@@ -96,14 +96,18 @@ class SqlReader
             $lineContent = trim($lineContent);
 
             // Skip empty lines and comments
-            if ($lineContent === '' || $lineContent[0] === '#' || strpos($lineContent, '--') === 0 ||
-                strpos($lineContent, '/*') === 0 || substr($lineContent, -2) === '*/' || $isInMultilineComment
+            if ($lineContent === ''
+                || $lineContent[0] === '#'
+                || str_starts_with($lineContent, '--')
+                || str_starts_with($lineContent, '/*')
+                || str_ends_with($lineContent, '*/')
+                || $isInMultilineComment
             ) {
                 // skip c style multiline comments
-                if (strpos($lineContent, '/*') === 0 && substr($lineContent, -2) !== '*/') {
+                if (str_starts_with($lineContent, '/*') && !str_ends_with($lineContent, '*/')) {
                     $isInMultilineComment = true;
                 }
-                if (substr($lineContent, -2) === '*/') {
+                if (str_ends_with($lineContent, '*/')) {
                     $isInMultilineComment = false;
                 }
                 continue;
@@ -111,7 +115,7 @@ class SqlReader
 
             $statementArray[$statementArrayPointer] = ($statementArray[$statementArrayPointer] ?? '') . $lineContent;
 
-            if (substr($lineContent, -1) === ';') {
+            if (str_ends_with($lineContent, ';')) {
                 $statement = trim($statementArray[$statementArrayPointer]);
                 if (!$statement || ($queryRegex && !preg_match('/' . $queryRegex . '/i', $statement))) {
                     unset($statementArray[$statementArrayPointer]);

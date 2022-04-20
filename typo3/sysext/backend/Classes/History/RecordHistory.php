@@ -387,7 +387,7 @@ class RecordHistory
             if ($actionType === RecordHistoryStore::ACTION_DELETE) {
                 $row['action'] = 'delete';
             }
-            if (strpos($row['history_data'], 'a') === 0) {
+            if (str_starts_with($row['history_data'], 'a')) {
                 // legacy code
                 $row['history_data'] = unserialize($row['history_data'], ['allowed_classes' => false]);
             } else {

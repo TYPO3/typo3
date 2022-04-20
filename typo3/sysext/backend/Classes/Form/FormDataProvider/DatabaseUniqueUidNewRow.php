@@ -42,7 +42,7 @@ class DatabaseUniqueUidNewRow implements FormDataProviderInterface
         // In this case, command "new" is given to the data compiler, but the "NEW1234" id has been calculated
         // by the former compiler when opening the record already. The ajax controller then hands in the
         // "new" command together with the id calculated by the first call.
-        if (isset($result['databaseRow']['uid']) && strpos($result['databaseRow']['uid'], 'NEW') !== 0) {
+        if (isset($result['databaseRow']['uid']) && !str_starts_with($result['databaseRow']['uid'], 'NEW')) {
             throw new \InvalidArgumentException(
                 'uid is already set to ' . $result['databaseRow']['uid'] . ' and does not start with NEW for a "new" command',
                 1437991120

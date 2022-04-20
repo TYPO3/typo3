@@ -167,7 +167,7 @@ class Bootstrap
         // to take the TypoScript settings regarding charset into account.
         // @todo Since HTML5 only utf-8 is a valid charset, this settings should be deprecated
         if (($typoScriptFrontendController = ($GLOBALS['TSFE'] ?? null)) instanceof TypoScriptFrontendController
-            && strpos($response->getHeaderLine('Content-Type'), 'application/json') === 0
+            && str_starts_with($response->getHeaderLine('Content-Type'), 'application/json')
         ) {
             // Unset the already defined Content-Type
             $response = $response->withoutHeader('Content-Type');

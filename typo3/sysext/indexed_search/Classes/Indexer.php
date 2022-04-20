@@ -725,7 +725,7 @@ class Indexer
         $localPath = '';
         $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
         $baseURLLength = strlen($baseURL);
-        if (strpos($sourcePath, $baseURL) === 0) {
+        if (str_starts_with($sourcePath, $baseURL)) {
             $sourcePath = substr($sourcePath, $baseURLLength);
             $localPath = Environment::getPublicPath() . '/' . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
@@ -748,7 +748,7 @@ class Indexer
         if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
             $absRefPrefixLength = strlen($absRefPrefix);
-            if ($absRefPrefixLength > 0 && strpos($sourcePath, $absRefPrefix) === 0) {
+            if ($absRefPrefixLength > 0 && str_starts_with($sourcePath, $absRefPrefix)) {
                 $sourcePath = substr($sourcePath, $absRefPrefixLength);
                 $localPath = Environment::getPublicPath() . '/' . $sourcePath;
                 if (!self::isAllowedLocalFile($localPath)) {
@@ -818,7 +818,7 @@ class Indexer
     protected static function isAllowedLocalFile($filePath)
     {
         $filePath = GeneralUtility::resolveBackPath($filePath);
-        $insideWebPath = strpos($filePath, Environment::getPublicPath()) === 0;
+        $insideWebPath = str_starts_with($filePath, Environment::getPublicPath());
         $isFile = is_file($filePath);
         return $insideWebPath && $isFile;
     }

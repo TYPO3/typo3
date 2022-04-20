@@ -9344,7 +9344,7 @@ class DataHandler implements LoggerAwareInterface
     protected function addNewValuesToRemapStackChildIds(array $idValues)
     {
         foreach ($idValues as $idValue) {
-            if (strpos($idValue, 'NEW') === 0) {
+            if (str_starts_with($idValue, 'NEW')) {
                 $this->remapStackChildIds[$idValue] = true;
             }
         }

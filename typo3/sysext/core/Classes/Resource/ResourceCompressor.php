@@ -297,7 +297,7 @@ class ResourceCompressor
                 $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
                 $contents = (string)file_get_contents($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
-                if (strpos($contents, "\xEF\xBB\xBF") === 0) {
+                if (str_starts_with($contents, "\xEF\xBB\xBF")) {
                     $contents = substr($contents, 3);
                 }
                 // only fix paths if files aren't already in typo3temp (already processed)
@@ -461,7 +461,7 @@ class ResourceCompressor
         }
         if (@is_file($absolutePath)) {
             $absolutePath = Environment::getPublicPath() . '/' . PathUtility::getAbsoluteWebPath($absolutePath, false);
-            if (strpos($absolutePath, $this->rootPath) === 0) {
+            if (str_starts_with($absolutePath, $this->rootPath)) {
                 // the path is within the current root path, simply strip rootPath off
                 return substr($absolutePath, strlen($this->rootPath));
             }
@@ -480,7 +480,7 @@ class ResourceCompressor
         // build the file path relative to the public web path
         if (PathUtility::isExtensionPath($filename)) {
             $file = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($filename, false);
-        } elseif (strpos($filename, '../') === 0) {
+        } elseif (str_starts_with($filename, '../')) {
             $file = GeneralUtility::resolveBackPath(Environment::getBackendPath() . '/' . $filename);
         } else {
             $file = Environment::getPublicPath() . '/' . $filename;

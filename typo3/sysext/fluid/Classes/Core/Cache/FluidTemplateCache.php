@@ -57,7 +57,7 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
      */
     public function set($entryIdentifier, $sourceCode, array $tags = [], $lifetime = null)
     {
-        if (strpos($sourceCode, '<?php') === 0) {
+        if (str_starts_with($sourceCode, '<?php')) {
             // Remove opening PHP tag; it is added by the cache backend to which
             // we delegate and would be duplicated if not removed.
             $sourceCode = substr($sourceCode, 6);

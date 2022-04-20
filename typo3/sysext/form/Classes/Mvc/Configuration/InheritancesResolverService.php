@@ -292,7 +292,7 @@ class InheritancesResolverService
                         $_inheritances = $this->getValueByPath($this->referenceConfiguration, $inheritancePath . '.' . self::INHERITANCE_OPERATOR);
 
                         foreach ($_inheritances as $_inheritancePath) {
-                            if (strpos($pathToCheck, $_inheritancePath) === 0) {
+                            if (str_starts_with($pathToCheck, $_inheritancePath)) {
                                 throw new CycleInheritancesException(
                                     $pathToCheck . ' has cycle inheritances',
                                     1474900797

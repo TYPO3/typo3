@@ -194,7 +194,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
     protected function getOptimizableTablesForConnection(Connection $connection, array $tableNames = []): array
     {
         // Return empty list if the database platform is not MySQL
-        if (strpos($connection->getServerVersion(), 'MySQL') !== 0) {
+        if (!str_starts_with($connection->getServerVersion(), 'MySQL')) {
             return [];
         }
 

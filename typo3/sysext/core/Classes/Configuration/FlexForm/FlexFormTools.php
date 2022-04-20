@@ -682,7 +682,7 @@ class FlexFormTools
         // Hooks may have parsed the data structure already to an array. If that is not the case, parse it now.
         if (is_string($dataStructure)) {
             // Resolve FILE: prefix pointing to a DS in a file
-            if (strpos(trim($dataStructure), 'FILE:') === 0) {
+            if (str_starts_with(trim($dataStructure), 'FILE:')) {
                 $file = GeneralUtility::getFileAbsFileName(substr(trim($dataStructure), 5));
                 if (empty($file) || !@is_file($file)) {
                     throw new \RuntimeException(
@@ -723,7 +723,7 @@ class FlexFormTools
         if (isset($dataStructure['sheets']) && is_array($dataStructure['sheets'])) {
             foreach ($dataStructure['sheets'] as $sheetName => $sheetStructure) {
                 if (!is_array($sheetStructure)) {
-                    if (strpos(trim($sheetStructure), 'FILE:') === 0) {
+                    if (str_starts_with(trim($sheetStructure), 'FILE:')) {
                         $file = GeneralUtility::getFileAbsFileName(substr(trim($sheetStructure), 5));
                     } else {
                         $file = GeneralUtility::getFileAbsFileName(trim($sheetStructure));

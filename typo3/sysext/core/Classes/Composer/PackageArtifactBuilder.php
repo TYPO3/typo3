@@ -169,7 +169,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 try {
                     $extensionKey = ExtensionKeyResolver::resolve($composerPackage);
                 } catch (\Throwable $e) {
-                    if (strpos($composerPackage->getType(), 'typo3-cms-') === 0) {
+                    if (str_starts_with($composerPackage->getType(), 'typo3-cms-')) {
                         // This means we have a package of type extension, and it does not have the extension key set
                         // This only happens since version > 4.0 of the installer and must be propagated to become user facing
                         throw $e;
@@ -247,7 +247,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             return [$rootPackage, $baseDir, $extensionKey];
         }
         $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
-        if (strpos($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH) === false) {
+        if (!str_contains($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH)) {
             return [$rootPackage, $baseDir, $extensionKey];
         }
         $filesystem = new Filesystem();
@@ -268,7 +268,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $baseDir = $this->config->get('base-dir');
         foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
             $fileSystemResourcesPath = $path . '/Resources/Public';
-            if (strpos($path, 'ext/' . $extensionKey) !== false || !file_exists($fileSystemResourcesPath)) {
+            if (str_contains($path, 'ext/' . $extensionKey) || !file_exists($fileSystemResourcesPath)) {
                 continue;
             }
             $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));

@@ -141,11 +141,11 @@ class ConfigurationStatus implements StatusProviderInterface
         if (function_exists('memcache_connect') && is_array($memcachedServers)) {
             foreach ($memcachedServers as $testServer) {
                 $configuredServer = $testServer;
-                if (strpos($testServer, 'unix://') === 0) {
+                if (str_starts_with($testServer, 'unix://')) {
                     $host = $testServer;
                     $port = 0;
                 } else {
-                    if (strpos($testServer, 'tcp://') === 0) {
+                    if (str_starts_with($testServer, 'tcp://')) {
                         $testServer = substr($testServer, 6);
                     }
                     if (str_contains($testServer, ':')) {
@@ -218,7 +218,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-        return strpos($connection->getServerVersion(), 'MySQL') === 0;
+        return str_starts_with($connection->getServerVersion(), 'MySQL');
     }
 
     /**
@@ -249,7 +249,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $severity = ReportStatus::OK;
         $statusValue = $this->getLanguageService()->getLL('status_ok');
         // also allow utf8mb4
-        if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
+        if (!str_starts_with($defaultDatabaseCharset, 'utf8')) {
             // If the default character set is e.g. latin1, BUT all tables in the system are UTF-8,
             // we assume that TYPO3 has the correct charset for adding tables, and everything is fine
             $queryBuilder = $connection->createQueryBuilder();

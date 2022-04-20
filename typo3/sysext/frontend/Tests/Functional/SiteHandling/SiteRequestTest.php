@@ -177,7 +177,7 @@ class SiteRequestTest extends AbstractTestCase
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (str_contains($uri, '/fr-ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome';
-                } elseif (strpos($uri, '/简/') !== false) {
+                } elseif (str_contains($uri, '/简/')) {
                     $expectedPageTitle = 'ZH-CN: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';
@@ -245,9 +245,9 @@ class SiteRequestTest extends AbstractTestCase
 
         return array_map(
             static function (string $uri) {
-                if (strpos($uri, '/fr-fr/') !== false) {
+                if (str_contains($uri, '/fr-fr/')) {
                     $expectedPageTitle = 'FR: Welcome ZH Default';
-                } elseif (strpos($uri, '/fr-ca/') !== false) {
+                } elseif (str_contains($uri, '/fr-ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome ZH Default';
                 } else {
                     $expectedPageTitle = 'ZH-CN: Welcome Default';
@@ -355,7 +355,7 @@ class SiteRequestTest extends AbstractTestCase
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (str_contains($uri, '.ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome';
-                } elseif (strpos($uri, '.简/') !== false) {
+                } elseif (str_contains($uri, '.简/')) {
                     $expectedPageTitle = 'ZH-CN: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';

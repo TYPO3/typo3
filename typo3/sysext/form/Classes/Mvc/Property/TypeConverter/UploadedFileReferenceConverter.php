@@ -164,7 +164,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
                     // File references use numeric resource pointers, direct
                     // file relations are using "file:" prefix (e.g. "file:5")
                     $resourcePointer = $this->hashService->validateAndStripHmac($source['submittedFile']['resourcePointer']);
-                    if (strpos($resourcePointer, 'file:') === 0) {
+                    if (str_starts_with($resourcePointer, 'file:')) {
                         $fileUid = (int)substr($resourcePointer, 5);
                         $resource = $this->createFileReferenceFromFalFileObject($this->resourceFactory->getFileObject($fileUid));
                     } else {

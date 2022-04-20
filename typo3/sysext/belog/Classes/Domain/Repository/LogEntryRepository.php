@@ -159,7 +159,7 @@ class LogEntryRepository extends Repository
             return;
         }
         // Constraint for a group
-        if (strpos($userOrGroup, 'gr-') === 0) {
+        if (str_starts_with($userOrGroup, 'gr-')) {
             $groupId = (int)substr($userOrGroup, 3);
             $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
             $userIds = $groupResolver->findAllUsersInGroups([$groupId], 'be_groups', 'be_users');
@@ -171,7 +171,7 @@ class LogEntryRepository extends Repository
                 // If there are no group members -> use -1 as constraint to not find anything
                 $queryConstraints[] = $query->in('userid', [-1]);
             }
-        } elseif (strpos($userOrGroup, 'us-') === 0) {
+        } elseif (str_starts_with($userOrGroup, 'us-')) {
             $queryConstraints[] = $query->equals('userid', (int)substr($userOrGroup, 3));
         } elseif ($userOrGroup === '-1') {
             $queryConstraints[] = $query->equals('userid', (int)$GLOBALS['BE_USER']->user['uid']);

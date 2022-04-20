@@ -50,9 +50,9 @@ class ListController extends AbstractWizardController
         $origRow = BackendUtility::getRecord($table, $parameters['uid']);
         $tsConfig = BackendUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid']]);
 
-        if (strpos($parameters['params']['pid'], '###') === 0 && substr($parameters['params']['pid'], -3) === '###') {
+        if (str_starts_with($parameters['params']['pid'], '###') && substr($parameters['params']['pid'], -3) === '###') {
             $keyword = substr($parameters['params']['pid'], 3, -3);
-            if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
+            if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
                 $pid = (int)$tsConfig[$parameters['field']][$keyword];
             } else {
                 $pid = (int)$tsConfig['_' . $keyword];

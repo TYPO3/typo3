@@ -3461,7 +3461,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // tags
                 $len = strcspn(substr($theValue, $pointer), '>') + 1;
                 $data = substr($theValue, $pointer, $len);
-                if (str_ends_with($data, '/>') && strpos($data, '<link ') !== 0) {
+                if (str_ends_with($data, '/>') && !str_starts_with($data, '<link ')) {
                     $tagContent = substr($data, 1, -2);
                 } else {
                     $tagContent = substr($data, 1, -1);
@@ -5417,7 +5417,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Static_* tables are allowed to be fetched from root page
-        if (strpos($table, 'static_') === 0) {
+        if (str_starts_with($table, 'static_')) {
             $pid_uid_flag++;
         }
 

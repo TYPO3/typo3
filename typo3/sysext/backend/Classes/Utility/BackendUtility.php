@@ -544,7 +544,7 @@ class BackendUtility
         }
         $output = $fullOutput = '/';
         $clause = trim($clause);
-        if ($clause !== '' && strpos($clause, 'AND') !== 0) {
+        if ($clause !== '' && !str_starts_with($clause, 'AND')) {
             $clause = 'AND ' . $clause;
         }
         $data = self::BEgetRootLine($uid, $clause, true);

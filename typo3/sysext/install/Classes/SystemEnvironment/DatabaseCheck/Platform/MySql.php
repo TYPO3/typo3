@@ -81,7 +81,7 @@ class MySql extends AbstractPlatform
     {
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (strpos($defaultConnection->getServerVersion(), 'MySQL') !== 0) {
+        if (!str_starts_with($defaultConnection->getServerVersion(), 'MySQL')) {
             return $this->messageQueue;
         }
         $this->checkMysqlVersion($defaultConnection);

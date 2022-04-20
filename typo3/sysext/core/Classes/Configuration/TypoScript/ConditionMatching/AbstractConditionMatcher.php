@@ -178,7 +178,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
         }
         $result = false;
         // First and last character must be square brackets:
-        if (strpos($expression, '[') === 0 && substr($expression, -1) === ']') {
+        if (str_starts_with($expression, '[') && str_ends_with($expression, ']')) {
             $innerExpression = substr($expression, 1, -1);
             $result = $this->evaluateExpression($innerExpression);
         }

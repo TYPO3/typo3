@@ -120,11 +120,11 @@ class ReferrerEnforcer
         if ($referrer === '') {
             return self::TYPE_REFERRER_EMPTY;
         }
-        if (strpos($referrer, $this->requestDir) === 0) {
+        if (str_starts_with($referrer, $this->requestDir)) {
             // same-origin implies same-site
             return self::TYPE_REFERRER_SAME_ORIGIN | self::TYPE_REFERRER_SAME_SITE;
         }
-        if (strpos($referrer, $this->requestHost) === 0) {
+        if (str_starts_with($referrer, $this->requestHost)) {
             return self::TYPE_REFERRER_SAME_SITE;
         }
         return 0;

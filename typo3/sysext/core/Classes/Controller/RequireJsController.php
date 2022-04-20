@@ -85,14 +85,14 @@ class RequireJsController
 
         $shim = $configuration['shim'] ?? [];
         foreach ($shim as $baseModuleName => $baseModuleConfiguration) {
-            if (strpos($name . '/', $baseModuleName . '/') === 0) {
+            if (str_starts_with($name . '/', $baseModuleName . '/')) {
                 $relevantConfiguration['shim'][$baseModuleName] = $baseModuleConfiguration;
             }
         }
 
         $paths = $configuration['paths'] ?? [];
         foreach ($paths as $baseModuleName => $baseModulePath) {
-            if (strpos($name . '/', $baseModuleName . '/') === 0) {
+            if (str_starts_with($name . '/', $baseModuleName . '/')) {
                 $relevantConfiguration['paths'][$baseModuleName] = $baseModulePath;
             }
         }
@@ -100,7 +100,7 @@ class RequireJsController
         $packages = $configuration['packages'] ?? [];
         foreach ($packages as $package) {
             if (!empty($package['name'])
-                && strpos($name . '/', $package['name'] . '/') === 0
+                && str_starts_with($name . '/', $package['name'] . '/')
             ) {
                 $relevantConfiguration['packages'][] = $package;
             }

@@ -630,7 +630,7 @@ MESSAGE;
         }
 
         if (
-            strpos($reflectionMethod->getName(), 'inject') === 0
+            str_starts_with($reflectionMethod->getName(), 'inject')
         ) {
             return true;
         }

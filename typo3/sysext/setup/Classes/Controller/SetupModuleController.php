@@ -320,7 +320,7 @@ class SetupModuleController
         $fieldArray = $this->getFieldsFromShowItem();
         $tabLabel = '';
         foreach ($fieldArray as $fieldName) {
-            if (strpos($fieldName, '--div--;') === 0) {
+            if (str_starts_with($fieldName, '--div--;')) {
                 if ($firstTabLabel === '') {
                     // First tab
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);

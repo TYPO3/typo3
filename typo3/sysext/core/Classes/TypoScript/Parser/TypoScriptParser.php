@@ -229,7 +229,7 @@ class TypoScriptParser
             $line = ltrim($this->raw[$this->rawP]);
             $this->rawP++;
             // Set comment flag?
-            if (!$this->multiLineEnabled && strpos($line, '/*') === 0) {
+            if (!$this->multiLineEnabled && str_starts_with($line, '/*')) {
                 $this->commentSet = true;
             }
             // If $this->multiLineEnabled we will go and get the line values here because we know, the first if() will be TRUE.
@@ -389,7 +389,7 @@ class TypoScriptParser
                             $this->lastComment .= rtrim($line) . LF;
                         }
                     }
-                    if (strpos($line, '### ERROR') === 0) {
+                    if (str_starts_with($line, '### ERROR')) {
                         $this->error(substr($line, 11));
                     }
                 }
@@ -797,7 +797,7 @@ class TypoScriptParser
                 // load default TypoScript for content rendering templates like
                 // fluid_styled_content if those have been included through f.e.
                 // <INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript">
-                if (strpos(strtolower($filename), 'ext:') === 0) {
+                if (str_starts_with(strtolower($filename), 'ext:')) {
                     $filePointerPathParts = explode('/', substr($filename, 4));
 
                     // remove file part, determine whether to load setup or constants

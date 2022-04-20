@@ -1622,7 +1622,7 @@ class PageRenderer implements SingletonInterface
         // trim spaces and slashes & add ending slash
         $sanitizedModuleName = trim($moduleName, ' /') . '/';
         foreach ($this->internalRequireJsPathModuleNames as $sanitizedBaseModuleName => $baseModuleName) {
-            if (strpos($sanitizedModuleName, $sanitizedBaseModuleName) === 0) {
+            if (str_starts_with($sanitizedModuleName, $sanitizedBaseModuleName)) {
                 return $baseModuleName;
             }
         }

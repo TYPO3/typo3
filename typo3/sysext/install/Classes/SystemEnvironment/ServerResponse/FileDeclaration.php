@@ -146,7 +146,7 @@ class FileDeclaration
             );
         }
         if ($this->expectedContentType !== null
-            && strpos($contentType . ';', $this->expectedContentType . ';') !== 0) {
+            && !str_starts_with($contentType . ';', $this->expectedContentType . ';')) {
             $mismatches[] = new StatusMessage(
                 'content-type mismatch %s, got %s',
                 $this->expectedContentType,
@@ -154,7 +154,7 @@ class FileDeclaration
             );
         }
         if ($this->unexpectedContentType !== null
-            && strpos($contentType . ';', $this->unexpectedContentType . ';') === 0) {
+            && str_starts_with($contentType . ';', $this->unexpectedContentType . ';')) {
             $mismatches[] = new StatusMessage(
                 'unexpected content-type %s',
                 $this->unexpectedContentType,

@@ -535,7 +535,7 @@ class MountPointTest extends AbstractTestCase
         $firstContent = null;
         // Find tt_content element
         foreach ($responseRecords as $identifier => $record) {
-            if (strpos($identifier, 'tt_content:') === 0) {
+            if (str_starts_with($identifier, 'tt_content:')) {
                 $firstContent = $record;
                 break;
             }

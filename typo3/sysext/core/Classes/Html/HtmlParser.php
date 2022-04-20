@@ -421,7 +421,7 @@ class HtmlParser
                 $tok = substr($tok, $eocPos + 10);
                 $inCdata = false;
                 $skipTag = true;
-            } elseif (strpos($tok, '!--') === 0) {
+            } elseif (str_starts_with($tok, '!--')) {
                 if (($eocPos = strpos($tok, '-->')) === false) {
                     // Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
                     $newContent[$c++] = '<' . $tok;
@@ -432,7 +432,7 @@ class HtmlParser
                 $newContent[$c++] = '<' . substr($tok, 0, $eocPos + 3);
                 $tok = substr($tok, $eocPos + 3);
                 $skipTag = true;
-            } elseif (strpos($tok, '![CDATA[*/') === 0) {
+            } elseif (str_starts_with($tok, '![CDATA[*/')) {
                 if (($eocPos = strpos($tok, '/*]]>*/')) === false) {
                     // Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
                     $newContent[$c++] = '<' . $tok;

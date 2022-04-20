@@ -176,7 +176,7 @@ class Typo3tempFileService
         $basePath = Environment::getPublicPath() . $folderName;
         if (empty($folderName)
             || !GeneralUtility::isAllowedAbsPath($basePath)
-            || strpos($folderName, '/typo3temp/assets/') !== 0
+            || !str_starts_with($folderName, '/typo3temp/assets/')
         ) {
             throw new \RuntimeException(
                 'Path to folder ' . $folderName . ' not allowed.',

@@ -279,7 +279,7 @@ class SlugService implements LoggerAwareInterface
      */
     protected function updateSlug(array $subPageRecord, string $oldSlugOfParentPage, string $newSlugOfParentPage): ?string
     {
-        if (strpos($subPageRecord['slug'], $oldSlugOfParentPage) !== 0) {
+        if (!str_starts_with($subPageRecord['slug'], $oldSlugOfParentPage)) {
             return null;
         }
 

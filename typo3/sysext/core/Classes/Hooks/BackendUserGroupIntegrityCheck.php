@@ -41,7 +41,7 @@ class BackendUserGroupIntegrityCheck
         $backendUserGroup = BackendUtility::getRecord($table, $id, 'explicit_allowdeny');
         $explicitAllowDenyFields = GeneralUtility::trimExplode(',', $backendUserGroup['explicit_allowdeny'] ?? '');
         foreach ($explicitAllowDenyFields as $value) {
-            if ($value !== '' && strpos($value, 'tt_content:list_type:') === 0) {
+            if ($value !== '' && str_starts_with($value, 'tt_content:list_type:')) {
                 if (!in_array('tt_content:CType:list', $explicitAllowDenyFields, true)) {
                     /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(

@@ -458,10 +458,10 @@ class StagesService implements SingletonInterface
         $backendGroupIds = [];
 
         foreach ($elements as $element) {
-            if (strpos($element, 'be_users_') === 0) {
+            if (str_starts_with($element, 'be_users_')) {
                 // Current value is a uid of a be_user record
                 $backendUserIds[] = str_replace('be_users_', '', $element);
-            } elseif (strpos($element, 'be_groups_') === 0) {
+            } elseif (str_starts_with($element, 'be_groups_')) {
                 $backendGroupIds[] = (int)str_replace('be_groups_', '', $element);
             } elseif ((int)$element) {
                 $backendUserIds[] = (int)$element;

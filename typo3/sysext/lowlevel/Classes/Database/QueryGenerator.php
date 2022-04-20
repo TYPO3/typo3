@@ -349,7 +349,7 @@ class QueryGenerator
                 $selectQueryString = $this->getSelectQuery($queryString);
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
 
-                $isConnectionMysql = strpos($connection->getServerVersion(), 'MySQL') === 0;
+                $isConnectionMysql = str_starts_with($connection->getServerVersion(), 'MySQL');
                 $fullQueryString = '';
                 try {
                     if ($mQ === 'explain' && $isConnectionMysql) {
@@ -1180,7 +1180,7 @@ class QueryGenerator
             $dontPrefixFirstTable = 0;
             $useTablePrefix = 0;
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                if (strpos($val[0], 'LLL:') === 0) {
+                if (str_starts_with($val[0], 'LLL:')) {
                     $value = $languageService->sL($val[0]);
                 } else {
                     $value = $val[0];

@@ -40,7 +40,7 @@ class Sqlite extends AbstractPlatform
     {
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (strpos($defaultConnection->getServerVersion(), 'sqlite') !== 0) {
+        if (!str_starts_with($defaultConnection->getServerVersion(), 'sqlite')) {
             return $this->messageQueue;
         }
 

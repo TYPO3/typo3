@@ -104,17 +104,17 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             if (!is_string($key)) {
                 continue;
             }
-            if (strpos($key, 'HTTP_COOKIE') === 0) {
+            if (str_starts_with($key, 'HTTP_COOKIE')) {
                 // Cookies are handled using the $_COOKIE superglobal
                 continue;
             }
             if (!empty($value)) {
-                if (strpos($key, 'HTTP_') === 0) {
+                if (str_starts_with($key, 'HTTP_')) {
                     $name = str_replace('_', ' ', substr($key, 5));
                     $name = str_replace(' ', '-', ucwords(strtolower($name)));
                     $name = strtolower($name);
                     $headers[$name] = $value;
-                } elseif (strpos($key, 'CONTENT_') === 0) {
+                } elseif (str_starts_with($key, 'CONTENT_')) {
                     $name = substr($key, 8); // Content-
                     $name = 'Content-' . (($name === 'MD5') ? $name : ucfirst(strtolower($name)));
                     $name = strtolower($name);

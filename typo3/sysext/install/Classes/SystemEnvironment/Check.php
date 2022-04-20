@@ -591,7 +591,7 @@ class Check implements CheckInterface
     protected function checkWindowsApacheThreadStackSize()
     {
         if ($this->isWindowsOs()
-            && strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === 0
+            && str_starts_with($_SERVER['SERVER_SOFTWARE'], 'Apache')
         ) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'This current value cannot be checked by the system, so please ignore this warning if it'

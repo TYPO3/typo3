@@ -113,7 +113,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 if (($pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) > 0) {
                     $pid = (int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
                 }
-            } elseif (strpos($pid, 'NEW') !== 0) {
+            } elseif (!str_starts_with($pid, 'NEW')) {
                 throw new \RuntimeException(
                     'inlineFirstPid should either be an integer or a "NEW..." string',
                     1521220142

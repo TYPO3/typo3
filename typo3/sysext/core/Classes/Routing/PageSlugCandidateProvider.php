@@ -85,7 +85,7 @@ class PageSlugCandidateProvider
             // pages found for the current URL and language.
             foreach ($pageCandidatesFromSlugsAndLanguage as $candidate) {
                 $slugCandidate = '/' . trim($candidate['slug'], '/');
-                if ($slugCandidate === '/' || strpos($urlPath, $slugCandidate) === 0) {
+                if ($slugCandidate === '/' || str_starts_with($urlPath, $slugCandidate)) {
                     // The slug is a subpart of the requested URL, so it's a possible candidate
                     if ($urlPath === $slugCandidate) {
                         // The requested URL matches exactly the found slug. We can't find a better match,
@@ -351,7 +351,7 @@ class PageSlugCandidateProvider
         $narrowedDownSlugPrefixes = [];
         foreach ($slugCandidates as $slugCandidate) {
             // Remove the mount point prefix (that we just found) from the slug candidates
-            if (strpos($slugCandidate, $slugOfMountPoint) === 0) {
+            if (str_starts_with($slugCandidate, $slugOfMountPoint)) {
                 // Find pages without the common prefix
                 $narrowedDownSlugPrefix = '/' . trim(substr($slugCandidate, strlen($slugOfMountPoint)), '/');
                 $narrowedDownSlugPrefixes[] = $narrowedDownSlugPrefix;
@@ -414,7 +414,7 @@ class PageSlugCandidateProvider
             // This is done by first removing the "common" prefix possibly provided by the Mounted Page
             // But more importantly adding the $slugOfMountPoint of the MountPoint Page
             $slugOfSubpage = $pageCandidate['slug'];
-            if ($commonSlugPrefixOfMountedPage && strpos($slugOfSubpage, $commonSlugPrefixOfMountedPage) === 0) {
+            if ($commonSlugPrefixOfMountedPage && str_starts_with($slugOfSubpage, $commonSlugPrefixOfMountedPage)) {
                 $slugOfSubpage = substr($slugOfSubpage, strlen($commonSlugPrefixOfMountedPage));
             }
             $pageCandidate['slug'] = $slugOfMountPoint . (($slugOfSubpage && $slugOfSubpage !== '/') ? '/' . trim($slugOfSubpage, '/') : '');

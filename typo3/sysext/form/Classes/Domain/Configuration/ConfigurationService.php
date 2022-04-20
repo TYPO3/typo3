@@ -308,7 +308,7 @@ class ConfigurationService implements SingletonInterface
         $propertyPath = $dto->getPropertyPath();
         $multiValueProperties = $formDefinitionValidationConfiguration['formElements'][$dto->getFormElementType()]['multiValueProperties'] ?? [];
         foreach ($multiValueProperties as $multiValueProperty) {
-            if (strpos($propertyPath, $multiValueProperty) === 0) {
+            if (str_starts_with($propertyPath, $multiValueProperty)) {
                 $propertyPath = $multiValueProperty;
                 continue;
             }
@@ -331,7 +331,7 @@ class ConfigurationService implements SingletonInterface
         $propertyPath = $dto->getPropertyPath();
         $multiValueProperties = $formDefinitionValidationConfiguration['collections'][$dto->getPropertyCollectionName()][$dto->getPropertyCollectionElementIdentifier()]['multiValueProperties'] ?? [];
         foreach ($multiValueProperties as $multiValueProperty) {
-            if (strpos($propertyPath, $multiValueProperty) === 0) {
+            if (str_starts_with($propertyPath, $multiValueProperty)) {
                 $propertyPath = $multiValueProperty;
                 continue;
             }
@@ -795,7 +795,7 @@ class ConfigurationService implements SingletonInterface
             return true;
         }
         foreach ($subConfig['multiValueProperties'] ?? [] as $relativeMultiValueProperty) {
-            if (strpos($propertyPath, $relativeMultiValueProperty) === 0) {
+            if (str_starts_with($propertyPath, $relativeMultiValueProperty)) {
                 return true;
             }
         }

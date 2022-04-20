@@ -184,7 +184,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
     {
         if ($folderIdentifier) {
             try {
-                if (strpos($folderIdentifier, 't3://folder') === 0) {
+                if (str_starts_with($folderIdentifier, 't3://folder')) {
                     // a t3://folder link to a folder in FAL
                     $linkService = GeneralUtility::makeInstance(LinkService::class);
                     $data = $linkService->resolveByStringRepresentation($folderIdentifier);

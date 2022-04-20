@@ -242,7 +242,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $HTML .= $depthData;
             $alttext = '[' . $row['templateID'] . ']';
             $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], '1=1', 20) : '';
-            $icon = strpos($row['templateID'], 'sys') === 0
+            $icon = str_starts_with($row['templateID'], 'sys')
                 ? '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
                 : '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
             if (in_array($row['templateID'], $this->templateService->clearList_const) || in_array($row['templateID'], $this->templateService->clearList_setup)) {

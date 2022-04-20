@@ -51,7 +51,7 @@ class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
             }
 
             // Process __row|field type placeholders
-            if (strpos($fieldConfig['config']['placeholder'], '__row|') === 0) {
+            if (str_starts_with($fieldConfig['config']['placeholder'], '__row|')) {
                 // split field names into array and remove the __row indicator
                 $fieldNameArray = array_slice(
                     GeneralUtility::trimExplode('|', $fieldConfig['config']['placeholder'], true),

@@ -138,7 +138,7 @@ class DocumentationFile
         $entry['tags'] = $this->extractTags($lines);
         $entry['class'] = 'default';
         foreach ($entry['tags'] as $key => $tag) {
-            if (strpos($tag, 'cat:') === 0) {
+            if (str_starts_with($tag, 'cat:')) {
                 $substr = substr($tag, 4);
                 $entry['class'] = strtolower($substr);
                 $entry['tags'][$key] = $substr;
@@ -206,7 +206,7 @@ class DocumentationFile
     protected function extractTagsFromFile(array $file): array
     {
         foreach ($file as $line) {
-            if (strpos($line, '.. index::') === 0) {
+            if (str_starts_with($line, '.. index::')) {
                 $tagString = substr($line, strlen('.. index:: '));
                 return GeneralUtility::trimExplode(',', $tagString, true);
             }
@@ -242,7 +242,7 @@ class DocumentationFile
     protected function extractHeadline(array $lines): string
     {
         $index = 0;
-        while (strpos($lines[$index], '..') === 0 || strpos($lines[$index], '==') === 0) {
+        while (str_starts_with($lines[$index], '..') || str_starts_with($lines[$index], '==')) {
             $index++;
         }
         return trim($lines[$index]);

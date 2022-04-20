@@ -1035,7 +1035,7 @@ class PackageManager implements SingletonInterface
         if (!empty($manifest->extra->{'typo3/cms'}->{'extension-key'})) {
             return $manifest->extra->{'typo3/cms'}->{'extension-key'};
         }
-        if (empty($manifest->name) || (isset($manifest->type) && strpos($manifest->type, 'typo3-cms-') === 0)) {
+        if (empty($manifest->name) || (isset($manifest->type) && str_starts_with($manifest->type, 'typo3-cms-'))) {
             return PathUtility::basename($packagePath);
         }
 

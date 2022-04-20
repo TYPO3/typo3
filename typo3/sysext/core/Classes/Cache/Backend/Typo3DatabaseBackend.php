@@ -501,7 +501,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     protected function isConnectionMysql(Connection $connection): bool
     {
         $serverVersion = $connection->getServerVersion();
-        return (bool)(strpos($serverVersion, 'MySQL') === 0);
+        return str_starts_with($serverVersion, 'MySQL');
     }
 
     /**

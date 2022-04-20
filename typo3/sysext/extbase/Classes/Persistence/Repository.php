@@ -219,13 +219,13 @@ class Repository implements RepositoryInterface, SingletonInterface
      */
     public function __call($methodName, $arguments)
     {
-        if (strpos($methodName, 'findBy') === 0 && strlen($methodName) > 7) {
+        if (str_starts_with($methodName, 'findBy') && strlen($methodName) > 7) {
             $propertyName = lcfirst(substr($methodName, 6));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
             return $result;
         }
-        if (strpos($methodName, 'findOneBy') === 0 && strlen($methodName) > 10) {
+        if (str_starts_with($methodName, 'findOneBy') && strlen($methodName) > 10) {
             $propertyName = lcfirst(substr($methodName, 9));
             $query = $this->createQuery();
 
@@ -236,7 +236,7 @@ class Repository implements RepositoryInterface, SingletonInterface
             if (is_array($result)) {
                 return $result[0] ?? null;
             }
-        } elseif (strpos($methodName, 'countBy') === 0 && strlen($methodName) > 8) {
+        } elseif (str_starts_with($methodName, 'countBy') && strlen($methodName) > 8) {
             $propertyName = lcfirst(substr($methodName, 7));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();

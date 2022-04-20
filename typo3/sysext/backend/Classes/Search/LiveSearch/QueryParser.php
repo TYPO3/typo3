@@ -115,7 +115,7 @@ class QueryParser
     public function isValidCommand($query)
     {
         $isValid = false;
-        if (strpos($query, self::COMMAND_KEY_INDICATOR) === 0 && strpos($query, self::COMMAND_SPLIT_INDICATOR) > 1 && $this->getTableNameFromCommand($query)) {
+        if (str_starts_with($query, self::COMMAND_KEY_INDICATOR) && strpos($query, self::COMMAND_SPLIT_INDICATOR) > 1 && $this->getTableNameFromCommand($query)) {
             $isValid = true;
         }
         return $isValid;

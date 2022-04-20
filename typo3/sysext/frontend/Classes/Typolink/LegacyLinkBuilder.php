@@ -33,7 +33,7 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
             $linkLocation = $linkDetails['file'];
             // Setting title if blank value to link
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-            $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
+            $linkLocation = (!str_starts_with($linkLocation, '/') ? $tsfe->absRefPrefix : '') . $linkLocation;
             $url = $linkLocation;
             $url = $this->forceAbsoluteUrl($url, $conf);
             $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget);

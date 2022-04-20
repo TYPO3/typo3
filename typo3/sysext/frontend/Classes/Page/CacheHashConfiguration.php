@@ -118,7 +118,7 @@ class CacheHashConfiguration
             return false;
         }
         foreach ($data as $item) {
-            if (strpos($value, $item) === 0) {
+            if (str_starts_with($value, $item)) {
                 return true;
             }
         }

@@ -279,7 +279,7 @@ class Locales implements SingletonInterface
             // As str_* methods are locale aware and turkish has no upper case I
             // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
             // @see http://bugs.php.net/bug.php?id=35050
-            if (strpos($locale, 'tr') !== 0) {
+            if (!str_starts_with($locale, 'tr')) {
                 setlocale(LC_CTYPE, ...$availableLocales);
             }
             setlocale(LC_MONETARY, ...$availableLocales);

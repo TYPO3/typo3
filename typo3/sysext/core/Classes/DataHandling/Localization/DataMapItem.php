@@ -412,7 +412,7 @@ class DataMapItem
             return $idValue;
         }
         $idValue = (string)$idValue;
-        if (strpos($idValue, 'NEW') === 0) {
+        if (str_starts_with($idValue, 'NEW')) {
             return $idValue;
         }
         // @todo Handle if $tableName does not match $this->tableName

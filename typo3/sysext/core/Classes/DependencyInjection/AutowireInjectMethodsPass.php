@@ -56,7 +56,7 @@ class AutowireInjectMethodsPass extends AbstractRecursivePass
                 continue;
             }
 
-            if ($reflectionMethod->isPublic() && strpos($reflectionMethod->name, 'inject') === 0) {
+            if ($reflectionMethod->isPublic() && str_starts_with($reflectionMethod->name, 'inject')) {
                 if ($reflectionMethod->name === 'injectSettings') {
                     continue;
                 }

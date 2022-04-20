@@ -399,11 +399,11 @@ class DefaultFactory
 
     protected function isApacheServer(): bool
     {
-        return isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === 0;
+        return isset($_SERVER['SERVER_SOFTWARE']) && str_starts_with($_SERVER['SERVER_SOFTWARE'], 'Apache');
     }
 
     protected function isMicrosoftIisServer(): bool
     {
-        return isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') === 0;
+        return isset($_SERVER['SERVER_SOFTWARE']) && str_starts_with($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS');
     }
 }

@@ -160,7 +160,7 @@ class ImageService implements SingletonInterface
     {
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && strpos($src, '../') === 0
+            && str_starts_with($src, '../')
         ) {
             $src = substr($src, 3);
         }
@@ -170,7 +170,7 @@ class ImageService implements SingletonInterface
             } else {
                 $image = $this->resourceFactory->getFileObject($src);
             }
-        } elseif (strpos($src, 't3://file') === 0) {
+        } elseif (str_starts_with($src, 't3://file')) {
             // We have a t3://file link to a file in FAL
             $linkService = GeneralUtility::makeInstance(LinkService::class);
             $data = $linkService->resolveByStringRepresentation($src);

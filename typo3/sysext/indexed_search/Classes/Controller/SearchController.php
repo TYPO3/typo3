@@ -363,7 +363,7 @@ class SearchController extends ActionController
             }
         }
         // Print a message telling which words in which sections we searched for
-        if (strpos($this->searchData['sections'], 'rl') === 0) {
+        if (str_starts_with($this->searchData['sections'], 'rl')) {
             $result['searchedInSectionInfo'] = (LocalizationUtility::translate('result.inSection', 'IndexedSearch') ?? '') . ' "' . $this->getPathFromPageId((int)substr($this->searchData['sections'], 4)) . '"';
         }
 
@@ -410,7 +410,7 @@ class SearchController extends ActionController
         $resultRows = $newResultRows;
         $this->resultSections = [];
         if ($freeIndexUid <= 0 && $this->searchData['group'] === 'sections') {
-            $rl2flag = strpos($this->searchData['sections'], 'rl') === 0;
+            $rl2flag = str_starts_with($this->searchData['sections'], 'rl');
             $sections = [];
             foreach ($resultRows as $row) {
                 $id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
@@ -692,7 +692,7 @@ class SearchController extends ActionController
             } else {
                 // Default creation / finding of icon:
                 $icon = '';
-                if ($imageType === '0' || strpos($imageType, '0:') === 0) {
+                if ($imageType === '0' || str_starts_with($imageType, '0:')) {
                     if (is_array($specRowConf['pageIcon'] ?? false)) {
                         $this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
                     } else {

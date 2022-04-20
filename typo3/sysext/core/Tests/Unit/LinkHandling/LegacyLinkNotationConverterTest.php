@@ -290,7 +290,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         }
         // fake methods to return proper objects
         if ($expected['type'] === LinkService::TYPE_FOLDER) {
-            if (strpos($expected['folder'], 'file:') === 0) {
+            if (str_starts_with($expected['folder'], 'file:')) {
                 $expected['folder'] = substr($expected['folder'], 5);
             }
             $folderObject = new Folder($storage, $expected['folder'], $expected['folder']);
@@ -337,7 +337,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         }
         // fake methods to return proper objects
         if ($parameters['type'] === LinkService::TYPE_FOLDER) {
-            if (strpos($parameters['folder'], 'file:') === 0) {
+            if (str_starts_with($parameters['folder'], 'file:')) {
                 $parameters['folder'] = substr($parameters['folder'], 5);
             }
             // fake "0" storage

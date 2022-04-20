@@ -190,12 +190,12 @@ class WebServerConfigurationFileService
 
     protected function isApache(): bool
     {
-        return strpos($this->webServer, 'Apache') === 0;
+        return str_starts_with($this->webServer, 'Apache');
     }
 
     protected function isMicrosoftIis(): bool
     {
-        return strpos($this->webServer, 'Microsoft-IIS') === 0;
+        return str_starts_with($this->webServer, 'Microsoft-IIS');
     }
 
     protected function getWebServer(): string

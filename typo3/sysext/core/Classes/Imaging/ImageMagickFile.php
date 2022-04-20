@@ -178,7 +178,7 @@ class ImageMagickFile
         $fileExtension = strtolower($this->fileExtension);
         if ($this->mimeType !== null && !empty($this->mimeTypeExtensionMap[$this->mimeType])) {
             $prefixExtension = $this->mimeTypeExtensionMap[$this->mimeType];
-        } elseif (!empty($this->mimeExtensions) && strpos((string)$this->mimeType, 'image/') === 0) {
+        } elseif (!empty($this->mimeExtensions) && str_starts_with((string)$this->mimeType, 'image/')) {
             $prefixExtension = $this->mimeExtensions[0];
         } elseif ($this->isInAllowedExtensions($fileExtension)) {
             $prefixExtension = $fileExtension;
