@@ -18,9 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\IntegerType;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -61,6 +64,7 @@ class SchemaMigrator
         $updateSuggestions = [];
 
         foreach ($connectionPool->getConnectionNames() as $connectionName) {
+            $this->adoptDoctrineAutoincrementDetectionForSqlite($tables, $connectionPool->getConnectionByName($connectionName));
             $connectionMigrator = ConnectionMigrator::create(
                 $connectionName,
                 $tables
@@ -295,5 +299,37 @@ class SchemaMigrator
         }
 
         return $tables;
+    }
+
+    /**
+     * doctrine/dbal detects both sqlite autoincrement variants (row_id alias and autoincrement) through assumptions
+     * which have been made. TYPO3 reads the ext_tables.sql files as MySQL/MariaDB variant, thus not setting the
+     * autoincrement value to true for the row_id alias variant, which leads to a endless missmatch during database
+     * comparison. This method adopts the doctrine/dbal assumption and apply it to the meta schema to mitigate
+     * endless database compare detections in these cases.
+     *
+     * @see https://github.com/doctrine/dbal/commit/33555d36e7e7d07a5880e01
+     *
+     * @param Table[] $tables
+     */
+    protected function adoptDoctrineAutoincrementDetectionForSqlite(array $tables, Connection $connection): void
+    {
+        if (!($connection->getDatabasePlatform() instanceof SqlitePlatform)) {
+            return;
+        }
+        array_walk($tables, static function (Table $table): void {
+            $primaryColumns = $table->hasPrimaryKey() ? $table->getPrimaryKey()->getColumns() : [];
+            $primaryKeyColumnCount = count($primaryColumns);
+            $firstPrimaryKeyColumnName = $primaryColumns[0] ?? '';
+            $singlePrimaryKeyColumn = $table->hasColumn($firstPrimaryKeyColumnName)
+                ? $table->getColumn($firstPrimaryKeyColumnName)
+                : null;
+            if ($primaryKeyColumnCount === 1
+                && $singlePrimaryKeyColumn !== null
+                && $singlePrimaryKeyColumn->getType() instanceof IntegerType
+            ) {
+                $singlePrimaryKeyColumn->setAutoincrement(true);
+            }
+        });
     }
 }
