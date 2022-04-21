@@ -477,9 +477,9 @@ class SearchController extends ActionController
             $dat = json_decode($row['static_page_arguments'], true);
             $pp = explode('-', $dat['key']);
             if ($pp[0] != $pp[1]) {
-                $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $dat['key'];
+                $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $dat['key'];
             } else {
-                $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $pp[0];
+                $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $pp[0];
             }
         }
         $title = $resultData['item_title'] . ($resultData['titleaddition'] ?? '');
