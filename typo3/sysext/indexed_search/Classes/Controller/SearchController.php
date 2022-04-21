@@ -475,11 +475,13 @@ class SearchController extends ActionController
         $resultData['CSSsuffix'] = ($specRowConf['CSSsuffix'] ?? false) ? '-' . $specRowConf['CSSsuffix'] : '';
         if ($this->multiplePagesType($row['item_type'])) {
             $dat = json_decode($row['static_page_arguments'], true);
-            $pp = explode('-', $dat['key']);
-            if ($pp[0] != $pp[1]) {
-                $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $dat['key'];
-            } else {
-                $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $pp[0];
+            if (is_array($dat) && is_string($dat['key'] ?? null) && $dat['key'] !== '') {
+                $pp = explode('-', $dat['key']);
+                if ($pp[0] != $pp[1]) {
+                    $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $dat['key'];
+                } else {
+                    $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $pp[0];
+                }
             }
         }
         $title = $resultData['item_title'] . ($resultData['titleaddition'] ?? '');
