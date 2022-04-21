@@ -474,7 +474,7 @@ class FileListController implements LoggerAwareInterface
         }
 
         $this->view->assign('displayThumbs', [
-            'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] === 'selectable',
+            'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable',
             'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')),
             'html' => BackendUtility::getFuncCheck(
                 $this->id,
@@ -486,7 +486,7 @@ class FileListController implements LoggerAwareInterface
             ),
         ]);
         $this->view->assign('enableClipBoard', [
-            'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] === 'selectable',
+            'enabled' => ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'selectable',
             'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clipBoard')),
             'mode' => $this->filelist->clipObj->current,
             'html' => BackendUtility::getFuncCheck(
