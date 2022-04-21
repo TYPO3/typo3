@@ -2175,6 +2175,81 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
     }
 
+    public function mailtoMakelinksDataProvider(): array
+    {
+        return [
+            'mailto link' => [
+                'Some text with an email address mailto:john@example.com',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>',
+            ],
+            'mailto link with subject parameter' => [
+                'Some text with an email address mailto:john@example.com?subject=hi',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com?subject=hi">john@example.com</a>',
+            ],
+            'mailto link with multiple parameters' => [
+                'Some text with an email address mailto:john@example.com?subject=Greetings&body=Hi+John',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com?subject=Greetings&amp;body=Hi+John">john@example.com</a>',
+            ],
+            'mailto link with question mark' => [
+                'Some text with an email address mailto:john@example.com?',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>?',
+            ],
+            'mailto link with period' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>.',
+            ],
+            'mailto link with wrap' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                    'wrap' => '<span>|</span>',
+                ],
+                'Some text with an email address <span><a href="mailto:john@example.com">john@example.com</a></span>.',
+            ],
+            'mailto link with ATagBeforeWrap' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                    'wrap' => '<span>|</span>',
+                    'ATagBeforeWrap' => 1,
+                ],
+                'Some text with an email address <a href="mailto:john@example.com"><span>john@example.com</span></a>.',
+            ],
+            'mailto link with ATagParams' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                    'ATagParams' => 'class="email"',
+                ],
+                'Some text with an email address <a href="mailto:john@example.com" class="email">john@example.com</a>.',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider mailtoMakelinksDataProvider
+     */
+    public function mailtoMakelinksReturnsMailToLink(string $data, array $configuration, string $expectedResult): void
+    {
+        self::assertSame($expectedResult, $this->subject->mailto_makelinks($data, $configuration));
+    }
+
+    /**
+     * @test
+     */
+    public function mailtoMakelinksReturnsNoMailToLink(): void
+    {
+        self::assertSame('mailto:', $this->subject->mailto_makelinks('mailto:', []));
+    }
+
     /**
      * @return array
      */
