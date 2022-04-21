@@ -2403,13 +2403,12 @@ class ContentObjectRendererTest extends UnitTestCase
      * @test
      * @dataProvider httpMakelinksDataProvider
      */
-    public function httpMakelinksReturnsLink(string $data, array $configuration, string $expectedResult, LinkResult|false $linkResult): void
+    public function httpMakelinksReturnsLink(string $data, array $configuration, string $expectedResult, LinkResult $linkResult): void
     {
-        if ($linkResult !== false) {
-            $linkFactory = $this->prophesize(LinkFactory::class);
-            $linkFactory->create(Argument::cetera())->willReturn($linkResult);
-            GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
-        }
+        $linkFactory = $this->prophesize(LinkFactory::class);
+        $linkFactory->create(Argument::cetera())->willReturn($linkResult);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+
         self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
     }
 
@@ -2444,6 +2443,93 @@ class ContentObjectRendererTest extends UnitTestCase
     public function httpMakelinksReturnsNoLink(string $data, array $configuration, string $expectedResult): void
     {
         self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
+    }
+
+    public function mailtoMakelinksDataProvider(): array
+    {
+        return [
+            'mailto link' => [
+                'Some text with an email address mailto:john@example.com',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with subject parameter' => [
+                'Some text with an email address mailto:john@example.com?subject=hi',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com?subject=hi">john@example.com</a>',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com?subject=hi'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with multiple parameters' => [
+                'Some text with an email address mailto:john@example.com?subject=Greetings&body=Hi+John',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com?subject=Greetings&amp;body=Hi+John">john@example.com</a>',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com?subject=Greetings&body=Hi+John'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with question mark' => [
+                'Some text with an email address mailto:john@example.com?',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>?',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with period' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                ],
+                'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>.',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with wrap' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                    'wrap' => '<span>|</span>',
+                ],
+                'Some text with an email address <span><a href="mailto:john@example.com">john@example.com</a></span>.',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with ATagBeforeWrap' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                    'wrap' => '<span>|</span>',
+                    'ATagBeforeWrap' => 1,
+                ],
+                'Some text with an email address <a href="mailto:john@example.com"><span>john@example.com</span></a>.',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+            ],
+            'mailto link with ATagParams' => [
+                'Some text with an email address mailto:john@example.com.',
+                [
+                    'ATagParams' => 'class="email"',
+                ],
+                'Some text with an email address <a href="mailto:john@example.com" class="email">john@example.com</a>.',
+                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withAttribute('class', 'email')->withLinkText('john@example.com'),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider mailtoMakelinksDataProvider
+     */
+    public function mailtoMakelinksReturnsMailToLink(string $data, array $configuration, string $expectedResult, LinkResult $linkResult): void
+    {
+        $linkFactory = $this->prophesize(LinkFactory::class);
+        $linkFactory->create(Argument::cetera())->willReturn($linkResult);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+
+        self::assertSame($expectedResult, $this->subject->mailto_makelinks($data, $configuration));
+    }
+
+    /**
+     * @test
+     */
+    public function mailtoMakelinksReturnsNoMailToLink(): void
+    {
+        self::assertSame('mailto:', $this->subject->mailto_makelinks('mailto:', []));
     }
 
     /**
