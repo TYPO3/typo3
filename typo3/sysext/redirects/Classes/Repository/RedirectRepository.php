@@ -43,7 +43,7 @@ class RedirectRepository
 
     public function countRedirectsByByDemand(Demand $demand): int
     {
-        return $this->getQueryBuilderForDemand($demand)->executeQuery()->rowCount();
+        return (int)$this->getQueryBuilderForDemand($demand)->count('*')->executeQuery()->fetchOne();
     }
 
     /**
