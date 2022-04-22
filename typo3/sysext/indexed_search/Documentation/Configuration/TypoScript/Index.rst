@@ -246,37 +246,6 @@ exactCount
          See property "show.forbiddenRecords" for more information.
 
 
-
-.. _search-skipextendtosubpageschecking:
-
-searchSkipExtendToSubpagesChecking
-""""""""""""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         searchSkipExtendToSubpagesChecking
-
-   Data type
-         boolean
-
-   Description
-         If set to false (default), on each search the complete page tree will
-         be transversed to check which pages are accessible, so that the
-         extendToSubpages can be considered. This will work with a limited
-         number of page-ids (which means most sites), but will result in slow
-         performance on huge page trees.
-
-         If set to true, then the final result rows are joined with the pages
-         table to select pages that are currently accessible. This will speed
-         up searching in very huge page trees, but on the other hand
-         extendToSubpages will NOT be taken into account!
-
-   Default
-         0
-
-
-
 .. _specialConfiguration-pid:
 
 specialConfiguration.[pid]

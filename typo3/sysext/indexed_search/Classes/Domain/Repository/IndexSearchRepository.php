@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -105,12 +104,6 @@ class IndexSearchRepository
     protected string $searchRootPageIdList = '';
 
     /**
-     * formally known as $conf['search.']['searchSkipExtendToSubpagesChecking']
-     * enabled through settings.searchSkipExtendToSubpagesChecking
-     */
-    protected bool $joinPagesForQuery = false;
-
-    /**
      * Select clauses for individual words, will be filled during the search
      */
     protected array $wSelClauses = [];
@@ -147,10 +140,6 @@ class IndexSearchRepository
         $this->externalParsers = $externalParsers;
         $this->searchRootPageIdList = (string)$searchRootPageIdList;
         $this->frontendUserGroupList = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
-        // Should we use joinPagesForQuery instead of long lists of uids?
-        if ($settings['searchSkipExtendToSubpagesChecking'] ?? false) {
-            $this->joinPagesForQuery = true;
-        }
         if ($settings['exactCount'] ?? false) {
             $this->useExactCount = true;
         }
@@ -440,28 +429,6 @@ class IndexSearchRepository
         if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
             $pageWhere = $hookObj->execFinalQuery_idList('');
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($pageWhere));
-        } elseif ($this->joinPagesForQuery) {
-            // Alternative to getting all page ids by ->getTreeList() where "excludeSubpages" is NOT respected.
-            $queryBuilder
-                ->join(
-                    'ISEC',
-                    'pages',
-                    'pages',
-                    $queryBuilder->expr()->eq('ISEC.page_id', $queryBuilder->quoteIdentifier('pages.uid'))
-                )
-                ->andWhere(
-                    $queryBuilder->expr()->eq(
-                        'pages.no_search',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
-                )
-                ->andWhere(
-                    $queryBuilder->expr()->lt(
-                        'pages.doktype',
-                        $queryBuilder->createNamedParameter(200, \PDO::PARAM_INT)
-                    )
-                );
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         } elseif ($searchRootPageIdList[0] >= 0) {
             // Collecting all pages IDs in which to search
             // filtering out ALL pages that are not accessible due to restriction containers. Does NOT look for "no_search" field!
@@ -987,22 +954,6 @@ class IndexSearchRepository
             if (!empty($hookWhere)) {
                 $queryBuilder->andWhere($hookWhere);
             }
-        } elseif ($this->joinPagesForQuery) {
-            // Alternative to getting all page ids by ->getTreeList() where
-            // "excludeSubpages" is NOT respected.
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            $queryBuilder->from('pages');
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page_id')),
-                $queryBuilder->expr()->eq(
-                    'pages.no_search',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->lt(
-                    'pages.doktype',
-                    $queryBuilder->createNamedParameter(200, \PDO::PARAM_INT)
-                )
-            );
         } elseif ($this->searchRootPageIdList >= 0) {
             // Collecting all pages IDs in which to search,
             // filtering out ALL pages that are not accessible due to restriction containers.
@@ -1217,15 +1168,6 @@ class IndexSearchRepository
     protected function getSearchRootPageIdList(): array
     {
         return GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-    }
-
-    /**
-     * Getter for joinPagesForQuery flag
-     * enabled through TypoScript 'settings.skipExtendToSubpagesChecking'
-     */
-    public function getJoinPagesForQuery(): bool
-    {
-        return $this->joinPagesForQuery;
     }
 
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController

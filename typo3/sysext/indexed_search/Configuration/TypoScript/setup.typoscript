@@ -31,7 +31,6 @@ plugin.tx_indexedsearch {
 		page_links = 10
 		detectDomainRecords = 0
 		defaultFreeIndexUidList =
-		searchSkipExtendToSubpagesChecking = 0
 		exactCount = 0
 
 		# various crop/offset settings for single result items
