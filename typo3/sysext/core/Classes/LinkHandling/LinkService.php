@@ -129,10 +129,10 @@ class LinkService implements SingletonInterface
         } elseif ($this->handlers[self::TYPE_URL] && PathUtility::hasProtocolAndScheme($urn)) {
             $result = $this->handlers[self::TYPE_URL]->resolveHandlerData(['url' => $urn]);
             $result['type'] = self::TYPE_URL;
-        } elseif (stripos($urn, 'mailto:') === 0 && $this->handlers[self::TYPE_EMAIL]) {
+        } elseif (($this->handlers[self::TYPE_EMAIL] ?? false) && str_starts_with(strtolower($urn), 'mailto:')) {
             $result = $this->handlers[self::TYPE_EMAIL]->resolveHandlerData(['email' => $urn]);
             $result['type'] = self::TYPE_EMAIL;
-        } elseif (stripos($urn, 'tel:') === 0 && $this->handlers[self::TYPE_TELEPHONE]) {
+        } elseif (($this->handlers[self::TYPE_TELEPHONE]  ?? false) && str_starts_with(strtolower($urn), 'tel:')) {
             $result = $this->handlers[self::TYPE_TELEPHONE]->resolveHandlerData(['telephone' => $urn]);
             $result['type'] = self::TYPE_TELEPHONE;
         } else {

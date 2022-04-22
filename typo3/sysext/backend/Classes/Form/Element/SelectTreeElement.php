@@ -86,7 +86,7 @@ class SelectTreeElement extends AbstractFormElement
 
         // Field configuration from TCA:
         $config = $parameterArray['fieldConf']['config'];
-        $readOnly = !empty($config['readOnly']) && $config['readOnly'];
+        $readOnly = !empty($config['readOnly']);
         $exclusiveKeys = !empty($config['exclusiveKeys']) ? $config['exclusiveKeys'] : '';
         $exclusiveKeys = $exclusiveKeys . ',';
         $appearance = !empty($config['treeConfig']['appearance']) ? $config['treeConfig']['appearance'] : [];

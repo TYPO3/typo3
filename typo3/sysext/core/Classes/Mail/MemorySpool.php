@@ -111,7 +111,7 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
                     $count++;
                 }
             } catch (TransportExceptionInterface $exception) {
-                if ($retries && $message) {
+                if ($retries) {
                     // re-queue the message at the end of the queue to give a chance
                     // to the other messages to be sent, in case the failure was due to
                     // this message and not just the transport failing

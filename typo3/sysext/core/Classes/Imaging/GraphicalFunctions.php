@@ -751,25 +751,23 @@ class GraphicalFunctions
             $theBBoxInfo['lineHeight'] = (int)$conf['lineHeight'];
         }
 
-        // If any kind of spacing applys, we use this function:
-        if ($spacing || $wordSpacing) {
+        if ($spacing) {
             $x = 0;
-            if (!$spacing && $wordSpacing) {
-                $bits = explode(' ', $theText);
-                foreach ($bits as $word) {
-                    $word .= ' ';
-                    $wordInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $word, $conf['splitRendering.'], $sF);
-                    $wordW = $wordInf[2] - $wordInf[0];
-                    $x += $wordW + $wordSpacing;
-                }
-            } else {
-                $utf8Chars = $this->csConvObj->utf8_to_numberarray($theText);
-                // For each UTF-8 char, do:
-                foreach ($utf8Chars as $char) {
-                    $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $char, $conf['splitRendering.'], $sF);
-                    $charW = $charInf[2] - $charInf[0];
-                    $x += $charW + ($char === ' ' ? $wordSpacing : $spacing);
-                }
+            $utf8Chars = $this->csConvObj->utf8_to_numberarray($theText);
+            // For each UTF-8 char, do:
+            foreach ($utf8Chars as $char) {
+                $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $char, $conf['splitRendering.'], $sF);
+                $charW = $charInf[2] - $charInf[0];
+                $x += $charW + ($char === ' ' ? $wordSpacing : $spacing);
+            }
+        } elseif ($wordSpacing) {
+            $x = 0;
+            $bits = explode(' ', $theText);
+            foreach ($bits as $word) {
+                $word .= ' ';
+                $wordInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $word, $conf['splitRendering.'], $sF);
+                $wordW = $wordInf[2] - $wordInf[0];
+                $x += $wordW + $wordSpacing;
             }
         } elseif (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($conf['text'], $conf) > $conf['breakWidth']) {
             $maxWidth = 0;

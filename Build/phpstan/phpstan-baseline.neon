@@ -131,11 +131,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectTreeElement.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/FieldWizard/LocalizationStateSelector.php
@@ -711,11 +706,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Core/ClassLoadingInformationGenerator.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Crypto/PasswordHashing/BcryptPasswordHash.php
-
-		-
 			message: "#^Binary operation \"\\*\\=\" between non\\-empty\\-string and \\-1 results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
@@ -1216,11 +1206,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
 			message: "#^Parameter \\#2 \\$folder of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:checkFolderActionPermission\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/IconFactory.php
@@ -1271,11 +1256,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
 			message: "#^Variable \\$result in empty\\(\\) always exists and is always falsy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
@@ -1309,11 +1289,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Mail/FluidEmail.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/MemorySpool.php
 
 		-
 			message: "#^Cannot assign offset 'address' to string\\.$#"
@@ -1594,11 +1569,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$file of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\OnlineMedia\\\\Helpers\\\\OnlineMediaHelperInterface\\:\\:getOnlineMediaId\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Rendering/YouTubeRenderer.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceCompressor.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getCollectionObject\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Collection\\\\AbstractFileCollection but returns TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\>\\.$#"
@@ -2896,11 +2866,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_memorizeCleanState\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php
@@ -2997,11 +2962,6 @@ parameters:
 
 		-
 			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
 
