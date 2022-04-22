@@ -2602,7 +2602,7 @@ class EditDocumentController
 
         if ($action === 'edit') {
             $record = BackendUtility::getRecord($table, $recordId) ?? [];
-            $recordTitle = BackendUtility::getRecordTitle($table, $record) ?? '';
+            $recordTitle = BackendUtility::getRecordTitle($table, $record);
             if ($table === 'pages') {
                 return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editPage'), $tableTitle, $recordTitle);
             }

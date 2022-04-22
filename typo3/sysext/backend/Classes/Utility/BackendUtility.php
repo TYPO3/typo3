@@ -1427,7 +1427,8 @@ class BackendUtility
                 // Create NULL-reference
                 $null = null;
                 GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
-                $recordTitle = $params['title'];
+                // Ensure that result of called userFunc still have title set, and it is a string.
+                $recordTitle = (string)($params['title'] ?? '');
             } else {
                 // No userFunc: Build label
                 $ctrlLabel = $GLOBALS['TCA'][$table]['ctrl']['label'] ?? '';

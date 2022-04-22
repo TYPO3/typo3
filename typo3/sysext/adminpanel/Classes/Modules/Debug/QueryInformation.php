@@ -69,7 +69,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         $data = [];
         if ($logger instanceof DoctrineSqlLogger) {
             $queries = $logger->getQueries();
-            $data['queries'] = $this->groupQueries($queries) ?? [];
+            $data['queries'] = $this->groupQueries($queries);
             $data['totalTime'] = array_sum(array_column($queries, 'executionMS')) * 1000;
         }
         return new ModuleData($data);

@@ -115,7 +115,7 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
             $properties['updated'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         }
 
-        $this->providerProperties = array_replace($this->providerProperties, $properties) ?? [];
+        $this->providerProperties = array_replace($this->providerProperties, $properties);
         $this->mfa[$this->providerIdentifier] = $this->providerProperties;
         return $this->storeProperties();
     }

@@ -1106,7 +1106,7 @@ class SearchController extends ActionController
 
                 $languages = $site->getLanguages();
                 foreach ($languages as $language) {
-                    $allOptions[$language->getLanguageId()] = $language->getNavigationTitle() ?? $language->getTitle();
+                    $allOptions[$language->getLanguageId()] = $language->getNavigationTitle();
                 }
             } catch (SiteNotFoundException $e) {
                 // No Site found, no options

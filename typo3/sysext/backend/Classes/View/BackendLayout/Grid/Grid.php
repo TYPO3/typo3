@@ -75,7 +75,7 @@ class Grid extends AbstractGridObject
             return 1;
         }
         $span = 0;
-        foreach ($this->rows[0]->getColumns() ?? [] as $column) {
+        foreach ($this->rows[0]->getColumns() as $column) {
             $span += $column->getColSpan();
         }
         return $span ?: 1;

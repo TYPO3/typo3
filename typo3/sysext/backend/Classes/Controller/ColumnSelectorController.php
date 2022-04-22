@@ -121,7 +121,7 @@ class ColumnSelectorController
      */
     protected function getColumns(string $table, int $pageId): array
     {
-        $tsConfig = BackendUtility::getPagesTSconfig($pageId) ?? [];
+        $tsConfig = BackendUtility::getPagesTSconfig($pageId);
 
         // Current fields selection
         $displayFields = $this->getBackendUserAuthentication()->getModuleData('list/displayFields')[$table] ?? [];

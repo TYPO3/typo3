@@ -204,7 +204,7 @@ class LoginController
     protected function init(ServerRequestInterface $request): void
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 

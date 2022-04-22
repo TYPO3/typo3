@@ -346,7 +346,7 @@ class PageRouter implements RouterInterface
                 // fetch potential applied defaults for later cHash generation
                 // (even if not applied in route, it will be exposed during resolving)
                 $appliedDefaults = $matchedRoute->getOption('_appliedDefaults') ?? [];
-                parse_str($uri->getQuery() ?? '', $remainingQueryParameters);
+                parse_str($uri->getQuery(), $remainingQueryParameters);
                 $enhancer = $route->getEnhancer();
                 if ($enhancer instanceof InflatableEnhancerInterface) {
                     $remainingQueryParameters = $enhancer->inflateParameters($remainingQueryParameters);

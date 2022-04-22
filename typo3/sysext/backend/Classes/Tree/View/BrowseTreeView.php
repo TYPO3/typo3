@@ -72,7 +72,7 @@ class BrowseTreeView extends AbstractTreeView
     {
         $title = parent::getTitleStr($row, $titleLen);
         if (!empty($row['is_siteroot'])
-            && $this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showDomainNameWithTitle'] ?? false
+            && ($this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showDomainNameWithTitle'] ?? false)
         ) {
             $pageId = (int)$row['uid'];
             $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);

@@ -59,7 +59,7 @@ class FileSizeValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validation.error.1505303626',
                     'form'
-                ) ?? '',
+                ),
                 1505303626
             );
             return;
@@ -75,7 +75,7 @@ class FileSizeValidator extends AbstractValidator
                     'validation.error.1505305752',
                     'form',
                     [GeneralUtility::formatSize($minFileSize, $labels)]
-                ) ?? '',
+                ),
                 1505305752,
                 [GeneralUtility::formatSize($minFileSize, $labels)]
             );
@@ -86,7 +86,7 @@ class FileSizeValidator extends AbstractValidator
                     'validation.error.1505305753',
                     'form',
                     [GeneralUtility::formatSize($maxFileSize, $labels)]
-                ) ?? '',
+                ),
                 1505305753,
                 [GeneralUtility::formatSize($maxFileSize, $labels)]
             );

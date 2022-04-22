@@ -501,7 +501,7 @@ class DefaultTcaSchema
                     || !in_array($tcaColumn['config']['type'], ['select', 'group', 'inline', 'category'], true)
                     || !is_string($tcaColumn['config']['MM'] ?? false)
                     // Consider this mm only if looking at it from the local side
-                    || (isset($tcaColumn['config']['MM_opposite_field']) ?? false)
+                    || ($tcaColumn['config']['MM_opposite_field'] ?? false)
                 ) {
                     // Broken TCA or not of expected type, or no MM, or foreign side
                     continue;
