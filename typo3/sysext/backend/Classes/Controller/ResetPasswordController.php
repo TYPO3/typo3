@@ -208,7 +208,7 @@ class ResetPasswordController
         }
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
-        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '');
+        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/login.js');
 

@@ -41,7 +41,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     public function getWidth()
     {
         $imageSizes = $this->getImageSizes();
-        return $imageSizes[0];
+        return (int)$imageSizes[0];
     }
 
     /**
@@ -52,7 +52,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     public function getHeight()
     {
         $imageSizes = $this->getImageSizes();
-        return $imageSizes[1];
+        return (int)$imageSizes[1];
     }
 
     /**

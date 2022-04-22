@@ -1,9 +1,5 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/adminpanel/Classes/Modules/Debug/QueryInformation.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Context\\\\AspectInterface\\:\\:isPreview\\(\\)\\.$#"
@@ -16,24 +12,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\AbstractConditionMatcher\\:\\:\\$pageId \\(int\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Configuration/TypoScript/ConditionMatching/ConditionMatcher.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Controller/BackendController.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ColumnSelectorController.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getReadablePath\\(\\)\\.$#"
@@ -42,11 +23,6 @@ parameters:
 
 		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Exception\\\\ResourceNotFoundException is never thrown in the try block\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
@@ -66,24 +42,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/File/ThumbnailController.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/LoginController.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ResetPasswordController.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between int and '' will always evaluate to false\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Controller/Wizard/AddController.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/Wizard/SuggestWizardController.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\AbstractNode\\:\\:initializeResultArray\\(\\) should return array\\{string\\: array\\<int, string\\>, requireJsModules\\: array\\<int, TYPO3\\\\CMS\\\\Core\\\\Page\\\\JavaScriptModuleInstruction\\>\\} but returns array\\{additionalJavaScriptPost\\: array\\{\\}, additionalHiddenFields\\: array\\{\\}, additionalInlineLanguageLabelFiles\\: array\\{\\}, stylesheetFiles\\: array\\{\\}, requireJsModules\\: array\\{\\}, inlineData\\: array\\{\\}, html\\: ''\\}\\.$#"
@@ -144,11 +105,6 @@ parameters:
 			message: "#^Variable \\$pidList in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/History/RecordHistory.php
 
 		-
 			message: "#^Left side of && is always true\\.$#"
@@ -226,11 +182,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Tree/View/AbstractContentPagePositionMap.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/View/BrowseTreeView.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
@@ -249,11 +200,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayout\\\\ContentFetcher\\:\\:getRuntimeCache\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\VariableFrontend but returns TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/Grid/Grid.php
 
 		-
 			message: "#^Left side of && is always true\\.$#"
@@ -434,11 +380,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<int, string\\> and false will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/IpLocker.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/MfaProviderPropertyManager.php
 
 		-
 			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, array given\\.$#"
@@ -727,11 +668,6 @@ parameters:
 
 		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Exception\\\\DefaultTcaSchemaTablePositionException is never thrown in the try block\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/DefaultTcaSchema.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Schema/DefaultTcaSchema.php
 
@@ -1437,11 +1373,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouteResultInterface\\:\\:getTail\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
 
@@ -2486,11 +2417,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/IntegerConverter.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/ObjectConverter.php
-
-		-
 			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\ObjectConverter\\:\\:\\$sourceTypes is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\AbstractTypeConverter\\:\\:\\$sourceTypes\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/ObjectConverter.php
@@ -2979,11 +2905,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Extension\\:\\:convertDependenciesToObjects\\(\\) should return iterable\\<TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Dependency\\>&SplObjectStorage but returns SplObjectStorage\\<object, mixed\\>\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/Extension.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Repository/BulkExtensionRepositoryWriter.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extensionmanager\\\\Remote\\\\RemoteRegistry\\:\\:\\$defaultRemote \\(TYPO3\\\\CMS\\\\Extensionmanager\\\\Remote\\\\ExtensionDownloaderRemoteInterface\\) in isset\\(\\) is not nullable\\.$#"
@@ -3544,31 +3465,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$key of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfigurationInterface\\:\\:getConfigurationValue\\(\\) expects string, int given\\.$#"
 			count: 4
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 2
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/CountValidator.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/DateRangeValidator.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/EmptyValidator.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/FileSizeValidator.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/MimeTypeValidator.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\Renderable\\\\RootRenderableInterface\\:\\:getProperties\\(\\)\\.$#"
@@ -4236,11 +4132,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Controller/AdministrationController.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Controller/SearchController.php
-
-		-
 			message: "#^Elseif condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/AdministrationRepository.php
@@ -4604,16 +4495,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Unit/Task/CleanerFieldProviderTest.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Hooks/DataHandlerSlugUpdateHook.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Http/Middleware/RedirectHandler.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between bool and 0 will always evaluate to false\\.$#"

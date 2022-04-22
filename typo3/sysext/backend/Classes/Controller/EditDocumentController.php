@@ -2295,7 +2295,7 @@ class EditDocumentController
                 $recordId = (int)$identifier;
             }
             $record = BackendUtility::getRecord($table, $recordId) ?? [];
-            $recordTitle = BackendUtility::getRecordTitle($table, $record) ?? '';
+            $recordTitle = BackendUtility::getRecordTitle($table, $record);
             if ($table === 'pages') {
                 return $multiple
                     ? $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editMultiplePages')

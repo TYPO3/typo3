@@ -209,8 +209,8 @@ class BackendController
         } else {
             // set width/height for custom logo
             $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
-            $logoWidth = $imageInfo->getWidth() ?? '22';
-            $logoHeight = $imageInfo->getHeight() ?? '22';
+            $logoWidth = $imageInfo->getWidth() ?: 22;
+            $logoHeight = $imageInfo->getHeight() ?: 22;
 
             // High-resolution?
             if (str_contains($logoPath, '@2x.')) {

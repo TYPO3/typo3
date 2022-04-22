@@ -100,7 +100,7 @@ class DataHandlerSlugUpdateHook
     protected function isNestedHookInvocation(DataHandler $dataHandler): bool
     {
         $correlationId = $dataHandler->getCorrelationId();
-        $correlationIdAspects = $correlationId ? $correlationId->getAspects() ?? [] : [];
+        $correlationIdAspects = $correlationId ? $correlationId->getAspects() : [];
         return in_array(SlugService::CORRELATION_ID_IDENTIFIER, $correlationIdAspects, true);
     }
 }

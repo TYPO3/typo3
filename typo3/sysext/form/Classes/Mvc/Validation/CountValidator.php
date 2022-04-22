@@ -49,7 +49,7 @@ final class CountValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validation.error.1475002976',
                     'form'
-                ) ?? '',
+                ),
                 1475002976
             );
             return;
@@ -63,7 +63,7 @@ final class CountValidator extends AbstractValidator
                     'validation.error.1475002994',
                     'form',
                     [$minimum, $maximum]
-                ) ?? '',
+                ),
                 1475002994,
                 [$this->options['minimum'], $this->options['maximum']]
             );

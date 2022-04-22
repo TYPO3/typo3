@@ -341,7 +341,7 @@ class Clipboard
                         'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
                             $table,
                             $record
-                        ) ?? '', $this->getBackendUser()->uc['titleLen'])), $record, $isRequestedTable),
+                        ), $this->getBackendUser()->uc['titleLen'])), $record, $isRequestedTable),
                         'infoDataDispatch' => [
                             'action' => 'TYPO3.InfoWindow.showItem',
                             'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$uid], false),

@@ -424,7 +424,7 @@ class RecordHistory
             $pageId = $record['pid'];
         }
 
-        if ($pageId === 0 && $GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction'] ?? false) {
+        if ($pageId === 0 && ($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction'] ?? false)) {
             return true;
         }
 

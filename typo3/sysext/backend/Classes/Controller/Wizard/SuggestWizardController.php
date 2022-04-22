@@ -51,10 +51,7 @@ class SuggestWizardController
         $fieldName = $parsedBody['fieldName'] ?? null;
         $uid = $parsedBody['uid'] ?? null;
         $pid = isset($parsedBody['pid']) ? (int)$parsedBody['pid'] : 0;
-        $dataStructureIdentifier = '' ?? null;
-        if (!empty($parsedBody['dataStructureIdentifier'])) {
-            $dataStructureIdentifier = $parsedBody['dataStructureIdentifier'];
-        }
+        $dataStructureIdentifier = $parsedBody['dataStructureIdentifier'] ?? '';
         $flexFormSheetName = $parsedBody['flexFormSheetName'] ?? null;
         $flexFormFieldName = $parsedBody['flexFormFieldName'] ?? null;
         $flexFormContainerName = $parsedBody['flexFormContainerName'] ?? null;

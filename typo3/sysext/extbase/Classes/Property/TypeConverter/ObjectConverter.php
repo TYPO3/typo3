@@ -131,7 +131,7 @@ class ObjectConverter extends AbstractTypeConverter
 
         $methodName = 'set' . ucfirst($propertyName);
         if ($classSchema->hasMethod($methodName)) {
-            $methodParameters = $classSchema->getMethod($methodName)->getParameters() ?? [];
+            $methodParameters = $classSchema->getMethod($methodName)->getParameters();
             $methodParameter = current($methodParameters);
             if ($methodParameter->getType() === null) {
                 throw new InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $targetType . '".', 1303379158);
