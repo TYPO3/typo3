@@ -1,1 +1,2 @@
 @import 'EXT:fluid_styled_content/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:indexed_search/Configuration/TypoScript/constants.typoscript'
