@@ -2275,42 +2275,49 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                 ],
                 'Some text with a link <a href="http://example.com">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com'))->withLinkText('example.com'),
             ],
             'http link with path' => [
                 'Some text with a link http://example.com/path/to/page',
                 [
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page'))->withLinkText('example.com'),
             ],
             'http link with query parameter' => [
                 'Some text with a link http://example.com?foo=bar',
                 [
                 ],
                 'Some text with a link <a href="http://example.com?foo=bar">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar'))->withLinkText('example.com'),
             ],
             'http link with question mark' => [
                 'Some text with a link http://example.com?',
                 [
                 ],
                 'Some text with a link <a href="http://example.com">example.com</a>?',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com'))->withLinkText('example.com'),
             ],
             'http link with period' => [
                 'Some text with a link http://example.com.',
                 [
                 ],
                 'Some text with a link <a href="http://example.com">example.com</a>.',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com'))->withLinkText('example.com'),
             ],
             'http link with fragment' => [
                 'Some text with a link http://example.com#',
                 [
                 ],
                 'Some text with a link <a href="http://example.com#">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com#'))->withLinkText('example.com'),
             ],
             'http link with query parameter and fragment' => [
                 'Some text with a link http://example.com?foo=bar#top',
                 [
                 ],
                 'Some text with a link <a href="http://example.com?foo=bar#top">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar#top'))->withLinkText('example.com'),
             ],
             'http link with query parameter and keep scheme' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -2318,6 +2325,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'scheme',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('http://example.com'),
             ],
             'http link with query parameter and keep path' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -2325,6 +2333,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'path',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">example.com/path/to/page</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('example.com/path/to/page'),
             ],
             'http link with query parameter and keep path with trailing slash' => [
                 'Some text with a link http://example.com/path/to/page/?foo=bar',
@@ -2332,6 +2341,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'path',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page/?foo=bar">example.com/path/to/page/</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page/?foo=bar'))->withLinkText('example.com/path/to/page/'),
             ],
             'http link with trailing slash and keep path with trailing slash' => [
                 'Some text with a link http://example.com/',
@@ -2339,6 +2349,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'path',
                 ],
                 'Some text with a link <a href="http://example.com/">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/'))->withLinkText('example.com'),
             ],
             'http link with query parameter and keep scheme,path' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -2346,6 +2357,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'scheme,path',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com/path/to/page</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('http://example.com/path/to/page'),
             ],
             'http link with multiple query parameters' => [
                 'Some text with a link http://example.com?foo=bar&fuz=baz',
@@ -2353,6 +2365,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'scheme,path,query',
                 ],
                 'Some text with a link <a href="http://example.com?foo=bar&amp;fuz=baz">http://example.com?foo=bar&fuz=baz</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar&fuz=baz'))->withLinkText('http://example.com?foo=bar&fuz=baz'),
             ],
             'http link with query parameter and keep scheme,path,query' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -2360,24 +2373,28 @@ class ContentObjectRendererTest extends UnitTestCase
                     'keep' => 'scheme,path,query',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com/path/to/page?foo=bar</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('http://example.com/path/to/page?foo=bar'),
             ],
             'https link' => [
                 'Some text with a link https://example.com',
                 [
                 ],
                 'Some text with a link <a href="https://example.com">example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'https://example.com'))->withLinkText('example.com'),
             ],
             'http link with www' => [
                 'Some text with a link http://www.example.com',
                 [
                 ],
                 'Some text with a link <a href="http://www.example.com">www.example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://www.example.com'))->withLinkText('www.example.com'),
             ],
             'https link with www' => [
                 'Some text with a link https://www.example.com',
                 [
                 ],
                 'Some text with a link <a href="https://www.example.com">www.example.com</a>',
+                (new LinkResult(LinkService::TYPE_URL, 'https://www.example.com'))->withLinkText('www.example.com'),
             ],
         ];
     }
@@ -2386,8 +2403,13 @@ class ContentObjectRendererTest extends UnitTestCase
      * @test
      * @dataProvider httpMakelinksDataProvider
      */
-    public function httpMakelinksReturnsLink(string $data, array $configuration, string $expectedResult): void
+    public function httpMakelinksReturnsLink(string $data, array $configuration, string $expectedResult, LinkResult|false $linkResult): void
     {
+        if ($linkResult !== false) {
+            $linkFactory = $this->prophesize(LinkFactory::class);
+            $linkFactory->create(Argument::cetera())->willReturn($linkResult);
+            GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+        }
         self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
     }
 
