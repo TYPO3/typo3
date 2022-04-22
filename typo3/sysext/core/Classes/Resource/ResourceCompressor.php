@@ -188,7 +188,7 @@ class ResourceCompressor
             } else {
                 $filesToInclude[$fileOptions['section']][] = $filenameFromMainDir;
             }
-            if (!empty($fileOptions['async']) && (bool)$fileOptions['async']) {
+            if ($fileOptions['async'] ?? false) {
                 $concatenatedJsFileIsAsync = true;
             } else {
                 $allFilesToConcatenateAreAsync = false;

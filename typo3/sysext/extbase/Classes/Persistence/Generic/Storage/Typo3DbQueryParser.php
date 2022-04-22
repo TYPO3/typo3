@@ -721,7 +721,7 @@ class Typo3DbQueryParser
             }
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
             $statement .= $this->getPageRepository()->enableFields($tableName);
-        } elseif (!$ignoreEnableFields && $includeDeleted) {
+        } elseif (!$ignoreEnableFields) {
             throw new InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1460975922);
         }
         return $statement;

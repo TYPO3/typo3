@@ -75,7 +75,6 @@ class BcryptPasswordHash implements PasswordHashInterface
     public function isAvailable(): bool
     {
         return defined('PASSWORD_BCRYPT')
-            && PASSWORD_BCRYPT
             && function_exists('hash')
             && function_exists('hash_algos')
             && in_array('sha384', hash_algos());
