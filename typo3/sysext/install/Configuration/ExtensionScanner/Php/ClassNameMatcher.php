@@ -2187,4 +2187,9 @@ return [
             'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Typolink\LinkResultFactory' => [
+        'restFiles' => [
+            'Deprecation-97536-LinkResultFactory.rst',
+        ],
+    ],
 ];

@@ -17,4 +17,5 @@ declare(strict_types=1);
 
 return [
     'TYPO3\\CMS\\Frontend\\Service\\TypoLinkCodecService' => \TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService::class,
+    'TYPO3\\CMS\\Frontend\\Typolink\\LinkResultFactory' => \TYPO3\CMS\Frontend\Typolink\LinkFactory::class,
 ];

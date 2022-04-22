@@ -24,3 +24,9 @@ namespace TYPO3\CMS\Frontend\Service {
     {
     }
 }
+
+namespace TYPO3\CMS\Frontend\Typolink {
+    class LinkResultFactory extends \TYPO3\CMS\Frontend\Typolink\LinkFactory
+    {
+    }
+}

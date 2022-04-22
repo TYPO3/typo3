@@ -5365,4 +5365,11 @@ return [
             'Deprecation-98488-ContentObjectRenderer-getQueryArguments.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Typolink\LinkResultFactory->createFromUriString' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-97536-LinkResultFactory.rst',
+        ],
+    ],
 ];

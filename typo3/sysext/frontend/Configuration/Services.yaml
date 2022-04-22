@@ -46,6 +46,7 @@ services:
 
   TYPO3\CMS\Frontend\Typolink\LinkResultFactory:
     public: true
+    alias: TYPO3\CMS\Frontend\Typolink\LinkFactory
 
   TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator:
     public: true

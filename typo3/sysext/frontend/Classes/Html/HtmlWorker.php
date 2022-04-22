@@ -22,10 +22,10 @@ use DOMDocumentFragment;
 use DOMElement;
 use DOMNode;
 use DOMXPath;
-use Exception;
 use Masterminds\HTML5;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Typolink\LinkResultFactory;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
 /**
  * @internal API still might change
@@ -50,16 +50,13 @@ class HtmlWorker
      */
     public const REMOVE_ENCLOSURE_ON_FAILURE = 4;
 
-    protected LinkResultFactory $linkResultFactory;
-    protected HTML5 $parser;
-
     protected ?DOMNode $mount = null;
     protected ?DOMDocument $document = null;
 
-    public function __construct(LinkResultFactory $linkResultFactory, HTML5 $parser)
-    {
-        $this->linkResultFactory = $linkResultFactory;
-        $this->parser = $parser;
+    public function __construct(
+        protected readonly LinkFactory $linkFactory,
+        protected readonly HTML5 $parser
+    ) {
     }
 
     public function __toString(): string
@@ -100,11 +97,8 @@ class HtmlWorker
                     continue;
                 }
                 try {
-                    $linkResult = $this->linkResultFactory->createFromUriString($elementAttrValue);
-                } catch (Exception $exception) {
-                    // @todo: Link building should be checked and adapted to throw only specific exceptions
-                    //        which can then be caught here. Catching generic Exception hides programmatic
-                    //        exceptions, which can be hard to track down.
+                    $linkResult = $this->linkFactory->createUri($elementAttrValue);
+                } catch (UnableToLinkException $exception) {
                     $this->onTransformUriFailure($element, $subject, $flags);
                     continue;
                 }
