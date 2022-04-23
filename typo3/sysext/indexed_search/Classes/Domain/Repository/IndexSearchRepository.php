@@ -207,6 +207,8 @@ class IndexSearchRepository
         $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
         // Getting SQL result pointer:
         $this->getTimeTracker()->push('Searching result');
+        // @todo Change hook and method signatures to return the QueryBuilder instead the Result. Consider to move
+        //       from hook to a proper PSR-14 event.
         if ($hookObj = $this->hookRequest('getResultRows_SQLpointer')) {
             $result = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
         } elseif ($useMysqlFulltext) {
@@ -217,8 +219,14 @@ class IndexSearchRepository
         $this->getTimeTracker()->pull();
         // Organize and process result:
         if ($result) {
+            // We need the result row count beforehand for the pointer calculation. Using $result->rowCount() for
+            // select queries is not reliable across dbms systems, and in case of sqlite this will return 0 here,
+            // even if there is a result set, we need to retrieve all rows and doing a count on the array.
+            // @todo Change this to second count() query call, after getResultRows_SQLpointer() signatures/hook has
+            //       been changed to return QueryBuilder instead of the Result.
+            $rows = $result->fetchAllAssociative();
             // Total search-result count
-            $count = $result->rowCount();
+            $count = count($rows);
             // The pointer is set to the result page that is currently being viewed
             $pointer = MathUtility::forceIntegerInRange($this->resultpagePointer, 0, (int)floor($count / $this->numberOfResults));
             // Initialize result accumulation variables:
@@ -235,7 +243,9 @@ class IndexSearchRepository
             // Now, traverse result and put the rows to be displayed into an array
             // Each row should contain the fields from 'ISEC.*, IP.*' combined
             // + artificial fields "show_resume" (bool) and "result_number" (counter)
-            while ($row = $result->fetchAssociative()) {
+            // @todo Change this back to while($row = $result->fetchAssociative()) after changing
+            //       getResultRows_SQLpointer() returning QueryBuilder instead of a Result.
+            foreach ($rows as $row) {
                 // Set first row
                 if (!$c) {
                     $firstRow = $row;
@@ -278,8 +288,6 @@ class IndexSearchRepository
                     $count--;
                 }
             }
-
-            $result->free();
 
             return [
                 'resultRows' => $resultRows,
