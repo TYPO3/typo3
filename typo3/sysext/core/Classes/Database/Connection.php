@@ -21,7 +21,6 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerAwareInterface;
@@ -392,10 +391,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             case 'pdo_oracle':
                 $version = 'Oracle';
                 break;
-            case 'sqlsrv':
-            case 'pdo_sqlsrv':
-                $version = 'SQLServer';
-                break;
         }
 
         // if clause can be removed with Doctrine DBAL 4.
@@ -444,13 +439,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         if ($databasePlatform instanceof PostgreSqlPlatform) {
             return parent::lastInsertId(trim(implode('_', [$tableName, $fieldName, 'seq']), '_'));
         }
-        if ($databasePlatform instanceof SQLServer2012Platform) {
-            // lastInsertId() in mssql >2012 takes a sequence name and not the table name as
-            // argument. If no argument is given, last insert id of latest table is returned.
-            // https://docs.microsoft.com/de-de/sql/connect/php/pdo-lastinsertid?view=sql-server-2017
-            return (string)parent::lastInsertId();
-        }
-
         return (string)parent::lastInsertId($tableName);
     }
 

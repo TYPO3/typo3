@@ -23,7 +23,6 @@ use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as PDOMySqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as PDOPgSqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as PDOSqliteDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOSqlsrv\Driver as PDOSqlsrvDriver;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
@@ -71,7 +70,6 @@ class ConnectionPool
         'pdo_mysql' => PDOMySqlDriver::class,
         'pdo_sqlite' => PDOSqliteDriver::class,
         'pdo_pgsql' => PDOPgSqlDriver::class,
-        'pdo_sqlsrv' => PDOSqlsrvDriver::class,
         // TODO: not supported yet, need to be checked later
 //        'pdo_oci' => PDOOCIDriver::class,
 //        'drizzle_pdo_mysql' => DrizzlePDOMySQLDriver::class,

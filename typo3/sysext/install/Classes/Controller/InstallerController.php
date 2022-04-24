@@ -503,7 +503,6 @@ class InstallerController
                     'mysqli',
                     'pdo_mysql',
                     'pdo_pgsql',
-                    'mssql',
                     'pdo_sqlite',
                 ];
                 if (in_array($postValues['driver'], $validDrivers, true)) {

@@ -22,7 +22,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 
 /**
  * Helper to handle platform specific details
@@ -37,7 +36,6 @@ class PlatformInformation
     protected static $identifierLimits = [
         'mysql' => 63,
         'postgresql' => 63,
-        'sqlserver' => 128,
         'sqlite' => 1024, // arbitrary limit, SQLite is only limited by the total statement length
     ];
 
@@ -47,7 +45,6 @@ class PlatformInformation
     protected static $bindParameterLimits = [
         'mysql' => 65535,
         'postgresql' => 34464,
-        'sqlserver' => 2100,
         'sqlite' => 999,
     ];
 
@@ -57,7 +54,6 @@ class PlatformInformation
     protected static $charSetMap = [
         'mysql' => 'utf8mb4',
         'postgresql' => 'UTF8',
-        'sqlserver' => 'UTF-8',
         'sqlite' => 'utf8',
     ];
 
@@ -67,7 +63,6 @@ class PlatformInformation
     protected static $databaseCreateWithCharsetMap = [
         'mysql' => 'CHARACTER SET %s',
         'postgresql' => "ENCODING '%s'",
-        'sqlserver' => '',
     ];
 
     /**
@@ -148,9 +143,6 @@ class PlatformInformation
         }
         if ($platform instanceof PostgreSqlPlatform) {
             return 'postgresql';
-        }
-        if ($platform instanceof SQLServerPlatform) {
-            return 'sqlserver';
         }
         if ($platform instanceof SqlitePlatform) {
             return 'sqlite';

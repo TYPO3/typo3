@@ -393,30 +393,6 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForMssql(): void
-    {
-        $databasePlatform = $this->prophesize(MockPlatform::class);
-        $databasePlatform->getName()->willReturn('mssql');
-        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
-
-        $this->connectionProphecy->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphecy->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphecy->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphecy->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
-            return '[' . $args[0] . ']';
-        });
-
-        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
-
-        $result = $this->subject->inSet('aField', "'1'");
-
-        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%') OR ([aField] LIKE '%,1') OR ([aField] LIKE '%,1,%')", $result);
-    }
-
-    /**
-     * @test
-     */
     public function notInSetThrowsExceptionWithEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -572,30 +548,6 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1476029421);
 
         $this->subject->inSet('aField', ':dcValue1');
-    }
-
-    /**
-     * @test
-     */
-    public function notInSetForMssql(): void
-    {
-        $databasePlatform = $this->prophesize(MockPlatform::class);
-        $databasePlatform->getName()->willReturn('mssql');
-        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
-
-        $this->connectionProphecy->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphecy->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphecy->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphecy->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
-            return '[' . $args[0] . ']';
-        });
-
-        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
-
-        $result = $this->subject->inSet('aField', "'1'");
-
-        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%') OR ([aField] LIKE '%,1') OR ([aField] LIKE '%,1,%')", $result);
     }
 
     /**

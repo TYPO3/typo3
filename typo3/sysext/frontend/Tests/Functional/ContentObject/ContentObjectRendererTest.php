@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
@@ -249,7 +248,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
         foreach ($expected as $field => $value) {
             // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
-            if (!($databasePlatform instanceof SQLServerPlatform) && $field === 'SELECT') {
+            if ($field === 'SELECT') {
                 $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
                 $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
             }

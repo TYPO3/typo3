@@ -21,7 +21,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,8 +41,7 @@ class PlatformInformationTest extends UnitTestCase
     {
         return [
             'mysql' => [$this->prophesize(MySQLPlatform::class)->reveal()],
-            'postgresql' => [$this->prophesize(PostgreSqlPlatform::class)->reveal()],
-            'sqlserver' => [$this->prophesize(SQLServerPlatform::class)->reveal()],
+            'postgresql' => [$this->prophesize(PostgreSQLPlatform::class)->reveal()],
             'sqlite' => [$this->prophesize(SqlitePlatform::class)->reveal()],
         ];
     }

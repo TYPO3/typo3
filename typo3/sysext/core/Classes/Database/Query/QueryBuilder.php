@@ -18,13 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Query;
 
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
@@ -1300,10 +1298,6 @@ class QueryBuilder
         if ($databasePlatform instanceof SqlitePlatform) {
             return sprintf('CAST(%s as TEXT)', $this->connection->quoteIdentifier($fieldName));
         }
-        // https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-ver15#implicit-conversions
-        if ($databasePlatform instanceof SQLServerPlatform) {
-            return sprintf('CAST(%s as VARCHAR)', $this->connection->quoteIdentifier($fieldName));
-        }
         // https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqlj33562.html
         if ($databasePlatform instanceof OraclePlatform) {
             return sprintf('CAST(%s as VARCHAR)', $this->connection->quoteIdentifier($fieldName));
@@ -1330,15 +1324,9 @@ class QueryBuilder
     {
         $identifier = trim($identifier);
         $platform = $this->getConnection()->getDatabasePlatform();
-        if ($platform instanceof SQLServerPlatform) {
-            // mssql quotes identifiers with [ and ], not a single character
-            $identifier = ltrim($identifier, '[');
-            $identifier = rtrim($identifier, ']');
-        } else {
-            $quoteChar = $platform->getIdentifierQuoteCharacter();
-            $identifier = trim($identifier, $quoteChar);
-            $identifier = str_replace($quoteChar . $quoteChar, $quoteChar, $identifier);
-        }
+        $quoteChar = $platform->getIdentifierQuoteCharacter();
+        $identifier = trim($identifier, $quoteChar);
+        $identifier = str_replace($quoteChar . $quoteChar, $quoteChar, $identifier);
         return $identifier;
     }
 

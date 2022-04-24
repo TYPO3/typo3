@@ -309,31 +309,4 @@ class BulkInsertTest extends UnitTestCase
             [Connection::PARAM_INT, Connection::PARAM_INT, 'baz' => Connection::PARAM_STR]
         );
     }
-
-    /**
-     * @test
-     */
-    public function executeWithMaxInsertRowsPerStatementExceededThrowsException(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You can only insert 10 rows in a single INSERT statement with platform "mock".');
-
-        /** @var \PHPUnit\Framework\MockObject\MockObject|BulkInsertQuery $subject */
-        $subject = $this->getAccessibleMock(
-            BulkInsertQuery::class,
-            ['getInsertMaxRows'],
-            [$this->connection, $this->testTable],
-            ''
-        );
-
-        $subject
-            ->method('getInsertMaxRows')
-            ->willReturn(10);
-
-        for ($i = 0; $i <= 10; $i++) {
-            $subject->addValues([]);
-        }
-
-        $subject->execute();
-    }
 }

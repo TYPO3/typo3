@@ -186,36 +186,7 @@ class BulkInsertQuery
      */
     public function execute(): int
     {
-        $platform = $this->connection->getDatabasePlatform();
-        $insertMaxRows = $this->getInsertMaxRows();
-
-        if ($insertMaxRows > 0 && count($this->values) > $insertMaxRows) {
-            throw new \LogicException(
-                sprintf(
-                    'You can only insert %d rows in a single INSERT statement with platform "%s".',
-                    $insertMaxRows,
-                    $platform->getName()
-                ),
-                1476049654
-            );
-        }
-
         return $this->connection->executeStatement($this->getSQL(), $this->parameters, $this->types);
-    }
-
-    /**
-     * Return the maximum number of rows that can be inserted at the same time.
-     *
-     * @return int
-     */
-    protected function getInsertMaxRows(): int
-    {
-        $platform = $this->connection->getDatabasePlatform();
-        if ($platform->getName() === 'mssql' && $platform->getReservedKeywordsList()->isKeyword('MERGE')) {
-            return 1000;
-        }
-
-        return 0;
     }
 
     /**

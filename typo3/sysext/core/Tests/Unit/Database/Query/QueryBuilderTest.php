@@ -22,7 +22,6 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -1181,12 +1180,6 @@ class QueryBuilderTest extends UnitTestCase
                 'input' => '"anIdentifier"',
                 'expected' => 'anIdentifier',
             ],
-            'mssql' => [
-                'platform' => SQLServerPlatform::class,
-                'quoteChar' => '', // no single quote character, but [ and ]
-                'input' => '[anIdentifier]',
-                'expected' => 'anIdentifier',
-            ],
         ];
     }
 
@@ -1413,10 +1406,6 @@ class QueryBuilderTest extends UnitTestCase
             'Test cast for SqlitePlatform' => [
                 new SqlitePlatform(),
                 'CAST(aField as TEXT)',
-            ],
-            'Test cast for SQLServerPlatform' => [
-                new SQLServerPlatform(),
-                'CAST(aField as VARCHAR)',
             ],
             'Test cast for OraclePlatform' => [
                 new OraclePlatform(),

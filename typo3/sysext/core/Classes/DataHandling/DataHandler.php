@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -1154,27 +1153,6 @@ class DataHandler implements LoggerAwareInterface
             $this->processClearCacheQueue();
             $this->resetElementsToBeDeleted();
         }
-    }
-
-    /**
-     * @param string $table
-     * @param string $value
-     * @param string $dbType
-     * @return string
-     */
-    protected function normalizeTimeFormat(string $table, string $value, string $dbType): string
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-        $platform = $connection->getDatabasePlatform();
-        if ($platform instanceof SQLServerPlatform) {
-            $defaultLength = QueryHelper::getDateTimeFormats()[$dbType]['empty'];
-            $value = substr(
-                $value,
-                0,
-                strlen($defaultLength)
-            );
-        }
-        return $value;
     }
 
     /**
@@ -7480,8 +7458,8 @@ class DataHandler implements LoggerAwareInterface
 
                 $types = [];
                 $platform = $connection->getDatabasePlatform();
-                if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
-                    // mssql and postgres needs to set proper PARAM_LOB and others to update fields.
+                if ($platform instanceof PostgreSQLPlatform) {
+                    // postgres needs to set proper PARAM_LOB and others to update fields.
                     $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
                     foreach ($fieldArray as $columnName => $columnValue) {
                         $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
@@ -7666,9 +7644,6 @@ class DataHandler implements LoggerAwareInterface
                             }
                         } else {
                             $dbType = $GLOBALS['TCA'][$table]['columns'][$key]['config']['dbType'] ?? false;
-                            if ($dbType === 'datetime' || $dbType === 'time') {
-                                $row[$key] = $this->normalizeTimeFormat($table, $row[$key], $dbType);
-                            }
                             if ((string)$value !== (string)$row[$key]) {
                                 // The is_numeric check catches cases where we want to store a float/double value
                                 // and database returns the field as a string with the least required amount of
@@ -9728,37 +9703,7 @@ class DataHandler implements LoggerAwareInterface
             // Return the actual ID we forced on insert as a surrogate.
             return $suggestedUid;
         }
-        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-            return $this->postProcessSqlServerInsert($connection, $tableName);
-        }
         $id = $connection->lastInsertId($tableName);
-        return (int)$id;
-    }
-
-    /**
-     * Get the last insert ID from sql server
-     *
-     * - first checks whether doctrine might be able to fetch the ID from the
-     * sequence table
-     * - if that does not succeed it manually selects the current IDENTITY value
-     * from a table
-     * - returns 0 if both fail
-     *
-     * @param \TYPO3\CMS\Core\Database\Connection $connection
-     * @param string $tableName
-     * @return int
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function postProcessSqlServerInsert(Connection $connection, string $tableName): int
-    {
-        $id = $connection->lastInsertId($tableName);
-        if (!((int)$id > 0)) {
-            $table = $connection->quoteIdentifier($tableName);
-            $result = $connection->executeQuery('SELECT IDENT_CURRENT(\'' . $table . '\') AS id')->fetchAssociative();
-            if (isset($result['id']) && $result['id'] > 0) {
-                $id = $result['id'];
-            }
-        }
         return (int)$id;
     }
 

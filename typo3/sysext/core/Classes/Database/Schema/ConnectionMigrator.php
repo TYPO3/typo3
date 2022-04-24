@@ -21,7 +21,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
@@ -165,9 +164,6 @@ class ConnectionMigrator
                         static function ($columnName) {
                             // Strip MySQL prefix length information to get real column names
                             $columnName = preg_replace('/\(\d+\)$/', '', $columnName) ?? '';
-                            // Strip mssql '[' and ']' from column names
-                            $columnName = ltrim($columnName, '[');
-                            $columnName = rtrim($columnName, ']');
                             // Strip sqlite '"' from column names
                             return trim($columnName, '"');
                         },
@@ -1340,9 +1336,6 @@ class ConnectionMigrator
         $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
         if ($databasePlatform instanceof PostgreSqlPlatform) {
             return 'postgresql';
-        }
-        if ($databasePlatform instanceof SQLServerPlatform) {
-            return 'mssql';
         }
         if ($databasePlatform instanceof SqlitePlatform) {
             return 'sqlite';

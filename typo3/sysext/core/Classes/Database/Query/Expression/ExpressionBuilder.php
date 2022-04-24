@@ -339,31 +339,6 @@ class ExpressionBuilder
                     'FIND_IN_SET support for database platform "Oracle" not yet implemented.',
                     1459696680
                 );
-            case 'sqlsrv':
-            case 'pdo_sqlsrv':
-            case 'mssql':
-                // See unit and functional tests for details
-                if ($isColumn) {
-                    $expression = $this->or(
-                        $this->eq($fieldName, $value),
-                        $this->like($fieldName, $value . ' + \',%\''),
-                        $this->like($fieldName, '\'%,\' + ' . $value),
-                        $this->like($fieldName, '\'%,\' + ' . $value . ' + \',%\'')
-                    );
-                } else {
-                    $likeEscapedValue = str_replace(
-                        ['[', '%'],
-                        ['[[]', '[%]'],
-                        $this->unquoteLiteral($value)
-                    );
-                    $expression = $this->or(
-                        $this->eq($fieldName, $this->literal($this->unquoteLiteral((string)$value))),
-                        $this->like($fieldName, $this->literal($likeEscapedValue . ',%')),
-                        $this->like($fieldName, $this->literal('%,' . $likeEscapedValue)),
-                        $this->like($fieldName, $this->literal('%,' . $likeEscapedValue . ',%'))
-                    );
-                }
-                return (string)$expression;
             case 'sqlite':
             case 'sqlite3':
             case 'pdo_sqlite':
@@ -452,31 +427,6 @@ class ExpressionBuilder
                     'negative FIND_IN_SET support for database platform "Oracle" not yet implemented.',
                     1627573101
                 );
-            case 'sqlsrv':
-            case 'pdo_sqlsrv':
-            case 'mssql':
-                // See unit and functional tests for details
-                if ($isColumn) {
-                    $expression = $this->and(
-                        $this->neq($fieldName, $value),
-                        $this->notLike($fieldName, $value . ' + \',%\''),
-                        $this->notLike($fieldName, '\'%,\' + ' . $value),
-                        $this->notLike($fieldName, '\'%,\' + ' . $value . ' + \',%\'')
-                    );
-                } else {
-                    $likeEscapedValue = str_replace(
-                        ['[', '%'],
-                        ['[[]', '[%]'],
-                        $this->unquoteLiteral($value)
-                    );
-                    $expression = $this->and(
-                        $this->neq($fieldName, $this->literal($this->unquoteLiteral((string)$value))),
-                        $this->notLike($fieldName, $this->literal($likeEscapedValue . ',%')),
-                        $this->notLike($fieldName, $this->literal('%,' . $likeEscapedValue)),
-                        $this->notLike($fieldName, $this->literal('%,' . $likeEscapedValue . ',%'))
-                    );
-                }
-                return (string)$expression;
             case 'sqlite':
             case 'sqlite3':
             case 'pdo_sqlite':

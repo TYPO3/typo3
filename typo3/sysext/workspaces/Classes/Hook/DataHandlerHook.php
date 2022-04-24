@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -680,15 +679,15 @@ class DataHandlerHook
 
         $platform = $connection->getDatabasePlatform();
         $tableDetails = null;
-        if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
-            // mssql and postgres needs to set proper PARAM_LOB and others to update fields.
+        if ($platform instanceof PostgreSQLPlatform) {
+            // postgres needs to set proper PARAM_LOB and others to update fields.
             $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
         }
 
         try {
             $types = [];
 
-            if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
+            if ($platform instanceof PostgreSQLPlatform) {
                 foreach ($curVersion as $columnName => $columnValue) {
                     $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
                 }
@@ -707,7 +706,7 @@ class DataHandlerHook
         if (empty($sqlErrors)) {
             try {
                 $types = [];
-                if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
+                if ($platform instanceof PostgreSQLPlatform) {
                     foreach ($curVersion as $columnName => $columnValue) {
                         $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
                     }

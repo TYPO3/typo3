@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
@@ -226,10 +225,8 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                         'table' => $table,
                         'uid' => $rowBefore['uid'],
                     ];
-                    if ($connectionForSysRegistry === $connectionForTable
-                        && !($connectionForSysRegistry->getDatabasePlatform() instanceof SQLServerPlatform)
-                    ) {
-                        // Target table and sys_registry table are on the same connection and not mssql, use a transaction
+                    if ($connectionForSysRegistry === $connectionForTable) {
+                        // Target table and sys_registry table are on the same connection, use a transaction
                         $connectionForTable->beginTransaction();
                         try {
                             $this->updateOrDeleteRow(
@@ -246,9 +243,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                             throw $up;
                         }
                     } else {
-                        // Either different connections for table and sys_registry, or mssql.
-                        // SqlServer can not run a transaction for a table if the same table is queried
-                        // currently - our above ->fetchAssociative() main loop.
+                        // Different connections for table and sys_registry.
                         // So, execute two distinct queries and hope for the best.
                         $this->updateOrDeleteRow(
                             $connectionForTable,
