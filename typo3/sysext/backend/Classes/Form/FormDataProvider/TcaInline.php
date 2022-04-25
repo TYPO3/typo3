@@ -161,7 +161,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
 
             // Find which records are localized, which records are not localized and which are
             // localized but miss default language record
-            $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
+            $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'] ?? '';
             foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
                 try {
                     $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
@@ -177,10 +177,12 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     );
                     continue;
                 }
-                $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
-                if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
-                    // This localized child has a default language record. Remove this record from list of default language records
-                    $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
+                if (isset($localizedRecord[$fieldNameWithDefaultLanguageUid])) {
+                    $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
+                    if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
+                        // This localized child has a default language record. Remove this record from list of default language records
+                        $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
+                    }
                 }
                 // Compile localized record
                 $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
