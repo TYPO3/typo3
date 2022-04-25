@@ -140,14 +140,6 @@ class EditFileController
         $dataColumnDefinition = $this->dataColumnTca;
         $dataColumnDefinition['label'] = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file')) . ' ' . htmlspecialchars($combinedIdentifier);
 
-        // @todo: Consider dropping this hook. Working on $content is useless here and
-        //        overriding $dataColumnDefinition could be done via FormEngine.
-        $hookContent = '';
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'] ?? [] as $hookFunction) {
-            $hookParameters = ['content' => &$hookContent, 'target' => &$combinedIdentifier, 'dataColumnDefinition' => &$dataColumnDefinition];
-            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-        }
-
         $formData = $this->formEngineData;
         $formData['databaseRow']['data'] = $file->getContents();
         $formData['databaseRow']['target'] = $file->getUid();
@@ -162,20 +154,9 @@ class EditFileController
         $view->assignMultiple([
             'moduleUrlTceFile' => (string)$this->uriBuilder->buildUriFromRoute('tce_file'),
             'fileName' => $file->getName(),
-            'hookContent' => $hookContent,
             'form' => $formResultCompiler->addCssFiles() . $resultArray['html'] . $formResultCompiler->printNeededJSFunctions(),
         ]);
         $content = $view->render('File/EditFile');
-
-        // @todo: Consider dropping this hook: Working late on content could be done via template override or FormEngine
-        //        and overriding $combinedIdentifier is useless here.
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'] ?? [] as $hookFunction) {
-            $hookParameters = [
-                'pageContent' => &$content,
-                'target' => &$combinedIdentifier,
-            ];
-            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-        }
 
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')

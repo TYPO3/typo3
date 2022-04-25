@@ -901,4 +901,14 @@ return [
             'Feature-98375-PSR-14EventsInPageModule.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/file_edit.php\'][\'preOutputProcessingHook\']' => [
+        'restFiles' => [
+            'Breaking-97452-RemovedEditFileControllerHooks.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/file_edit.php\'][\'postOutputProcessingHook\']' => [
+        'restFiles' => [
+            'Breaking-97452-RemovedEditFileControllerHooks.rst',
+        ],
+    ],
 ];
