@@ -280,6 +280,10 @@ class FileList
             //       This should be fixed, so we can use the $firstResult and $maxResults
             //       properties of the search demand directly.
             $this->totalItems = count($files);
+            if (trim($this->sort) !== '') {
+                // Sort the files before applying the pagination
+                $files = $this->sortFiles($files);
+            }
             $filesNum = $this->firstElementNumber + $this->iLimit > $this->totalItems
                 ? $this->totalItems - $this->firstElementNumber
                 : $this->iLimit;
@@ -330,8 +334,30 @@ class FileList
                 }
             }
 
-            $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum);
-            $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false);
+            // Initialize files and folders
+            $files = [];
+            $folders = [];
+
+            if (trim($this->sort) !== '') {
+                // Note: In case sorting is requested, this can not be done by the driver because
+                //       the sorting field might be a metadata field, which is not known to the
+                //       driver (see #97443). This therefore requires to fetch all files and folders
+                //       first. They are then sorted and sliced to respect the current pagination.
+                if ($foldersNum) {
+                    // Only perform find/sort/slice in case at least one folder is available
+                    $folders = $this->sortFolders($storage->getFoldersInFolder($this->folderObject));
+                    $folders = array_slice($folders, $foldersFrom, $foldersNum);
+                }
+                if ($filesNum) {
+                    // Only perform find/sort/slice in case at least one file is available
+                    $files = $this->sortFiles($this->folderObject->getFiles());
+                    $files = array_slice($files, $filesFrom, $filesNum);
+                }
+            } else {
+                $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum);
+                $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false);
+            }
+
             $this->totalItems = $foldersCount + $filesCount;
         }
 
@@ -480,7 +506,7 @@ class FileList
     public function formatDirList(array $folders)
     {
         $out = '';
-        foreach (ListUtility::resolveSpecialFolderNames($this->sortFolders($folders)) as $folderName => $folderObject) {
+        foreach (ListUtility::resolveSpecialFolderNames($folders) as $folderName => $folderObject) {
             $role = $folderObject->getRole();
             if ($role === FolderInterface::ROLE_PROCESSING) {
                 // don't show processing-folder
@@ -633,7 +659,7 @@ class FileList
     public function formatFileList(array $files)
     {
         $out = '';
-        foreach ($this->sortFiles($files) as $fileObject) {
+        foreach ($files as $fileObject) {
             // Initialization
             $this->counter++;
             $this->totalbytes += $fileObject->getSize();
@@ -1380,11 +1406,6 @@ class FileList
      */
     protected function sortFiles(array $files): array
     {
-        if (trim($this->sort) === '') {
-            // Early return in case no sorting is requested
-            return $files;
-        }
-
         $sortedFiles = [];
         foreach ($files as $file) {
             switch ($this->sort) {
@@ -1431,9 +1452,8 @@ class FileList
      */
     protected function sortFolders(array $folders): array
     {
-        if (trim($this->sort) === '' || !in_array($this->sort, ['size', 'rw', 'name'], true)) {
-            // Early return in case no sorting is requested or sorting field is not
-            // supported on folders. Latter is important to prevent jumping of folders.
+        if (!in_array($this->sort, ['size', 'rw', 'name'], true)) {
+            // Early return in case the sorting field is not supported on folders.
             return $folders;
         }
 
