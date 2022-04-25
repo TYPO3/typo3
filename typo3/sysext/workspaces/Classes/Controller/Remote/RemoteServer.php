@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
+use TYPO3\CMS\Workspaces\Event\ModifyVersionDifferencesEvent;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\HistoryService;
 use TYPO3\CMS\Workspaces\Service\IntegrityService;
@@ -50,31 +52,14 @@ class RemoteServer
 {
     use LogDataTrait;
 
-    /**
-     * @var GridDataService
-     */
-    protected $gridDataService;
-
-    /**
-     * @var StagesService
-     */
-    protected $stagesService;
-
-    /**
-     * @var WorkspaceService
-     */
-    protected $workspaceService;
-
-    /**
-     * @var DiffUtility|null
-     */
-    protected $differenceHandler;
-
-    public function __construct()
-    {
-        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $this->gridDataService = GeneralUtility::makeInstance(GridDataService::class);
-        $this->stagesService = GeneralUtility::makeInstance(StagesService::class);
+    public function __construct(
+        protected readonly GridDataService $gridDataService,
+        protected readonly StagesService $stagesService,
+        protected readonly WorkspaceService $workspaceService,
+        protected readonly DiffUtility $differenceHandler,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+        $this->differenceHandler->stripTags = false;
     }
 
     /**
@@ -132,7 +117,6 @@ class RemoteServer
     {
         $diffReturnArray = [];
         $liveReturnArray = [];
-        $diffUtility = $this->getDifferenceHandler();
         $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $versionState = VersionState::cast((int)($versionRecord['t3ver_state'] ?? 0));
@@ -228,8 +212,8 @@ class RemoteServer
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $versionState->equals(VersionState::NEW_PLACEHOLDER)
-                            ? $diffUtility->makeDiffDisplay('', $newOrDeleteRecord[$fieldName])
-                            : $diffUtility->makeDiffDisplay($newOrDeleteRecord[$fieldName], ''),
+                            ? $this->differenceHandler->makeDiffDisplay('', $newOrDeleteRecord[$fieldName])
+                            : $this->differenceHandler->makeDiffDisplay($newOrDeleteRecord[$fieldName], ''),
                     ];
 
                     // Generally not needed by Core, but let's make it available for further processing in hooks
@@ -262,7 +246,7 @@ class RemoteServer
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName]),
+                        'content' => $this->differenceHandler->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName]),
                     ];
                     $liveReturnArray[] = [
                         'field' => $fieldName,
@@ -272,14 +256,10 @@ class RemoteServer
                 }
             }
         }
-        // Hook for modifying the difference and live arrays
-        // (this may be used by custom or dynamically-defined fields)
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObject, 'modifyDifferenceArray')) {
-                $hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
-            }
-        }
+
+        $versionDifferencesEvent = $this->eventDispatcher->dispatch(
+            new ModifyVersionDifferencesEvent($diffReturnArray, $liveReturnArray, $parameter)
+        );
 
         $historyService = GeneralUtility::makeInstance(HistoryService::class);
         $history = $historyService->getHistory($parameter->table, $parameter->t3ver_oid);
@@ -305,8 +285,7 @@ class RemoteServer
             'data' => [
                 [
                     // these parts contain HTML (don't escape)
-                    'diff' => $diffReturnArray,
-                    'live_record' => $liveReturnArray,
+                    'diff' => $versionDifferencesEvent->getVersionDifferences(),
                     'icon_Live' => $icon_Live,
                     'icon_Workspace' => $icon_Workspace,
                     // this part is already escaped in getCommentsForRecord()
@@ -389,7 +368,7 @@ class RemoteServer
             }
         }
 
-        $differences = $this->getDifferenceHandler()->makeDiffDisplay($liveInformation, $versionInformation);
+        $differences = $this->differenceHandler->makeDiffDisplay($liveInformation, $versionInformation);
         $liveInformation = str_replace(array_keys($substitutes), array_values($substitutes), trim($liveInformation));
         $differences = str_replace(array_keys($substitutes), array_values($substitutes), trim($differences));
 
@@ -486,20 +465,6 @@ class RemoteServer
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Gets the difference handler, parsing differences based on sentences.
-     *
-     * @return DiffUtility
-     */
-    protected function getDifferenceHandler()
-    {
-        if (!isset($this->differenceHandler)) {
-            $this->differenceHandler = GeneralUtility::makeInstance(DiffUtility::class);
-            $this->differenceHandler->stripTags = false;
-        }
-        return $this->differenceHandler;
     }
 
     /**

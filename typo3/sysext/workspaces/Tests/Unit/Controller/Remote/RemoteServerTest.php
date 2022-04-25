@@ -22,6 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -118,6 +119,10 @@ class RemoteServerTest extends UnitTestCase
         $versionFileReferences = $this->getFileReferenceMocks($versionFileReferenceList);
 
         $subject = $this->getAccessibleMock(RemoteServer::class, ['__none'], [], '', false);
+        $reflection = new \ReflectionClass(RemoteServer::class);
+        $reflectionProperty = $reflection->getProperty('differenceHandler');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($subject, new DiffUtility());
         $result = $subject->_call(
             'prepareFileReferenceDifferences',
             $liveFileReferences,

@@ -707,4 +707,10 @@ return [
             'Feature-96641-NewPSR-14EventForModifyingLinks.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'workspaces\'][\'modifyDifferenceArray\']' => [
+        'restFiles' => [
+            'Breaking-97450-RemovedHookForModifyingVersionDifferences.rst',
+            'Feature-97450-PSR-14EventForModifyingVersionDifferences.rst',
+        ],
+    ],
 ];
