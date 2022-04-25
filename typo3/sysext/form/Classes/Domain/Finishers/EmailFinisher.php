@@ -234,6 +234,10 @@ class EmailFinisher extends AbstractFinisher
     protected function getRecipients(string $listOption): array
     {
         $recipients = $this->parseOption($listOption) ?? [];
+        if (!is_array($recipients) || $recipients === []) {
+            return [];
+        }
+
         $addresses = [];
         foreach ($recipients as $address => $name) {
             if (!GeneralUtility::validEmail($address)) {
