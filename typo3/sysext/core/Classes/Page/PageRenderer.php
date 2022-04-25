@@ -2163,7 +2163,7 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->cssLibs)) {
             foreach ($this->cssLibs as $file => $properties) {
                 $tag = $this->createCssTag($properties, $file);
-                if ($properties['forceOnTop']) {
+                if ($properties['forceOnTop'] ?? false) {
                     $cssFiles = $tag . $cssFiles;
                 } else {
                     $cssFiles .= $tag;
@@ -2184,7 +2184,7 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->cssFiles)) {
             foreach ($this->cssFiles as $file => $properties) {
                 $tag = $this->createCssTag($properties, $file);
-                if ($properties['forceOnTop']) {
+                if ($properties['forceOnTop'] ?? false) {
                     $cssFiles = $tag . $cssFiles;
                 } else {
                     $cssFiles .= $tag;
@@ -2208,14 +2208,14 @@ class PageRenderer implements SingletonInterface
         if ($includeInline && @is_file($file)) {
             $tag = $this->createInlineCssTagFromFile($file, $properties);
         } else {
-            $tag = '<link rel="' . htmlspecialchars($properties['rel'])
+            $tag = '<link rel="' . htmlspecialchars($properties['rel'] ?? '')
                 . '" href="' . htmlspecialchars($file)
-                . '" media="' . htmlspecialchars($properties['media']) . '"'
+                . '" media="' . htmlspecialchars($properties['media'] ?? '') . '"'
                 . (($properties['title'] ?? false) ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
                 . $this->endingSlash . '>';
         }
-        if ($properties['allWrap']) {
-            $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
+        if ($properties['allWrap'] ?? false) {
+            $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
             $tag = $wrapArr[0] . $tag . $wrapArr[1];
         }
         $tag .= LF;
@@ -2233,8 +2233,8 @@ class PageRenderer implements SingletonInterface
         $cssInline = '';
         if (!empty($this->cssInline)) {
             foreach ($this->cssInline as $name => $properties) {
-                $cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
-                if ($properties['forceOnTop']) {
+                $cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
+                if ($properties['forceOnTop'] ?? false) {
                     $cssInline = $cssCode . $cssInline;
                 } else {
                     $cssInline .= $cssCode;
@@ -2256,7 +2256,7 @@ class PageRenderer implements SingletonInterface
         $jsFooterLibs = '';
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
-                $properties['file'] = $this->getStreamlinedFileName($properties['file']);
+                $properties['file'] = $this->getStreamlinedFileName($properties['file'] ?? '');
                 $type = ($properties['type'] ?? false) ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
                 $async = ($properties['async'] ?? false) ? ' async="async"' : '';
                 $defer = ($properties['defer'] ?? false) ? ' defer="defer"' : '';
@@ -2344,7 +2344,7 @@ class PageRenderer implements SingletonInterface
         $jsFooterInline = '';
         if (!empty($this->jsInline)) {
             foreach ($this->jsInline as $name => $properties) {
-                $jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+                $jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
                 if ($properties['forceOnTop'] ?? false) {
                     if (($properties['section'] ?? 0) === self::PART_HEADER) {
                         $jsInline = $jsCode . $jsInline;
@@ -2560,7 +2560,7 @@ class PageRenderer implements SingletonInterface
                 // Traverse the arrays, compress files
                 foreach ($this->jsInline ?? [] as $name => $properties) {
                     if ($properties['compress'] ?? false) {
-                        $this->jsInline[$name]['code'] = $this->getCompressor()->compressJavaScriptSource($properties['code']);
+                        $this->jsInline[$name]['code'] = $this->getCompressor()->compressJavaScriptSource($properties['code'] ?? '');
                     }
                 }
                 $this->jsLibs = $this->getCompressor()->compressJsFiles($this->jsLibs);
@@ -2774,8 +2774,8 @@ class PageRenderer implements SingletonInterface
         }
         $cssInlineFix = $this->getPathFixer()->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
         return '<style'
-            . ' media="' . htmlspecialchars($properties['media']) . '"'
-            . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
+            . ' media="' . htmlspecialchars($properties['media'] ?? '') . '"'
+            . (($properties['title'] ?? false) ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
             . '>' . LF
             . '/*<![CDATA[*/' . LF . '<!-- ' . LF
             . $cssInlineFix
