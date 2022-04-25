@@ -349,7 +349,7 @@ class TypoScriptParser
                                             break;
                                         case '<':
                                             $theVal = trim(substr($line, 1));
-                                            if ($theVal[0] === '.') {
+                                            if (str_starts_with($theVal, '.')) {
                                                 $res = $this->getVal(substr($theVal, 1), $setup);
                                             } else {
                                                 $res = $this->getVal($theVal, $this->setup);
