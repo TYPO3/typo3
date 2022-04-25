@@ -283,7 +283,8 @@ class ValidatorTask extends AbstractTask
         $successfullyExecuted = true;
         $linkAnalyzerResult = $this->getLinkAnalyzerResult();
 
-        if ($linkAnalyzerResult->getTotalBrokenLinksCount() > 0
+        if ($this->getEmail() !== '' &&
+            $linkAnalyzerResult->getTotalBrokenLinksCount() > 0
             && (!$this->emailOnBrokenLinkOnly || $linkAnalyzerResult->isDifferentToLastResult())
         ) {
             $successfullyExecuted = $this->reportEmail($linkAnalyzerResult);
