@@ -3516,7 +3516,7 @@ class DataHandler implements LoggerAwareInterface
                             )
                         );
                     if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
-                        $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby'], 'DESC');
+                        $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby'], 'ASC');
                     }
                     $queryBuilder->addOrderBy('uid');
                     try {
