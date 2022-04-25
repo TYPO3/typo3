@@ -50,9 +50,9 @@ The corresponding event listener class:
 
 .. code-block:: php
 
-    use TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent
+    use TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent;
 
-    final class ModifyLinkExplanationEventListener
+    final class MyEventListener
     {
         public function __invoke(ModifyImageManipulationPreviewUrlEvent $event): void
         {

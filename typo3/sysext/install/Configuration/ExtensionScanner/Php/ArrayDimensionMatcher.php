@@ -552,6 +552,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'toolbarItems\']' => [
         'restFiles' => [
             'Breaking-96041-ToolbarItemsRegisterByTag.rst',
+            'Feature-96041-ImproveBackendToolbarRegistration.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_parsehtml_proc.php\'][\'transformation\']' => [
@@ -563,6 +564,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'ContextMenu\'][\'ItemProviders\']' => [
         'restFiles' => [
             'Breaking-96333-AutoConfigurationOfContextMenuItemProviders.rst',
+            'Feature-96333-ImproveContextMenuItemProviderRegistration.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/tslib/class.tslib_menu.php\'][\'filterMenuPages\']' => [
@@ -597,36 +599,43 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'ContentObjects\']' => [
         'restFiles' => [
             'Breaking-96659-RegistrationOfCObjectsViaTYPO3_CONF_VARS.rst',
+            'Feature-96659-ContentObjectRegistrationViaServiceConfiguration.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'Backend\Template\Components\ButtonBar\'][\'getButtonsHook\']' => [
         'restFiles' => [
             'Breaking-96806-RemovedHookForModifyingButtonBar.rst',
+            'Feature-96806-PSR-14EventForModifyingButtonBar.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'get_cache_timeout\']' => [
         'restFiles' => [
             'Breaking-96879-RemovedHookGetCacheTimeout.rst',
+            'Feature-96879-NewPSR-14EventModifyCacheLifetimeForPageEvent.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'displayWarningMessages\']' => [
         'restFiles' => [
             'Breaking-96899-DisplayWarningMessagesHookRemoved.rst',
+            'Feature-96899-NewPSR-14EventModifyGenericBackendMessagesEvent.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'linkvalidator\'][\'checkLinks\']' => [
         'restFiles' => [
             'Breaking-96935-RegisterLinkvalidatorLinktypesViaServiceConfiguration.rst',
+            'Feature-96935-NewRegistrationForLinkvalidatorLinktype.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'headerNoCache\']' => [
         'restFiles' => [
             'Breaking-96968-HookHeaderNoCacheRemoved.rst',
+            'Feature-96996-PSR-14EventForModifyingRecordAccessEvaluation.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'hook_checkEnableFields\']' => [
         'restFiles' => [
             'Breaking-96996-HookCheckEnableFieldsRemoved.rst',
+            'Feature-96996-PSR-14EventForModifyingRecordAccessEvaluation.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController\'][\'newStandardTemplateView\']' => [
@@ -642,6 +651,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/web_info/class.tx_cms_webinfo.php\'][\'drawFooterHook\']' => [
         'restFiles' => [
             'Breaking-97174-RemovedHookForModifyingInfoModuleFooterContent.rst',
+            'Feature-97174-PSR-14EventForModifyingInfoModuleContent.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms\'][\'db_new_content_el\'][\'wizardItemsHook\']' => [
@@ -653,11 +663,13 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'formEngine\'][\'linkHandler\']' => [
         'restFiles' => [
             'Breaking-97187-RemovedHookForModifyingLinkExplanation.rst',
+            'Feature-97187-PSR-14EventForModifyingLinkExplanation.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ElementBrowsers\']' => [
         'restFiles' => [
             'Breaking-97188-RegisterElementBrowsersViaServiceConfiguration.rst',
+            'Feature-97188-NewRegistrationForElementBrowsers.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_tceforms_inline.php\'][\'tceformsInlineHook\']' => [

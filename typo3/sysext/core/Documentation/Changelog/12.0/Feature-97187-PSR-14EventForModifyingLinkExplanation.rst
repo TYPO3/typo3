@@ -47,7 +47,7 @@ Registration of the Event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
-  MyVendor\MyPackage\Backend\MyEventListener:
+  MyVendor\MyPackage\Backend\ModifyLinkExplanationEventListener:
     tags:
       - name: event.listener
         identifier: 'my-package/backend/modify-link-explanation'
