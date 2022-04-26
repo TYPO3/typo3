@@ -35,9 +35,8 @@ class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
     {
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
             // Placeholders are only valid for input and text type fields
-            if (
-                ($fieldConfig['config']['type'] !== 'input' && $fieldConfig['config']['type'] !== 'text')
-                || !isset($fieldConfig['config']['placeholder'])
+            if (!isset($fieldConfig['config']['placeholder'], $fieldConfig['config']['type'])
+                || ($fieldConfig['config']['type'] !== 'input' && $fieldConfig['config']['type'] !== 'text')
             ) {
                 continue;
             }
