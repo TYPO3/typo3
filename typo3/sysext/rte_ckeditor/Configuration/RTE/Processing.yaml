@@ -81,8 +81,7 @@ processing:
     denyTags: img
     tags:
       hr:
-        allowedAttribs:
-          - class
+        allowedAttribs: "class"
 
     ## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS
     ## We use this rule instead of the denyTags rule so that we can protect custom tags without protecting these unwanted tags.
