@@ -3886,6 +3886,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
 
 		-
+			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:\\$currentValKey \\(string\\) on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
+
+		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 5
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
@@ -4511,11 +4516,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentRequiredStaticMatcher.php
 
 		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\\\Expr\\:\\:\\$name\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodArgumentUnusedMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
@@ -4544,11 +4544,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\PropertyExistsStaticMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyExistsStaticMatcher.php
-
-		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\\\Expr\\:\\:\\$name\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyProtectedMatcher.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\PropertyProtectedMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
@@ -4609,16 +4604,6 @@ parameters:
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Functional/ViewHelpers/Format/PhpErrorCodeViewHelperTest.php
-
-		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\:\\:\\$expr\\.$#"
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
-
-		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\\\Expr\\\\BinaryOp\\\\Concat\\:\\:\\$class\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string, string, string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
