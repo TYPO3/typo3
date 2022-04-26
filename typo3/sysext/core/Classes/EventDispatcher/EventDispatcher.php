@@ -28,17 +28,12 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class EventDispatcher implements EventDispatcherInterface, SingletonInterface
 {
-    /**
-     * @var ListenerProviderInterface
-     */
-    protected $listenerProvider;
-
-    public function __construct(ListenerProviderInterface $listenerProvider)
-    {
-        $this->listenerProvider = $listenerProvider;
+    public function __construct(
+        protected readonly ListenerProviderInterface $listenerProvider
+    ) {
     }
 
-    public function dispatch(object $event)
+    public function dispatch(object $event): object
     {
         // If the event is already stopped, nothing to do here.
         if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {

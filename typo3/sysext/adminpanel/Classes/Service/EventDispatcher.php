@@ -25,14 +25,14 @@ class EventDispatcher extends \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
     /**
      * @var object[]
      */
-    protected $dispatchedEvents = [];
+    protected array $dispatchedEvents = [];
 
     public function getDispatchedEvents(): array
     {
         return $this->dispatchedEvents;
     }
 
-    public function dispatch(object $event)
+    public function dispatch(object $event): object
     {
         $this->dispatchedEvents[] = $event;
         return parent::dispatch($event);
