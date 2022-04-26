@@ -20,7 +20,7 @@ evaluated anymore.
 For Composer based installs the artifact is located at
 :file:`vendor/typo3/PackageArtifact.php`. This file must be deployed
 together with all other Composer dependencies. In a TYPO3v11 sprint this file was located at
-:file:`var/build/PackageArtifact.php` which did need a special handing and caused
+:file:`var/build/PackageArtifact.php` which did need a special handling and caused
 some issues for example on platform.sh, which were solved by storing it in the vendor folder.
 
 Any extension present in the :file:`typo3conf/ext` folder, but not installed by Composer,
