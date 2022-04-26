@@ -560,7 +560,6 @@ class FlexFormTools
      * After the data structure definition is found, the method resolves:
      * * FILE:EXT: prefix of the data structure itself - the ds is in a file
      * * FILE:EXT: prefix for sheets - if single sheets are in files
-     * * EXT: prefix for sheets - if single sheets are in files (slightly different b/w compat syntax)
      * * Create an sDEF sheet if the data structure has non, yet.
      *
      * After that method is run, the data structure is fully resolved to an array,
