@@ -712,8 +712,8 @@ class TemplateService
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         // If "Include before all static templates if root-flag is set" is set:
-        $staticFileMode = $row['static_file_mode'] ?? null;
-        if ($staticFileMode == 3 && str_starts_with($templateID, 'sys_') && $row['root']) {
+        $staticFileMode = (int)($row['static_file_mode'] ?? null);
+        if ($staticFileMode === 3 && str_starts_with($templateID, 'sys_') && $row['root']) {
             $this->addExtensionStatics($idList, $templateID, $pid);
         }
         // Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
@@ -723,30 +723,20 @@ class TemplateService
             foreach ($include_static_fileArr as $ISF_file) {
                 if (PathUtility::isExtensionPath($ISF_file)) {
                     [$ISF_extKey, $ISF_localPath] = explode('/', substr($ISF_file, 4), 2);
-                    if ((string)$ISF_extKey !== '' && ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
+                    if ($ISF_extKey !== '' && $ISF_localPath !== '' && ExtensionManagementUtility::isLoaded($ISF_extKey)) {
                         $ISF_localPath = rtrim($ISF_localPath, '/') . '/';
                         $ISF_filePath = ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
                         if (@is_dir($ISF_filePath)) {
                             $mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
-
-                            $includeStaticTxtPath = $ISF_filePath . 'include_static.txt';
-                            $includeStaticTxtContents = '';
-                            if (@file_exists($includeStaticTxtPath)) {
-                                $includeStaticTxtContents = (string)file_get_contents($includeStaticTxtPath);
-                                $includeStaticTxtContents = implode(',', array_unique(GeneralUtility::intExplode(',', $includeStaticTxtContents)));
-                            }
-
                             $includeStaticFileTxtPath = $ISF_filePath . 'include_static_file.txt';
                             $includeStaticFileTxtContents = '';
                             if (@file_exists($includeStaticFileTxtPath)) {
                                 $includeStaticFileTxtContents = (string)file_get_contents($includeStaticFileTxtPath);
                                 $includeStaticFileTxtContents = implode(',', array_unique(GeneralUtility::trimExplode(',', $includeStaticFileTxtContents)));
                             }
-
                             $subrow = [
                                 'constants' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'constants'),
                                 'config' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'setup'),
-                                'include_static' => $includeStaticTxtContents,
                                 'include_static_file' => $includeStaticFileTxtContents,
                                 'title' => $ISF_file,
                                 'uid' => $mExtKey,
@@ -760,7 +750,7 @@ class TemplateService
         }
         // If "Default (include before if root flag is set)" is set OR
         // "Always include before this template record" AND root-flag are set
-        if ($staticFileMode == 1 || ($staticFileMode == 0 && str_starts_with($templateID, 'sys_') && $row['root'])) {
+        if ($staticFileMode === 1 || ($staticFileMode === 0 && str_starts_with($templateID, 'sys_') && $row['root'])) {
             $this->addExtensionStatics($idList, $templateID, $pid);
         }
         // Include Static Template Records after all other TypoScript has been included.

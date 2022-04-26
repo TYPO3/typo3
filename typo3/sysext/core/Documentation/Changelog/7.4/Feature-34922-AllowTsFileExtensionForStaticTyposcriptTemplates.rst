@@ -14,7 +14,6 @@ Only these TypoScript file names were allowed:
 
 - constants.txt
 - setup.txt
-- include_static.txt
 - include_static_files.txt
 
 The ts file extension has been allowed for constants and setup and is prioritised over txt.

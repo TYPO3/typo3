@@ -1179,7 +1179,12 @@ tt_content.' . $key . $suffix . ' {
      * FOR USE IN Configuration/TCA/Overrides/sys_template.php Use in ext_tables.php may break the frontend.
      *
      * @param string $extKey Is of course the extension key
-     * @param string $path Is the path where the template files (fixed names) include_static.txt, constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a comma separated list of static templates to include, like:  EXT:fluid_styled_content/Configuration/TypoScript/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
+     * @param string $path Is the path where the template files "constants.typoscript", "setup.typoscript", and "include_static_file.txt"
+     *                     are found (relative to extPath, eg. "Configuration/TypoScript/Static/"). The file "include_static_file.txt",
+     *                     allows including other static templates defined in files, from your static template, and thus corresponds
+     *                     to the field 'include_static_file' in the sys_template table. The syntax for this is a comma separated list
+     *                     of static templates to include, example:
+     *                     EXT:fluid_styled_content/Configuration/TypoScript/,EXT:other_extension/Configuration/TypoScript/
      * @param string $title Is the title in the selector box.
      * @throws \InvalidArgumentException
      * @see addTypoScript()
