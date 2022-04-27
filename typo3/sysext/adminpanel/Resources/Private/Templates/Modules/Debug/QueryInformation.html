@@ -12,6 +12,19 @@
             <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime" languageKey="{languageKey}"/>
         </div>
     </div>
+    <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap">
+        <div class="typo3-adminPanel-col typo3-adminPanel-col-icon"></div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-col-ellipsis typo3-adminPanel-col-auto">
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.total" languageKey="{languageKey}"/>
+        </div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-count">{totalQueries}</div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-time">
+            <div class="typo3-adminPanel-progress">
+                <div class="typo3-adminPanel-progress-bar" style="width:{100 * 0.65}%"></div>
+                <div class="typo3-adminPanel-progress-value"><f:format.number decimals="2">{totalTime}</f:format.number></div>
+            </div>
+        </div>
+    </div>
     <f:for each="{queries}" as="queryCollection" iteration="queryCollectionIteration">
         <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap">
             <div class="typo3-adminPanel-col typo3-adminPanel-col-icon">
@@ -25,7 +38,7 @@
             <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-count">{queryCollection.count}</div>
             <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-time">
                 <div class="typo3-adminPanel-progress">
-                    <div class="typo3-adminPanel-progress-bar" style="width:{queryCollection.time / totalTime * 100}%;"></div>
+                    <div class="typo3-adminPanel-progress-bar" style="width:{queryCollection.time / totalTime * 100 * 0.65}%;"></div>
                     <div class="typo3-adminPanel-progress-value"><f:format.number decimals="2">{queryCollection.time}</f:format.number></div>
                 </div>
             </div>

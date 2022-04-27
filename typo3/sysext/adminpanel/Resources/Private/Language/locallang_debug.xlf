@@ -61,6 +61,9 @@
 			<trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
 				<source>Total Time [ms]</source>
 			</trans-unit>
+			<trans-unit id="submodule.queryInformation.total" resname="submodule.queryInformation.total">
+				<source>Total</source>
+			</trans-unit>
 			<trans-unit id="submodule.pageTitle.label">
 				<source>Page title</source>
 			</trans-unit>
