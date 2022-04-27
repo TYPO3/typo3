@@ -293,7 +293,7 @@ DOCKER_COMPOSE_VERSION=$(docker-compose version --short)
 DOCKER_COMPOSE_MAJOR=$(echo "$DOCKER_COMPOSE_VERSION" | cut -d'.' -f1 | tr -d 'v')
 if [ "$DOCKER_COMPOSE_MAJOR" -gt "1" ]; then
     echo "docker-compose $DOCKER_COMPOSE_VERSION is currently broken and not supported by runTests.sh."
-    echo "If you are running Docker Desktop for MacOS/Windows disable 'Use Docker Compose V2 release candidate' (Settings > Experimental Features)"
+    echo "If you are running Docker Desktop for MacOS/Windows disable 'Use Docker Compose V2' (Preferences > General)"
     exit 1
 fi
 
