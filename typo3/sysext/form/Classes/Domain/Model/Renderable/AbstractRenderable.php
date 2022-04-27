@@ -144,16 +144,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
             $this->setLabel($options['label']);
         }
 
-        if (isset($options['defaultValue'])) {
-            $this->setDefaultValue($options['defaultValue']);
-        }
-
-        if (isset($options['properties'])) {
-            foreach ($options['properties'] as $key => $value) {
-                $this->setProperty($key, $value);
-            }
-        }
-
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
                 $this->setRenderingOption($key, $value);
@@ -412,16 +402,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     public function setLabel(string $label)
     {
         $this->label = $label;
-    }
-
-    public function setDefaultValue($defaultValue)
-    {
-        // todo: this method must either be abstract and implemented in sub classes or get a proper method body.
-    }
-
-    public function setProperty(string $key, $value)
-    {
-        // todo: this method must either be abstract and implemented in sub classes or get a proper method body.
     }
 
     /**

@@ -98,6 +98,21 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
         return lcfirst($uniqueIdentifier);
     }
 
+    public function setOptions(array $options, bool $resetValidators = false)
+    {
+        if (isset($options['defaultValue'])) {
+            $this->setDefaultValue($options['defaultValue']);
+        }
+
+        if (isset($options['properties'])) {
+            foreach ($options['properties'] as $key => $value) {
+                $this->setProperty($key, $value);
+            }
+        }
+
+        parent::setOptions($options, $resetValidators);
+    }
+
     /**
      * Get the default value of the element
      *

@@ -61,6 +61,17 @@ class Section extends AbstractSection implements FormElementInterface
         }
     }
 
+    public function setOptions(array $options, bool $resetValidators = false)
+    {
+        if (isset($options['properties'])) {
+            foreach ($options['properties'] as $key => $value) {
+                $this->setProperty($key, $value);
+            }
+        }
+
+        parent::setOptions($options, $resetValidators);
+    }
+
     /**
      * Returns a unique identifier of this element.
      * While element identifiers are only unique within one form,
