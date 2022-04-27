@@ -1289,6 +1289,15 @@ define(['jquery',
 
       getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(propertyData);
 
+      if (
+        !getUtility().isUndefinedOrNull(editorConfiguration['additionalElementPropertyPaths'])
+        && 'array' === $.type(editorConfiguration['additionalElementPropertyPaths'])
+      ) {
+        for (var i = 0, len = editorConfiguration['additionalElementPropertyPaths'].length; i < len; ++i) {
+          getCurrentlySelectedFormElement().set(editorConfiguration['additionalElementPropertyPaths'][i], propertyData);
+        }
+      }
+
       renderFormElementSelectorEditorAddition(editorConfiguration, editorHtml, propertyPath);
 
       getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).on('keyup paste', function() {
