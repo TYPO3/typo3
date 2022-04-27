@@ -45,6 +45,9 @@
 			<trans-unit id="toolbarItems" resname="toolbarItems">
 				<source>Backend Toolbar Items</source>
 			</trans-unit>
+			<trans-unit id="symfonyExpressionLanguage" resname="symfonyExpressionLanguage">
+				<source>Symfony Expression Language Providers</source>
+			</trans-unit>
 			<trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
 				<source>Form: YAML Configuration</source>
 			</trans-unit>

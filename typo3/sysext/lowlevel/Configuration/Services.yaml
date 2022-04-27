@@ -192,3 +192,11 @@ services:
         identifier: 'toolbaritems'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:toolbarItems'
         after: 'softReferenceParsers'
+
+  lowlevel.configuration.module.provider.expressionlanguage:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SymfonyExpressionLanguageProvidersProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'symfonyExpressionLanguage'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:symfonyExpressionLanguage'
+        after: 'toolbaritems'

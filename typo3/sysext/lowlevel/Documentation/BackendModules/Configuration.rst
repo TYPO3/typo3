@@ -50,6 +50,7 @@ The Configuration module displays various configuration settings:
 - :ref:`Soft Reference Parsers <t3coreapi:soft-references>`
 - :ref:`Form: YAML Configuration <ext_form:concepts-configuration>` (with installed :doc:`Form system extension <ext_form:Index>`)
 - `Backend Toolbar Items`
+- `Symfony Expression Language Providers`
 
 
 Extending the Configuration module
