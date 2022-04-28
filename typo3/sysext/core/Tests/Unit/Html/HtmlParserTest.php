@@ -171,34 +171,67 @@ final class HtmlParserTest extends UnitTestCase
     public static function spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider(): array
     {
         return [
-            'Span tag with no attrib' => [
+            'Span tag with no attrib (allowedAttribs-list)' => [
                 '<span>text</span>',
                 'text',
             ],
-            'Span tag with allowed id attrib' => [
-                '<span id="id">text</span>',
-                '<span id="id">text</span>',
+            'Span tag with allowed id attrib (allowedAttribs-list)' => [
+                '<span id="id" data-something="allowed" class="something-unallowed">text</span>',
+                '<span id="id" data-something="allowed">text</span>',
             ],
-            'Span tag with disallowed style attrib' => [
+            'Span tag with disallowed style attrib (allowedAttribs-list)' => [
                 '<span style="line-height: 12px;">text</span>',
                 'text',
+            ],
+            'Span tag with no attrib (allowedAttribs-array)' => [
+                '<span>text</span>',
+                'text',
+                false,
+            ],
+            'Span tag with allowed id attrib (allowedAttribs-array)' => [
+                '<span id="id" data-something="allowed" class="something-unallowed">text</span>',
+                '<span id="id" data-something="allowed">text</span>',
+                false,
+            ],
+            'Span tag with disallowed style attrib (allowedAttribs-array)' => [
+                '<span style="line-height: 12px;">text</span>',
+                'text',
+                false,
             ],
         ];
     }
 
     #[DataProvider('spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider')]
     #[Test]
-    public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured(string $content, string $expectedResult): void
+    public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredAndAllowedAttribsArePassed(string $content, string $expectedResult, bool $useListDirective = true): void
     {
         $tsConfig = [
             'allowTags' => 'span',
             'tags.' => [
                 'span.' => [
-                    'allowedAttribs' => 'id',
+                    ($useListDirective ? 'allowedAttribs' : 'allowedAttribs.')
+                        => $useListDirective ? 'id,data-something' : ['id', 'data-something'],
                     'rmTagIfNoAttrib' => 1,
                 ],
             ],
         ];
+        self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+    }
+
+    #[DataProvider('spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider')]
+    #[Test]
+    public function allowedAttribsSetToArrayOrStringWithZeroValueReturnsTagWithoutAllAttributes(string $content, string $dataProviderexpectedResult, bool $useListDirective = true): void
+    {
+        $tsConfig = [
+            'allowTags' => 'span',
+            'tags.' => [
+                'span.' => [
+                    ($useListDirective ? 'allowedAttribs' : 'allowedAttribs.')
+                                      => $useListDirective ? '0' : [0],
+                ],
+            ],
+        ];
+        $expectedResult = '<span>' . strip_tags($content) . '</span>';
         self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 

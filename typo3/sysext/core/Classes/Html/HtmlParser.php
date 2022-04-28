@@ -464,26 +464,28 @@ class HtmlParser
                                 if (isset($tags[$tagName]['overrideAttribs']) && (string)$tags[$tagName]['overrideAttribs'] !== '') {
                                     $tagParts[1] = $tags[$tagName]['overrideAttribs'];
                                 }
-                                // Allowed tags
-                                if (isset($tags[$tagName]['allowedAttribs']) && (string)$tags[$tagName]['allowedAttribs'] !== '') {
-                                    // No attribs allowed
-                                    if ((string)$tags[$tagName]['allowedAttribs'] === '0') {
+                                // Allowed attributes (array-directives takes precedence in general)
+                                $allowedAttribsArray = $tags[$tagName]['allowedAttribs.'] ?? null;
+                                $allowedAttribsList = $tags[$tagName]['allowedAttribs'] ?? null;
+                                // Note that "allowedAttribsList = 0" means: "strip every attribute", and not "do not apply attribute stripping".
+                                // Only a 'null' (or [] for the array notation) means to allow all attributes, and not kick into this condition branch.
+                                if (is_array($allowedAttribsArray) && $allowedAttribsArray !== [] || (string)$allowedAttribsList !== '') {
+                                    // No attribs allowed - array-directives takes precedence in general
+                                    if ($allowedAttribsArray === [0] || $allowedAttribsArray === ['0'] || $allowedAttribsList === '0') {
                                         $tagParts[1] = '';
                                     } elseif (isset($tagParts[1]) && trim($tagParts[1])) {
                                         $tagAttrib = $this->get_tag_attributes($tagParts[1]);
-                                        $tagParts[1] = '';
-                                        $newTagAttrib = [];
-                                        $tList = (array)(
-                                            $tags[$tagName]['_allowedAttribs']
-                                            ?? GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), true)
-                                        );
-                                        foreach ($tList as $allowTag) {
-                                            if (isset($tagAttrib[0][$allowTag])) {
-                                                $newTagAttrib[$allowTag] = $tagAttrib[0][$allowTag];
+                                        $newTagAttribs = [];
+                                        $allowedAttribs = is_array($allowedAttribsArray)
+                                            ? array_map('strtolower', $allowedAttribsArray)
+                                            : GeneralUtility::trimExplode(',', strtolower($allowedAttribsList), true);
+
+                                        foreach ($allowedAttribs as $allowedAttrib) {
+                                            if (isset($tagAttrib[0][$allowedAttrib])) {
+                                                $newTagAttribs[$allowedAttrib] = $tagAttrib[0][$allowedAttrib];
                                             }
                                         }
-
-                                        $tagParts[1] = $this->compileTagAttribs($newTagAttrib, $tagAttrib[1]);
+                                        $tagParts[1] = $this->compileTagAttribs($newTagAttribs, $tagAttrib[1]);
                                     }
                                 }
                                 // Fixed attrib values
