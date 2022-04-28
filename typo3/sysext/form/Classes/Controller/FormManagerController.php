@@ -103,7 +103,11 @@ class FormManagerController extends AbstractBackendController
 
         $jsModules = $requireJsModules + $javaScriptModules;
         if (count($requireJsModules)) {
-            trigger_error('formManager.dynamicRequireJsModules has been deprecated. Use formManager.dynamicJavaScriptModules instead.', E_USER_DEPRECATED);
+            trigger_error(
+                'formManager.dynamicRequireJsModules has been deprecated in v12 and will be removed with v13. ' .
+                'Use formManager.dynamicJavaScriptModules instead.',
+                E_USER_DEPRECATED
+            );
             $this->pageRenderer->loadRequireJs();
         }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(

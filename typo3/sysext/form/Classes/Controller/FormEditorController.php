@@ -112,7 +112,11 @@ class FormEditorController extends AbstractBackendController
             $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'] ?? []
         );
         if (count($additionalViewModelRequireJsModules) > 0) {
-            trigger_error('formEditor.dynamicRequireJsModules has been deprecated. Use formEditor.dynamicJavaScriptModules instead.', E_USER_DEPRECATED);
+            trigger_error(
+                'formEditor.dynamicRequireJsModules has been deprecated in v12 and will be removed with v13. ' .
+                'Use formEditor.dynamicJavaScriptModules instead.',
+                E_USER_DEPRECATED
+            );
             $this->pageRenderer->loadRequireJs();
         }
         $additionalViewModelModules = [...$additionalViewModelRequireJsModules, ...$additionalViewModelJavaScriptModules];
@@ -165,7 +169,11 @@ class FormEditorController extends AbstractBackendController
             )
         );
         if (count($requireJsModules)) {
-            trigger_error('formEditor.dynamicRequireJsModules has been deprecated. Use formEditor.dynamicJavaScriptModules instead.', E_USER_DEPRECATED);
+            trigger_error(
+                'formEditor.dynamicRequireJsModules has been deprecated in v12 and will be removed with v13. ' .
+                'Use formEditor.dynamicJavaScriptModules instead.',
+                E_USER_DEPRECATED
+            );
             $this->pageRenderer->loadRequireJs();
         }
         $jsModules = $requireJsModules + $javaScriptModules;
