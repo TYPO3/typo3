@@ -218,9 +218,9 @@ class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
      * @test
      * @dataProvider addWizardItemTestDataProvider
      */
-    public function addWizardItemTest(string $identifier, array $configuraiton, array $position, array $expected): void
+    public function addWizardItemTest(string $identifier, array $configuration, array $position, array $expected): void
     {
-        $this->subject->setWizardItem($identifier, $configuraiton, $position);
+        $this->subject->setWizardItem($identifier, $configuration, $position);
         self::assertEquals($expected, $this->subject->getWizardItems());
     }
 }

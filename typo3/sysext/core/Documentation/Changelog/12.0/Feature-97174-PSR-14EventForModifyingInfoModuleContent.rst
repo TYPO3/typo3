@@ -32,7 +32,7 @@ content.
 Access control
 ==============
 
-The added content is by defualt always displayed. The PSR-14 Event however
+The added content is by default always displayed. The PSR-14 Event however
 provides the :php:`hasAccess()` method, returning whether the access checks
 in the module were passed by the user.
 

@@ -135,7 +135,7 @@ class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
                     'aField' => 'wont-be-overridden',
                 ],
                 'defaultLanguageRow' => [
-                    // This case usually can not occure, however since it's possible
+                    // This case usually can not occur, however since it's possible
                     // for 3rd party to hook in we have to check this case as well.
                     'aField' => 'some-default-value',
                 ],

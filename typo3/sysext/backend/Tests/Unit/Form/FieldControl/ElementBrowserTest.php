@@ -158,7 +158,7 @@ class ElementBrowserTest extends UnitTestCase
             ],
             '',
         ];
-        yield 'Two tables without _defualt' => [
+        yield 'Two tables without _default' => [
             [
                 'type' => 'group',
                 'allowed' => 'pages,some_table',
@@ -169,7 +169,7 @@ class ElementBrowserTest extends UnitTestCase
             ],
             '',
         ];
-        yield 'Two tables with _defualt' => [
+        yield 'Two tables with _default' => [
             [
                 'type' => 'group',
                 'allowed' => 'pages,some_table',

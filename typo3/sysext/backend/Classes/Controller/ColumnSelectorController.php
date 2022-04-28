@@ -40,7 +40,7 @@ class ColumnSelectorController
         'name', // Handled manually in listing
         'metadata', // The reference to the meta data is not relevant
         'file', // The reference to the file is not relevant
-        'sys_language_uid', // Not relevant in listing since only defualt is displayed
+        'sys_language_uid', // Not relevant in listing since only default is displayed
         'l10n_parent', // Not relevant in listing
         't3ver_state', // Not relevant in listing
         't3ver_wsid', // Not relevant in listing

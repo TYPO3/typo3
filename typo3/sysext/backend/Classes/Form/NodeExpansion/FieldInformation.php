@@ -45,13 +45,13 @@ class FieldInformation extends AbstractNode
             return $result;
         }
 
-        $fieldInformations = $this->data['renderData']['fieldInformation'];
+        $fieldInformation = $this->data['renderData']['fieldInformation'];
         $orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-        $orderedFieldInformation = $orderingService->orderByDependencies($fieldInformations, 'before', 'after');
+        $orderedFieldInformation = $orderingService->orderByDependencies($fieldInformation, 'before', 'after');
 
         foreach ($orderedFieldInformation as $anOrderedFieldInformation => $orderedFieldInformationConfiguration) {
             if (isset($orderedFieldInformationConfiguration['disabled']) && $orderedFieldInformationConfiguration['disabled']
-                || !isset($fieldInformations[$anOrderedFieldInformation]['renderType'])
+                || !isset($fieldInformation[$anOrderedFieldInformation]['renderType'])
             ) {
                 // Don't consider this control if disabled.
                 // Also ignore if renderType is not given.
@@ -64,7 +64,7 @@ class FieldInformation extends AbstractNode
             }
 
             $options = $this->data;
-            $options['renderType'] = $fieldInformations[$anOrderedFieldInformation]['renderType'];
+            $options['renderType'] = $fieldInformation[$anOrderedFieldInformation]['renderType'];
             $options['renderData']['fieldInformationOptions'] = $orderedFieldInformationConfiguration['options'] ?? [];
             $informationResult = $this->nodeFactory->create($options)->render();
 
