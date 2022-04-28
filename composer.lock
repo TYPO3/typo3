@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b31ecb17485cb0b60b9b1085d873eb0e",
+    "content-hash": "4946d55bcce2572af08591f32ce9e10d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3411,16 +3411,16 @@
         },
         {
             "name": "symfony/rate-limiter",
-            "version": "v5.4.2",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/rate-limiter.git",
-                "reference": "bef5489f1a8504777a49498e1652e6bf9f229a4d"
+                "reference": "c77d140eb88f99051e934435af64963cc5d99e16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/bef5489f1a8504777a49498e1652e6bf9f229a4d",
-                "reference": "bef5489f1a8504777a49498e1652e6bf9f229a4d",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/c77d140eb88f99051e934435af64963cc5d99e16",
+                "reference": "c77d140eb88f99051e934435af64963cc5d99e16",
                 "shasum": ""
             },
             "require": {
@@ -3461,7 +3461,7 @@
                 "rate-limiter"
             ],
             "support": {
-                "source": "https://github.com/symfony/rate-limiter/tree/v5.4.2"
+                "source": "https://github.com/symfony/rate-limiter/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -3477,7 +3477,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-15T11:06:13+00:00"
+            "time": "2022-04-03T11:05:26+00:00"
         },
         {
             "name": "symfony/routing",

@@ -62,7 +62,7 @@
 		"symfony/mailer": "^5.4",
 		"symfony/mime": "^5.4",
 		"symfony/options-resolver": "^5.4",
-		"symfony/rate-limiter": "^5.4",
+		"symfony/rate-limiter": "^5.4.8",
 		"symfony/routing": "^5.4",
 		"symfony/yaml": "^5.4",
 		"typo3/class-alias-loader": "^1.0",
