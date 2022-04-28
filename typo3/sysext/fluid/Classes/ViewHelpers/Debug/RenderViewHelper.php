@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Debug;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -112,7 +111,9 @@ class RenderViewHelper extends AbstractViewHelper
                 'EXT:',
                 $path
             );
-            $path = PathUtility::stripPathSitePrefix($path);
+            if (str_starts_with($path, Environment::getPublicPath())) {
+                $path = substr($path, strlen(Environment::getPublicPath() . '/'));
+            }
             $debugInfo['Partial'] = 'Partial: ' . $path;
         }
         if (isset($this->arguments['section'])) {
