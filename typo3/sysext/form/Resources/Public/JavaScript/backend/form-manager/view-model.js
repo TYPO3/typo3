@@ -238,7 +238,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           } else {
             html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h5>'
             if (prototypes.length > 1) {
-              html += '<div class="form-group">'
+              html += '<div class="mb-3">'
                 + '<label for="new-form-prototype-name">' + '<strong>' + TYPO3.lang['formManager.form_prototype'] + '</strong>' + '</label>'
                 + '<div class="formengine-field-item t3js-formengine-field-item">'
                 + '<div class="form-control-wrap">' + $(prototypeNameSelect)[0].outerHTML + '</div>'
@@ -247,7 +247,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             }
 
             if (templates.length > 1) {
-              html += '<div class="form-group">'
+              html += '<div class="mb-3">'
                 + '<label for="new-form-template">' + '<strong>' + TYPO3.lang['formManager.form_template'] + '</strong>' + '</label>'
                 + '<div class="formengine-field-item t3js-formengine-field-item">'
                 + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_template_description'] + '</span>'
@@ -257,7 +257,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             }
           }
 
-          html += '<div class="form-group">'
+          html += '<div class="mb-3">'
             + '<label for="new-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
             + '<div class="formengine-field-item t3js-formengine-field-item">'
             + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_name_description'] + '</span>'
@@ -279,7 +279,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             + '</div>';
 
           if (savePathSelect) {
-            html += '<div class="form-group">'
+            html += '<div class="mb-3">'
               + '<label for="new-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
               + '<div class="formengine-field-item t3js-formengine-field-item">'
               + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_save_path_description'] + '</span>'
@@ -577,7 +577,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           MultiStepWizard.set('formPersistenceIdentifier', that.data('formPersistenceIdentifier'));
           MultiStepWizard.set('savePath', folders[0]['value']);
           if (folders.length > 1) {
-            savePathSelect = $('<select class="duplicate-form-save-path form-select" data-identifier="duplicateFormSavePath" />');
+            savePathSelect = $('<select id="duplicate-form-save-path" class="form-select" data-identifier="duplicateFormSavePath" />');
             for (var i = 0, len = folders.length; i < len; ++i) {
               var option = new Option(folders[i]['label'], folders[i]['value']);
               $(savePathSelect).append(option);
@@ -585,16 +585,28 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           }
 
           html = '<div class="duplicate-form-modal">'
-            + '<div class="row mb-3">'
-            + '<label class="col-4 col-form-label">' + TYPO3.lang['formManager.new_form_name'] + '</label>'
-            + '<div class="col-8"><input class="duplicate-form-name form-control has-error" data-identifier="duplicateFormName" /></div>';
+            + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.new_form_name'] + '</h5>'
+            + '<div class="mb-3">'
+            + '<label for="duplicate-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
+            + '<div class="formengine-field-item t3js-formengine-field-item">'
+            + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_name_description'] + '</span>'
+            + '<div class="form-control-wrap">'
+            + '<input id="duplicate-form-name" class="form-control has-error" data-identifier="duplicateFormName" />'
+            + '</div>'
+            + '</div>'
+            + '</div>';
 
           if (savePathSelect) {
-            html += '<label class="col col-form-label">' + TYPO3.lang['formManager.form_save_path'] + '</label>' + $(savePathSelect)[0].outerHTML;
+            html += '<div class="mb-3">'
+              + '<label for="duplicate-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
+              + '<div class="formengine-field-item t3js-formengine-field-item">'
+              + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_save_path_description'] + '</span>'
+              + '<div class="form-control-wrap">' + $(savePathSelect)[0].outerHTML + '</div>'
+              + '</div>'
+              + '</div>';
           }
 
-          html += '</div>'
-            + '</div>';
+          html += '</div>';
 
           slide.html(html);
           $(getDomElementIdentifier('duplicateFormName'), modal).focus();
