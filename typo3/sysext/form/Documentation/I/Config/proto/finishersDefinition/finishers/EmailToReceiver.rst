@@ -74,16 +74,16 @@ options.subject
       Subject of the email.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipientaddress:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipients:
 
-options.recipientAddress
-------------------------
+options.recipients
+------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipientAddress
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipients
 
 :aspect:`Data type`
-      string
+      array
 
 :aspect:`Needed by`
       Frontend
@@ -99,35 +99,7 @@ options.recipientAddress
       - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email address of the recipient (To).
-
-
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipientname:
-
-options.recipientName
----------------------
-
-:aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipientName
-
-:aspect:`Data type`
-      string
-
-:aspect:`Needed by`
-      Frontend
-
-:aspect:`Mandatory`
-      No
-
-:aspect:`Default value`
-      empty string
-
-:aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-
-:aspect:`Description`
-      Human-readable name of the recipient.
+      Email addresses and names of the recipients (To).
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.senderaddress:
@@ -186,48 +158,16 @@ options.senderName
       Human-readable name of the sender.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.replytoaddress:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.replytorecipients:
 
-options.replyToAddress
-----------------------
-
-:aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.replyToAddress
-
-:aspect:`Data type`
-      string/ array
-
-:aspect:`Needed by`
-      Frontend
-
-:aspect:`Mandatory`
-      No
-
-:aspect:`Default value`
-      undefined
-
-:aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-
-:aspect:`Description`
-      Email address of to be used as reply-to email (use multiple addresses with an array).
-
-.. note::
-
-   For the moment, the ``form editor`` cannot deal with multiple reply-to addresses (use multiple addresses with an array)
-
-
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.carboncopyaddress:
-
-options.carbonCopyAddress
+options.replyToRecipients
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.carbonCopyAddress
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.replyToRecipients
 
 :aspect:`Data type`
-      string/ array
+      array
 
 :aspect:`Needed by`
       Frontend
@@ -243,23 +183,19 @@ options.carbonCopyAddress
       - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email address of the copy recipient (use multiple addresses with an array)
-
-.. note::
-
-   For the moment, the ``form editor`` cannot deal with multiple copy recipient addresses (use multiple addresses with an array)
+      Email addresses of to be used as reply-to emails.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.blindcarboncopyaddress:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.carboncopyrecipients:
 
-options.blindCarbonCopyAddress
-------------------------------
+options.carbonCopyRecipients
+----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.blindCarbonCopyAddress
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.carbonCopyRecipients
 
 :aspect:`Data type`
-      string
+      array
 
 :aspect:`Needed by`
       Frontend
@@ -275,23 +211,19 @@ options.blindCarbonCopyAddress
       - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email address of the blind copy recipient (use multiple addresses with an array)
-
-.. note::
-
-   For the moment, the ``form editor`` cannot deal with multiple blind copy recipient addresses (use multiple addresses with an array)
+      Email addresses of the copy recipient.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.format:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.blindcarbonCopyrecipients:
 
-options.format
---------------
+options.blindCarbonCopyRecipients
+---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.format
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.blindCarbonCopyRecipients
 
 :aspect:`Data type`
-      string
+      array
 
 :aspect:`Needed by`
       Frontend
@@ -300,17 +232,44 @@ options.format
       No
 
 :aspect:`Default value`
-      html
-
-:aspect:`Possible values`
-      html/ plaintext
+      undefined
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
       - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      The format of the email. By default mails are sent as HTML.
+      Email address of the blind copy recipient.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.addhtmlpart:
+
+options.addHtmlPart
+-------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.addHtmlPart
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      true
+
+:aspect:`Good to know`
+      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+
+:aspect:`Description`
+      If set, mails will contain a plaintext and HTML part, otherwise only a
+      plaintext part. That way, it can be used to disable HTML and enforce
+      plaintext-only mails.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.attachuploads:
@@ -339,6 +298,36 @@ options.attachUploads
 
 :aspect:`Description`
       If set, all uploaded items are attached to the email.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.title:
+
+options.title
+-------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.title
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Good to know`
+      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+
+:aspect:`Description`
+      The title, being shown in the email. The templates are based onFluidEmail.
+      The template renders the title field in the header section right above the
+      email body. Do not confuse this field with the subject of the email.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.translation.language:
@@ -381,7 +370,7 @@ options.translation.translationFiles
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.translation.translationFiles
 
 :aspect:`Data type`
-      string/ array
+      array
 
 :aspect:`Needed by`
       Frontend
@@ -401,6 +390,7 @@ options.translation.translationFiles
       If set, this translation file(s) will be used for finisher option translations.
       If not set, the translation file(s) from the 'Form' element will be used.
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
+
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.partialrootpaths:
 
@@ -509,20 +499,6 @@ formeditor.iconIdentifier
            formEditor:
              iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
-             predefinedDefaults:
-               options:
-                 subject: ''
-                 recipientAddress: ''
-                 recipientName: ''
-                 senderAddress: ''
-                 senderName: ''
-                 replyToAddress: ''
-                 carbonCopyAddress: ''
-                 blindCarbonCopyAddress: ''
-                 format: html
-                 attachUploads: true
-                 translation:
-                   language: ''
 
 .. :aspect:`Good to know`
       ToDo
@@ -557,20 +533,6 @@ formeditor.label
            formEditor:
              iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
-             predefinedDefaults:
-               options:
-                 subject: ''
-                 recipientAddress: ''
-                 recipientName: ''
-                 senderAddress: ''
-                 senderName: ''
-                 replyToAddress: ''
-                 carbonCopyAddress: ''
-                 blindCarbonCopyAddress: ''
-                 format: html
-                 attachUploads: true
-                 translation:
-                   language: ''
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -608,17 +570,17 @@ formeditor.predefinedDefaults
              predefinedDefaults:
                options:
                  subject: ''
-                 recipientAddress: ''
-                 recipientName: ''
+                 recipients: {  }
                  senderAddress: ''
                  senderName: ''
-                 replyToAddress: ''
-                 carbonCopyAddress: ''
-                 blindCarbonCopyAddress: ''
-                 format: html
+                 replyToRecipients: {  }
+                 carbonCopyRecipients: {  }
+                 blindCarbonCopyRecipients: {  }
+                 addHtmlPart: true
                  attachUploads: true
                  translation:
-                   language: ''
+                   language: 'default'
+                 title: ''
 
 .. :aspect:`Good to know`
       ToDo
@@ -660,6 +622,7 @@ FormEngine.label
       .. include:: ../properties/formEngine/label.rst
 
 
+@ToDo
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.formengine.elements:
 
 FormEngine.elements
@@ -690,15 +653,29 @@ FormEngine.elements
                  label: tt_content.finishersDefinition.EmailToReceiver.subject.label
                  config:
                    type: input
-               recipientAddress:
-                 label: tt_content.finishersDefinition.EmailToReceiver.recipientAddress.label
-                 config:
-                   type: input
                    required: true
-               recipientName:
-                 label: tt_content.finishersDefinition.EmailToReceiver.recipientName.label
-                 config:
-                   type: input
+               recipients:
+                 title: tt_content.finishersDefinition.EmailToReceiver.recipients.label
+                 type: array
+                 section: true
+                 sectionItemKey: email
+                 sectionItemValue: name
+                 el:
+                   _arrayContainer:
+                     type: array
+                     title: tt_content.finishersDefinition.EmailToSender.recipients.item.label
+                     el:
+                       email:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                           config:
+                             type: email
+                             required: true
+                       name:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                           config:
+                             type: input
                senderAddress:
                  label: tt_content.finishersDefinition.EmailToReceiver.senderAddress.label
                  config:
@@ -708,33 +685,77 @@ FormEngine.elements
                  label: tt_content.finishersDefinition.EmailToReceiver.senderName.label
                  config:
                    type: input
-               replyToAddress:
-                 label: tt_content.finishersDefinition.EmailToReceiver.replyToAddress.label
+               replyToRecipients:
+                 title: tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label
+                 type: array
+                 section: true
+                 sectionItemKey: email
+                 sectionItemValue: name
+                 el:
+                   _arrayContainer:
+                     type: array
+                     title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label
+                     el:
+                       email:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                           config:
+                             type: email
+                             required: true
+                       name:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                           config:
+                             type: input
+               carbonCopyRecipients:
+                 title: tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label
+                 type: array
+                 section: true
+                 sectionItemKey: email
+                 sectionItemValue: name
+                 el:
+                   _arrayContainer:
+                     type: array
+                     title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label
+                     el:
+                       email:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                           config:
+                             type: email
+                             required: true
+                       name:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                           config:
+                             type: input
+               blindCarbonCopyRecipients:
+                 title: tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label
+                 type: array
+                 section: true
+                 sectionItemKey: email
+                 sectionItemValue: name
+                 el:
+                   _arrayContainer:
+                     type: array
+                     title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label
+                     el:
+                       email:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                           config:
+                             type: email
+                             required: true
+                       name:
+                         TCEforms:
+                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                           config:
+                             type: input
+               addHtmlPart:
+                 label: tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label
                  config:
-                   type: input
-               carbonCopyAddress:
-                 label: tt_content.finishersDefinition.EmailToReceiver.carbonCopyAddress.label
-                 config:
-                   type: input
-               blindCarbonCopyAddress:
-                 label: tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyAddress.label
-                 config:
-                   type: input
-               format:
-                 label: tt_content.finishersDefinition.EmailToReceiver.format.label
-                 config:
-                   type: select
-                   renderType: selectSingle
-                   minitems: 1
-                   maxitems: 1
-                   size: 1
-                   items:
-                     10:
-                       - tt_content.finishersDefinition.EmailToSender.format.1
-                       - html
-                     20:
-                       - tt_content.finishersDefinition.EmailToSender.format.2
-                       - plaintext
+                   type: check
+                   default: 1
                translation:
                  language:
                    label: tt_content.finishersDefinition.EmailToReceiver.language.label
@@ -748,6 +769,10 @@ FormEngine.elements
                        10:
                          - tt_content.finishersDefinition.EmailToReceiver.language.1
                          - default
+               title:
+                 label: tt_content.finishersDefinition.EmailToReceiver.title.label
+                 config:
+                   type: input
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`

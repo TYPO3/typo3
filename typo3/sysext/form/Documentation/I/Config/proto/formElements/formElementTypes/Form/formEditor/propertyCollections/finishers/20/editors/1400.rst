@@ -1,9 +1,10 @@
 .. include:: /Includes.rst.txt
-formEditor.propertyCollections.finishers.20.editors.300
--------------------------------------------------------
+
+formEditor.propertyCollections.finishers.20.editors.1400
+--------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.300
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1400
 
 :aspect:`Data type`
       array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
@@ -23,17 +24,15 @@ formEditor.propertyCollections.finishers.20.editors.300
            formEditor:
              propertyCollections:
                finishers:
-                 20:
-                   identifier: EmailToReceiver
+                 10:
+                   identifier: EmailToSender
                    editors:
-                     300:
-                       identifier: recipientAddress
+                     1400:
+                       identifier: title
                        templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.label
-                       propertyPath: options.recipientAddress
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label
+                       propertyPath: options.title
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText
                        enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
                        propertyValidators:
-                         10: NaiveEmail
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-
+                         10: FormElementIdentifierWithinCurlyBracesInclusive

@@ -45,8 +45,9 @@ Example form definition
        identifier: EmailToReceiver
        options:
          subject: 'Your message'
-         recipientAddress: 'your.company@example.com'
-         recipientName: 'Your company name'
+         recipients:
+           your.company@example.com: 'Your Company name'
+           ceo@example.com: 'CEO'
          senderAddress: '{email}'
          senderName: '{name}'
 

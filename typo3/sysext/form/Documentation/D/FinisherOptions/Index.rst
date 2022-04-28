@@ -50,9 +50,9 @@ closure
 Confirmation finisher
 ---------------------
 
-A simple finisher that outputs a given text.
+A simple finisher that outputs a given text or a content element, respectively.
 
-Usage within form definition
+Usage within form definition for the case, you want to use a given text.
 
 .. code-block:: yaml
 
@@ -79,6 +79,37 @@ or create manually (not preferred)::
    $confirmationFinisher = GeneralUtility::makeInstance(ConfirmationFinisher::class);
    $confirmationFinisher->setOptions([
        'message' => 'foo',
+   ]);
+   $formDefinition->addFinisher($confirmationFinisher);
+
+
+Usage within form definition for the case, you want to output a content element.
+
+.. code-block:: yaml
+
+   identifier: example-form
+   label: 'example'
+   type: Form
+
+   finishers:
+     -
+       identifier: Confirmation
+       options:
+         contentElement: 9
+   ...
+
+
+Usage through code::
+
+   $formDefinition->createFinisher('Confirmation', [
+       'contentElement' => 9,
+   ]);
+
+or create manually (not preferred)::
+
+   $confirmationFinisher = GeneralUtility::makeInstance(ConfirmationFinisher::class);
+   $confirmationFinisher->setOptions([
+       'contentElement' => 9,
    ]);
    $formDefinition->addFinisher($confirmationFinisher);
 
@@ -112,7 +143,7 @@ This finisher remove the currently submited files.
 Use this finisher e.g after the email finisher if you don't want to keep the files online.
 
 
-Usage within form definition
+Usage within form definition.
 
 .. code-block:: yaml
 
@@ -144,7 +175,7 @@ Email finisher
 This finisher sends an email to one recipient.
 EXT:form uses 2 EmailFinisher declarations with the identifiers ``EmailToReceiver`` and ``EmailToSender``.
 
-Usage within form definition
+Usage within form definition.
 
 .. code-block:: yaml
 
@@ -157,8 +188,9 @@ Usage within form definition
        identifier: EmailToReceiver
        options:
          subject: 'Your message'
-         recipientAddress: your.company@example.com
-         recipientName: 'Your Company name'
+         recipients:
+           your.company@example.com: 'Your Company name'
+           ceo@example.com: 'CEO'
          senderAddress: 'form@example.com'
          senderName: 'form submitter'
    ...
@@ -168,8 +200,10 @@ Usage through code::
 
    $formDefinition->createFinisher('EmailToReceiver', [
        'subject' => 'Your message',
-       'recipientAddress' => 'your.company@example.com',
-       'recipientName' => 'Your Company name',
+       'recipients' => [
+           'your.company@example.com' => 'Your Company name',
+           'ceo@example.com' => 'CEO'
+       ],
        'senderAddress' => 'form@example.com',
        'senderName' => 'form submitter',
    ]);
@@ -179,8 +213,10 @@ or create manually (not preferred)::
    $emailFinisher = GeneralUtility::makeInstance(EmailFinisher::class);
    $emailFinisher->setOptions([
        'subject' => 'Your message',
-       'recipientAddress' => 'your.company@example.com',
-       'recipientName' => 'Your Company name',
+       'recipients' => [
+           'your.company@example.com' => 'Your Company name',
+           'ceo@example.com' => 'CEO'
+       ],
        'senderAddress' => 'form@example.com',
        'senderName' => 'form submitter',
    ]);
@@ -207,16 +243,16 @@ subject
       undefined
 
 :aspect:`Description`
-      Subject of the email
+      Subject of the email.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-recipientaddress:
+.. _apireference-finisheroptions-emailfinisher-options-recipients:
 
-recipientAddress
-++++++++++++++++
+recipients
+++++++++++
 
 :aspect:`Data type`
-      string
+      array
 
 :aspect:`Mandatory`
       Yes
@@ -225,25 +261,7 @@ recipientAddress
       undefined
 
 :aspect:`Description`
-      Email address of the recipient (To)
-
-
-.. _apireference-finisheroptions-emailfinisher-options-recipientname:
-
-recipientName
-+++++++++++++
-
-:aspect:`Data type`
-      string
-
-:aspect:`Mandatory`
-      No
-
-:aspect:`Default value`
-      empty string
-
-:aspect:`Description`
-      Human-readable name of the recipient
+      Email addresses and names of the recipients (To).
 
 
 .. _apireference-finisheroptions-emailfinisher-options-senderaddress:
@@ -261,7 +279,7 @@ senderAddress
       undefined
 
 :aspect:`Description`
-      Email address of the sender/ visitor (From)
+      Email address of the sender/ visitor (From).
 
 
 .. _apireference-finisheroptions-emailfinisher-options-sendername:
@@ -279,38 +297,16 @@ senderName
       empty string
 
 :aspect:`Description`
-      Human-readable name of the sender
+      Human-readable name of the sender.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-replytoaddress:
+.. _apireference-finisheroptions-emailfinisher-options-replytorecipients:
 
-replyToAddress
-++++++++++++++
-
-:aspect:`Data type`
-      string/ array
-
-:aspect:`Mandatory`
-      No
-
-:aspect:`Default value (for 'EmailToReceiver' and 'EmailToSender' declarations)`
-      undefined
-
-:aspect:`Description`
-      Email address of to be used as reply-to email (use multiple addresses with an array)
-
-.. note::
-
-   For the moment, the ``form editor`` cannot deal with multiple reply-to addresses (use multiple addresses with an array)
-
-
-.. _apireference-finisheroptions-emailfinisher-options-carboncopyaddress:
-
-carbonCopyAddress
+replyToRecipients
 +++++++++++++++++
 
 :aspect:`Data type`
-      string/ array
+      array
 
 :aspect:`Mandatory`
       No
@@ -319,20 +315,16 @@ carbonCopyAddress
       undefined
 
 :aspect:`Description`
-      Email address of the copy recipient (use multiple addresses with an array)
-
-.. note::
-
-   For the moment, the ``form editor`` cannot deal with multiple copy recipient addresses (use multiple addresses with an array)
+      Email addresses of to be used as reply-to emails.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-blindcarboncopyaddress:
+.. _apireference-finisheroptions-emailfinisher-options-carboncopyrecipients:
 
-blindCarbonCopyAddress
-++++++++++++++++++++++
+carbonCopyRecipients
+++++++++++++++++++++
 
 :aspect:`Data type`
-      string/ array
+      array
 
 :aspect:`Mandatory`
       No
@@ -341,32 +333,45 @@ blindCarbonCopyAddress
       undefined
 
 :aspect:`Description`
-      Email address of the blind copy recipient (use multiple addresses with an array)
-
-.. note::
-
-   For the moment, the ``form editor`` cannot deal with multiple blind copy recipient addresses (use multiple addresses with an array)
+      Email addresses of the copy recipient.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-format:
+.. _apireference-finisheroptions-emailfinisher-options-blindcarbonCopyrecipients:
 
-format
-++++++
+blindCarbonCopyRecipients
++++++++++++++++++++++++++
 
 :aspect:`Data type`
-      string
+      array
 
 :aspect:`Mandatory`
       No
 
 :aspect:`Default value (for 'EmailToReceiver' and 'EmailToSender' declarations)`
-      html
-
-:aspect:`possible values`
-      html/ plaintext
+      undefined
 
 :aspect:`Description`
-      The format of the email. By default mails are sent as HTML.
+      Email address of the blind copy recipient.
+
+
+.. _apireference-finisheroptions-emailfinisher-options-addhtmlpart:
+
+addHtmlPart
++++++++++++
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for 'EmailToReceiver' and 'EmailToSender' declarations)`
+      true
+
+:aspect:`Description`
+      If set, mails will contain a plaintext and HTML part, otherwise only a
+      plaintext part. That way, it can be used to disable HTML and enforce
+      plaintext-only mails.
 
 
 .. _apireference-finisheroptions-emailfinisher-options-attachuploads:
@@ -387,13 +392,13 @@ attachUploads
       If set, all uploaded items are attached to the email.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-translation-translationfiles:
+.. _apireference-finisheroptions-emailfinisher-options-translation-title:
 
-translation.translationFiles
-++++++++++++++++++++++++++++
+title
++++++
 
 :aspect:`Data type`
-      string/ array
+      string
 
 :aspect:`Mandatory`
       No
@@ -402,9 +407,7 @@ translation.translationFiles
       undefined
 
 :aspect:`Description`
-      If set, this translation file(s) will be used for finisher option translations.
-      If not set, the translation file(s) from the 'Form' element will be used.
-      Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
+      The title, being shown in the Email.
 
 
 .. _apireference-finisheroptions-emailfinisher-options-translation-language:
@@ -424,6 +427,26 @@ translation.language
 :aspect:`Description`
       If not set, the finisher options are translated depending on the current frontend language (if translations exists).
       This option allows you to force translations for a given language isocode, e.g 'dk' or 'de'.
+      Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
+
+
+.. _apireference-finisheroptions-emailfinisher-options-translation-translationfiles:
+
+translation.translationFiles
+++++++++++++++++++++++++++++
+
+:aspect:`Data type`
+      array
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for 'EmailToReceiver' and 'EmailToSender' declarations)`
+      undefined
+
+:aspect:`Description`
+      If set, this translation file(s) will be used for finisher option translations.
+      If not set, the translation file(s) from the 'Form' element will be used.
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
@@ -508,7 +531,7 @@ FlashMessage finisher
 
 A simple finisher that adds a message to the FlashMessageContainer.
 
-Usage within form definition
+Usage within form definition.
 
 .. code-block:: yaml
 
@@ -649,7 +672,7 @@ Redirect finisher
 
 A simple finisher that redirects to another page.
 
-Usage within form definition
+Usage within form definition.
 
 .. code-block:: yaml
 
@@ -768,7 +791,7 @@ SaveToDatabase finisher
 This finisher saves the data from a submitted form into a database table.
 
 
-Usage within form definition
+Usage within form definition.
 
 .. code-block:: yaml
 
@@ -850,7 +873,7 @@ or create manually (not preferred)::
 
 You can write options as an array to perform multiple database operations.
 
-Usage within form definition
+Usage within form definition.
 
 .. code-block:: yaml
 

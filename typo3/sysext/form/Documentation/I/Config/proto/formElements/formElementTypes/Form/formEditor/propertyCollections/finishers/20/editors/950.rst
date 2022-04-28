@@ -1,0 +1,46 @@
+.. include:: /Includes.rst.txt
+
+formEditor.propertyCollections.finishers.20.editors.950
+-------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.950
+
+:aspect:`Data type`
+      array/ :ref:`[PropertyGridEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 20:
+                   identifier: EmailToReceiver
+                   editors:
+                     950:
+                       identifier: blindCarbonCopyRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label
+                       propertyPath: options.blindCarbonCopyRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+

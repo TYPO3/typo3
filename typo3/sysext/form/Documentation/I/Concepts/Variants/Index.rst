@@ -400,15 +400,16 @@ the finisher is skipped.
        identifier: EmailToReceiver
        options:
          subject: Yes, I am ready
-         recipientAddress: tritum@example.org
-         recipientName: TRITUM
+         recipients:
+           your.company@example.com: 'Your Company name'
          senderAddress: tritum@example.org
          senderName: tritum@example.org
      -
        identifier: EmailToSender
        options:
          subject: This is a copy of the form data
-         recipientAddress: '{email-address}'
+         recipients:
+           {email-address}: '{name}'
          senderAddress: tritum@example.org
          senderName: tritum@example.org
          renderingOptions:

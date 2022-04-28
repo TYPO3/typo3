@@ -1,10 +1,10 @@
 .. include:: /Includes.rst.txt
 
-formEditor.propertyCollections.finishers.10.editors.1000
+formEditor.propertyCollections.finishers.10.editors.1200
 --------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.10.editors.1000
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.10.editors.1200
 
 :aspect:`Data type`
       array/ :ref:`[SingleSelectEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.singleselecteditor>`
@@ -18,7 +18,7 @@ formEditor.propertyCollections.finishers.10.editors.1000
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 8-
+         :emphasize-lines: 4-
 
          Form:
            formEditor:
@@ -27,16 +27,13 @@ formEditor.propertyCollections.finishers.10.editors.1000
                  10:
                    identifier: EmailToSender
                    editors:
-                     1000:
-                       identifier: format
+                     1200:
+                       identifier: language
                        templateName: Inspector-SingleSelectEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.format.label
-                       propertyPath: options.format
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.language.label
+                       propertyPath: options.translation.language
                        selectOptions:
                          10:
-                           value: plaintext
-                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.1
-                         20:
-                           value: html
-                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.2
+                           value: default
+                           label: formEditor.elements.Form.finisher.EmailToSender.editor.language.1
 
