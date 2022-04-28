@@ -91,6 +91,10 @@ $tree-line-height: 20px;
     .table {
         margin: 0;
     }
+
+    .help-block {
+        margin-bottom: 0;
+    }
 }
 
 .form-check.form-switch {
@@ -381,10 +385,29 @@ $tree-line-height: 20px;
         line-height: 13px;
     }
 
-    .t3-form-remove-element-button {
-        position: absolute;
-        top: 25px;
-        right: 2.5em;
+    > .t3-form-remove-element-button {
+        padding-top: 1rem;
+        border-top: 1px solid $module-docheader-border;
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    &-validators.sortable + .t3-form-remove-element-button {
+        margin-top: 0.25rem;
+    }
+
+    .t3-form-inspector-finishers-editor-removeButton,
+    .t3-form-inspector-validators-editor-removeButton {
+        .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.65625rem;
+        }
+
+        .t3-form-remove-element-button-label {
+            display: none;
+        }
     }
 
     .t3-form-control-group,
@@ -538,6 +561,7 @@ $tree-line-height: 20px;
         .btn {
             background-color: $btn-default-bg;
             border-color: $btn-default-border;
+            font-size: 0.9em;
         }
     }
 
