@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -473,6 +474,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $queryParameters['_language'] = $siteLanguageOfTargetPage;
+        $pageObject = new Page($page);
 
         if ($fragment
             && $useAbsoluteUrl === false
@@ -486,7 +488,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         } else {
             try {
                 $uri = $siteOfTargetPage->getRouter()->generateUri(
-                    $targetPageId,
+                    $pageObject,
                     $queryParameters,
                     $fragment,
                     $useAbsoluteUrl ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH

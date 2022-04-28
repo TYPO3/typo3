@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
@@ -202,9 +203,9 @@ class PageRouter implements RouterInterface
     }
 
     /**
-     * API for generating a page where the $route parameter is typically an array (page record) or the page ID
+     * API for generating a page uri where the $route parameter is typically an array (a page record) or the page ID
      *
-     * @param array|string|int $route
+     * @param array|string|int|Page $route
      * @param array $parameters an array of query parameters which can be built into the URI path, also consider the special handling of "_language"
      * @param string $fragment additional #my-fragment part
      * @param string $type see the RouterInterface for possible types
@@ -226,7 +227,9 @@ class PageRouter implements RouterInterface
         }
 
         $pageId = 0;
-        if (is_array($route)) {
+        if ($route instanceof Page) {
+            $pageId = $route->getPageId();
+        } elseif (is_array($route)) {
             $pageId = (int)$route['uid'];
         } elseif (is_scalar($route)) {
             $pageId = (int)$route;
@@ -235,7 +238,19 @@ class PageRouter implements RouterInterface
         $context = clone $this->context;
         $context->setAspect('language', LanguageAspectFactory::createFromSiteLanguage($language));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
-        $page = $pageRepository->getPage($pageId, true);
+
+        if ($route instanceof Page) {
+            $page = $route->toArray();
+        } elseif (is_array($route)
+            // Check 3rd party input $route for basic requirements
+            && isset($route['uid'], $route['sys_language_uid'], $route['l10n_parent'], $route['slug'])
+            && (int)$route['sys_language_uid'] === $language->getLanguageId()
+            && ((int)$route['l10n_parent'] === 0 || ($route['_PAGES_OVERLAY'] ?? false))
+        ) {
+            $page = $route;
+        } else {
+            $page = $pageRepository->getPage($pageId, true);
+        }
         $pagePath = $page['slug'] ?? '';
 
         if ($parameters['MP'] ?? '') {
