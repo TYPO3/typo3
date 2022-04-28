@@ -52,4 +52,4 @@ The translation order is as follows:
 With the new translation option, the last (third) step can be skipped. That way,
 the Flexform value will be preferred.
 
-.. index:: Frontend, FlexForm, ext:form, NotScanned
+.. index:: Frontend, FlexForm, ext:form
