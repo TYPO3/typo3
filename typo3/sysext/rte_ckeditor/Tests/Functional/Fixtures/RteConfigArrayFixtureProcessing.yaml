@@ -136,6 +136,20 @@ processing:
       #      data-custom19:
       #        userFunc: ['TYPO3\CMS\Core\Tests\Unit\Html\Fixture\HtmlParserUserFuncFixture->userfuncFixAttribWithParam','anythingValue','moreParm']
 
+      # The following 'allowedAttribs' case has test coverage
+      span20:
+        allowedAttribs:
+          - id
+          - data-something
+        rmTagIfNoAttrib: 1
+      span21:
+        allowedAttribs:
+          - 0
+        rmTagIfNoAttrib: 1
+      span22:
+        allowedAttribs:
+
+
     removeTags: [link, meta, o:p, sdfield, style, title]
     keepNonMatchedTags: protect
     htmlSanitize:

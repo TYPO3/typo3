@@ -1,6 +1,7 @@
-# ****************************************************
+# ********************************************************
 # Sets the proc options for all default configurations
-# ****************************************************
+# https://docs.typo3.org/permalink/t3tsref:rte-config-proc
+# ********************************************************
 
 processing:
   mode: default

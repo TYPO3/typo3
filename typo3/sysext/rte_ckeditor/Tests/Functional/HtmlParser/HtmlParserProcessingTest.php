@@ -321,6 +321,89 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         self::assertEquals(trim($expectedResult), trim($result));
     }
 
+    /**
+     * @see typo3/sysext/core/Tests/Unit/Html/HtmlParserTest.php->spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider()
+     */
+    public static function HtmlParserProcessingParsesAllowedAttribsDataProvider(): array
+    {
+        return [
+            'Span tag with no attrib' => [
+                '<span20>text</span20>',
+                'text',
+            ],
+            'Span tag with allowed id attrib' => [
+                '<span20 id="id" class="something-unallowed">text</span20>',
+                '<span20 id="id">text</span20>',
+            ],
+            'Span tag with disallowed style attrib' => [
+                '<span20 style="line-height: 12px;">text</span20>',
+                'text',
+            ],
+
+            'Span tag with no attrib, all attribs denied' => [
+                '<span21>text</span21>',
+                'text',
+            ],
+            'Span tag with with attribs, all attribs denied' => [
+                '<span21 id="id" class="something-unallowed">text</span21>',
+                'text',
+            ],
+            'Span tag with style attrib, all attribs denied' => [
+                '<span21 style="line-height: 12px;">text</span21>',
+                'text',
+            ],
+
+            'Span tag with no attrib, all attribs allowed (set empty)' => [
+                '<span22>text</span22>',
+                '<span22>text</span22>',
+            ],
+            'Span tag with with attribs, all attribs allowed (set empty)' => [
+                '<span22 id="id" class="something-unallowed">text</span22>',
+                '<span22 id="id" class="something-unallowed">text</span22>',
+            ],
+            'Span tag with style attrib, all attribs allowed (set empty)' => [
+                '<span22 style="line-height: 12px;">text</span22>',
+                '<span22 style="line-height: 12px;">text</span22>',
+            ],
+        ];
+    }
+
+    #[DataProvider('HtmlParserProcessingParsesAllowedAttribsDataProvider')]
+    #[Test]
+    public function HtmlParserProcessingParsesAllowedAttribsWithStringConfiguration(string $content, string $expectedResult): void
+    {
+        $preset = 'RteConfigStringFixture';
+        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
+        $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
+
+        // This assertion ensures that the YAML was loaded.
+        self::assertEquals('testingValue', $richTextConfigurationConfigurationProc['typo3Testing.']['testingKey'], 'YAML could not be parsed for Array configuration.');
+        $subject = $this->get(RteHtmlParser::class);
+        $result = $subject->transformTextForPersistence($content, $richTextConfigurationConfigurationProc);
+        self::assertEquals(trim($expectedResult), trim($result));
+    }
+
+    #[DataProvider('HtmlParserProcessingParsesAllowedAttribsDataProvider')]
+    #[Test]
+    public function HtmlParserProcessingParsesAllowedAttribsWithArrayConfiguration(string $content, string $expectedResult): void
+    {
+        $preset = 'RteConfigArrayFixture';
+        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
+        $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
+
+        // This assertion ensures that the YAML was loaded.
+        self::assertEquals('testingValue', $richTextConfigurationConfigurationProc['typo3Testing.']['testingKey'], 'YAML could not be parsed for Array configuration.');
+        $subject = $this->get(RteHtmlParser::class);
+        $result = $subject->transformTextForPersistence($content, $richTextConfigurationConfigurationProc);
+        self::assertEquals(trim($expectedResult), trim($result));
+    }
+
     private function buildHtmlElement(string $tagName): string
     {
         return sprintf('<%1$s>text-%1$s-text</%1$s>', $tagName);
