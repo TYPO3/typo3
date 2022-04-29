@@ -2666,9 +2666,15 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
       }
       assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1478967319);
 
-      return $('<span></span>').text((formElement.get('label')
-        ? formElement.get('label')
-        : formElement.get('identifier')));
+      if (formElement.get('type') === 'Form') {
+        label = formElement.get('type');
+      } else {
+        label = getFormElementDefinition(formElement, 'label')
+          ? getFormElementDefinition(formElement, 'label')
+          : formElement.get('identifier');
+      }
+
+      return $('<span></span>').text(label);
     };
 
     /**
