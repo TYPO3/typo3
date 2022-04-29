@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.validatorsdefinition.count:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count:
 
 =======
 [Count]
@@ -108,7 +108,7 @@ options.maximum
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -142,7 +142,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`
@@ -176,7 +176,7 @@ formeditor.label
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.predefineddefaults:
 
-formeditor.predefinedDefaults
+formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`

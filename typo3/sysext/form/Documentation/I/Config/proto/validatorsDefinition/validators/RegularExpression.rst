@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.validatorsdefinition.regularexpression:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression:
 
 ===================
 [RegularExpression]
@@ -81,7 +81,7 @@ options.regularExpression
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -115,7 +115,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`
@@ -149,7 +149,7 @@ formeditor.label
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
 
-formeditor.predefinedDefaults
+formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`

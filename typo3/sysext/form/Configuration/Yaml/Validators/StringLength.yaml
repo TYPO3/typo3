@@ -3,6 +3,11 @@ prototypes:
     validatorsDefinition:
       StringLength:
         implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator
+        #options:
+          # minimum length for a valid string
+          #minimum:
+          # maximum length for a valid string
+          #maximum:
         formEditor:
           iconIdentifier: form-validator
           label: formEditor.elements.TextMixin.editor.validators.StringLength.label

@@ -3,6 +3,11 @@ prototypes:
     validatorsDefinition:
       NumberRange:
         implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator
+        #options:
+          # minimum value to accept
+          #minimum:
+          # maximum value to accept
+          #maximum:
         formEditor:
           iconIdentifier: form-validator
           label: formEditor.elements.TextMixin.editor.validators.NumberRange.label

@@ -57,7 +57,7 @@ implementationClassName
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -91,7 +91,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`

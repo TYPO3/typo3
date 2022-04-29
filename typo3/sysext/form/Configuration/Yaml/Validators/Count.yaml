@@ -3,6 +3,11 @@ prototypes:
     validatorsDefinition:
       Count:
         implementationClassName: TYPO3\CMS\Form\Mvc\Validation\CountValidator
+        #options:
+          # minimum count to accept
+          #minimum:
+          # maximum count to accept
+          #maximum:
         formEditor:
           iconIdentifier: form-validator
           label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label

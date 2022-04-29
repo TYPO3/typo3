@@ -66,7 +66,7 @@ implementationClassName
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -100,7 +100,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`

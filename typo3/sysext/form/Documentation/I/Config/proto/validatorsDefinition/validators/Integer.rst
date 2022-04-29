@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.validatorsdefinition.integer:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.integer:
 
 =========
 [Integer]
@@ -57,7 +57,7 @@ implementationClassName
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.integer.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -91,7 +91,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.integer.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`

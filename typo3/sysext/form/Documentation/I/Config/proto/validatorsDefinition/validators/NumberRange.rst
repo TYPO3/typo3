@@ -1,6 +1,7 @@
 .. include:: /Includes.rst.txt
 
-.. _prototypes.validatorsdefinition.numberrange:
+
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange:
 
 =============
 [NumberRange]
@@ -107,7 +108,7 @@ options.maximum
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -141,7 +142,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`
@@ -175,7 +176,7 @@ formeditor.label
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.predefineddefaults:
 
-formeditor.predefinedDefaults
+formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`

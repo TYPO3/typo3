@@ -5,6 +5,10 @@ prototypes:
         implementationClassName: TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator
         options:
           format: Y-m-d
+          # minimum date formatted as Y-m-d
+          #minimum:
+          # maximum date formatted as Y-m-d
+          #maximum:
         formEditor:
           iconIdentifier: form-validator
           label: formEditor.elements.FormElement.validators.DateRange.editor.header.label

@@ -61,7 +61,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.minimum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.format:
 
 options.format
 --------------
@@ -87,12 +87,60 @@ options.format
              format: Y-m-d
 
 :aspect:`Description`
-      The format of the date.
+      The format of the minimum and maximum option.
+
+
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.minimum:
+
+options.minimum
+---------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.minimum
+
+:aspect:`Data type`
+      int
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      Yes
+
+:aspect:`Default value (for prototype 'standard')`
+      undefined
+
+:aspect:`Description`
+      The minimum date formatted as Y-m-d.
+
+
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.maximum:
+
+options.maximum
+---------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.maximum
+
+:aspect:`Data type`
+      int
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      Yes
+
+:aspect:`Default value (for prototype 'standard')`
+      undefined
+
+:aspect:`Description`
+      The maximum date formatted as Y-m-d.
 
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -126,7 +174,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`
@@ -160,7 +208,7 @@ formeditor.label
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.predefineddefaults:
 
-formeditor.predefinedDefaults
+formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`

@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.validatorsdefinition.stringlength:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength:
 
 ==============
 [StringLength]
@@ -88,7 +88,7 @@ options.minimum
       undefined
 
 :aspect:`Description`
-      The minimum value to accept.
+      Minimum length for a valid string.
 
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.maximum:
@@ -112,12 +112,12 @@ options.maximum
       undefined
 
 :aspect:`Description`
-      The maximum value to accept.
+      Maximum length for a valid string.
 
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -151,7 +151,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`
@@ -185,7 +185,7 @@ formeditor.label
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.predefineddefaults:
 
-formeditor.predefinedDefaults
+formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`

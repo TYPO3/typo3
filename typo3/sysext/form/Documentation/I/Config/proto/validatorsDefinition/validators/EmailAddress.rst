@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.validatorsdefinition.emailaddress:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress:
 
 ==============
 [EmailAddress]
@@ -59,7 +59,7 @@ implementationClassName
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.iconidentifier:
 
-formeditor.iconIdentifier
+formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
@@ -93,7 +93,7 @@ formeditor.iconIdentifier
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.label:
 
-formeditor.label
+formEditor.label
 ----------------
 
 :aspect:`Option path`
