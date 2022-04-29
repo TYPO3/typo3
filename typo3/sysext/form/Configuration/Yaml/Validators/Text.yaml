@@ -1,11 +1,8 @@
-TYPO3:
-  CMS:
-    Form:
-      prototypes:
-        standard:
-          validatorsDefinition:
-            Text:
-              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\TextValidator
-              formEditor:
-                iconIdentifier: form-validator
-                label: formEditor.elements.TextMixin.editor.validators.Text.label
+prototypes:
+  standard:
+    validatorsDefinition:
+      Text:
+        implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\TextValidator
+        formEditor:
+          iconIdentifier: form-validator
+          label: formEditor.elements.TextMixin.editor.validators.Text.label

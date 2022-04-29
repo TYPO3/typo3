@@ -70,6 +70,11 @@ class YamlSource
                 $loadedConfiguration = $this->loadFromFile($fileToLoad);
             } else {
                 $loadedConfiguration = $this->loadFromFilePath($fileToLoad);
+                if (isset($loadedConfiguration['TYPO3']['CMS']['Form'])) {
+                    $namespacedConfiguration = $loadedConfiguration['TYPO3']['CMS']['Form'];
+                    unset($loadedConfiguration['TYPO3']);
+                    $loadedConfiguration = array_replace_recursive($namespacedConfiguration, $loadedConfiguration);
+                }
             }
 
             if (is_array($loadedConfiguration)) {

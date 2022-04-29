@@ -1,0 +1,14 @@
+TYPO3:
+  CMS:
+    Form:
+      klaus01:
+        key01: key01_value
+        key02: key02_value
+        key06: key06_value
+        key07: key07_value
+      key03: key03_value
+key04: key04_value
+key05: key05_value
+key08: key08_value
+klaus01:
+  key06: key06_value_override

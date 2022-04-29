@@ -106,4 +106,33 @@ class YamlSourceTest extends UnitTestCase
 
         self::assertSame($expected, $mockYamlSource->_call('load', $input));
     }
+
+    /**
+     * @test
+     */
+    public function loadRemovesVendorNamespacePrefixFromConfiguration(): void
+    {
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
+
+        $input = [
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/ConfigurationWithVendorNamespacePrefix1.yaml',
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/ConfigurationWithoutVendorNamespacePrefix1.yaml',
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/ConfigurationWithVendorNamespacePrefix2.yaml',
+        ];
+
+        $expected = [
+            'klaus01' => [
+                'key01' => 'key01_value',
+                'key02' => 'key02_value_override',
+                'key06' => 'key06_value_override',
+                'key07' => 'key07_value_override',
+            ],
+            'key03' => 'key03_value',
+            'key04' => 'key04_value',
+            'key05' => 'key05_value_override',
+            'key08' => 'key08_value_override',
+        ];
+
+        self::assertSame($expected, $mockYamlSource->_call('load', $input));
+    }
 }

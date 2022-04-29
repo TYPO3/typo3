@@ -1,156 +1,153 @@
-TYPO3:
-  CMS:
-    Form:
-      prototypes:
-        standard:
-          formElementsDefinition:
-            DatePicker:
-              formEditor:
+prototypes:
+  standard:
+    formElementsDefinition:
+      DatePicker:
+        formEditor:
+          editors:
+            100:
+              identifier: header
+              templateName: Inspector-FormElementHeaderEditor
+            200:
+              identifier: label
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.FormElement.editor.label.label
+              propertyPath: label
+            230:
+              identifier: elementDescription
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.FormElement.editor.elementDescription.label
+              propertyPath: properties.elementDescription
+            300:
+              identifier: dateFormat
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.DatePicker.editor.dateFormat.label
+              propertyPath: properties.dateFormat
+            350:
+              identifier: placeholder
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.TextMixin.editor.placeholder.label
+              propertyPath: properties.fluidAdditionalAttributes.placeholder
+              doNotSetIfPropertyValueIsEmpty: true
+            400:
+              identifier: enableDatePicker
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.DatePicker.editor.enableDatePicker.label
+              propertyPath: properties.enableDatePicker
+            500:
+              identifier: displayTimeSelector
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.DatePicker.editor.displayTimeSelector.label
+              propertyPath: properties.displayTimeSelector
+            700:
+              identifier: gridColumnViewPortConfiguration
+              templateName: Inspector-GridColumnViewPortConfigurationEditor
+              label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+              configurationOptions:
+                viewPorts:
+                  10:
+                    viewPortIdentifier: xs
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                  20:
+                    viewPortIdentifier: sm
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                  30:
+                    viewPortIdentifier: md
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                  40:
+                    viewPortIdentifier: lg
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  50:
+                    viewPortIdentifier: xl
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label
+                  60:
+                    viewPortIdentifier: xxl
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label
+                numbersOfColumnsToUse:
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                  propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                  fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+            800:
+              identifier: requiredValidator
+              templateName: Inspector-RequiredValidatorEditor
+              label: formEditor.elements.FormElement.editor.requiredValidator.label
+              validatorIdentifier: NotEmpty
+              propertyPath: properties.fluidAdditionalAttributes.required
+              propertyValue: required
+              configurationOptions:
+                validationErrorMessage:
+                  label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
+                  propertyPath: properties.validationErrorMessages
+                  fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                  errorCodes:
+                    10: 1221560910
+                    20: 1221560718
+                    30: 1347992400
+                    40: 1347992453
+            900:
+              identifier: validators
+              templateName: Inspector-ValidatorsEditor
+              label: formEditor.elements.DatePicker.editor.validators.label
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.DatePicker.editor.validators.EmptyValue.label
+                20:
+                  value: DateTime
+                  label: formEditor.elements.DatePicker.editor.validators.DateTime.label
+            9999:
+              identifier: removeButton
+              templateName: Inspector-RemoveElementEditor
+          predefinedDefaults:
+            properties:
+              dateFormat: Y-m-d
+              enableDatePicker: true
+              displayTimeSelector: false
+          label: formEditor.elements.DatePicker.label
+          group: custom
+          groupSorting: 200
+          iconIdentifier: form-date-picker
+          propertyCollections:
+            validators:
+              10:
+                identifier: DateTime
                 editors:
                   100:
                     identifier: header
-                    templateName: Inspector-FormElementHeaderEditor
+                    templateName: Inspector-CollectionElementHeaderEditor
+                    label: formEditor.elements.DatePicker.validators.DateTime.editor.header.label
                   200:
-                    identifier: label
-                    templateName: Inspector-TextEditor
-                    label: formEditor.elements.FormElement.editor.label.label
-                    propertyPath: label
-                  230:
-                    identifier: elementDescription
-                    templateName: Inspector-TextEditor
-                    label: formEditor.elements.FormElement.editor.elementDescription.label
-                    propertyPath: properties.elementDescription
-                  300:
-                    identifier: dateFormat
-                    templateName: Inspector-TextEditor
-                    label: formEditor.elements.DatePicker.editor.dateFormat.label
-                    propertyPath: properties.dateFormat
-                  350:
-                    identifier: placeholder
-                    templateName: Inspector-TextEditor
-                    label: formEditor.elements.TextMixin.editor.placeholder.label
-                    propertyPath: properties.fluidAdditionalAttributes.placeholder
-                    doNotSetIfPropertyValueIsEmpty: true
-                  400:
-                    identifier: enableDatePicker
-                    templateName: Inspector-CheckboxEditor
-                    label: formEditor.elements.DatePicker.editor.enableDatePicker.label
-                    propertyPath: properties.enableDatePicker
-                  500:
-                    identifier: displayTimeSelector
-                    templateName: Inspector-CheckboxEditor
-                    label: formEditor.elements.DatePicker.editor.displayTimeSelector.label
-                    propertyPath: properties.displayTimeSelector
-                  700:
-                    identifier: gridColumnViewPortConfiguration
-                    templateName: Inspector-GridColumnViewPortConfigurationEditor
-                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
-                    configurationOptions:
-                      viewPorts:
-                        10:
-                          viewPortIdentifier: xs
-                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
-                        20:
-                          viewPortIdentifier: sm
-                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
-                        30:
-                          viewPortIdentifier: md
-                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
-                        40:
-                          viewPortIdentifier: lg
-                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
-                        50:
-                          viewPortIdentifier: xl
-                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label
-                        60:
-                          viewPortIdentifier: xxl
-                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label
-                      numbersOfColumnsToUse:
-                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
-                        propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
-                        fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
-                  800:
-                    identifier: requiredValidator
-                    templateName: Inspector-RequiredValidatorEditor
-                    label: formEditor.elements.FormElement.editor.requiredValidator.label
-                    validatorIdentifier: NotEmpty
-                    propertyPath: properties.fluidAdditionalAttributes.required
-                    propertyValue: required
-                    configurationOptions:
-                      validationErrorMessage:
-                        label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
-                        propertyPath: properties.validationErrorMessages
-                        fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
-                        errorCodes:
-                          10: 1221560910
-                          20: 1221560718
-                          30: 1347992400
-                          40: 1347992453
-                  900:
-                    identifier: validators
-                    templateName: Inspector-ValidatorsEditor
-                    label: formEditor.elements.DatePicker.editor.validators.label
-                    selectOptions:
-                      10:
-                        value: ''
-                        label: formEditor.elements.DatePicker.editor.validators.EmptyValue.label
-                      20:
-                        value: DateTime
-                        label: formEditor.elements.DatePicker.editor.validators.DateTime.label
+                    identifier: validationErrorMessage
+                    templateName: Inspector-ValidationErrorMessageEditor
+                    label: formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label
+                    fieldExplanationText: formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText
+                    errorCodes:
+                      10: 1238087674
+                    propertyPath: properties.validationErrorMessages
                   9999:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
-                predefinedDefaults:
-                  properties:
-                    dateFormat: Y-m-d
-                    enableDatePicker: true
-                    displayTimeSelector: false
-                label: formEditor.elements.DatePicker.label
-                group: custom
-                groupSorting: 200
-                iconIdentifier: form-date-picker
-                propertyCollections:
-                  validators:
-                    10:
-                      identifier: DateTime
-                      editors:
-                        100:
-                          identifier: header
-                          templateName: Inspector-CollectionElementHeaderEditor
-                          label: formEditor.elements.DatePicker.validators.DateTime.editor.header.label
-                        200:
-                          identifier: validationErrorMessage
-                          templateName: Inspector-ValidationErrorMessageEditor
-                          label: formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label
-                          fieldExplanationText: formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText
-                          errorCodes:
-                            10: 1238087674
-                          propertyPath: properties.validationErrorMessages
-                        9999:
-                          identifier: removeButton
-                          templateName: Inspector-RemoveElementEditor
-              implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker
-              properties:
-                containerClassAttribute: input
-                elementClassAttribute: 'small form-control'
-                elementErrorClassAttribute: error
-                timeSelectorClassAttribute: mini
-                timeSelectorHourLabel: ''
-                timeSelectorMinuteLabel: ''
-                dateFormat: Y-m-d
-                # consider using a different file if the backend is behind an http basic auth
-                datePickerInitializationJavaScriptFile: EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js
-                enableDatePicker: true
-                displayTimeSelector: false
-              variants:
-                -
-                  identifier: template-variant
-                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-                  properties:
-                    containerClassAttribute: 'form-element form-element-datepicker form-inline mb-3'
-                    elementClassAttribute: form-control
-                    elementErrorClassAttribute: ~
-                    labelClassAttribute: form-label
-          formEditor:
-            formEditorPartials:
-              FormElement-DatePicker: Stage/SimpleTemplate
+        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker
+        properties:
+          containerClassAttribute: input
+          elementClassAttribute: 'small form-control'
+          elementErrorClassAttribute: error
+          timeSelectorClassAttribute: mini
+          timeSelectorHourLabel: ''
+          timeSelectorMinuteLabel: ''
+          dateFormat: Y-m-d
+          # consider using a different file if the backend is behind an http basic auth
+          datePickerInitializationJavaScriptFile: EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js
+          enableDatePicker: true
+          displayTimeSelector: false
+        variants:
+          -
+            identifier: template-variant
+            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+            properties:
+              containerClassAttribute: 'form-element form-element-datepicker form-inline mb-3'
+              elementClassAttribute: form-control
+              elementErrorClassAttribute: ~
+              labelClassAttribute: form-label
+    formEditor:
+      formEditorPartials:
+        FormElement-DatePicker: Stage/SimpleTemplate

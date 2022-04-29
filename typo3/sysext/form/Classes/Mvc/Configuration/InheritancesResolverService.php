@@ -26,7 +26,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
  * Resolve declared inheritances within a configuration array
  *
  * Basic concept:
- * - Take a large YAML config and replace the key '__inheritance' by the referenced YAML partial (of the same config file)
+ * - Take a large YAML config and replace the key '__inheritances' by the referenced YAML partial (of the same config file)
  * - Maybe also override some keys of the referenced partial
  * - Avoid endless loop by reference cycles
  *
@@ -39,7 +39,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
  *    key2: value2
  *    key3: value3
  *  part2:
- *    __inheritance:
+ *    __inheritances:
  *      10: Form.part1
  *    key2: another_value
  *
@@ -222,6 +222,7 @@ class InheritancesResolverService
         ksort($inheritances);
         $inheritedConfigurations = [];
         foreach ($inheritances as $inheritancePath) {
+            $inheritancePath = $this->removeVendorNamespaceFromInheritancePath($inheritancePath);
             $this->throwExceptionIfCycleInheritances($inheritancePath, $inheritancePath);
             $inheritedConfiguration = $this->getValueByPath($this->referenceConfiguration, $inheritancePath);
 
@@ -285,12 +286,14 @@ class InheritancesResolverService
 
             if (is_array($inheritances)) {
                 foreach ($inheritances as $inheritancePath) {
+                    $inheritancePath = $this->removeVendorNamespaceFromInheritancePath($inheritancePath);
                     $configuration = $this->getValueByPath($this->referenceConfiguration, $inheritancePath);
 
                     if (isset($configuration[self::INHERITANCE_OPERATOR])) {
                         $_inheritances = $this->getValueByPath($this->referenceConfiguration, $inheritancePath . '.' . self::INHERITANCE_OPERATOR);
 
                         foreach ($_inheritances as $_inheritancePath) {
+                            $_inheritancePath = $this->removeVendorNamespaceFromInheritancePath($_inheritancePath);
                             if (str_starts_with($pathToCheck, $_inheritancePath)) {
                                 throw new CycleInheritancesException(
                                     $pathToCheck . ' has cycle inheritances',
@@ -357,5 +360,12 @@ class InheritancesResolverService
         } catch (MissingArrayPathException $exception) {
             return null;
         }
+    }
+
+    protected function removeVendorNamespaceFromInheritancePath(string $inheritancePath): string
+    {
+        return str_starts_with($inheritancePath, 'TYPO3.CMS.Form.')
+               ? substr($inheritancePath, 15)
+               : $inheritancePath;
     }
 }

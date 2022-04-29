@@ -50,121 +50,118 @@ imports:
     - { resource: './Finishers/Redirect.yaml' }
     - { resource: './Finishers/SaveToDatabase.yaml' }
 
-TYPO3:
-  CMS:
-    Form:
-      persistenceManager:
-        allowedFileMounts:
-          10: '1:/form_definitions/'
-        allowSaveToExtensionPaths: false
-        allowDeleteFromExtensionPaths: false
-        sortByKeys:
-          - name
-          - fileUid
-        sortAscending: true
+persistenceManager:
+  allowedFileMounts:
+    10: '1:/form_definitions/'
+  allowSaveToExtensionPaths: false
+  allowDeleteFromExtensionPaths: false
+  sortByKeys:
+    - name
+    - fileUid
+  sortAscending: true
 
-      prototypes:
-        standard:
-          formEditor:
-            translationFiles:
-              10: 'EXT:form/Resources/Private/Language/Database.xlf'
-            dynamicJavaScriptModules:
-              app: '@typo3/form/backend/form-editor.js'
-              mediator: '@typo3/form/backend/form-editor/mediator.js'
-              viewModel: '@typo3/form/backend/form-editor/view-model.js'
-            addInlineSettings: {  }
-            maximumUndoSteps: 10
-            stylesheets:
-              200: 'EXT:form/Resources/Public/Css/form.css'
-            formEditorFluidConfiguration:
-              templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
-              partialRootPaths:
-                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
-              layoutRootPaths:
-                10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
+prototypes:
+  standard:
+    formEditor:
+      translationFiles:
+        10: 'EXT:form/Resources/Private/Language/Database.xlf'
+      dynamicJavaScriptModules:
+        app: '@typo3/form/backend/form-editor.js'
+        mediator: '@typo3/form/backend/form-editor/mediator.js'
+        viewModel: '@typo3/form/backend/form-editor/view-model.js'
+      addInlineSettings: {  }
+      maximumUndoSteps: 10
+      stylesheets:
+        200: 'EXT:form/Resources/Public/Css/form.css'
+      formEditorFluidConfiguration:
+        templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+        partialRootPaths:
+          10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
+        layoutRootPaths:
+          10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
 
-            formEditorPartials:
-              FormElement-_ElementToolbar: Stage/_ElementToolbar
-              FormElement-_UnknownElement: Stage/_UnknownElement
-              Modal-InsertElements: Modals/InsertElements
-              Modal-InsertPages: Modals/InsertPages
-              Modal-ValidationErrors: Modals/ValidationErrors
-              Inspector-FormElementHeaderEditor: Inspector/FormElementHeaderEditor
-              Inspector-CollectionElementHeaderEditor: Inspector/CollectionElementHeaderEditor
-              Inspector-TextEditor: Inspector/TextEditor
-              Inspector-PropertyGridEditor: Inspector/PropertyGridEditor
-              Inspector-SingleSelectEditor: Inspector/SingleSelectEditor
-              Inspector-MultiSelectEditor: Inspector/MultiSelectEditor
-              Inspector-GridColumnViewPortConfigurationEditor: Inspector/GridColumnViewPortConfigurationEditor
-              Inspector-TextareaEditor: Inspector/TextareaEditor
-              Inspector-RemoveElementEditor: Inspector/RemoveElementEditor
-              Inspector-FinishersEditor: Inspector/FinishersEditor
-              Inspector-ValidatorsEditor: Inspector/ValidatorsEditor
-              Inspector-RequiredValidatorEditor: Inspector/RequiredValidatorEditor
-              Inspector-CheckboxEditor: Inspector/CheckboxEditor
-              Inspector-ValidationErrorMessageEditor: Inspector/ValidationErrorMessageEditor
-              Inspector-Typo3WinBrowserEditor: Inspector/Typo3WinBrowserEditor
-              Inspector-MaximumFileSizeEditor: Inspector/MaximumFileSizeEditor
+      formEditorPartials:
+        FormElement-_ElementToolbar: Stage/_ElementToolbar
+        FormElement-_UnknownElement: Stage/_UnknownElement
+        Modal-InsertElements: Modals/InsertElements
+        Modal-InsertPages: Modals/InsertPages
+        Modal-ValidationErrors: Modals/ValidationErrors
+        Inspector-FormElementHeaderEditor: Inspector/FormElementHeaderEditor
+        Inspector-CollectionElementHeaderEditor: Inspector/CollectionElementHeaderEditor
+        Inspector-TextEditor: Inspector/TextEditor
+        Inspector-PropertyGridEditor: Inspector/PropertyGridEditor
+        Inspector-SingleSelectEditor: Inspector/SingleSelectEditor
+        Inspector-MultiSelectEditor: Inspector/MultiSelectEditor
+        Inspector-GridColumnViewPortConfigurationEditor: Inspector/GridColumnViewPortConfigurationEditor
+        Inspector-TextareaEditor: Inspector/TextareaEditor
+        Inspector-RemoveElementEditor: Inspector/RemoveElementEditor
+        Inspector-FinishersEditor: Inspector/FinishersEditor
+        Inspector-ValidatorsEditor: Inspector/ValidatorsEditor
+        Inspector-RequiredValidatorEditor: Inspector/RequiredValidatorEditor
+        Inspector-CheckboxEditor: Inspector/CheckboxEditor
+        Inspector-ValidationErrorMessageEditor: Inspector/ValidationErrorMessageEditor
+        Inspector-Typo3WinBrowserEditor: Inspector/Typo3WinBrowserEditor
+        Inspector-MaximumFileSizeEditor: Inspector/MaximumFileSizeEditor
 
-            formElementPropertyValidatorsDefinition:
-              NotEmpty:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label
-              Integer:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.Integer.label
-              NaiveEmail:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label
-              NaiveEmailOrEmpty:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label
-              FormElementIdentifierWithinCurlyBracesInclusive:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label
-              FormElementIdentifierWithinCurlyBracesExclusive:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label
-              FileSize:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FileSize.label
-              RFC3339FullDate:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
-              RegularExpressionPattern:
-                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
+      formElementPropertyValidatorsDefinition:
+        NotEmpty:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label
+        Integer:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.Integer.label
+        NaiveEmail:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label
+        NaiveEmailOrEmpty:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label
+        FormElementIdentifierWithinCurlyBracesInclusive:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label
+        FormElementIdentifierWithinCurlyBracesExclusive:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label
+        FileSize:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.FileSize.label
+        RFC3339FullDate:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
+        RegularExpressionPattern:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
-            formElementGroups:
-              input:
-                label: formEditor.formElementGroups.input.label
-              html5:
-                label: formEditor.formElementGroups.html5.label
-              select:
-                label: formEditor.formElementGroups.select.label
-              custom:
-                label: formEditor.formElementGroups.custom.label
-              container:
-                label: formEditor.formElementGroups.container.label
-              page:
-                label: formEditor.formElementGroups.page.label
+      formElementGroups:
+        input:
+          label: formEditor.formElementGroups.input.label
+        html5:
+          label: formEditor.formElementGroups.html5.label
+        select:
+          label: formEditor.formElementGroups.select.label
+        custom:
+          label: formEditor.formElementGroups.custom.label
+        container:
+          label: formEditor.formElementGroups.container.label
+        page:
+          label: formEditor.formElementGroups.page.label
 
-          formEngine:
-            translationFiles:
-              10: 'EXT:form/Resources/Private/Language/Database.xlf'
+    formEngine:
+      translationFiles:
+        10: 'EXT:form/Resources/Private/Language/Database.xlf'
 
-      formManager:
-        dynamicJavaScriptModules:
-          app: '@typo3/form/backend/form-manager.js'
-          viewModel: '@typo3/form/backend/form-manager/view-model.js'
-        stylesheets:
-          100: 'EXT:form/Resources/Public/Css/form.css'
-        translationFiles:
-          10: 'EXT:form/Resources/Private/Language/Database.xlf'
-        javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
-        selectablePrototypesConfiguration:
-          100:
-            identifier: standard
-            label: formManager.selectablePrototypesConfiguration.standard.label
-            newFormTemplates:
-              100:
-                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
-                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
-              200:
-                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
-                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
-        controller:
-          deleteAction:
-            errorTitle: formManagerController.deleteAction.error.title
-            errorMessage: formManagerController.deleteAction.error.body
+formManager:
+  dynamicJavaScriptModules:
+    app: '@typo3/form/backend/form-manager.js'
+    viewModel: '@typo3/form/backend/form-manager/view-model.js'
+  stylesheets:
+    100: 'EXT:form/Resources/Public/Css/form.css'
+  translationFiles:
+    10: 'EXT:form/Resources/Private/Language/Database.xlf'
+  javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
+  selectablePrototypesConfiguration:
+    100:
+      identifier: standard
+      label: formManager.selectablePrototypesConfiguration.standard.label
+      newFormTemplates:
+        100:
+          templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
+          label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+        200:
+          templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
+          label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+  controller:
+    deleteAction:
+      errorTitle: formManagerController.deleteAction.error.title
+      errorMessage: formManagerController.deleteAction.error.body

@@ -1,52 +1,49 @@
-TYPO3:
-  CMS:
-    Form:
-      prototypes:
-        standard:
-          formElementsDefinition:
-            ContentElement:
-              formEditor:
-                editors:
-                  100:
-                    identifier: header
-                    templateName: Inspector-FormElementHeaderEditor
-                  300:
-                    identifier: contentElement
-                    templateName: Inspector-Typo3WinBrowserEditor
-                    label: formEditor.elements.ContentElement.editor.contentElement.label
-                    buttonLabel: formEditor.elements.ContentElement.editor.contentElement.buttonLabel
-                    browsableType: tt_content
-                    iconIdentifier: mimetypes-x-content-text
-                    propertyPath: properties.contentElementUid
-                    propertyValidatorsMode: OR
-                    propertyValidators:
-                      10: Integer
-                      20: FormElementIdentifierWithinCurlyBracesExclusive
-                  9999:
-                    identifier: removeButton
-                    templateName: Inspector-RemoveElementEditor
-                predefinedDefaults:
-                  label: formEditor.elements.ContentElement.label
-                  properties:
-                    contentElementUid: ''
-                label: formEditor.elements.ContentElement.label
-                group: custom
-                groupSorting: 700
-                iconIdentifier: form-content-element
-              implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
-              properties:
-                contentElementUid: ''
-              variants:
-                -
-                  identifier: hide-1
-                  renderingOptions:
-                    enabled: false
-                  condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
-                -
-                  identifier: template-variant
-                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-                  properties:
-                    outerContainerClassAttribute: clearfix
-          formEditor:
-            formEditorPartials:
-              FormElement-ContentElement: Stage/ContentElement
+prototypes:
+  standard:
+    formElementsDefinition:
+      ContentElement:
+        formEditor:
+          editors:
+            100:
+              identifier: header
+              templateName: Inspector-FormElementHeaderEditor
+            300:
+              identifier: contentElement
+              templateName: Inspector-Typo3WinBrowserEditor
+              label: formEditor.elements.ContentElement.editor.contentElement.label
+              buttonLabel: formEditor.elements.ContentElement.editor.contentElement.buttonLabel
+              browsableType: tt_content
+              iconIdentifier: mimetypes-x-content-text
+              propertyPath: properties.contentElementUid
+              propertyValidatorsMode: OR
+              propertyValidators:
+                10: Integer
+                20: FormElementIdentifierWithinCurlyBracesExclusive
+            9999:
+              identifier: removeButton
+              templateName: Inspector-RemoveElementEditor
+          predefinedDefaults:
+            label: formEditor.elements.ContentElement.label
+            properties:
+              contentElementUid: ''
+          label: formEditor.elements.ContentElement.label
+          group: custom
+          groupSorting: 700
+          iconIdentifier: form-content-element
+        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+        properties:
+          contentElementUid: ''
+        variants:
+          -
+            identifier: hide-1
+            renderingOptions:
+              enabled: false
+            condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
+          -
+            identifier: template-variant
+            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+            properties:
+              outerContainerClassAttribute: clearfix
+    formEditor:
+      formEditorPartials:
+        FormElement-ContentElement: Stage/ContentElement

@@ -74,7 +74,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
     /**
@@ -115,7 +115,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
     /**
@@ -148,7 +148,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
     /**
@@ -213,7 +213,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
     /**
@@ -257,7 +257,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
     /**
@@ -350,7 +350,96 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
+    }
+
+    /**
+     * @test
+     */
+    public function getMergedConfigurationResolvesInheritancesWithAndWithoutVendorNamespacePrefix(): void
+    {
+        $input = [
+            'mixin01' => [
+                'key01' => 'value01',
+                'key02' => 'value02',
+            ],
+            'mixin02' => [
+                '__inheritances' => [
+                    10 => 'mixin01',
+                ],
+            ],
+            'mixin03' => [
+                'key03' => 'value03',
+            ],
+
+            'klaus01' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.mixin01',
+                ],
+                'key01' => 'value01 override 01',
+            ],
+            'klaus02' => [
+                '__inheritances' => [
+                    10 => 'klaus01',
+                    20 => 'TYPO3.CMS.Form.mixin03',
+                ],
+                'key01' => 'value01 override 02',
+                'key02' => [
+                    'horst01' => 'gerda01',
+                ],
+                'key03' => [
+                    '__inheritances' => [
+                        10 => 'mixin02',
+                    ],
+                    'key02' => null,
+                ],
+            ],
+            'klaus03' => [
+                '__inheritances' => [
+                    10 => 'klaus02',
+                ],
+            ],
+        ];
+
+        $expected = [
+            'mixin01' => [
+                'key01' => 'value01',
+                'key02' => 'value02',
+            ],
+            'mixin02' => [
+                'key01' => 'value01',
+                'key02' => 'value02',
+            ],
+            'mixin03' => [
+                'key03' => 'value03',
+            ],
+            'klaus01' => [
+                'key01' => 'value01 override 01',
+                'key02' => 'value02',
+            ],
+            'klaus02' => [
+                'key01' => 'value01 override 02',
+                'key02' => [
+                    'horst01' => 'gerda01',
+                ],
+                'key03' => [
+                    'key01' => 'value01',
+                    'key02' => null,
+                ],
+            ],
+            'klaus03' => [
+                'key01' => 'value01 override 02',
+                'key02' => [
+                    'horst01' => 'gerda01',
+                ],
+                'key03' => [
+                    'key01' => 'value01',
+                    'key02' => null,
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
     /**
@@ -359,20 +448,14 @@ class InheritancesResolverServiceTest extends UnitTestCase
     public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnSameLevelIsFound(): void
     {
         $input = [
-            'TYPO3' => [
-                'CMS' => [
-                    'Form' => [
-                        'someKey' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.anotherKey',
-                            ],
-                        ],
-                        'anotherKey' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.someKey',
-                            ],
-                        ],
-                    ],
+            'someKey' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.anotherKey',
+                ],
+            ],
+            'anotherKey' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.someKey',
                 ],
             ],
         ];
@@ -380,7 +463,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
         $this->expectException(CycleInheritancesException::class);
         $this->expectExceptionCode(1474900797);
 
-        $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input);
+        $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration();
     }
 
     /**
@@ -389,30 +472,24 @@ class InheritancesResolverServiceTest extends UnitTestCase
     public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnSameLevelWithGapIsFound(): void
     {
         $input = [
-            'TYPO3' => [
-                'CMS' => [
-                    'Form' => [
-                        'klaus1' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.klaus2',
-                            ],
-                        ],
-                        'klaus2' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.mixin1',
-                            ],
-                        ],
-                        'mixin1' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.mixin2',
-                            ],
-                        ],
-                        'mixin2' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.klaus2',
-                            ],
-                        ],
-                    ],
+            'klaus1' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.klaus2',
+                ],
+            ],
+            'klaus2' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.mixin1',
+                ],
+            ],
+            'mixin1' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.mixin2',
+                ],
+            ],
+            'mixin2' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.klaus2',
                 ],
             ],
         ];
@@ -420,7 +497,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
         $this->expectException(CycleInheritancesException::class);
         $this->expectExceptionCode(1474900799);
 
-        $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input);
+        $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration();
     }
 
     /**
@@ -429,45 +506,39 @@ class InheritancesResolverServiceTest extends UnitTestCase
     public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnHigherLevelIsFound(): void
     {
         $input = [
-            'TYPO3' => [
-                'CMS' => [
-                    'Form' => [
-                        'klaus1' => [
-                            'key01' => 'value',
-                            'key02' => [
-                                '__inheritances' => [
-                                    10 => 'TYPO3.CMS.Form.mixin01',
-                                ],
-                            ],
-                        ],
-                        'klaus2' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.klaus1',
-                            ],
-                            'key02' => [
-                                '__inheritances' => [
-                                    10 => 'TYPO3.CMS.Form.mixin01',
-                                    20 => 'TYPO3.CMS.Form.mixin02',
-                                ],
-                            ],
-                        ],
-                        'mixin01' => [
-                            'liselotte01' => 'value',
-                        ],
-                        'mixin02' => [
-                            '__inheritances' => [
-                                10 => 'TYPO3.CMS.Form.klaus2',
-                            ],
-                            'liselotte02' => 'value',
-                        ],
+            'klaus1' => [
+                'key01' => 'value',
+                'key02' => [
+                    '__inheritances' => [
+                        10 => 'TYPO3.CMS.Form.mixin01',
                     ],
                 ],
+            ],
+            'klaus2' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.klaus1',
+                ],
+                'key02' => [
+                    '__inheritances' => [
+                        10 => 'TYPO3.CMS.Form.mixin01',
+                        20 => 'TYPO3.CMS.Form.mixin02',
+                    ],
+                ],
+            ],
+            'mixin01' => [
+                'liselotte01' => 'value',
+            ],
+            'mixin02' => [
+                '__inheritances' => [
+                    10 => 'TYPO3.CMS.Form.klaus2',
+                ],
+                'liselotte02' => 'value',
             ],
         ];
 
         $this->expectException(CycleInheritancesException::class);
         $this->expectExceptionCode(1474900797);
 
-        $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input);
+        $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration();
     }
 }
