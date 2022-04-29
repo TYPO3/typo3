@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes:
+.. _prototypes:
 
 ============
 [prototypes]
 ============
 
 
-.. _typo3.cms.form.prototypes-properties:
+.. _prototypes-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.*:
+.. _prototypes.*:
 
 prototypes
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes
+      prototypes
 
 :aspect:`Data type`
       array
@@ -46,13 +46,13 @@ prototypes
       Array which defines the available prototypes. Every key within this array is called the ``<prototypeIdentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>:
+.. _prototypes.<prototypeidentifier>:
 
 <prototypeIdentifier>
 ---------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>
+      prototypes.<prototypeIdentifier>
 
 :aspect:`Data type`
       array
@@ -64,7 +64,7 @@ prototypes
       Yes
 
 :aspect:`Related options`
-      - :ref:`"TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.*.identifier"<typo3.cms.form.formmanager.selectableprototypesconfiguration.*.identifier>`
+      - :ref:`"formManager.selectablePrototypesConfiguration.*.identifier"<formmanager.selectableprototypesconfiguration.*.identifier>`
 
 :aspect:`Default value`
       .. code-block:: yaml

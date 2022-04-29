@@ -3,7 +3,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts
 -----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts
 
 :aspect:`Data type`
       array
@@ -43,7 +43,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts
                    classPattern: 'col-lg-{@numbersOfColumnsToUse}'
 
 :aspect:`Related options`
-      - :ref:`"properties.gridColumnClassAutoConfiguration"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
+      - :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
 
 :aspect:`Description`
       Each configuration key within `properties.gridColumnClassAutoConfiguration.viewPorts` represents an viewport of the CSS grid system (bootstrap by default).

@@ -3,7 +3,7 @@ properties.imageLinkMaxWidth
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageLinkMaxWidth
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageLinkMaxWidth
 
 :aspect:`Data type`
       int

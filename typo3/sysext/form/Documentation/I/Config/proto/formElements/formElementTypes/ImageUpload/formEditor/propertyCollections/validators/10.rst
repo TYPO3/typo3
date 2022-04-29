@@ -4,7 +4,7 @@ formEditor.propertyCollections.validators.10
 --------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.propertyCollections.validators.10
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.propertyCollections.validators.10
 
 :aspect:`Data type`
       array

@@ -3,7 +3,7 @@ formEditor.propertyCollections.finishers.10.identifier
 ------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.10.identifier
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.10.identifier
 
 :aspect:`Data type`
       string
@@ -28,7 +28,7 @@ formEditor.propertyCollections.finishers.10.identifier
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<finisherIdentifier>"<typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
+      - :ref:`"\<finisherIdentifier>"<prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
 
 :aspect:`Description`
       Identifies the finisher which should be attached to the form definition. Must be equal to a existing ``<finisherIdentifier>``.

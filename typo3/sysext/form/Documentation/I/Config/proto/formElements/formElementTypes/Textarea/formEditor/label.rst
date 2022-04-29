@@ -3,7 +3,7 @@ formEditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.label
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.label
 
 :aspect:`Data type`
       string

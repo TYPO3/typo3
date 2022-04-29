@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange:
 
 ===========
 [DateRange]
 ===========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -23,19 +23,19 @@ Validation error codes
 - Error message: `You must select a date after %s.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.implementationClassName
 
 :aspect:`Data type`
       string
@@ -61,13 +61,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.minimum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.minimum:
 
 options.format
 --------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.format
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.format
 
 :aspect:`Data type`
       string
@@ -90,13 +90,13 @@ options.format
       The format of the date.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -124,13 +124,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.label
 
 :aspect:`Data type`
       string
@@ -158,13 +158,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.predefineddefaults:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

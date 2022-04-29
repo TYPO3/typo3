@@ -3,7 +3,7 @@ formEditor.inspectorEditorFormElementSelectorNoElements
 -------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.inspectorEditorFormElementSelectorNoElements
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.inspectorEditorFormElementSelectorNoElements
 
 :aspect:`Data type`
       string

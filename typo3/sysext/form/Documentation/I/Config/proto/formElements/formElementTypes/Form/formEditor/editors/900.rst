@@ -4,10 +4,10 @@ formEditor.editors.900
 ----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.editors.900
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.editors.900
 
 :aspect:`Data type`
-      array/ :ref:`[FinishersEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.finisherseditor>`
+      array/ :ref:`[FinishersEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.finisherseditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

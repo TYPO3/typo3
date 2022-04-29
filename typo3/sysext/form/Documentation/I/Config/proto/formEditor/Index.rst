@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor:
+.. _prototypes.<prototypeidentifier>.formeditor:
 
 ============
 [formEditor]
 ============
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor-properties:
+.. _prototypes.<prototypeidentifier>.formeditor-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.translationfiles:
+.. _prototypes.<prototypeidentifier>.formeditor.translationfiles:
 
 translationFiles
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.translationFiles
+      prototypes.<prototypeIdentifier>.formeditor.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -46,13 +46,13 @@ translationFiles
       Filesystem path(s) to translation files which should be searched for form editor translations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.app:
+.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.app:
 
 dynamicJavaScriptModules.app
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.app
+      prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.app
 
 :aspect:`Data type`
       string
@@ -81,13 +81,13 @@ dynamicJavaScriptModules.app
       ES6 module specifier for the form editor JavaScript app.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.mediator:
+.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.mediator:
 
 dynamicJavaScriptModules.mediator
 ---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.mediator
+      prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.mediator
 
 :aspect:`Data type`
       string
@@ -117,13 +117,13 @@ dynamicJavaScriptModules.mediator
       ES6 module specifier for the form editor JavaScript mediator.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.viewmodel:
+.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.viewmodel:
 
 dynamicJavaScriptModules.viewModel
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.viewModel
+      prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.viewModel
 
 :aspect:`Data type`
       string
@@ -153,13 +153,13 @@ dynamicJavaScriptModules.viewModel
       ES6 module specifier for the form editor JavaScript view model.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.additionalviewmodelmodules:
+.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.additionalviewmodelmodules:
 
 dynamicJavaScriptModules.additionalViewModelModules
 ---------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.additionalViewModelModules
+      prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.additionalViewModelModules
 
 :aspect:`Data type`
       array
@@ -181,13 +181,13 @@ dynamicJavaScriptModules.additionalViewModelModules
       Array with ES6 module specifiers for custom JavaScript modules.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.addinlinesettings:
+.. _prototypes.<prototypeidentifier>.formeditor.addinlinesettings:
 
 addInlineSettings
 -----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.addInlineSettings
+      prototypes.<prototypeIdentifier>.formeditor.addInlineSettings
 
 :aspect:`Data type`
       array
@@ -208,13 +208,13 @@ addInlineSettings
       Adds Javascript Inline Setting. This will occur in TYPO3.settings - object.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.maximumundosteps:
+.. _prototypes.<prototypeidentifier>.formeditor.maximumundosteps:
 
 maximumUndoSteps
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.maximumUndoSteps
+      prototypes.<prototypeIdentifier>.formeditor.maximumUndoSteps
 
 :aspect:`Data type`
       int
@@ -240,13 +240,13 @@ maximumUndoSteps
       Define the maximum possible undo steps within the form editor.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.stylesheets:
+.. _prototypes.<prototypeidentifier>.formeditor.stylesheets:
 
 stylesheets
 -----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.stylesheets
+      prototypes.<prototypeIdentifier>.formeditor.stylesheets
 
 :aspect:`Data type`
       array
@@ -273,13 +273,13 @@ stylesheets
       The CSS files to be used by the ``form editor``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration:
+.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration:
 
 formEditorFluidConfiguration
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration
+      prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration
 
 :aspect:`Data type`
       array
@@ -311,13 +311,13 @@ formEditorFluidConfiguration
       Basic fluid template search path configurations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.templatepathandfilename:
+.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.templatepathandfilename:
 
 formEditorFluidConfiguration.templatePathAndFilename
 ----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.templatePathAndFilename
+      prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.templatePathAndFilename
 
 :aspect:`Data type`
       string
@@ -348,13 +348,13 @@ formEditorFluidConfiguration.templatePathAndFilename
       Internal setting. Template which render the inline HTML templates which are used by the form editor JavaScript.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths:
+.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths:
 
 formEditorFluidConfiguration.partialRootPaths
 ---------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths
+      prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths
 
 :aspect:`Data type`
       array
@@ -386,13 +386,13 @@ formEditorFluidConfiguration.partialRootPaths
       Array with fluid partial search paths for the inline HTML templates which are used by the form editor JavaScript.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.layoutrootpaths:
+.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.layoutrootpaths:
 
 formEditorFluidConfiguration.layoutRootPaths
 --------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.layoutRootPaths
+      prototypes.<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.layoutRootPaths
 
 :aspect:`Data type`
       array
@@ -424,13 +424,13 @@ formEditorFluidConfiguration.layoutRootPaths
       Internal setting.  Array with fluid layout search paths.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formeditorpartials:
+.. _prototypes.<prototypeidentifier>.formeditor.formeditorpartials:
 
 formEditorPartials
 ------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formEditorPartials
+      prototypes.<prototypeIdentifier>.formeditor.formEditorPartials
 
 :aspect:`Data type`
       array
@@ -496,21 +496,21 @@ formEditorPartials
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
       - :ref:`"Common Abstract view formelement templates"<apireference-formeditor-stage-commonabstractformelementtemplates>`
-      - :ref:`"available inspector editors"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formEditor.editors-availableinspectoreditors>`
+      - :ref:`"available inspector editors"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formEditor.editors-availableinspectoreditors>`
       - :ref:`"view/inspector/editor/insert/perform"<apireference-formeditor-basicjavascriptconcepts-events-view-inspector-editor-insert-perform>`
 
 :aspect:`Description`
-      Array with mappings for the inline HTML templates. The keys are identifiers which could be used within the JavaScript code. The values are partial paths, relative to :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths"<typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths>`.
+      Array with mappings for the inline HTML templates. The keys are identifiers which could be used within the JavaScript code. The values are partial paths, relative to :ref:`"prototypes.\<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths"<prototypes.\<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths>`.
       The partials content will be rendered as inline HTML. This inline HTML templates can be identified and used by such a key (e.g. "Inspector-TextEditor") within the JavaScript code.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition:
+.. _prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition:
 
 formElementPropertyValidatorsDefinition
 ---------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formElementPropertyValidatorsDefinition
+      prototypes.<prototypeIdentifier>.formeditor.formElementPropertyValidatorsDefinition
 
 :aspect:`Data type`
       array
@@ -548,8 +548,8 @@ formElementPropertyValidatorsDefinition
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
 :aspect:`Related options`
-      - :ref:`"[TextEditor] propertyValidators"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
-      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
+      - :ref:`"[TextEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
+      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
 
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
@@ -561,13 +561,13 @@ formElementPropertyValidatorsDefinition
       for this validator. Every array key within ``formElementPropertyValidatorsDefinition`` must be equal to such a identifier.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition.<formelementpropertyvalidatoridentifier>.errormessage:
+.. _prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition.<formelementpropertyvalidatoridentifier>.errormessage:
 
 formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>.errorMessage
 ---------------------------------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>.errorMessage
+      prototypes.<prototypeIdentifier>.formeditor.formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>.errorMessage
 
 :aspect:`Data type`
       string
@@ -605,8 +605,8 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
 :aspect:`Related options`
-      - :ref:`"[TextEditor] propertyValidators"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
-      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
+      - :ref:`"[TextEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
+      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
 
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
@@ -615,13 +615,13 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
       The error message for a inspector editor property validator which is shown if the validation fails.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formelementgroups:
+.. _prototypes.<prototypeidentifier>.formeditor.formelementgroups:
 
 formElementGroups
 -----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formElementGroups
+      prototypes.<prototypeIdentifier>.formeditor.formElementGroups
 
 :aspect:`Data type`
       array
@@ -653,30 +653,30 @@ formElementGroups
                label: formEditor.formElementGroups.page.label
 
 :aspect:`Related options`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.advancedpassword.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.ContentElement.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.contentelement.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Date.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.date.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Email.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.email.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Fieldset.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.fieldset.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.FileUpload.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.fileupload.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.gridrow.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Hidden.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.hidden.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.multicheckbox.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.MultiSelect.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Number.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.number.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Page.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.page.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Password.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.password.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.SingleSelect.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.singleselect.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.StaticText.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.statictext.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.telephone.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Text.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.text.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Url.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.url.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.advancedpassword.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.ContentElement.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.contentelement.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Date.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.date.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Email.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.email.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Fieldset.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.fieldset.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.FileUpload.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.fileupload.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.gridrow.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Hidden.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.hidden.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.multicheckbox.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.MultiSelect.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Number.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.number.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Page.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.page.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Password.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.password.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.SingleSelect.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.singleselect.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.StaticText.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.statictext.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.telephone.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Text.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.text.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.group>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Url.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.url.formeditor.group>`
 
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
@@ -687,13 +687,13 @@ formElementGroups
       must be equal to an array key within ``formElementGroups``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formelementgroups.<formelementgroupidentifier>.label:
+.. _prototypes.<prototypeidentifier>.formeditor.formelementgroups.<formelementgroupidentifier>.label:
 
 formElementGroups.<formElementGroupIdentifier>.label
 ----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.formElementGroups.<formElementGroupIdentifier>.label
+      prototypes.<prototypeIdentifier>.formeditor.formElementGroups.<formElementGroupIdentifier>.label
 
 :aspect:`Data type`
       string

@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.emailaddress:
+.. _prototypes.validatorsdefinition.emailaddress:
 
 ==============
 [EmailAddress]
 ==============
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,19 +17,19 @@ Validation error codes
 - Error message: `The given subject was not a valid email address.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.EmailAddress.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.EmailAddress.implementationClassName
 
 :aspect:`Data type`
       string
@@ -57,13 +57,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.EmailAddress.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.EmailAddress.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -91,13 +91,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.EmailAddress.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.EmailAddress.formEditor.label
 
 :aspect:`Data type`
       string

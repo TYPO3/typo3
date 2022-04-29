@@ -3,7 +3,7 @@ formEditor._isCompositeFormElement
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Page.formEditor._isCompositeFormElement
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Page.formEditor._isCompositeFormElement
 
 :aspect:`Data type`
       bool

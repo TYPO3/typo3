@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.redirect:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.redirect:
 
 ==========
 [Redirect]
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinitionredirect-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinitionredirect-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.implementationClassName
 
 :aspect:`Data type`
       string
@@ -45,13 +45,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.pageuid:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.pageuid:
 
 options.pageUid
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.pageUid
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.pageUid
 
 :aspect:`Data type`
       int
@@ -73,13 +73,13 @@ options.pageUid
       Redirect to this page uid.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.additionalparameters:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.additionalparameters:
 
 options.additionalParameters
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.additionalParameters
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.additionalParameters
 
 :aspect:`Data type`
       string
@@ -101,13 +101,13 @@ options.additionalParameters
       Additional parameters which should be used on the target page.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.fragment:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.fragment:
 
 options.fragment
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.fragment
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.fragment
 
 :aspect:`Data type`
       string
@@ -126,17 +126,17 @@ options.fragment
       - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Add a fragment (e.g. `#c9` or `#foo`) to the redirect link.
-      The `#' character can be omitted.
+      Add a fragment (e.g. :html:`#c9` or :html:`#foo`) to the redirect link.
+      The :html:`#` character can be omitted.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.delay:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.delay:
 
 options.delay
 -------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.delay
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.delay
 
 :aspect:`Data type`
       int
@@ -158,13 +158,13 @@ options.delay
       The redirect delay in seconds.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.statuscode:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.statuscode:
 
 options.statusCode
 ------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.statusCode
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.statusCode
 
 :aspect:`Data type`
       int
@@ -186,13 +186,13 @@ options.statusCode
       The HTTP status code for the redirect. Default is "303 See Other".
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.translation.translationfiles:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.translation.translationFiles
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -217,13 +217,13 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -256,13 +256,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.formEditor.label
 
 :aspect:`Data type`
       string
@@ -295,13 +295,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array
@@ -334,13 +334,13 @@ formeditor.predefinedDefaults
       .. include:: ../properties/predefinedDefaults.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.label:
 
 FormEngine.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.FormEngine.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.FormEngine.label
 
 :aspect:`Data type`
       array
@@ -367,13 +367,13 @@ FormEngine.label
       .. include:: ../properties/formEngine/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.elements:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.elements:
 
 FormEngine.elements
 -------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.FormEngine.elements
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.FormEngine.elements
 
 :aspect:`Data type`
       array

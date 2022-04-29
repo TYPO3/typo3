@@ -3,7 +3,7 @@ properties.elementDescription
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.elementDescription
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.elementDescription
 
 :aspect:`Data type`
       string

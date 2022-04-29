@@ -24,8 +24,8 @@ globally and valid for the whole ``form definition`` . While adding the form
 to a specific page, the backend editor can define a different redirect target. This
 setting is only valid for the page containing the plugin.
 
-Read more about changing the :ref:`general<typo3.cms.form.prototypes.\<prototypeidentifier>.formengine>`
-and :ref:`aspect-specific form plugin configuration<typo3.cms.form.prototypes.\<prototypeIdentifier>.finishersdefinition.\<finisheridentifier>.formengine>`.
+Read more about changing the :ref:`general<prototypes.\<prototypeidentifier>.formengine>`
+and :ref:`aspect-specific form plugin configuration<prototypes.\<prototypeIdentifier>.finishersdefinition.\<finisheridentifier>.formengine>`.
 
 
 .. _concepts-formplugin-exclude-override:
@@ -43,19 +43,16 @@ by this.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             finishersDefinition:
-               EmailToReceiver:
-                 FormEngine:
-                   elements:
-                     senderAddress: ~
-                     senderName: ~
-                     replyToRecipients: ~
-                     translation: ~
+   prototypes:
+     standard:
+       finishersDefinition:
+         EmailToReceiver:
+           FormEngine:
+             elements:
+               senderAddress: ~
+               senderName: ~
+               replyToRecipients: ~
+               translation: ~
 
 
 .. _concepts-formplugin-translation-formengine:
@@ -68,28 +65,22 @@ translated:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             finishersDefinition:
-               <finisherIdentifier>
-                 formEngine:
+   prototypes:
+     standard:
+       finishersDefinition:
+         <finisherIdentifier>
+           formEngine:
 
 The translation files of the ``form plugin`` are loaded as follows:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEngine:
-               translationFiles:
-                 # custom translation file
-                 20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+   prototypes:
+     standard:
+       formEngine:
+         translationFiles:
+           # custom translation file
+           20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value

@@ -3,7 +3,7 @@ formEditor.modalCloseConfirmButton
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseConfirmButton
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseConfirmButton
 
 :aspect:`Data type`
       string

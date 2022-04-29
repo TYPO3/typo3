@@ -3,7 +3,7 @@ properties.imageMaxWidth
 ------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageMaxWidth
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageMaxWidth
 
 :aspect:`Data type`
       int

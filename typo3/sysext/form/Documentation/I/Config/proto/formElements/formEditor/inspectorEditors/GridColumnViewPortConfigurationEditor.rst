@@ -1,13 +1,13 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor:
 
 =======================================
 [GridColumnViewPortConfigurationEditor]
 =======================================
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor-introduction:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor-introduction:
 
 Introduction
 ============
@@ -15,12 +15,12 @@ Introduction
 Shows a viewport selector as buttons and an input field. With this editor, you can define how many columns per viewPort an form element should occupy.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor-properties:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templateName-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templateName-gridcolumnviewportconfigurationeditor:
 
 templateName
 ------------
@@ -35,7 +35,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-GridColumnViewPortConfigurationEditor
@@ -47,15 +47,15 @@ templateName
       .. include:: properties/TemplateName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-gridcolumnviewportconfigurationeditor:
 .. include:: properties/Identifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-gridcolumnviewportconfigurationeditor:
 .. include:: properties/Label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.viewPorts.*.viewPortIdentifier-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.viewPorts.*.viewPortIdentifier-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.viewPorts.[*].viewPortIdentifier
 -----------------------------------------------------
@@ -70,16 +70,16 @@ configurationOptions.viewPorts.[*].viewPortIdentifier
       Yes
 
 :aspect:`Related options`
-      - :ref:`"properties.gridColumnClassAutoConfiguration"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
+      - :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
 
 .. :aspect:`Good to know`
       ToDo
 
 :aspect:`Description`
-      Has to match with a ``TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts`` configuration key.
+      Has to match with a ``prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts`` configuration key.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.viewPorts.*.label-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.viewPorts.*.label-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.viewPorts.[*].label
 ----------------------------------------
@@ -103,7 +103,7 @@ configurationOptions.viewPorts.[*].label
       The label for the viewport button.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.label-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.label-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.numbersOfColumnsToUse.label
 ------------------------------------------------
@@ -127,7 +127,7 @@ configurationOptions.numbersOfColumnsToUse.label
       The label for the "Numbers of columns" input field.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.propertyPath-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.propertyPath-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.numbersOfColumnsToUse.propertyPath
 -------------------------------------------------------
@@ -151,7 +151,7 @@ configurationOptions.numbersOfColumnsToUse.propertyPath
       The path to the property of the form element which should be written.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.fieldExplanationText-gridcolumnviewportconfigurationeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.fieldExplanationText-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.numbersOfColumnsToUse.fieldExplanationText
 ---------------------------------------------------------------

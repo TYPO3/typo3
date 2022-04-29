@@ -3,7 +3,7 @@ formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -30,7 +30,7 @@ formEditor.iconIdentifier
       An icon identifier which must be registered through the ``\TYPO3\CMS\Core\Imaging\IconRegistry``.
       This icon will be shown within
 
-      - :ref:`"Inspector [FormElementHeaderEditor]"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
+      - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
       - :ref:`"Abstract view formelement templates"<apireference-formeditor-stage-commonabstractformelementtemplates>`.
       - ``Tree`` component.
       - "new element" Modal

@@ -3,7 +3,7 @@ properties.value
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.properties.value
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.properties.value
 
 :aspect:`Data type`
       string

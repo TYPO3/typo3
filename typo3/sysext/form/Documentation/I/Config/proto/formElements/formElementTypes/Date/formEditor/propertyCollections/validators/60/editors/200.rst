@@ -3,10 +3,10 @@ formEditor.propertyCollections.validators.60.editors.200
 --------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.60.editors.200
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.60.editors.200
 
 :aspect:`Data type`
-      array/ :ref:`[ValidationErrorMessageEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor>`
+      array/ :ref:`[ValidationErrorMessageEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

@@ -3,7 +3,7 @@ validators
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Number.validators
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Number.validators
 
 :aspect:`Data type`
       array

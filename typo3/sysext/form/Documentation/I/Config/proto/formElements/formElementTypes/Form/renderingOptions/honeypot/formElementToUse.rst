@@ -3,7 +3,7 @@ renderingOptions.honeypot.formElementToUse
 ------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.honeypot.formElementToUse
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.honeypot.formElementToUse
 
 :aspect:`Data type`
       bool

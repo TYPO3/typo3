@@ -4,7 +4,7 @@ formEditor
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor
 
 :aspect:`Data type`
       array

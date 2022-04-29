@@ -57,7 +57,7 @@ enable the editor to choose one. Additionally, the same ``Start template``
 can be used for several ``prototypes``. To do so, make sure the included
 form elements of the template are defined in the corresponding ``prototype``.
 
-For example, imagine your integrator has :ref:`configured<typo3.cms.form.formmanager.selectablePrototypesConfiguration>`
+For example, imagine your integrator has :ref:`configured<formmanager.selectablePrototypesConfiguration>`
 a prototype called 'routing' which contains a custom form element with the
 ``<formElementTypeIdentifier>`` 'locationPicker'. The element is only
 defined for this prototype. The integrator has created a ``Start template``
@@ -82,7 +82,7 @@ template``. You need at least the root form element ('Form') and a 'Page'.
        label: 'Page'
 
 As mentioned previously, the form wizard within the ``form manager`` offers
-a list of all existing, :ref:`pre-configured<typo3.cms.form.formmanager.selectableprototypesconfiguration.*.newformtemplates>`
+a list of all existing, :ref:`pre-configured<formmanager.selectableprototypesconfiguration.*.newformtemplates>`
 ``Start templates``. As soon as the backend editor creates a form with the
 help of such a template, a new ``form definition`` is generated based on the
 one of the selected ``Start template``. The ``form definition`` will be
@@ -103,22 +103,16 @@ translated:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         formManager:
+   formManager:
 
 The translation files of the ``form manager`` are loaded as follows:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         formManager:
-           translationFiles:
-             # custom translation file
-             20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'
+   formManager:
+     translationFiles:
+       # custom translation file
+       20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value

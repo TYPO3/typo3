@@ -3,7 +3,7 @@ renderingOptions.templateRootPaths
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.templateRootPaths
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.templateRootPaths
 
 :aspect:`Data type`
       array

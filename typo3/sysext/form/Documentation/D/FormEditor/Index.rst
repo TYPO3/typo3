@@ -203,7 +203,7 @@ configuration of form elements, without having to click them in order to view
 the detailed configuration in the ``Inspector``. The ``form editor`` requires
 for each form element an inline HTML template and the corresponding JavaScript
 code. Information matching inline HTML templates to the appropriate form
-elements must be configured within :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formeditor.formEditorPartials <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`.
+elements must be configured within :ref:`prototypes.\<prototypeIdentifier>.formeditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`.
 At this point, the key identifying the form element follows a convention:
 ``FormElement-<formElementTypeIdentifier>``. The value for the key tells the
 ``form editor`` which inline HTML template should be loaded for the respective
@@ -956,8 +956,8 @@ Subscribe to the event:
 view/inspector/collectionElement/existing/selected
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 
-The ``inspector editors`` :ref:`ValidatorsEditor <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.finisherseditor>`
-and :ref:`FinishersEditor <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
+The ``inspector editors`` :ref:`ValidatorsEditor <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.finisherseditor>`
+and :ref:`FinishersEditor <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
 are used to display the available validators/ finishers for a form element as a
 select box. Furthermore, these ``inspector editors`` indicate that in the
 ``form definition``, validators/ finishers for the currently selected element
@@ -987,11 +987,11 @@ Subscribe to the event:
 view/inspector/collectionElement/new/selected
 +++++++++++++++++++++++++++++++++++++++++++++
 
-The ``inspector editors`` :ref:`ValidatorsEditor <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.finisherseditor>`
-and :ref:`FinishersEditor <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
+The ``inspector editors`` :ref:`ValidatorsEditor <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.finisherseditor>`
+and :ref:`FinishersEditor <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
 are used to display the available validators/ finishers for a form element as a
 select box. The onChange event of the select box then calls this event. In
-addition, the ``inspector editor`` :ref:`RequiredValidatorEditor <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.requiredvalidatoreditor>`
+addition, the ``inspector editor`` :ref:`RequiredValidatorEditor <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.requiredvalidatoreditor>`
 calls this event when a checkbox is chosen. EXT:form uses this event to add and
 render the validator/ finisher of the ``form definition`` via ``getFormEditorApp().getViewModel().createAndAddPropertyCollectionElement()``.
 
@@ -1053,9 +1053,9 @@ render all ``inspector editors`` for a form element) and ``getFormEditorApp().ge
 (to render the ``inspector editors`` for a validator/ finisher) call this event
 at the end. Strictly speaking, the ``Inspector`` component in the method
 ``_renderEditorDispatcher()`` calls this event.
-Each ``inspector editor`` has the property :ref:`templateName <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.templatename>`,
+Each ``inspector editor`` has the property :ref:`templateName <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.templatename>`,
 which gives the ``form editor`` two pieces of information. On the one hand the
-``templateName`` must match with a key within the :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formeditor.formEditorPartials <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`.
+``templateName`` must match with a key within the :ref:`prototypes.\<prototypeIdentifier>.formeditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`.
 The ``form editor`` can consequently load a corresponding inline HTML template
 for the ``inspector editor``. On the other hand, the ``Inspector`` component
 must be told which JavaScript code should be executed for the
@@ -1092,27 +1092,24 @@ A simple example that registers a custom ``inspector editor`` called 'Inspector-
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-               dynamicJavaScriptModules:
-                 additionalViewModelModules:
-                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
-               formEditorFluidConfiguration:
-                 partialRootPaths:
-                   100: 'EXT:my_site_package/Resources/Private/Backend/Partials/FormEditor/'
-               formEditorPartials:
-                 Inspector-MyCustomInspectorEditor: 'Inspector/MyCustomInspectorEditor'
-             formElementsDefinition:
-               Text:
-                 formEditor:
-                   editors:
-                     600:
-                       templateName: 'Inspector-MyCustomInspectorEditor'
-                       ...
+   prototypes:
+     standard:
+       formEditor:
+         dynamicJavaScriptModules:
+           additionalViewModelModules:
+             10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+         formEditorFluidConfiguration:
+           partialRootPaths:
+             100: 'EXT:my_site_package/Resources/Private/Backend/Partials/FormEditor/'
+         formEditorPartials:
+           Inspector-MyCustomInspectorEditor: 'Inspector/MyCustomInspectorEditor'
+       formElementsDefinition:
+         Text:
+           formEditor:
+             editors:
+               600:
+                 templateName: 'Inspector-MyCustomInspectorEditor'
+                 ...
 
 .. code-block:: javascript
    :emphasize-lines: 107-116
@@ -1276,7 +1273,7 @@ A simple example that registers a custom ``inspector editor`` called 'Inspector-
 view/inspector/removeCollectionElement/perform
 ++++++++++++++++++++++++++++++++++++++++++++++
 
-The ``inspector editor`` :ref:`RequiredValidatorEditor <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.requiredvalidatoreditor>`
+The ``inspector editor`` :ref:`RequiredValidatorEditor <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.requiredvalidatoreditor>`
 calls this event, if the checkbox is deselected. EXT:form uses this event to
 remove the configured required validator ('NotEmpty') from the ``form
 definition`` through the method ``getFormEditorApp().getViewModel().removePropertyCollectionElement()``.
@@ -1729,7 +1726,7 @@ call this event. Strictly speaking, the ``Stage`` component in the method
 ``_renderTemplateDispatcher()`` calls this event. The ``form editor`` requires
 for each form element an inline HTML template the corresponding JavaScript
 code. Information matching inline HTML templates to the appropriate form
-elements must be configured within :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formeditor.formEditorPartials <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`.
+elements must be configured within :ref:`prototypes.\<prototypeIdentifier>.formeditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`.
 At this point, the key identifying the form element follows a convention:
 ``FormElement-<formElementTypeIdentifier>``. The value for the key tells the
 ``form editor`` which inline HTML template should be loaded for the respective
@@ -1772,44 +1769,41 @@ for a custom form element with ``<formElementTypeIdentifier>`` = 'GenderSelect'.
 In this example, 'GenderSelect' is basically a radio button form element with some predefined options.
 
 .. code-block:: yaml
-   :emphasize-lines: 11
+   :emphasize-lines: 8
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-               dynamicJavaScriptModules:
-                 additionalViewModelModules:
-                   10: '@typo3/my-site-package/backend/form-editor/view-model.js'
-               formEditorPartials:
-                 FormElement-GenderSelect: 'Stage/SelectTemplate'
-             formElementsDefinition:
-               GenderSelect:
-                 __inheritances:
-                   10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
-                 renderingOptions:
-                   templateName: 'RadioButton'
-                 properties:
-                   options:
-                     f: 'Female'
-                     m: 'Male'
-                     u: 'Unicorn'
-                     a: 'Alien'
-                 formEditor:
-                   label: 'Gender Select'
-                   group: select
-                   groupSorting: 9000
-                   predefinedDefaults:
-                     properties:
-                       options:
-                         f: 'Female'
-                         m: 'Male'
-                         u: 'Unicorn'
-                         a: 'Alien'
-                   editors:
-                     300: null
+   prototypes:
+     standard:
+       formEditor:
+         dynamicJavaScriptModules:
+           additionalViewModelModules:
+             10: '@typo3/my-site-package/backend/form-editor/view-model.js'
+         formEditorPartials:
+           FormElement-GenderSelect: 'Stage/SelectTemplate'
+       formElementsDefinition:
+         GenderSelect:
+           __inheritances:
+             10: 'prototypes.standard.formElementsDefinition.RadioButton'
+           renderingOptions:
+             templateName: 'RadioButton'
+           properties:
+             options:
+               f: 'Female'
+               m: 'Male'
+               u: 'Unicorn'
+               a: 'Alien'
+           formEditor:
+             label: 'Gender Select'
+             group: select
+             groupSorting: 9000
+             predefinedDefaults:
+               properties:
+                 options:
+                   f: 'Female'
+                   m: 'Male'
+                   u: 'Unicorn'
+                   a: 'Alien'
+             editors:
+               300: null
 
 .. code-block:: javascript
    :emphasize-lines: 105-109

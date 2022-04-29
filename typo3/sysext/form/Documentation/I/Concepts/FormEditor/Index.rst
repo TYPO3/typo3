@@ -50,12 +50,9 @@ the following configuration path:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
+   prototypes:
+     standard:
+       formEditor:
 
 Furthermore, you are able to configure the ``form editor`` regarding its
 different aspects. The configuration can be found below the following
@@ -63,20 +60,17 @@ configuration paths:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               <formElementTypeIdentifier>:
-                 formEditor:
-             finishersDefinition:
-               <finisherIdentifier>
-                 formEditor:
-             validatorsDefinition:
-               <validatorIdentifier>
-                 formEditor:
+   prototypes:
+     standard:
+       formElementsDefinition:
+         <formElementTypeIdentifier>:
+           formEditor:
+       finishersDefinition:
+         <finisherIdentifier>
+           formEditor:
+       validatorsDefinition:
+         <validatorIdentifier>
+           formEditor:
 
 
 .. _concepts-formeditor-components-in-detail:
@@ -160,35 +154,29 @@ translated:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-             formElementsDefinition:
-               <formElementTypeIdentifier>:
-                 formEditor:
-             finishersDefinition:
-               <finisherIdentifier>
-                 formEditor:
-             validatorsDefinition:
-               <validatorIdentifier>
-                 formEditor:
+   prototypes:
+     standard:
+       formEditor:
+       formElementsDefinition:
+         <formElementTypeIdentifier>:
+           formEditor:
+       finishersDefinition:
+         <finisherIdentifier>
+           formEditor:
+       validatorsDefinition:
+         <validatorIdentifier>
+           formEditor:
 
 The translation files of the ``form editor`` are loaded as follows:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-               translationFiles:
-                 # custom translation file
-                 20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+   prototypes:
+     standard:
+       formEditor:
+         translationFiles:
+           # custom translation file
+           20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value
@@ -234,18 +222,15 @@ to use this element in their manually created YAML definitions or via API anymor
 
 .. code-block:: yaml
    :linenos:
-   :emphasize-lines: 7
+   :emphasize-lines: 4
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               AdvancedPassword: null
+   prototypes:
+     standard:
+       formElementsDefinition:
+         AdvancedPassword: null
 
 
-The correct way is to unset the :ref:`group property <typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group>`.
+The correct way is to unset the :ref:`group property <prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group>`.
 This property defines within which group within the ``form editor`` "new Element"
 modal the form element should be shown. Unsetting this property will remove the
 form element safely form the form editor. Check out the following example. The
@@ -253,17 +238,14 @@ configuration removes the :yaml:`AdvancedPassword` form element from.
 
 .. code-block:: yaml
    :linenos:
-   :emphasize-lines: 9
+   :emphasize-lines: 6
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               AdvancedPassword:
-                 formEditor:
-                   group: null
+   prototypes:
+     standard:
+       formElementsDefinition:
+         AdvancedPassword:
+           formEditor:
+             group: null
 
 
 .. _concepts-formeditor-extending:
@@ -298,15 +280,12 @@ The following YAML configuration registers an additional JavaScript module.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-               dynamicJavaScriptModules:
-                 additionalViewModelModules:
-                   10: '@my-vendor/my-site-package/backend/form-editor/view-model.js'
+   prototypes:
+     standard:
+       formEditor:
+         dynamicJavaScriptModules:
+           additionalViewModelModules:
+             10: '@my-vendor/my-site-package/backend/form-editor/view-model.js'
 
 .. code-block:: php
 

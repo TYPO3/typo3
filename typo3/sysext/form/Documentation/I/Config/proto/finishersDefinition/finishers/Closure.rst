@@ -1,26 +1,26 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.closure:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.closure:
 
 =========
 [Closure]
 =========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinitionclosure-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinitionclosure-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.closure.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Closure.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.implementationClassName
 
 :aspect:`Data type`
       string
@@ -46,13 +46,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.closure.options.closure:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.options.closure:
 
 options.closure
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Closure.options.closure
+      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.options.closure
 
 :aspect:`Data type`
       \Closure
@@ -75,13 +75,13 @@ options.closure
       The closure which is invoked if the finisher is triggered.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -112,13 +112,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.label
 
 :aspect:`Data type`
       string
@@ -149,13 +149,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

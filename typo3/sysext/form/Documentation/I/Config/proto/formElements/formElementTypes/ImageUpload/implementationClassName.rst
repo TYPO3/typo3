@@ -3,7 +3,7 @@ implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.implementationClassName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.implementationClassName
 
 :aspect:`Data type`
       string

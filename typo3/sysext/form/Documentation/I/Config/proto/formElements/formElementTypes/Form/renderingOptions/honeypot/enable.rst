@@ -3,7 +3,7 @@ renderingOptions.honeypot.enable
 --------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.honeypot.enable
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.honeypot.enable
 
 :aspect:`Data type`
       bool

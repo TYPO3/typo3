@@ -3,7 +3,7 @@ renderingOptions.argumentsToBeExcludedFromQueryString
 -----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.argumentsToBeExcludedFromQueryString
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.argumentsToBeExcludedFromQueryString
 
 :aspect:`Data type`
       array

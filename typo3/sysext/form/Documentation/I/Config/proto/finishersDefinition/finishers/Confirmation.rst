@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.confirmation:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.confirmation:
 
 ==============
 [Confirmation]
 ==============
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinitionconfirmation-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinitionconfirmation-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.implementationClassName
 
 :aspect:`Data type`
       string
@@ -45,13 +45,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.message:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.message:
 
 options.message
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.message
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.message
 
 :aspect:`Data type`
       string
@@ -74,13 +74,13 @@ options.message
       The text which is shown if the finisher is invoked.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.contentelementuid:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.contentelementuid:
 
 options.contentElementUid
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.contentElementUid
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.contentElementUid
 
 :aspect:`Data type`
       integer
@@ -99,13 +99,13 @@ options.contentElementUid
       If contentElementUid is set, the option "message" will be ignored.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.typoscriptobjectpath:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.typoscriptobjectpath:
 
 options.typoscriptObjectPath
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.typoscriptObjectPath
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.typoscriptObjectPath
 
 :aspect:`Data type`
       string
@@ -123,13 +123,13 @@ options.typoscriptObjectPath
       The option "typoscriptObjectPath" can be used to render the content element (options.contentElementUid) through a typoscript lib.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.variables:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.variables:
 
 options.variables
 -----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.variables
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.variables
 
 :aspect:`Data type`
       array
@@ -147,13 +147,13 @@ options.variables
       Variables which should be available within the template.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templatename:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templatename:
 
 options.templateName
 --------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateName
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateName
 
 :aspect:`Data type`
       string
@@ -171,13 +171,13 @@ options.templateName
       Define a custom template name which should be used.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templaterootpaths:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templaterootpaths:
 
 options.templateRootPaths
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateRootPaths
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateRootPaths
 
 :aspect:`Data type`
       array
@@ -201,13 +201,13 @@ options.templateRootPaths
       Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfiles:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.translation.translationFiles
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -232,13 +232,13 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -269,13 +269,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.formEditor.label
 
 :aspect:`Data type`
       string
@@ -306,13 +306,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

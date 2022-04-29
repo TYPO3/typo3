@@ -3,7 +3,7 @@ implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.implementationClassName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.implementationClassName
 
 :aspect:`Data type`
       string

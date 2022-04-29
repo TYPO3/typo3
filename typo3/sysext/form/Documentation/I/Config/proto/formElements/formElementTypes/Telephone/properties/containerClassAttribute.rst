@@ -3,7 +3,7 @@ properties.containerClassAttribute
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.properties.containerClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.properties.containerClassAttribute
 
 :aspect:`Data type`
       string

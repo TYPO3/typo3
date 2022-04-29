@@ -3,7 +3,7 @@ properties.gridColumnClassAutoConfiguration.gridSize
 ----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.gridSize
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.gridSize
 
 :aspect:`Data type`
       int

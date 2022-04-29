@@ -1,13 +1,13 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.texteditor:
 
 ============
 [TextEditor]
 ============
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.texteditor-introduction:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.texteditor-introduction:
 
 Introduction
 ============
@@ -15,12 +15,12 @@ Introduction
 Shows a single line textfield.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.texteditor-properties:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.texteditor-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-texteditor:
 
 templateName
 ------------
@@ -35,7 +35,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-TextEditor
@@ -47,19 +47,19 @@ templateName
       .. include:: properties/TemplateName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-texteditor:
 .. include:: properties/Identifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-texteditor:
 .. include:: properties/Label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-texteditor:
 .. include:: properties/PropertyPath.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.donotsetifpropertyvalueisempty-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.donotsetifpropertyvalueisempty-texteditor:
 
 doNotSetIfPropertyValueIsEmpty
 ------------------------------
@@ -84,7 +84,7 @@ doNotSetIfPropertyValueIsEmpty
       value from the ``inspector editor`` is empty instead of writing an empty value ('') for this property.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor:
 
 propertyValidators
 ------------------
@@ -99,7 +99,7 @@ propertyValidators
       No
 
 :aspect:`Related options`
-      - :ref:`"formElementPropertyValidatorsDefinition"<typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition>`
+      - :ref:`"formElementPropertyValidatorsDefinition"<prototypes.\<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition>`
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -119,7 +119,7 @@ propertyValidators
            20: 'FormElementIdentifierWithinCurlyBracesExclusive'
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertyvalidatorsmode-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertyvalidatorsmode-texteditor:
 
 propertyValidatorsMode
 ----------------------
@@ -149,7 +149,7 @@ propertyValidatorsMode
       If set to 'OR' then at least one validator must be valid to accept the ``inspector editor`` value. If set to 'AND' then all validators must be valid.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.fieldexplanationtext-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.fieldexplanationtext-texteditor:
 
 fieldExplanationText
 --------------------
@@ -174,7 +174,7 @@ fieldExplanationText
       A text which is shown at the bottom of the ``inspector editor``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.additionalelementpropertypaths-texteditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.additionalelementpropertypaths-texteditor:
 
 additionalElementPropertyPaths
 ------------------------------

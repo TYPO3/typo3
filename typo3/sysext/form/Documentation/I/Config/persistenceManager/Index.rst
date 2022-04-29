@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.persistencemanager:
+.. _persistencemanager:
 
 ====================
 [persistenceManager]
 ====================
 
 
-.. _typo3.cms.form.persistencemanager-properties:
+.. _persistencemanager-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.persistencemanager.allowedfilemounts:
+.. _persistencemanager.allowedfilemounts:
 
 allowedFileMounts
 -----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.persistenceManager.allowedFileMounts
+      persistenceManager.allowedFileMounts
 
 :aspect:`Data type`
       array
@@ -28,7 +28,7 @@ allowedFileMounts
       Frontend/ Backend (form manager/ form editor/ plugin)
 
 :aspect:`Mandatory`
-      Yes (if :ref:`allowedExtensionPaths <TYPO3.CMS.Form.persistenceManager.allowedExtensionPaths>` is not set)
+      Yes (if :ref:`allowedExtensionPaths <persistenceManager.allowedExtensionPaths>` is not set)
 
 :aspect:`Default value`
       .. code-block:: yaml
@@ -49,13 +49,13 @@ allowedFileMounts
       filemount which is then utilized for storing and reading forms.
 
 
-.. _typo3.cms.form.persistencemanager.allowSaveToExtensionPaths:
+.. _persistencemanager.allowSaveToExtensionPaths:
 
 allowSaveToExtensionPaths
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.persistenceManager.allowSaveToExtensionPaths
+      persistenceManager.allowSaveToExtensionPaths
 
 :aspect:`Data type`
       bool
@@ -81,13 +81,13 @@ allowSaveToExtensionPaths
       Set this to ``true`` if you want to allow backend users to **edit** forms stored within your own extension.
 
 
-.. _typo3.cms.form.persistencemanager.allowDeleteFromExtensionPaths:
+.. _persistencemanager.allowDeleteFromExtensionPaths:
 
 allowDeleteFromExtensionPaths
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.persistenceManager.allowDeleteFromExtensionPaths
+      persistenceManager.allowDeleteFromExtensionPaths
 
 :aspect:`Data type`
       bool
@@ -113,13 +113,13 @@ allowDeleteFromExtensionPaths
       Set this to ``true`` if you want to allow backend users to **delete** forms stored within your own extension.
 
 
-.. _typo3.cms.form.persistencemanager.sortByKeys:
+.. _persistencemanager.sortByKeys:
 
 sortByKeys
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.persistenceManager.sortByKeys
+      persistenceManager.sortByKeys
 
 :aspect:`Data type`
       array
@@ -171,13 +171,13 @@ sortByKeys
          Does the form have an error?
 
 
-.. _typo3.cms.form.persistencemanager.sortAscending:
+.. _persistencemanager.sortAscending:
 
 sortAscending
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.persistenceManager.sortAscending
+      persistenceManager.sortAscending
 
 :aspect:`Data type`
       bool
@@ -201,13 +201,13 @@ sortAscending
       If set to ``true``, the forms will be sorted in ascending, otherwise in descending order.
 
 
-.. _typo3.cms.form.persistencemanager.allowedExtensionPaths:
+.. _persistencemanager.allowedExtensionPaths:
 
 allowedExtensionPaths
 ---------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.persistenceManager.allowedExtensionPaths
+      persistenceManager.allowedExtensionPaths
 
 :aspect:`Data type`
       array
@@ -216,7 +216,7 @@ allowedExtensionPaths
       Frontend/ Backend (form manager/ form editor/ plugin)
 
 :aspect:`Mandatory`
-      Yes (if :ref:`allowedFileMounts <TYPO3.CMS.Form.persistenceManager.allowedFileMounts>` is not set)
+      Yes (if :ref:`allowedFileMounts <persistenceManager.allowedFileMounts>` is not set)
 
 :aspect:`Default value`
       undefined

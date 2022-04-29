@@ -3,7 +3,7 @@ formEditor.modalRemoveElementDialogTitle
 ----------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementDialogTitle
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementDialogTitle
 
 :aspect:`Data type`
       string

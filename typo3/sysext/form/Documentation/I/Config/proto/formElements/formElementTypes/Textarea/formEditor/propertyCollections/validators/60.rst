@@ -4,7 +4,7 @@ formEditor.propertyCollections.validators.60
 --------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.propertyCollections.validators.60
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.propertyCollections.validators.60
 
 :aspect:`Data type`
       array

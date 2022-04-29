@@ -3,7 +3,7 @@ properties.prependOptionValue
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.properties.prependOptionValue
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.properties.prependOptionValue
 
 :aspect:`Data type`
       string

@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.number:
+.. _prototypes.validatorsdefinition.number:
 
 ========
 [Number]
 ========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.number-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,19 +17,19 @@ Validation error codes
 - Error message: `The given subject was not a valid number.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.number-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.number.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Number.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Number.implementationClassName
 
 :aspect:`Data type`
       string
@@ -55,13 +55,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.number.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Number.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Number.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -89,13 +89,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.number.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Number.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Number.formEditor.label
 
 :aspect:`Data type`
       string

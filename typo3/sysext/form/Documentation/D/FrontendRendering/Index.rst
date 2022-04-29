@@ -43,16 +43,13 @@ Only the root element (``FormDefinition``) has to be a template file. All child 
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   templateRootPaths:
-                     10: 'EXT:form/Resources/Private/Frontend/Templates/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             templateRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Templates/'
 
 
 .. _apireference-frontendrendering-fluidformrenderer-options-layoutrootpaths:
@@ -65,16 +62,13 @@ The first folder where the desired layout is found, is used. If the array keys a
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   layoutRootPaths:
-                     10: 'EXT:form/Resources/Private/Frontend/Layouts/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             layoutRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Layouts/'
 
 
 .. _apireference-frontendrendering-fluidformrenderer-options-partialrootpaths:
@@ -97,16 +91,13 @@ There is a setting available to set a custom partial name. Please read the secti
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   partialRootPaths:
-                     10: 'EXT:form/Resources/Private/Frontend/Partials/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             partialRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Partials/'
 
 
 .. _apireference-frontendrendering-fluidformrenderer-options-templatename:
@@ -132,15 +123,12 @@ Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Foo:
-                 renderingOptions:
-                   templateName: 'Text'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Foo:
+           renderingOptions:
+             templateName: 'Text'
 
 
 .. _apireference-frontendrendering-renderviewHelper:

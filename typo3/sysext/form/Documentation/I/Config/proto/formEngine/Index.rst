@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formengine:
+.. _prototypes.<prototypeidentifier>.formengine:
 
 ============
 [formEngine]
 ============
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formengine-properties:
+.. _prototypes.<prototypeidentifier>.formengine-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formengine.translationfiles:
+.. _prototypes.<prototypeidentifier>.formengine.translationfiles:
 
 translationFiles
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formEngine.translationFiles
+      prototypes.<prototypeIdentifier>.formEngine.translationFiles
 
 :aspect:`Data type`
       string/ array

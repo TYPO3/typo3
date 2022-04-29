@@ -3,7 +3,7 @@ properties.containerClassAttribute
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.properties.containerClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.properties.containerClassAttribute
 
 :aspect:`Data type`
       string

@@ -3,7 +3,7 @@ properties.enableDatePicker
 ---------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.enableDatePicker
+      prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.enableDatePicker
 
 :aspect:`Data type`
       bool

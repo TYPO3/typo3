@@ -3,7 +3,7 @@ formEditor.group
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor.group
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor.group
 
 :aspect:`Data type`
       string
@@ -24,7 +24,7 @@ formEditor.group
              group: container
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Description`
       Define within which group within the ``form editor`` "new Element" modal the form element should be shown.

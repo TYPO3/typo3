@@ -3,7 +3,7 @@ properties.displayTimeSelector
 ------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.displayTimeSelector
+      prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.displayTimeSelector
 
 :aspect:`Data type`
       bool

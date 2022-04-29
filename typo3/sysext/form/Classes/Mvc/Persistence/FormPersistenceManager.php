@@ -127,7 +127,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Only files with the extension .form.yaml are saved.
      * If the formDefinition is located within an EXT: resource, save is only
      * allowed if the configuration path
-     * TYPO3.CMS.Form.persistenceManager.allowSaveToExtensionPaths
+     * persistenceManager.allowSaveToExtensionPaths
      * is set to true.
      *
      * @param string $persistenceIdentifier
@@ -366,7 +366,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * current backend user.
      *
      * Only registered mountpoints from
-     * TYPO3.CMS.Form.persistenceManager.allowedFileMounts
+     * persistenceManager.allowedFileMounts
      * are listed.
      *
      * @return Folder[]
@@ -438,7 +438,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Return a list of all accessible extension folders
      *
      * Only registered mountpoints from
-     * TYPO3.CMS.Form.persistenceManager.allowedExtensionPaths
+     * persistenceManager.allowedExtensionPaths
      * are listed.
      *
      * @return array
@@ -567,7 +567,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Check if a persistence path or if a persistence identifier path
      * is configured within the form setup
-     * (TYPO3.CMS.Form.persistenceManager.allowedExtensionPaths / TYPO3.CMS.Form.persistenceManager.allowedFileMounts).
+     * (persistenceManager.allowedExtensionPaths / persistenceManager.allowedFileMounts).
      * If the input is a persistence identifier an additional check for a
      * valid file extension will be performed.
      * .

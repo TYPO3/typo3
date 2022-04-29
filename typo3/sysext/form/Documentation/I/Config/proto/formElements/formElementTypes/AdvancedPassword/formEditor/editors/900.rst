@@ -4,10 +4,10 @@ formEditor.editors.900
 ----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.editors.900
+      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.editors.900
 
 :aspect:`Data type`
-      array/ :ref:`[ValidatorsEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
+      array/ :ref:`[ValidatorsEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

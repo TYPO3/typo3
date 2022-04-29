@@ -4,7 +4,7 @@ formEditor.propertyCollections.finishers.70
 -------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.70
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.70
 
 :aspect:`Data type`
       array

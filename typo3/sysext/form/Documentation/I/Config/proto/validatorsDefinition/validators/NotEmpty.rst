@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty:
 
 ==========
 [NotEmpty]
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -26,19 +26,19 @@ Validation error codes
 - Error message: `The given subject was empty.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NotEmpty.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NotEmpty.implementationClassName
 
 :aspect:`Data type`
       string
@@ -64,13 +64,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NotEmpty.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NotEmpty.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -98,13 +98,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NotEmpty.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NotEmpty.formEditor.label
 
 :aspect:`Data type`
       string

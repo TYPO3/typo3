@@ -243,14 +243,11 @@ for the validator implementation.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             validatorsDefinition:
-               Custom:
-                 implementationClassName: 'VENDOR\MySitePackage\Domain\Validation\CustomValidator'
+   prototypes:
+     standard:
+       validatorsDefinition:
+         Custom:
+           implementationClassName: 'VENDOR\MySitePackage\Domain\Validation\CustomValidator'
 
 You can provide options for your validator using the property ``options``.
 Those will be used as default values which can be overridden within a
@@ -260,16 +257,13 @@ Define the default value of the option ``yourCustomOption``:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             validatorsDefinition:
-               Custom:
-                 implementationClassName: 'VENDOR\MySitePackage\Domain\Validation\CustomValidator'
-                 options:
-                   yourCustomOption: 'Jurian'
+   prototypes:
+     standard:
+       validatorsDefinition:
+         Custom:
+           implementationClassName: 'VENDOR\MySitePackage\Domain\Validation\CustomValidator'
+           options:
+             yourCustomOption: 'Jurian'
 
 Override the default value within your ``form definition``:
 

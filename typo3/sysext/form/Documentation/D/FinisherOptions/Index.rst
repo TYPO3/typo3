@@ -762,8 +762,8 @@ fragment
       empty string
 
 :aspect:`Description`
-      Add a fragment (e.g. `#c9` or `#foo`) to the redirect link.
-      The `#' character can be omitted.
+      Add a fragment (e.g. :html:`#c9` or :html:`#foo`) to the redirect link.
+      The :html:`#` character can be omitted.
 
 
 .. _apireference-finisheroptions-redirectfinisher-options-delay:

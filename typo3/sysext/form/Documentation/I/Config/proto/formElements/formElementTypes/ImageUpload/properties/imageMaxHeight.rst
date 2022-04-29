@@ -3,7 +3,7 @@ properties.imageMaxHeight
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageMaxHeight
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageMaxHeight
 
 :aspect:`Data type`
       int

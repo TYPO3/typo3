@@ -3,7 +3,7 @@ properties.elementClassAttribute
 --------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.properties.elementClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.properties.elementClassAttribute
 
 :aspect:`Data type`
       string

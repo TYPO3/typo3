@@ -3,7 +3,7 @@ formEditor.saveSuccessFlashMessageMessage
 -----------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.saveSuccessFlashMessageMessage
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.saveSuccessFlashMessageMessage
 
 :aspect:`Data type`
       string

@@ -1,13 +1,13 @@
 .. include:: /Includes.rst.txt
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.numberrange:
+.. _prototypes.validatorsdefinition.numberrange:
 
 =============
 [NumberRange]
 =============
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -19,19 +19,19 @@ Validation error codes
 - Error message: `The given subject was not in the valid range (%s - %s).`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.implementationClassName
 
 :aspect:`Data type`
       string
@@ -57,13 +57,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.minimum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.minimum:
 
 options.minimum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.minimum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.minimum
 
 :aspect:`Data type`
       int
@@ -81,13 +81,13 @@ options.minimum
       The minimum value to accept.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.maximum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.maximum:
 
 options.maximum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.maximum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.maximum
 
 :aspect:`Data type`
       int
@@ -105,13 +105,13 @@ options.maximum
       The maximum value to accept.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -139,13 +139,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.label
 
 :aspect:`Data type`
       string
@@ -173,13 +173,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.predefineddefaults:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

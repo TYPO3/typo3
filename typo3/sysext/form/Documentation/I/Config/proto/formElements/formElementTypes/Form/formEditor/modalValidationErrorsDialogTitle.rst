@@ -3,7 +3,7 @@ formEditor.modalValidationErrorsDialogTitle
 -------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalValidationErrorsDialogTitle
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalValidationErrorsDialogTitle
 
 :aspect:`Data type`
       string

@@ -252,7 +252,7 @@ class DataStructureIdentifierHook
                 $formFinisherDefinition
             );
 
-            // Iterate over all `TYPO3.CMS.Form.prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
+            // Iterate over all `prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
             // and convert them to FlexForm elements
             GeneralUtility::makeInstance(ArrayProcessor::class, $prototypeFinisherDefinition['FormEngine']['elements'])->forEach(
                 GeneralUtility::makeInstance(

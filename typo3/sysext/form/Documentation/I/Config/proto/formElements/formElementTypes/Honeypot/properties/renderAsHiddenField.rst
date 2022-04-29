@@ -3,7 +3,7 @@ properties.renderAsHiddenField
 ------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.renderAsHiddenField
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.renderAsHiddenField
 
 :aspect:`Data type`
       bool

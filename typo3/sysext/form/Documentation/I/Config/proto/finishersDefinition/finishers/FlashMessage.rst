@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.flashmessage:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.flashmessage:
 
 ==============
 [FlashMessage]
 ==============
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinitionflashmessage-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinitionflashmessage-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.implementationClassName
 
 :aspect:`Data type`
       string
@@ -45,13 +45,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagebody:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagebody:
 
 options.messageBody
 -------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageBody
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageBody
 
 :aspect:`Data type`
       string
@@ -74,13 +74,13 @@ options.messageBody
       The flash message body TEXT.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagetitle:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagetitle:
 
 options.messageTitle
 --------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageTitle
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageTitle
 
 :aspect:`Data type`
       string
@@ -103,13 +103,13 @@ options.messageTitle
       The flash message title.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagearguments:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagearguments:
 
 options.messageArguments
 ------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageArguments
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageArguments
 
 :aspect:`Data type`
       array
@@ -132,13 +132,13 @@ options.messageArguments
       The flash message arguments, if needed.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagecode:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagecode:
 
 options.messageCode
 -------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageCode
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageCode
 
 :aspect:`Data type`
       int
@@ -159,13 +159,13 @@ options.messageCode
       The flash message code, if needed.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.severity:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.severity:
 
 options.severity
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.severity
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.severity
 
 :aspect:`Data type`
       int
@@ -187,13 +187,13 @@ options.severity
       See \TYPO3\CMS\Core\Messaging\AbstractMessage constants for the codes.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.translation.translationfiles:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.translationFiles
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -218,13 +218,13 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -259,13 +259,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.label
 
 :aspect:`Data type`
       string
@@ -300,13 +300,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

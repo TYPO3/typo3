@@ -1,26 +1,26 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.formmanager:
+.. _formmanager:
 
 =============
 [formManager]
 =============
 
 
-.. _typo3.cms.form.formmanager-properties:
+.. _formmanager-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.formmanager.dynamicjavascriptmodules.app:
+.. _formmanager.dynamicjavascriptmodules.app:
 
 dynamicJavaScriptModules.app
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.dynamicJavaScriptModules.app
+      formManager.dynamicJavaScriptModules.app
 
 :aspect:`Data type`
       string
@@ -44,13 +44,13 @@ dynamicJavaScriptModules.app
       Internal setting. ES6 module specifier for the form manager JavaScript app.
 
 
-.. _typo3.cms.form.formmanager.dynamicjavascriptmodules.viewmodel:
+.. _formmanager.dynamicjavascriptmodules.viewmodel:
 
 dynamicJavaScriptModules.viewModel
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.dynamicJavaScriptModules.viewModel
+      formManager.dynamicJavaScriptModules.viewModel
 
 :aspect:`Data type`
       string
@@ -74,13 +74,13 @@ dynamicJavaScriptModules.viewModel
       Internal setting. ES6 module specifier for the form manager JavaScript view model.
 
 
-.. _typo3.cms.form.formmanager.stylesheets:
+.. _formmanager.stylesheets:
 
 stylesheets
 -----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.stylesheets
+      formManager.stylesheets
 
 :aspect:`Data type`
       array
@@ -102,13 +102,13 @@ stylesheets
       Internal setting. Path for the form manager CSS file.
 
 
-.. _typo3.cms.form.formmanager.translationfiles:
+.. _formmanager.translationfiles:
 
 translationFiles
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.translationFiles
+      formManager.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -133,13 +133,13 @@ translationFiles
       The translation file(s) which should be used to translate parts of the form manager.
 
 
-.. _typo3.cms.form.formmanager.javascripttranslationfile:
+.. _formmanager.javascripttranslationfile:
 
 javaScriptTranslationFile
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.javaScriptTranslationFile
+      formManager.javaScriptTranslationFile
 
 :aspect:`Data type`
       string
@@ -160,13 +160,13 @@ javaScriptTranslationFile
       Internal setting. Path for the inline language labels for the form manager app.
 
 
-.. _typo3.cms.form.formmanager.selectableprototypesconfiguration:
+.. _formmanager.selectableprototypesconfiguration:
 
 selectablePrototypesConfiguration
 ---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration
+      formManager.selectablePrototypesConfiguration
 
 :aspect:`Data type`
       array
@@ -201,13 +201,13 @@ selectablePrototypesConfiguration
       Array with numerical Keys. Configure the ``Start template`` selection list within the ``form manager`` "Advanced settings" step.
 
 
-.. _typo3.cms.form.formmanager.selectableprototypesconfiguration.*.identifier:
+.. _formmanager.selectableprototypesconfiguration.*.identifier:
 
 selectablePrototypesConfiguration.*.identifier
 ----------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.*.identifier
+      formManager.selectablePrototypesConfiguration.*.identifier
 
 :aspect:`Data type`
       string
@@ -219,7 +219,7 @@ selectablePrototypesConfiguration.*.identifier
       Yes
 
 :aspect:`Related options`
-      - :ref:`TYPO3.CMS.Form.prototypes <typo3.cms.form.prototypes>`
+      - :ref:`prototypes <prototypes>`
 
 :aspect:`Good to know`
       - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
@@ -228,13 +228,13 @@ selectablePrototypesConfiguration.*.identifier
       Reference to a ``prototype`` which should be used for the newly created form definition.
 
 
-.. _typo3.cms.form.formmanager.selectableprototypesconfiguration.*.label:
+.. _formmanager.selectableprototypesconfiguration.*.label:
 
 selectablePrototypesConfiguration.*.label
 -----------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.*.label
+      formManager.selectablePrototypesConfiguration.*.label
 
 :aspect:`Data type`
       string
@@ -253,13 +253,13 @@ selectablePrototypesConfiguration.*.label
       The ``Form prototype`` selectlist label for this ``prototype`` within the ``form manager`` "Advanced settings" step.
 
 
-.. _typo3.cms.form.formmanager.selectableprototypesconfiguration.*.newformtemplates:
+.. _formmanager.selectableprototypesconfiguration.*.newformtemplates:
 
 selectablePrototypesConfiguration.*.newFormTemplates
 ----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.*.newFormTemplates
+      formManager.selectablePrototypesConfiguration.*.newFormTemplates
 
 :aspect:`Data type`
       array
@@ -295,13 +295,13 @@ selectablePrototypesConfiguration.*.newFormTemplates
       Array with numerical Keys. Configure the ``Start templates`` selectlist for this ``prototype`` within the ``form manager`` "Advanced settings" step.
 
 
-.. _typo3.cms.form.formmanager.selectableprototypesconfiguration.*.newformtemplates.*.templatepath:
+.. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.templatepath:
 
 selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
 -------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
+      formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
 
 :aspect:`Data type`
       string
@@ -320,13 +320,13 @@ selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
       The filesystem path to the `Start template`` YAML file.
 
 
-.. _typo3.cms.form.formmanager.selectableprototypesconfiguration.*.newformtemplates.*.label:
+.. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.label:
 
 selectablePrototypesConfiguration.*.newFormTemplates.*.label
 ------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.label
+      formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.label
 
 :aspect:`Data type`
       string
@@ -345,13 +345,13 @@ selectablePrototypesConfiguration.*.newFormTemplates.*.label
       The ``Start template`` selectlist label for this ``Start template`` within the ``form manager`` "Advanced settings" step.
 
 
-.. _typo3.cms.form.formmanager.controller:
+.. _formmanager.controller:
 
 controller
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.controller
+      formManager.controller
 
 :aspect:`Data type`
       array
@@ -375,13 +375,13 @@ controller
       Internal setting. Configure the ``form manager`` flash message texts.
 
 
-.. _typo3.cms.form.formmanager.controller.deleteaction.errortitle:
+.. _formmanager.controller.deleteaction.errortitle:
 
 controller.deleteAction.errorTitle
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.controller.deleteAction.errorTitle
+      formManager.controller.deleteAction.errorTitle
 
 :aspect:`Data type`
       string
@@ -406,13 +406,13 @@ controller.deleteAction.errorTitle
       Internal setting. Configure the ``form manager`` flash message texts.
 
 
-.. _typo3.cms.form.formmanager.controller.deleteaction.errormessage:
+.. _formmanager.controller.deleteaction.errormessage:
 
 controller.deleteAction.errorMessage
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.controller.deleteAction.errorMessage
+      formManager.controller.deleteAction.errorMessage
 
 :aspect:`Data type`
       string

@@ -3,7 +3,7 @@ formEditor.modalRemoveElementCancleButton
 -----------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementCancleButton
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementCancleButton
 
 :aspect:`Data type`
       string

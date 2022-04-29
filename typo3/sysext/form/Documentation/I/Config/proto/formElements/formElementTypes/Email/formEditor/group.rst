@@ -3,7 +3,7 @@ formEditor.group
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Email.formEditor.group
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Email.formEditor.group
 
 :aspect:`Data type`
       string

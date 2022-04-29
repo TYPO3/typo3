@@ -331,7 +331,7 @@ class FormManagerController extends AbstractBackendController
      * Return a list of all accessible file mountpoints.
      *
      * Only registered mount points from
-     * TYPO3.CMS.Form.persistenceManager.allowedFileMounts
+     * persistenceManager.allowedFileMounts
      * are listed. This list will be reduced by the configured
      * mount points for the current backend user.
      */
@@ -457,7 +457,7 @@ class FormManagerController extends AbstractBackendController
      * and accessible.
      *
      * Valid template paths has to be configured within
-     * TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.[('identifier':  $prototypeName)].newFormTemplates.[('templatePath': $templatePath)]
+     * formManager.selectablePrototypesConfiguration.[('identifier':  $prototypeName)].newFormTemplates.[('templatePath': $templatePath)]
      */
     protected function isValidTemplatePath(string $prototypeName, string $templatePath): bool
     {

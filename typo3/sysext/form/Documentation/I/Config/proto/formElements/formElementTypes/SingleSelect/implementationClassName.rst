@@ -3,7 +3,7 @@ implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.implementationClassName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.implementationClassName
 
 :aspect:`Data type`
       string

@@ -3,7 +3,7 @@ properties.displayFormat
 ------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.properties.displayFormat
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Date.properties.displayFormat
 
 :aspect:`Data type`
       string

@@ -28,20 +28,17 @@ via YAML. The settings are part of the ``prototypes`` configuration.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   templateRootPaths:
-                     100: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
-                   partialRootPaths:
-                     100: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
-                   layoutRootPaths:
-                     100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             templateRootPaths:
+               100: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
+             partialRootPaths:
+               100: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
+             layoutRootPaths:
+               100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
 
 For each ``form definition`` - which references the prototype ``standard`` -
 the form framework will additionally look for Fluid templates within the
@@ -120,18 +117,15 @@ Additional translation files can be defined as follows:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   translation:
-                     translationFiles:
-                       # custom translation file
-                       20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             translation:
+               translationFiles:
+                 # custom translation file
+                 20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
 
 The array is processed from the highest key to the lowest, i.e. your
 translation file with the key ``20`` is processed first. If the look-up
@@ -258,7 +252,7 @@ the following translation scenarios are possible:
 
 In Extbase, the validation messages are identified with the help of
 numerical codes (UNIX timestamps). For the same validator, different codes
-are valid. Read more about :ref:`concrete validator configurations <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`.
+are valid. Read more about :ref:`concrete validator configurations <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`.
 
 The look-up process searches for translation keys in all given translation
 files based on the following order:
@@ -714,14 +708,11 @@ This allows you to declaratively define how a form should be rendered.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
 
 
 .. _concepts-frontendrendering-basiccodecomponents-fluidformrenderer:
@@ -751,14 +742,11 @@ defined by:
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               CustomFormElementIdentifier:
-                 implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         CustomFormElementIdentifier:
+           implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
 
 With the provided hooks, this ``FormElement`` can now be manipulated.
 

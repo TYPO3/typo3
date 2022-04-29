@@ -4,10 +4,10 @@ formEditor.propertyCollections.validators.30.editors.100
 --------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Text.formEditor.propertyCollections.validators.30.editors.100
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Text.formEditor.propertyCollections.validators.30.editors.100
 
 :aspect:`Data type`
-      array/ :ref:`[CollectionElementHeaderEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.collectionelementheadereditor>`
+      array/ :ref:`[CollectionElementHeaderEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.collectionelementheadereditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

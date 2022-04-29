@@ -3,7 +3,7 @@ formEditor.modalCloseDialogMessage
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseDialogMessage
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseDialogMessage
 
 :aspect:`Data type`
       string

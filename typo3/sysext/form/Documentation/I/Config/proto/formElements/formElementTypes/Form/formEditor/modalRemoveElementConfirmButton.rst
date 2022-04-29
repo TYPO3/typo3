@@ -3,7 +3,7 @@ formEditor.modalRemoveElementConfirmButton
 ------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementConfirmButton
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementConfirmButton
 
 :aspect:`Data type`
       string

@@ -4,10 +4,10 @@ formEditor.editors.200
 ----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Fieldset.formEditor.editors.200
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Fieldset.formEditor.editors.200
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+      array/ :ref:`[TextEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

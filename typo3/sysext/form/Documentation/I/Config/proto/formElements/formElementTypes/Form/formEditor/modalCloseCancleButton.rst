@@ -3,7 +3,7 @@ formEditor.modalCloseCancleButton
 ---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseCancleButton
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseCancleButton
 
 :aspect:`Data type`
       string

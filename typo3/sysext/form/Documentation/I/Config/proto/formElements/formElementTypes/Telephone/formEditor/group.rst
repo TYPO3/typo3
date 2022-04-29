@@ -3,7 +3,7 @@ formEditor.group
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.group
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.group
 
 :aspect:`Data type`
       string

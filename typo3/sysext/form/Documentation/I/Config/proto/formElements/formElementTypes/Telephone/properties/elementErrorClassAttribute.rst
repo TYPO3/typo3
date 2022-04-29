@@ -3,7 +3,7 @@ properties.elementErrorClassAttribute
 -------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.properties.elementErrorClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.properties.elementErrorClassAttribute
 
 :aspect:`Data type`
       string

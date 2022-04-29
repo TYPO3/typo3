@@ -3,7 +3,7 @@ properties.timeSelectorClassAttribute
 -------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.timeSelectorClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.timeSelectorClassAttribute
 
 :aspect:`Data type`
       string

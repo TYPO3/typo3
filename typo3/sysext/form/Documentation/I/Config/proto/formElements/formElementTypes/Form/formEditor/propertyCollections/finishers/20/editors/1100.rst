@@ -4,10 +4,10 @@ formEditor.propertyCollections.finishers.20.editors.1100
 --------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1100
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1100
 
 :aspect:`Data type`
-      array/ :ref:`[CheckboxEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor>`
+      array/ :ref:`[CheckboxEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor:
 
 ================
 [CheckboxEditor]
 ================
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor-introduction:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor-introduction:
 
 Introduction
 ============
@@ -16,12 +16,12 @@ Introduction
 Shows a checkbox which write 'true' or 'false' within the form definition for a form element property.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor-properties:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-checkboxeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-checkboxeditor:
 
 templateName
 ------------
@@ -36,7 +36,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-CheckboxEditor
@@ -48,13 +48,13 @@ templateName
       .. include:: properties/TemplateName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-checkboxeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-checkboxeditor:
 .. include:: properties/Identifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-checkboxeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-checkboxeditor:
 .. include:: properties/Label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-checkboxeditor:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-checkboxeditor:
 .. include:: properties/PropertyPath.rst

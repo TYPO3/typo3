@@ -3,7 +3,7 @@ renderingOptions.translation.translationFiles
 ---------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles
 
 :aspect:`Data type`
       string
@@ -55,4 +55,4 @@ renderingOptions.translation.translationFiles
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for form element property translations.
-      If ``translationFiles`` is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
+      If ``translationFiles`` is undefined, - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.

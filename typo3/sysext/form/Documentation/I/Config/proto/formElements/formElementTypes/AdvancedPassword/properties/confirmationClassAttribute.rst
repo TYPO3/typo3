@@ -3,7 +3,7 @@ properties.confirmationClassAttribute
 -------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.properties.confirmationClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.properties.confirmationClassAttribute
 
 :aspect:`Data type`
       string

@@ -3,7 +3,7 @@ renderingOptions.skipUnknownElements
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.skipUnknownElements
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.skipUnknownElements
 
 :aspect:`Data type`
       bool

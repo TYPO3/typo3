@@ -3,7 +3,7 @@ formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

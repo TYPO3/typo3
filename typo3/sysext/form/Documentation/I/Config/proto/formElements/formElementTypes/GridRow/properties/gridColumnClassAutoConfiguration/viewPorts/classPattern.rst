@@ -3,7 +3,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts.[*].classPattern
 ----------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts.<gridColumnClassAutoConfigurationViewPortIdentifier>.classPattern
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts.<gridColumnClassAutoConfigurationViewPortIdentifier>.classPattern
 
 :aspect:`Data type`
       string
@@ -43,7 +43,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts.[*].classPattern
                    classPattern: 'col-lg-{@numbersOfColumnsToUse}'
 
 :aspect:`Related options`
-      - :ref:`"properties.gridColumnClassAutoConfiguration"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
+      - :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
 
 :aspect:`Description`
       Defines the CSS class pattern for the CSS grid system.

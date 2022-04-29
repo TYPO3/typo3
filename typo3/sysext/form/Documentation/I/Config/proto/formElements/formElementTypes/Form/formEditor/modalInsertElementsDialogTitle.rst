@@ -3,7 +3,7 @@ formEditor.modalInsertPagesDialogTitle
 --------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalInsertPagesDialogTitle
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalInsertPagesDialogTitle
 
 :aspect:`Data type`
       string

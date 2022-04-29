@@ -3,7 +3,7 @@ properties.contentElementUid
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ContentElement.properties.contentElementUid
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ContentElement.properties.contentElementUid
 
 :aspect:`Data type`
       string

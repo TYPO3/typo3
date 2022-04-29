@@ -3,7 +3,7 @@ formEditor.groupSorting
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor.groupSorting
+      prototypes.<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor.groupSorting
 
 :aspect:`Data type`
       int

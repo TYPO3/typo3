@@ -3,7 +3,7 @@ properties.containerClassAttribute
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.containerClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.containerClassAttribute
 
 :aspect:`Data type`
       string

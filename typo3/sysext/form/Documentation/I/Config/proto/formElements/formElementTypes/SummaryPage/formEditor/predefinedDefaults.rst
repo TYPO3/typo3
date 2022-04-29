@@ -3,7 +3,7 @@ formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

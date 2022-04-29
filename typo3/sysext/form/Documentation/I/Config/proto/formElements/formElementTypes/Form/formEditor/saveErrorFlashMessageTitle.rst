@@ -3,7 +3,7 @@ formEditor.saveErrorFlashMessageTitle
 -------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.saveErrorFlashMessageTitle
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.saveErrorFlashMessageTitle
 
 :aspect:`Data type`
       string

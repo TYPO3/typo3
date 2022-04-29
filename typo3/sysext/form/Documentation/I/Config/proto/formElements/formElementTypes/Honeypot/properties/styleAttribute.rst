@@ -3,7 +3,7 @@ properties.styleAttribute
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.styleAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.styleAttribute
 
 :aspect:`Data type`
       string

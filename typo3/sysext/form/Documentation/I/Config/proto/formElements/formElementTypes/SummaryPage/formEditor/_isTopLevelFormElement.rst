@@ -3,7 +3,7 @@ formEditor._isTopLevelFormElement
 ---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor._isTopLevelFormElement
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor._isTopLevelFormElement
 
 :aspect:`Data type`
       bool

@@ -304,20 +304,17 @@ register an additional configuration file via
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   templateRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
-                   partialRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
-                   layoutRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             templateRootPaths:
+               20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
+             partialRootPaths:
+               20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
+             layoutRootPaths:
+               20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
 
 The values of your own configuration file will overrule the corresponding
 values of the basic configuration file (:file:`EXT:form/Configuration/Yaml/FormSetup.yaml`).
@@ -390,23 +387,20 @@ element but also has its own properties.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               GenderSelect:
-                 __inheritances:
-                   10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
-                 renderingOptions:
-                   templateName: 'RadioButton'
-                 properties:
-                   options:
-                     f: 'Female'
-                     m: 'Male'
-                     u: 'Unicorn'
-                     a: 'Alien'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         GenderSelect:
+           __inheritances:
+             10: 'prototypes.standard.formElementsDefinition.RadioButton'
+           renderingOptions:
+             templateName: 'RadioButton'
+           properties:
+             options:
+               f: 'Female'
+               m: 'Male'
+               u: 'Unicorn'
+               a: 'Alien'
 
 The YAML configuration defines a new form element called ``GenderSelect``.
 This element inherits its definition from the ``RadioButton`` element but

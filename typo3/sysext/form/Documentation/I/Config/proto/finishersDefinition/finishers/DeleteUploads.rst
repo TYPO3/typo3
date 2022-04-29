@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.deleteuploads:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.deleteuploads:
 
 ===============
 [DeleteUploads]
 ===============
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinitiondeleteuploads-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinitiondeleteuploads-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.DeleteUploads.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.DeleteUploads.implementationClassName
 
 :aspect:`Data type`
       string
@@ -45,13 +45,13 @@ implementationClassName
       Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.DeleteUploads.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.DeleteUploads.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -79,13 +79,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.DeleteUploads.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.DeleteUploads.formEditor.label
 
 :aspect:`Data type`
       string

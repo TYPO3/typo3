@@ -3,7 +3,7 @@ implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Email.implementationClassName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Email.implementationClassName
 
 :aspect:`Data type`
       string

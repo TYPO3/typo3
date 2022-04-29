@@ -1,26 +1,26 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition:
+.. _prototypes.<prototypeidentifier>.finishersdefinition:
 
 =====================
 [finishersDefinition]
 =====================
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinition-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.*:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.*:
 
 [finishersDefinition]
 ---------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition
+      prototypes.<prototypeIdentifier>.finishersDefinition
 
 :aspect:`Data type`
       array
@@ -47,13 +47,13 @@ Properties
       Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>:
 
 <finisherIdentifier>
 --------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisherIdentifier>
+      prototypes.<prototypeIdentifier>.finishersdefinition.<finisherIdentifier>
 
 :aspect:`Data type`
       string
@@ -91,8 +91,8 @@ Properties
                [...]
 
 :aspect:`Related options`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].identifier"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.identifier>`
-      - :ref:`"[FinishersEditor] selectOptions.[*].value"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].identifier"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.identifier>`
+      - :ref:`"[FinishersEditor] selectOptions.[*].value"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
 
 :aspect:`Good to know`
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
@@ -101,19 +101,19 @@ Properties
       This array key identifies a finisher. This identifier could be used to attach a finisher to a form.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>-commonproperties:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>-commonproperties:
 
 Common <finisherIdentifier> properties
 =============================================
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.implementationClassName:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.implementationClassName
 
 :aspect:`Data type`
       string
@@ -125,7 +125,7 @@ implementationClassName
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
@@ -134,13 +134,13 @@ implementationClassName
       .. include:: properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.options:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.options:
 
 options
 -------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.options
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.options
 
 :aspect:`Data type`
       array
@@ -149,10 +149,10 @@ options
       Frontend
 
 :aspect:`Mandatory`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
@@ -161,13 +161,13 @@ options
       Array with finisher options.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.translation.translationFiles:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.translation.translationFiles:
 
 translation.translationFiles
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.translation.translationFiles
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -179,23 +179,23 @@ translation.translationFiles
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for finisher translations.
-      If the property is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
+      If the property is undefined, - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor:
 
 formEditor
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor
 
 :aspect:`Data type`
       array
@@ -207,7 +207,7 @@ formEditor
       Recommended
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -216,13 +216,13 @@ formEditor
       Array with configurations for the ``form editor``
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -234,7 +234,7 @@ formeditor.iconIdentifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -243,13 +243,13 @@ formeditor.iconIdentifier
        .. include:: properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.label
 
 :aspect:`Data type`
       string
@@ -261,7 +261,7 @@ formeditor.label
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -270,13 +270,13 @@ formeditor.label
       .. include:: properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array
@@ -288,7 +288,7 @@ formeditor.predefinedDefaults
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -297,13 +297,13 @@ formeditor.predefinedDefaults
       .. include:: properties/predefinedDefaults.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formengine:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formengine:
 
 FormEngine
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine
 
 :aspect:`Data type`
       array
@@ -315,7 +315,7 @@ FormEngine
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -324,13 +324,13 @@ FormEngine
       Array with configurations for the ``form plugin``
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.FormEngine.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.FormEngine.label:
 
 FormEngine.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.label
 
 :aspect:`Data type`
       string
@@ -342,7 +342,7 @@ FormEngine.label
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
@@ -351,13 +351,13 @@ FormEngine.label
       .. include:: properties/formEngine/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.FormEngine.elements:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.FormEngine.elements:
 
 FormEngine.elements
 -------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.elements
+      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.elements
 
 :aspect:`Data type`
       array
@@ -369,7 +369,7 @@ FormEngine.elements
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
@@ -378,7 +378,7 @@ FormEngine.elements
       .. include:: properties/formEngine/elements.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>-concreteconfigurations:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>-concreteconfigurations:
 
 Concrete configurations
 =======================

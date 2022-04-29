@@ -3,7 +3,7 @@ formEditor.paginationTitle
 --------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.paginationTitle
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.paginationTitle
 
 :aspect:`Data type`
       string

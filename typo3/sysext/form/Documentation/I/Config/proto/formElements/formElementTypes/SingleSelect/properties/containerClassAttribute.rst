@@ -3,7 +3,7 @@ properties.containerClassAttribute
 ----------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.properties.containerClassAttribute
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.properties.containerClassAttribute
 
 :aspect:`Data type`
       string

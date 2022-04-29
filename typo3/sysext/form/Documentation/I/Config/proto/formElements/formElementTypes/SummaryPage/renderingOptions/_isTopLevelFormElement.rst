@@ -3,7 +3,7 @@ renderingOptions._isTopLevelFormElement
 ---------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.renderingOptions._isTopLevelFormElement
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.renderingOptions._isTopLevelFormElement
 
 :aspect:`Data type`
       bool

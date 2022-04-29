@@ -3,7 +3,7 @@ formEditor.groupSorting
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.groupSorting
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.groupSorting
 
 :aspect:`Data type`
       int

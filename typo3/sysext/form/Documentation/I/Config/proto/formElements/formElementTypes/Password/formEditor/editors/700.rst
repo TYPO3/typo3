@@ -3,10 +3,10 @@ formEditor.editors.700
 ----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.editors.700
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.editors.700
 
 :aspect:`Data type`
-      array/ :ref:`[GridColumnViewPortConfigurationEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor>`
+      array/ :ref:`[GridColumnViewPortConfigurationEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

@@ -1,6 +1,3 @@
-TYPO3:
-  CMS:
-    Form:
-      persistenceManager:
-        allowedExtensionPaths:
-          1628755200: EXT:form_caching_tests/Resources/Private/Form/
+persistenceManager:
+  allowedExtensionPaths:
+    1628755200: EXT:form_caching_tests/Resources/Private/Form/

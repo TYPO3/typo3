@@ -3,7 +3,7 @@ formEditor
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor
 
 :aspect:`Data type`
       array

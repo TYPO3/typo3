@@ -3,7 +3,7 @@ properties.elementDescription
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.properties.elementDescription
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.properties.elementDescription
 
 :aspect:`Data type`
       string

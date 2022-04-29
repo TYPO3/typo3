@@ -3,7 +3,7 @@ properties.confirmationLabel
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.properties.confirmationLabel
+      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.properties.confirmationLabel
 
 :aspect:`Data type`
       string

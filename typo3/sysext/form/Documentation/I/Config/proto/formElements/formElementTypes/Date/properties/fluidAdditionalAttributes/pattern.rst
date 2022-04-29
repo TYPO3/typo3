@@ -3,7 +3,7 @@ properties.fluidAdditionalAttributes.pattern
 --------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.properties.fluidAdditionalAttributes.pattern
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Date.properties.fluidAdditionalAttributes.pattern
 
 :aspect:`Data type`
       string

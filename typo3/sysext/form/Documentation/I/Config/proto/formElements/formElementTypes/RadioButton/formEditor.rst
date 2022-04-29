@@ -3,7 +3,7 @@ formEditor
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor
+      prototypes.<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor
 
 :aspect:`Data type`
       array

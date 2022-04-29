@@ -4,10 +4,10 @@ formEditor.propertyCollections.validators.50.editors.9999
 ---------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.propertyCollections.validators.50.editors.9999
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.propertyCollections.validators.50.editors.9999
 
 :aspect:`Data type`
-      array/ :ref:`[RemoveElementEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.removeelementeditor>`
+      array/ :ref:`[RemoveElementEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.removeelementeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

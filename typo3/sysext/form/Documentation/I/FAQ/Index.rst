@@ -51,20 +51,17 @@ Next, define the additional fluid template search paths via YAML.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   templateRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
-                   partialRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
-                   layoutRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         Form:
+           renderingOptions:
+             templateRootPaths:
+               20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
+             partialRootPaths:
+               20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
+             layoutRootPaths:
+               20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
 
 .. note::
 
@@ -170,7 +167,7 @@ The honeypot does not work with static site caching. What can I do?
 
 If you want to use a static site caching - for example using the
 staticfilecache extension - you should disable the automatic inclusion of the
-honeypot. Read more :ref:`here<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.honeypot.enable>`.
+honeypot. Read more :ref:`here<prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.honeypot.enable>`.
 
 
 .. _faq-form-element-default-value:
@@ -190,7 +187,7 @@ form is loaded. In contrast, the :yaml:`prependOptionValue` allows you to define
 string which will be shown as the first select-option. If both settings exist,
 the :yaml:`defaultValue` is prioritized.
 
-Learn more :ref:`here<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.defaultValue>`
+Learn more :ref:`here<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.defaultValue>`
 and see the forge issue `#82422 <https://forge.typo3.org/issues/82422#note-6>`_.
 
 

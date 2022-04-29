@@ -124,7 +124,7 @@ class FormFrontendController extends ActionController
                         $flexFormSheetSettings
                     );
 
-                    // Iterate over all `TYPO3.CMS.Form.prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
+                    // Iterate over all `prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
                     GeneralUtility::makeInstance(ArrayProcessor::class, $prototypeFinisherDefinition['FormEngine']['elements'])->forEach(
                         GeneralUtility::makeInstance(
                             ArrayProcessing::class,

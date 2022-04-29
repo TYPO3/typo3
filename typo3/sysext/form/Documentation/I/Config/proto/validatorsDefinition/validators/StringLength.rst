@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.stringlength:
+.. _prototypes.validatorsdefinition.stringlength:
 
 ==============
 [StringLength]
 ==============
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -29,19 +29,19 @@ Validation error codes
 - Error message: `The length of the given string exceeded %s characters.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.implementationClassName
 
 :aspect:`Data type`
       string
@@ -67,13 +67,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.minimum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.minimum:
 
 options.minimum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.options.minimum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.options.minimum
 
 :aspect:`Data type`
       int
@@ -91,13 +91,13 @@ options.minimum
       The minimum value to accept.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.maximum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.maximum:
 
 options.maximum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.options.maximum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.options.maximum
 
 :aspect:`Data type`
       int
@@ -115,13 +115,13 @@ options.maximum
       The maximum value to accept.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -149,13 +149,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.formEditor.label
 
 :aspect:`Data type`
       string
@@ -183,13 +183,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.predefineddefaults:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.StringLength.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

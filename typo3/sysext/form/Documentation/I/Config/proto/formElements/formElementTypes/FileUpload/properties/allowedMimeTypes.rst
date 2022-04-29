@@ -3,7 +3,7 @@ properties.allowedMimeTypes
 ---------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.allowedMimeTypes
+      prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.allowedMimeTypes
 
 :aspect:`Data type`
       array

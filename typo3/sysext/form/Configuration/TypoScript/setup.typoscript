@@ -3,7 +3,7 @@ plugin.tx_form {
         # Note that this configuration only affects the EXT:Form plugin
         # template (form/Resources/Private/Frontend/Templates/Render.html)
         # The fluid paths for the formelements reside within the YAML settings.
-        # @see TYPO3.CMS.Form.<prototypeName>.standard.formElementsDefinition.Form.renderingOptions
+        # @see <prototypeName>.standard.formElementsDefinition.Form.renderingOptions
         #
         # That means: If you want to override the formelement templates
         # then change them within the YAML settings, not here.

@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.filesize:
+.. _prototypes.validatorsdefinition.filesize:
 
 ==========
 [FileSize]
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -24,19 +24,19 @@ Validation error codes
 - Error message: `You must select a file that is no larger than %s.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.implementationClassName
 
 :aspect:`Data type`
       string
@@ -62,13 +62,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.minimum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.minimum:
 
 options.minimum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.minimum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.minimum
 
 :aspect:`Data type`
       string
@@ -86,13 +86,13 @@ options.minimum
       The minimum filesize to accept. Use the format <size>B|K|M|G. For example: 10M means 10 Megabytes.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.maximum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.maximum:
 
 options.maximum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.maximum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.maximum
 
 :aspect:`Data type`
       string
@@ -110,13 +110,13 @@ options.maximum
       The maximum filesize to accept. Use the format <size>B|K|M|G. For example: 10M means 10 Megabytes.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -144,13 +144,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.label
 
 :aspect:`Data type`
       string
@@ -178,13 +178,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.predefineddefaults:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

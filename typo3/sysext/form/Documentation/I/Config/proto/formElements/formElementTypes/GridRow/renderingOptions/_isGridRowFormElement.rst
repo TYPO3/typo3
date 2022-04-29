@@ -3,7 +3,7 @@ renderingOptions._isGridRowFormElement
 --------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.renderingOptions._isGridRowFormElement
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.renderingOptions._isGridRowFormElement
 
 :aspect:`Data type`
       bool

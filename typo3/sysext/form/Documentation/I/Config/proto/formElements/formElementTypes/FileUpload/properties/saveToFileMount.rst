@@ -3,7 +3,7 @@ properties.saveToFileMount
 --------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.saveToFileMount
+      prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.saveToFileMount
 
 :aspect:`Data type`
       string

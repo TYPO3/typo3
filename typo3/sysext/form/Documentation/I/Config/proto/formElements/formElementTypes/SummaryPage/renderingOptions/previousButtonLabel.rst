@@ -3,7 +3,7 @@ renderingOptions.previousButtonLabel
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.renderingOptions.previousButtonLabel
+      prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.renderingOptions.previousButtonLabel
 
 :aspect:`Data type`
       string

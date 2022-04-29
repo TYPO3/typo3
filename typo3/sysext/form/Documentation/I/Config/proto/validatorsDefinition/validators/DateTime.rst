@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime:
 
 ==========
 [DateTime]
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime-validationerrorcodes:
 
 validation error codes
 ======================
@@ -17,19 +17,19 @@ validation error codes
 - Error message: `The given subject was not a valid DateTime. Got: '%s'`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateTime.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateTime.implementationClassName
 
 :aspect:`Data type`
       string
@@ -55,13 +55,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateTime.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateTime.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -89,13 +89,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateTime.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.DateTime.formEditor.label
 
 :aspect:`Data type`
       string

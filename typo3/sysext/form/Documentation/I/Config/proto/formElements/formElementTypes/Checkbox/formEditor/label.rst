@@ -3,7 +3,7 @@ formEditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.label
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.label
 
 :aspect:`Data type`
       string

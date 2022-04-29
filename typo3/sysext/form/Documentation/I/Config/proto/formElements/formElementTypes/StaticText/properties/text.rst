@@ -3,7 +3,7 @@ properties.text
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.StaticText.properties.text
+      prototypes.<prototypeIdentifier>.formElementsDefinition.StaticText.properties.text
 
 :aspect:`Data type`
       string

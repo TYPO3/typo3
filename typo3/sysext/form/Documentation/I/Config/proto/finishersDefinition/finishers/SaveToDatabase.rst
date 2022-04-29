@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinition.savetodatabase:
+.. _prototypes.<prototypeidentifier>.finishersdefinition.savetodatabase:
 
 ================
 [SaveToDatabase]
 ================
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.finishersdefinitionsavetodatabase-properties:
+.. _prototypes.<prototypeidentifier>.finishersdefinitionsavetodatabase-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.implementationClassName
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.implementationClassName
 
 :aspect:`Data type`
       string
@@ -45,13 +45,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.table:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.table:
 
 options.table
 -------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.table
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.table
 
 :aspect:`Data type`
       string
@@ -73,13 +73,13 @@ options.table
       Insert or update values into this table.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.mode:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.mode:
 
 options.mode
 ------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.mode
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.mode
 
 :aspect:`Data type`
       string
@@ -106,13 +106,13 @@ options.mode
       ``update`` will update a given database row with the values from the submitted form and/or some predefined values. 'options.whereClause' is then required.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.whereclause:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.whereclause:
 
 options.whereClause
 -------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.whereClause
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.whereClause
 
 :aspect:`Data type`
       array
@@ -134,13 +134,13 @@ options.whereClause
       This where clause will be used for a database update action.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements:
 
 options.elements
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements
 
 :aspect:`Data type`
       array
@@ -164,13 +164,13 @@ options.elements
       The value for each key within ``options.elements`` is an array with additional informations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.mapondatabasecolumn:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.mapondatabasecolumn:
 
 options.elements.<formElementIdentifier>.mapOnDatabaseColumn
 ------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.mapOnDatabaseColumn
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.mapOnDatabaseColumn
 
 :aspect:`Data type`
       string
@@ -192,13 +192,13 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn
       The value from the submitted form element with the identifier ``<formElementIdentifier>`` will be written into this database column.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.savefileidentifierinsteadofuid:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.savefileidentifierinsteadofuid:
 
 options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 -------------------------------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 
 :aspect:`Data type`
       bool
@@ -225,13 +225,13 @@ options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
       FAL identifier (1:/user_uploads/some_uploaded_pic.jpg) instead.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.skipifvalueisempty:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.skipifvalueisempty:
 
 options.elements.<formElementIdentifier>.skipIfValueIsEmpty
 -------------------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.skipIfValueIsEmpty
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.skipIfValueIsEmpty
 
 :aspect:`Data type`
       bool
@@ -255,13 +255,13 @@ options.elements.<formElementIdentifier>.skipIfValueIsEmpty
       is valid content.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.dateformat:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.dateformat:
 
 options.elements.<formElementIdentifier>.dateFormat
 ---------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.dateFormat
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.dateFormat
 
 :aspect:`Data type`
       string
@@ -287,13 +287,13 @@ options.elements.<formElementIdentifier>.dateFormat
       The default value is "U" which means a Unix timestamp.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings:
 
 options.databaseColumnMappings
 ------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.databaseColumnMappings
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.databaseColumnMappings
 
 :aspect:`Data type`
       array
@@ -322,13 +322,13 @@ options.databaseColumnMappings
       will override the value you set within ``options.databaseColumnMappings``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.value:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.value:
 
 options.databaseColumnMappings.<databaseColumnName>.value
 ---------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.databaseColumnMappings.<databaseColumnName>.value
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.databaseColumnMappings.<databaseColumnName>.value
 
 :aspect:`Data type`
       string
@@ -355,13 +355,13 @@ options.databaseColumnMappings.<databaseColumnName>.value
       to the ``options.elements`` configuration variant.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.skipifvalueisempty:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.skipifvalueisempty:
 
 options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
 ----------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
 
 :aspect:`Data type`
       bool
@@ -384,13 +384,13 @@ options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
       <databaseColumnName>.value` is empty. Empty means strings without content, whitespace is valid content.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.translation.translationfiles:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.translation.translationFiles
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -415,13 +415,13 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -451,13 +451,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.formEditor.label
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.formEditor.label
 
 :aspect:`Data type`
       string
@@ -487,13 +487,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

@@ -63,84 +63,69 @@ for form definitions.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         persistenceManager:
-           allowedFileMounts:
-             # default filemount, no need to redeclare it again
-             # just to show you the structure
-             # 10: 1:/form_definitions/
-             # additional filemounts
-             100: 1:/custom/forms/
-             110: 2:/cloudstorage/forms/
+   persistenceManager:
+     allowedFileMounts:
+       # default filemount, no need to redeclare it again
+       # just to show you the structure
+       # 10: 1:/form_definitions/
+       # additional filemounts
+       100: 1:/custom/forms/
+       110: 2:/cloudstorage/forms/
 
 The following code block shows you how to allow an extension path as an
 additional filemount for form definitions.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         persistenceManager:
-           allowedExtensionPaths:
-             10: EXT:my_site_package/Resources/Private/Forms/
+   persistenceManager:
+     allowedExtensionPaths:
+       10: EXT:my_site_package/Resources/Private/Forms/
 
 Add the following config if you want to allow backend users to **edit**
 forms stored within your own extension.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         persistenceManager:
-           allowSaveToExtensionPaths: true
+   persistenceManager:
+     allowSaveToExtensionPaths: true
 
 Add the following config if you want to allow backend users to **delete**
 forms stored within your own extension.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         persistenceManager:
-           allowDeleteFromExtensionPaths: true
+   persistenceManager:
+     allowDeleteFromExtensionPaths: true
 
 The following code blocks show you the default setup for filemounts that
 are used for file (and image) uploads.
 
 .. code-block:: yaml
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               FileUpload:
-                 formEditor:
-                   predefinedDefaults:
-                     properties:
-                       saveToFileMount: '1:/user_upload/'
-                   editors:
-                     400:
-                       selectOptions:
-                         10:
-                           value: '1:/user_upload/'
-                           label: '1:/user_upload/'
-                 properties:
-                   saveToFileMount: '1:/user_upload/'
-               ImageUpload:
-                 formEditor:
-                   predefinedDefaults:
-                     properties:
-                       saveToFileMount: '1:/user_upload/'
-                   editors:
-                     400:
-                       selectOptions:
-                         10:
-                           value: '1:/user_upload/'
-                           label: '1:/user_upload/'
+   prototypes:
+     standard:
+       formElementsDefinition:
+         FileUpload:
+           formEditor:
+             predefinedDefaults:
+               properties:
+                 saveToFileMount: '1:/user_upload/'
+             editors:
+               400:
+                 selectOptions:
+                   10:
+                     value: '1:/user_upload/'
+                     label: '1:/user_upload/'
+           properties:
+             saveToFileMount: '1:/user_upload/'
+         ImageUpload:
+           formEditor:
+             predefinedDefaults:
+               properties:
+                 saveToFileMount: '1:/user_upload/'
+             editors:
+               400:
+                 selectOptions:
+                   10:
+                     value: '1:/user_upload/'
+                     label: '1:/user_upload/'

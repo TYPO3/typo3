@@ -3,7 +3,7 @@ properties.elementDescription
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.MultiSelect.properties.elementDescription
+      prototypes.<prototypeIdentifier>.formElementsDefinition.MultiSelect.properties.elementDescription
 
 :aspect:`Data type`
       string

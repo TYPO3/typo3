@@ -3,7 +3,7 @@ validators
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Email.validators
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Email.validators
 
 :aspect:`Data type`
       array

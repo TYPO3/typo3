@@ -1,26 +1,26 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition:
 
 ======================
 [validatorsDefinition]
 ======================
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.*:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.*:
 
 [validatorsDefinition]
 ----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition
+      prototypes.<prototypeIdentifier>.validatorsDefinition
 
 :aspect:`Data type`
       array
@@ -47,13 +47,13 @@ Properties
       Array which defines the available serverside validators. Every key within this array is called the ``<validatoridentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>:
 
 <validatorIdentifier>
 ---------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>
 
 :aspect:`Data type`
       array
@@ -96,9 +96,9 @@ Properties
                [...]
 
 :aspect:`Related options`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].identifier"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier>`
-      - :ref:`"[ValidatorsEditor] selectOptions.[*].value"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-validatorseditor>`
-      - :ref:`"[RequiredValidatorEditor] validatorIdentifier"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatoridentifier-requiredvalidatoreditor>`
+      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].identifier"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier>`
+      - :ref:`"[ValidatorsEditor] selectOptions.[*].value"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-validatorseditor>`
+      - :ref:`"[RequiredValidatorEditor] validatorIdentifier"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatoridentifier-requiredvalidatoreditor>`
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -107,18 +107,18 @@ Properties
       This array key identifies a validator. This identifier could be used to attach a validator to a form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>-commonproperties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>-commonproperties:
 
 Common <validatorIdentifier> properties
 =======================================
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.implementationClassName:
+.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.implementationClassName
 
 :aspect:`Data type`
       string
@@ -130,7 +130,7 @@ implementationClassName
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -139,13 +139,13 @@ implementationClassName
       .. include:: properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.options:
+.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.options:
 
 options
 -------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.options
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.options
 
 :aspect:`Data type`
       array
@@ -154,10 +154,10 @@ options
       Frontend/ Backend (form editor)
 
 :aspect:`Mandatory`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -166,13 +166,13 @@ options
       Array with validator options.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor:
+.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor:
 
 formEditor
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor
 
 :aspect:`Data type`
       array
@@ -184,7 +184,7 @@ formEditor
       Recommended
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -193,13 +193,13 @@ formEditor
       Array with configurations for the ``form editor``
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -211,7 +211,7 @@ formeditor.iconIdentifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -220,13 +220,13 @@ formeditor.iconIdentifier
       .. include:: properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor.label
 
 :aspect:`Data type`
       string
@@ -238,7 +238,7 @@ formeditor.label
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -247,13 +247,13 @@ formeditor.label
       .. include:: properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.<validatorIdentifier>.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array
@@ -265,7 +265,7 @@ formeditor.predefinedDefaults
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -274,7 +274,7 @@ formeditor.predefinedDefaults
       .. include:: properties/predefinedDefaults.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>-concreteconfigurations:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>-concreteconfigurations:
 
 Concrete configurations
 =======================

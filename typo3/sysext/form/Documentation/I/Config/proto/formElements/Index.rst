@@ -1,25 +1,25 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition:
 
 ========================
 [formElementsDefinition]
 ========================
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition-properties:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition-properties:
 
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.*:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.*:
 
 [formElementsDefinition]
 ------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition
+      prototypes.<prototypeIdentifier>.formElementsDefinition
 
 :aspect:`Data type`
       array
@@ -46,13 +46,13 @@ Properties
       Array which defines the available form elements. Every key within this array is called the ``<formElementTypeIdentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>:
 
 <formElementTypeIdentifier>
 ---------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>
 
 :aspect:`Data type`
       string
@@ -129,19 +129,19 @@ Properties
       This array key identifies a form element. This identifier could be used to attach a form element to a form.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>-commonproperties:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>-commonproperties:
 
 Common <formElementTypeIdentifier> properties
 =============================================
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.defaultValue:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.defaultValue:
 
 defaultValue
 ------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.defaultValue
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.defaultValue
 
 :aspect:`Data type`
       string/ array
@@ -161,13 +161,13 @@ defaultValue
       ``MultiSelect`` form element).
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.implementationclassname:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.implementationClassName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.implementationClassName
 
 :aspect:`Data type`
       string
@@ -179,7 +179,7 @@ implementationClassName
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -188,13 +188,13 @@ implementationClassName
       Classname which implements the form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.translation.translationfiles:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.translation.translationfiles:
 
 renderingOptions.translation.translationFiles
 ---------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingOptions.translation.translationFiles
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingOptions.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -206,7 +206,7 @@ renderingOptions.translation.translationFiles
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -214,16 +214,16 @@ renderingOptions.translation.translationFiles
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for form element property translations.
-      If ``translationFiles`` is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
+      If ``translationFiles`` is undefined, - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingOptions.translation.translatePropertyValueIfEmpty:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingOptions.translation.translatePropertyValueIfEmpty:
 
 renderingOptions.translation.translatePropertyValueIfEmpty
 ----------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingoptions.translation.translatepropertyvalueifempty
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingoptions.translation.translatepropertyvalueifempty
 
 :aspect:`Data type`
       bool
@@ -245,13 +245,13 @@ renderingOptions.translation.translatePropertyValueIfEmpty
       If set to ``false``, the form element property translation will be skipped if the form element property value is empty.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.templatename:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.templatename:
 
 renderingOptions.templateName
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingOptions.templateName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingOptions.templateName
 
 :aspect:`Data type`
       string
@@ -260,7 +260,7 @@ renderingOptions.templateName
       Frontend/ Backend (form editor)
 
 :aspect:`Mandatory`
-      (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Default value`
       undefined
@@ -273,13 +273,13 @@ renderingOptions.templateName
       Set ``templateName`` to define a custom template name which should be used instead of the ``<formElementTypeIdentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties:
 
 properties
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties
 
 :aspect:`Data type`
       array
@@ -291,7 +291,7 @@ properties
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -301,13 +301,13 @@ properties
       Array with form element specific properties.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.elementDescription:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.elementDescription:
 
 properties.elementDescription
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.elementDescription
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.elementDescription
 
 :aspect:`Data type`
       string
@@ -330,13 +330,13 @@ properties.elementDescription
       below the form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.fluidadditionalattributes:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.fluidadditionalattributes:
 
 properties.fluidAdditionalAttributes
 ------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.fluidAdditionalAttributes
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.fluidAdditionalAttributes
 
 :aspect:`Data type`
       array
@@ -348,7 +348,7 @@ properties.fluidAdditionalAttributes
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -358,13 +358,13 @@ properties.fluidAdditionalAttributes
       The values within this array are directly used within the form element ViewHelper's property ``additionalAttributes``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration:
 
 properties.gridColumnClassAutoConfiguration
 -------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.gridColumnClassAutoConfiguration
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.gridColumnClassAutoConfiguration
 
 :aspect:`Data type`
       array
@@ -379,11 +379,11 @@ properties.gridColumnClassAutoConfiguration
       Undefined
 
 :aspect:`Related options`
-      - :ref:`"GridRow viewPorts"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.gridrow.properties.gridcolumnclassautoconfiguration.viewports>`
+      - :ref:`"GridRow viewPorts"<prototypes.\<prototypeIdentifier>.formelementsdefinition.gridrow.properties.gridcolumnclassautoconfiguration.viewports>`
 
 :aspect:`Description`
         If the form element lies within a GridRow you can define the number of columns which the form element should occupy.
-        Each ``viewPorts`` configuration key has to match with on ofe the defined viewports within ``TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts``
+        Each ``viewPorts`` configuration key has to match with on ofe the defined viewports within ``prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts``
 
               .. code-block:: yaml
                  :linenos:
@@ -399,13 +399,13 @@ properties.gridColumnClassAutoConfiguration
                       xs:
                         numbersOfColumnsToUse: '5'
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.label:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.label:
 
 label
 -----
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.label
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.label
 
 :aspect:`Data type`
       string
@@ -417,7 +417,7 @@ label
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -427,13 +427,13 @@ label
       The label of the form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor:
 
 formEditor
 ----------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor
 
 :aspect:`Data type`
       array
@@ -445,7 +445,7 @@ formEditor
       No (but recommended)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -454,13 +454,13 @@ formEditor
       Array with configurations for the ``form editor``
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.predefineddefaults:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array
@@ -472,7 +472,7 @@ formEditor.predefinedDefaults
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -481,13 +481,13 @@ formEditor.predefinedDefaults
       Defines predefined defaults for form element properties which are prefilled, if the form element is added to a form.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections:
 
 formEditor.propertyCollections
 ------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections
 
 :aspect:`Data type`
       array
@@ -499,7 +499,7 @@ formEditor.propertyCollections
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -508,13 +508,13 @@ formEditor.propertyCollections
       Array with configurations for ``property collections`` for the form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators:
 
 formEditor.propertyCollections.validators
 -----------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.validators
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.validators
 
 :aspect:`Data type`
       array
@@ -526,7 +526,7 @@ formEditor.propertyCollections.validators
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -535,13 +535,13 @@ formEditor.propertyCollections.validators
       Array with configurations for available validators for a form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier:
 
 formEditor.propertyCollections.validators.[*].identifier
 --------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].identifier
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].identifier
 
 :aspect:`Data type`
       string
@@ -553,23 +553,23 @@ formEditor.propertyCollections.validators.[*].identifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<validatorIdentifier>"<typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>>`
+      - :ref:`"\<validatorIdentifier>"<prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>>`
 
 :aspect:`Description`
       Identifies the validator which should be attached to the form element. Must be equal to a existing ``<validatorIdentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.editors:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.editors:
 
 formEditor.propertyCollections.validators.[*].editors
 -----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].editors
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].editors
 
 :aspect:`Data type`
       string
@@ -581,7 +581,7 @@ formEditor.propertyCollections.validators.[*].editors
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -590,13 +590,13 @@ formEditor.propertyCollections.validators.[*].editors
       Array with available ``inspector editors`` for this validator.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers:
 
 formEditor.propertyCollections.finishers
 ----------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.finishers
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.finishers
 
 :aspect:`Data type`
       array
@@ -608,7 +608,7 @@ formEditor.propertyCollections.finishers
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -617,13 +617,13 @@ formEditor.propertyCollections.finishers
       Array with configurations for available finisher for a form definition.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.identifier:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.identifier:
 
 formEditor.propertyCollections.finishers.[*].identifier
 -------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].identifier
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].identifier
 
 :aspect:`Data type`
       string
@@ -635,23 +635,23 @@ formEditor.propertyCollections.finishers.[*].identifier
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<finisherIdentifier>"<typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
+      - :ref:`"\<finisherIdentifier>"<prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
 
 :aspect:`Description`
       Identifies the finisher which should be attached to the form definition. Must be equal to a existing ``<finisherIdentifier>``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.editors:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.editors:
 
 formEditor.propertyCollections.finishers.[*].editors
 ----------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].editors
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].editors
 
 :aspect:`Data type`
       string
@@ -663,7 +663,7 @@ formEditor.propertyCollections.finishers.[*].editors
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -672,13 +672,13 @@ formEditor.propertyCollections.finishers.[*].editors
       Array with available ``inspector editors`` for this finisher.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.label:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.label:
 
 formEditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.label
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.label
 
 :aspect:`Data type`
       string
@@ -690,7 +690,7 @@ formEditor.label
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -699,13 +699,13 @@ formEditor.label
       This label will be shown within the "new element" Modal.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group:
 
 formEditor.group
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.group
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.group
 
 :aspect:`Data type`
       string
@@ -717,23 +717,23 @@ formEditor.group
       No
 
 :aspect:`Related options`
-      - :ref:`TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formEditor.formElementGroups <typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formelementgroups>`
+      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formElementGroups <prototypes.\<prototypeidentifier>.formeditor.formelementgroups>`
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 :aspect:`Description`
       Define within which group within the ``form editor`` "new Element" modal the form element should be shown.
       The ``group`` value must be equal to an array key within ``formElementGroups``.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.groupsorting:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.groupsorting:
 
 formEditor.groupSorting
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.groupSorting
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.groupSorting
 
 :aspect:`Data type`
       int
@@ -745,7 +745,7 @@ formEditor.groupSorting
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -754,13 +754,13 @@ formEditor.groupSorting
       The position within the ``formEditor.group`` for this form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.iconidentifier:
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -772,7 +772,7 @@ formEditor.iconIdentifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -781,13 +781,13 @@ formEditor.iconIdentifier
       An icon identifier which must be registered through the ``\TYPO3\CMS\Core\Imaging\IconRegistry``.
       This icon will be shown within
 
-      - :ref:`"Inspector [FormElementHeaderEditor]"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
+      - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
       - :ref:`"Abstract view formelement templates"<apireference-formeditor-stage-commonabstractformelementtemplates>`.
       - ``Tree`` component.
       - "new element" Modal
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formEditor.editors-tree:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formEditor.editors-tree:
 
 formEditor.editors
 ------------------
@@ -797,7 +797,7 @@ formEditor.editors
     formEditor/Index
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>-concreteconfigurations:
+.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>-concreteconfigurations:
 
 Concrete configurations
 =======================

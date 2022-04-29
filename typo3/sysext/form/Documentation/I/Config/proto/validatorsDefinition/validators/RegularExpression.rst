@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.regularexpression:
+.. _prototypes.validatorsdefinition.regularexpression:
 
 ===================
 [RegularExpression]
 ===================
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,19 +17,19 @@ Validation error codes
 - Error message: `The given subject did not match the pattern.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.implementationClassName
 
 :aspect:`Data type`
       string
@@ -55,13 +55,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.options.regularExpression:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.options.regularExpression:
 
 options.regularExpression
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.options.regularExpression
+      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.options.regularExpression
 
 :aspect:`Data type`
       string
@@ -79,13 +79,13 @@ options.regularExpression
       The regular expression to use for validation, used as given.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -113,13 +113,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.label
 
 :aspect:`Data type`
       string
@@ -147,13 +147,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

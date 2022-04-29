@@ -3,7 +3,7 @@ renderingOptions.nextButtonLabel
 --------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Page.renderingOptions.nextButtonLabel
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Page.renderingOptions.nextButtonLabel
 
 :aspect:`Data type`
       string

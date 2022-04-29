@@ -3,7 +3,7 @@ renderingOptions.httpEnctype
 ----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.httpEnctype
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.httpEnctype
 
 :aspect:`Data type`
       string

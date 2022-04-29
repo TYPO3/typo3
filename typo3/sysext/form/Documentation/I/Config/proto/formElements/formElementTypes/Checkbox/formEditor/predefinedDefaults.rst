@@ -3,7 +3,7 @@ formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

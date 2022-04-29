@@ -3,7 +3,7 @@ formEditor.modalRemoveElementLastAvailablePageFlashMessageTitle
 ---------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementLastAvailablePageFlashMessageTitle
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalRemoveElementLastAvailablePageFlashMessageTitle
 
 :aspect:`Data type`
       string

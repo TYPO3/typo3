@@ -3,10 +3,10 @@ formEditor.editors.230
 ----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.editors.230
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.editors.230
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+      array/ :ref:`[TextEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
 
 :aspect:`Needed by`
       Frontend/ Backend (form editor)

@@ -3,7 +3,7 @@ implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.implementationClassName
+      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.implementationClassName
 
 :aspect:`Data type`
       string

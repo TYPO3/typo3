@@ -3,7 +3,7 @@ properties.timeSelectorHourLabel
 --------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.timeSelectorHourLabel
+      prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.properties.timeSelectorHourLabel
 
 :aspect:`Data type`
       string

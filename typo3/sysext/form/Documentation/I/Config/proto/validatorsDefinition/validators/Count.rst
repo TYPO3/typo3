@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.count:
+.. _prototypes.validatorsdefinition.count:
 
 =======
 [Count]
 =======
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count-validationerrorcodes:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -20,19 +20,19 @@ Validation error codes
 - Error message: `You must select between %s to %s elements.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count-properties:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.implementationClassName:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.implementationClassName
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Count.implementationClassName
 
 :aspect:`Data type`
       string
@@ -58,13 +58,13 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.options.minimum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.options.minimum:
 
 options.minimum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.options.minimum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Count.options.minimum
 
 :aspect:`Data type`
       int
@@ -82,13 +82,13 @@ options.minimum
       The minimum count to accept.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.options.maximum:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.options.maximum:
 
 options.maximum
 ---------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.options.maximum
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Count.options.maximum
 
 :aspect:`Data type`
       int
@@ -106,13 +106,13 @@ options.maximum
       The maximum count to accept.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.iconidentifier:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.iconIdentifier
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -140,13 +140,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.label:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.label
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.label
 
 :aspect:`Data type`
       string
@@ -174,13 +174,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.predefineddefaults:
+.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.predefinedDefaults
+      prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array

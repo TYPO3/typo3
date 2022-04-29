@@ -3,7 +3,7 @@ formEditor._isGridRowFormElement
 --------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor._isGridRowFormElement
+      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor._isGridRowFormElement
 
 :aspect:`Data type`
       bool

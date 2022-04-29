@@ -3,7 +3,7 @@ renderingOptions.addQueryString
 -------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.addQueryString
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.addQueryString
 
 :aspect:`Data type`
       bool

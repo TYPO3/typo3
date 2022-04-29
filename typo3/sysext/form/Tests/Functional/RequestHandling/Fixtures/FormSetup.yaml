@@ -1,6 +1,3 @@
-TYPO3:
-  CMS:
-    Form:
-      persistenceManager:
-        allowedExtensionPaths:
-          10: EXT:form/Tests/Functional/RequestHandling/Fixtures/Forms/
+persistenceManager:
+  allowedExtensionPaths:
+    10: EXT:form/Tests/Functional/RequestHandling/Fixtures/Forms/

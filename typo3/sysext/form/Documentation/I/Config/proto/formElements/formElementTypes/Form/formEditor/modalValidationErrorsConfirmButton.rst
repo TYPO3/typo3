@@ -3,7 +3,7 @@ formEditor.modalValidationErrorsConfirmButton
 ---------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalValidationErrorsConfirmButton
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalValidationErrorsConfirmButton
 
 :aspect:`Data type`
       string
