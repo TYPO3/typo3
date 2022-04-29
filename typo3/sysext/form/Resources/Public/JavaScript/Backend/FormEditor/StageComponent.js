@@ -674,7 +674,7 @@ define(['jquery',
 
       template = $($(template.html()));
 
-      getHelper().getTemplatePropertyDomElement('_type', template).text(formElement.get('type'));
+      getHelper().getTemplatePropertyDomElement('_type', template).text(getFormElementDefinition(formElement, 'label'));
       getHelper().getTemplatePropertyDomElement('_identifier', template).text(formElement.get('identifier'));
 
       if (formElementTypeDefinition['_isCompositeFormElement']) {
@@ -923,7 +923,7 @@ define(['jquery',
 
       getHelper()
         .getTemplatePropertyDomElement('_type', template)
-        .append(formElement.get('type'));
+        .append(getFormElementDefinition(formElement, 'label'));
       getHelper()
         .getTemplatePropertyDomElement('_identifier', template)
         .append(formElement.get('identifier'));
