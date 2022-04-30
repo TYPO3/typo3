@@ -9,8 +9,8 @@ See :issue:`89463`
 Description
 ===========
 
-Switchable controller actions have been marked as deprecated and will be removed in one of the next major versions
-of TYPO3, probably version 11.0 or 12.0.
+Switchable controller actions have been marked as deprecated and will be removed
+in TYPO3 version 12.0.
 
 Switchable controller actions are used to override the allowed set of controllers and actions via TypoScript or plugin
 flexforms. While this is convenient for reusing the same plugin for a lot of different use cases, it's also very
