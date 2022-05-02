@@ -738,7 +738,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function getPageAndRootline(ServerRequestInterface $request)
     {
         $requestedPageRowWithoutGroupCheck = [];
-        $this->resolveTranslatedPageId();
+        $this->page = $this->sys_page->getPage($this->id);
         if (empty($this->page)) {
             // If no page, we try to find the page above in the rootLine.
             // Page is 'not found' in case the id itself was not an accessible page. code 1
@@ -900,25 +900,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
             }
         }
-    }
-
-    /**
-     * If $this->id contains a translated page record, this needs to be resolved to the default language
-     * in order for all rootline functionality and access restrictions to be in place further on.
-     *
-     * Additionally, if a translated page is found, LanguageAspect is set as well.
-     */
-    protected function resolveTranslatedPageId()
-    {
-        $this->page = $this->sys_page->getPage($this->id);
-        // Accessed a default language page record, nothing to resolve
-        if (empty($this->page) || (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] === 0) {
-            return;
-        }
-        $languageId = (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
-        $this->page = $this->sys_page->getPage($this->page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']]);
-        $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $languageId));
-        $this->id = (int)$this->page['uid'];
     }
 
     /**
