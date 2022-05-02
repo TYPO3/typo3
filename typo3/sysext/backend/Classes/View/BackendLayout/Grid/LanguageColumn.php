@@ -154,7 +154,7 @@ class LanguageColumn extends AbstractGridObject
         $languageId = $this->context->getSiteLanguage()->getLanguageId();
         return (string)PreviewUriBuilder::create($pageId)
             ->withRootLine(BackendUtility::BEgetRootLine($pageId))
-            ->withAdditionalQueryParameters('&L=' . $languageId)
+            ->withLanguage($languageId)
             ->serializeDispatcherAttributes();
     }
 }

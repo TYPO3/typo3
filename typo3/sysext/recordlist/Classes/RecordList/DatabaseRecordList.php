@@ -969,21 +969,14 @@ class DatabaseRecordList
     {
         if ($table === 'tt_content') {
             // Link to a content element, possibly translated and with anchor
-            $additionalParams = '';
-            $language = $row[$GLOBALS['TCA']['tt_content']['ctrl']['languageField'] ?? null] ?? 0;
-            if ($language > 0) {
-                $additionalParams = '&L=' . $language;
-            }
-            $previewUriBuilder = PreviewUriBuilder::create((int)$this->id)
+            $previewUriBuilder = PreviewUriBuilder::create($this->id)
                 ->withSection('#c' . $row['uid'])
-                ->withAdditionalQueryParameters($additionalParams);
+                ->withLanguage((int)($row[$GLOBALS['TCA']['tt_content']['ctrl']['languageField'] ?? null] ?? 0));
         } elseif ($table === 'pages' && ($row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) > 0) {
             // Link to a page translation needs uid of default language page as id
-            $languageParentId = $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?? 0;
-            $language = $row[$GLOBALS['TCA']['pages']['ctrl']['languageField']] ?? 0;
-            $previewUriBuilder = PreviewUriBuilder::create($languageParentId)
+            $previewUriBuilder = PreviewUriBuilder::create((int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']])
                 ->withSection('#c' . $row['uid'])
-                ->withAdditionalQueryParameters('&L=' . $language);
+                ->withLanguage((int)($row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0));
         } else {
             // Link to a page in the default language
             $previewUriBuilder = PreviewUriBuilder::create((int)($row['uid'] ?? 0));

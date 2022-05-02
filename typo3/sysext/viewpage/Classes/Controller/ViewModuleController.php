@@ -86,7 +86,8 @@ class ViewModuleController
         }
         $languageId = (int)$moduleData->get('language');
         $targetUrl = (string)PreviewUriBuilder::create($pageId)
-            ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId) . '&L=' . $languageId)
+            ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId))
+            ->withLanguage($languageId)
             ->buildUri();
         if ($targetUrl === '') {
             $view->addFlashMessage(

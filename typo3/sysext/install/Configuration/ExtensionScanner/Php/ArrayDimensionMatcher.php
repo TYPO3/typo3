@@ -719,4 +719,10 @@ return [
             'Feature-97320-NewRegistrationForReportsAndStatus.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'viewOnClickClass\']' => [
+        'restFiles' => [
+            'Deprecation-97544-PreviewURIGenerationRelatedFunctionalityInBackendUtility.rst',
+            'Feature-97544-PSR-14EventsForModifyingPreviewURIs.rst',
+        ],
+    ],
 ];

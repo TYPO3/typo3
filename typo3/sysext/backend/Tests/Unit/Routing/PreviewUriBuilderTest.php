@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Routing;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,17 +29,25 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PreviewUriBuilderTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * @test
      */
     public function attributesContainAlternativeUri(): void
     {
-        // Make sure the hook inside viewOnClick is not fired. This may be removed if unit tests
-        // bootstrap does not initialize TYPO3_CONF_VARS anymore.
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']);
-
-        $alternativeUri = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
-        $subject = PreviewUriBuilder::create(0, $alternativeUri)->withModuleLoading(false);
+        $eventDispatcher = new class() implements EventDispatcherInterface {
+            public function dispatch(object $event)
+            {
+                if ($event instanceof BeforePagePreviewUriGeneratedEvent) {
+                    $alternativeUri = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
+                    $event->setPreviewUri(new Uri($alternativeUri));
+                }
+                return $event;
+            }
+        };
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        $subject = PreviewUriBuilder::create(0)->withModuleLoading(false);
         $attributes = $subject->buildDispatcherAttributes([PreviewUriBuilder::OPTION_SWITCH_FOCUS => false]);
 
         self::assertSame(

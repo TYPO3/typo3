@@ -1385,4 +1385,11 @@ return [
             'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getPreviewUrl' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 7,
+        'restFiles' => [
+            'Deprecation-97544-PreviewURIGenerationRelatedFunctionalityInBackendUtility.rst',
+        ],
+    ],
 ];

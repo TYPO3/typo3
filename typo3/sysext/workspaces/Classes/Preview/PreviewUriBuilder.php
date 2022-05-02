@@ -181,7 +181,7 @@ class PreviewUriBuilder
         if (BackendUtility::isTableLocalizable($table)) {
             $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
             if ($versionRecord[$languageField] > 0) {
-                $additionalParameters .= '&L=' . $versionRecord[$languageField];
+                $additionalParameters .= '&_language=' . $versionRecord[$languageField];
             }
         }
 

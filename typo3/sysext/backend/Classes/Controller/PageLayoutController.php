@@ -544,10 +544,9 @@ class PageLayoutController
             && !in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
             && !VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
-            $languageParameter = $this->currentSelectedLanguage ? ('&L=' . $this->currentSelectedLanguage) : '';
             $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
                 ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-                ->withAdditionalQueryParameters($languageParameter)
+                ->withLanguage($this->currentSelectedLanguage)
                 ->buildDispatcherDataAttributes();
             $viewButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes($previewDataAttributes ?? [])

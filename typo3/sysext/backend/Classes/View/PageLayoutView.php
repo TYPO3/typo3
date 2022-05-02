@@ -698,7 +698,7 @@ class PageLayoutView implements LoggerAwareInterface
             if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                 $attributes = PreviewUriBuilder::create($this->id)
                     ->withRootLine(BackendUtility::BEgetRootLine($this->id))
-                    ->withAdditionalQueryParameters('&L=' . $languageId)
+                    ->withLanguage($languageId)
                     ->serializeDispatcherAttributes();
                 $viewLink = '<a href="#" class="btn btn-default btn-sm" ' . $attributes . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             }

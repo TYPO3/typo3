@@ -235,7 +235,7 @@ class TranslationStatusController extends InfoModuleController
                         ]);
                         // ViewPageLink
                         $info = '<a href="#" ' . $previewUriBuilder
-                                ->withAdditionalQueryParameters('&L=' . $languageId)
+                                ->withLanguage($languageId)
                                 ->serializeDispatcherAttributes()
                             . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                             $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';

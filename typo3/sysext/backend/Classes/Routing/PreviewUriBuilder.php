@@ -17,16 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Routing;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent;
+use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
+use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Substitution for `BackendUtility::getPreviewUrl`.
- * Internally `BackendUtility::getPreviewUrl` is still called due to hooks being invoked
- * there - in the future it basically aims to be a replacement for mentioned function.
+ * Substitution for `BackendUtility::getPreviewUrl` for generating links to Frontend URLs
+ * with a modified scope.
  */
 class PreviewUriBuilder
 {
@@ -38,60 +50,28 @@ class PreviewUriBuilder
     public const OPTION_WINDOW_SCOPE_LOCAL = 'local';
     public const OPTION_WINDOW_SCOPE_GLOBAL = 'global';
 
-    /**
-     * @var int
-     */
-    protected $pageId;
-
-    /**
-     * @var string|null
-     */
-    protected $alternativeUri;
-
-    /**
-     * @var array|null
-     */
-    protected $rootLine;
-
-    /**
-     * @var string|null
-     */
-    protected $section;
-
-    /**
-     * @var string|null
-     */
-    protected $additionalQueryParameters;
-
-    /**
-     * @var string|null
-     * @internal Not used, kept for potential compatibility issues
-     */
-    protected $backPath;
-
-    /**
-     * @var bool
-     */
-    protected $moduleLoading = true;
+    protected int $pageId;
+    protected int $languageId = 0;
+    protected array $rootLine = [];
+    protected string $section = '';
+    protected array $additionalQueryParameters = [];
+    protected bool $moduleLoading = true;
 
     /**
      * @param int $pageId Page ID to be previewed
-     * @param string|null $alternativeUri Alternative URL to be used instead of `/index.php?id=`
      * @return static
      */
-    public static function create(int $pageId, string $alternativeUri = null): self
+    public static function create(int $pageId): self
     {
-        return GeneralUtility::makeInstance(static::class, $pageId, $alternativeUri);
+        return GeneralUtility::makeInstance(static::class, $pageId);
     }
 
     /**
      * @param int $pageId Page ID to be previewed
-     * @param string|null $alternativeUri Alternative URL to be used instead of `/index.php?id=`
      */
-    public function __construct(int $pageId, string $alternativeUri = null)
+    public function __construct(int $pageId)
     {
         $this->pageId = $pageId;
-        $this->alternativeUri = $alternativeUri;
     }
 
     /**
@@ -123,6 +103,20 @@ class PreviewUriBuilder
     }
 
     /**
+     * @param int $language particular language
+     * @return static
+     */
+    public function withLanguage(int $language): self
+    {
+        if ($this->languageId === $language) {
+            return $this;
+        }
+        $target = clone $this;
+        $target->languageId = $language;
+        return $target;
+    }
+
+    /**
      * @param string $section particular section (anchor element)
      * @return static
      */
@@ -137,41 +131,102 @@ class PreviewUriBuilder
     }
 
     /**
-     * @param string $additionalQueryParameters additional URI query parameters
+     * @param string|array $additionalQueryParameters additional URI query parameters
      * @return static
      */
-    public function withAdditionalQueryParameters(string $additionalQueryParameters): self
+    public function withAdditionalQueryParameters(array|string $additionalQueryParameters): self
     {
-        if ($this->additionalQueryParameters === $additionalQueryParameters) {
+        if (is_array($additionalQueryParameters)) {
+            $additionalQueryParams = $additionalQueryParameters;
+        } else {
+            $additionalQueryParams = [];
+            parse_str($additionalQueryParameters, $additionalQueryParams);
+        }
+        $languageId = $this->languageId;
+        if (isset($additionalQueryParams['_language'])) {
+            $languageId = (int)$additionalQueryParams['_language'];
+            unset($additionalQueryParams['_language']);
+        }
+        // No change
+        if ($this->languageId === $languageId && $additionalQueryParams === $this->additionalQueryParameters) {
             return $this;
         }
+
         $target = clone $this;
-        $target->additionalQueryParameters = $additionalQueryParameters;
+        $target->additionalQueryParameters = $additionalQueryParams;
+        $target->languageId = $languageId;
         return $target;
     }
 
     /**
-     * Builds preview URI (still using `BackendUtility::getPreviewUrl`).
-     *
-     * @param array|null $options
-     * @return Uri|null
+     * Builds preview URI.
      */
-    public function buildUri(array $options = null): ?Uri
+    public function buildUri(array $options = null, Context $context = null): ?UriInterface
     {
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         try {
-            $options = $this->enrichOptions($options);
-            $switchFocus = $options[self::OPTION_SWITCH_FOCUS] ?? true;
-            $uriString = BackendUtility::getPreviewUrl(
+            $event = new BeforePagePreviewUriGeneratedEvent(
                 $this->pageId,
-                $this->backPath ?? '',
+                $this->languageId,
                 $this->rootLine,
-                $this->section ?? '',
-                $this->alternativeUri ?? '',
-                $this->additionalQueryParameters ?? '',
-                $switchFocus
+                $this->section,
+                $this->additionalQueryParameters,
+                $context ?? clone GeneralUtility::makeInstance(Context::class),
+                $this->enrichOptions($options)
             );
-            return GeneralUtility::makeInstance(Uri::class, $uriString);
-        } catch (UnableToLinkToPageException $exception) {
+            $eventDispatcher->dispatch($event);
+
+            // If there hasn't been a custom preview URI set by an event listener, generate it.
+            if ($event->getPreviewUri() === null) {
+                $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
+                $pageInfo = BackendUtility::readPageAccess($event->getPageId(), $permissionClause) ?: [];
+                // Check if the page (= its rootline) has a site attached, otherwise just keep the URI as is
+                if ($event->getRootline() === []) {
+                    $event->setRootline(BackendUtility::BEgetRootLine($event->getPageId()));
+                }
+                // prepare custom context for link generation (to allow for example time based previews)
+                $event->setAdditionalQueryParameters(
+                    array_replace_recursive(
+                        $event->getAdditionalQueryParameters(),
+                        $this->getAdditionalQueryParametersForAccessRestrictedPages($pageInfo, $event->getContext(), $event->getRootline())
+                    )
+                );
+
+                // Build the URI with a site as prefix, if configured
+                $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+                try {
+                    $site = $siteFinder->getSiteByPageId($event->getPageId(), $event->getRootline());
+                } catch (SiteNotFoundException $e) {
+                    throw new UnableToLinkToPageException('The page ' . $event->getPageId() . ' had no proper connection to a site, no link could be built.', 1651499353);
+                }
+                try {
+                    $event->setPreviewUri(
+                        $site->getRouter($event->getContext())->generateUri(
+                            $event->getPageId(),
+                            $event->getAdditionalQueryParameters(),
+                            $event->getSection(),
+                            RouterInterface::ABSOLUTE_URL
+                        )
+                    );
+                } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
+                    throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $event->getPageId(), $e->getMessage()), 1651499354, $e);
+                }
+            }
+
+            $event = new AfterPagePreviewUriGeneratedEvent(
+                $event->getPreviewUri(),
+                $event->getPageId(),
+                $event->getLanguageId(),
+                $event->getRootline(),
+                $event->getSection(),
+                $event->getAdditionalQueryParameters(),
+                $event->getContext(),
+                $event->getOptions(),
+            );
+            $eventDispatcher->dispatch($event);
+
+            return $event->getPreviewUri();
+        } catch (UnableToLinkToPageException $e) {
             return null;
         }
     }
@@ -320,5 +375,76 @@ class PreviewUriBuilder
             $attributeNames,
             array_values($attributes)
         );
+    }
+
+    /**
+     * Creates ADMCMD parameters for the "viewpage" extension / frontend
+     */
+    protected function getAdditionalQueryParametersForAccessRestrictedPages(array $pageInfo, Context $context, array $rootLine): array
+    {
+        if ($pageInfo === []) {
+            return [];
+        }
+        // Initialize access restriction values from current page
+        $access = [
+            'fe_group' => (string)($pageInfo['fe_group'] ?? ''),
+            'starttime' => (int)($pageInfo['starttime'] ?? 0),
+            'endtime' => (int)($pageInfo['endtime'] ?? 0),
+        ];
+        // Only check rootline if the current page has not set extendToSubpages itself
+        if (!(bool)($pageInfo['extendToSubpages'] ?? false)) {
+            // remove the current page from the rootline
+            array_shift($rootLine);
+            foreach ($rootLine as $page) {
+                // Skip root node and pages which do not define extendToSubpages
+                if ((int)($page['uid'] ?? 0) === 0 || !(bool)($page['extendToSubpages'] ?? false)) {
+                    continue;
+                }
+                $access['fe_group'] = (string)($page['fe_group'] ?? '');
+                $access['starttime'] = (int)($page['starttime'] ?? 0);
+                $access['endtime'] = (int)($page['endtime'] ?? 0);
+                // Stop as soon as a page in the rootline has extendToSubpages set
+                break;
+            }
+        }
+        $additionalQueryParameters = [];
+        if ((int)$access['fe_group'] === -2) {
+            // -2 means "show at any login". We simulate first available fe_group.
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('fe_groups');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+
+            $activeFeGroupId = $queryBuilder->select('uid')
+                ->from('fe_groups')
+                ->executeQuery()
+                ->fetchOne();
+
+            if ($activeFeGroupId) {
+                $additionalQueryParameters['ADMCMD_simUser'] = $activeFeGroupId;
+            }
+        } elseif (!empty($access['fe_group'])) {
+            $additionalQueryParameters['ADMCMD_simUser'] = $access['fe_group'];
+        }
+        if ($access['starttime'] > $GLOBALS['EXEC_TIME']) {
+            // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
+            // a URL for it
+            $dateAspect = GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $access['starttime']));
+            $context->setAspect('date', $dateAspect);
+            $additionalQueryParameters['ADMCMD_simTime'] = $access['starttime'];
+        }
+        if ($access['endtime'] < $GLOBALS['EXEC_TIME'] && $access['endtime'] !== 0) {
+            // Set access time to page's endtime subtracted one second to ensure PageRepository will find the page and
+            // in turn PageRouter will generate a URL for it
+            $dateAspect = GeneralUtility::makeInstance(
+                DateTimeAspect::class,
+                new \DateTimeImmutable('@' . ($access['endtime'] - 1))
+            );
+            $context->setAspect('date', $dateAspect);
+            $additionalQueryParameters['ADMCMD_simTime'] = ($access['endtime'] - 1);
+        }
+        return $additionalQueryParameters;
     }
 }

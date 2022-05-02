@@ -446,18 +446,15 @@ class RecordProvider extends AbstractProvider
     protected function getViewLink(): string
     {
         $anchorSection = '';
-        $additionalParams = '';
+        $language = 0;
         if ($this->table === 'tt_content') {
             $anchorSection = '#c' . $this->record['uid'];
-            $language = (int)$this->record[$GLOBALS['TCA']['tt_content']['ctrl']['languageField']];
-            if ($language > 0) {
-                $additionalParams = '&L=' . $language;
-            }
+            $language = (int)($this->record[$GLOBALS['TCA']['tt_content']['ctrl']['languageField'] ?? null] ?? 0);
         }
 
         return (string)PreviewUriBuilder::create($this->getPreviewPid())
-            ->withAdditionalQueryParameters($additionalParams)
             ->withSection($anchorSection)
+            ->withLanguage($language)
             ->buildUri();
     }
 

@@ -92,7 +92,7 @@ class StageChangeNotification implements LoggerAwareInterface
             $languageId = $elementRecord[$GLOBALS['TCA'][$elementTable]['ctrl']['languageField'] ?? ''] ?? 0;
             $previewLink = $this->previewUriBuilder->buildUriForPage($pageUid, $languageId);
         } catch (UnableToLinkToPageException $e) {
-            // Generating a preview for a page that is is a delete placeholder
+            // Generating a preview for a page that is a "delete placeholder"
             // in workspaces fails. No preview link in this case.
         }
 

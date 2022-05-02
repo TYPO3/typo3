@@ -1914,6 +1914,7 @@ class BackendUtility
      * @param string $additionalGetVars Additional GET variables.
      * @param bool $switchFocus If TRUE, then the preview window will gain the focus.
      * @return string
+     * @deprecated since TYPO3 v12.0. Use PreviewUriBuilder instead.
      */
     public static function getPreviewUrl(
         $pageUid,
@@ -1924,9 +1925,17 @@ class BackendUtility
         $additionalGetVars = '',
         &$switchFocus = true
     ): string {
+        trigger_error('BackendUtility::getPreviewUrl() will be removed in TYPO3 v13.0. Use PreviewUriBuilder instead.', E_USER_DEPRECATED);
         $viewScript = '/index.php?id=';
         if ($alternativeUrl) {
             $viewScript = $alternativeUrl;
+        }
+
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])) {
+            trigger_error(
+                'Hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'viewOnClickClass\'] will be removed in TYPO3 v13.0. Use BeforePagePreviewUriGeneratedEvent and AfterPagePreviewUriGeneratedEvent instead.',
+                E_USER_DEPRECATED
+            );
         }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] ?? [] as $className) {
@@ -3173,7 +3182,7 @@ class BackendUtility
      * @param array $pageInfo Page record
      * @param \TYPO3\CMS\Core\Context\Context $context
      * @return string Query-parameters
-     * @internal
+     * @internal this method will be removed in TYPO3 v13.0 along with BackendUtility::getPreviewUrl()
      */
     public static function ADMCMD_previewCmds($pageInfo, Context $context)
     {

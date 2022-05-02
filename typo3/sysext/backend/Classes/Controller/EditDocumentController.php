@@ -174,13 +174,6 @@ class EditDocumentController
     protected $popViewId;
 
     /**
-     * Alternative URL for viewing the frontend pages.
-     *
-     * @var string
-     */
-    protected $viewUrl;
-
-    /**
      * @var string|null
      */
     protected $previewCode;
@@ -723,7 +716,6 @@ class EditDocumentController
         $beUser = $this->getBackendUser();
 
         $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
-        $this->viewUrl = (string)($parsedBody['viewUrl'] ?? $queryParams['viewUrl'] ?? '');
         $this->recTitle = (string)($parsedBody['recTitle'] ?? $queryParams['recTitle'] ?? '');
         $this->noView = (bool)($parsedBody['noView'] ?? $queryParams['noView'] ?? false);
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
@@ -763,7 +755,7 @@ class EditDocumentController
         $previewPageRootLine = BackendUtility::BEgetRootLine($previewPageId);
         $previewUrlParameters = $this->getPreviewUrlParameters($previewPageId);
 
-        return PreviewUriBuilder::create($previewPageId, $this->viewUrl)
+        return PreviewUriBuilder::create($previewPageId)
             ->withRootLine($previewPageRootLine)
             ->withSection($anchorSection)
             ->withAdditionalQueryParameters($previewUrlParameters)
@@ -787,7 +779,7 @@ class EditDocumentController
             $recordId = $this->resolvePreviewRecordId($table, $recordArray, $previewConfiguration);
             $language = $recordArray[$languageField];
             if ($language > 0) {
-                $linkParameters['L'] = $language;
+                $linkParameters['_language'] = $language;
             }
         }
 
@@ -1710,7 +1702,6 @@ class EditDocumentController
             >
             ' . $editForm . '
             <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
-            <input type="hidden" name="viewUrl" value="' . htmlspecialchars($this->viewUrl) . '" />
             <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$this->viewId) . '" />
             <input type="hidden" name="closeDoc" value="0" />
             <input type="hidden" name="doSave" value="0" />';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Hook;
 
+use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -26,29 +27,30 @@ use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
- * Befunc service
  * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUtilityHook
 {
     /**
-     * Hooks into the \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick and redirects to the workspace preview
+     * Hooks into the PagePreviewUri and redirects to the workspace preview
      * only if we're in a workspace and if the frontend-preview is disabled.
-     *
-     * @param int $pageUid
-     * @param string $backPath
-     * @param array $rootLine
-     * @param string $anchorSection
-     * @param string $viewScript
-     * @param string $additionalGetVars
-     * @param bool $switchFocus
      */
-    public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus)
+    public function createPageUriForWorkspaceVersion(BeforePagePreviewUriGeneratedEvent $event): void
     {
-        if ($GLOBALS['BE_USER']->workspace !== 0) {
-            $viewScript = (string)GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForWorkspaceSplitPreview((int)$pageUid);
-            $viewScript .= $additionalGetVars ?: '';
+        if ($GLOBALS['BE_USER']->workspace === 0) {
+            return;
         }
+        $uri = GeneralUtility::makeInstance(PreviewUriBuilder::class)
+            ->buildUriForWorkspaceSplitPreview($event->getPageId());
+        $queryString = $uri->getQuery();
+        if ($event->getAdditionalQueryParameters() !== []) {
+            $queryString .= http_build_query($event->getAdditionalQueryParameters(), '', '&', PHP_QUERY_RFC3986);
+            if ($event->getLanguageId() > 0) {
+                $queryString .= '&_language=' . $event->getLanguageId();
+            }
+            $uri = $uri->withQuery($queryString);
+        }
+        $event->setPreviewUri($uri);
     }
 
     /**

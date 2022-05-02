@@ -579,11 +579,8 @@ class PageProvider extends RecordProvider
      */
     protected function getViewLink(): string
     {
-        $language = (int)$this->record['sys_language_uid'];
-        $additionalParams = ($language > 0) ? '&L=' . $language : '';
-
         return (string)PreviewUriBuilder::create($this->getPreviewPid())
-            ->withAdditionalQueryParameters($additionalParams)
+            ->withLanguage((int)($this->record['sys_language_uid'] ?? 0))
             ->buildUri();
     }
 
