@@ -36,6 +36,7 @@ setUpDockerComposeDotEnv() {
         echo "PHP_VERSION=${PHP_VERSION}"
         echo "CHUNKS=${CHUNKS}"
         echo "THISCHUNK=${THISCHUNK}"
+        echo "DOCKER_SELENIUM_IMAGE=${DOCKER_SELENIUM_IMAGE}"
     } > .env
 }
 
@@ -350,6 +351,16 @@ MYSQL_VERSION="5.5"
 POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
+DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:4.0.0-20211102"
+
+# Detect arm64 and use a seleniarm image.
+# In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
+# So for the time being we have to use seleniarm image.
+ARCH=$(uname -m)
+if [ $ARCH = "arm64" ]; then
+    DOCKER_SELENIUM_IMAGE="seleniarm/standalone-chromium:4.1.2-20220227"
+    echo "Architecture" $ARCH "requires" $DOCKER_SELENIUM_IMAGE "to run acceptance tests."
+fi
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
