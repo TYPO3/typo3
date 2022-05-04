@@ -269,7 +269,7 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function resolveSite(array $linkDetails, ?SiteInterface $site): ?SiteInterface
     {
-        if (($site === null || $site instanceof NullSite) && ($linkDetails['type'] ?? '') === 'page') {
+        if (($site === null || $site instanceof NullSite) && ($linkDetails['type'] ?? '') === LinkService::TYPE_PAGE) {
             try {
                 return $this->siteFinder->getSiteByPageId((int)$linkDetails['pageuid']);
             } catch (SiteNotFoundException $e) {
@@ -334,11 +334,6 @@ class RedirectService implements LoggerAwareInterface
             $result = $linkBuilder->build($linkDetails, '', '', $configuration);
             return new Uri($result->getUrl());
         } catch (UnableToLinkException $e) {
-            // This exception is also thrown by the DatabaseRecordTypolinkBuilder
-            $url = $controller->cObj->lastTypoLinkUrl;
-            if (!empty($url)) {
-                return new Uri($url);
-            }
             return null;
         }
     }

@@ -534,8 +534,8 @@ class MenuProcessor implements DataProcessorInterface
      */
     public function replacePlaceholderInRenderedMenuItem($menuItem, $conf)
     {
-        $link = $this->jsonEncode($menuItem['linkHREF']['HREF'] ?? '');
-        $target = $this->jsonEncode($menuItem['linkHREF']['TARGET'] ?? '');
+        $link = $this->jsonEncode($menuItem['linkHREF']['href'] ?? '');
+        $target = $this->jsonEncode($menuItem['linkHREF']['target'] ?? '');
 
         $menuItem['parts']['title'] = str_replace(self::LINK_PLACEHOLDER, $link, $menuItem['parts']['title']);
         $menuItem['parts']['title'] = str_replace(self::TARGET_PLACEHOLDER, $target, $menuItem['parts']['title']);

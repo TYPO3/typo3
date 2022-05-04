@@ -90,24 +90,11 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         if (!empty($linkDetails['fragment'])) {
             $typoScriptConfiguration['section'] = $linkDetails['fragment'];
         }
-        // Build the full link to the record
+        // Build the full link to the record by calling LinkFactory again ("inception")
         $request = $this->contentObjectRenderer->getRequest();
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $localContentObjectRenderer->start($record, $databaseTable, $request);
         $localContentObjectRenderer->parameters = $this->contentObjectRenderer->parameters;
-        $link = (string)$localContentObjectRenderer->typoLink($linkText, $typoScriptConfiguration);
-
-        $this->contentObjectRenderer->lastTypoLinkLD = $localContentObjectRenderer->lastTypoLinkLD;
-        $this->contentObjectRenderer->lastTypoLinkUrl = $localContentObjectRenderer->lastTypoLinkUrl;
-        $this->contentObjectRenderer->lastTypoLinkTarget = $localContentObjectRenderer->lastTypoLinkTarget;
-        $this->contentObjectRenderer->lastTypoLinkResult = $localContentObjectRenderer->lastTypoLinkResult;
-
-        // nasty workaround so typolink stops putting a link together, there is a link already built
-        throw new UnableToLinkException(
-            '',
-            1491130170,
-            null,
-            $link
-        );
+        return $localContentObjectRenderer->createLink($linkText, $typoScriptConfiguration);
     }
 }

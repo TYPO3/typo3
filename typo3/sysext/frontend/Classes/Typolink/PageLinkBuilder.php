@@ -146,13 +146,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if (!isset($conf['extTarget'])) {
                 $conf['extTarget'] = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
             }
-            $this->contentObjectRenderer->typoLink($linkText, $conf);
-            $target = $this->contentObjectRenderer->lastTypoLinkTarget;
-            $url = $this->contentObjectRenderer->lastTypoLinkUrl;
+            $linkResultFromExternalUrl = $this->contentObjectRenderer->createLink($linkText, $conf);
+            $target = $linkResultFromExternalUrl->getTarget();
+            $url = $linkResultFromExternalUrl->getUrl();
             // If the page external URL is resolved into a URL or email, this should be taken into account when compiling the final link result object
-            if ($this->contentObjectRenderer->lastTypoLinkResult) {
-                $linkResultType = $this->contentObjectRenderer->lastTypoLinkResult->getType();
-            }
+            $linkResultType = $linkResultFromExternalUrl->getType();
             if (empty($url)) {
                 throw new UnableToLinkException('Link to external page "' . $page['uid'] . '" does not have a proper target URL, so "' . $linkText . '" was not linked.', 1551621999, null, $linkText);
             }

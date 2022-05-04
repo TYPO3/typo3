@@ -189,7 +189,7 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
         );
 
         $cObj->start(Argument::cetera())->shouldBeCalled();
-        $cObj->typoLink(Argument::cetera())->shouldBeCalled();
+        $cObj->createLink(Argument::cetera())->shouldBeCalled();
 
         $frontendControllerProphecy->getPagesTSconfig()->willReturn($pageTsConfig);
 

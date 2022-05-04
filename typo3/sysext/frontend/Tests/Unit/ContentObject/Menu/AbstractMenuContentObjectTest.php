@@ -615,9 +615,9 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, string $oTarget, $addParams = '', $typeOverride = '', $overrideId = null): void
     {
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->onlyMethods(['typoLink'])
+            ->onlyMethods(['createLink'])
             ->getMock();
-        $cObject->expects(self::once())->method('typoLink')->with('|', $expected);
+        $cObject->expects(self::once())->method('createLink')->with('|', $expected);
         $this->subject->_set('parent_cObj', $cObject);
         $this->subject->_set('mconf', $mconf);
         $this->subject->_call('menuTypoLink', $page, $oTarget, $addParams, $typeOverride, $overrideId);

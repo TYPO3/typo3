@@ -34,7 +34,9 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
 /**
  * Generating navigation/menus from TypoScript
@@ -1184,11 +1186,10 @@ abstract class AbstractMenuContentObject
      * @param int $key Pointer to a key in the $this->menuArr array where the value for that key represents the menu item we are linking to (page record)
      * @param string $altTarget Alternative target
      * @param string $typeOverride Alternative type
-     * @return array Returns an array with A-tag attributes as key/value pairs (HREF, TARGET and data-window-* attrs)
+     * @return array Returns an array with A-tag attributes as key/value pairs ('href', 'target' and data-window-* attrs)
      */
     protected function link($key, $altTarget, $typeOverride)
     {
-        $attrs = [];
         $runtimeCache = $this->getRuntimeCache();
         $MP_var = $this->getMPvar($key);
         $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . $MP_var . ((string)($this->mconf['showAccessRestrictedPages'] ?? '_')) . json_encode($this->menuArr[$key]));
@@ -1223,22 +1224,22 @@ abstract class AbstractMenuContentObject
         $mainTarget = $altTarget ?: (string)$this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
         // Creating link
         $addParams = ($this->mconf['addParams'] ?? '') . ($this->I['val']['additionalParams'] ?? '') . $MP_params;
-        $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
-        // Overriding URL / Target if set to do so:
-        if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
-            $LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
-            if ($this->menuArr[$key]['_OVERRIDE_TARGET']) {
-                $LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
+        try {
+            $linkResult = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
+            // Overriding URL / Target if set to do so:
+            if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
+                $linkResult = $linkResult->withAttribute('href', $this->menuArr[$key]['_OVERRIDE_HREF']);
+                if ($this->menuArr[$key]['_OVERRIDE_TARGET'] ?? false) {
+                    $linkResult = $linkResult->withAttribute('target', $this->menuArr[$key]['_OVERRIDE_TARGET']);
+                }
             }
+            $attrs = $linkResult->getAttributes();
+        } catch (UnableToLinkException $e) {
+            $attrs = [
+                'href' => '',
+                'target' => '',
+            ];
         }
-        // Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites)
-        // as URL if the calculated value is empty. The problem is that no link is generated with a blank URL
-        // and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
-        $attrs['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $tsfe->baseUrl;
-        $attrs['TARGET'] = $LD['target'] ?? '';
-        $attrs = array_merge($attrs, $LD['ATagParams']);
-        // @todo: prefer to use lower-case href / target to be consistent
-        unset($attrs['href'], $attrs['target']);
         $runtimeCache->set($cacheId, $attrs);
 
         // End showAccessRestrictedPages
@@ -1592,9 +1593,9 @@ abstract class AbstractMenuContentObject
      * @param string $addParams Parameters to add to URL
      * @param int|string $typeOverride "type" value, empty string means "not set"
      * @param int|null $overridePageId link to this page instead of the $page[uid] value
-     * @return array See linkData
+     * @return LinkResultInterface
      */
-    protected function menuTypoLink($page, $oTarget, $addParams, $typeOverride, ?int $overridePageId = null)
+    protected function menuTypoLink(array $page, string $oTarget, $addParams, $typeOverride, ?int $overridePageId = null): LinkResultInterface
     {
         $conf = [
             'parameter' => $overridePageId ?? $page['uid'] ?? 0,
@@ -1629,11 +1630,7 @@ abstract class AbstractMenuContentObject
         if ($page['sectionIndex_uid'] ?? false) {
             $conf['section'] = $page['sectionIndex_uid'];
         }
-        $this->parent_cObj->typoLink('|', $conf);
-        $LD = $this->parent_cObj->lastTypoLinkLD;
-        $LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
-        $LD['ATagParams'] = $this->parent_cObj->lastTypoLinkResult ? $this->parent_cObj->lastTypoLinkResult->getAttributes() : [];
-        return $LD;
+        return $this->parent_cObj->createLink('|', $conf);
     }
 
     /**

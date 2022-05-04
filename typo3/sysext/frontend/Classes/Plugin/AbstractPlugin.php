@@ -449,13 +449,13 @@ class AbstractPlugin
      * @param bool $cache See pi_linkTP_keepPIvars
      * @param bool $clearAnyway See pi_linkTP_keepPIvars
      * @param int $altPageId See pi_linkTP_keepPIvars
-     * @return string The URL ($this->cObj->lastTypoLinkUrl)
+     * @return string The URL ($this->cObj->lastTypoLinkResult)
      * @see pi_linkTP_keepPIvars()
      */
     public function pi_linkTP_keepPIvars_url($overrulePIvars = [], $cache = false, $clearAnyway = false, $altPageId = 0)
     {
         $this->pi_linkTP_keepPIvars('|', $overrulePIvars, $cache, $clearAnyway, $altPageId);
-        return $this->cObj->lastTypoLinkUrl;
+        return $this->cObj->lastTypoLinkResult->getUrl();
     }
 
     /**
@@ -484,9 +484,9 @@ class AbstractPlugin
                 $overrulePIvars = array_merge($overrulePIvars, (array)$mergeArr);
                 $str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, false, $altPageId);
             }
-            // If urlOnly flag, return only URL as it has recently be generated.
+            // If urlOnly flag, return only URL as it has recently been generated.
             if ($urlOnly) {
-                $str = $this->cObj->lastTypoLinkUrl;
+                $str = $this->cObj->lastTypoLinkResult->getUrl();
             }
         }
         return $str;

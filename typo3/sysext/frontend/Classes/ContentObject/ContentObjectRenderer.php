@@ -321,6 +321,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * This will be set by typoLink() to the url of the most recent link created.
      *
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0. Use $this->lastTypoLinkResult or call LinkFactory directly
      */
     public $lastTypoLinkUrl = '';
 
@@ -328,11 +329,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * DO. link target.
      *
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0. Use $this->lastTypoLinkResult or call LinkFactory directly
      */
     public $lastTypoLinkTarget = '';
 
     /**
      * @var array
+     * @deprecated will be removed in TYPO3 v13.0. Use $this->lastTypoLinkResult or call LinkFactory directly
      */
     public $lastTypoLinkLD = [];
 
@@ -4469,7 +4472,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $e->getLinkText();
         }
 
-        // If flag "returnLastTypoLinkUrl" set, then just return the latest URL made
+        // If flag "returnLast" set, then just return the latest URL / url / target that was built.
         // This returns the information without being wrapped in a "HtmlLinkResult" object.
         switch ($conf['returnLast'] ?? null) {
             case 'url':
@@ -4521,6 +4524,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $this->lastTypoLinkResult = $linkResult;
         // Now populate all legacy values
+        // @deprecated can be removed in TYPO3 13.0.
         $this->lastTypoLinkTarget = $linkResult->getTarget();
         $this->lastTypoLinkUrl = $linkResult->getUrl();
         $this->lastTypoLinkLD['target'] = htmlspecialchars($linkResult->getTarget());
@@ -4647,8 +4651,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             $conf['additionalParams'] = $urlParameters;
         }
-        $this->createUrl($conf);
-        return $this->lastTypoLinkUrl;
+        return $this->createUrl($conf);
     }
 
     /**

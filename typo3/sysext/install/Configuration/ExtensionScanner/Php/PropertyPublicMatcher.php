@@ -949,4 +949,19 @@ return [
             'Breaking-97065-TYPO3FrontendAlwaysRenderedInUTF-8.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl' => [
+        'restFiles' => [
+            'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget' => [
+        'restFiles' => [
+            'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD' => [
+        'restFiles' => [
+            'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
+        ],
+    ],
 ];
