@@ -105,7 +105,7 @@ class ResourceCompressorTest extends BaseTestCase
     public function compressedCssFileIsFlaggedToNotCompressAgain(): void
     {
         $fileName = 'fooFile.css';
-        $compressedFileName = $fileName . '.gzip';
+        $compressedFileName = $fileName . '.gz';
         $testFileFixture = [
             $fileName => [
                 'file' => $fileName,
@@ -130,7 +130,7 @@ class ResourceCompressorTest extends BaseTestCase
     public function compressedJsFileIsFlaggedToNotCompressAgain(): void
     {
         $fileName = 'fooFile.js';
-        $compressedFileName = $fileName . '.gzip';
+        $compressedFileName = $fileName . '.gz';
         $testFileFixture = [
             $fileName => [
                 'file' => $fileName,

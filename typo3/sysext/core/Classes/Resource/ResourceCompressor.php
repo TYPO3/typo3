@@ -47,6 +47,8 @@ class ResourceCompressor
      */
     protected $createGzipped = false;
 
+    protected string $gzipFileExtension = '.gz';
+
     /**
      * @var int
      */
@@ -55,7 +57,7 @@ class ResourceCompressor
     /**
      * @var string
      */
-    protected $htaccessTemplate = '<FilesMatch "\\.(js|css)(\\.gzip)?$">
+    protected $htaccessTemplate = '<FilesMatch "\\.(js|css)(\\.gz)?$">
 	<IfModule mod_expires.c>
 		ExpiresActive on
 		ExpiresDefault "access plus 7 days"
@@ -368,7 +370,7 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filenameAbsolute);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
-        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . $this->gzipFileExtension)) {
             $contents = $this->compressCssString((string)file_get_contents($filenameAbsolute));
             if (!str_contains($filename, $this->targetDirectory)) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
@@ -422,7 +424,7 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filename);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
         // only create it, if it doesn't exist, yet
-        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . $this->gzipFileExtension)) {
             $contents = (string)file_get_contents($filenameAbsolute);
             $this->writeFileAndCompressed($targetFile, $contents);
         }
@@ -577,7 +579,7 @@ class ResourceCompressor
     }
 
     /**
-     * Writes $contents into file $filename together with a gzipped version into $filename.gz
+     * Writes $contents into file $filename together with a gzipped version into $filename.gz (gzipFileExtension)
      *
      * @param string $filename Target filename
      * @param string $contents File contents
@@ -588,7 +590,7 @@ class ResourceCompressor
         GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $contents);
         if ($this->createGzipped) {
             // create compressed version
-            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . '.gzip', (string)gzencode($contents, $this->gzipCompressionLevel));
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . $this->gzipFileExtension, (string)gzencode($contents, $this->gzipCompressionLevel));
         }
     }
 
@@ -597,13 +599,13 @@ class ResourceCompressor
      * based on HTTP_ACCEPT_ENCODING
      *
      * @param string $filename File name
-     * @return string $filename suffixed with '.gzip' or not - dependent on HTTP_ACCEPT_ENCODING
+     * @return string $filename suffixed with '.gz' or not - dependent on HTTP_ACCEPT_ENCODING
      */
     protected function returnFileReference($filename)
     {
         // if the client accepts gzip and we can create gzipped files, we give him compressed versions
         if ($this->createGzipped && str_contains(GeneralUtility::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip')) {
-            $filename .= '.gzip';
+            $filename .= $this->gzipFileExtension;
         }
         return PathUtility::getRelativePath($this->rootPath, Environment::getPublicPath() . '/') . $filename;
     }
