@@ -2165,10 +2165,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
     {
-        // Set header for charset-encoding unless disabled
-        if (empty($this->config['config']['disableCharsetHeader'])) {
-            $response = $response->withHeader('Content-Type', $this->contentType . '; charset=utf-8');
-        }
+        // Set header for content-type + charset-encoding
+        $response = $response->withHeader('Content-Type', $this->contentType . '; charset=utf-8');
         // Set header for content language unless disabled
         $contentLanguage = $this->language->getTwoLetterIsoCode();
         if (empty($this->config['config']['disableLanguageHeader']) && !empty($contentLanguage)) {

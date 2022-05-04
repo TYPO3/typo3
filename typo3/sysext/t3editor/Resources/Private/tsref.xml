@@ -315,11 +315,6 @@ This value is overridden by the value set in the page-record (field="cache_timeo
 Use this feature in templates supplying other content-types than HTML. That could be an image or a WAP-page!]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
-		<property name="disableCharsetHeader" type="boolean">
-			<description><![CDATA[By default a HTTP header "Content-Type: text/html; charset..." is sent. This option will disable that.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="disablePrefixComment" type="boolean">
 			<description><![CDATA[If set, the stdWrap property "prefixComment" will be disabled, thus preventing any revealing and spaceconsuming comments in the HTML source code.]]></description>
 			<default><![CDATA[
