@@ -55,8 +55,8 @@ class PermissionsCheck
     {
         $this->checkCreateTable($this->testTableName);
         $connection = $this->getConnection();
-        $schemaCurrent = $this->getSchemaManager()->createSchema();
-        $schemaNew = $this->getSchemaManager()->createSchema();
+        $schemaCurrent = $this->createSchemaManager()->createSchema();
+        $schemaNew = $this->createSchemaManager()->createSchema();
         $schemaCurrent
             ->getTable($this->testTableName)
             ->addColumn('index_test', 'integer', ['unsigned' => true]);
@@ -76,8 +76,8 @@ class PermissionsCheck
     {
         if ($this->checkCreateTable($this->testTableName)) {
             $connection = $this->getConnection();
-            $schemaCurrent = $this->getSchemaManager()->createSchema();
-            $schemaNew = $this->getSchemaManager()->createSchema();
+            $schemaCurrent = $this->createSchemaManager()->createSchema();
+            $schemaNew = $this->createSchemaManager()->createSchema();
             $testTable = $schemaCurrent->getTable($this->testTableName);
             $testTable->addColumn('index_test', 'integer', ['unsigned' => true]);
             $testTable->addIndex(['index_test'], 'test_index');
@@ -211,7 +211,7 @@ class PermissionsCheck
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }
 
-    private function getSchemaManager(): AbstractSchemaManager
+    private function createSchemaManager(): AbstractSchemaManager
     {
         return $this->getConnection()->createSchemaManager();
     }

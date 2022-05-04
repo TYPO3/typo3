@@ -1270,8 +1270,7 @@ For each website you need a TypoScript template on the main page of your website
         // an invalid database name would lead to exceptions which would prevent
         // changing the currently configured database.
         $connection = DriverManager::getConnection($connectionParams);
-        // @todo: migrate to createSchemaManager() with Doctrine DBAL 3.2 requirement in TYPO3 v12.0
-        $databaseArray = $connection->getSchemaManager()->listDatabases();
+        $databaseArray = $connection->createSchemaManager()->listDatabases();
         $connection->close();
 
         // Remove organizational tables from database list
@@ -1289,10 +1288,9 @@ For each website you need a TypoScript template on the main page of your website
                 $connectionParams['dbname'] = $databaseName;
                 $connection = DriverManager::getConnection($connectionParams);
 
-                // @todo: migrate to createSchemaManager() with Doctrine DBAL 3.2 requirement in TYPO3 v12.0
                 $databases[] = [
                     'name' => $databaseName,
-                    'tables' => count($connection->getSchemaManager()->listTableNames()),
+                    'tables' => count($connection->createSchemaManager()->listTableNames()),
                     'readonly' => false,
                 ];
                 $connection->close();
