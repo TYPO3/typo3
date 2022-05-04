@@ -98,7 +98,10 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
         if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)) {
             $controller->set_no_cache('Preview active', true);
         }
-        $controller->determineId($request);
+        $directResponse = $controller->determineId($request);
+        if ($directResponse) {
+            return $directResponse;
+        }
         // Check if backend user has read access to this page.
         if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
             && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)

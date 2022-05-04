@@ -67,6 +67,9 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent;
+use TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent;
+use TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent;
 use TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -155,11 +158,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $sys_page = '';
 
     /**
-     * Is set to 1 if a pageNotFound handler could have been called.
-     * @var int
-     * @internal
+     * Is set to > 0 if the page cound not be resolved. This will then result in early returns when resolving the page.
      */
-    public $pageNotFound = 0;
+    protected int $pageNotFound = 0;
 
     /**
      * Array containing a history of why a requested page was not accessible.
@@ -580,33 +581,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * - originalMountPointPage
      * - pageAccessFailureHistory['direct_access']
      * - pageNotFound
-     *
-     * @todo:
-     *
-     * On the first impression the method does too much.
-     * The reasons are manifold.
-     *
-     * 1.) The workflow of the resolution could be elaborated to be less
-     * tangled. Maybe the check of the page id to be below the domain via the
-     * root line doesn't need to be done each time, but for the final result
-     * only.
-     *
-     * 2.) The root line does not need to be directly addressed by this class.
-     * A root line is always related to one page. The rootline could be handled
-     * indirectly by page objects. Page objects still don't exist.
-     *
-     * @param ServerRequestInterface $request
      */
-    public function determineId(ServerRequestInterface $request): void
+    public function determineId(ServerRequestInterface $request): ?ResponseInterface
     {
-        // Call pre processing function for id determination
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] ?? [] as $functionReference) {
-            $parameters = ['parentObject' => $this];
-            GeneralUtility::callUserFunction($functionReference, $parameters, $this);
-        }
-        $timeTracker = $this->getTimeTracker();
-
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
+
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(new BeforePageIsResolvedEvent($this, $request));
+
+        $timeTracker = $this->getTimeTracker();
         $timeTracker->push('determineId rootLine/');
         try {
             // Sets ->page and ->rootline information based on ->id. ->id may change during this operation.
@@ -637,57 +620,65 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->pageNotFound = 1;
         }
         $timeTracker->pull();
-        if ($this->pageNotFound) {
-            switch ($this->pageNotFound) {
-                case 1:
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                        $request,
-                        'ID was not an accessible page',
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED)
-                    );
-                    break;
-                case 2:
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                        $request,
-                        'Subsection was found and not accessible',
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
-                    );
-                    break;
-                case 3:
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'ID was outside the domain',
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
-                    );
-                    break;
-                default:
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'Unspecified error',
-                        $this->getPageAccessFailureReasons()
-                    );
-            }
-            throw new PropagateResponseException($response, 1533931329);
+
+        $event = new AfterPageWithRootLineIsResolvedEvent($this, $request);
+        $event = $eventDispatcher->dispatch($event);
+        if ($event->getResponse()) {
+            return $event->getResponse();
         }
 
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] ?? [] as $functionReference) {
-            $parameters = ['parentObject' => $this];
-            GeneralUtility::callUserFunction($functionReference, $parameters, $this);
+        $response = null;
+        try {
+            $this->evaluatePageNotFound($this->pageNotFound, $request);
+
+            // Setting language and fetch translated page
+            $this->settingLanguage($request);
+            // Check the "content_from_pid" field of the resolved page
+            $this->contentPid = $this->resolveContentPid($request);
+
+            // Update SYS_LASTCHANGED at the very last, when $this->page might be changed
+            // by settingLanguage() and the $this->page was finally resolved
+            $this->setRegisterValueForSysLastChanged($this->page);
+        } catch (PropagateResponseException $e) {
+            $response = $e->getResponse();
         }
 
-        // Setting language and fetch translated page
-        $this->settingLanguage($request);
-        // Check the "content_from_pid" field of the resolved page
-        $this->contentPid = $this->resolveContentPid($request);
+        $event = new AfterPageAndLanguageIsResolvedEvent($this, $request, $response);
+        $eventDispatcher->dispatch($event);
+        return $event->getResponse();
+    }
 
-        // Update SYS_LASTCHANGED at the time, when $this->page might be changed by settingLanguage() and the $this->page was finally resolved
-        $this->setRegisterValueForSysLastChanged($this->page);
-
-        // Call post processing function for id determination:
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+    /**
+     * If $this->pageNotFound is set, then throw an exception to stop further page generation process
+     */
+    protected function evaluatePageNotFound(int $pageNotFoundNumber, ServerRequestInterface $request): void
+    {
+        if (!$pageNotFoundNumber) {
+            return;
         }
+        $response = match ($pageNotFoundNumber) {
+            1 => GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                $request,
+                'ID was not an accessible page',
+                $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED)
+            ),
+            2 => GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                $request,
+                'Subsection was found and not accessible',
+                $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
+            ),
+            3 => GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'ID was outside the domain',
+                $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
+            ),
+            default => GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'Unspecified error',
+                $this->getPageAccessFailureReasons()
+            ),
+        };
+        throw new PropagateResponseException($response, 1533931329);
     }
 
     /**
@@ -1410,12 +1401,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function settingLanguage(ServerRequestInterface $request)
     {
-        $_params = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
-            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
-            GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
-        }
-
         // Get values from site language
         $languageAspect = LanguageAspectFactory::createFromSiteLanguage($this->language);
 
@@ -1491,7 +1476,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
             // Setting the site language if an overlay record was found (which it is only if a language is used)
             // We'll do this every time since the language aspect might have changed now
-            // Doing this ensures that page properties like the page title are returned in the correct language
+            // Doing this ensures that page properties like the page title are resolved in the correct language
             $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getContentId());
         }
 
@@ -1500,14 +1485,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Setting sys_language_uid inside sys-page by creating a new page repository
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        // If default language is not available:
+        // If default language is not available
         if ((!$languageAspect->getContentId() || !$languageAspect->getId())
             && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
         ) {
-            $message = 'Page is not available in default language.';
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $request,
-                $message,
+                'Page is not available in default language.',
                 ['code' => PageAccessFailureReasons::LANGUAGE_DEFAULT_NOT_AVAILABLE]
             );
             throw new PropagateResponseException($response, 1533931423);
@@ -1515,11 +1499,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         if ($languageAspect->getId() > 0) {
             $this->updateRootLinesWithTranslations();
-        }
-
-        $_params = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 

@@ -725,4 +725,34 @@ return [
             'Feature-97544-PSR-14EventsForModifyingPreviewURIs.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'determineId-PreProcessing\']' => [
+        'restFiles' => [
+            'Breaking-97737-Page-relatedHooksInTSFERemoved.rst',
+            'Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'fetchPageId-PostProcessing\']' => [
+        'restFiles' => [
+            'Breaking-97737-Page-relatedHooksInTSFERemoved.rst',
+            'Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'settingLanguage_preProcess\']' => [
+        'restFiles' => [
+            'Breaking-97737-Page-relatedHooksInTSFERemoved.rst',
+            'Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'determineId-PostProc\']' => [
+        'restFiles' => [
+            'Breaking-97737-Page-relatedHooksInTSFERemoved.rst',
+            'Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'settingLanguage_postProcess\']' => [
+        'restFiles' => [
+            'Breaking-97737-Page-relatedHooksInTSFERemoved.rst',
+            'Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved.rst',
+        ],
+    ],
 ];
