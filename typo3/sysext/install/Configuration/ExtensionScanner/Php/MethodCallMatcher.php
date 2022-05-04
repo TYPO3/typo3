@@ -550,7 +550,7 @@ return [
             'Deprecation-74156-TemplateServicesortedKeyListAndTemplateService-removeQueryString.rst',
         ],
     ],
-    '\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules' => [
+    'TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
@@ -4227,7 +4227,7 @@ return [
             'Breaking-88779-RecordListRemoveUnusedCode.rst',
         ],
     ],
-    '\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::sendNotifyEmail' => [
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::sendNotifyEmail' => [
         'numberOfMandatoryArguments' => 4,
         'maximumNumberOfArguments' => 6,
         'restFiles' => [

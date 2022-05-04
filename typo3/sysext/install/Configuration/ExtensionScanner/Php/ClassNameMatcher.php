@@ -1553,7 +1553,7 @@ return [
             'Breaking-91066-MovedInterfacesOfDashboard.rst',
         ],
     ],
-    '\TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface' => [
+    'TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface' => [
         'restFiles' => [
             'Deprecation-96524-DeprecateInlineJavaScriptInDashboard.rst',
         ],
@@ -1861,7 +1861,7 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
-    '\TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper' => [
+    'TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper' => [
         'restFiles' => [
             'Deprecation-95041-DeprecateFuriemailView-helper.rst',
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
