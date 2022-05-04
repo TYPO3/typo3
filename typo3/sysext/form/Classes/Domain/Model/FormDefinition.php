@@ -222,17 +222,25 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  */
 class FormDefinition extends AbstractCompositeRenderable implements VariableRenderableInterface
 {
+
+    /**
+     * The Form's pages
+     *
+     * @var array<int, Page>
+     */
+    protected $renderables = [];
+
     /**
      * The finishers for this form
      *
-     * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface[]
+     * @var list<FinisherInterface>
      */
     protected $finishers = [];
 
     /**
      * Property Mapping Rules, indexed by element identifier
      *
-     * @var \TYPO3\CMS\Form\Mvc\ProcessingRule[]
+     * @var array<string, ProcessingRule>
      */
     protected $processingRules = [];
 
@@ -240,14 +248,14 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Contains all elements of the form, indexed by identifier.
      * Is used as internal cache as we need this really often.
      *
-     * @var \TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface[]
+     * @var array<string, FormElementInterface>
      */
     protected $elementsByIdentifier = [];
 
     /**
      * Form element default values in the format ['elementIdentifier' => 'default value']
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $elementDefaultValues = [];
 
@@ -259,17 +267,17 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     protected $rendererClassName = '';
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected $typeDefinitions;
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected $validatorsDefinition;
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected $finishersDefinition;
 
@@ -291,7 +299,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param string $identifier The Form Definition's identifier, must be a non-empty string.
      * @param array $prototypeConfiguration overrides form defaults of this definition
      * @param string $type element type of this form
-     * @param string $persistenceIdentifier the persistence identifier of the form
+     * @param string|null $persistenceIdentifier the persistence identifier of the form
      * @throws IdentifierNotValidException if the identifier was not valid
      */
     public function __construct(
@@ -447,7 +455,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Get the Form's pages
      *
-     * @return array|Page[] The Form's pages in the correct order
+     * @return array<int, Page> The Form's pages in the correct order
      */
     public function getPages(): array
     {
@@ -471,7 +479,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * If page at $index does not exist, an exception is thrown. @see hasPageWithIndex()
      *
      * @param int $index
-     * @return Page the page, or NULL if none found.
+     * @return Page the page
      * @throws FormException if the specified index does not exist
      */
     public function getPageByIndex(int $index)
@@ -517,7 +525,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Gets all finishers of this form
      *
-     * @return \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface[]
+     * @return list<FinisherInterface>
      */
     public function getFinishers(): array
     {
@@ -557,7 +565,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Get all form elements with their identifiers as keys
      *
-     * @return FormElementInterface[]
+     * @return array<string, FormElementInterface>
      */
     public function getElements(): array
     {
@@ -570,7 +578,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * If identifier does not exist, returns NULL.
      *
      * @param string $elementIdentifier
-     * @return FormElementInterface The element with the given $elementIdentifier or NULL if none found
+     * @return FormElementInterface|null The element with the given $elementIdentifier or NULL if none found
      */
     public function getElementByIdentifier(string $elementIdentifier)
     {
@@ -670,7 +678,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Get all mapping rules
      *
-     * @return \TYPO3\CMS\Form\Mvc\ProcessingRule[]
+     * @return array<string, ProcessingRule>
      * @internal
      */
     public function getProcessingRules(): array
@@ -679,7 +687,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      * @internal
      */
     public function getTypeDefinitions(): array
@@ -688,7 +696,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      * @internal
      */
     public function getValidatorsDefinition(): array
