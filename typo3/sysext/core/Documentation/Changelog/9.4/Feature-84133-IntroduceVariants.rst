@@ -441,50 +441,47 @@ Hide a form element in certain finishers and on the summary step:
         label: 'Summary step'
 
 
-Adding own expression language provider
----------------------------------------
+Adding own expression language providers
+----------------------------------------
 
-If you need to extend the expression language with custom functions you can extend it. For more
-information @see https://symfony.com/doc/4.1/components/expression_language/extending.html#using-expression-providers.
+If you need to extend the expression language with custom functions you
+can extend it. For more information check the official `docs <https://symfony.com/doc/5.4/components/expression_language/extending.html#using-expression-providers>`__
+and the appropriate :ref:`TYPO3 implementation details<t3coreapi:symfony-expression-language>`.
 
-First of all, you have to register the expression language provider within the form setup:
+Register the expression language provider in the extension file
+:file:`Configuration/ExpressionLanguage.php`. Make sure your expression
+language provider implements :php:`Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface`.
 
-.. code-block:: yaml
+.. code-block:: php
+    :caption: EXT:some_extension/Configuration/ExpressionLanguage.php
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              conditionContextDefinition:
-                expressionLanguageProvider:
-                  MyCustomExpressionLanguageProvider:
-                    implementationClassName: '\Vendor\MyExtension\CustomExpressionLanguageProvider'
-
-Your expression language provider must implement :php`Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface`.
-
+    return [
+        'form' => [
+            Vendor\MyExtension\ExpressionLanguage\CustomExpressionLanguageProvider::class,
+        ],
+    ];
 
 Adding own expression language variables
 ----------------------------------------
 
-If you need to add custom variables to the expression language you can extend it.
-Then the variables are ready to be checked in conditions.
+If you need to add custom variables to the expression language you can
+extend it. Then the variables are ready to be checked in conditions.
 
-First of all, you have to register the variable provider within the form setup:
+Register a custom expression language provider as written above and
+provide the expression language variables:
 
-.. code-block:: yaml
+.. code-block:: php
+    :caption: EXT:some_extension/Classes/ExpressionLanguage/CustomExpressionLanguageProvider.php
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              conditionContextDefinition:
-                expressionLanguageVariableProvider:
-                  MyCustomExpressionLanguageVariableProvider:
-                    implementationClassName: '\Vendor\MyExtension\CustomExpressionLanguageVariableProvider'
-
-Your expression language variable provider must implement :php`TYPO3\CMS\Form\Domain\Condition\ExpressionLanguageVariableProviderInterface`.
+    class CustomExpressionLanguageProvider extends AbstractProvider
+    {
+        public function __construct()
+        {
+            $this->expressionLanguageVariables = [
+                'variableA' => 'valueB',
+            ];
+        }
+    }
 
 
 .. index:: Frontend, ext:form

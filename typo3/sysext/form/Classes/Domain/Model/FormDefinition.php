@@ -282,11 +282,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     protected $finishersDefinition;
 
     /**
-     * @var array
-     */
-    protected $conditionContextDefinition;
-
-    /**
      * The persistence identifier of the form
      *
      * @var string
@@ -311,7 +306,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
         $this->typeDefinitions = $prototypeConfiguration['formElementsDefinition'] ?? [];
         $this->validatorsDefinition = $prototypeConfiguration['validatorsDefinition'] ?? [];
         $this->finishersDefinition = $prototypeConfiguration['finishersDefinition'] ?? [];
-        $this->conditionContextDefinition = $prototypeConfiguration['conditionContextDefinition'] ?? [];
 
         if (!is_string($identifier) || strlen($identifier) === 0) {
             throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1477082503);
@@ -702,15 +696,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     public function getValidatorsDefinition(): array
     {
         return $this->validatorsDefinition;
-    }
-
-    /**
-     * @return array
-     * @internal
-     */
-    public function getConditionContextDefinition(): array
-    {
-        return $this->conditionContextDefinition;
     }
 
     /**
