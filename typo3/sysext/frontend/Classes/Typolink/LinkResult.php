@@ -20,10 +20,10 @@ namespace TYPO3\CMS\Frontend\Typolink;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 
 /**
- * This class represents a created link to a resource (page, email etc), coming from linkService
- * and after it was executed by the LinkBuilders (mostly in Frontend) after it is called from Typolink.
+ * This class represents a created link to a resource (page, email etc.), coming from LinkService.
+ * After it was executed by the LinkBuilders (mostly in Frontend) after it is called from Typolink.
  */
-class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
+class LinkResult implements LinkResultInterface, \JsonSerializable
 {
     protected string $type = LinkService::TYPE_UNKNOWN;
     protected string $url;
@@ -192,91 +192,6 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
             return json_encode($this->jsonSerialize(), JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             return '';
-        }
-    }
-
-    /**
-     * Kept for legacy reasons, will be removed in TYPO3 v12.0.
-     * This is built because the LinkBuilders now return an object instead an array with three items.
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
-    {
-        switch ($offset) {
-            case 0:
-            case '0':
-                return $this->url !== '';
-            case 1:
-            case '1':
-                return $this->linkText !== null;
-            case 2:
-            case '2':
-                return $this->target !== '';
-            default:
-                return false;
-        }
-    }
-
-    // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
-    {
-        switch ($offset) {
-            case 0:
-            case '0':
-                return $this->getUrl();
-            case 1:
-            case '1':
-                return $this->getLinkText();
-            case 2:
-            case '2':
-                return $this->getTarget();
-            default:
-                return null;
-        }
-    }
-
-    // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
-    {
-        switch ($offset) {
-            case 0:
-            case '0':
-                $this->url = (string)$value;
-                break;
-            case 1:
-            case '1':
-                $this->linkText = (string)$value;
-                break;
-            case 2:
-            case '2':
-                $this->target = (string)$value;
-                break;
-            default:
-                // do nothing
-        }
-    }
-
-    // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
-    {
-        switch ($offset) {
-            case 0:
-            case '0':
-                $this->url = '';
-                break;
-            case 1:
-            case '1':
-                $this->linkText = null;
-                break;
-            case 2:
-            case '2':
-                $this->target = '';
-                break;
-            default:
-                // do nothing
         }
     }
 }

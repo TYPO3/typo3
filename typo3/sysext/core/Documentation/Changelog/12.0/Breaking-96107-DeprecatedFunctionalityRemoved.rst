@@ -369,6 +369,7 @@ The following fallbacks have been removed:
 - Extbase no longer determines types from doc block annotations for dependency injection methods and actions with validators,
   defined types in method signatures must be used.
 - Accessing core related caches with :php:`cache_` prefix has been removed.
+- Accessing :php:`\TYPO3\CMS\Frontend\Typolink\LinkResult` properties as arrays - ArrayAccess functionality removed
 
 The following database tables have been removed:
 
