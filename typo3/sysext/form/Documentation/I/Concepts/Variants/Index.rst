@@ -596,24 +596,21 @@ Adding own expression language providers
 ----------------------------------------
 
 If you need to extend the expression language with custom functions you
-can extend it. For more information check the official `docs <https://symfony.com/doc/4.1/components/expression_language/extending.html#using-expression-providers>`_.
+can extend it. For more information check the official `docs <https://symfony.com/doc/5.4/components/expression_language/extending.html#using-expression-providers>`__
+and the appropriate :ref:`TYPO3 implementation details<t3coreapi:symfony-expression-language>`.
 
-Register the expression language provider within the form setup and
-provide the functionality you need. Make sure your expression language
-provider implements :php:`Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface`.
+Register the expression language provider in the extension file
+:file:`Configuration/ExpressionLanguage.php`. Make sure your expression
+language provider implements :php:`Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface`.
 
-.. code-block:: yaml
+.. code-block:: php
+    :caption: EXT:some_extension/Configuration/ExpressionLanguage.php
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             conditionContextDefinition:
-               expressionLanguageProvider:
-                 MyCustomExpressionLanguageProvider:
-                   implementationClassName: '\Vendor\MyExtension\CustomExpressionLanguageProvider'
-
+    return [
+        'form' => [
+            Vendor\MyExtension\ExpressionLanguage\CustomExpressionLanguageProvider::class,
+        ],
+    ];
 
 .. _concepts-variants-custom-language-variables:
 
@@ -623,17 +620,18 @@ Adding own expression language variables
 If you need to add custom variables to the expression language you can
 extend it. Then the variables are ready to be checked in conditions.
 
-Register the variable provider within the form setup. Make sure your
-expression language variable provider implements :php:`TYPO3\CMS\Form\Domain\Condition\ExpressionLanguageVariableProviderInterface`.
+Register a custom expression language provider as written above and
+provide the expression language variables:
 
-.. code-block:: yaml
+.. code-block:: php
+    :caption: EXT:some_extension/Classes/ExpressionLanguage/CustomExpressionLanguageProvider.php
 
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             conditionContextDefinition:
-               expressionLanguageVariableProvider:
-                 MyCustomExpressionLanguageVariableProvider:
-                   implementationClassName: '\Vendor\MyExtension\CustomExpressionLanguageVariableProvider'
+    class CustomExpressionLanguageProvider extends AbstractProvider
+    {
+        public function __construct()
+        {
+            $this->expressionLanguageVariables = [
+                'variableA' => 'valueB',
+            ];
+        }
+    }
