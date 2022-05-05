@@ -555,9 +555,9 @@ class DataHandlerHook
                 DatabaseAction::PUBLISH,
                 0,
                 SystemLogErrorClassification::USER_ERROR,
-                'Error: You cannot swap versions for record %s:%d you do not have access to edit!',
+                'Error: You cannot swap versions for record {table}:{uid} you do not have access to edit',
                 -1,
-                [$table, $id]
+                ['table' => $table, 'uid' => $id]
             );
             return;
         }
@@ -584,9 +584,9 @@ class DataHandlerHook
                 DatabaseAction::PUBLISH,
                 0,
                 SystemLogErrorClassification::SYSTEM_ERROR,
-                'Error: Either online or swap version for %s:%d->%d could not be selected!',
+                'Error: Either online or swap version for {table}:{uid}->{offlineUid} could not be selected',
                 -1,
-                [$table, $id, $swapWith]
+                ['table' => $table, 'uid' => $id, 'offlineUid' => $swapWith]
             );
             return;
         }
@@ -598,7 +598,7 @@ class DataHandlerHook
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
         if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || $currentStage === StagesService::STAGE_PUBLISH_ID)) {
-            $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage.', -1, ['workspace' => $workspaceId]);
+            $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', -1, ['workspace' => $workspaceId]);
             return;
         }
         if (!($dataHandler->doesRecordExist($table, $swapWith, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
@@ -607,7 +607,7 @@ class DataHandlerHook
         }
         // Check if the swapWith record really IS a version of the original!
         if (!(((int)$swapVersion['t3ver_oid'] > 0 && (int)$curVersion['t3ver_oid'] === 0) && (int)$swapVersion['t3ver_oid'] === (int)$id)) {
-            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'In offline record, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!');
+            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'In offline record, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must');
             return;
         }
         $versionState = new VersionState($swapVersion['t3ver_state']);
@@ -944,7 +944,7 @@ class DataHandlerHook
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
         if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$newRecordInWorkspace['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage.', -1, ['workspace' => $workspaceId]);
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', -1, ['workspace' => $workspaceId]);
             return;
         }
         if (!($dataHandler->doesRecordExist($table, $id, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $id))) {

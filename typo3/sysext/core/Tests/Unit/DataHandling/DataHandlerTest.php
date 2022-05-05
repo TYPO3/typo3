@@ -1122,7 +1122,7 @@ class DataHandlerTest extends UnitTestCase
         $dataHandlerMock
             ->expects(self::once())
             ->method('log')
-            ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled.', -1, [], 0);
+            ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
 
         $dataHandlerMock->deletePages(0);
     }
