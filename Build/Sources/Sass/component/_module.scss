@@ -188,6 +188,11 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
     // Use overflow-y: auto to ensure ckeditor dropdowns
     // do not conflict with height: 100% on <body>
     overflow-y: auto;
+    // Define an explicit background color to allow
+    // the browser to promote the scroll layer to a composited
+    // layer when performing subpixel font rendering
+    // This avoids expensive redraws on scroll.
+    background-color: $module-bg;
 
     > .callout:first-child {
         margin-top: 0;
