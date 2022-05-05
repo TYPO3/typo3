@@ -481,6 +481,11 @@ class DataHandlerHook
      */
     protected function version_setStage($table, $id, $stageId, string $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = [])
     {
+        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: Table "{table}" does not support versioning', -1, ['table' => $table]);
+            return;
+        }
+
         $record = BackendUtility::getRecord($table, $id);
         if (!is_array($record)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: No Record');

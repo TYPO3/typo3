@@ -356,14 +356,6 @@ class DataHandler implements LoggerAwareInterface
     public $userid;
 
     /**
-     * Will be set to username of be_user executing this script
-     *
-     * @var string
-     * @internal should only be used from within TYPO3 Core
-     */
-    public $username;
-
-    /**
      * Will be set if user is admin
      *
      * @var bool
@@ -641,7 +633,6 @@ class DataHandler implements LoggerAwareInterface
         // Initializing BE_USER
         $this->BE_USER = is_object($altUserObject) ? $altUserObject : $GLOBALS['BE_USER'];
         $this->userid = $this->BE_USER->user['uid'] ?? 0;
-        $this->username = $this->BE_USER->user['username'] ?? '';
         $this->admin = $this->BE_USER->user['admin'] ?? false;
 
         // set correlation id for each new set of data or commands
@@ -977,7 +968,7 @@ class DataHandler implements LoggerAwareInterface
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', -1, ['reason' => $this->BE_USER->errorMsg]);
                     } else {
                         // Here we fetch the PID of the record that we point to...
-                        $tempdata = $this->recordInfo($table, $id, 'pid' . (BackendUtility::isTableWorkspaceEnabled($table) ? ',t3ver_oid,t3ver_wsid,t3ver_stage' : ''));
+                        $tempdata = $this->recordInfo($table, $id);
                         $theRealPid = $tempdata['pid'] ?? null;
                         // Use the new id of the versionized record we're trying to write to:
                         // (This record is a child record of a parent and has already been versionized.)
@@ -1188,7 +1179,7 @@ class DataHandler implements LoggerAwareInterface
             $fieldArray[$sortColumn] = $sortingInfo['sortNumber'];
         } else {
             // Here we fetch the PID of the record that we point to
-            $record = $this->recordInfo($table, abs($pid), 'pid');
+            $record = $this->recordInfo($table, abs($pid));
             // Ensure that the "pid" is not a translated page ID, but the default page ID
             $fieldArray['pid'] = $this->getDefaultLanguagePageId($record['pid']);
         }
@@ -1228,7 +1219,7 @@ class DataHandler implements LoggerAwareInterface
         } else {
             $id = (int)$id;
             // We must use the current values as basis for this!
-            $currentRecord = ($checkValueRecord = $this->recordInfo($table, $id, '*'));
+            $currentRecord = ($checkValueRecord = $this->recordInfo($table, $id));
         }
 
         // Get original language record if available:
@@ -1239,7 +1230,7 @@ class DataHandler implements LoggerAwareInterface
             && ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? false)
             && (int)($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?? 0) > 0
         ) {
-            $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
+            $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
             BackendUtility::workspaceOL($table, $originalLanguageRecord);
             $originalLanguage_diffStorage = json_decode(
                 (string)($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] ?? ''),
@@ -1399,7 +1390,7 @@ class DataHandler implements LoggerAwareInterface
         $curValue = null;
         if ((int)$id !== 0) {
             // Get current value:
-            $curValueRec = $this->recordInfo($table, (int)$id, $field);
+            $curValueRec = $this->recordInfo($table, (int)$id);
             // isset() won't work here, since values can be NULL
             if ($curValueRec !== null && array_key_exists($field, $curValueRec)) {
                 $curValue = $curValueRec[$field];
@@ -4355,7 +4346,7 @@ class DataHandler implements LoggerAwareInterface
             if ($defaultLanguagePageUid !== (int)$uid) {
                 // If the default language page has been moved, localized pages need to be moved to
                 // that pid and sorting, too.
-                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageUid, 'pid,' . $sortColumn);
+                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageUid);
                 $updateFields[$sortColumn] = $originalTranslationRecord[$sortColumn];
                 $destPid = $originalTranslationRecord['pid'];
             }
@@ -6370,7 +6361,7 @@ class DataHandler implements LoggerAwareInterface
                             case 'flex':
                                 if ($value === 'FlexForm_reference') {
                                     // This will fetch the new row for the element
-                                    $origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*');
+                                    $origRecordRow = $this->recordInfo($table, $theUidToUpdate);
                                     if (is_array($origRecordRow)) {
                                         BackendUtility::workspaceOL($table, $origRecordRow);
                                         // Get current data structure and value array:
@@ -6734,7 +6725,7 @@ class DataHandler implements LoggerAwareInterface
             $uid = $this->substNEWwithIDs[$uid];
         }
 
-        $record = $this->recordInfo($table, $uid, '*');
+        $record = $this->recordInfo($table, $uid);
 
         if (!$table || !$uid || !$field || !is_array($record)) {
             return;
@@ -7309,16 +7300,15 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Returns the row of a record given by $table and $id and $fieldList (list of fields, may be '*')
+     * Returns the row of a record given by $table and $id
      * NOTICE: No check for deleted or access!
      *
      * @param string $table Table name
      * @param int $id UID of the record from $table
-     * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,...
      * @return array|null Returns the selected record on success, otherwise NULL.
      * @internal should only be used from within DataHandler
      */
-    public function recordInfo($table, $id, $fieldList)
+    public function recordInfo($table, $id)
     {
         // Skip, if searching for NEW records or there's no TCA table definition
         if ((int)$id === 0 || !isset($GLOBALS['TCA'][$table])) {
@@ -7327,7 +7317,7 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
         $result = $queryBuilder
-            ->select(...GeneralUtility::trimExplode(',', $fieldList))
+            ->select('*')
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
             ->executeQuery()
@@ -7410,7 +7400,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function getRecordProperties($table, $id, $noWSOL = false)
     {
-        $row = $table === 'pages' && !$id ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0] : $this->recordInfo($table, $id, '*');
+        $row = $table === 'pages' && !$id ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0] : $this->recordInfo($table, $id);
         if (!$noWSOL) {
             BackendUtility::workspaceOL($table, $row);
         }
@@ -8478,11 +8468,8 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * List of all tables (those administrators has access to = array_keys of $GLOBALS['TCA'])
-     *
-     * @return array Array of all TCA table names
-     * @internal should only be used from within DataHandler
      */
-    public function compileAdminTables()
+    protected function compileAdminTables(): array
     {
         return array_keys($GLOBALS['TCA']);
     }
@@ -8500,7 +8487,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
-        $curData = $this->recordInfo($table, $uid, '*');
+        $curData = $this->recordInfo($table, $uid);
         $newData = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
             if (($conf['config']['type'] === 'input' || $conf['config']['type'] === 'email') && (string)$curData[$field] !== '') {
@@ -8528,7 +8515,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function fixUniqueInSite(string $table, int $uid): bool
     {
-        $curData = $this->recordInfo($table, $uid, '*');
+        $curData = $this->recordInfo($table, $uid);
         $workspaceId = $this->BE_USER->workspace;
         $newData = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
@@ -8584,7 +8571,7 @@ class DataHandler implements LoggerAwareInterface
     public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = [])
     {
         if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] ?? false) {
-            $prevData = $this->recordInfo($table, $prevUid, '*');
+            $prevData = $this->recordInfo($table, $prevUid);
             $theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
             foreach ($theFields as $field) {
                 if ($GLOBALS['TCA'][$table]['columns'][$field] && ($update || !isset($newData[$field]))) {
@@ -8714,9 +8701,8 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @return string Label to append, containing "%s" for the number
      * @see getCopyHeader()
-     * @internal should only be used from within DataHandler
      */
-    public function prependLabel($table)
+    protected function prependLabel($table)
     {
         return $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['prependAtCopy']);
     }
@@ -9251,7 +9237,7 @@ class DataHandler implements LoggerAwareInterface
     protected function getDefaultLanguagePageId(int $pageId): int
     {
         $localizationParentFieldName = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
-        $row = $this->recordInfo('pages', $pageId, $localizationParentFieldName);
+        $row = $this->recordInfo('pages', $pageId);
         $localizationParent = (int)($row[$localizationParentFieldName] ?? 0);
         if ($localizationParent > 0) {
             return $localizationParent;
@@ -9430,9 +9416,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public function workspaceCannotEditOfflineVersion(string $table, array $record)
     {
-        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
-            return 'Table does not support versioning';
-        }
         $versionState = new VersionState($record['t3ver_state']);
         if ($versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)$record['t3ver_oid'] > 0) {
             return $this->workspaceCannotEditRecord($table, $record);
