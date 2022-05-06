@@ -159,7 +159,7 @@ class ColorElement extends AbstractFormElement
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
-        $mainFieldHtml[] =      '<div class="form-wizards-element form-wizards-element--overflow-visible">';
+        $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
