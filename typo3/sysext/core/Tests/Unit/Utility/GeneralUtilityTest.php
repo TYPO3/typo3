@@ -3562,7 +3562,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider callUserFunctionInvalidParameterDataprovider
-     * @param string $functionName
+     * @param non-empty-string $functionName
      * @param int $expectedException
      */
     public function callUserFunctionWillThrowExceptionForInvalidParameters(string $functionName, int $expectedException): void
