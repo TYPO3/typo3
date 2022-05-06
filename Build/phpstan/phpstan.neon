@@ -9,13 +9,6 @@ parameters:
   # Use local .cache dir instead of /tmp
   tmpDir: ../../.cache/phpstan
 
-  parallel:
-    # Don't be overly greedy on machines with more CPU's to be a good neighbor especially on CI
-    maximumNumberOfProcesses: 5
-    # @todo Process timeout raised as a intermediate solution. This should be further investigated if we can mitigate
-    #       the occurring subprocess timeout issue through other configurations and minimize the execution time again.
-    processTimeout: 900.0
-
   level: 5
 
   bootstrapFiles:
