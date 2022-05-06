@@ -2825,7 +2825,7 @@ class GeneralUtility
      * Calls a user-defined function/method in class
      * Such a function/method should look like this: "function proc(&$params, &$ref) {...}"
      *
-     * @param string $funcName Function/Method reference or Closure.
+     * @param non-empty-string|\Closure $funcName Function/Method reference or Closure.
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
      * @param object|null $ref Reference to be passed along (typically "$this" - being a reference to the calling object)
      * @return mixed Content from method/function call
@@ -2861,6 +2861,7 @@ class GeneralUtility
             // It's a function
             $content = call_user_func_array($funcName, [&$params, &$ref]);
         } else {
+            // Usually this will be annotated by static code analysis tools, but there's no native "not empty string" type
             throw new \InvalidArgumentException('No function named: ' . $funcName, 1294585867);
         }
         return $content;

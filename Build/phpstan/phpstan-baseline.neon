@@ -1666,11 +1666,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Call to function is_object\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:getMaxUploadFileSize\\(\\) should return int but returns float\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
@@ -1688,11 +1683,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 3
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
@@ -2288,11 +2278,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<foo&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\>, class\\-string\\<foo\\>&class\\-string\\<PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\> given\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$funcName of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:callUserFunction\\(\\) expects string, Closure given\\.$#"
-			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
