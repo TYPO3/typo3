@@ -1263,7 +1263,7 @@ services:
           set -x
         fi
         mkdir -p .cache
-        bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction --memory-limit 4G ${TEST_FILE}
+        bin/phpstan analyse -c Build/phpstan/${PHPSTAN_CONFIG_FILE} --no-progress --no-interaction --memory-limit 4G ${TEST_FILE}
       "
 
   phpstan_generate_baseline:
@@ -1278,7 +1278,7 @@ services:
           set -x
         fi
         mkdir -p .cache
-        bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon
+        bin/phpstan analyse -c Build/phpstan/${PHPSTAN_CONFIG_FILE} --no-progress --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon
       "
 
   unit:
