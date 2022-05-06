@@ -1,53 +1,39 @@
 #!/usr/bin/env bash
 
 #
-# TYPO3 core test runner based on docker and docker-compose.
+# TYPO3 core test runner based on docker.
 #
 
-# Function to write a .env file in Build/testing-docker/local
-# This is read by docker-compose and vars defined here are
-# used in Build/testing-docker/local/docker-compose.yml
-setUpDockerComposeDotEnv() {
-    # Delete possibly existing local .env file if exists
-    [ -e .env ] && rm .env
-    # Set up a new .env file for docker-compose
-    {
-        echo "COMPOSE_PROJECT_NAME=local"
-        # To prevent access rights of files created by the testing, the docker image later
-        # runs with the same user that is currently executing the script. docker-compose can't
-        # use $UID directly itself since it is a shell variable and not an env variable, so
-        # we have to set it explicitly here.
-        echo "HOST_UID=$(id -u)"
-        # Your local user
-        echo "CORE_ROOT=${CORE_ROOT}"
-        echo "HOST_USER=${USER}"
-        echo "TEST_FILE=${TEST_FILE}"
-        echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}"
-        echo "PHP_XDEBUG_PORT=${PHP_XDEBUG_PORT}"
-        echo "DOCKER_PHP_IMAGE=${DOCKER_PHP_IMAGE}"
-        echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}"
-        echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}"
-        echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}"
-        echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}"
-        echo "DATABASE_DRIVER=${DATABASE_DRIVER}"
-        echo "MARIADB_VERSION=${MARIADB_VERSION}"
-        echo "MYSQL_VERSION=${MYSQL_VERSION}"
-        echo "POSTGRES_VERSION=${POSTGRES_VERSION}"
-        echo "PHP_VERSION=${PHP_VERSION}"
-        echo "CHUNKS=${CHUNKS}"
-        echo "THISCHUNK=${THISCHUNK}"
-        echo "DOCKER_SELENIUM_IMAGE=${DOCKER_SELENIUM_IMAGE}"
-        echo "IS_CORE_CI=${IS_CORE_CI}"
-        echo "PHPSTAN_CONFIG_FILE=${PHPSTAN_CONFIG_FILE}"
-        echo "IMAGE_PREFIX=${IMAGE_PREFIX}"
-    } > .env
+waitFor() {
+    local HOST=${1}
+    local PORT=${2}
+    local TESTCOMMAND="
+        COUNT=0;
+        while ! nc -z ${HOST} ${PORT}; do
+            if [ \"\${COUNT}\" -gt 10 ]; then
+              echo \"Can not connect to ${HOST} port ${PORT}. Aborting.\";
+              exit 1;
+            fi;
+            sleep 1;
+            COUNT=\$((COUNT + 1));
+        done;
+    "
+    docker run ${DOCKER_COMMON_PARAMS} --name wait-for-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" alpine:3.8 /bin/sh -c "${TESTCOMMAND}"
+}
+
+cleanUp() {
+    ATTACHED_CONTAINERS=$(docker inspect ${NETWORK} --format '{{range $k, $v := .Containers}}{{println $k}}{{end}}')
+    for ATTACHED_CONTAINER in ${ATTACHED_CONTAINERS}; do
+        docker rm -f ${ATTACHED_CONTAINER} >/dev/null
+    done
+    docker network rm ${NETWORK} >/dev/null
 }
 
 # Options -a and -d depend on each other. The function
 # validates input combinations and sets defaults.
 handleDbmsAndDriverOptions() {
     case ${DBMS} in
-        mysql|mariadb)
+        mariadb)
             [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
@@ -56,7 +42,16 @@ handleDbmsAndDriverOptions() {
                 exit 1
             fi
             ;;
-        postgres|sqlite)
+        mysql)
+            [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
+            if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            ;;
+        postgres)
             if [ -n "${DATABASE_DRIVER}" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
                 echo >&2
@@ -64,69 +59,79 @@ handleDbmsAndDriverOptions() {
                 exit 1
             fi
             ;;
+        sqlite)
+            if [ -n "${DATABASE_DRIVER}" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            ;;
+        *)
+            echo "Invalid option -d ${DBMS}" >&2
+            echo >&2
+            echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+            exit 1
+            ;;
     esac
 }
 
 cleanBuildFiles() {
-    # > builds
     echo -n "Clean builds ... "
     rm -rf \
-        ../../../Build/JavaScript \
-        ../../../Build/node_modules
+        Build/JavaScript \
+        Build/node_modules
     echo "done"
 }
 
 cleanCacheFiles() {
-    # > caches
     echo -n "Clean caches ... "
     rm -rf \
-        ../../../.cache \
-        ../../../Build/.cache \
-        ../../../Build/composer/.cache/ \
-        ../../../.php-cs-fixer.cache
+        .cache \
+        Build/.cache \
+        Build/composer/.cache/ \
+        .php-cs-fixer.cache
     echo "done"
 }
 
 cleanTestFiles() {
-    # > composer distribution test
+    # composer distribution test
     echo -n "Clean composer distribution test ... "
     rm -rf \
-        ../../../Build/composer/composer.json \
-        ../../../Build/composer/composer.lock \
-        ../../../Build/composer/public/index.php \
-        ../../../Build/composer/public/typo3 \
-        ../../../Build/composer/public/typo3conf/ext \
-        ../../../Build/composer/var/ \
-        ../../../Build/composer/vendor/
-   echo "done"
+        Build/composer/composer.json \
+        Build/composer/composer.lock \
+        Build/composer/public/index.php \
+        Build/composer/public/typo3 \
+        Build/composer/public/typo3conf/ext \
+        Build/composer/var/ \
+        Build/composer/vendor/
+    echo "done"
 
-    # > test related
+    # test related
     echo -n "Clean test related files ... "
     rm -rf \
-        ../../../Build/phpunit/FunctionalTests-Job-*.xml \
-        ../../../typo3/sysext/core/Tests/AcceptanceTests-Job-* \
-        ../../../typo3/sysext/core/Tests/Acceptance/Support/_generated \
-        ../../../typo3temp/var/tests/
+        Build/phpunit/FunctionalTests-Job-*.xml \
+        typo3/sysext/core/Tests/AcceptanceTests-Job-* \
+        typo3/sysext/core/Tests/Acceptance/Support/_generated \
+        typo3temp/var/tests/
     echo "done"
 }
 
 cleanRenderedDocumentationFiles() {
-    # > caches
     echo -n "Clean rendered documentation files ... "
     rm -rf \
         ../../../typo3/sysext/*/Documentation-GENERATED-temp
     echo "done"
 }
 
-# Load help text into $HELP
-read -r -d '' HELP <<EOF
+loadHelp() {
+    # Load help text into $HELP
+    read -r -d '' HELP <<EOF
 TYPO3 core test runner. Execute acceptance, unit, functional and other test suites in
 a docker based test environment. Handles execution of single test files, sending
 xdebug information to a local IDE and more.
 
 Usage: $0 [options] [file]
-
-No arguments: Run all unit tests with PHP 8.1
 
 Options:
     -s <...>
@@ -191,8 +196,8 @@ Options:
         Only with -s functional|functionalDeprecated|acceptance|acceptanceInstall
         Specifies on which DBMS tests are performed
             - sqlite: (default): use sqlite
-            - mariadb use mariadb
-            - mysql: use MySQL server
+            - mariadb: use mariadb
+            - mysql: use MySQL
             - postgres: use postgres
 
     -i <10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1>
@@ -234,7 +239,7 @@ Options:
         Specifies the PHP minor version to be used
             - 8.1 (default): use PHP 8.1
             - 8.2: use PHP 8.2
-            - 8.3: use PHP 8.3 (alpha/RC)
+            - 8.3: use PHP 8.3
 
     -e "<phpunit options>"
         Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
@@ -260,7 +265,7 @@ Options:
         replay the unit tests in that order.
 
     -n
-        Only with -s cgl|cglGit|cglHeader|cglGitHeader
+        Only with -s cgl|cglGit|cglHeader|cglHeaderGit
         Activate dry-run in CGL check that does not actively change files and only prints broken ones.
 
     -u
@@ -268,9 +273,6 @@ Options:
         Maintenance call to docker pull latest versions of the main php images. The images are updated once
         in a while and only the latest ones are supported by core testing. Use this if weird test errors occur.
         Also removes obsolete image versions of typo3/core-testing-*.
-
-    -v
-        Enable verbose script output. Shows variables and docker commands.
 
     -h
         Show this help.
@@ -290,14 +292,8 @@ Examples:
     # example will currently execute two tests, both of which start with the search term
     ./Build/Scripts/runTests.sh -s functional -e "--filter deleteContent" typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php
 
-    # Run unit tests with PHP 8.1 and have xdebug enabled
-    ./Build/Scripts/runTests.sh -x -p 8.1
-
     # Run functional tests on postgres with xdebug, php 8.1 and execute a restricted set of tests
     ./Build/Scripts/runTests.sh -x -p 8.1 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
-
-    # Run functional tests on mariadb 10.5
-    ./Build/Scripts/runTests.sh -d mariadb -i 10.5
 
     # Run functional tests on postgres 11
     ./Build/Scripts/runTests.sh -s functional -d postgres -k 11
@@ -308,27 +304,12 @@ Examples:
     # Run installer tests of a new instance on sqlite
     ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
 EOF
+}
 
-# Test if docker-compose exists, else exit out with error
-if ! type "docker-compose" > /dev/null; then
-    echo "This script relies on docker and docker-compose. Please install" >&2
+# Test if docker exists, else exit out with error
+if ! type "docker" >/dev/null; then
+    echo "This script relies on docker. Please install" >&2
     exit 1
-fi
-
-# Go to the directory this script is located, so everything else is relative
-# to this dir, no matter from where this script is called.
-THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
-cd "$THIS_SCRIPT_DIR" || exit 1
-
-# Go to directory that contains the local docker-compose.yml file
-cd ../testing-docker/local || exit 1
-
-# Set core root path by checking whether realpath exists
-if ! command -v realpath &> /dev/null; then
-    echo "Consider installing realpath for properly resolving symlinks" >&2
-    CORE_ROOT="${PWD}/../../../"
-else
-    CORE_ROOT=$(realpath "${PWD}/../../../")
 fi
 
 # Option defaults
@@ -338,7 +319,6 @@ PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
-SCRIPT_VERBOSE=0
 PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
@@ -347,36 +327,14 @@ MYSQL_VERSION="8.0"
 POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
-DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:4.0.0-20211102"
-IS_CORE_CI=0
-PHPSTAN_CONFIG_FILE="phpstan.local.neon"
-IMAGE_PREFIX="ghcr.io/typo3/"
 
-# ENV var "CI" is set by gitlab-ci. We use it here to distinct 'local' and 'CI' environment.
-if [ "$CI" == "true" ]; then
-    IS_CORE_CI=1
-    PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
-
-    # Set to empty to use docker hub (default) again. CI only until image cache issue has been solved in infrastructure.
-    IMAGE_PREFIX="typo3/"
-fi
-
-# Detect arm64 and use a seleniarm image.
-# In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
-# So for the time being we have to use seleniarm image.
-ARCH=$(uname -m)
-if [ $ARCH = "arm64" ]; then
-    DOCKER_SELENIUM_IMAGE="seleniarm/standalone-chromium:4.1.2-20220227"
-    echo "Architecture" $ARCH "requires" $DOCKER_SELENIUM_IMAGE "to run acceptance tests."
-fi
-
-# Option parsing
+# Option parsing updates above default vars
 # Reset in case getopts has been used previously in the shell
 OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
+while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhu" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
@@ -436,14 +394,12 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             CGLCHECK_DRY_RUN="-n"
             ;;
         h)
+            loadHelp
             echo "${HELP}"
             exit 0
             ;;
         u)
             TEST_SUITE=update
-            ;;
-        v)
-            SCRIPT_VERBOSE=1
             ;;
         \?)
             INVALID_OPTIONS+=("${OPTARG}")
@@ -465,219 +421,247 @@ if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
     exit 1
 fi
 
+COMPOSER_ROOT_VERSION="13.0.x-dev"
+HOST_UID=$(id -u)
+USERSET=""
+if [ $(uname) != "Darwin" ]; then
+    USERSET="--user $HOST_UID"
+fi
+
+# Go to the directory this script is located, so everything else is relative
+# to this dir, no matter from where this script is called, then go up two dirs.
+THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+cd "$THIS_SCRIPT_DIR" || exit 1
+cd ../../ || exit 1
+CORE_ROOT="${PWD}"
+
+# Create .cache dir: composer and various npm jobs need this.
+mkdir -p .cache
+mkdir -p typo3temp/var/tests
+
+DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:4.0.0-20211102"
+PHPSTAN_CONFIG_FILE="phpstan.local.neon"
+
+IS_CORE_CI=0
+IMAGE_PREFIX="ghcr.io/typo3/"
+DOCKER_INTERACTIVE="-it --init"
+# ENV var "CI" is set by gitlab-ci. We use it here to distinct 'local' and 'CI' environment.
+if [ "$CI" == "true" ]; then
+    IS_CORE_CI=1
+    PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
+    # Set to empty to use docker hub. CI only, until image cache issue has been solved in infrastructure.
+    IMAGE_PREFIX="typo3/"
+    DOCKER_INTERACTIVE=""
+fi
+
+# Detect arm64 and use a seleniarm image.
+# In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
+# So for the time being we have to use seleniarm image.
+ARCH=$(uname -m)
+if [ $ARCH = "arm64" ]; then
+    DOCKER_SELENIUM_IMAGE="seleniarm/standalone-chromium:4.1.2-20220227"
+    echo "Architecture" $ARCH "requires" $DOCKER_SELENIUM_IMAGE "to run acceptance tests."
+fi
+
 # Move "7.4" to "php74", the latter is the docker container name
 DOCKER_PHP_IMAGE=$(echo "php${PHP_VERSION}" | sed -e 's/\.//')
+DOCKER_PHP_IMAGE="${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest"
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
 TEST_FILE=${1}
 
-if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-    set -x
+SUFFIX=$(echo $RANDOM)
+NETWORK="typo3-core-${SUFFIX}"
+docker network create ${NETWORK} >/dev/null
+
+DOCKER_COMMON_PARAMS="${DOCKER_INTERACTIVE} --rm --network $NETWORK --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
+
+if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+    XDEBUG_MODE="-e XDEBUG_MODE=off"
+    XDEBUG_CONFIG=" "
+else
+    XDEBUG_MODE="-e XDEBUG_MODE=debug -e XDEBUG_TRIGGER=foo"
+    XDEBUG_CONFIG="client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal"
 fi
 
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
         handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
-        if [ "${CHUNKS}" -gt 1 ]; then
-            docker-compose run acceptance_split
+        if [ "${CHUNKS}" -gt 0 ]; then
+            docker run ${DOCKER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
+            COMMAND="bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html"
+        else
+            COMMAND="bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html"
         fi
+        docker run -d --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${DOCKER_SELENIUM_IMAGE} >/dev/null
+        docker run -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${DOCKER_PHP_IMAGE} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        waitFor chrome 4444
+        waitFor web 8000
         case ${DBMS} in
-            mysql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_application_mysql
-                docker-compose run acceptance_application_mysql
-                SUITE_EXIT_CODE=$?
-                ;;
             mariadb)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_application_mariadb
-                docker-compose run acceptance_application_mariadb
+                docker run --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mariadb:${MARIADB_VERSION} >/dev/null
+                waitFor mariadb-ac-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-mariadb ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
+                ;;
+            mysql)
+                docker run --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mysql:${MYSQL_VERSION} >/dev/null
+                waitFor mysql-ac-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mysql-ac-${SUFFIX}"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-mysql ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_acceptance_application_postgres
-                docker-compose run acceptance_application_postgres
+                docker run --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid postgres:${POSTGRES_VERSION}-alpine >/dev/null
+                waitFor postgres-ac-${SUFFIX} 5432
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=func_test -e typo3DatabaseUsername=funcu -e typo3DatabasePassword=funcp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-postgres ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
-                docker-compose run prepare_acceptance_application_sqlite
-                docker-compose run acceptance_application_sqlite
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
-            *)
-                echo "Acceptance tests don't run with DBMS ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-                ;;
         esac
-        docker-compose down
         ;;
     acceptanceInstall)
         handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
+        docker run -d --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${DOCKER_SELENIUM_IMAGE} >/dev/null
+        docker run -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${DOCKER_PHP_IMAGE} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        waitFor chrome 4444
+        waitFor web 8000
         case ${DBMS} in
-            mysql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_install_mysql
-                docker-compose run acceptance_install_mysql
+            mariadb)
+                docker run --name mariadb-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mariadb:${MARIADB_VERSION} >/dev/null
+                waitFor mariadb-ac-install-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mariadb-ac-install-${SUFFIX}"
+                COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
-            mariadb)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_install_mariadb
-                docker-compose run acceptance_install_mariadb
+            mysql)
+                docker run --name mysql-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mysql:${MYSQL_VERSION} >/dev/null
+                waitFor mysql-ac-install-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mysql-ac-install-${SUFFIX}"
+                COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_acceptance_install_postgres
-                docker-compose run acceptance_install_postgres
+                docker run --name postgres-ac-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid postgres:${POSTGRES_VERSION}-alpine >/dev/null
+                waitFor postgres-ac-install-${SUFFIX} 5432
+                CONTAINERPARAMS="-e typo3InstallPostgresqlDatabasePort=5432 -e typo3InstallPostgresqlDatabaseName=${USER} -e typo3InstallPostgresqlDatabaseHost=postgres-ac-install-${SUFFIX} -e typo3InstallPostgresqlDatabaseUsername=funcu -e typo3InstallPostgresqlDatabasePassword=funcp"
+                COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=postgresql --xml reports.xml --html reports.html"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
-                docker-compose run prepare_acceptance_install_sqlite
-                docker-compose run acceptance_install_sqlite
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=sqlite --xml reports.xml --html reports.html"
+                docker run ${DOCKER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
-            *)
-                echo "Acceptance install tests don't run with DBMS ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-                ;;
         esac
-        docker-compose down
         ;;
     buildCss)
-        setUpDockerComposeDotEnv
-        docker-compose run build_css
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt css"
+        docker run ${DOCKER_COMMON_PARAMS} --name build-css-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     buildJavascript)
-        setUpDockerComposeDotEnv
-        docker-compose run build_javascript
+        COMMAND="cd Build/; npm ci || exit 1; node_modules/grunt/bin/grunt scripts"
+        docker run ${DOCKER_COMMON_PARAMS} --name build-js-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     cgl)
         # Active dry-run for cgl needs not "-n" but specific options
         if [ -n "${CGLCHECK_DRY_RUN}" ]; then
             CGLCHECK_DRY_RUN="--dry-run --diff"
         fi
-        setUpDockerComposeDotEnv
-        docker-compose run cgl_all
+        COMMAND="php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection --config=Build/php-cs-fixer/config.php typo3/"
+        docker run ${DOCKER_COMMON_PARAMS} --name cgl-${SUFFIX} ${DOCKER_PHP_IMAGE} ${COMMAND}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     cglGit)
-        setUpDockerComposeDotEnv
-        docker-compose run cgl_git
+        docker run ${DOCKER_COMMON_PARAMS} --name cgl-git-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/cglFixMyCommit.sh ${CGLCHECK_DRY_RUN}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     cglHeader)
         # Active dry-run for cgl needs not "-n" but specific options
         if [ -n "${CGLCHECK_DRY_RUN}" ]; then
             CGLCHECK_DRY_RUN="--dry-run --diff"
         fi
-        setUpDockerComposeDotEnv
-        docker-compose run cgl_header_all
+        COMMAND="php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection --config=Build/php-cs-fixer/header-comment.php typo3/"
+        docker run ${DOCKER_COMMON_PARAMS} --name cgl-header-${SUFFIX} ${DOCKER_PHP_IMAGE} ${COMMAND}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     cglHeaderGit)
-        setUpDockerComposeDotEnv
-        docker-compose run cgl_header_git
+        docker run ${DOCKER_COMMON_PARAMS} --name cgl-header-git-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/cglFixMyCommitFileHeader.sh ${CGLCHECK_DRY_RUN}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkAnnotations)
-        setUpDockerComposeDotEnv
-        docker-compose run check_annotations
+        docker run ${DOCKER_COMMON_PARAMS} --name check-annotations-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/annotationChecker.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkTestClassFinal)
-        setUpDockerComposeDotEnv
-        docker-compose run check_test_class_final
+        docker run ${DOCKER_COMMON_PARAMS} --name check-test-classes-final-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/testClassFinalChecker.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkTestMethodsPrefix)
-        setUpDockerComposeDotEnv
-        docker-compose run check_test_methods_prefix
+        docker run ${DOCKER_COMMON_PARAMS} --name check-test-methods-prefix-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/testMethodPrefixChecker.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkBom)
-        setUpDockerComposeDotEnv
-        docker-compose run check_bom
+        docker run ${DOCKER_COMMON_PARAMS} --name check-utf8bom-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/checkUtf8Bom.sh
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkComposer)
-        setUpDockerComposeDotEnv
-        docker-compose run check_composer
+        docker run ${DOCKER_COMMON_PARAMS} --name check-composer-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/checkIntegrityComposer.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkExceptionCodes)
-        setUpDockerComposeDotEnv
-        docker-compose run check_exception_codes
+        docker run ${DOCKER_COMMON_PARAMS} --name check-exception-codes-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/duplicateExceptionCodeCheck.sh
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkExtensionScannerRst)
-        setUpDockerComposeDotEnv
-        docker-compose run check_extension_scanner_rst
+        docker run ${DOCKER_COMMON_PARAMS} --name check-extensionscanner-rst-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/extensionScannerRstFileReferences.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkFilePathLength)
-        setUpDockerComposeDotEnv
-        docker-compose run check_file_path_length
+        docker run ${DOCKER_COMMON_PARAMS} --name check-file-path-length-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/maxFilePathLength.sh
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkGitSubmodule)
-        setUpDockerComposeDotEnv
-        docker-compose run check_git_submodule
+        COMMAND="if [ \$(git submodule status 2>&1 | wc -l) -ne 0 ]; then echo \"Found a submodule definition in repository\"; exit 1; fi"
+        docker run ${DOCKER_COMMON_PARAMS} --name check-git-submodule-${SUFFIX} ${DOCKER_PHP_IMAGE} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkGruntClean)
-        setUpDockerComposeDotEnv
-        docker-compose run check_grunt_clean
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt build; cd ..; git add *; git status; git status | grep -q \"nothing to commit, working tree clean\""
+        docker run ${DOCKER_COMMON_PARAMS} --name check-grunt-clean-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkIsoDatabase)
-        setUpDockerComposeDotEnv
-        docker-compose run check_iso_database
+        COMMAND="git checkout -- composer.json; git checkout -- composer.lock; php -dxdebug.mode=off Build/Scripts/updateIsoDatabase.php; git add *; git status; git status | grep -q \"nothing to commit, working tree clean\""
+        docker run ${DOCKER_COMMON_PARAMS} --name check-iso-database-${SUFFIX} ${DOCKER_PHP_IMAGE} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkNamespaceIntegrity)
-        setUpDockerComposeDotEnv
-        docker-compose run check_namespace_integrity
+        docker run ${DOCKER_COMMON_PARAMS} --name check-namespaces-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/checkNamespaceIntegrity.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkPermissions)
-        setUpDockerComposeDotEnv
-        docker-compose run check_permissions
+        docker run ${DOCKER_COMMON_PARAMS} --name check-permissions-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/checkFilePermissions.sh
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     checkRst)
-        setUpDockerComposeDotEnv
-        docker-compose run check_rst
+        docker run ${DOCKER_COMMON_PARAMS} --name check-rst-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/validateRstFiles.php
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     clean)
         cleanBuildFiles
@@ -698,183 +682,165 @@ case ${TEST_SUITE} in
         cleanTestFiles
         ;;
     composerInstall)
-        setUpDockerComposeDotEnv
-        docker-compose run composer_install
+        docker run ${DOCKER_COMMON_PARAMS} --name composer-install-${SUFFIX} -e COMPOSER_CACHE_DIR=.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${DOCKER_PHP_IMAGE} composer install --no-progress --no-interaction
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     composerInstallMax)
-        setUpDockerComposeDotEnv
-        docker-compose run composer_install_max
+        COMMAND="composer config --unset platform.php; composer update --no-progress --no-interaction; composer dumpautoload"
+        docker run ${DOCKER_COMMON_PARAMS} --name composer-install-max-${SUFFIX} -e COMPOSER_CACHE_DIR=.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${DOCKER_PHP_IMAGE} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     composerInstallMin)
-        setUpDockerComposeDotEnv
-        docker-compose run composer_install_min
+        COMMAND="composer config platform.php ${PHP_VERSION}.0; composer update --prefer-lowest --no-progress --no-interaction; composer dumpautoload"
+        docker run ${DOCKER_COMMON_PARAMS} --name composer-install-min-${SUFFIX} -e COMPOSER_CACHE_DIR=.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${DOCKER_PHP_IMAGE} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     composerTestDistribution)
-        setUpDockerComposeDotEnv
-        docker-compose run composer_test_distribution
+        COMMAND="cd Build/composer; rm -rf composer.json composer.lock public/index.php public/typo3 public/typo3conf/ext var/ vendor/; cp composer.dist.json composer.json; composer update --no-progress --no-interaction"
+        docker run ${DOCKER_COMMON_PARAMS} --name composer-test-distribution-${SUFFIX} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${DOCKER_PHP_IMAGE} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     composerValidate)
-        setUpDockerComposeDotEnv
-        docker-compose run composer_validate
+        docker run ${DOCKER_COMMON_PARAMS} --name composer-validate-${SUFFIX} ${DOCKER_PHP_IMAGE} composer validate
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     functional)
         handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
         if [ "${CHUNKS}" -gt 0 ]; then
-            docker-compose run functional_split
+            docker run ${DOCKER_COMMON_PARAMS} --name func-splitter-${SUFFIX} ${DOCKER_PHP_IMAGE} php -dxdebug.mode=off Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
+            COMMAND="bin/phpunit -c Build/phpunit/FunctionalTests-Job-${THISCHUNK}.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
+        else
+            COMMAND="bin/phpunit -c Build/phpunit/FunctionalTests.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
         fi
+        docker run --name redis-func-${SUFFIX} --network ${NETWORK} -d redis:4-alpine >/dev/null
+        docker run --name memcached-func-${SUFFIX} --network ${NETWORK} -d memcached:1.5-alpine >/dev/null
+        waitFor redis-func-${SUFFIX} 6379
+        waitFor memcached-func-${SUFFIX} 11211
+        DOCKER_COMMON_PARAMS="${DOCKER_COMMON_PARAMS} -e typo3TestingRedisHost=redis-func-${SUFFIX} -e typo3TestingMemcachedHost=memcached-func-${SUFFIX}"
         case ${DBMS} in
             mariadb)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mariadb
-                docker-compose run functional_mariadb
+                docker run --name mariadb-func-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mariadb:${MARIADB_VERSION} >/dev/null
+                waitFor mariadb-func-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mariadb-func-${SUFFIX} -e typo3DatabasePassword=funcp"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mysql
-                docker-compose run functional_mysql
+                docker run --name mysql-func-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mysql:${MYSQL_VERSION} >/dev/null
+                waitFor mysql-func-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mysql-func-${SUFFIX} -e typo3DatabasePassword=funcp"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_functional_postgres
-                docker-compose run functional_postgres
+                docker run --name postgres-func-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid postgres:${POSTGRES_VERSION}-alpine >/dev/null
+                waitFor postgres-func-${SUFFIX} 5432
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=bamboo -e typo3DatabaseUsername=funcu -e typo3DatabaseHost=postgres-func-${SUFFIX} -e typo3DatabasePassword=funcp"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
-                # sqlite has a tmpfs as typo3temp/var/tests/functional-sqlite-dbs/
-                # Since docker is executed as root (yay!), the path to this dir is owned by
-                # root if docker creates it. Thank you, docker. We create the path beforehand
-                # to avoid permission issues on host filesystem after execution.
+                # create sqlite tmpfs mount typo3temp/var/tests/functional-sqlite-dbs/ to avoid permission issues
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
-                docker-compose run prepare_functional_sqlite
-                docker-compose run functional_sqlite
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
-            *)
-                echo "Functional tests don't run with DBMS ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-                ;;
         esac
-        docker-compose down
         ;;
     functionalDeprecated)
         handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
+        COMMAND="bin/phpunit -c Build/phpunit/FunctionalTestsDeprecated.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
+        docker run --name redis-func-dep-${SUFFIX} --network ${NETWORK} -d redis:4-alpine >/dev/null
+        docker run --name memcached-func-dep-${SUFFIX} --network ${NETWORK} -d memcached:1.5-alpine >/dev/null
+        waitFor redis-func-dep-${SUFFIX} 6379
+        waitFor memcached-func-dep-${SUFFIX} 11211
+        DOCKER_COMMON_PARAMS="${DOCKER_COMMON_PARAMS} -e typo3TestingRedisHost=redis-func-dep-${SUFFIX} -e typo3TestingMemcachedHost=memcached-func-dep-${SUFFIX}"
         case ${DBMS} in
             mariadb)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mariadb
-                docker-compose run functional_deprecated_mariadb
+                docker run --name mariadb-func-dep-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mariadb:${MARIADB_VERSION} >/dev/null
+                waitFor mariadb-func-dep-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mariadb-func-dep-${SUFFIX} -e typo3DatabasePassword=funcp"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mysql
-                docker-compose run functional_deprecated_mysql
+                docker run --name mysql-func-dep-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid mysql:${MYSQL_VERSION} >/dev/null
+                waitFor mysql-func-dep-${SUFFIX} 3306
+                CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mysql-func-dep-${SUFFIX} -e typo3DatabasePassword=funcp"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_functional_postgres
-                docker-compose run functional_deprecated_postgres
+                docker run --name postgres-func-dep-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid postgres:${POSTGRES_VERSION}-alpine >/dev/null
+                waitFor postgres-func-dep-${SUFFIX} 5432
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=bamboo -e typo3DatabaseUsername=funcu -e typo3DatabaseHost=postgres-func-dep-${SUFFIX} -e typo3DatabasePassword=funcp"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
-                # sqlite has a tmpfs as typo3temp/var/tests/functional-sqlite-dbs/
-                # Since docker is executed as root (yay!), the path to this dir is owned by
-                # root if docker creates it. Thank you, docker. We create the path beforehand
-                # to avoid permission issues on host filesystem after execution.
+                # create sqlite tmpfs mount typo3temp/var/tests/functional-sqlite-dbs/ to avoid permission issues
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
-                docker-compose run prepare_functional_sqlite
-                docker-compose run functional_deprecated_sqlite
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                docker run ${DOCKER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${DOCKER_PHP_IMAGE} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
-            *)
-                echo "Deprecated functional tests don't run with DBMS ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-                ;;
         esac
-        docker-compose down
         ;;
     lintPhp)
-        setUpDockerComposeDotEnv
-        docker-compose run lint_php
+        COMMAND="php -v | grep '^PHP'; find typo3/ -name \\*.php -print0 | xargs -0 -n1 -P4 php -dxdebug.mode=off -l >/dev/null"
+        docker run ${DOCKER_COMMON_PARAMS} --name lint-php-${SUFFIX} ${DOCKER_PHP_IMAGE} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     lintScss)
-        setUpDockerComposeDotEnv
-        docker-compose run lint_scss
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt stylelint"
+        docker run ${DOCKER_COMMON_PARAMS} --name lint-css-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     lintTypescript)
-        setUpDockerComposeDotEnv
-        docker-compose run lint_typescript
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt eslint"
+        docker run ${DOCKER_COMMON_PARAMS} --name lint-typescript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     lintHtml)
-        setUpDockerComposeDotEnv
-        docker-compose run lint_html
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt exec:lintspaces"
+        docker run ${DOCKER_COMMON_PARAMS} --name lint-html-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     listExceptionCodes)
-        setUpDockerComposeDotEnv
-        docker-compose run list_exception_codes
+        docker run ${DOCKER_COMMON_PARAMS} --name list-exception-codes-${SUFFIX} ${DOCKER_PHP_IMAGE} Build/Scripts/duplicateExceptionCodeCheck.sh -p
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     phpstan)
-        setUpDockerComposeDotEnv
-        docker-compose run phpstan
+        COMMAND="php -dxdebug.mode=off bin/phpstan analyse -c Build/phpstan/${PHPSTAN_CONFIG_FILE} --no-progress --no-interaction --memory-limit 4G ${TEST_FILE}"
+        docker run ${DOCKER_COMMON_PARAMS} --name phpstan-${SUFFIX} ${DOCKER_PHP_IMAGE} sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     phpstanGenerateBaseline)
-        setUpDockerComposeDotEnv
-        docker-compose run phpstan_generate_baseline
+        COMMAND="php -dxdebug.mode=off bin/phpstan analyse -c Build/phpstan/${PHPSTAN_CONFIG_FILE} --no-progress --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon"
+        docker run ${DOCKER_COMMON_PARAMS} --name phpstan-baseline-${SUFFIX} ${DOCKER_PHP_IMAGE} sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     unit)
-        setUpDockerComposeDotEnv
-        docker-compose run unit
+        docker run ${DOCKER_COMMON_PARAMS} --name unit-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${DOCKER_PHP_IMAGE} bin/phpunit -c Build/phpunit/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     unitDeprecated)
-        setUpDockerComposeDotEnv
-        docker-compose run unitDeprecated
+        docker run ${DOCKER_COMMON_PARAMS} --name unit-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${DOCKER_PHP_IMAGE} bin/phpunit -c Build/phpunit/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     unitJavascript)
-        setUpDockerComposeDotEnv
-        docker-compose run unitJavascript
+        COMMAND="cd Build; npm ci || exit 1; cd ..; Build/node_modules/karma/bin/karma start Build/JSUnit/karma.conf.ci.js --single-run"
+        docker run ${DOCKER_COMMON_PARAMS} --name unit-javascript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_PREFIX}core-testing-nodejs18-chrome:latest /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     unitRandom)
-        setUpDockerComposeDotEnv
-        docker-compose run unitRandom
+        docker run ${DOCKER_COMMON_PARAMS} --name unit-random-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${DOCKER_PHP_IMAGE} bin/phpunit -c Build/phpunit/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE}
         SUITE_EXIT_CODE=$?
-        docker-compose down
         ;;
     update)
         # prune unused, dangling local volumes
@@ -891,6 +857,7 @@ case ${TEST_SUITE} in
         echo ""
         ;;
     *)
+        loadHelp
         echo "Invalid -s option argument ${TEST_SUITE}" >&2
         echo >&2
         echo "${HELP}" >&2
@@ -898,30 +865,9 @@ case ${TEST_SUITE} in
         ;;
 esac
 
-case ${DBMS} in
-    mariadb)
-        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MARIADB_VERSION}  driver ${DATABASE_DRIVER}"
-        ;;
-    mysql)
-        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER}"
-        ;;
-    postgres)
-        DBMS_OUTPUT="DBMS: ${DBMS}  version ${POSTGRES_VERSION}"
-        ;;
-    sqlite)
-        DBMS_OUTPUT="DBMS: ${DBMS}"
-        ;;
-    *)
-        DBMS_OUTPUT="DBMS not recognized: $DBMS"
-        exit 1
-        ;;
-esac
+cleanUp
 
 # Print summary
-if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-    # Turn off verbose mode for the script summary
-    set +x
-fi
 echo "" >&2
 echo "###########################################################################" >&2
 echo "Result of ${TEST_SUITE}" >&2
@@ -931,10 +877,22 @@ else
     echo "Environment: local" >&2
 fi
 echo "PHP: ${PHP_VERSION}" >&2
-if [[ ${TEST_SUITE} =~ ^(functional|acceptance|acceptanceInstall)$ ]]; then
-    echo "${DBMS_OUTPUT}" >&2
+if [[ ${TEST_SUITE} =~ ^(functional|functionalDeprecated|acceptance|acceptanceInstall)$ ]]; then
+    case "${DBMS}" in
+        mariadb)
+            echo "DBMS: ${DBMS}  version ${MARIADB_VERSION}  driver ${DATABASE_DRIVER}" >&2
+            ;;
+        mysql)
+            echo "DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER}" >&2
+            ;;
+        postgres)
+            echo "DBMS: ${DBMS}  version ${POSTGRES_VERSION}" >&2
+            ;;
+        sqlite)
+            echo "DBMS: ${DBMS}" >&2
+            ;;
+    esac
 fi
-
 if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
     echo "SUCCESS" >&2
 else
