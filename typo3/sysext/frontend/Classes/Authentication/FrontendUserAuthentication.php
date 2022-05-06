@@ -533,7 +533,9 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function updateOnlineTimestamp()
     {
-        if (!is_array($this->user) || !($this->user['uid'] ?? 0)
+        if (!is_array($this->user)
+            || !($this->user['uid'] ?? 0)
+            || $this->user['uid'] === PHP_INT_MAX // Simulated preview user (flagged with PHP_INT_MAX uid)
             || ($this->user['is_online'] ?? 0) >= $GLOBALS['EXEC_TIME'] - 60) {
             return;
         }
