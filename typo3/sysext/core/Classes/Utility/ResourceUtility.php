@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Utility class for the File Abstraction Layer (aka subpackage Resource in EXT:core)
+ *
+ * @deprecated This class will be removed in TYPO3 v13.
  */
 class ResourceUtility
 {
@@ -33,6 +35,10 @@ class ResourceUtility
      */
     public static function recursiveFileListSortingHelper($elementA, $elementB)
     {
+        trigger_error(
+            'Class ' . __CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13. Implement method "recursiveFileListSortingHelper" in your extension if needed.',
+            E_USER_DEPRECATED,
+        );
         if (!str_contains($elementA, '/')) {
             // first element is a file
             if (!str_contains($elementB, '/')) {
@@ -74,6 +80,13 @@ class ResourceUtility
      */
     public static function nameCompareSortingHelper($elementA, $elementB)
     {
+        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        if (($backTrace[0]['file'] ?? '') !== __FILE__) {
+            trigger_error(
+                'Class ' . __CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13. Implement method "nameCompareSortingHelper" in your extension if needed.',
+                E_USER_DEPRECATED,
+            );
+        }
         $result = strnatcasecmp($elementA, $elementB);
         if ($result === 0) {
             // Both are same in case insensitive so it's ok to check then now unnaturally.

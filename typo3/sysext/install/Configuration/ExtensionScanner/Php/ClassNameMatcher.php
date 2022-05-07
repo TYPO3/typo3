@@ -1974,4 +1974,9 @@ return [
             'Deprecation-96641-UnusedHookRelatedUrlProcessorInterface.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ResourceUtility' => [
+        'restFiles' => [
+            'Deprecation-97576-TYPO3CMSCoreUtilityResourceUtility.rst',
+        ],
+    ],
 ];
