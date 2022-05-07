@@ -52,24 +52,24 @@ class GeneralUtility
     protected static ?ContainerInterface $container = null;
 
     /**
-     * Singleton instances returned by makeInstance, using the class names as
-     * array keys
+     * Singleton instances returned by `makeInstance`, using the class names as array keys
      *
-     * @var array<string, SingletonInterface>
+     * @var array<class-string, SingletonInterface>
      */
     protected static array $singletonInstances = [];
 
     /**
-     * Instances returned by makeInstance, using the class names as array keys
+     * Instances returned by `makeInstance`, using the class names as array keys
      *
-     * @var array<string, array<object>>
+     * @var array<class-string, array<int, object>>
      */
     protected static array $nonSingletonInstances = [];
 
     /**
-     * Cache for makeInstance with given class name and final class names to reduce number of self::getClassName() calls
+     * Cache for `makeInstance` with given class name and final class names to reduce number of
+     * `self::getClassName()` calls
      *
-     * @var array<string, class-string> Given class name => final class name
+     * @var array<class-string, class-string> Given class name => final class name
      */
     protected static array $finalClassNameCache = [];
 
@@ -2906,20 +2906,22 @@ class GeneralUtility
 
     /**
      * Creates an instance of a class taking into account the class-extensions
-     * API of TYPO3. USE THIS method instead of the PHP "new" keyword.
-     * Eg. "$obj = new myclass;" should be "$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")" instead!
+     * API of TYPO3. USE THIS method instead of the PHP `new` keyword.
+     * For example, `$obj = new myclass;` should be
+     * `$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")` instead.
      *
      * You can also pass arguments for a constructor:
-     * \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\myClass::class, $arg1, $arg2, ..., $argN)
+     * `GeneralUtility::makeInstance(\myClass::class, $arg1, $arg2, ..., $argN)`
      *
      * @template T of object
-     * @param string|class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
+     * @param class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
      * @param array<int, mixed> $constructorArguments Arguments for the constructor
      * @return T the created instance
      * @throws \InvalidArgumentException if $className is empty or starts with a backslash
      */
     public static function makeInstance($className, ...$constructorArguments)
     {
+        // PHPStan will complain about this check. That's okay as we're checking a contract violation here.
         if (!is_string($className) || empty($className)) {
             throw new \InvalidArgumentException('$className must be a non empty string.', 1288965219);
         }
@@ -2971,11 +2973,10 @@ class GeneralUtility
     /**
      * Creates a class taking implementation settings and class aliases into account.
      *
-     * Intended to be used to create objects by the dependency injection
-     * container.
+     * Intended to be used to create objects by the dependency injection container.
      *
      * @template T of object
-     * @param string|class-string<T> $className name of the class to instantiate
+     * @param class-string<T> $className name of the class to instantiate
      * @param array<int, mixed> $constructorArguments Arguments for the constructor
      * @return T the created instance
      * @internal
@@ -2996,8 +2997,8 @@ class GeneralUtility
      * Returns the class name for a new instance, taking into account
      * registered implementations for this class
      *
-     * @param string $className Base class name to evaluate
-     * @return class-string Final class name to instantiate with "new [classname]
+     * @param class-string $className Base class name to evaluate
+     * @return class-string Final class name to instantiate with `new [classname]`
      */
     protected static function getClassName($className)
     {
@@ -3012,8 +3013,8 @@ class GeneralUtility
     /**
      * Returns the configured implementation of the class
      *
-     * @param string $className
-     * @return string
+     * @param class-string $className
+     * @return class-string
      */
     protected static function getImplementationForClass($className)
     {
@@ -3023,7 +3024,7 @@ class GeneralUtility
     /**
      * Checks if a class has a configured implementation
      *
-     * @param string $className
+     * @param class-string $className
      * @return bool
      */
     protected static function classHasImplementation($className)
@@ -3032,20 +3033,19 @@ class GeneralUtility
     }
 
     /**
-     * Sets the instance of a singleton class to be returned by makeInstance.
+     * Sets the instance of a singleton class to be returned by `makeInstance`.
      *
      * If this function is called multiple times for the same $className,
      * makeInstance will return the last set instance.
      *
      * Warning:
      * This is NOT a public API method and must not be used in own extensions!
-     * This methods exists mostly for unit tests to inject a mock of a singleton class.
-     * If you use this, make sure to always combine this with getSingletonInstances()
-     * and resetSingletonInstances() in setUp() and tearDown() of the test class.
+     * This method exists mostly for unit tests to inject a mock of a singleton class.
+     * If you use this, make sure to always combine this with `getSingletonInstances()`
+     * and `resetSingletonInstances()` in setUp() and `tearDown()` of the test class.
      *
      * @see makeInstance
-     * @param string $className
-     * @param \TYPO3\CMS\Core\SingletonInterface $instance
+     * @param class-string $className
      * @internal
      */
     public static function setSingletonInstance($className, SingletonInterface $instance)
@@ -3057,18 +3057,17 @@ class GeneralUtility
     }
 
     /**
-     * Removes the instance of a singleton class to be returned by makeInstance.
+     * Removes the instance of a singleton class to be returned by `makeInstance`.
      *
      * Warning:
      * This is NOT a public API method and must not be used in own extensions!
-     * This methods exists mostly for unit tests to inject a mock of a singleton class.
-     * If you use this, make sure to always combine this with getSingletonInstances()
-     * and resetSingletonInstances() in setUp() and tearDown() of the test class.
+     * This method exists mostly for unit tests to inject a mock of a singleton class.
+     * If you use this, make sure to always combine this with `getSingletonInstances()`
+     * and `resetSingletonInstances()` in `setUp()` and `tearDown()` of the test class.
      *
      * @see makeInstance
+     * @param class-string $className
      * @throws \InvalidArgumentException
-     * @param string $className
-     * @param \TYPO3\CMS\Core\SingletonInterface $instance
      * @internal
      */
     public static function removeSingletonInstance($className, SingletonInterface $instance)
@@ -3084,17 +3083,17 @@ class GeneralUtility
     }
 
     /**
-     * Set a group of singleton instances. Similar to setSingletonInstance(),
+     * Set a group of singleton instances. Similar to `setSingletonInstance()`,
      * but multiple instances can be set.
      *
      * Warning:
      * This is NOT a public API method and must not be used in own extensions!
      * This method is usually only used in tests to restore the list of singletons in
-     * tearDown(), that was backed up with getSingletonInstances() in setUp() and
-     * manipulated in tests with setSingletonInstance()
+     * `tearDown()` that was backed up with `getSingletonInstances()` in `setUp()` and
+     * manipulated in tests with `setSingletonInstance()`.
      *
      * @internal
-     * @param array<string, SingletonInterface> $newSingletonInstances
+     * @param array<class-string, SingletonInterface> $newSingletonInstances
      */
     public static function resetSingletonInstances(array $newSingletonInstances)
     {
@@ -3109,12 +3108,12 @@ class GeneralUtility
      *
      * Warning:
      * This is NOT a public API method and must not be used in own extensions!
-     * This method is usually only used in tests in setUp() to fetch the list of
+     * This method is usually only used in tests in `setUp()` to fetch the list of
      * currently registered singletons, if this list is manipulated with
-     * setSingletonInstance() in tests.
+     * `setSingletonInstance()` in tests.
      *
      * @internal
-     * @return array<string, SingletonInterface>
+     * @return array<class-string, SingletonInterface>
      */
     public static function getSingletonInstances()
     {
@@ -3126,11 +3125,11 @@ class GeneralUtility
      *
      * Warning:
      * This is NOT a public API method and must not be used in own extensions!
-     * This method is only used in UnitTestCase base test tearDown() to verify tests
-     * have no left over instances that were previously added using addInstance().
+     * This method is only used in `UnitTestCase` base test `tearDown()` to verify tests
+     * have no left-over instances that were previously added using `addInstance()`.
      *
      * @internal
-     * @return array<string, array<object>>
+     * @return array<class-string, array<object>>
      */
     public static function getInstances()
     {
@@ -3138,18 +3137,18 @@ class GeneralUtility
     }
 
     /**
-     * Sets the instance of a non-singleton class to be returned by makeInstance.
+     * Sets the instance of a non-singleton class to be returned by `makeInstance`.
      *
-     * If this function is called multiple times for the same $className,
-     * makeInstance will return the instances in the order in which they have
+     * If this function is called multiple times for the same `$className`,
+     * `makeInstance` will return the instances in the order in which they have
      * been added (FIFO).
      *
      * Warning: This is a helper method for unit tests. Do not call this directly in production code!
      *
      * @see makeInstance
-     * @throws \InvalidArgumentException if class extends \TYPO3\CMS\Core\SingletonInterface
-     * @param string $className
+     * @param class-string $className
      * @param object $instance
+     * @throws \InvalidArgumentException if class extends \TYPO3\CMS\Core\SingletonInterface
      */
     public static function addInstance($className, $instance)
     {
@@ -3164,12 +3163,11 @@ class GeneralUtility
     }
 
     /**
-     * Checks that $className is non-empty and that $instance is an instance of
-     * $className.
+     * Checks that `$className` is non-empty and that `$instance` is an instance of `$className`.
      *
+     * @param string $className
+     * @param object $instance
      * @throws \InvalidArgumentException if $className is empty or if $instance is no instance of $className
-     * @param string $className a class name
-     * @param object $instance an object
      */
     protected static function checkInstanceClassName($className, $instance)
     {

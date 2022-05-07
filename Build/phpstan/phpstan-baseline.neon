@@ -1216,16 +1216,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Template type T of method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) is not referenced in a parameter\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Template type T of method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstanceForDi\\(\\) is not referenced in a parameter\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Binary operation \"&\" between string and string\\|false results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php

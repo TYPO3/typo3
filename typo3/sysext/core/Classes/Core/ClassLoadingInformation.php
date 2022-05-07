@@ -197,7 +197,7 @@ class ClassLoadingInformation
      * Get class name for alias
      *
      * @param string $alias
-     * @return mixed
+     * @return class-string
      */
     public static function getClassNameForAlias($alias)
     {

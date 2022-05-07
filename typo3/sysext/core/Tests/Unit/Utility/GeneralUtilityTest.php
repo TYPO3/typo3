@@ -2992,6 +2992,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288965219);
 
+        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
         GeneralUtility::makeInstance('');
     }
 
@@ -3140,6 +3141,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1288967479);
 
         $instance = $this->createMock(SingletonInterface::class);
+        // @phpstan-ignore-next-line We are explicitly testing with a contract violation here.
         GeneralUtility::setSingletonInstance('', $instance);
     }
 
@@ -3245,6 +3247,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967479);
 
+        // @phpstan-ignore-next-line We are explicitly testing with a contract violation here.
         GeneralUtility::addInstance('', new \stdClass());
     }
 
