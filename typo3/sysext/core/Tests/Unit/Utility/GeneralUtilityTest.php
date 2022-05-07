@@ -2557,6 +2557,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303662955);
 
+        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
         GeneralUtility::mkdir_deep([]);
     }
 
@@ -3037,6 +3038,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288965219);
 
+        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
         GeneralUtility::makeInstance(null);
     }
 
@@ -3048,6 +3050,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288965219);
 
+        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
         GeneralUtility::makeInstance(0);
     }
 
@@ -3059,6 +3062,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288965219);
 
+        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
         GeneralUtility::makeInstance([]);
     }
 
@@ -3070,6 +3074,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288965219);
 
+        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
         GeneralUtility::makeInstance(['foo']);
     }
 

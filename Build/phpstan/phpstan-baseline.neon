@@ -2601,31 +2601,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) expects string, array\\<int, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\) expects string, null given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$directory of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:mkdir_deep\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<foo&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\>, class\\-string\\<foo\\>&class\\-string\\<PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
