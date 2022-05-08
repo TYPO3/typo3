@@ -1046,8 +1046,11 @@ class GeneralUtility
             if (is_array($AVal)) {
                 $str = self::implodeArrayForUrl($thisKeyName, $AVal, $str, $skipBlank, $rawurlencodeParamName);
             } else {
-                if (!$skipBlank || (string)$AVal !== '') {
-                    $str .= '&' . ($rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName) . '=' . rawurlencode($AVal);
+                $stringValue = (string)$AVal;
+                if (!$skipBlank || $stringValue !== '') {
+                    $parameterName = $rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName;
+                    $parameterValue = rawurlencode($stringValue);
+                    $str .= '&' . $parameterName . '=' . $parameterValue;
                 }
             }
         }
@@ -1374,7 +1377,7 @@ class GeneralUtility
         // Traverse the input array
         foreach ($array as $k => $v) {
             $attr = '';
-            $tagName = $k;
+            $tagName = (string)$k;
             // Construct the tag name.
             // Use tag based on grand-parent + parent tag name
             if (isset($stackData['grandParentTagName'], $stackData['parentTagName'], $options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
@@ -1433,28 +1436,29 @@ class GeneralUtility
                     $attr .= ' type="array"';
                 }
             } else {
+                $stringValue = (string)$v;
                 // Just a value:
                 // Look for binary chars:
-                $vLen = strlen((string)$v);
+                $vLen = strlen($stringValue);
                 // Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
-                if ($vLen && strcspn($v, $binaryChars) != $vLen) {
+                if ($vLen && strcspn($stringValue, $binaryChars) != $vLen) {
                     // If the value contained binary chars then we base64-encode it and set an attribute to notify this situation:
-                    $content = $nl . chunk_split(base64_encode($v));
+                    $content = $nl . chunk_split(base64_encode($stringValue));
                     $attr .= ' base64="1"';
                 } else {
                     // Otherwise, just htmlspecialchar the stuff:
-                    $content = htmlspecialchars((string)$v);
+                    $content = htmlspecialchars($stringValue);
                     $dType = gettype($v);
                     if ($dType === 'string') {
-                        if (isset($options['useCDATA']) && $options['useCDATA'] && $content != $v) {
-                            $content = '<![CDATA[' . $v . ']]>';
+                        if (isset($options['useCDATA']) && $options['useCDATA'] && $content != $stringValue) {
+                            $content = '<![CDATA[' . $stringValue . ']]>';
                         }
                     } elseif (!($options['disableTypeAttrib'] ?? false)) {
                         $attr .= ' type="' . $dType . '"';
                     }
                 }
             }
-            if ((string)$tagName !== '') {
+            if ($tagName !== '') {
                 // Add the element to the output string:
                 $output .= ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '')
                     . '<' . $NSprefix . $tagName . $attr . '>' . $content . '</' . $NSprefix . $tagName . '>' . $nl;
