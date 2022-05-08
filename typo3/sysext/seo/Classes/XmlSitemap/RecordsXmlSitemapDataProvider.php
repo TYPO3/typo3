@@ -54,7 +54,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             );
         }
 
-        $pids = !empty($this->config['pid']) ? GeneralUtility::intExplode(',', $this->config['pid']) : [];
+        $pids = !empty($this->config['pid']) ? GeneralUtility::intExplode(',', (string)$this->config['pid']) : [];
         $lastModifiedField = $this->config['lastModifiedField'] ?? 'tstamp';
         $sortField = $this->config['sortField'] ?? 'sorting';
 

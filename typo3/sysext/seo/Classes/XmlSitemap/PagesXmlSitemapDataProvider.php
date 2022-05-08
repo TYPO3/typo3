@@ -67,7 +67,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             $rootPageId = $site->getRootPageId();
         }
 
-        $excludePagesRecursive = GeneralUtility::intExplode(',', $this->config['excludePagesRecursive'] ?? '', true);
+        $excludePagesRecursive = GeneralUtility::intExplode(',', (string)($this->config['excludePagesRecursive'] ?? ''), true);
 
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $pageIds = $pageRepository->getDescendantPageIdsRecursive($rootPageId, 99, 0, $excludePagesRecursive);
@@ -85,7 +85,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         if (!empty($this->config['excludedDoktypes'])) {
-            $excludedDoktypes = GeneralUtility::intExplode(',', $this->config['excludedDoktypes']);
+            $excludedDoktypes = GeneralUtility::intExplode(',', (string)$this->config['excludedDoktypes']);
             if (!empty($excludedDoktypes)) {
                 $constraints[] = $queryBuilder->expr()->notIn('doktype', implode(',', $excludedDoktypes));
             }

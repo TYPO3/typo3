@@ -129,7 +129,7 @@ class InfoModuleController
             if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
                 $excludeDokTypes = GeneralUtility::intExplode(
                     ',',
-                    $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
+                    (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
                     true
                 );
             } else {

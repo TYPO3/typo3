@@ -2254,7 +2254,7 @@ class DatabaseRecordList
             ->expr();
         $permsClause = $expressionBuilder->and($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         // This will hide records from display - it has nothing to do with user rights!!
-        $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
+        $pidList = GeneralUtility::intExplode(',', (string)($backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? ''), true);
         if (!empty($pidList)) {
             $permsClause = $permsClause->with($expressionBuilder->notIn('pages.uid', $pidList));
         }
@@ -3319,7 +3319,7 @@ class DatabaseRecordList
     protected function getNoViewWithDokTypes(array $tsConfig): array
     {
         if (isset($tsConfig['noViewWithDokTypes'])) {
-            $noViewDokTypes = GeneralUtility::intExplode(',', $tsConfig['noViewWithDokTypes'], true);
+            $noViewDokTypes = GeneralUtility::intExplode(',', (string)$tsConfig['noViewWithDokTypes'], true);
         } else {
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SPACER,

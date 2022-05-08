@@ -190,7 +190,7 @@ class SearchController extends ActionController
         }
 
         // Sets availableResultsNumbers - has to be called before request settings are read to avoid DoS attack
-        $this->availableResultsNumbers = array_filter(GeneralUtility::intExplode(',', $this->settings['blind']['numberOfResults']));
+        $this->availableResultsNumbers = array_filter(GeneralUtility::intExplode(',', (string)($this->settings['blind']['numberOfResults'] ?? '')));
 
         // Sets default result number if at least one availableResultsNumbers exists
         if (isset($this->availableResultsNumbers[0])) {
@@ -238,8 +238,9 @@ class SearchController extends ActionController
         // the above will then fetch the menu for the CURRENT site - regardless
         // of this kind of searching here. Thus a general search will lookup in
         // the WHOLE database while a specific section search will take the current sections.
-        if ($this->settings['rootPidList']) {
-            $this->searchRootPageIdList = implode(',', GeneralUtility::intExplode(',', $this->settings['rootPidList']));
+        $rootPidListFromSettings = (string)($this->settings['rootPidList'] ?? '');
+        if ($rootPidListFromSettings) {
+            $this->searchRootPageIdList = implode(',', GeneralUtility::intExplode(',', $rootPidListFromSettings));
         }
         $this->searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
         $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
@@ -280,7 +281,7 @@ class SearchController extends ActionController
             $this->view->assignMultiple($this->processExtendedSearchParameters());
         }
 
-        $indexCfgs = GeneralUtility::intExplode(',', $freeIndexUid);
+        $indexCfgs = GeneralUtility::intExplode(',', (string)$freeIndexUid);
         $resultsets = [];
         foreach ($indexCfgs as $freeIndexUid) {
             // Get result rows
@@ -1175,8 +1176,9 @@ class SearchController extends ActionController
         $blindSettings = $this->settings['blind'];
         if (!($blindSettings['indexingConfigurations'] ?? false)) {
             // add an additional index configuration
-            if ($this->settings['defaultFreeIndexUidList']) {
-                $uidList = GeneralUtility::intExplode(',', $this->settings['defaultFreeIndexUidList']);
+            $defaultFreeIndexUidList = (string)($this->settings['defaultFreeIndexUidList'] ?? '');
+            if ($defaultFreeIndexUidList) {
+                $uidList = GeneralUtility::intExplode(',', $defaultFreeIndexUidList);
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('index_config');
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));

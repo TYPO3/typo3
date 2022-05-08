@@ -2481,7 +2481,7 @@ class QueryGenerator
             $inputVal = $conf['inputValue' . $suffix] ?? null;
         } elseif ($comparison === 39 || $comparison === 38) {
             // in list:
-            $inputVal = implode(',', GeneralUtility::intExplode(',', ($conf['inputValue' . $suffix] ?? '')));
+            $inputVal = implode(',', GeneralUtility::intExplode(',', (string)($conf['inputValue' . $suffix] ?? '')));
         } elseif ($comparison === 68 || $comparison === 69 || $comparison === 162 || $comparison === 163) {
             // in list:
             if (is_array($conf['inputValue' . $suffix] ?? false)) {
@@ -2557,7 +2557,7 @@ class QueryGenerator
             if (!$this->extFieldLists['queryLimit']) {
                 $this->extFieldLists['queryLimit'] = 100;
             }
-            $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
+            $parts = GeneralUtility::intExplode(',', (string)$this->extFieldLists['queryLimit']);
             $limitBegin = 0;
             $limitLength = (int)($this->extFieldLists['queryLimit'] ?? 0);
             if ($parts[1] ?? null) {
@@ -2726,9 +2726,10 @@ class QueryGenerator
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
         }
-        if ($this->extFieldLists['queryLimit']) {
+        $queryLimit = (string)($this->extFieldLists['queryLimit'] ?? '');
+        if ($queryLimit) {
             // Explode queryLimit to fetch the limit and a possible offset
-            $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
+            $parts = GeneralUtility::intExplode(',', $queryLimit);
             if ($parts[1] ?? null) {
                 // Offset and limit are given
                 $queryBuilder->setFirstResult($parts[0]);

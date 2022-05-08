@@ -362,7 +362,7 @@ class PermissionController
                 }
                 $dataHandlerInput[$pageUid] = $properties;
                 if (!empty($mirror['pages'][$pageUid])) {
-                    $mirrorPages = GeneralUtility::intExplode(',', $mirror['pages'][$pageUid]);
+                    $mirrorPages = GeneralUtility::intExplode(',', (string)$mirror['pages'][$pageUid]);
                     foreach ($mirrorPages as $mirrorPageUid) {
                         $dataHandlerInput[$mirrorPageUid] = $properties;
                     }
