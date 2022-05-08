@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Tests\Unit\Controller;
 
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptObjectBrowserController;
+use TYPO3\CMS\Tstemplate\Controller\ObjectBrowserController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TypoScriptObjectBrowserControllerTest extends UnitTestCase
@@ -29,7 +29,7 @@ class TypoScriptObjectBrowserControllerTest extends UnitTestCase
     public function getSetupTest($setup, $key, $expected): void
     {
         $subject = $this->getAccessibleMock(
-            TypoScriptObjectBrowserController::class,
+            ObjectBrowserController::class,
             null,
             [],
             '',

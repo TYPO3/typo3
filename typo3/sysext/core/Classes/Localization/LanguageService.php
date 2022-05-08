@@ -153,11 +153,11 @@ class LanguageService
     }
 
     /**
-     * splitLabel function
+     * Main and most often used method.
      *
-     * All translations are based on $LOCAL_LANG variables.
-     * 'language-splitted' labels can therefore refer to a local-lang file + index.
-     * Refer to 'Inside TYPO3' for more details
+     * Resolve strings like these:
+     *      'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'
+     * This looks up the given .xlf file path in the 'core' extension for label 'labels.depth_0'
      *
      * @param string $input Label key/reference
      * @return string

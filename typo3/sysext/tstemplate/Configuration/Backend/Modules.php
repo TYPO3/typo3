@@ -1,10 +1,11 @@
 <?php
 
+use TYPO3\CMS\Tstemplate\Controller\ConstantEditorController;
+use TYPO3\CMS\Tstemplate\Controller\DummyController;
+use TYPO3\CMS\Tstemplate\Controller\InfoModifyController;
+use TYPO3\CMS\Tstemplate\Controller\ObjectBrowserController;
 use TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerController;
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptConstantEditorController;
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptObjectBrowserController;
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationController;
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController;
+use TYPO3\CMS\Tstemplate\Controller\TemplateRecordsOverviewController;
 
 /**
  * Definitions for modules provided by EXT:tstemplate
@@ -19,7 +20,7 @@ return [
         'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
         'routes' => [
             '_default' => [
-                'target' => TypoScriptTemplateModuleController::class . '::handleRequest',
+                'target' => DummyController::class . '::handleRequest',
             ],
         ],
     ],
@@ -33,7 +34,7 @@ return [
         ],
         'routes' => [
             '_default' => [
-                'target' => TypoScriptConstantEditorController::class . '::handleRequest',
+                'target' => ConstantEditorController::class . '::handleRequest',
             ],
         ],
         'moduleData' => [
@@ -51,7 +52,7 @@ return [
         ],
         'routes' => [
             '_default' => [
-                'target' => TypoScriptTemplateInformationController::class . '::handleRequest',
+                'target' => InfoModifyController::class . '::handleRequest',
             ],
         ],
         'moduleData' => [
@@ -68,15 +69,13 @@ return [
         ],
         'routes' => [
             '_default' => [
-                'target' => TypoScriptObjectBrowserController::class . '::handleRequest',
+                'target' => ObjectBrowserController::class . '::handleRequest',
             ],
         ],
         'moduleData' => [
             'templatesOnPage' => 0,
             'ts_browser_type' => 'const',
             'ts_browser_const' => '0',
-            'ts_browser_toplevel_setup' => '0',
-            'ts_browser_toplevel_const' => '0',
             'ts_browser_alphaSort' => false,
             'ts_browser_regexsearch' => false,
             'ts_browser_showComments' => true,
@@ -97,6 +96,20 @@ return [
         ],
         'moduleData' => [
             'templatesOnPage' => 0,
+        ],
+    ],
+    'web_typoscript_recordsoverview' => [
+        'parent' => 'web_ts',
+        'access' => 'admin',
+        'path' => '/module/web/typoscript/records-overview',
+        'iconIdentifier' => 'module-tstemplate',
+        'labels' => [
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:templateRecordsOverview',
+        ],
+        'routes' => [
+            '_default' => [
+                'target' => TemplateRecordsOverviewController::class . '::handleRequest',
+            ],
         ],
     ],
 ];

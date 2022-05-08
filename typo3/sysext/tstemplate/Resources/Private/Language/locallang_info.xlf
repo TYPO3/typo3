@@ -64,7 +64,7 @@
 				<source>Resources</source>
 			</trans-unit>
 			<trans-unit id="editToView" resname="editToView">
-				<source>(edit to view, %s lines)</source>
+				<source>%s lines</source>
 			</trans-unit>
 			<trans-unit id="editTemplateRecord" resname="editTemplateRecord">
 				<source>Edit the whole template record</source>

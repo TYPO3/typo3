@@ -72,6 +72,8 @@ class ModuleData
      * Cleans a single property by the given allowed list. First fallback
      * is the default data list. If this list does also not contain an
      * allowed value, the first value from the allowed list is taken.
+     *
+     * @return bool True if something has been cleaned up
      */
     public function clean(string $propertyName, array $allowedValues): bool
     {

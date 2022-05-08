@@ -1,0 +1,146 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:be.pageRenderer
+    includeJavaScriptModules="{0: '@typo3/tstemplate/typo-script-object-browser.js'}"
+/>
+
+<div class="row row-cols-auto align-items-end">
+    <f:if condition="{browserTypeDropdownMenu}">
+        <div class="col">
+            <label class="form-label" for="ts_browser_type">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:browse"/>
+            </label>
+            {browserTypeDropdownMenu -> f:format.raw()}
+        </div>
+    </f:if>
+    <div class="col">
+        <label class="form-label" for="search_field">
+            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:search"/>
+        </label>
+        <input class="form-control" type="text" name="search_field" id="search_field" value="{postSearchField}"/>
+    </div>
+    <div class="col">
+        <div class="form-check form-switch">
+            {regexSearchCheckbox -> f:format.raw()}
+            <label class="form-check-label" for="checkTs_browser_regexsearch">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:regExp"/>
+            </label>
+        </div>
+    </div>
+    <div class="col">
+        <input class="btn btn-default" type="submit" name="search" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')}"/>
+    </div>
+</div>
+
+<div class="row row-cols-auto mt-3">
+    <div class="col">
+        <div class="form-check form-switch">
+            <label class="form-check-label" for="checkTs_browser_showComments">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayComments" />
+            </label>
+            {checkBoxShowComments -> f:format.raw()}
+        </div>
+        <div class="form-check form-switch">
+            <label class="form-check-label" for="checkTs_browser_alphaSort">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sortAlphabetically" />
+            </label>
+            {checkBoxAlphaSort -> f:format.raw()}
+        </div>
+    </div>
+    <f:if condition="{isSetupAndCropLinesDisabled}">
+        <div class="col">
+            <label class="form-label" for="ts_browser_const">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayConstants" />
+            </label>
+            <f:if condition="{tsBrowserType} == 'setup'">
+                {dropdownDisplayConstants -> f:format.raw()}
+            </f:if>
+        </div>
+    </f:if>
+</div>
+
+<f:if condition="{tsConditions}">
+    <div class="mt-3 panel panel-default panel-collapse">
+        <div class="panel-heading" role="tab" id="heading-tsConditions">
+            <h2 class="panel-title">
+                <a role="button" data-bs-toggle="collapse" href="#collapse-tsConditions" aria-expanded="false" aria-controls="collapse-tsConditions" class="collapsed">
+                    <span class="caret"></span>
+                    <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:conditions" /></strong>
+                    <f:if condition="{activeConditions}">
+                        <span class="badge badge-warning">
+                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:activeConditions" arguments="{0: '{activeConditions}'}"/>
+                        </span>
+                    </f:if>
+                </a>
+            </h2>
+        </div>
+        <div class="collapse" id="collapse-tsConditions" role="tabpanel" aria-labelledby="heading-tsConditions">
+            <div class="panel-body">
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <f:for each="{tsConditions}" as="condition">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="check{condition.key}">
+                                    <f:format.raw>{condition.label}</f:format.raw>
+                                </label>
+                                <input type="hidden" name="conditions[{condition.key}]" value="">
+                                <input
+                                    type="checkbox"
+                                    name="conditions[{condition.key}]"
+                                    value="{condition.value}"
+                                    id="check{condition.key}"
+                                    class="form-check-input"
+                                    {f:if(condition:  condition.isSet, then:'checked="checked"')}
+                                >
+                            </div>
+                        </f:for>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-auto">
+                        <input
+                            type="submit"
+                            name="Submit"
+                            value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:setConditions')}"
+                            class="btn btn-default"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:if>
+
+<f:if condition="{parseErrors}">
+    <f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:errorsWarnings')}" state="1">
+        <f:for each="{parseErrors}" as="parseError">
+            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:severity.{parseError.1}"/>
+            : {parseError.0}
+            <a href="{showErrorDetailsUri}{parseError.2 + parseError.3}" class="text-warning">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:errorShowDetails"/>
+            </a>
+            <br/>
+        </f:for>
+    </f:be.infobox>
+</f:if>
+
+<div class="mt-3 panel panel-default">
+    <div class="panel-heading">
+        <f:format.case mode="upper">
+            <f:if condition="{tsBrowserType} == 'setup'">
+                <f:then>
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:setupRoot" />
+                </f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:constantRoot" />
+                </f:else>
+            </f:if>
+        </f:format.case>
+    </div>
+    <div class="panel-body tstemplate-tsobjectbrowser-content">{tsTree -> f:format.raw()}</div>
+</div>
+
+</html>

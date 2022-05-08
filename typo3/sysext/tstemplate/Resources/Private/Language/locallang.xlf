@@ -18,6 +18,9 @@
 			<trans-unit id="objectBrowser" resname="objectBrowser">
 				<source>TypoScript Object Browser</source>
 			</trans-unit>
+			<trans-unit id="templateRecordsOverview" resname="templateRecordsOverview">
+				<source>Template Records Overview</source>
+			</trans-unit>
 			<trans-unit id="viewTemplates" resname="viewTemplates">
 				<source>Viewing templates of</source>
 			</trans-unit>
@@ -34,7 +37,7 @@
 				<source>Is Ext?</source>
 			</trans-unit>
 			<trans-unit id="overview" resname="overview">
-				<source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+				<source>This is a global overview of all pages in the database containing one or more template records.</source>
 			</trans-unit>
 			<trans-unit id="areYouSure" resname="areYouSure">
 				<source>Are you sure you want to do this?</source>

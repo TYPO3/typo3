@@ -160,6 +160,7 @@ class SiteModuleCest
         $I->click('Template');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
         $I->waitForText('Create new website');
 
         $I->amGoingTo('Create a new template for the root page');
@@ -204,6 +205,8 @@ page.10.value = This is a default text for default rendering without dynamic con
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->waitForText('Edit the whole template record');
         $I->click('Edit the whole template record');
         $I->waitForElement('#EditDocumentController');
         $I->click('Delete');
@@ -258,7 +261,7 @@ page.10.value = This is a default text for default rendering without dynamic con
         $I->waitForElement($saveButtonLink, 30);
         $I->click($saveButtonLink);
 
-        $I->amGoingTo('Create and delete new site language. Verify "Placehoder" is not added to selector');
+        $I->amGoingTo('Create and delete new site language. Verify "Placeholder" is not added to selector');
         $I->click('Languages');
         $I->click('Create new language');
         $I->waitForElementVisible('div.inlineIsNewRecord');

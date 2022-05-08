@@ -19,7 +19,7 @@
 
     <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
 
-    <f:if condition="{existTemplate}">
+    <f:if condition="{templateRecord}">
         <div class="row row-cols-auto g-3 align-items-center">
             <f:if condition="{manyTemplatesMenu}">
                 <div class="col">
@@ -31,7 +31,7 @@
             <div class="col mb-3">
                 <core:iconForRecord table="sys_template" row="{templateRecord}"/>
                 <strong>
-                    <f:format.raw>{linkWrappedTemplateTitle}</f:format.raw>
+                    <f:be.link route="web_typoscript_overview" parameters="{id: pageId}">{templateRecord.title}</f:be.link>
                 </strong>
             </div>
         </div>

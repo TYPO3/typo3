@@ -19,8 +19,12 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleData;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
@@ -31,127 +35,135 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  * TypoScript Constant editor
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TypoScriptConstantEditorController extends TypoScriptTemplateModuleController
+class ConstantEditorController extends AbstractTemplateModuleController
 {
     protected array $categories = [
+        // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features.
+        //The most basic constants, which you would almost always want to configure.
         'basic' => [],
-        // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features. The most basic constants, which you would almost always want to configure.
-        'menu' => [],
         // Menu setup. This includes fontfiles, sizes, background images. Depending on the menutype.
-        'content' => [],
+        'menu' => [],
         // All constants related to the display of pagecontent elements
-        'page' => [],
+        'content' => [],
         // General configuration like metatags, link targets
-        'advanced' => [],
+        'page' => [],
         // Advanced functions, which are used very seldom.
+        'advanced' => [],
         'all' => [],
     ];
 
+    protected ExtendedTemplateService $templateService;
     protected array $constants = [];
 
-    protected ConstantConfigurationParser $constantParser;
+    public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly ConstantConfigurationParser $constantParser,
+    ) {
+    }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->constantParser = GeneralUtility::makeInstance(ConstantConfigurationParser::class);
-        $this->init($request);
-        // Fallback to regular module when on root level
-        if ($this->id === 0) {
-            return $this->overviewAction();
-        }
-        // Create extension template
-        $this->createTemplate();
-        // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->templateMenu();
-        $selectedTemplateRecord = 0;
-        if ($manyTemplatesMenu) {
-            $selectedTemplateRecord = (int)$this->moduleData->get('templatesOnPage');
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
+
+        $currentModule = $request->getAttribute('module');
+        $currentModuleIdentifier = $currentModule->getIdentifier();
+        $moduleData = $request->getAttribute('moduleData');
+        if ($moduleData->cleanUp([])) {
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
-        // initialize
-        $existTemplate = $this->initialize_editor($selectedTemplateRecord);
-        if ($existTemplate) {
-            $assigns['templateRecord'] = $this->templateRow;
-            $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
+        $pageId = (int)($request->getQueryParams()['id'] ?? 0);
+        if ($pageId === 0) {
+            // Redirect to template record overview if on page 0.
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+        $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
 
-            $saveId = empty($this->templateRow['_ORIG_uid']) ? $this->templateRow['uid'] : $this->templateRow['_ORIG_uid'];
-            // Update template ?
-            if ($this->request->getParsedBody()['_savedok'] ?? false) {
-                $constantsHaveChanged = $this->templateService->ext_procesInput($this->request->getParsedBody(), $this->constants);
-                if ($constantsHaveChanged) {
-                    // Set the data to be saved
-                    $recData = [];
-                    $recData['sys_template'][$saveId]['constants'] = implode(LF, $this->templateService->raw);
-                    // Create new  tce-object
-                    $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->start($recData, []);
-                    $tce->process_datamap();
-                    // re-read the template ...
-                    // re-read the constants as they have changed
-                    $this->initialize_editor($selectedTemplateRecord);
-                }
+        $this->createTemplateIfRequested($request, $pageId);
+
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageId);
+        if ($moduleData->clean('templatesOnPage', array_column($allTemplatesOnPage, 'uid') ?: [0])) {
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        }
+
+        $selectedTemplateRecord = (int)$moduleData->get('templatesOnPage');
+        $templateRow = $this->parseTemplate($pageId, $selectedTemplateRecord);
+
+        if ($request->getParsedBody()['_savedok'] ?? false) {
+            // Update template with new data on save
+            $constantsHaveChanged = $this->templateService->ext_procesInput($request->getParsedBody(), $this->constants);
+            if ($constantsHaveChanged) {
+                $saveId = empty($templateRow['_ORIG_uid']) ? $templateRow['uid'] : $templateRow['_ORIG_uid'];
+                $recordData = [];
+                $recordData['sys_template'][$saveId]['constants'] = implode(LF, $this->templateService->raw);
+                $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+                $dataHandler->start($recordData, []);
+                $dataHandler->process_datamap();
+                // Re-init template state as constants have changed
+                $this->parseTemplate($pageId, $selectedTemplateRecord);
             }
-            // Resetting the menu (stop)
-            $assigns['title'] = $this->linkWrapTemplateTitle($this->templateRow['title'], 'constants');
-            // Category and constant editor config
-            $availableCategories = $this->getCategoryLabels();
-            $currentCategory = (string)$this->moduleData->get('constant_editor_cat');
-            if (!empty($availableCategories)) {
-                $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->id, 'constant_editor_cat', $currentCategory, $availableCategories, '', '', ['id' => 'constant_editor_cat']);
-            }
-            $assigns['editorFields'] = $this->printFields($this->constants, $currentCategory);
-
-            $this->view->assignMultiple($assigns);
-            return $this->view->renderResponse('ConstantEditor');
         }
-        return $this->noTemplateAction();
+
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addPreviewButtonToDocHeader($view, $pageId, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageId);
+        $this->addSaveButtonToDocHeader($view, $moduleData, $pageId);
+        $view->makeDocHeaderModuleMenu(['id' => $pageId]);
+        $availableCategories = $this->getCategoryLabels($this->categories);
+        $currentCategory = (string)$moduleData->get('constant_editor_cat');
+        if (!empty($availableCategories)) {
+            $view->assign('constantsMenu', BackendUtility::getDropdownMenu($pageId, 'constant_editor_cat', $currentCategory, $availableCategories, '', '', ['id' => 'constant_editor_cat']));
+        }
+        $view->assignMultiple([
+            'pageId' => $pageId,
+            'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageId),
+            'moduleIdentifier' => $currentModuleIdentifier,
+            'editorFields' => $this->printFields($this->constants, $this->categories, $currentCategory),
+            'templateRecord' => $templateRow,
+            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageId, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
+        ]);
+        return $view->renderResponse('ConstantEditor');
     }
 
     /**
-     * Initialize editor
-     *
-     * Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
+     * Set $this->templateService with parsed template and set $this->constants.
      */
-    protected function initialize_editor(int $selectedTemplateRecord): bool
+    protected function parseTemplate(int $pageId, int $selectedTemplateRecord): ?array
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-
-        // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $this->templateRow = $this->getFirstTemplateRecordOnPage($this->id, $selectedTemplateRecord);
-        // IF there was a template...
-        if (is_array($this->templateRow)) {
-            // Gets the rootLine
-            $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $this->id);
-            $rootLine = $rootlineUtility->get();
-            // This generates the constants/config + hierarchy info for the template.
+        // Get the row of the first *visible* template of the page. where clause like in frontend.
+        $templateRow = $this->getFirstTemplateRecordOnPage($pageId, $selectedTemplateRecord);
+        if (is_array($templateRow)) {
+            // If there is a template
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+            // Generate constants/config + hierarchy info for the template.
             $this->templateService->runThroughTemplates($rootLine, $selectedTemplateRecord);
-            // The editable constants are returned in an array.
+            // Editable constants are returned in an array.
             $this->constants = $this->templateService->generateConfig_constants();
-            // The returned constants are sorted in categories, that goes into the $tmpl->categories array
-            $this->categorizeEditableConstants($this->constants);
-            // This array will contain key=[expanded constant name], value=line number in template.
-            $this->templateService->ext_regObjectPositions((string)$this->templateRow['constants']);
-            return true;
+            // Returned constants are sorted in categories, that goes into the $tmpl->categories array
+            $this->categories = $this->categorizeEditableConstants($this->categories, $this->constants);
+            // This array contains key=[expanded constant name], value=line number in template.
+            $this->templateService->ext_regObjectPositions((string)$templateRow['constants']);
         }
-        return false;
+        return $templateRow ?: null;
     }
 
     /**
-     * This functions returns the HTML-code that creates the editor-layout of the module.
-     *
-     * @param array $theConstants
-     * @param string $category
-     * @return array
+     * Create editor HTML.
      */
-    protected function printFields(array $theConstants, string $category): array
+    protected function printFields(array $theConstants, array $categories, string $category): array
     {
+        $languageService = $this->getLanguageService();
         reset($theConstants);
         $groupedOutput = [];
         $subcat = '';
-        if (!empty($this->categories[$category]) && is_array($this->categories[$category])) {
-            asort($this->categories[$category]);
+        if (!empty($categories[$category]) && is_array($categories[$category])) {
+            asort($categories[$category]);
             $categoryLoop = 0;
-            foreach ($this->categories[$category] as $name => $type) {
+            foreach ($categories[$category] as $name => $type) {
                 $params = $theConstants[$name];
                 if (is_array($params)) {
                     if ($subcat !== (string)($params['subcat_name'] ?? '')) {
@@ -163,7 +175,7 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
                             'fields' => [],
                         ];
                     }
-                    $label = $this->getLanguageService()->sL($params['label']);
+                    $label = $languageService->sL($params['label']);
                     $label_parts = explode(':', $label, 2);
                     if (count($label_parts) === 2) {
                         $head = trim($label_parts[0]);
@@ -243,7 +255,7 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
                                     if ($val === $params['value']) {
                                         $sel = ' selected';
                                     }
-                                    $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $this->getLanguageService()->sL($label) . '</option>';
+                                    $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $languageService->sL($label) . '</option>';
                                 }
                                 $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
                             }
@@ -303,13 +315,13 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
                     }
                     $deleteIconHTML =
                         '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
-                        . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')) . '">'
+                        . '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')) . '">'
                         . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render()
                         . '</span>'
                         . '</button>';
                     $editIconHTML =
                         '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
-                        . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')) . '">'
+                        . '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')) . '">'
                         . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
                         . '</span>'
                         . '</button>';
@@ -354,7 +366,7 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
         $fN = 'data[' . $params['name'] . ']';
         $idName = str_replace('.', '-', $params['name']);
         $fV = $params['value'];
-        // Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
+        // Values entered from the constants edit cannot be constants!	230502; removed \{ and set {
         if (preg_match('/^{[\\$][a-zA-Z0-9\\.]*}$/', trim($fV), $reg)) {
             $fV = '';
         }
@@ -362,9 +374,9 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
         return [$fN, $fV, $params, $idName];
     }
 
-    protected function categorizeEditableConstants(array $editConstArray): void
+    protected function categorizeEditableConstants(array $categories, array $editConstArray): array
     {
-        // Runs through the available constants and fills the $this->categories array with pointers and priority-info
+        // Runs through the available constants and fills the categories array with pointers and priority-info
         foreach ($editConstArray as $constName => $constData) {
             if (!$constData['type']) {
                 $constData['type'] = 'string';
@@ -374,17 +386,18 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
             foreach ($cats as $theCat) {
                 $theCat = trim($theCat);
                 if ($theCat) {
-                    $this->categories[$theCat][$constName] = $constData['subcat'];
+                    $categories[$theCat][$constName] = $constData['subcat'];
                 }
             }
         }
+        return $categories;
     }
 
-    protected function getCategoryLabels(): array
+    protected function getCategoryLabels(array $categories): array
     {
         // Returns array used for labels in the menu.
         $retArr = [];
-        foreach ($this->categories as $k => $v) {
+        foreach ($categories as $k => $v) {
             if (!empty($v)) {
                 $retArr[$k] = strtoupper($k) . ' (' . count($v) . ')';
             }
@@ -392,21 +405,16 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
         return $retArr;
     }
 
-    /**
-     * Add additional "SAVE" button to the button bar
-     */
-    protected function getButtons(): void
+    protected function addSaveButtonToDocHeader(ModuleTemplate $view, ModuleData $moduleData, int $pageId): void
     {
-        parent::getButtons();
-
-        if ($this->id && $this->access && !empty($this->moduleData->get('constant_editor_cat'))) {
-            $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-
+        $languageService = $this->getLanguageService();
+        if ($pageId && !empty($moduleData->get('constant_editor_cat'))) {
+            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
             $saveButton = $buttonBar->makeInputButton()
                 ->setName('_savedok')
                 ->setValue('1')
                 ->setForm('TypoScriptConstantEditorController')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
             $buttonBar->addButton($saveButton);

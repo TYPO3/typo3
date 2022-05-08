@@ -580,7 +580,9 @@ class BackendUtility
     }
 
     /**
-     * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path IF the WHERE clause, $perms_clause, selects the record. Thus is works as an access check that returns a page record if access was granted, otherwise not.
+     * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path if
+     * the WHERE clause $perms_clause selects the record. This works as an access check that returns a page
+     * record if access was granted, otherwise false.
      * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
      * In any case ->isInWebMount must return TRUE for the user (regardless of $perms_clause)
      *

@@ -1,0 +1,97 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{templateRecord}">
+    <f:then>
+        <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editProperty"/></h3>
+        <div class="row row-cols-auto align-items-end g-1">
+            <div class="col">
+                <label class="form-label">{typoScriptPath} =</label>
+            </div>
+            <div class="col">
+                <input
+                    class="form-control"
+                    type="text"
+                    name="data[{typoScriptPath}][value]"
+                    value="{theSetupValue}"
+                >
+            </div>
+            <div class="col">
+                <input
+                    type="submit"
+                    value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateButton')}"
+                    name="update_value"
+                    class="btn btn-default"
+                >
+            </div>
+        </div>
+
+        <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addProperty"/></h3>
+        <div class="row row-cols-auto align-items-end g-1">
+            <div class="col">
+                <label class="visually-hidden">{typoScriptPath}.</label>
+                <div class="input-group">
+                    <div class="input-group-addon">{typoScriptPath}.</div>
+                    <input
+                        name="data[{typoScriptPath}][name]"
+                        type="text"
+                        class="form-control"
+                    >
+                </div>
+            </div>
+            <div class="col">
+                <label>=</label>
+            </div>
+            <div class="col">
+                <input
+                    type="text"
+                    name="data[{typoScriptPath}][propertyValue]"
+                    class="form-control"
+                >
+            </div>
+            <div class="col">
+                <input
+                    type="submit"
+                    value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addButton')}"
+                    name="add_property"
+                    class="btn btn-default"
+                >
+            </div>
+        </div>
+
+        <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearObject"/></h3>
+
+        <div class="row row-cols-auto align-items-end g-3">
+            <div class="col">
+                <div class="form-check">
+                    <label class="form-check-label" for="clearValue-{typoScriptPath}">
+                        {typoScriptPath}
+                    </label>
+                    <input type="hidden" name="data[{typoScriptPath}][clearValue]" value="">
+                    <input
+                        type="checkbox"
+                        name="data[{typoScriptPath}][clearValue]" value="1"
+                        id="clearValue-{typoScriptPath}"
+                        class="form-check-input"
+                    >
+                </div>
+            </div>
+            <div class="col">
+                <input
+                    type="submit"
+                    name="clear_object"
+                    value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearButton')}"
+                    class="btn btn-default"
+                >
+            </div>
+        </div>
+    </f:then>
+    <f:else>
+        {typoScriptPath} = <strong>{theSetupValue}</strong>
+    </f:else>
+</f:if>
+
+</html>

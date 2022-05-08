@@ -46,13 +46,14 @@ class TemplateCest
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
-        $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
+        $I->see('This is a global overview of all pages in the database containing one or more template records.');
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
         $I->switchToMainFrame();
         // click on website root page
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
@@ -75,7 +76,6 @@ class TemplateCest
         $I->switchToContentFrame();
         $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");
-        $I->waitForText('Edit constants for template');
 
         $I->wantTo('change to Info/Modify and see the template overview table');
         $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
@@ -207,33 +207,5 @@ class TemplateCest
         $I->click("//input[@name='search']");
         $I->waitForText('CONSTANTS ROOT');
         $I->seeInSource('<strong class="text-danger">styles</strong>');
-    }
-
-    /**
-     * @depends addANewSiteTemplate
-     */
-    public function useObjectListInObjectBrowser(ApplicationTester $I): void
-    {
-        $I->wantTo('Open the TypoScript Object Browser and use the object list.');
-        $I->switchToMainFrame();
-        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
-        $I->switchToContentFrame();
-
-        $I->amGoingTo('Switch to object browser.');
-        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
-        $I->waitForText('CONSTANTS ROOT');
-        $I->selectOption('select[name="ts_browser_type"]', 'Setup');
-        $I->waitForText('SETUP ROOT');
-        $I->click('tt_content');
-        $I->waitForText('Edit object/property value');
-
-        $I->amGoingTo('add tt_content to object list');
-        $I->click('Add key "tt_content" to Object List');
-        $I->see('Remove key from OL');
-        $I->see('key');
-
-        $I->amGoingTo('verify "all" can still be selected and shows full setup.');
-        $I->selectOption('select[name="ts_browser_toplevel_setup"]', 'all');
-        $I->seeInSource('<i class="text-muted"># Content element rendering</i>');
     }
 }

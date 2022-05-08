@@ -69,17 +69,11 @@
 			<trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
 				<source>You cannot edit properties and values, if there's no current template.</source>
 			</trans-unit>
-			<trans-unit id="addKey" resname="addKey">
-				<source>Add key &quot;%s&quot; to Object List</source>
-			</trans-unit>
 			<trans-unit id="back" resname="back">
 				<source>Back</source>
 			</trans-unit>
 			<trans-unit id="browse" resname="browse">
 				<source>Browse</source>
-			</trans-unit>
-			<trans-unit id="objectList" resname="objectList">
-				<source>Object List</source>
 			</trans-unit>
 			<trans-unit id="search" resname="search">
 				<source>Search</source>
@@ -92,9 +86,6 @@
 			</trans-unit>
 			<trans-unit id="errorShowDetails" resname="errorShowDetails">
 				<source>Show details</source>
-			</trans-unit>
-			<trans-unit id="removeKey" resname="removeKey">
-				<source>Remove key from OL</source>
 			</trans-unit>
 			<trans-unit id="setupRoot" resname="setupRoot">
 				<source>setup root</source>

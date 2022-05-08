@@ -19,62 +19,76 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * TypoScript template analyzer
+ *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TemplateAnalyzerController extends TypoScriptTemplateModuleController
+class TemplateAnalyzerController extends AbstractTemplateModuleController
 {
+    protected ExtendedTemplateService $templateService;
+
+    public function __construct(
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+    ) {
+    }
+
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->init($request);
-        // Fallback to regular module when on root level
-        if ($this->id === 0) {
-            return $this->overviewAction();
+        $backendUser = $this->getBackendUser();
+        $languageService = $this->getLanguageService();
+
+        $queryParams = $request->getQueryParams();
+
+        $currentModule = $request->getAttribute('module');
+        $currentModuleIdentifier = $currentModule->getIdentifier();
+        $moduleData = $request->getAttribute('moduleData');
+        if ($moduleData->cleanUp([])) {
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
+
+        $pageId = (int)($queryParams['id'] ?? 0);
+        if ($pageId === 0) {
+            // Redirect to template record overview if on page 0.
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+        $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
+
         // Set if user clicked on one template to show content of this specific one
-        $selectedTemplate = (string)($this->request->getQueryParams()['template'] ?? '');
+        $selectedTemplate = (string)($queryParams['template'] ?? '');
         // The template object browser shows info boxes with parser errors and links to template analyzer to highlight
         // affected line. Increased by one if set to avoid an off-by-one error.
-        $highlightLine = (int)($this->request->getQueryParams()['highlightLine'] ?? 0);
+        $highlightLine = (int)($queryParams['highlightLine'] ?? 0);
         // 'const' or 'setup' or not set
-        $highlightType = (string)($this->request->getQueryParams()['highlightType'] ?? '');
+        $highlightType = (string)($queryParams['highlightType'] ?? '');
 
-        $assigns = [
-            'pageUid' => $this->id,
-        ];
-
-        $templateUid = 0;
-        $assigns['manyTemplatesMenu'] = $this->templateMenu();
-        if ($assigns['manyTemplatesMenu']) {
-            $templateUid = (int)$this->moduleData->get('templatesOnPage');
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageId);
+        if ($moduleData->clean('templatesOnPage', array_column($allTemplatesOnPage, 'uid') ?: [0])) {
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
-        $assigns['existTemplate'] = $this->initializeTemplates($templateUid);
-        if ($assigns['existTemplate']) {
-            $assigns['templateRecord'] = $this->templateRow;
-            $assigns['linkWrappedTemplateTitle'] = $this->linkWrapTemplateTitle($this->templateRow['title']);
-        }
+        $templateUid = (int)$moduleData->get('templatesOnPage');
 
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        $templateRow = $this->getFirstTemplateRecordOnPage($pageId, $templateUid);
+
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->runThroughTemplates($rootLine, $templateUid);
         $this->templateService->clearList_const_temp = array_flip($this->templateService->clearList_const);
         $this->templateService->clearList_setup_temp = array_flip($this->templateService->clearList_setup);
         $pointer = count($this->templateService->hierarchyInfo);
         $hierarchyInfo = $this->templateService->ext_process_hierarchyInfo([], $pointer);
-        $assigns['hierarchy'] = implode('', array_reverse($this->getTemplateHierarchyArr(
-            $hierarchyInfo,
-            '',
-            [],
-            true
-        )));
-
-        $assigns['constants'] =  $this->renderTemplates($this->templateService->constants, $selectedTemplate, $highlightType === 'const', $highlightLine);
-        $assigns['setups'] =  $this->renderTemplates($this->templateService->config, $selectedTemplate, $highlightType === 'setup', $highlightLine);
 
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             // @todo: Let EXT:t3editor add the deps via events in the render-loops above
@@ -83,32 +97,28 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
-        $this->view->assignMultiple($assigns);
-        return $this->view->renderResponse('TemplateAnalyzer');
-    }
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->assign('moduleIdentifier', $currentModuleIdentifier);
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addPreviewButtonToDocHeader($view, $pageId, (int)$pageRecord['doktype']);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageId);
+        $view->assign('pageId', $pageId);
+        $view->makeDocHeaderModuleMenu(['id' => $pageId]);
+        $view->assignMultiple([
+            'pageUid' => $pageId,
+            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageId, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
+            'templateRecord' => $templateRow,
+            'hierarchy' => implode('', array_reverse($this->getTemplateHierarchyArr($currentModuleIdentifier, $pageId, $selectedTemplate, $hierarchyInfo, '', [], true))),
+            'constants' =>  $this->renderTemplates($this->templateService->constants, $selectedTemplate, $highlightType === 'const', $highlightLine),
+            'setups' =>  $this->renderTemplates($this->templateService->config, $selectedTemplate, $highlightType === 'setup', $highlightLine),
+        ]);
 
-    protected function initializeTemplates(int $templateUid): bool
-    {
-        // Gets the rootLine
-        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $this->id);
-        $rootLine = $rootlineUtility->get();
-
-        // This generates the constants/config + hierarchy info for the template.
-        $this->templateService->runThroughTemplates($rootLine, $templateUid);
-
-        // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->getFirstTemplateRecordOnPage($this->id, $templateUid);
-        return is_array($this->templateRow);
+        return $view->renderResponse('Analyzer');
     }
 
     /**
      * Render constants or setup templates using t3editor or plain textarea
-     *
-     * @param array $templates
-     * @param string $selectedTemplate
-     * @param bool $highlight
-     * @param int $highlightLine
-     * @return array Modified assign array
      */
     protected function renderTemplates(array $templates, string $selectedTemplate, bool $highlight, int $highlightLine): array
     {
@@ -129,12 +139,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $nextLineOffset += $linesInTemplate;
             if ($selectedTemplate === 'all'
                 || $templateId === $selectedTemplate
-                || (
-                    $highlight
-                    && $highlightLine
-                    && $highlightLine > $thisLineOffset
-                    && $highlightLine <= $nextLineOffset
-                )
+                || ($highlight && $highlightLine && $highlightLine > $thisLineOffset && $highlightLine <= $nextLineOffset)
             ) {
                 if (ExtensionManagementUtility::isLoaded('t3editor')) {
                     // @todo: Fire event and let EXT:t3editor fill the markup
@@ -147,11 +152,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
                         $templateContent
                     );
                 } else {
-                    $templatesMarkup[] = $this->getTextareaMarkup(
-                        $templateTitle,
-                        $linesInTemplate,
-                        $templateContent
-                    );
+                    $templatesMarkup[] = $this->getTextareaMarkup($templateTitle, $linesInTemplate, $templateContent);
                 }
             }
             $thisLineOffset = $nextLineOffset;
@@ -159,14 +160,8 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
         return $templatesMarkup;
     }
 
-    protected function getCodeMirrorMarkup(
-        string $label,
-        int $lineOffset,
-        int $lines,
-        int $totalLines,
-        int $highlightLine,
-        string $content
-    ): string {
+    protected function getCodeMirrorMarkup(string $label, int $lineOffset, int $lines, int $totalLines, int $highlightLine, string $content): string
+    {
         $codeMirrorConfig = [
             'label' => $label,
             'panel' => 'top',
@@ -221,12 +216,12 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             . '</textarea>';
     }
 
-    protected function getTemplateHierarchyArr(array $arr, string $depthData, array $keyArray, bool $first = false): array
+    protected function getTemplateHierarchyArr(string $moduleIdentifier, int $pageId, string $selectedTemplate, array $arr, string $depthData, array $keyArray, bool $first = false): array
     {
         $keyArr = [];
         foreach ($arr as $key => $value) {
             $key = preg_replace('/\\.$/', '', $key) ?? '';
-            if (substr($key, -1) !== '.') {
+            if (!str_ends_with($key, '.')) {
                 $keyArr[$key] = 1;
             }
         }
@@ -247,13 +242,13 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
                 : '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
             if (in_array($row['templateID'], $this->templateService->clearList_const) || in_array($row['templateID'], $this->templateService->clearList_setup)) {
                 $urlParameters = [
-                    'id' => $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null,
+                    'id' => $pageId,
                     'template' => $row['templateID'],
                 ];
-                $aHref = (string)$this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier(), $urlParameters);
+                $aHref = (string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier, $urlParameters);
                 $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
                 $A_E = '</a>';
-                if (($this->request->getParsedBody()['template'] ?? $this->request->getQueryParams()['template'] ?? null) == $row['templateID']) {
+                if ($selectedTemplate === $row['templateID']) {
                     $A_B = '<strong>' . $A_B;
                     $A_E .= '</strong>';
                 }
@@ -264,32 +259,30 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . ' ' . $A_B
                 . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
                 . $A_E . '&nbsp;&nbsp;';
-            $RL = $this->getRootlineNumber((int)$row['pid']);
+
+            $rootLineNumber = -1;
+            if ((int)$row['pid']) {
+                foreach ($this->templateService->getRootLine() as $rootlineKey => $rootlineArray) {
+                    if ((int)$rootlineArray['uid'] === (int)$row['pid']) {
+                        $rootLineNumber = (int)$rootlineKey;
+                    }
+                }
+            }
+
             $statusCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-            $keyArray[] = '<tr>
-							<td class="nowrap">' . $HTML . '</td>
-							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '</td>
-							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>
-							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>
-							<td align="center">' . ($row['pid'] ?: '') . '</td>
-							<td align="center">' . ($RL >= 0 ? $RL : '') . '</td>
-						</tr>';
+            $keyArray[] =
+                '<tr>' .
+                    '<td class="nowrap">' . $HTML . '</td>' .
+                    '<td>' . ($row['root'] ? $statusCheckedIcon : '') . '</td>' .
+                    '<td>' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>' .
+                    '<td>' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>' .
+                    '<td>' . ($row['pid'] ?: '') . '</td>' .
+                    '<td>' . ($rootLineNumber >= 0 ? $rootLineNumber : '') . '</td>' .
+                '</tr>';
             if ($deeper) {
-                $keyArray = $this->getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);
+                $keyArray = $this->getTemplateHierarchyArr($moduleIdentifier, $pageId, $selectedTemplate, $arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);
             }
         }
         return $keyArray;
-    }
-
-    protected function getRootlineNumber(int $pid): int
-    {
-        if ($pid) {
-            foreach ($this->templateService->getRootLine() as $key => $val) {
-                if ((int)$val['uid'] === $pid) {
-                    return (int)$key;
-                }
-            }
-        }
-        return -1;
     }
 }

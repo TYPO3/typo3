@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -31,7 +32,7 @@
                 </thead>
                 <tbody>
                 <f:for each="{pageTree}" as="page">
-                    <f:render section="PageZeroTableRow" arguments="{page: page, level: 0, template: page._templates.0, moduleIdentifier: moduleIdentifier}" />
+                    <f:render section="TableRow" arguments="{page: page, level: 0, template: page._templates.0}" />
                 </f:for>
                 </tbody>
             </table>
@@ -40,46 +41,36 @@
 
 </f:section>
 
-<f:section name="PageZeroTableRow">
+<f:section name="TableRow">
     <f:variable name="maxCharacters" value="30" />
     <tr class="{f:if(condition: page.hidden, then: 'inactive')}">
         <td class="nowrap">
             <span style="width: 1px; height: 1px; display: inline-block; margin-left: {level * 20}px"></span>
             <f:if condition="{page}">
-                <f:then>
-                    <f:if condition="{page._templates}">
-                        <f:then>
-                            <a href="{f:be.uri(route: moduleIdentifier, parameters:'{id: page.uid}')}"
-                                title="ID: {page.uid}">
-                                <core:IconForRecord table="pages" row="{page}" />
-                                {page.title -> f:format.crop(maxCharacters: maxCharacters)}
-                            </a>
-                        </f:then>
-                        <f:else>
-                            <span title="ID: {page.uid}">
-                                <core:IconForRecord table="pages" row="{page}" />
-                                {page.title -> f:format.crop(maxCharacters: maxCharacters)}
-                            </span>
-                        </f:else>
-                    </f:if>
-                </f:then>
-                <f:else>
-                    &nbsp;
-                </f:else>
+                <f:if condition="{page._templates}">
+                    <f:then>
+                        <a href="{f:be.uri(route: 'web_typoscript_overview', parameters:'{id: page.uid}')}"
+                            title="ID: {page.uid}">
+                            <core:IconForRecord table="pages" row="{page}" />
+                            {page.title -> f:format.crop(maxCharacters: maxCharacters)}
+                        </a>
+                    </f:then>
+                    <f:else>
+                        <span title="ID: {page.uid}">
+                            <core:IconForRecord table="pages" row="{page}" />
+                            {page.title -> f:format.crop(maxCharacters: maxCharacters)}
+                        </span>
+                    </f:else>
+                </f:if>
             </f:if>
         </td>
         <td>
             <f:if condition="{template}">
-                <f:then>
-                    <a href="{f:be.uri(route: moduleIdentifier, parameters:'{id: template.pid, templatesOnPage: template.uid}')}"
-                        title="ID: {template.uid}">
-                        <core:IconForRecord table="sys_template" row="{template}" />
-                        {template.title -> f:format.crop(maxCharacters: maxCharacters)}
-                    </a>
-                </f:then>
-                <f:else>
-                    &nbsp;
-                </f:else>
+                <a href="{f:be.uri(route: 'web_typoscript_overview', parameters:'{id: template.pid, templatesOnPage: template.uid}')}"
+                    title="ID: {template.uid}">
+                    <core:IconForRecord table="sys_template" row="{template}" />
+                    {template.title -> f:format.crop(maxCharacters: maxCharacters)}
+                </a>
             </f:if>
         </td>
         <td>
@@ -98,14 +89,14 @@
         <f:if condition="{page._templates -> f:count()}">
             <f:for each="{page._templates}" as="template" iteration="i">
                 <f:if condition="{i.index} > 0">
-                    <f:render section="PageZeroTableRow" arguments="{page: 0, level: level, template: template, moduleIdentifier: moduleIdentifier}" />
+                    <f:render section="TableRow" arguments="{page: 0, level: level, template: template}" />
                 </f:if>
             </f:for>
         </f:if>
         <!-- Subpages -->
         <f:if condition="{page._nodes -> f:count()}">
             <f:for each="{page._nodes}" as="page">
-                <f:render section="PageZeroTableRow" arguments="{page: page, level: '{level + 1}', template: page._templates.0, moduleIdentifier: moduleIdentifier}" />
+                <f:render section="TableRow" arguments="{page: page, level: '{level + 1}', template: page._templates.0}" />
             </f:for>
         </f:if>
     </f:if>
