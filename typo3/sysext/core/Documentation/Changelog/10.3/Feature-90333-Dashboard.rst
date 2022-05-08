@@ -62,7 +62,7 @@ do so, you can extend one of the WidgetAbstracts available in EXT:dashboard.
 By extending one of those abstracts, and providing it with the needed data, you are able to
 have a new widget quite fast. The only thing that is left is to register the widget.
 
-Tag you widget in :file:`EXT:your_extension/Configuration/Services.yaml`:
+Tag your widget in :file:`EXT:your_extension/Configuration/Services.yaml`:
 
 .. code-block:: yaml
 
