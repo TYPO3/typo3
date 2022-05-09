@@ -1056,27 +1056,6 @@ return [
         ],
     ],
     'palettes' => [
-        '1' => [
-            'showitem' => 'starttime, endtime, extendToSubpages',
-        ],
-        '2' => [
-            'showitem' => 'layout, lastUpdated, newUntil, no_search',
-        ],
-        '3' => [
-            'showitem' => 'target, cache_timeout, cache_tags',
-        ],
-        '5' => [
-            'showitem' => 'author, author_email',
-        ],
-        '6' => [
-            'showitem' => 'php_tree_stop, editlock',
-        ],
-        '7' => [
-            'showitem' => 'is_siteroot',
-        ],
-        '8' => [
-            'showitem' => 'backend_layout_next_level',
-        ],
         'standard' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard',
             'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel',
