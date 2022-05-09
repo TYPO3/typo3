@@ -191,11 +191,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/View/PageLayoutView.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Backend\\\\View\\\\ArrayBrowser\\:\\:\\$dontLinkVar\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ArrayBrowserViewHelper.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Link/EditRecordViewHelper.php
@@ -614,11 +609,6 @@ parameters:
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Exception\\\\DefaultTcaSchemaTablePositionException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Schema/DefaultTcaSchema.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Parser\\\\AST\\\\CreateColumnDefinitionItem\\:\\:\\$null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
@@ -1336,16 +1326,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
 
 		-
-			message: "#^Access to an undefined property object\\:\\:\\$info\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:getLastErrorArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:getMaxUploadFileSize\\(\\) should return int but returns float\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
@@ -1589,11 +1569,6 @@ parameters:
 			message: "#^Result of method TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\FlexForm\\\\FlexFormTools\\:\\:traverseFlexFormXMLData_recurse\\(\\) \\(void\\) is used\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Configuration\\\\Parser\\\\PageTsConfigParserTest\\:\\:\\$setup\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/Parser/PageTsConfigParserTest.php
 
 		-
 			message: "#^Parameter \\#2 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\ProviderConfigurationLoader constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend, TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface given\\.$#"
@@ -3711,11 +3686,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/IndexSearchRepository.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\IndexedSearch\\\\Utility\\\\DoubleMetaPhoneUtility\\:\\:\\$pObj\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
-
-		-
 			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
@@ -3789,16 +3759,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\ConstantMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstantMatcher.php
-
-		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\:\\:\\$args\\.$#"
-			count: 5
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
-
-		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\:\\:\\$class\\.$#"
-			count: 5
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
 
 		-
 			message: "#^Property PhpParser\\\\Node\\\\Expr\\\\New_\\:\\:\\$class \\(PhpParser\\\\Node\\\\Expr\\|PhpParser\\\\Node\\\\Name\\|PhpParser\\\\Node\\\\Stmt\\\\Class_\\) in isset\\(\\) is not nullable\\.$#"

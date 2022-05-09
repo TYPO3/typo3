@@ -724,7 +724,7 @@ class Parser
                     $this->match(Lexer::T_NULL);
                     break;
                 case Lexer::T_NULL:
-                    $columnDefinitionItem->null = true;
+                    $columnDefinitionItem->allowNull = true;
                     $this->match(Lexer::T_NULL);
                     break;
                 case Lexer::T_DEFAULT:

@@ -42,6 +42,7 @@ class PageTsConfigParserTest extends UnitTestCase
         $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
         $typoScriptParserProphecy = $this->prophesize(TypoScriptParser::class);
         $typoScriptParserProphecy->parse($input, $matcherProphecy)->shouldBeCalled()->will(function () use ($expectedParsedTsConfig) {
+            /** @var TypoScriptParser $this */
             $this->setup = $expectedParsedTsConfig;
         });
         $cache = new NullFrontend('runtime');
