@@ -29,6 +29,7 @@ setUpDockerComposeDotEnv() {
         echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}"
         echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}"
         echo "DATABASE_DRIVER=${DATABASE_DRIVER}"
+        echo "DOCKER_SELENIUM_IMAGE=${DOCKER_SELENIUM_IMAGE}"
     } > .env
 }
 
@@ -171,6 +172,16 @@ EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
+DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:3.141.59-20210713"
+
+# Detect arm64 and use a seleniarm image.
+# In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
+# So for the time being we have to use seleniarm image.
+ARCH=$(uname -m)
+if [ $ARCH = "arm64" ]; then
+    DOCKER_SELENIUM_IMAGE="seleniarm/standalone-chromium:4.1.2-20220227"
+    echo "Architecture" $ARCH "requires" $DOCKER_SELENIUM_IMAGE "to run acceptance tests."
+fi
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
