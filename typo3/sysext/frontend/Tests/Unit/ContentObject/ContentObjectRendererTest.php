@@ -2352,6 +2352,32 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 '<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
             ],
+            'Link url using stdWrap' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com',
+                        ],
+                    ],
+                ],
+                '<a href="http://typo3.com">TYPO3</a>',
+            ],
+            'Link url using stdWrap with class attribute in parameter' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org - url-class',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com',
+                        ],
+                    ],
+                ],
+                '<a href="http://typo3.com" class="url-class">TYPO3</a>',
+            ],
         ];
     }
 

@@ -4720,7 +4720,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $linkText = (string)$linkText;
         $tsfe = $this->getTypoScriptFrontendController();
 
-        $linkParameter = trim((string)$this->stdWrapValue('parameter', $conf ?? []));
+        if (isset($conf['parameter.'])) {
+            // Evaluate "parameter." stdWrap but keep additional information (like target, class and title)
+            $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+            $linkParameterParts = $typoLinkCodecService->decode($conf['parameter'] ?? '');
+            $linkParameterParts['url'] = $this->stdWrap($linkParameterParts['url'], $conf['parameter.']);
+            $linkParameter = $typoLinkCodecService->encode($linkParameterParts);
+        } else {
+            $linkParameter = trim(($conf['parameter'] ?? ''));
+        }
         $this->lastTypoLinkUrl = '';
         $this->lastTypoLinkTarget = '';
 
