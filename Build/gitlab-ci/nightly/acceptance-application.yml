@@ -15,8 +15,6 @@ acceptance application mariadb php 8.1 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 acceptance application mariadb php 8.1 max:
   stage: acceptance
   needs: []
@@ -38,8 +36,6 @@ acceptance application mariadb php 8.1 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 acceptance application mariadb php 8.1 min:
   stage: acceptance
   needs: []
@@ -61,8 +57,6 @@ acceptance application mariadb php 8.1 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 
 acceptance application mysql php 8.1 locked:
   stage: acceptance
@@ -81,8 +75,6 @@ acceptance application mysql php 8.1 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 acceptance application mysql php 8.1 max:
   stage: acceptance
   needs: []
@@ -104,8 +96,6 @@ acceptance application mysql php 8.1 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 acceptance application mysql php 8.1 min:
   stage: acceptance
   needs: []
@@ -127,8 +117,6 @@ acceptance application mysql php 8.1 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 
 acceptance application sqlite php 8.1 locked:
   stage: acceptance
@@ -147,8 +135,6 @@ acceptance application sqlite php 8.1 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 acceptance application sqlite php 8.1 max:
   stage: acceptance
   needs: []
@@ -170,8 +156,6 @@ acceptance application sqlite php 8.1 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 acceptance application sqlite php 8.1 min:
   stage: acceptance
   needs: []
@@ -193,8 +177,6 @@ acceptance application sqlite php 8.1 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
 
 # @todo New acceptance tests with postgres has some issues, so we leave them
 #       disabled for now before adding more unstable acceptance tests.
@@ -212,8 +194,6 @@ acceptance application sqlite php 8.1 min:
 #  script:
 #    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
 #    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-#  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-#  retry: 1
 #acceptance application postgres php 8.1 max:
 #  stage: acceptance
 #  needs: []
@@ -232,8 +212,6 @@ acceptance application sqlite php 8.1 min:
 #  script:
 #    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
 #    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-#  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-#  retry: 1
 #acceptance application postgres php 8.1 min:
 #  stage: acceptance
 #  needs: []
@@ -252,5 +230,3 @@ acceptance application sqlite php 8.1 min:
 #  script:
 #    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
 #    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-#  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-#  retry: 1
