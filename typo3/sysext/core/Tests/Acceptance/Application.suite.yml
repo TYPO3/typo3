@@ -19,8 +19,8 @@ modules:
     - Codeception\Module\Cli
 
 extensions:
-    enabled:
-        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\BackendCoreEnvironment
+  enabled:
+    - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\BackendCoreEnvironment
 
 groups:
   AcceptanceTests-Job-*: AcceptanceTests-Job-*

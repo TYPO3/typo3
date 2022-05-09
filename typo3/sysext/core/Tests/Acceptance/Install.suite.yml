@@ -11,6 +11,7 @@ modules:
             args: [ "--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
     - Asserts
 
+env:
   mysql:
     extensions:
       enabled:
