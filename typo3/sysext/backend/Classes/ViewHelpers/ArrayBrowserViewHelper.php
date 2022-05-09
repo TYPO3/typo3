@@ -58,7 +58,6 @@ class ArrayBrowserViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
-        $arrayBrowser->dontLinkVar = true;
         $arrayBrowser->expAll = true;
 
         return $arrayBrowser->tree($arguments['data'], '');

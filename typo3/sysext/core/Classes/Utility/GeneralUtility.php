@@ -24,6 +24,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
@@ -3458,11 +3459,15 @@ class GeneralUtility
      * Find the best service and check if it works.
      * Returns object of the service class.
      *
+     * This method is used for the legacy ExtensionManager:addService() mechanism,
+     * not with Dependency-Injected services. In practice, all remaining core uses of
+     * this mechanism are authentication services, which all have an info property.
+     *
      * @param string $serviceType Type of service (service key).
      * @param string $serviceSubType Sub type like file extensions or similar. Defined by the service.
      * @param array $excludeServiceKeys List of service keys which should be excluded in the search for a service
      * @throws \RuntimeException
-     * @return object|string[] The service object or an array with error infos.
+     * @return object|string[]|false The service object or an array with error infos, or false if no service was found.
      */
     public static function makeInstanceService($serviceType, $serviceSubType = '', array $excludeServiceKeys = [])
     {
@@ -3475,7 +3480,11 @@ class GeneralUtility
         while ($info = ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
             // provide information about requested service to service object
             $info = array_merge($info, $requestInfo);
-            $obj = self::makeInstance($info['className']);
+
+            /** @var class-string<AbstractAuthenticationService> $className */
+            $className = $info['className'];
+            /** @var AbstractAuthenticationService $obj */
+            $obj = self::makeInstance($className);
             if (is_object($obj)) {
                 if (!is_callable([$obj, 'init'])) {
                     self::getLogger()->error('Requested service {class} has no init() method.', [
