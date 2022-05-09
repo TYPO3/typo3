@@ -228,7 +228,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                         'columns' => [
                             'bar' => [
                                 'label' => 'barColumnTitle',
-                                'exclude' => 1,
+                                'exclude' => true,
                             ],
                             'baz' => [
                                 'label' => 'bazColumnTitle',

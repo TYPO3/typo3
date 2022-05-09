@@ -10,7 +10,7 @@
 
    'columns' => [
        't3editor_1' => [
-           'exclude' => 1,
+           'exclude' => true,
            'label' => 't3editor_1 format=html, rows=7',
            'description' => 'field description',
            'config' => [
@@ -21,4 +21,3 @@
            ],
        ],
    ]
-   

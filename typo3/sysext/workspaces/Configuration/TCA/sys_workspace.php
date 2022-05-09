@@ -131,7 +131,6 @@ return [
             ],
         ],
         'custom_stages' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.custom_stages',
             'config' => [
                 'type' => 'inline',

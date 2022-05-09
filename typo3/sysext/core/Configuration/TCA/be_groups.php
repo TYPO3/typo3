@@ -107,7 +107,6 @@ return [
             ],
         ],
         'workspace_perms' => [
-            'exclude' => 1,
             'displayCond' => 'USER:TYPO3\CMS\Core\Hooks\TcaDisplayConditions->isExtensionInstalled:workspaces',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms',
             'config' => [
@@ -184,7 +183,6 @@ return [
             ],
         ],
         'hidden' => [
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'config' => [
                 'type' => 'check',

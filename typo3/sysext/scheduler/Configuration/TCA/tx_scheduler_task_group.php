@@ -40,7 +40,6 @@ return [
         ],
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'exclude' => true,
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',

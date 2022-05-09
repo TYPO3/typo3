@@ -24,7 +24,6 @@ return [
     'columns' => [
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'exclude' => true,
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -38,7 +37,6 @@ return [
             ],
         ],
         'starttime' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'datetime',
@@ -46,7 +44,6 @@ return [
             ],
         ],
         'endtime' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'datetime',

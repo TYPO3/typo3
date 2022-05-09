@@ -10,21 +10,21 @@ return [
     ],
     'columns' => [
         'datetime_immutable_text' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'type=datetime, db=text',
             'config' => [
                 'type' => 'datetime',
             ],
         ],
         'datetime_immutable_int' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'type=datetime, db=int',
             'config' => [
                 'type' => 'datetime',
             ],
         ],
         'datetime_immutable_datetime' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'type=datetime, db=datetime',
             'config' => [
                 'type' => 'datetime',

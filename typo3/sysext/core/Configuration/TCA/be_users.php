@@ -164,7 +164,6 @@ return [
             ],
         ],
         'disable' => [
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'displayCond' => 'USER:' . \TYPO3\CMS\Core\Hooks\TcaDisplayConditions::class . '->isRecordCurrentUser:false',
             'config' => [
@@ -180,7 +179,6 @@ return [
             ],
         ],
         'admin' => [
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.admin',
             'config' => [
                 'type' => 'check',
@@ -235,7 +233,6 @@ return [
             ],
         ],
         'workspace_perms' => [
-            'exclude' => 1,
             'displayCond' => 'USER:TYPO3\CMS\Core\Hooks\TcaDisplayConditions->isExtensionInstalled:workspaces',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms',
             'config' => [
