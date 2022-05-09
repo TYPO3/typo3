@@ -134,8 +134,8 @@ class HistoryService implements SingletonInterface
                 if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
                     // Create diff-result:
                     $fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(
-                        BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true),
-                        BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true)
+                        (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true),
+                        (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true)
                     );
                     if (!empty($fieldDifferences)) {
                         $differences[] = [

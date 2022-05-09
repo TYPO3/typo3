@@ -193,7 +193,7 @@ class RemoteServer
                     ];
                 } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
                     // If this is a new or delete placeholder, add diff view for all appropriate fields
-                    $newOrDeleteRecord[$fieldName] = BackendUtility::getProcessedValue(
+                    $newOrDeleteRecord[$fieldName] = (string)BackendUtility::getProcessedValue(
                         $parameter->table,
                         $fieldName,
                         $liveRecord[$fieldName], // Both (live and version) values are the same
@@ -201,7 +201,7 @@ class RemoteServer
                         true,
                         false,
                         $liveRecord['uid'] // Relations of new/delete placeholder do always contain the live uid
-                    ) ?? '';
+                    );
 
                     // Don't add empty fields
                     if ($newOrDeleteRecord[$fieldName] === '') {
@@ -233,7 +233,7 @@ class RemoteServer
                         false,
                         $liveRecord['uid']
                     );
-                    $versionRecord[$fieldName] = BackendUtility::getProcessedValue(
+                    $versionRecord[$fieldName] = (string)BackendUtility::getProcessedValue(
                         $parameter->table,
                         $fieldName,
                         $versionRecord[$fieldName],
