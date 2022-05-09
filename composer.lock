@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27b48d24edab3a059215e25cd11df550",
+    "content-hash": "225b029f1a0aa959d21df0fa4adc8cfe",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9083,19 +9083,20 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.16.2",
+            "version": "6.16.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "54ac7b82c48bc70a9dbb43fbc3f46a59ea28583a"
+                "reference": "111b3136dc21d96738083203891c4c5e179619e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/54ac7b82c48bc70a9dbb43fbc3f46a59ea28583a",
-                "reference": "54ac7b82c48bc70a9dbb43fbc3f46a59ea28583a",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/111b3136dc21d96738083203891c4c5e179619e1",
+                "reference": "111b3136dc21d96738083203891c4c5e179619e1",
                 "shasum": ""
             },
             "require": {
+                "ext-pdo": "*",
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
                 "mikey179/vfsstream": "~1.6.10",
                 "php": ">= 7.2",
@@ -9114,7 +9115,8 @@
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.4.6",
+                "phpstan/phpstan": "^1.6.7",
+                "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev",
                 "typo3/coding-standards": "^0.5.0"
             },
@@ -9151,9 +9153,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.2"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.4"
             },
-            "time": "2022-03-04T20:20:41+00:00"
+            "time": "2022-05-09T22:28:41+00:00"
         }
     ],
     "aliases": [],
