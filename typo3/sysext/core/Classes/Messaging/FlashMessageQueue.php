@@ -27,6 +27,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class FlashMessageQueue extends \SplQueue implements \JsonSerializable
 {
+    public const FLASHMESSAGE_QUEUE = 'core.template.flashMessages';
+    public const NOTIFICATION_QUEUE = 'core.template.notifications';
+
     /**
      * A unique identifier for this queue
      *
