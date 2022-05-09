@@ -55,7 +55,14 @@ class LinkFactory implements LoggerAwareInterface
      */
     public function create(string $linkText, array $linkConfiguration, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
     {
-        $linkParameter = trim((string)$contentObjectRenderer->stdWrapValue('parameter', $linkConfiguration));
+        if (isset($linkConfiguration['parameter.'])) {
+            // Evaluate "parameter." stdWrap but keep additional information (like target, class and title)
+            $linkParameterParts = $this->typoLinkCodecService->decode($linkConfiguration['parameter'] ?? '');
+            $linkParameterParts['url'] = $contentObjectRenderer->stdWrap($linkParameterParts['url'], $linkConfiguration['parameter.']);
+            $linkParameter = $this->typoLinkCodecService->encode($linkParameterParts);
+        } else {
+            $linkParameter = trim((string)($linkConfiguration['parameter'] ?? ''));
+        }
         try {
             [$linkParameter, $target, $classList, $title] = $this->resolveTypolinkParameterString($linkParameter, $linkConfiguration);
         } catch (UnableToLinkException $e) {
