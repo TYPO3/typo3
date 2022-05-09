@@ -4162,7 +4162,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // Timestamp field:
         $updateFields = [];
-        if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
             $updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
         }
 
