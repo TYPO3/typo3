@@ -9,10 +9,10 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,
-    'version' => '10.4.28',
+    'version' => '10.4.29',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.28'
+            'typo3' => '10.4.29'
         ],
         'conflicts' => [],
         'suggests' => [
