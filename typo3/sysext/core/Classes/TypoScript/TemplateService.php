@@ -662,7 +662,7 @@ class TemplateService
                 }
                 // Traversing list again to ensure the sorting of the templates
                 foreach ($basedOnIds as $id) {
-                    if (is_array($subTemplates[$id])) {
+                    if (is_array($subTemplates[$id] ?? false)) {
                         $this->versionOL($subTemplates[$id]);
                         $this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
                     }
