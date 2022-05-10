@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -83,8 +82,6 @@ class TextTableElement extends AbstractFormElement
      */
     public function render()
     {
-        $backendUser = $this->getBackendUserAuthentication();
-
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
@@ -175,11 +172,7 @@ class TextTableElement extends AbstractFormElement
             $classes[] = 't3js-enable-tab';
         }
         $attributes['class'] = implode(' ', $classes);
-        $maximumHeight = (int)$backendUser->uc['resizeTextareas_MaxHeight'];
-        if ($maximumHeight > 0) {
-            // add the max-height from the users' preference to it
-            $attributes['style'] = 'max-height: ' . $maximumHeight . 'px';
-        }
+
         if (isset($config['max']) && (int)$config['max'] > 0) {
             $attributes['maxlength'] = (string)(int)$config['max'];
         }
@@ -229,11 +222,6 @@ class TextTableElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

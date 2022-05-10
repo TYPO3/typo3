@@ -87,11 +87,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
                 'eventName' => 'setup:confirmation:response',
             ],
         ],
-        'resizeTextareas_MaxHeight' => [
-            'type' => 'number',
-            'class' => 'form-control-adapt',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:flexibleTextareas_MaxHeight',
-        ],
         'mfaProviders' => [
             'type' => 'mfa',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders',
@@ -108,5 +103,5 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
     'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity,passwordCurrent,password,password2,mfaProviders,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,startModule,
-            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,resizeTextareas_MaxHeight,titleLen,backendTitleFormat,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,resetConfiguration',
+            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,titleLen,backendTitleFormat,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,resetConfiguration',
 ];

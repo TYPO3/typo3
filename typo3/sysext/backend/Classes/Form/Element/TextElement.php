@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -181,11 +180,7 @@ class TextElement extends AbstractFormElement
             $classes[] = 't3js-enable-tab';
         }
         $attributes['class'] = implode(' ', $classes);
-        $maximumHeight = (int)$this->getBackendUserAuthentication()->uc['resizeTextareas_MaxHeight'];
-        if ($maximumHeight > 0) {
-            // add the max-height from the users' preference to it
-            $attributes['style'] = 'max-height: ' . $maximumHeight . 'px';
-        }
+
         if (isset($config['max']) && (int)$config['max'] > 0) {
             $attributes['maxlength'] = (string)(int)$config['max'];
         }
@@ -324,10 +319,5 @@ class TextElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/text-element.js');
 
         return $resultArray;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }
