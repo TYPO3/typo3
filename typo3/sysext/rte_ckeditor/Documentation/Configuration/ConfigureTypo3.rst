@@ -178,12 +178,12 @@ For example, look at :guilabel:`tt_content > columns > bodytext`.
 However, you will
 find that neither `enableRichtext`, nor `richtextConfiguration` is set here. They
 are configured in :guilabel:`tt_content > types` for various content types, for example
-look at :guilabel:`tt_content > types > text > columnOverrides`.
+look at :guilabel:`tt_content > types > text > columnsOverrides`.
 
 .. figure:: images/column_overrides.png
    :class: with-shadow
 
-   TCA: tt_content > types > text > columnsOverride > bodytext
+   TCA: tt_content > types > text > columnsOverrides > bodytext
 
 
 
