@@ -115,6 +115,9 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $availableCategories = $this->getCategoryLabels($this->categories);
         $currentCategory = (string)$moduleData->get('constant_editor_cat');
         if (!empty($availableCategories)) {
+            if ($currentCategory === '') {
+                $currentCategory = array_key_first($availableCategories);
+            }
             $view->assign('constantsMenu', BackendUtility::getDropdownMenu($pageId, 'constant_editor_cat', $currentCategory, $availableCategories, '', '', ['id' => 'constant_editor_cat']));
         }
         $view->assignMultiple([
