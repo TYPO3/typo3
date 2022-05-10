@@ -1327,7 +1327,7 @@ class EditDocumentController
         ) {
             $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'] ?? 0);
             if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-                $excludeDokTypes = GeneralUtility::intExplode(',', $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], true);
+                $excludeDokTypes = GeneralUtility::intExplode(',', (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], true);
             } else {
                 // exclude sys-folders, spacers and recycler by default
                 $excludeDokTypes = [

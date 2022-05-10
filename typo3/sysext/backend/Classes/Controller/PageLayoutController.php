@@ -511,7 +511,7 @@ class PageLayoutController
     protected function getActiveColumnsArray(PageLayoutContext $pageLayoutContext, array $tsConfig): array
     {
         $availableColumnPositionsFromBackendLayout = array_unique($pageLayoutContext->getBackendLayout()->getColumnPositionNumbers());
-        $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', $tsConfig['mod.']['SHARED.']['colPos_list'] ?? '', true));
+        $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', (string)($tsConfig['mod.']['SHARED.']['colPos_list'] ?? ''), true));
         $activeColumns = $availableColumnPositionsFromBackendLayout;
         if (!empty($allowedColumnPositionsByTsConfig)) {
             // If there is no tsConfig colPos_list, no restriction. Else create intersection of available and allowed.
@@ -537,7 +537,7 @@ class PageLayoutController
         ];
         // Exclude sysfolders, spacers and recycler by default, but allow custom overrides via tsConfig
         if (isset($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-            $excludeDokTypes = GeneralUtility::intExplode(',', $tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'], true);
+            $excludeDokTypes = GeneralUtility::intExplode(',', (string)($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'] ?? ''), true);
         }
         if (
             $this->currentSelectedLanguage !== -1

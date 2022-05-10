@@ -263,7 +263,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function getSelectedLanguages(): array
     {
-        $langList = $this->tt_contentConfig['sys_language_uid'];
+        $langList = (string)($this->tt_contentConfig['sys_language_uid'] ?? '');
         if ($this->tt_contentConfig['languageMode']) {
             if ($this->tt_contentConfig['languageColsPointer']) {
                 $langList = '0,' . $this->tt_contentConfig['languageColsPointer'];

@@ -137,7 +137,7 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
         }
 
         if (isset($pageTsConfig['startingPoints'])) {
-            $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', $pageTsConfig['startingPoints'])));
+            $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', (string)$pageTsConfig['startingPoints'])));
         }
         if (isset($pageTsConfig['appearance.']['expandAll'])) {
             $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];

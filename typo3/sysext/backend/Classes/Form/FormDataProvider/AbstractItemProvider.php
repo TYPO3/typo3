@@ -885,7 +885,7 @@ abstract class AbstractItemProvider
                     return implode(',', array_map('intval', $value));
                 }
 
-                return implode(',', GeneralUtility::intExplode(',', $value, true));
+                return implode(',', GeneralUtility::intExplode(',', (string)$value, true));
             }, $parsedSiteConfiguration));
             $resolvedStartingPoints = $this->replaceParsedSiteConfiguration($fieldConfig['config']['treeConfig']['startingPoints'], $parsedSiteConfiguration);
             // Add the resolved starting points while removing empty values

@@ -1176,7 +1176,7 @@ class BackendUtility
         }
         if ($row['fe_group']) {
             $fe_groups = [];
-            foreach (GeneralUtility::intExplode(',', $row['fe_group']) as $fe_group) {
+            foreach (GeneralUtility::intExplode(',', (string)$row['fe_group']) as $fe_group) {
                 if ($fe_group < 0) {
                     $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', (string)$fe_group));
                 } else {

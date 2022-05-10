@@ -71,7 +71,8 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'])) {
                 $pageTsConfig = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'];
                 if (isset($pageTsConfig['startingPoints'])) {
-                    $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', $pageTsConfig['startingPoints'])));
+                    $fieldConfig['config']['treeConfig']['startingPoints']
+                        = implode(',', array_unique(GeneralUtility::intExplode(',', (string)$pageTsConfig['startingPoints'])));
                 }
                 if (isset($pageTsConfig['appearance.']['expandAll'])) {
                     $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];

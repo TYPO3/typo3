@@ -66,7 +66,7 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 ) {
                     $defaultLanguageKey = $result['tableName'] . ':' . (int)$result['databaseRow']['uid'];
                     $result['defaultLanguageDiffRow'][$defaultLanguageKey] = json_decode(
-                        (string)($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']] ?? ''),
+                        (string)$result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']],
                         true
                     );
                 }
@@ -75,7 +75,7 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 // @todo: Permission check if user is in "restrict ot language" is missing here.
                 // @todo: The TranslationConfigurationProvider is more stupid than good for us ... invent a better translation overlay api!
                 if (!empty($result['userTsConfig']['options.']['additionalPreviewLanguages'])) {
-                    $additionalLanguageUids = GeneralUtility::intExplode(',', $result['userTsConfig']['options.']['additionalPreviewLanguages'], true);
+                    $additionalLanguageUids = GeneralUtility::intExplode(',', (string)$result['userTsConfig']['options.']['additionalPreviewLanguages'], true);
                     $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
                     foreach ($additionalLanguageUids as $additionalLanguageUid) {
                         // Continue if this system language record does not exist or if 0 or -1 is requested

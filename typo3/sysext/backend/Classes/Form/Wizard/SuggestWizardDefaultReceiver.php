@@ -108,7 +108,7 @@ class SuggestWizardDefaultReceiver
         $this->config = $config;
         // get a list of all the pages that should be looked on
         if (isset($config['pidList'])) {
-            $pageIds = GeneralUtility::intExplode(',', $config['pidList'], true);
+            $pageIds = GeneralUtility::intExplode(',', (string)$config['pidList'], true);
             $depth = (int)($config['pidDepth'] ?? 0);
             $availablePageIds = [];
             foreach ($pageIds as $pageId) {

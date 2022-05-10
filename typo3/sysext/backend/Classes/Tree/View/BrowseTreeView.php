@@ -38,7 +38,7 @@ class BrowseTreeView extends AbstractTreeView
         $backendUser = $this->getBackendUser();
         // This will hide records from display - it has nothing to do with user rights!!
         $clauseExcludePidList = '';
-        $pidList = $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '';
+        $pidList = (string)($backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '');
         if (!empty($pidList)) {
             if ($pidList = implode(',', GeneralUtility::intExplode(',', $pidList))) {
                 $clauseExcludePidList = ' AND pages.uid NOT IN (' . $pidList . ')';

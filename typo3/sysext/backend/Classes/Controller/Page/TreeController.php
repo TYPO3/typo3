@@ -148,7 +148,7 @@ class TreeController
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $this->hiddenRecords = GeneralUtility::intExplode(
             ',',
-            $userTsConfig['options.']['hideRecords.']['pages'] ?? '',
+            (string)($userTsConfig['options.']['hideRecords.']['pages'] ?? ''),
             true
         );
         $this->backgroundColors = $userTsConfig['options.']['pageTree.']['backgroundColor.'] ?? [];
@@ -189,7 +189,7 @@ class TreeController
 
     public function fetchReadOnlyConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
-        $entryPoints = $request->getQueryParams()['alternativeEntryPoints'] ?? '';
+        $entryPoints = (string)($request->getQueryParams()['alternativeEntryPoints'] ?? '');
         $entryPoints = GeneralUtility::intExplode(',', $entryPoints, true);
         $additionalArguments = [
             'readOnly' => 1,
@@ -226,10 +226,10 @@ class TreeController
             }
             $doktypeLabelMap[$doktypeItemConfig[1]] = $doktypeItemConfig[0];
         }
-        $doktypes = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['pageTree.']['doktypesToShowInNewPageDragArea'] ?? '', true);
+        $doktypes = GeneralUtility::intExplode(',', (string)($backendUser->getTSConfig()['options.']['pageTree.']['doktypesToShowInNewPageDragArea'] ?? ''), true);
         $doktypes = array_unique($doktypes);
         $output = [];
-        $allowedDoktypes = GeneralUtility::intExplode(',', $backendUser->groupData['pagetypes_select'], true);
+        $allowedDoktypes = GeneralUtility::intExplode(',', (string)($backendUser->groupData['pagetypes_select'] ?? ''), true);
         $isAdmin = $backendUser->isAdmin();
         // Early return if backend user may not create any doktype
         if (!$isAdmin && empty($allowedDoktypes)) {
@@ -473,7 +473,7 @@ class TreeController
     {
         $backendUser = $this->getBackendUser();
         $userTsConfig = $backendUser->getTSConfig();
-        $excludedDocumentTypes = GeneralUtility::intExplode(',', $userTsConfig['options.']['pageTree.']['excludeDoktypes'] ?? '', true);
+        $excludedDocumentTypes = GeneralUtility::intExplode(',', (string)($userTsConfig['options.']['pageTree.']['excludeDoktypes'] ?? ''), true);
 
         $additionalQueryRestrictions = [];
         if (!empty($excludedDocumentTypes)) {
