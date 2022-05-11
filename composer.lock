@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10395279bca544f78ccd424f3bcf4817",
+    "content-hash": "52c6404d6b9a2fc4bf5a9f9b99ee7a9b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1048,16 +1048,16 @@
         },
         {
             "name": "lolli42/finediff",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lolli42/FineDiff.git",
-                "reference": "249e4965bb6b7efe4c198021f38d6b31d93c4152"
+                "reference": "72b57e1355c6bbe2f51921e6a3a5bb7441471a7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lolli42/FineDiff/zipball/249e4965bb6b7efe4c198021f38d6b31d93c4152",
-                "reference": "249e4965bb6b7efe4c198021f38d6b31d93c4152",
+                "url": "https://api.github.com/repos/lolli42/FineDiff/zipball/72b57e1355c6bbe2f51921e6a3a5bb7441471a7a",
+                "reference": "72b57e1355c6bbe2f51921e6a3a5bb7441471a7a",
                 "shasum": ""
             },
             "require": {
@@ -1107,9 +1107,9 @@
             ],
             "support": {
                 "issues": "https://github.com/lolli42/FineDiff/issues",
-                "source": "https://github.com/lolli42/FineDiff/tree/1.0.0"
+                "source": "https://github.com/lolli42/FineDiff/tree/1.0.1"
             },
-            "time": "2021-10-23T16:02:24+00:00"
+            "time": "2022-05-11T13:15:52+00:00"
         },
         {
             "name": "masterminds/html5",
