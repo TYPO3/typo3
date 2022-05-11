@@ -702,6 +702,7 @@ class SiteConfigurationController
 
     /**
      * Returns a list of pages that have 'is_siteroot' set
+     * or are on pid 0 and not in list of excluded doktypes
      */
     protected function getAllSitePages(): array
     {
@@ -716,7 +717,12 @@ class SiteConfigurationController
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq('pid', 0),
-                        $queryBuilder->expr()->neq('doktype', PageRepository::DOKTYPE_SYSFOLDER)
+                        $queryBuilder->expr()->notIn('doktype', [
+                            PageRepository::DOKTYPE_SYSFOLDER,
+                            PageRepository::DOKTYPE_SPACER,
+                            PageRepository::DOKTYPE_RECYCLER,
+                            PageRepository::DOKTYPE_LINK,
+                        ])
                     ),
                     $queryBuilder->expr()->eq('is_siteroot', 1)
                 )
