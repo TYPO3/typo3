@@ -992,7 +992,7 @@ abstract class AbstractMenuContentObject
                 $recArr['up'] = $this->sys_page->getPage($value_rec['pid']);
             }
             // If the 'up' item was NOT level 0 in rootline...
-            if ($recArr['up']['pid'] && $value_rec['pid'] != $this->tmpl->rootLine[0]['uid']) {
+            if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != $this->tmpl->rootLine[0]['uid']) {
                 // The page record of "index".
                 $recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
             }
