@@ -34,7 +34,7 @@
 		"enshrined/svg-sanitize": "^0.15.4",
 		"guzzlehttp/guzzle": "^6.3.0",
 		"guzzlehttp/psr7": "^1.8.5",
-		"lolli42/finediff": "^1.0",
+		"lolli42/finediff": "^1.0.1",
 		"nikic/php-parser": "^4.10.4",
 		"psr/container": "^1.0",
 		"psr/event-dispatcher": "^1.0",
