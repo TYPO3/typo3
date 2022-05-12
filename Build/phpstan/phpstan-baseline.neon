@@ -2511,11 +2511,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/ConjunctionValidator.php
-
-		-
 			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\BlogController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/BlogController.php
