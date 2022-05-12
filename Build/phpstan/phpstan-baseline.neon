@@ -3016,11 +3016,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/ConjunctionValidator.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
