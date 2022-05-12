@@ -20,7 +20,7 @@ Export
       On the first tab of the export module you can fine-tune the export (1).
 
       If you want to export all data of the selected page including its
-      subpages, select the "Infinite" option in the :guilabel:`Layers` selection
+      subpages, select the "Infinite" option in the :guilabel:`Levels` selection
       box. Under :guilabel:`Include tables` you can limit the types of records
       to be exported.
 
