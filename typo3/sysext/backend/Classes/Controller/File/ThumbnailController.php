@@ -92,7 +92,7 @@ class ThumbnailController
     protected function generateThumbnail($fileId, array $configuration): ResponseInterface
     {
         $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileId);
-        if ($file === null || $file->isMissing()) {
+        if ($file->isMissing()) {
             return $this->generateNotFoundResponse();
         }
 

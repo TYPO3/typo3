@@ -170,19 +170,15 @@ class ResourceStorageTest extends BaseTestCase
             $driverConfiguration['basePath'] = $this->getMountRootUrl();
         }
 
-        if ($mockedDriverMethods === null) {
-            $driver = new LocalDriver($driverConfiguration);
-        } else {
-            // We are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
-            // when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
-            $driver = $this->getMockBuilder(LocalDriver::class)
-                ->onlyMethods($mockedDriverMethods)
-                ->setConstructorArgs([$driverConfiguration])
-                ->getMock();
-        }
-        if ($storageObject !== null) {
-            $storageObject->setDriver($driver);
-        }
+        // We are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
+        // when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
+        $driver = $this->getMockBuilder(LocalDriver::class)
+            ->onlyMethods($mockedDriverMethods)
+            ->setConstructorArgs([$driverConfiguration])
+            ->getMock();
+
+        $storageObject?->setDriver($driver);
+
         $driver->setStorageUid(6);
         $driver->processConfiguration();
         $driver->initialize();

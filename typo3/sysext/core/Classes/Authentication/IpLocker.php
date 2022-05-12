@@ -79,9 +79,7 @@ class IpLocker
 
         $numberOfParts = MathUtility::forceIntegerInRange($numberOfParts, 1, $maxParts);
         $ipParts = explode($delimiter, $ipAddress);
-        if ($ipParts === false) {
-            return $ipAddress;
-        }
+
         for ($a = $maxParts; $a > $numberOfParts; $a--) {
             $ipPartValue = $delimiter === '.' ? '0' : str_pad('', strlen($ipParts[$a - 1]), '0');
             $ipParts[$a - 1] = $ipPartValue;

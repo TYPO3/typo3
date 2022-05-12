@@ -147,7 +147,7 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
 
         $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier($queueIdentifier);
         $flashMessages = $flashMessageQueue->getAllMessagesAndFlush();
-        if ($flashMessages === null || count($flashMessages) === 0) {
+        if (count($flashMessages) === 0) {
             return '';
         }
 

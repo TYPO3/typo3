@@ -176,9 +176,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
             $this->initialize();
             $numberOfElements = count($this->storage);
         }
-        if ($numberOfElements === null) {
-            throw new Exception('The number of elements could not be determined.', 1252514486);
-        }
         return $numberOfElements;
     }
 

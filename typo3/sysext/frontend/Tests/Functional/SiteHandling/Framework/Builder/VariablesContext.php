@@ -46,7 +46,7 @@ class VariablesContext implements Applicable
 
     public function matchesRequiredApplicables(Applicable ...$applicables): bool
     {
-        if ($this->requiredApplicables === null || $this->requiredApplicables === []) {
+        if ($this->requiredApplicables === []) {
             return true;
         }
         $missingApplicables = array_udiff(

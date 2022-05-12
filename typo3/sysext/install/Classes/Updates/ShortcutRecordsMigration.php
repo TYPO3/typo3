@@ -107,10 +107,6 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
     {
         $schemaManager = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME)->createSchemaManager();
 
-        if ($schemaManager === null) {
-            return false;
-        }
-
         $tableColumns = $schemaManager->listTableColumns(self::TABLE_NAME);
 
         foreach (['module_name', 'url', 'route', 'arguments'] as $column) {

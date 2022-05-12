@@ -2051,7 +2051,7 @@ class PageRenderer implements SingletonInterface
                     sprintf(
                         'Object.fromEntries(Object.entries(%s).filter((entry) => '
                             . "!['__proto__', 'prototype', 'constructor'].includes(entry[0])))",
-                        json_encode($assignments === [] ? new \stdClass() : $assignments)
+                        json_encode($assignments)
                     ),
                     $this->inlineJavascriptWrap[1],
                 );
