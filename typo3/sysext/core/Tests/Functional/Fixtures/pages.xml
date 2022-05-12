@@ -184,4 +184,35 @@
         <sys_language_uid>1</sys_language_uid>
         <title>Mount translation</title>
     </pages>
+    <tt_content>
+        <uid>1</uid>
+        <pid>1</pid>
+        <header>Default Content #1</header>
+        <bodytext><p>Say thanks for HTML in the DB</p></bodytext>
+        <sys_language_uid>0</sys_language_uid>
+        <l18n_parent>0</l18n_parent>
+    </tt_content>
+    <tt_content>
+        <uid>2</uid>
+        <pid>1</pid>
+        <header>Translated Content #1</header>
+        <bodytext><p>Grazie por HTML en la database</p></bodytext>
+        <sys_language_uid>1</sys_language_uid>
+        <l18n_parent>1</l18n_parent>
+    </tt_content>
+    <tt_content>
+        <uid>3</uid>
+        <pid>1</pid>
+        <header>Default Content #2</header>
+        <bodytext><p>Could be anything</p></bodytext>
+        <sys_language_uid>0</sys_language_uid>
+        <l18n_parent>0</l18n_parent>
+    </tt_content>
+    <tt_content>
+        <uid>4</uid>
+        <pid>1</pid>
+        <header>Translated #2</header>
+        <sys_language_uid>1</sys_language_uid>
+        <l18n_parent>3</l18n_parent>
+    </tt_content>
 </dataset>

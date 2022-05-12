@@ -611,4 +611,25 @@ class PageRepositoryTest extends FunctionalTestCase
         self::assertFalse(isset($row['_PAGES_OVERLAY_UID']));
         self::assertFalse(isset($row['_PAGES_OVERLAY_LANGUAGE']));
     }
+
+    /**
+     * @test
+     */
+    public function getLanguageOverlayResolvesContentWithNullInValues(): void
+    {
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]));
+        $subject = new PageRepository($context);
+        $record = $subject->getRawRecord('tt_content', 1);
+        self::assertSame('Default Content #1', $record['header']);
+        $overlaidRecord = $subject->getLanguageOverlay('tt_content', $record);
+        self::assertSame(2, (int)$overlaidRecord['_LOCALIZED_UID']);
+        self::assertSame('Translated Content #1', $overlaidRecord['header']);
+
+        // Check if "bodytext" is actually overlaid with a NULL value
+        $record = $subject->getRawRecord('tt_content', 3);
+        $overlaidRecord = $subject->getLanguageOverlay('tt_content', $record);
+        self::assertSame('Translated #2', $overlaidRecord['header']);
+        self::assertNull($overlaidRecord['bodytext']);
+    }
 }

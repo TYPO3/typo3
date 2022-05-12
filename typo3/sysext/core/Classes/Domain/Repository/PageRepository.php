@@ -661,7 +661,7 @@ class PageRepository implements LoggerAwareInterface
                             $row['_ORIG_pid'] = $olrow['_ORIG_pid'];
                         }
                         foreach ($row as $fN => $fV) {
-                            if ($fN !== 'uid' && $fN !== 'pid' && isset($olrow[$fN])) {
+                            if ($fN !== 'uid' && $fN !== 'pid' && array_key_exists($fN, $olrow)) {
                                 $row[$fN] = $olrow[$fN];
                             } elseif ($fN === 'uid') {
                                 $row['_LOCALIZED_UID'] = $olrow['uid'];
