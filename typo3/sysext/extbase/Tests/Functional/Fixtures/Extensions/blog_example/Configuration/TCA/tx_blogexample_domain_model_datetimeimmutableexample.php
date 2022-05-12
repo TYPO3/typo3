@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'ctrl' => [
         'title' => 'DateTimeImmutable Example',
-        'label' => 'title',
+        'label' => 'uid',
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_dateexample.gif',
     ],
     'columns' => [
