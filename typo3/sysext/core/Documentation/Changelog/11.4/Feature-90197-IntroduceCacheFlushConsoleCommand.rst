@@ -40,7 +40,7 @@ updates, in order for content changes to become active.
 TYPO3 caches can now be flushed in release postparatory steps. The integrator
 may decide to flush all caches (common practice with `EXT:typo3_console`) or
 may alternatively flush selected groups (e.g. 'pages') in case the `cache:warmup`
-(see :issue:`#93436`) command is used as companion in release preparatory steps.
+(see :issue:`93436`) command is used as companion in release preparatory steps.
 
 Deployment steps could then be:
 
