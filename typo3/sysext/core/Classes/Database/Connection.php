@@ -105,9 +105,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         }
 
         foreach ($this->prepareConnectionCommands as $command) {
-            if ($this->executeStatement($command) === false) {
-                $this->logger->critical('Could not initialize DB connection with query: {query}', ['query' => $command]);
-            }
+            $this->executeStatement($command);
         }
 
         return true;

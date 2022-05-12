@@ -46,11 +46,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/File/FileController.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/File/ThumbnailController.php
-
-		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/SiteConfigurationController.php
@@ -837,11 +832,6 @@ parameters:
 
 		-
 			message: "#^Return type \\(TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\) of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:createQueryBuilder\\(\\) should be compatible with return type \\(Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\) of method Doctrine\\\\DBAL\\\\Connection\\:\\:createQueryBuilder\\(\\)$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Connection.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int\\|string and false will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Connection.php
 
@@ -2476,11 +2466,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between array and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\:\\:method\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Routing/SiteMatcherTest.php
@@ -2666,11 +2651,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ActionController.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Arguments.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ControllerContext.php
@@ -2787,11 +2767,6 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyObjectStorage\\:\\:\\$warning is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php
 
@@ -3921,11 +3896,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FlashMessagesViewHelper.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FlashMessagesViewHelper.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 3
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Form/AbstractFormFieldViewHelper.php
@@ -4886,11 +4856,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Variables.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between array\\<TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\SiteHandling\\\\Framework\\\\Builder\\\\Applicable\\> and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariablesContext.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariablesContext.php
@@ -5319,11 +5284,6 @@ parameters:
 			message: "#^Variable \\$user on left side of \\?\\? is never defined\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Updates/BackendUserLanguageMigration.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Doctrine\\\\DBAL\\\\Schema\\\\AbstractSchemaManager and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Updates/ShortcutRecordsMigration.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
