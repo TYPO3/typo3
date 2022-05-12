@@ -82,7 +82,7 @@ class ServerRequest extends Request implements ServerRequestInterface
             $this->validateUploadedFiles($uploadedFiles);
         }
 
-        parent::__construct($uri, $method, $body, $headers);
+        parent::__construct($uri, $method ?? 'GET', $body, $headers);
 
         $this->serverParams  = $serverParams;
         $this->uploadedFiles = $uploadedFiles ?? [];

@@ -33,23 +33,20 @@ class Request extends Message implements RequestInterface
 {
     /**
      * The request-target, if it has been provided or calculated.
-     * @var string|null
      */
-    protected $requestTarget;
+    protected ?string $requestTarget = null;
 
     /**
-     * The HTTP method, defaults to GET
-     *
-     * @var string|null
+     * The HTTP method.
      */
-    protected $method;
+    protected string $method = 'GET';
 
     /**
      * Supported HTTP methods
      *
-     * @var array
+     * @var non-empty-string[]
      */
-    protected $supportedMethods = [
+    protected array $supportedMethods = [
         'CONNECT',
         'DELETE',
         'GET',
@@ -75,44 +72,42 @@ class Request extends Message implements RequestInterface
 
     /**
      * An instance of the Uri object
-     * @var UriInterface|null
+     *
+     * @todo It is a PSR-7 spec violation for this to be null. This should be corrected.
      */
-    protected $uri;
+    protected ?UriInterface $uri;
 
     /**
      * Constructor, the only place to set all parameters of this Request
      *
      * @param string|UriInterface|null $uri URI for the request, if any.
-     * @param string|null $method HTTP method for the request, if any.
+     * @param string $method HTTP method for the request, if any.
      * @param string|resource|StreamInterface|null $body Message body, if any.
      * @param array $headers Headers for the message, if any.
      * @throws \InvalidArgumentException for any invalid value.
      */
-    public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = [])
+    public function __construct(UriInterface|string|null $uri = null, string $method = 'GET', $body = 'php://input', array $headers = [])
     {
-
-        // Build a streamable object for the body
-        if ($body !== null && !is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {
-            throw new \InvalidArgumentException('Body must be a string stream resource identifier, a stream resource, or a StreamInterface instance', 1436717271);
-        }
-
-        if ($body !== null && !$body instanceof StreamInterface) {
-            $body = new Stream($body);
+        // Upcast the body to a streamable object, or error
+        // if it's an invalid type.
+        if ($body instanceof StreamInterface) {
+            $this->body = $body;
+        } else {
+            $this->body = match (get_debug_type($body)) {
+                'string', 'resource' => new Stream($body),
+                'null' => null,
+                default => throw new \InvalidArgumentException('Body must be a string stream resource identifier, a stream resource, or a StreamInterface instance', 1436717271),
+            };
         }
 
         if (is_string($uri)) {
             $uri = new Uri($uri);
         }
 
-        if (!$uri instanceof UriInterface && $uri !== null) {
-            throw new \InvalidArgumentException('Invalid URI provided; must be null, a string, or a UriInterface instance', 1436717272);
-        }
-
         $this->validateMethod($method);
 
         $this->method = $method;
         $this->uri    = $uri;
-        $this->body   = $body;
         [$this->lowercasedHeaderNames, $headers] = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;
@@ -143,10 +138,10 @@ class Request extends Message implements RequestInterface
      *     key MUST be a header name, and each value MUST be an array of strings
      *     for that header.
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         $headers = parent::getHeaders();
-        if (!$this->hasHeader('host') && ($this->uri && $this->uri->getHost())) {
+        if (!$this->hasHeader('host') && ($this->uri?->getHost())) {
             $headers['host'] = [$this->getHostFromUri()];
         }
         return $headers;
@@ -166,9 +161,9 @@ class Request extends Message implements RequestInterface
      *    header. If the header does not appear in the message, this method MUST
      *    return an empty array.
      */
-    public function getHeader($header)
+    public function getHeader($header): array
     {
-        if (!$this->hasHeader($header) && strtolower($header) === 'host' && ($this->uri && $this->uri->getHost())) {
+        if (!$this->hasHeader($header) && strtolower($header) === 'host' && ($this->uri?->getHost())) {
             return [$this->getHostFromUri()];
         }
         return parent::getHeader($header);
@@ -176,10 +171,8 @@ class Request extends Message implements RequestInterface
 
     /**
      * Retrieve the host from the URI instance
-     *
-     * @return string
      */
-    protected function getHostFromUri()
+    protected function getHostFromUri(): string
     {
         $host  = $this->uri->getHost();
         $host .= $this->uri->getPort() ? ':' . $this->uri->getPort() : '';
@@ -199,17 +192,17 @@ class Request extends Message implements RequestInterface
      *
      * If no URI is available, and no request-target has been specifically
      * provided, this method MUST return the string "/".
-     *
-     * @return string
      */
-    public function getRequestTarget()
+    public function getRequestTarget(): string
     {
         if ($this->requestTarget !== null) {
             return $this->requestTarget;
         }
+
         if (!$this->uri) {
             return '/';
         }
+
         $target = $this->uri->getPath();
 
         if ($this->uri->getQuery()) {
@@ -236,11 +229,8 @@ class Request extends Message implements RequestInterface
      *
      * @link https://tools.ietf.org/html/rfc7230#section-2.7 (for the various
      *     request-target forms allowed in request messages)
-     *
-     * @param mixed $requestTarget
-     * @return static
      */
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget(mixed $requestTarget): static
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new \InvalidArgumentException('Invalid request target provided which contains whitespaces.', 1436717273);
@@ -252,12 +242,10 @@ class Request extends Message implements RequestInterface
 
     /**
      * Retrieves the HTTP method of the request, defaults to GET
-     *
-     * @return string Returns the request method.
      */
-    public function getMethod()
+    public function getMethod(): string
     {
-        return !empty($this->method) ? $this->method : 'GET';
+        return $this->method;
     }
 
     /**
@@ -275,7 +263,7 @@ class Request extends Message implements RequestInterface
      * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method)
+    public function withMethod($method): static
     {
         $clonedObject = clone $this;
         $clonedObject->method = $method;
@@ -287,11 +275,14 @@ class Request extends Message implements RequestInterface
      *
      * This method MUST return a UriInterface instance.
      *
+     * @todo This method currently may return null instead. This is
+     * a PSR-7 spec violation that should be corrected.
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.3
-     * @return \Psr\Http\Message\UriInterface Returns a UriInterface instance
+     * @return \Psr\Http\Message\UriInterface|null Returns a UriInterface instance
      *     representing the URI of the request.
      */
-    public function getUri()
+    public function getUri(): ?UriInterface
     {
         return $this->uri;
     }
@@ -327,7 +318,7 @@ class Request extends Message implements RequestInterface
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, $preserveHost = false): static
     {
         $clonedObject = clone $this;
         $clonedObject->uri = $uri;
@@ -354,20 +345,17 @@ class Request extends Message implements RequestInterface
     /**
      * Validate the HTTP method, helper function.
      *
-     * @param string|null $method
      * @throws \InvalidArgumentException on invalid HTTP method.
      */
-    protected function validateMethod($method)
+    protected function validateMethod(?string $method): void
     {
-        if ($method !== null) {
-            if (!is_string($method)) {
-                $methodAsString = get_debug_type($method);
-                throw new \InvalidArgumentException('Unsupported HTTP method "' . $methodAsString . '".', 1436717274);
-            }
-            $method = strtoupper($method);
-            if (!in_array($method, $this->supportedMethods, true)) {
-                throw new \InvalidArgumentException('Unsupported HTTP method "' . $method . '".', 1436717275);
-            }
+        if (is_null($method)) {
+            return;
+        }
+
+        $method = strtoupper($method);
+        if (!in_array($method, $this->supportedMethods, true)) {
+            throw new \InvalidArgumentException('Unsupported HTTP method "' . $method . '".', 1436717275);
         }
     }
 }

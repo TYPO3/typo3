@@ -66,15 +66,6 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorRaisesExceptionForInvalidStream(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        new Request(['TOTALLY INVALID']);
-    }
-
-    /**
-     * @test
-     */
     public function withUriReturnsNewInstanceWithNewUri(): void
     {
         $request = $this->request->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));
@@ -113,58 +104,6 @@ class RequestTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function invalidRequestUriDataProvider(): array
-    {
-        return [
-            'true'     => [true],
-            'false'    => [false],
-            'int'      => [1],
-            'float'    => [1.1],
-            'array'    => [['http://example.com']],
-            'stdClass' => [(object)['href' => 'http://example.com']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidRequestUriDataProvider
-     * @test
-     */
-    public function constructorRaisesExceptionForInvalidUri($uri): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717272);
-        new Request($uri);
-    }
-
-    /**
-     * @return array
-     */
-    public function invalidRequestMethodDataProvider(): array
-    {
-        return [
-            'true'       => [true],
-            'false'      => [false],
-            'int'        => [1],
-            'float'      => [1.1],
-            'array'      => [['POST']],
-            'stdClass'   => [(object)['method' => 'POST']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidRequestMethodDataProvider
-     * @test
-     */
-    public function constructorRaisesExceptionForInvalidMethodByType($method): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717274);
-        new Request(null, $method);
-    }
-
-    /**
      * @test
      */
     public function constructorRaisesExceptionForInvalidMethodByString(): void
@@ -197,7 +136,7 @@ class RequestTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717271);
-        new Request(null, null, $body);
+        new Request(null, 'GET', $body);
     }
 
     /**
@@ -219,7 +158,7 @@ class RequestTest extends UnitTestCase
             'x-valid-string' => ['VALID'],
             'x-valid-array'  => ['VALID'],
         ];
-        $request = new Request(null, null, 'php://memory', $headers);
+        $request = new Request(null, 'GET', 'php://memory', $headers);
         self::assertEquals($expected, $request->getHeaders());
     }
 
@@ -492,7 +431,7 @@ class RequestTest extends UnitTestCase
      */
     public function headerCanBeRetrieved($header, $value, $expected): void
     {
-        $request = new Request(null, null, 'php://memory', [$header => $value]);
+        $request = new Request(null, 'GET', 'php://memory', [$header => $value]);
         self::assertEquals([$expected], $request->getHeader(strtolower($header)));
         self::assertEquals([$expected], $request->getHeader(strtoupper($header)));
     }
@@ -525,7 +464,7 @@ class RequestTest extends UnitTestCase
     public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Request(null, null, 'php://memory', [$name => $value]);
+        new Request(null, 'GET', 'php://memory', [$name => $value]);
     }
 
     /**

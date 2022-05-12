@@ -69,33 +69,6 @@ class ServerRequestFactoryTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function invalidRequestUriDataProvider(): array
-    {
-        return [
-            'true'     => [true],
-            'false'    => [false],
-            'int'      => [1],
-            'float'    => [1.1],
-            'array'    => [['http://example.com']],
-            'stdClass' => [(object)['href' => 'http://example.com']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidRequestUriDataProvider
-     * @test
-     */
-    public function constructorRaisesExceptionForInvalidUri($uri): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717272);
-        $factory = new ServerRequestFactory();
-        $factory->createServerRequest('GET', $uri);
-    }
-
-    /**
      * @test
      */
     public function raisesExceptionForInvalidMethod(): void

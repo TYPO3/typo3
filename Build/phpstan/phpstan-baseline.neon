@@ -676,16 +676,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/RedirectResponse.php
 
 		-
-			message: "#^Result of && is always false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Http/Request.php
-
-		-
-			message: "#^Strict comparison using \\!\\=\\= between null and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Request.php
-
-		-
 			message: "#^Call to function is_resource\\(\\) with Psr\\\\Http\\\\Message\\\\StreamInterface will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/Response.php
@@ -1669,16 +1659,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Html\\\\Parser\\\\ParserTest\\:\\:nodesAreResolvedDataProvider\\(\\) should return array\\<string\\> but returns array\\<int, array\\<int, array\\<int, string\\>\\|string\\>\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Html/Parser/ParserTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with Psr\\\\Http\\\\Message\\\\UriInterface will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Http/RequestTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$uri of class TYPO3\\\\CMS\\\\Core\\\\Http\\\\Request constructor expects Psr\\\\Http\\\\Message\\\\UriInterface\\|string\\|null, array\\<int, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Http/RequestTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$body of class TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|string\\|null, array\\<int, string\\> given\\.$#"
