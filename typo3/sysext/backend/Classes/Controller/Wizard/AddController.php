@@ -38,45 +38,33 @@ class AddController extends AbstractWizardController
 {
     /**
      * If set, the DataHandler class is loaded and used to add the returning ID to the parent record.
-     *
-     * @var int
      */
-    protected $processDataFlag = 0;
+    protected int $processDataFlag = 0;
 
     /**
      * Create new record -pid (pos/neg). If blank, return immediately
-     *
-     * @var int
      */
-    protected $pid;
+    protected int $pid = 0;
 
     /**
      * The parent table we are working on.
-     *
-     * @var string
      */
-    protected $table;
+    protected string $table = '';
 
     /**
      * Loaded with the created id of a record FormEngine returns ...
-     *
-     * @var int
      */
-    protected $id;
+    protected int $id = 0;
 
     /**
      * Wizard parameters, coming from TCEforms linking to the wizard.
-     *
-     * @var array
      */
-    protected $P;
+    protected array $P = [];
 
     /**
      * Information coming back from the FormEngine script, telling what the table/id was of the newly created record.
-     *
-     * @var string
      */
-    protected $returnEditConf;
+    protected string $returnEditConf = '';
 
     /**
      * Injects the request object for the current request or subrequest
@@ -89,11 +77,6 @@ class AddController extends AbstractWizardController
     {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         $this->init($request);
-
-        // Return if new record as parent (not possibly/allowed)
-        if ($this->pid === '') {
-            return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
-        }
 
         if ($this->returnEditConf) {
             if ($this->processDataFlag) {
@@ -226,23 +209,15 @@ class AddController extends AbstractWizardController
             is_array($record) ? $record : ['pid' => (int)$this->P['params']['pid']]
         );
         // Set [params][pid]
-        if (str_starts_with($this->P['params']['pid'], '###') && substr($this->P['params']['pid'], -3) === '###') {
+        if (str_starts_with($this->P['params']['pid'], '###') && str_ends_with($this->P['params']['pid'], '###')) {
             $keyword = substr($this->P['params']['pid'], 3, -3);
-            if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
-                $this->pid = (int)$TSconfig[$this->P['field']][$keyword];
-            } else {
-                $this->pid = (int)$TSconfig['_' . $keyword];
-            }
+            $this->pid = str_starts_with($keyword, 'PAGE_TSCONFIG_')
+                ? (int)$TSconfig[$this->P['field']][$keyword]
+                : (int)$TSconfig['_' . $keyword];
         } else {
             $this->pid = (int)$this->P['params']['pid'];
         }
-        // Return if new record as parent (not possibly/allowed)
-        // @todo how could this happen? pid is cast to int in the if/else above
-        if ($this->pid === '') {
-            // HTTP Redirect is performed by processRequest()
-            return;
-        }
-        // Else proceed:
+
         // If a new id has returned from a newly created record...
         if ($this->returnEditConf) {
             $editConfiguration = json_decode($this->returnEditConf, true);
