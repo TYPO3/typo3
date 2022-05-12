@@ -22,3 +22,9 @@ pages,,,,,,,,,,,,,,,
 ,1002,1000,root translation,0,,0,0,0,0,0,1,1001,1,0,0
 ,1003,1000,Mount default language,0,,0,0,0,0,0,0,0,7,1001,1
 ,1004,1000,Mount translation,0,,0,0,0,0,0,1,1003,7,1001,1
+tt_content,,,,,,,,,,,,,,,,
+,uid,pid,header,bodytext,sys_language_uid,l18n_parent,,,,,,,,,,
+,1,1,"Default Content #1","<p>Say thanks for HTML in the DB</p>",0,0,,,,,,,,,,
+,2,1,"Translated Content #1","<p>Grazie por HTML en la database</p>",1,1,,,,,,,,,,
+,3,1,"Default Content #2","<p>Could be anything</p>",0,0,,,,,,,,,,
+,4,1,"Translated #2","\NULL",1,3,,,,,,,,,,
