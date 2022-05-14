@@ -550,7 +550,7 @@ class DataHandler implements LoggerAwareInterface
     protected $disableDeleteClause = false;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $checkModifyAccessListHookObjects;
 
@@ -558,7 +558,7 @@ class DataHandler implements LoggerAwareInterface
      * The outer most instance of \TYPO3\CMS\Core\DataHandling\DataHandler:
      * This object instantiates itself on versioning and localization ...
      *
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
+     * @var \TYPO3\CMS\Core\DataHandling\DataHandler|null
      */
     protected $outerMostInstance;
 

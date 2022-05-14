@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
 class UrlGenerator extends SymfonyUrlGenerator
 {
     /**
-     * @var MappableProcessor
+     * @var MappableProcessor|null
      */
     protected $mappableProcessor;
 

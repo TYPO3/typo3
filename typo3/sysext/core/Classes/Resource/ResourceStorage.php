@@ -189,7 +189,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected $eventDispatcher;
 
     /**
-     * @var Folder
+     * @var Folder|null
      */
     protected $processingFolder;
 

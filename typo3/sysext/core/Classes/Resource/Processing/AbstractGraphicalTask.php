@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 abstract class AbstractGraphicalTask extends AbstractTask
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $targetFileExtension;
 

@@ -46,7 +46,7 @@ class Package implements PackageInterface
      * ServiceProvider class name. This property and the corresponding
      * composer.json setting is internal and therefore no api (yet).
      *
-     * @var string
+     * @var string|null
      * @internal
      */
     protected $serviceProvider;

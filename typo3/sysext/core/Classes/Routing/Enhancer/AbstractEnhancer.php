@@ -32,7 +32,7 @@ abstract class AbstractEnhancer implements EnhancerInterface
     protected $aspects = [];
 
     /**
-     * @var VariableProcessor
+     * @var VariableProcessor|null
      */
     protected $variableProcessor;
 

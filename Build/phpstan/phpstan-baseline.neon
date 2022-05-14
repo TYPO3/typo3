@@ -366,11 +366,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\:\\:\\$filePermissions \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
-
-		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/IpLocker.php
@@ -492,16 +487,6 @@ parameters:
 
 		-
 			message: "#^Offset string does not exist on array\\{\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:\\$checkModifyAccessListHookObjects \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:\\$outerMostInstance \\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
@@ -694,11 +679,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\:\\:\\$workspace \\(int\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Error/ErrorHandler.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\AbstractFormProtection\\:\\:\\$sessionToken \\(string\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/FormProtection/AbstractFormProtection.php
 
 		-
 			message: "#^Result of && is always true\\.$#"
@@ -991,11 +971,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Package\\\\Package\\:\\:\\$serviceProvider \\(string\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/Package.php
-
-		-
 			message: "#^Offset string does not exist on null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
@@ -1191,11 +1166,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/OnlineMedia/Processing/PreviewProcessing.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Processing\\\\AbstractGraphicalTask\\:\\:\\$targetFileExtension \\(string\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Processing/AbstractGraphicalTask.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Processing/TaskTypeRegistry.php
@@ -1266,11 +1236,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:\\$processingFolder \\(TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Search/FileSearchQuery.php
@@ -1314,16 +1279,6 @@ parameters:
 			message: "#^Comparison operation \"\\>\" between null and 0 is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Aspect/PersistedPatternMapper.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Enhancer\\\\AbstractEnhancer\\:\\:\\$variableProcessor \\(TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Enhancer\\\\VariableProcessor\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/AbstractEnhancer.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/AbstractEnhancer.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Enhancer\\\\AbstractEnhancer\\:\\:\\$aspects \\(array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\AspectInterface\\>\\) on left side of \\?\\? is not nullable\\.$#"
@@ -1374,11 +1329,6 @@ parameters:
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/RouteSorter.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Routing\\\\UrlGenerator\\:\\:\\$mappableProcessor \\(TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableProcessor\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/UrlGenerator.php
 
 		-
 			message: "#^Comparison operation \"\\>\" between int\\<2, max\\> and 0 is always true\\.$#"

@@ -140,7 +140,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     protected $fileStorages;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $filePermissions;
 
