@@ -47,7 +47,7 @@ class DataProviderCollectionTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597629);
         $identifier = StringUtility::getUniqueId('identifier__');
-        $dataProviderMock = $this->getMockBuilder('stdClass')->getMock();
+        $dataProviderMock = $this->getMockBuilder(\stdClass::class)->getMock();
 
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
     }
@@ -60,7 +60,7 @@ class DataProviderCollectionTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381269811);
         $identifier = StringUtility::getUniqueId('identifier');
-        $dataProviderMock = $this->getMockBuilder('stdClass')->getMock();
+        $dataProviderMock = $this->getMockBuilder(\stdClass::class)->getMock();
 
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
     }

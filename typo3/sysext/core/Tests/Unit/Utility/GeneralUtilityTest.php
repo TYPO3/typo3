@@ -3340,7 +3340,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function addInstanceMakesMakeInstanceReturnThatInstance(): void
     {
-        $instance = $this->createMock('stdClass');
+        $instance = $this->createMock(\stdClass::class);
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         self::assertSame($instance, GeneralUtility::makeInstance($className));
@@ -3351,7 +3351,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function makeInstanceCalledTwoTimesAfterAddInstanceReturnTwoDifferentInstances(): void
     {
-        $instance = $this->createMock('stdClass');
+        $instance = $this->createMock(\stdClass::class);
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
@@ -3362,7 +3362,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function addInstanceCalledTwoTimesMakesMakeInstanceReturnBothInstancesInAddingOrder(): void
     {
-        $instance1 = $this->createMock('stdClass');
+        $instance1 = $this->createMock(\stdClass::class);
         $className = get_class($instance1);
         GeneralUtility::addInstance($className, $instance1);
         $instance2 = new $className();
@@ -3376,7 +3376,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function purgeInstancesDropsAddedInstance(): void
     {
-        $instance = $this->createMock('stdClass');
+        $instance = $this->createMock(\stdClass::class);
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         GeneralUtility::purgeInstances();

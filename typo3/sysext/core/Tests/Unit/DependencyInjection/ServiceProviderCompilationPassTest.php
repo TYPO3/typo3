@@ -155,7 +155,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 TestServiceProviderFactoryOverride::class,
             ],
             static function (ContainerBuilder $container) {
-                $definition = new Definition('stdClass');
+                $definition = new Definition(\stdClass::class);
                 // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
                 // property should not be "deleted" by service provider
@@ -182,7 +182,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 TestServiceProviderFactoryOverride::class,
             ],
             static function (ContainerBuilder $container) {
-                $definition = new Definition('stdClass');
+                $definition = new Definition(\stdClass::class);
                 // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
                 // property should not be "deleted" by service provider
