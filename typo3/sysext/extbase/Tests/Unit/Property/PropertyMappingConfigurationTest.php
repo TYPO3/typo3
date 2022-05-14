@@ -232,10 +232,10 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithGetConfigurationFor(): void
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
-        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
+        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions(\stdClass::class, ['k1' => 'v1']);
 
         $configuration = $this->propertyMappingConfiguration->getConfigurationFor('items')->getConfigurationFor('6');
-        self::assertSame('v1', $configuration->getConfigurationValue('stdClass', 'k1'));
+        self::assertSame('v1', $configuration->getConfigurationValue(\stdClass::class, 'k1'));
     }
 
     /**
@@ -244,10 +244,10 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithForProperty(): void
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
-        $this->propertyMappingConfiguration->forProperty('items.*.foo')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
+        $this->propertyMappingConfiguration->forProperty('items.*.foo')->setTypeConverterOptions(\stdClass::class, ['k1' => 'v1']);
 
         $configuration = $this->propertyMappingConfiguration->forProperty('items.6.foo');
-        self::assertSame('v1', $configuration->getConfigurationValue('stdClass', 'k1'));
+        self::assertSame('v1', $configuration->getConfigurationValue(\stdClass::class, 'k1'));
     }
 
     /**
@@ -255,7 +255,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap(): void
     {
-        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
+        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions(\stdClass::class, ['k1' => 'v1']);
 
         $configuration = $this->propertyMappingConfiguration->forProperty('items');
         self::assertTrue($configuration->shouldMap(6));

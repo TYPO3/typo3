@@ -80,7 +80,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $title = '<b>b</b><script>alert(1);</script>';
-        $exception = $this->getMockBuilder('Exception')
+        $exception = $this->getMockBuilder(\Exception::class)
             ->addMethods(['getTitle'])
             ->setConstructorArgs(['some message'])
             ->getMock();
