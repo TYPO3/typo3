@@ -38,7 +38,7 @@ abstract class AbstractFormProtection
     /**
      * The session token which is used to be hashed during token generation.
      *
-     * @var string
+     * @var string|null
      */
     protected $sessionToken;
 
