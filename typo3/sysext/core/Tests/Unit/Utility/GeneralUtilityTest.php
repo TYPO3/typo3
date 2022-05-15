@@ -3094,8 +3094,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function makeInstanceReturnsClassInstance(): void
     {
-        $className = get_class($this->getMockBuilder('foo')->getMock());
-        self::assertInstanceOf($className, GeneralUtility::makeInstance($className));
+        self::assertInstanceOf(\stdClass::class, GeneralUtility::makeInstance(\stdClass::class));
     }
 
     /**
@@ -3134,7 +3133,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function makeInstanceCalledTwoTimesForNonSingletonClassReturnsDifferentInstances(): void
     {
-        $className = get_class($this->getMockBuilder('foo')->getMock());
+        $className = \stdClass::class;
         self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
@@ -3281,8 +3280,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967479);
 
-        $instance = $this->getMockBuilder('foo')->getMock();
-        GeneralUtility::addInstance('', $instance);
+        GeneralUtility::addInstance('', new \stdClass());
     }
 
     /**
