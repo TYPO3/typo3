@@ -252,6 +252,13 @@ class IconFactory
             $recordType[0] = 'tcarecords-' . $table . '-default';
         }
 
+        if (($row['CType'] ?? '') === 'list' && ($row['list_type'] ?? '') !== '') {
+            $pluginIcon = $this->getIconForPlugin($row['list_type']);
+            if ($pluginIcon) {
+                $recordType[7] = $pluginIcon;
+            }
+        }
+
         krsort($recordType);
         foreach ($recordType as $iconName) {
             if ($this->iconRegistry->isRegistered($iconName)) {
@@ -260,6 +267,26 @@ class IconFactory
         }
 
         return $this->iconRegistry->getDefaultIconIdentifier();
+    }
+
+    /**
+     * Returns a possible configured icon for the given plugin name
+     *
+     * @param string $pluginName
+     * @return string|null
+     */
+    protected function getIconForPlugin(string $pluginName): ?string
+    {
+        $result = null;
+        $items = $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
+        foreach ($items as $item) {
+            if ($item[1] === $pluginName) {
+                $result = $item[2];
+                break;
+            }
+        }
+
+        return $result;
     }
 
     /**
