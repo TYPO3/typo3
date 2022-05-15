@@ -1,6 +1,5 @@
 parameters:
 	ignoreErrors:
-
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Context\\\\AspectInterface\\:\\:isPreview\\(\\)\\.$#"
 			count: 1
@@ -1987,16 +1986,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Messaging/FlashMessageServiceTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of method PHPUnit\\\\Framework\\\\TestCase\\:\\:getMockBuilder\\(\\) expects class\\-string\\<foo\\>, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Package/AbstractServiceProviderTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<foo&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\>, class\\-string\\<foo\\>&class\\-string\\<PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Package/AbstractServiceProviderTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Page/AssetRendererTest.php
@@ -2133,16 +2122,6 @@ parameters:
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of method PHPUnit\\\\Framework\\\\TestCase\\:\\:getMockBuilder\\(\\) expects class\\-string\\<foo\\>, string given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<foo&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\>, class\\-string\\<foo\\>&class\\-string\\<PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
