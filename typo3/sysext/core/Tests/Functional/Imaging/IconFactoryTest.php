@@ -447,7 +447,7 @@ class IconFactoryTest extends FunctionalTestCase
      *
      * @test
      */
-    public function getIconForRecordWithMockRecordOfTypePluginReturnsPluginIcon(): void
+    public function getIconForRecordWithMockRecordOfTypePluginReturnsDefaultPluginIcon(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -464,6 +464,45 @@ class IconFactoryTest extends FunctionalTestCase
         $mockRecord['CType'] = 'list';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
         self::assertStringContainsString('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-x-content-plugin" data-identifier="mimetypes-x-content-plugin">', $result);
+    }
+
+    /**
+     * Tests the returns of tt_content + mock record of type 'list' (aka plugin) with a dedicated icon for the
+     * plugin (registered in ExtensionUtility::registerPlugin)
+     *
+     * @test
+     */
+    public function getIconForRecordWithMockRecordOfTypePluginReturnsConfiguredPluginIcon(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
+                    'typeicon_column' => 'CType',
+                    'typeicon_classes' => [
+                        'default' => '',
+                        'list' => 'mimetypes-x-content-plugin',
+                    ],
+                ],
+                'columns' => [
+                    'list_type' => [
+                        'config' => [
+                            'items' => [
+                                [
+                                    'Blog example plugin',
+                                    'pi_blogexample',
+                                    $this->registeredIconIdentifier,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $mockRecord = $this->mockRecord;
+        $mockRecord['CType'] = 'list';
+        $mockRecord['list_type'] = 'pi_blogexample';
+        $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-default icon-state-default icon-actions-close" data-identifier="actions-close">', $result);
     }
 
     /**

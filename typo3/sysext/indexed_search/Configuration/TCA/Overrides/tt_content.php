@@ -7,7 +7,8 @@ call_user_func(static function () {
     $pluginSignature = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'IndexedSearch',
         'Pi2',
-        'Indexed Search'
+        'Indexed Search',
+        'mimetypes-x-content-form-search'
     );
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,pages,recursive';
 });
