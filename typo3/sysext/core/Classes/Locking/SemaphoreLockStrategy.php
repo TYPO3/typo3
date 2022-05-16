@@ -37,7 +37,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
     protected $id;
 
     /**
-     * @var resource|\SysvSemaphore Semaphore Resource used for this lock
+     * @var resource|\SysvSemaphore|null Semaphore Resource used for this lock
      */
     protected $resource;
 
@@ -83,7 +83,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
         $this->filePath = $path . 'sem_' . md5((string)$subject);
         touch($this->filePath);
         $this->id = ftok($this->filePath, 'A');
-        if ($this->id === false) {
+        if ($this->id === -1) {
             throw new LockCreateException('Cannot create key for semaphore using path ' . $this->filePath, 1396278734);
         }
     }
