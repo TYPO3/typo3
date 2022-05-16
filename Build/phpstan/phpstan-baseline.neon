@@ -1216,17 +1216,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Localization/LanguageService.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Locking/SemaphoreLockStrategy.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Locking\\\\SemaphoreLockStrategy\\:\\:\\$resource has unknown class SysvSemaphore as its type\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Locking/SemaphoreLockStrategy.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int and false will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Locking/SemaphoreLockStrategy.php
 
