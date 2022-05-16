@@ -99,11 +99,10 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
             /** @var \SimpleXMLElement $column*/
             foreach ($table->children() as $column) {
                 $columnName = $column->getName();
-                $columnValue = null;
 
                 if (isset($column['ref'])) {
-                    $columnValue = explode('#', $column['ref']);
-                } elseif (isset($column['is-NULL']) && ($column['is-NULL'] === 'yes')) {
+                    $columnValue = explode('#', (string)$column['ref']);
+                } elseif (isset($column['is-NULL']) && ((string)$column['is-NULL'] === 'yes')) {
                     $columnValue = null;
                 } else {
                     $columnValue = (string)$table->$columnName;

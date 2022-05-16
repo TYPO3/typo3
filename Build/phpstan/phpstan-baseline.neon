@@ -4456,21 +4456,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: "#^Parameter \\#2 \\$string of function explode expects string, SimpleXMLElement given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between SimpleXMLElement and 'yes' will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Unit/Task/CleanerFieldProviderTest.php
