@@ -5531,21 +5531,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: "#^Parameter \\#2 \\$str of function explode expects string, SimpleXMLElement given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between SimpleXMLElement and 'yes' will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
 			message: "#^Variable \\$previousValueOfEntityLoader might not be defined\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
