@@ -63,29 +63,28 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class Comparison implements ComparisonInterface
 {
-    /**
-     * @var PropertyValueInterface
-     */
-    protected $operand1;
+    protected PropertyValueInterface $operand1;
 
     /**
-     * @var int
+     * @var QueryInterface::OPERATOR_*
      */
-    protected $operator;
+    protected int $operator;
 
     /**
+     * The type of the second operand will vary depending on the operator.
+     *
      * @var mixed
+     * @todo Type this as mixed in v13.
      */
     protected $operand2;
 
     /**
      * Constructs this Comparison instance
      *
-     * @param PropertyValueInterface $operand1
-     * @param int $operator one of QueryInterface::OPERATOR_*
+     * @param QueryInterface::OPERATOR_* $operator
      * @param mixed $operand2
      */
-    public function __construct(PropertyValueInterface $operand1, $operator, $operand2)
+    public function __construct(PropertyValueInterface $operand1, int $operator, $operand2)
     {
         $this->operand1 = $operand1;
         $this->operator = $operator;
@@ -94,10 +93,8 @@ class Comparison implements ComparisonInterface
 
     /**
      * Gets the first operand.
-     *
-     * @return PropertyValueInterface the operand; non-null
      */
-    public function getOperand1()
+    public function getOperand1(): PropertyValueInterface
     {
         return $this->operand1;
     }
@@ -105,9 +102,9 @@ class Comparison implements ComparisonInterface
     /**
      * Gets the operator.
      *
-     * @return string One of QueryInterface::OPERATOR_*
+     * @return QueryInterface::OPERATOR_*
      */
-    public function getOperator()
+    public function getOperator(): int
     {
         $operator = $this->operator;
 
@@ -123,9 +120,7 @@ class Comparison implements ComparisonInterface
     }
 
     /**
-     * Gets the second operand.
-     *
-     * @return mixed the operand; non-null
+     * @return mixed
      */
     public function getOperand2()
     {
@@ -137,7 +132,8 @@ class Comparison implements ComparisonInterface
      *
      * @param array $boundVariables
      */
-    public function collectBoundVariableNames(&$boundVariables)
+    public function collectBoundVariableNames(&$boundVariables): array
     {
+        return [];
     }
 }

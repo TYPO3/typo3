@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * Filters node-tuples based on the outcome of a binary operation.
  *
@@ -62,22 +64,23 @@ interface ComparisonInterface extends ConstraintInterface
 {
     /**
      * Gets the first operand.
-     *
-     * @return PropertyValueInterface the operand; non-null
      */
-    public function getOperand1();
+    public function getOperand1(): PropertyValueInterface;
 
     /**
      * Gets the operator.
      *
-     * @return string one of \TYPO3\CMS\Extbase\Persistence\QueryInterface::*
+     * @return QueryInterface::OPERATOR_*
      */
-    public function getOperator();
+    public function getOperator(): int;
 
     /**
      * Gets the second operand.
      *
-     * @return StaticOperandInterface the operand; non-null
+     * For some operators, this value may be null.
+     *
+     * @return mixed
+     * @todo Type this as mixed in v13.
      */
     public function getOperand2();
 }

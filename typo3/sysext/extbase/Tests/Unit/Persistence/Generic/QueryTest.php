@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -188,9 +189,9 @@ class QueryTest extends UnitTestCase
             $this->prophesize(ContainerInterface::class)->reveal()
         );
 
-        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
-        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
-        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), QueryInterface::OPERATOR_EQUAL_TO, 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), QueryInterface::OPERATOR_EQUAL_TO, 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), QueryInterface::OPERATOR_EQUAL_TO, 'value3');
 
         $logicalAnd = $subject->logicalAnd($constraint1, $constraint2, $constraint3);
         self::assertEquals(
@@ -211,9 +212,9 @@ class QueryTest extends UnitTestCase
             $this->prophesize(ContainerInterface::class)->reveal()
         );
 
-        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
-        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
-        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), QueryInterface::OPERATOR_EQUAL_TO, 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), QueryInterface::OPERATOR_EQUAL_TO, 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), QueryInterface::OPERATOR_EQUAL_TO, 'value3');
 
         $logicalOr = $subject->logicalOr($constraint1, $constraint2, $constraint3);
         self::assertEquals(

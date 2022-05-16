@@ -2036,11 +2036,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\Comparison\\:\\:getOperator\\(\\) should return string but returns int\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/Comparison.php
-
-		-
 			message: "#^Parameter \\#2 \\$operator of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\QueryObjectModelFactory\\:\\:comparison\\(\\) expects string, int given\\.$#"
 			count: 9
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
@@ -2056,22 +2051,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Session.php
 
 		-
-			message: "#^Argument of an invalid type TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\StaticOperandInterface supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
 			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\StaticOperandInterface and null will always evaluate to false\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between string and 8 will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
 
@@ -2408,11 +2388,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$offset of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Query\\:\\:setOffset\\(\\) expects int, float given\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$operator of class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\Comparison constructor expects int, string given\\.$#"
-			count: 6
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
 
 		-
