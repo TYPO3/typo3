@@ -47,7 +47,7 @@ class TargetPageIdViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        if (!strpos($arguments['target'], 't3://page', 0) === 0) {
+        if (!str_starts_with($arguments['target'] ?? '', 't3://page')) {
             return '';
         }
 
