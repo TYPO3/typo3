@@ -412,7 +412,7 @@ class DataMap
     /**
      * Returns the name of a column indicating the 'deleted' state of the row
      *
-     * @return string The field name
+     * @return string|null The field name
      */
     public function getDeletedFlagColumnName()
     {

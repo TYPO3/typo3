@@ -764,7 +764,7 @@ class ReferenceIndex implements LoggerAwareInterface
      *
      * @param array $refRec sys_refindex record
      * @param array $itemArray Array of references from that field
-     * @param string $newValue Value to substitute current value with (or NULL to unset it)
+     * @param string|null $newValue Value to substitute current value with (or NULL to unset it)
      * @param array $dataArray Data array in which the new value is set (passed by reference)
      * @param string $flexPointer Flexform pointer, if in a flex form field.
      * @return string Error message if any, otherwise FALSE = OK

@@ -1571,7 +1571,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Evaluate "text" type values.
      *
-     * @param string $value The value to set.
+     * @param string|null $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
