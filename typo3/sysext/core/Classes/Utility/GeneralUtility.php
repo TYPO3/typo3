@@ -1813,7 +1813,7 @@ class GeneralUtility
      *
      * @param string $filepath Absolute file path to write within the typo3temp/ or Environment::getVarPath() folder - the file path must be prefixed with this path
      * @param string $content Content string to write
-     * @return string Returns NULL on success, otherwise an error string telling about the problem.
+     * @return string|null Returns NULL on success, otherwise an error string telling about the problem.
      */
     public static function writeFileToTypo3tempDir($filepath, $content)
     {

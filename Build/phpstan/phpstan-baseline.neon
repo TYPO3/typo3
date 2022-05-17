@@ -722,7 +722,7 @@ parameters:
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
@@ -932,11 +932,6 @@ parameters:
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Database\\\\ReferenceIndex\\:\\:setReferenceValue_softreferences\\(\\) should return string but returns false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
 
@@ -2476,11 +2471,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
 			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
@@ -2692,16 +2682,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#2 \\$identifier of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:registerObject\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
 
@@ -4061,11 +4041,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Finishers/ClosureFinisher.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Closure and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/ClosureFinisher.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\DeleteUploadsFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Finishers/DeleteUploadsFinisher.php
@@ -5191,27 +5166,12 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Service/EnableFileService.php
 
 		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
-
-		-
-			message: "#^Negated boolean expression is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
-
-		-
 			message: "#^Offset string on array\\{\\} on left side of \\?\\? does not exist\\.$#"
 			count: 2
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between '' and 'excludeFromUpdates' will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
 
