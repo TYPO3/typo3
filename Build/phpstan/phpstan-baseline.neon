@@ -101,11 +101,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
 
 		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Middleware/BackendUserAuthenticator.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\) but returns object\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Routing/PreviewUriBuilder.php
@@ -194,11 +189,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayout\\\\ContentFetcher\\:\\:getRuntimeCache\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\VariableFrontend but returns TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
-
-		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/PageLayoutView.php
 
 		-
 			message: "#^Variable \\$localizationButtons in empty\\(\\) always exists and is not falsy\\.$#"
@@ -882,11 +872,6 @@ parameters:
 
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
-			message: "#^Left side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
@@ -3474,11 +3459,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/LoadRegisterContentObject.php
-
-		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"

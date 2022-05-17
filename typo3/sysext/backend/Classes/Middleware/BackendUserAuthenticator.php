@@ -241,7 +241,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         }
         $loginRateLimiter = $this->rateLimiterFactory->createLoginRateLimiter($user, $request);
         $limit = $loginRateLimiter->consume();
-        if ($limit && !$limit->isAccepted()) {
+        if (!$limit->isAccepted()) {
             $this->logger->debug('Login request has been rate limited for IP address {ipAddress}', ['ipAddress' => $request->getAttribute('normalizedParams')->getRemoteAddress()]);
             $dateformat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
             $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0 ?

@@ -784,7 +784,7 @@ abstract class AbstractMenuContentObject
         $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', $sortingField ?: $sortField . ' DESC', $extraWhere);
         foreach ($pageRecords as $row) {
             // Build a custom LIMIT clause as "getMenuForPages()" does not support this
-            if ($limit && ++$i > $limit) {
+            if (++$i > $limit) {
                 continue;
             }
             $menuItems[$row['uid']] = $row;

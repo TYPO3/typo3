@@ -1017,7 +1017,7 @@ class PageLayoutView implements LoggerAwareInterface
                     . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-                if ($out && $this->hasContentModificationAndAccessPermissions()) {
+                if ($this->hasContentModificationAndAccessPermissions()) {
                     $out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
                 } else {
                     $out = '';
