@@ -4,12 +4,12 @@
             <f:if condition="{pagination.hasLessPages}">
                 <f:then>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}" class="page-link">
+                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}" class="page-link">
                             <core:icon identifier="actions-view-paging-first" />
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.previousPage}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}" class="page-link">
+                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.previousPage}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}" class="page-link">
                             <core:icon identifier="actions-view-paging-previous" />
                         </a>
                     </li>
@@ -37,7 +37,7 @@
                 <span class="page-link">
                     <f:translate extensionName="fluid" key="widget.pagination.page" />
                         <f:variable name="gotToPageUrl">
-                            <f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" />
+                            <f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: 987654322}" />
                         </f:variable>
                         <form data-on-submit="processNavigate" style="display:inline;">
                             <input type="number"
@@ -55,12 +55,12 @@
             <f:if condition="{pagination.hasMorePages}">
                 <f:then>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.nextPage}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}" class="page-link">
+                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.nextPage, orderField: demand.orderField, orderDirection: demand.orderDirection}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}" class="page-link">
                             <core:icon identifier="actions-view-paging-next" />
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.numberOfPages}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}" class="page-link">
+                        <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.numberOfPages, orderField: demand.orderField, orderDirection: demand.orderDirection}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}" class="page-link">
                             <core:icon identifier="actions-view-paging-last" />
                         </a>
                     </li>
@@ -79,7 +79,7 @@
                 </f:else>
             </f:if>
             <li class="page-item">
-                <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: demand.page}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.refresh')}" class="page-link">
+                <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: demand.page, orderField: demand.orderField, orderDirection: demand.orderDirection}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.refresh')}" class="page-link">
                     <core:icon identifier="actions-refresh" />
                 </a>
             </li>
