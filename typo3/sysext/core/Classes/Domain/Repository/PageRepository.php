@@ -2044,7 +2044,8 @@ class PageRepository implements LoggerAwareInterface
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class));
 
         $queryBuilder
             ->select('uid', 'hidden', 'starttime', 'endtime')
