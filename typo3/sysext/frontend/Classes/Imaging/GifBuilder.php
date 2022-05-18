@@ -190,10 +190,10 @@ class GifBuilder extends GraphicalFunctions
                             $fileInfo = $this->getResource($conf['file'] ?? '', $conf['file.'] ?? []);
                             if ($fileInfo) {
                                 $this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', PathUtility::basename($fileInfo[3]));
-                                if ($fileInfo['processedFile'] instanceof ProcessedFile) {
+                                if (($fileInfo['processedFile'] ?? null) instanceof ProcessedFile) {
                                     // Use processed file, if a FAL file has been processed by GIFBUILDER (e.g. scaled/cropped)
                                     $this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(false);
-                                } elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof File) {
+                                } elseif (!isset($fileInfo['origFile']) && ($fileInfo['originalFile'] ?? null) instanceof File) {
                                     // Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
                                     /** @var File $originalFile */
                                     $originalFile = $fileInfo['originalFile'];
