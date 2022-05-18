@@ -6792,7 +6792,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * @return TypoScriptFrontendController|null
-     * @internal this is set to public so extensions such as EXT:solr can use the method in tests.
+     * @internal for reducing usage of global TSFE objects and to avoid conflicts when different frontend environments are used
      */
     public function getTypoScriptFrontendController()
     {

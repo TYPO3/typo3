@@ -29,7 +29,8 @@ class RestoreRegisterContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        $GLOBALS['TSFE']->register = array_pop($GLOBALS['TSFE']->registerStack);
+        $frontendController = $this->getTypoScriptFrontendController();
+        $frontendController->register = array_pop($frontendController->registerStack);
         return '';
     }
 }

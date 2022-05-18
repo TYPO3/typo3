@@ -522,6 +522,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $content = '';
 
     /**
+     * Info-array of the last resulting image resource of content object
+     * IMG_RESOURCE (if any), containing width, height and so on.
+     */
+    public ?array $lastImgResourceInfo = null;
+
+    /**
      * Output charset of the websites content. This is the charset found in the
      * header, meta tag etc. If different than utf-8 a conversion
      * happens before output to browser. Defaults to utf-8.

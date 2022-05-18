@@ -53,9 +53,8 @@ class FilesContentObject extends AbstractContentObject
         $limit = (int)$this->cObj->stdWrapValue('maxItems', $conf, $availableFileObjectCount);
         $end = MathUtility::forceIntegerInRange($start + $limit, $start, $availableFileObjectCount);
 
-        if (isset($GLOBALS['TSFE'])) {
-            $GLOBALS['TSFE']->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
-        }
+        $frontendController = $this->getTypoScriptFrontendController();
+        $frontendController->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
         $fileObjectCounter = 0;
         $keys = array_keys($fileObjects);
 
@@ -64,9 +63,7 @@ class FilesContentObject extends AbstractContentObject
             $key = $keys[$i];
             $fileObject = $fileObjects[$key];
 
-            if (isset($GLOBALS['TSFE'])) {
-                $GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
-            }
+            $frontendController->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
             $this->cObj->setCurrentFile($fileObject);
             $content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.'], 'renderObj');
             $fileObjectCounter++;
@@ -185,14 +182,6 @@ class FilesContentObject extends AbstractContentObject
         if (is_array($element)) {
             $fileCollector->addFilesFromRelation($referencesForeignTable ?: $tableName, $referencesFieldName, $element);
         }
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Domain\Repository\PageRepository
-     */
-    protected function getPageRepository()
-    {
-        return $GLOBALS['TSFE']->sys_page;
     }
 
     /**

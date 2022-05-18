@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
@@ -52,17 +51,18 @@ class RecordsContentObject extends AbstractContentObject
         // Reset items and data
         $this->itemArray = [];
         $this->data = [];
+        $frontendController = $this->getTypoScriptFrontendController();
 
         $theValue = '';
-        $originalRec = $GLOBALS['TSFE']->currentRecord;
+        $originalRec = $frontendController->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
         if ($originalRec) {
-            if (!($GLOBALS['TSFE']->recordRegister[$originalRec] ?? false)) {
-                $GLOBALS['TSFE']->recordRegister[$originalRec] = 0;
+            if (!($frontendController->recordRegister[$originalRec] ?? false)) {
+                $frontendController->recordRegister[$originalRec] = 0;
             }
 
-            ++$GLOBALS['TSFE']->recordRegister[$originalRec];
+            ++$frontendController->recordRegister[$originalRec];
         }
 
         $tables = (string)$this->cObj->stdWrapValue('tables', $conf ?? []);
@@ -94,6 +94,7 @@ class RecordsContentObject extends AbstractContentObject
                 $this->cObj->currentRecordNumber = 0;
                 // @deprecated since v11, will be removed in v12. Drop together with ContentObjectRenderer->currentRecordTotal
                 $this->cObj->currentRecordTotal = $itemArrayCount;
+                $pageRepository = $this->getPageRepository();
                 foreach ($this->itemArray as $val) {
                     $row = $this->data[$val['table']][$val['id']] ?? null;
                     if ($row === null) {
@@ -102,26 +103,26 @@ class RecordsContentObject extends AbstractContentObject
                     // Perform overlays if necessary (records coming from category collections are already overlaid)
                     if ($source) {
                         // Versioning preview
-                        $this->getPageRepository()->versionOL($val['table'], $row);
+                        $pageRepository->versionOL($val['table'], $row);
                         // Language overlay
                         if (is_array($row)) {
-                            $row = $this->getPageRepository()->getLanguageOverlay($val['table'], $row);
+                            $row = $pageRepository->getLanguageOverlay($val['table'], $row);
                         }
                     }
                     // Might be unset during the overlay process
                     if (is_array($row)) {
                         $dontCheckPid = $this->cObj->stdWrapValue('dontCheckPid', $conf ?? []);
                         if (!$dontCheckPid) {
-                            $validPageId = $this->getPageRepository()->filterAccessiblePageIds([$row['pid']]);
+                            $validPageId = $pageRepository->filterAccessiblePageIds([$row['pid']]);
                             $row = !empty($validPageId) ? $row : '';
                         }
-                        if ($row && !empty($val['table']) && !($GLOBALS['TSFE']->recordRegister[$val['table'] . ':' . $val['id']] ?? false)) {
+                        if ($row && !empty($val['table']) && !($frontendController->recordRegister[$val['table'] . ':' . $val['id']] ?? false)) {
                             $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
                             $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
                             $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];
                             $this->cObj->currentRecordNumber++;
                             $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-                            $GLOBALS['TSFE']->currentRecord = $val['table'] . ':' . $val['id'];
+                            $frontendController->currentRecord = $val['table'] . ':' . $val['id'];
                             $this->cObj->lastChanged($row['tstamp'] ?? 0);
                             $cObj->start($row, $val['table'], $this->request);
                             $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
@@ -139,9 +140,9 @@ class RecordsContentObject extends AbstractContentObject
             $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
         }
         // Restore
-        $GLOBALS['TSFE']->currentRecord = $originalRec;
+        $frontendController->currentRecord = $originalRec;
         if ($originalRec) {
-            --$GLOBALS['TSFE']->recordRegister[$originalRec];
+            --$frontendController->recordRegister[$originalRec];
         }
         return $theValue;
     }
@@ -234,13 +235,5 @@ class RecordsContentObject extends AbstractContentObject
     protected function getTimeTracker()
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * @return PageRepository
-     */
-    protected function getPageRepository(): PageRepository
-    {
-        return $GLOBALS['TSFE']->sys_page ?: GeneralUtility::makeInstance(PageRepository::class);
     }
 }

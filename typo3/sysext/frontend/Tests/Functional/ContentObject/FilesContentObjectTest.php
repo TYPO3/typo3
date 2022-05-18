@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FilesContentObjectTest extends FunctionalTestCase
@@ -40,9 +41,7 @@ class FilesContentObjectTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         $this->importCSVDataSet(__DIR__ . '/DataSet/FilesContentObjectDataSet.csv');
 
-        $typoScriptFrontendController = new class() {
-            public PageRepository $sys_page;
-        };
+        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
         $contentObjectRenderer = GeneralUtility::getContainer()->get(ContentObjectRenderer::class);

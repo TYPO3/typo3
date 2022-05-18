@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains CONTENT class object.
@@ -36,7 +35,7 @@ class ContentContentObject extends AbstractContentObject
             return '';
         }
 
-        $frontendController = $this->getFrontendController();
+        $frontendController = $this->getTypoScriptFrontendController();
         $theValue = '';
         $originalRec = $frontendController->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
@@ -138,21 +137,11 @@ class ContentContentObject extends AbstractContentObject
     }
 
     /**
-     * Returns the frontend controller
-     *
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController()
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    /**
      * Returns Time Tracker
      *
      * @return TimeTracker
      */
-    protected function getTimeTracker()
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }

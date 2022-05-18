@@ -58,13 +58,14 @@ class TextMenuContentObject extends AbstractMenuContentObject
             return '';
         }
 
+        $frontendController = $this->getTypoScriptFrontendController();
         $this->WMresult = '';
         $this->WMmenuItems = count($this->result);
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes'] ?? null], $this->WMmenuItems);
         foreach ($this->result as $key => $val) {
-            $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
-            $GLOBALS['TSFE']->register['count_MENUOBJ']++;
+            $frontendController->register['count_HMENU_MENUOBJ']++;
+            $frontendController->register['count_MENUOBJ']++;
             // Initialize the cObj with the page record of the menu item
             $this->WMcObj->start($this->menuArr[$key], 'pages', $this->request);
             $this->I = [];

@@ -39,17 +39,20 @@ class HierarchicalMenuContentObject extends AbstractContentObject
         $theValue = '';
         $menuType = $conf[1] ?? '';
         try {
+            $frontendController = $this->getTypoScriptFrontendController();
+
+            /** @var Menu\MenuContentObjectFactory $menuObjectFactory */
             $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
             $menu = $menuObjectFactory->getMenuObjectByType($menuType);
-            if (isset($GLOBALS['TSFE']->register['count_HMENU'])) {
-                $GLOBALS['TSFE']->register['count_HMENU']++;
+            if (isset($frontendController->register['count_HMENU'])) {
+                $frontendController->register['count_HMENU']++;
             } else {
-                $GLOBALS['TSFE']->register['count_HMENU'] = 1;
+                $frontendController->register['count_HMENU'] = 1;
             }
-            $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
-            $GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
+            $frontendController->register['count_HMENU_MENUOBJ'] = 0;
+            $frontendController->register['count_MENUOBJ'] = 0;
             $menu->parent_cObj = $this->cObj;
-            $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1, '', $this->request);
+            $menu->start($frontendController->tmpl, $this->getPageRepository(), '', $conf, 1, '', $this->request);
             $menu->makeMenu();
             $theValue .= $menu->writeMenu();
         } catch (NoSuchMenuTypeException $e) {

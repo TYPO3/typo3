@@ -40,12 +40,4 @@ class UserInternalContentObject extends AbstractContentObject
         $this->cObj->setUserObjectType(false);
         return $content;
     }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
-    }
 }
