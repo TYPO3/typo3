@@ -41,7 +41,7 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
     protected ?QueryInterface $query = null;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $queryResult;
 

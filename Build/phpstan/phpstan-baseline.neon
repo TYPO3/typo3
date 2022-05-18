@@ -1761,11 +1761,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/ExtendedTemplateService.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:getRootlineLevel\\(\\) should return int but returns false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
@@ -2829,11 +2824,6 @@ parameters:
 			message: "#^Parameter \\#3 \\$operand2 of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\QueryObjectModelFactory\\:\\:comparison\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\StaticOperandInterface, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/QueryResult.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:getIdentifierByObject\\(\\) should return string but returns null\\.$#"
@@ -4322,7 +4312,7 @@ parameters:
 
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-

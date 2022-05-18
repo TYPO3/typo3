@@ -1264,7 +1264,7 @@ class TemplateService
     }
 
     /**
-     * @return TypoScriptFrontendController
+     * @return TypoScriptFrontendController|null
      */
     protected function getTypoScriptFrontendController()
     {
