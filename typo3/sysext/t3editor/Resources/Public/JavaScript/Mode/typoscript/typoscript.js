@@ -751,6 +751,7 @@
         'showHistory': kw('showHistory'),
         'showPageIdWithTitle': kw('showPageIdWithTitle'),
         'showTagFreeClasses': kw('showTagFreeClasses'),
+        'showWebsiteTitle': kw('showWebsiteTitle'),
         'simulateDate': kw('simulateDate'),
         'simulateUserGroup': kw('simulateUserGroup'),
         'singlePid': kw('singlePid'),

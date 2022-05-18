@@ -131,6 +131,28 @@ class TitleTagRenderingTest extends FunctionalTestCase
             [
                 [
                     'pageId' => 1000,
+                    'noPageTitle' => 1,
+                    'showWebsiteTitle' => 0,
+                ],
+                [
+                    'assertRegExp' => '',
+                    'assertNotRegExp' => '#<title>.*</title>#',
+                ],
+            ],
+            [
+                [
+                    'pageId' => 1001,
+                    'noPageTitle' => 1,
+                    'showWebsiteTitle' => 0,
+                ],
+                [
+                    'assertRegExp' => '',
+                    'assertNotRegExp' => '#<title>.*</title>#',
+                ],
+            ],
+            [
+                [
+                    'pageId' => 1000,
                     'noPageTitle' => 2,
                 ],
                 [
@@ -146,6 +168,26 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '',
                     'assertNotRegExp' => '#<title>.*</title>#',
+                ],
+            ],
+            [
+                [
+                    'pageId' => 1000,
+                    'showWebsiteTitle' => 0,
+                ],
+                [
+                    'assertRegExp' => '#<title>Root 1000</title>#',
+                    'assertNotRegExp' => '',
+                ],
+            ],
+            [
+                [
+                    'pageId' => 1001,
+                    'showWebsiteTitle' => 0,
+                ],
+                [
+                    'assertRegExp' => '#<title>SEO Root 1001</title>#',
+                    'assertNotRegExp' => '',
                 ],
             ],
             [
@@ -193,6 +235,17 @@ class TitleTagRenderingTest extends FunctionalTestCase
             [
                 [
                     'pageId' => 1000,
+                    'pageTitleFirst' => 1,
+                    'showWebsiteTitle' => 0,
+                ],
+                [
+                    'assertRegExp' => '#<title>Root 1000</title>#',
+                    'assertNotRegExp' => '',
+                ],
+            ],
+            [
+                [
+                    'pageId' => 1000,
                     'pageTitleSeparator' => 'typoscriptText',
                 ],
                 [
@@ -227,6 +280,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 'pageTitleTS' => (int)($pageConfig['pageTitleTS'] ?? 0),
                 'pageTitleFirst' => (int)($pageConfig['pageTitleFirst'] ?? 0),
                 'pageTitleSeparator' => $pageConfig['pageTitleSeparator'] ?? '',
+                'showWebsiteTitle' => (int)($pageConfig['showWebsiteTitle'] ?? 1),
             ])
         );
         $content = (string)$response->getBody();

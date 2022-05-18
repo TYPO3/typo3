@@ -7,6 +7,10 @@ page.typeNum = 0
   config.noPageTitle = 2
 [end]
 
+[request.getQueryParams()['showWebsiteTitle'] == 0 || request.getParsedBody()['showWebsiteTitle'] == 0]
+  config.showWebsiteTitle = 0
+[end]
+
 [request.getQueryParams()['headerData'] == 1 || request.getParsedBody()['headerData'] == 1]
   page.headerData.100 = TEXT
   page.headerData.100.value = Header Data Title

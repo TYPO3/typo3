@@ -495,9 +495,13 @@ This is especially useful if you want to add RDFa or microformats to your html.
 ]]></default>
 		</property>
 		<property name="noPageTitle" type="int">
-			<description><![CDATA[If you only want to have the sitename (from the template record) in your <title> tag, set this to 1. If the value is 2 then the <title> tag is not printed at all.
+			<description><![CDATA[If you only want to have the website title (from the site configuration) in your <title> tag, set this to 1. If the value is 2 then the <title> tag is not printed at all.
 Please take note that this tag is required for XHTML compliant output, so you should only disable this tag if you generate it manually already.]]></description>
 			<default><![CDATA[0]]></default>
+		</property>
+		<property name="showWebsiteTitle" type="int">
+			<description><![CDATA[If you want to omit the website title (from the site configuration) in your <title> tag, set this to 0.]]></description>
+			<default><![CDATA[1]]></default>
 		</property>
 		<property name="no_cache" type="boolean">
 			<description><![CDATA[If this is set to true, the page will not be cached. If set to false, it's ignored. Other parameters may have set it to true of other reasons.]]></description>

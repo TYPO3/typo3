@@ -1952,7 +1952,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $pageTitle,
             (bool)($this->config['config']['noPageTitle'] ?? false),
             (bool)($this->config['config']['pageTitleFirst'] ?? false),
-            $pageTitleSeparator
+            $pageTitleSeparator,
+            (bool)($this->config['config']['showWebsiteTitle'] ?? true)
         );
         $this->config['config']['pageTitle'] = $titleTagContent;
         // stdWrap around the title tag
@@ -1972,27 +1973,26 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Compiles the content for the page <title> tag.
      *
      * @param string $pageTitle The input title string, typically the "title" field of a page's record.
-     * @param bool $noTitle If set, then only the site title is outputted
-     * @param bool $showTitleFirst If set, then website title and $title is swapped
+     * @param bool $noPageTitle If set, the page title will not be printed
+     * @param bool $showPageTitleFirst If set, website title and page title are swapped
      * @param string $pageTitleSeparator an alternative to the ": " as the separator between site title and page title
+     * @param bool $showWebsiteTitle If set, the website title will be printed
      * @return string The page title on the form "[website title]: [input-title]". Not htmlspecialchar()'ed.
      * @see generatePageTitle()
      */
-    protected function printTitle(string $pageTitle, bool $noTitle = false, bool $showTitleFirst = false, string $pageTitleSeparator = ''): string
+    protected function printTitle(string $pageTitle, bool $noPageTitle = false, bool $showPageTitleFirst = false, string $pageTitleSeparator = '', bool $showWebsiteTitle = true): string
     {
-        $websiteTitle = $this->getWebsiteTitle();
-        $pageTitle = $noTitle ? '' : $pageTitle;
-        if ($showTitleFirst) {
-            $temp = $websiteTitle;
-            $websiteTitle = $pageTitle;
-            $pageTitle = $temp;
-        }
+        $websiteTitle = $showWebsiteTitle ? $this->getWebsiteTitle() : '';
+        $pageTitle = $noPageTitle ? '' : $pageTitle;
         // only show a separator if there are both site title and page title
         if ($pageTitle === '' || $websiteTitle === '') {
             $pageTitleSeparator = '';
         } elseif (empty($pageTitleSeparator)) {
             // use the default separator if non given
             $pageTitleSeparator = ': ';
+        }
+        if ($showPageTitleFirst) {
+            return $pageTitle . $pageTitleSeparator . $websiteTitle;
         }
         return $websiteTitle . $pageTitleSeparator . $pageTitle;
     }
