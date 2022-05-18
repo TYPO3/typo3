@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
@@ -36,6 +37,9 @@ class FilesContentObject extends AbstractContentObject
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';
         }
+        $frontendController = $this->hasTypoScriptFrontendController()
+            ? $this->getTypoScriptFrontendController()
+            : null;
         // Store the original "currentFile" within a variable so it can be re-applied later-on
         $originalFileInContentObject = $this->cObj->getCurrentFile();
 
@@ -53,8 +57,8 @@ class FilesContentObject extends AbstractContentObject
         $limit = (int)$this->cObj->stdWrapValue('maxItems', $conf, $availableFileObjectCount);
         $end = MathUtility::forceIntegerInRange($start + $limit, $start, $availableFileObjectCount);
 
-        if (isset($GLOBALS['TSFE'])) {
-            $GLOBALS['TSFE']->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
+        if ($frontendController instanceof TypoScriptFrontendController) {
+            $frontendController->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
         }
         $fileObjectCounter = 0;
         $keys = array_keys($fileObjects);
@@ -64,8 +68,8 @@ class FilesContentObject extends AbstractContentObject
             $key = $keys[$i];
             $fileObject = $fileObjects[$key];
 
-            if (isset($GLOBALS['TSFE'])) {
-                $GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
+            if ($frontendController instanceof TypoScriptFrontendController) {
+                $frontendController->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
             }
             $this->cObj->setCurrentFile($fileObject);
             $content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.'], 'renderObj');
@@ -185,14 +189,6 @@ class FilesContentObject extends AbstractContentObject
         if (is_array($element)) {
             $fileCollector->addFilesFromRelation($referencesForeignTable ?: $tableName, $referencesFieldName, $element);
         }
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Domain\Repository\PageRepository
-     */
-    protected function getPageRepository()
-    {
-        return $GLOBALS['TSFE']->sys_page;
     }
 
     /**

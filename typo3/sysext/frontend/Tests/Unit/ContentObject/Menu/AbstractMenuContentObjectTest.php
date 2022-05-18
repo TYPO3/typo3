@@ -426,6 +426,10 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             ->method('stdWrapValue')
             ->with('excludeUidList', ['excludeUidList' => $excludeUidList])
             ->willReturn($excludeUidList);
+
+        $typoScriptFrontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $cObjectMock->method('getTypoScriptFrontendController')->willReturn($typoScriptFrontendControllerMock);
+
         $this->subject->parent_cObj = $cObjectMock;
         $this->subject->expects(self::once())->method('getRuntimeCache')->willReturn($runtimeCacheMock);
         $this->prepareSectionIndexTest();

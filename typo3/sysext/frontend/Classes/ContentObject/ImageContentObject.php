@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains IMAGE class object.
@@ -301,7 +300,10 @@ class ImageContentObject extends AbstractContentObject
     {
         $altText = trim((string)$this->cObj->stdWrapValue('altText', $conf ?? []));
         $titleText = trim((string)$this->cObj->stdWrapValue('titleText', $conf ?? []));
-        if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
+        $frontendController = $this->hasTypoScriptFrontendController()
+            ? $this->getTypoScriptFrontendController()
+            : null;
+        if (isset($conf['longdescURL.']) && ($frontendController->config['config']['doctype'] ?? '') !== 'html5') {
             $longDescUrl = $this->cObj->createUrl($conf['longdescURL.']);
         } else {
             $longDescUrl = trim($conf['longdescURL'] ?? '');
@@ -323,13 +325,5 @@ class ImageContentObject extends AbstractContentObject
             $altParam .= ' longdesc="' . htmlspecialchars($longDescUrl) . '"';
         }
         return $altParam;
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 }

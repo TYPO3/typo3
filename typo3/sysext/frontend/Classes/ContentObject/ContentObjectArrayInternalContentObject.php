@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains COA_INT class object.
@@ -37,9 +36,11 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
             $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COA_INT).', LogLevel::WARNING);
             return '';
         }
-        $substKey = 'INT_SCRIPT.' . $this->getTypoScriptFrontendController()->uniqueHash();
+
+        $frontendController = $this->getTypoScriptFrontendController();
+        $substKey = 'INT_SCRIPT.' . $frontendController->uniqueHash();
         $content = '<!--' . $substKey . '-->';
-        $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = [
+        $frontendController->config['INTincScript'][$substKey] = [
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
             'type' => 'COA',
@@ -53,13 +54,5 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
     protected function getTimeTracker()
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 }

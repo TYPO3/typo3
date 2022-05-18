@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
@@ -345,6 +346,7 @@ abstract class AbstractMenuContentObject
             return;
         }
 
+        $frontendController = $this->getTypoScriptFrontendController();
         // Initializing showAccessRestrictedPages
         $SAVED_where_groupAccess = '';
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
@@ -390,7 +392,7 @@ abstract class AbstractMenuContentObject
             while ($c < $minItems) {
                 $this->menuArr[$c] = [
                     'title' => '...',
-                    'uid' => $this->getTypoScriptFrontendController()->id,
+                    'uid' => $frontendController->id,
                 ];
                 $c++;
             }
@@ -400,7 +402,7 @@ abstract class AbstractMenuContentObject
             $this->menuArr = $this->userProcess('itemArrayProcFunc', $this->menuArr);
         }
         // Setting number of menu items
-        $this->getTypoScriptFrontendController()->register['count_menuItems'] = count($this->menuArr);
+        $frontendController->register['count_menuItems'] = count($this->menuArr);
         $this->hash = md5(
             json_encode($this->menuArr) .
             json_encode($this->mconf) .
@@ -411,7 +413,7 @@ abstract class AbstractMenuContentObject
         if ($this->conf['cache_period'] ?? false) {
             $cacheTimeout = $this->conf['cache_period'];
         } else {
-            $cacheTimeout = $this->getTypoScriptFrontendController()->get_cache_timeout();
+            $cacheTimeout = $frontendController->get_cache_timeout();
         }
         $cache = $this->getCache();
         $cachedData = $cache->get($this->hash);
@@ -1737,11 +1739,16 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * @return TypoScriptFrontendController
+     * @throws ContentRenderingException
      */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
-        return $GLOBALS['TSFE'];
+        $frontendController = $this->parent_cObj->getTypoScriptFrontendController();
+        if (!$frontendController instanceof TypoScriptFrontendController) {
+            throw new ContentRenderingException('TypoScriptFrontendController is not available.', 1655725105);
+        }
+
+        return $frontendController;
     }
 
     protected function getCurrentLanguageAspect(): LanguageAspect

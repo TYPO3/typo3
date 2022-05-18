@@ -29,7 +29,8 @@ class LoadRegisterContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        $GLOBALS['TSFE']->registerStack[] = $GLOBALS['TSFE']->register;
+        $frontendController = $this->getTypoScriptFrontendController();
+        $frontendController->registerStack[] = $frontendController->register;
         if (is_array($conf)) {
             $isExecuted = [];
             foreach ($conf as $theKey => $theValue) {
@@ -41,7 +42,7 @@ class LoadRegisterContentObject extends AbstractContentObject
                     } elseif (isset($conf[$registerProperties])) {
                         $theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
                     }
-                    $GLOBALS['TSFE']->register[$register] = $theValue;
+                    $frontendController->register[$register] = $theValue;
                     $isExecuted[$register] = true;
                 }
             }
