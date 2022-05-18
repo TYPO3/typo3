@@ -370,7 +370,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Indicates current object type. Can hold one of OBJECTTYPE_ constants or FALSE.
      * The value is set and reset inside USER() function. Any time outside of
      * USER() it is FALSE.
-     * @var bool
+     * @var int|bool
      */
     protected $userObjectType = false;
 

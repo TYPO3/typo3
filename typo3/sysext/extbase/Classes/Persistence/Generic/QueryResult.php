@@ -39,7 +39,7 @@ class QueryResult implements QueryResultInterface
     protected ?QueryInterface $query = null;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $queryResult;
 
