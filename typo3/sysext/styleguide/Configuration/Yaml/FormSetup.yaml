@@ -2,8 +2,6 @@ TYPO3:
   CMS:
     Form:
       persistenceManager:
-        allowedFileMounts:
-          10: ~
         allowedExtensionPaths:
           10: 'EXT:styleguide/Resources/Private/Forms/'
         allowSaveToExtensionPaths: false
