@@ -64,7 +64,7 @@ class BackendLogController extends ActionController
             $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
         }
         // Static format needed for date picker (flatpickr), see BackendController::generateJavascript() and #91606
-        $this->settings['dateTimeFormat'] = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'h:m m-d-Y' : 'h:m d-m-Y');
+        $this->settings['dateTimeFormat'] = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'H:i m-d-Y' : 'H:i d-m-Y');
         $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
