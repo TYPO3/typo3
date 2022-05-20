@@ -151,7 +151,16 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'icon' => 'data-identifier="mimetypes-x-content-text"',
                 'href' => '/typo3/record/edit?token=%s&edit%5Btt_content%5D%5B113%5D=edit',
             ],
-            6 => [
+            3 => [
+                'table' => 'tt_content',
+                'recordid' => 117,
+                'groupLabel' => null,
+                'type' => 'new',
+                'label' => 'Create Content',
+                'icon' => 'data-identifier="mimetypes-x-content-text"',
+                'href' => '/typo3/record/edit?token=%s&edit%5Btt_content%5D%5B117%5D=new',
+            ],
+            7 => [
                 'table' => null,
                 'recordid' => null,
                 'groupLabel' => null,
@@ -163,7 +172,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
         ];
 
         $shortcuts = $this->subject->getShortcutsByGroup(1);
-        self::assertCount(3, $shortcuts);
+        self::assertCount(count($expected), $shortcuts);
 
         foreach ($shortcuts as $shortcut) {
             $id = (int)$shortcut['raw']['uid'];
