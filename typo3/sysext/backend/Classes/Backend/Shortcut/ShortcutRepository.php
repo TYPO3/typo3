@@ -485,7 +485,7 @@ class ShortcutRepository
                     $shortcut['type'] = 'new';
                 }
 
-                if (substr((string)$shortcut['recordid'], -1) === ',') {
+                if (str_ends_with((string)$shortcut['recordid'], ',')) {
                     $shortcut['recordid'] = substr((string)$shortcut['recordid'], 0, -1);
                 }
             } else {
@@ -528,17 +528,24 @@ class ShortcutRepository
                 }
             } else {
                 if ($moduleName === 'record_edit' && isset($shortcut['table'], $shortcut['recordid'])) {
-                    // Check if user is allowed to edit the requested record
+                    // Check if user is allowed to modify the requested record
                     if (!$backendUser->check('tables_modify', $shortcut['table'])) {
                         continue;
                     }
-                    $record = BackendUtility::getRecord($shortcut['table'], (int)$shortcut['recordid']);
-                    // Check if requested record exists
-                    if ($record === null || $record === []) {
-                        continue;
+                    if ($shortcut['type'] === 'edit'
+                        || ($shortcut['type'] === 'new' && (int)$shortcut['recordid'] < 0)
+                    ) {
+                        $record = BackendUtility::getRecord($shortcut['table'], abs((int)$shortcut['recordid']));
+                        // Check if requested record exists
+                        if ($record === null || $record === []) {
+                            continue;
+                        }
+                        // Store the page id of the record in question
+                        $pageId = ($shortcut['table'] === 'pages' ? (int)($record['uid'] ?? 0) : (int)($record['pid'] ?? 0));
+                    } elseif ($shortcut['type'] === 'new' && (int)$shortcut['recordid'] > 0) {
+                        // If type is new and "recordid" is positive, it references the current page
+                        $pageId = (int)$shortcut['recordid'];
                     }
-                    // Store the page id of the record in question
-                    $pageId = ($shortcut['table'] === 'pages' ? (int)($record['uid'] ?? 0) : (int)($record['pid']));
                 } else {
                     // In case this is no record edit shortcut, treat a possible "id" as page id
                     $pageId = (int)($arguments['id'] ?? 0);

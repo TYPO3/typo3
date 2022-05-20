@@ -2597,6 +2597,41 @@ class EditDocumentController
         $action = (string)($queryParameters['edit'][$table][$recordId] ?? '');
 
         if ($action === 'new') {
+            if ($table === 'pages') {
+                return sprintf(
+                    $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNewPage'),
+                    $tableTitle
+                );
+            }
+
+            if ($recordId === 0) {
+                return sprintf(
+                    $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNewRecordRootLevel'),
+                    $tableTitle
+                );
+            }
+
+            $pageRecord = null;
+            if ($recordId < 0) {
+                $parentRecord = BackendUtility::getRecord($table, abs($recordId));
+                if ($parentRecord['pid'] ?? false) {
+                    $pageRecord = BackendUtility::getRecord('pages', (int)($parentRecord['pid']), 'title');
+                }
+            } else {
+                $pageRecord = BackendUtility::getRecord('pages', $recordId, 'title');
+            }
+
+            if ($pageRecord !== null) {
+                $pageTitle = BackendUtility::getRecordTitle('pages', $pageRecord);
+                if ($pageTitle !== '') {
+                    return sprintf(
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNewRecord'),
+                        $tableTitle,
+                        $pageTitle
+                    );
+                }
+            }
+
             return $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNew') . ' ' . $tableTitle;
         }
 
