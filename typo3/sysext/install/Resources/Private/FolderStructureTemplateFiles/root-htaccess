@@ -279,8 +279,6 @@ AddDefaultCharset utf-8
 
 ### Begin: Rewriting and Access ###
 
-# You need rewriting, if you use a URL-Rewriting extension (RealURL, CoolUri).
-
 <IfModule mod_rewrite.c>
 
 	# Enable URL rewriting
