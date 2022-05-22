@@ -39,10 +39,10 @@ Furthermore does the event provide the following methods
 
 .. note::
 
-    The removed hook contained an instace of :php:`DiffUtility`, which can
+    The removed hook contained an instance of :php:`DiffUtility`, which can
     be used to generate the differences :php:`string`. Since PSR-14 Events
     are usually pure data objects, without dependencies to any service, the
-    new PSR-14 Event does no longer provide an instace of :php:`DiffUtility`.
+    new PSR-14 Event does no longer provide an instance of :php:`DiffUtility`.
     Listeners have to inject the service on their own - if needed.
 
 Example
