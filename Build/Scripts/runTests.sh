@@ -105,6 +105,13 @@ cleanTestFiles() {
         echo "done"
 }
 
+cleanRenderedDocumentationFiles() {
+    # > caches
+    echo -n "Clean rendered documentation files ... " ; rm -rf \
+        ../../../typo3/sysext/*/Documentation-GENERATED-temp ; \
+        echo "done"
+}
+
 # Load help text into $HELP
 # @todo Remove xdebug / php8.2 note after PHP8.2 image contains working xdebug.
 read -r -d '' HELP <<EOF
@@ -142,6 +149,7 @@ Options:
             - clean: clean up build, cache and testing related files and folders
             - cleanBuild: clean up build related files and folders
             - cleanCache: clean up cache related files and folders
+            - cleanRenderedDocumentation: clean up rendered documentation files and folders (Documentation-GENERATED-temp)
             - cleanTests: clean up test related files and folders
             - composerInstall: "composer install"
             - composerInstallMax: "composer update", with no platform.php config.
@@ -635,6 +643,7 @@ case ${TEST_SUITE} in
     clean)
         cleanBuildFiles
         cleanCacheFiles
+        cleanRenderedDocumentationFiles
         cleanTestFiles
         ;;
     cleanBuild)
@@ -642,6 +651,9 @@ case ${TEST_SUITE} in
         ;;
     cleanCache)
         cleanCacheFiles
+        ;;
+    cleanRenderedDocumentation)
+        cleanRenderedDocumentationFiles
         ;;
     cleanTests)
         cleanTestFiles
