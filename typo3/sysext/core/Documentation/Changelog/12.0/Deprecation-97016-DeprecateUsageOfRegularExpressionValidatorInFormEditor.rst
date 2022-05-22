@@ -23,7 +23,7 @@ Impact
 ======
 
 No deprecation will be logged. The extension scanner will not report anything.
-The validator will be removed form the UI in TYPO3 v13 with an according breaking
+The validator will be removed from the UI in TYPO3 v13 with an according breaking
 change. The impact itself is quite low, since the validator can
 easily be re-added.
 
