@@ -1017,7 +1017,7 @@ parameters:
 
 		-
 			message: "#^Offset string does not exist on null\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-
@@ -2246,11 +2246,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfiguration.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with 1 will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
-
-		-
 			message: "#^Offset non\\-empty\\-string on array\\{\\} on left side of \\?\\? does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
@@ -2258,11 +2253,6 @@ parameters:
 		-
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
 
 		-
@@ -2666,7 +2656,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$name of class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\Argument constructor expects string, ArrayObject\\<\\(int\\|string\\), mixed\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$name of class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\Argument constructor expects string, ArrayObject\\<\\*NEVER\\*, \\*NEVER\\*\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentTest.php
 
@@ -2881,6 +2871,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithInvalidTypeHint.php
 
 		-
+			message: "#^ArrayObject\\<\\*NEVER\\*, \\*NEVER\\*\\> does not accept string\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ObjectAccessTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$pageIdsToClear of method TYPO3\\\\CMS\\\\Extbase\\\\Service\\\\CacheService\\:\\:clearPageCache\\(\\) expects array\\<int\\>\\|int\\|null, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Service/CacheServiceTest.php
@@ -2942,7 +2937,7 @@ parameters:
 
 		-
 			message: "#^Offset string does not exist on null\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/EmConfUtility.php
 
 		-
@@ -4283,11 +4278,6 @@ parameters:
 		-
 			message: "#^Property PhpParser\\\\Node\\\\Stmt\\\\ClassMethod\\:\\:\\$params \\(array\\<PhpParser\\\\Node\\\\Param\\>\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
-
-		-
-			message: "#^Result of && is always true\\.$#"
-			count: 2
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
 
 		-
