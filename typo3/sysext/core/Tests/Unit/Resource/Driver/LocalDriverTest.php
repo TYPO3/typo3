@@ -1158,14 +1158,7 @@ class LocalDriverTest extends BaseTestCase
         $subject = $this->createDriver();
         $newIdentifier = $subject->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
         self::assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/file')));
-
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist($this->getUrlInMount('/someFile'));
-        } else {
-            self::assertFileDoesNotExist($this->getUrlInMount('/someFile'));
-        }
-
+        self::assertFileDoesNotExist($this->getUrlInMount('/someFile'));
         self::assertEquals('/targetFolder/file', $newIdentifier);
     }
 
@@ -1403,12 +1396,7 @@ class LocalDriverTest extends BaseTestCase
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
         self::assertFileExists($this->getUrlInMount('/targetFolder/someFolder/'));
         self::assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/someFolder/file')));
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist($this->getUrlInMount('/sourceFolder'));
-        } else {
-            self::assertFileDoesNotExist($this->getUrlInMount('/sourceFolder'));
-        }
+        self::assertFileDoesNotExist($this->getUrlInMount('/sourceFolder'));
     }
 
     /**

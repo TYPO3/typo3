@@ -499,12 +499,7 @@ class FileBackendTest extends UnitTestCase
         self::assertFileExists($pathAndFilename);
 
         $backend->remove($entryIdentifier);
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist($pathAndFilename);
-        } else {
-            self::assertFileDoesNotExist($pathAndFilename);
-        }
+        self::assertFileDoesNotExist($pathAndFilename);
     }
 
     public function invalidEntryIdentifiers(): array
@@ -857,14 +852,8 @@ class FileBackendTest extends UnitTestCase
 
         $backend->flush();
 
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
-            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
-        } else {
-            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
-            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
-        }
+        self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+        self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
     }
 
     /**
@@ -936,13 +925,7 @@ class FileBackendTest extends UnitTestCase
 
         $backend->collectGarbage();
 
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
-        } else {
-            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
-        }
-
+        self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
         self::assertFileExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
     }
 

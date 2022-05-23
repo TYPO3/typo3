@@ -127,13 +127,7 @@ class AbstractFormProtectionTest extends UnitTestCase
      */
     public function generateTokenReturns32CharacterHexToken(): void
     {
-
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertMatchesRegularExpression')) {
-            self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
-        } else {
-            self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
-        }
+        self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
     }
 
     /**

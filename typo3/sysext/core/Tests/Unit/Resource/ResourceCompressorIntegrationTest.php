@@ -77,12 +77,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = false;
         $this->resourceCompressor = new TestableResourceCompressor();
         $htaccessPath = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory() . '.htaccess';
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist($htaccessPath);
-        } else {
-            self::assertFileDoesNotExist($htaccessPath);
-        }
+        self::assertFileDoesNotExist($htaccessPath);
     }
 
     /**

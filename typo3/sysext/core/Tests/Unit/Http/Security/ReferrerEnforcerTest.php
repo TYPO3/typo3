@@ -126,13 +126,7 @@ class ReferrerEnforcerTest extends UnitTestCase
         if ($expectedResponse === null) {
             self::assertNull($response);
         } else {
-
-            // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-            if (method_exists($this, 'assertMatchesRegularExpression')) {
-                self::assertMatchesRegularExpression($expectedResponse, (string)$response->getBody());
-            } else {
-                self::assertMatchesRegularExpression($expectedResponse, (string)$response->getBody());
-            }
+            self::assertMatchesRegularExpression($expectedResponse, (string)$response->getBody());
         }
     }
 
