@@ -80,12 +80,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         $this->resourceCompressor = $this->getAccessibleMock(TestableResourceCompressor::class, null);
         $this->resourceCompressor->_call('initialize');
         $htaccessPath = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory() . '.htaccess';
-        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            self::assertFileDoesNotExist($htaccessPath);
-        } else {
-            self::assertFileDoesNotExist($htaccessPath);
-        }
+        self::assertFileDoesNotExist($htaccessPath);
     }
 
     /**
