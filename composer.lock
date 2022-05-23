@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "244495ef186a850527b9f034fabce26f",
+    "content-hash": "ebc1402b5ba5ce2e194c950294812b95",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9083,16 +9083,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.16.4",
+            "version": "6.16.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "111b3136dc21d96738083203891c4c5e179619e1"
+                "reference": "3aa25fa072f93ab001f97e346e2b8c788c6c6530"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/111b3136dc21d96738083203891c4c5e179619e1",
-                "reference": "111b3136dc21d96738083203891c4c5e179619e1",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/3aa25fa072f93ab001f97e346e2b8c788c6c6530",
+                "reference": "3aa25fa072f93ab001f97e346e2b8c788c6c6530",
                 "shasum": ""
             },
             "require": {
@@ -9115,7 +9115,7 @@
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.6.7",
+                "phpstan/phpstan": "^1.7.0",
                 "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev",
                 "typo3/coding-standards": "^0.5.0"
@@ -9153,9 +9153,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.4"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.5"
             },
-            "time": "2022-05-09T22:28:41+00:00"
+            "time": "2022-05-23T16:08:14+00:00"
         }
     ],
     "aliases": [],
