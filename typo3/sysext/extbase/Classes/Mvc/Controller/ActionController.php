@@ -842,8 +842,8 @@ abstract class ActionController implements ControllerInterface
             $content = $statusCode . ' ' . $statusMessage;
         }
         $response = $this->responseFactory
-            ->createResponse((int)$statusCode, $statusMessage)
-            ->withBody($this->streamFactory->createStream($content));
+            ->createResponse((int)$statusCode, (string)$statusMessage)
+            ->withBody($this->streamFactory->createStream((string)$content));
         throw new PropagateResponseException($response, 1476045871);
     }
 
