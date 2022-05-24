@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ObjectStorageConverterTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     /**

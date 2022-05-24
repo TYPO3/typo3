@@ -26,9 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RteHtmlParserTest extends UnitTestCase
 {
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     protected array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr'];

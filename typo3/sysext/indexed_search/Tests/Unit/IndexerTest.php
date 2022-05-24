@@ -30,9 +30,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class IndexerTest extends UnitTestCase
 {
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void

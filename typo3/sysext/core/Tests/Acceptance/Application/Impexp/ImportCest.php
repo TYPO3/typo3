@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class ImportCest extends AbstractCest
 {
-    /** Absolute path to files that must be removed */
     protected array $testFilesToDelete = [];
 
     protected string $inPageTree = '#typo3-pagetree-treeContainer .nodes';

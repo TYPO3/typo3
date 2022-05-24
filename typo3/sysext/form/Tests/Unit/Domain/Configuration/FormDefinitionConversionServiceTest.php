@@ -23,10 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormDefinitionConversionServiceTest extends UnitTestCase
 {
-
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

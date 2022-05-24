@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
  */
 class RelativeCssPathFixerTest extends BaseTestCase
 {
-    /**
-     * @var bool Restore Environment after tests
-     */
     protected bool $backupEnvironment = true;
 
     /**

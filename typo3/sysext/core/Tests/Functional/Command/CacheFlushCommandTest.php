@@ -28,9 +28,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
  */
 class CacheFlushCommandTest extends AbstractCommandTest
 {
-    /**
-     * @var array
-     */
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [

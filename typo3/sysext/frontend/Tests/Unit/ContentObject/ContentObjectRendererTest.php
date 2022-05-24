@@ -96,9 +96,6 @@ class ContentObjectRendererTest extends UnitTestCase
     use ProphecyTrait;
     use ContentObjectRendererTestTrait;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

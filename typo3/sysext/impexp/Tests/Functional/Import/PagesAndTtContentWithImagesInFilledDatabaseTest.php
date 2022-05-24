@@ -24,9 +24,6 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected array $additionalFoldersToCreate = [
         '/fileadmin/user_upload',
     ];

@@ -24,9 +24,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class HiddenViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     /**

@@ -28,9 +28,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
  */
 class ResourceCompressorTest extends BaseTestCase
 {
-    /**
-     * @var bool Restore Environment after tests
-     */
     protected bool $backupEnvironment = true;
 
     /**

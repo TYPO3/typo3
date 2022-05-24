@@ -27,9 +27,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfHasRoleViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     protected function setUp(): void

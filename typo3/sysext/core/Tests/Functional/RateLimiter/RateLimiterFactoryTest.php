@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RateLimiterFactoryTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     public function loginRateLimiterLimitsRequestsDataProvider(): array

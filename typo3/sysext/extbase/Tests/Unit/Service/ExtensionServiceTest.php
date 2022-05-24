@@ -48,7 +48,6 @@ class ExtensionServiceTest extends UnitTestCase
 
     /**
      * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set
-     * @var bool
      */
     protected bool $resetSingletonInstances = true;
 

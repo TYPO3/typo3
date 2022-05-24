@@ -44,9 +44,6 @@ class AbstractPluginTest extends UnitTestCase
 
     protected AbstractPlugin $abstractPlugin;
 
-    /**
-     * @var bool
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

@@ -25,9 +25,6 @@ class UploadedResourceViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['form'];
 
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     /**

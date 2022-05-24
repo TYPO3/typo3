@@ -22,9 +22,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SlugHelperTest extends UnitTestCase
 {
-    /**
-     * @var bool
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

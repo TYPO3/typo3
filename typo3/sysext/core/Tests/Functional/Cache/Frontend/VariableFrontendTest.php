@@ -26,9 +26,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class VariableFrontendTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [

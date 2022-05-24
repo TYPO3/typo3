@@ -31,9 +31,6 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
 
     protected ?MarkerBasedTemplateService $templateService;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

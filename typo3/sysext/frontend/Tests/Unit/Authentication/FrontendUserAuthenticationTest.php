@@ -49,9 +49,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
 
     private const NOT_CHECKED_INDICATOR = '--not-checked--';
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

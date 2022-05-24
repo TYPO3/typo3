@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceCompressorIntegrationTest extends BaseTestCase
 {
-    /**
-     * @var bool Restore Environment after tests
-     */
     protected bool $backupEnvironment = true;
 
     protected ?TestableResourceCompressor $resourceCompressor;

@@ -22,17 +22,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class SiteConfigurationOverridesTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     /** @var array */
     protected array $subject;
 
-    /**
-     * @var string[]
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/Fixtures/Extensions/conf_overriding/a',
         'typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/Fixtures/Extensions/conf_overriding/b',

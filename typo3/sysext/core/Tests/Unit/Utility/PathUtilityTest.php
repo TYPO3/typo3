@@ -27,10 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PathUtilityTest extends UnitTestCase
 {
-    /**
-     * Restore Environment after the test
-     * @var bool
-     */
     protected bool $backupEnvironment = true;
 
     /**

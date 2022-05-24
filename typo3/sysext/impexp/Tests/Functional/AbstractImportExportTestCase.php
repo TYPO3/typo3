@@ -33,10 +33,6 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['impexp', 'form'];
 
-    /**
-     * Absolute path to files that must be removed
-     * after a test - handled in tearDown
-     */
     protected array $testFilesToDelete = [];
 
     /**

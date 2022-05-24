@@ -61,9 +61,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     use ProphecyTrait;
     use PageRendererFactoryTrait;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

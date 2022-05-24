@@ -37,9 +37,6 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool
-     */
     protected bool $resetSingletonInstances = true;
 
     public function setUp(): void

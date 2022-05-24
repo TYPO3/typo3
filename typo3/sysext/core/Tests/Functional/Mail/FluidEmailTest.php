@@ -22,14 +22,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FluidEmailTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
-    /**
-     * @var string[]
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_fluid_email',
     ];

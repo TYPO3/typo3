@@ -32,9 +32,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RedirectUrlValidatorTest extends UnitTestCase
 {
-    /**
-     * @var bool Restore Environment after tests
-     */
     protected bool $backupEnvironment = true;
 
     /**

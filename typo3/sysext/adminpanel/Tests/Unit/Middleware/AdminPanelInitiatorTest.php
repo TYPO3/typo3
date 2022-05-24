@@ -36,9 +36,6 @@ class AdminPanelInitiatorTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

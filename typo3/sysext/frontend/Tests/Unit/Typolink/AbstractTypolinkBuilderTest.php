@@ -36,14 +36,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractTypolinkBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
-    /**
-     * @var bool Reset singletons created by subject
-     */
+
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var bool Restore Environment after tests
-     */
     protected bool $backupEnvironment = true;
 
     /**

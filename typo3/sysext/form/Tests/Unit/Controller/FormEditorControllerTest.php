@@ -28,9 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormEditorControllerTest extends UnitTestCase
 {
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
     /**

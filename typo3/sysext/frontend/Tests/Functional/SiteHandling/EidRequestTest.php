@@ -27,9 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 class EidRequestTest extends AbstractTestCase
 {
-    /**
-     * @var string[]
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid',
     ];

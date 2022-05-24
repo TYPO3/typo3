@@ -27,9 +27,6 @@ class LanguageServiceTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
     ];
 
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     protected array $configurationToUseInTestInstance = [

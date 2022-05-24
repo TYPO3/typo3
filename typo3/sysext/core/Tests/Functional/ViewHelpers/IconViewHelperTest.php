@@ -31,9 +31,6 @@ class IconViewHelperTest extends FunctionalTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     /**

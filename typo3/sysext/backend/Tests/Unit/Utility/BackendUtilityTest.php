@@ -41,9 +41,6 @@ class BackendUtilityTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool
-     */
     protected bool $resetSingletonInstances = true;
 
     ///////////////////////////////////////

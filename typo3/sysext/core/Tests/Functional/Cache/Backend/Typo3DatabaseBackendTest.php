@@ -30,9 +30,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
 
-    /**
-     * @var array
-     */
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [

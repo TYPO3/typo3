@@ -29,9 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EnableFileServiceTest extends UnitTestCase
 {
-    /**
-     * @var bool This test fiddles with Environment
-     */
     protected bool $backupEnvironment = true;
 
     /**

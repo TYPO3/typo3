@@ -25,9 +25,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfHasStateViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @var bool Speed up this test case, it needs no database
-     */
     protected bool $initializeDatabase = false;
 
     protected TemplateView $view;

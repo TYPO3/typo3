@@ -37,9 +37,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RecoveryServiceTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var bool
-     */
+
     protected bool $resetSingletonInstances = true;
 
     /** @var ObjectProphecy<FrontendUserRepository> */

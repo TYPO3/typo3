@@ -34,14 +34,8 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class LocalDriverTest extends BaseTestCase
 {
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var bool Reset changed Environment
-     */
     protected bool $backupEnvironment = true;
 
     protected ?LocalDriver $localDriver;

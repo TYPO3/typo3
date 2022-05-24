@@ -42,9 +42,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DataHandlerTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var bool Reset singletons created by subject
-     */
+
     protected bool $resetSingletonInstances = true;
 
     /**
