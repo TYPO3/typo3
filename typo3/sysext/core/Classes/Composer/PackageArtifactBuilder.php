@@ -100,7 +100,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             $this->registerPackage($package);
         }
         $this->sortPackagesAndConfiguration();
-        $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()));
+        $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()) . $this->event->isDevMode());
         $this->setPackageCache(new ComposerPackageArtifact($composer->getConfig()->get('vendor-dir') . '/typo3', new Filesystem(), $cacheIdentifier));
         $this->saveToPackageCache();
 
