@@ -344,7 +344,7 @@ BE:
             description: 'Don''t use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all file operations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.'
         compressionLevel:
             type: text
-            description: 'Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see <code>_.htacces</code> for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
+            description: 'Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see <code>_.htaccess</code> for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
         checkStoredRecords:
             type: bool
             description: 'If set, values of the record are validated after saving in DataHandler. Disable only if using a database in strict mode.'
