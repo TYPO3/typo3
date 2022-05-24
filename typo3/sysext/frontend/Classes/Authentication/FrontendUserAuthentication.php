@@ -460,7 +460,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $value = null;
         switch ($type) {
             case 'user':
-                $value = $this->uc[$key];
+                $value = $this->uc[$key] ?? null;
                 break;
             case 'ses':
                 $value = $this->getSessionData($key);
