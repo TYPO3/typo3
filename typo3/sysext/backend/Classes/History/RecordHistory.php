@@ -434,7 +434,7 @@ class RecordHistory
                 $deletedField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
                 $fields = 'pid,' . $deletedField;
                 $pageRecord = BackendUtility::getRecord('pages', $pageId, $fields, '', false);
-                $isDeletedPage = (bool)$pageRecord[$deletedField];
+                $isDeletedPage = (bool)($pageRecord[$deletedField] ?? false);
             }
             if ($isDeletedPage) {
                 // The page is deleted, so we fake its uid to be the one of the parent page.
