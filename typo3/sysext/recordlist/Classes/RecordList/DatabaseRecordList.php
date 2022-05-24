@@ -3141,7 +3141,7 @@ class DatabaseRecordList
 
         $dropdownItems['toggleSelection'] = '
             <li>
-                <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
                     ' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
                 </button>

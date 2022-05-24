@@ -386,6 +386,15 @@ class MultiRecordSelection {
       if (checkNone !== null) {
         checkNone.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier).length);
       }
+
+      const toggle: HTMLButtonElement = document.querySelector([
+        MultiRecordSelection.getCombinedSelector(Selectors.checkboxActionsSelector, identifier),
+        'button[data-multi-record-selection-check-action="' + CheckboxActions.toggle + '"]'
+      ].join(' '));
+
+      if (toggle !== null) {
+        toggle.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).length);
+      }
     }).delegateTo(document, Selectors.checkboxActionsToggleSelector);
   }
 
