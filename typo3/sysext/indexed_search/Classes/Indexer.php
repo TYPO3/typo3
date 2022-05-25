@@ -351,6 +351,7 @@ class Indexer
                 // Check words and submit to word list if not there
                 $this->log_push('Check word list and submit words', '');
                 if (IndexedSearchUtility::isTableUsed('index_words')) {
+                    $indexArr = $this->removePhashCollisions($indexArr);
                     $this->checkWordList($indexArr);
                     $this->submitWords($indexArr, $this->hash['phash']);
                 }
@@ -900,6 +901,7 @@ class Indexer
                                     // Check words and submit to word list if not there
                                     $this->log_push('Check word list and submit words', '');
                                     if (IndexedSearchUtility::isTableUsed('index_words')) {
+                                        $indexArr = $this->removePhashCollisions($indexArr);
                                         $this->checkWordList($indexArr);
                                         $this->submitWords($indexArr, $phash_arr['phash']);
                                     }
@@ -1841,7 +1843,7 @@ class Indexer
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_words');
             $queryBuilder = $connection->createQueryBuilder();
 
-            $result = $queryBuilder->select('baseword')
+            $result = $queryBuilder->select('wid')
                 ->from('index_words')
                 ->where(
                     $queryBuilder->expr()->in(
@@ -1853,7 +1855,11 @@ class Indexer
 
             $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), LogLevel::NOTICE);
             while ($row = $result->fetchAssociative()) {
-                unset($wordListArray[$row['baseword']]);
+                foreach ($wordListArray as $baseword => $wordData) {
+                    if ($wordData['hash'] === $row['wid']) {
+                        unset($wordListArray[$baseword]);
+                    }
+                }
             }
 
             foreach ($wordListArray as $key => $val) {
@@ -2035,5 +2041,25 @@ class Indexer
     {
         $keywords = GeneralUtility::trimExplode(',', $keywordList);
         return ' ' . implode(', ', $keywords) . ' ';
+    }
+
+    /**
+     * Make sure that the word list only contains words with unique phash values.
+     * All words with phash collisions are filtered from the list.
+     *
+     * @param array $wordList the input word list
+     * @return array the filtered word list
+     */
+    private function removePhashCollisions(array $wordList): array
+    {
+        $uniquePhashes = [];
+        foreach ($wordList as $baseword => $wordData) {
+            if (in_array($wordData['hash'], $uniquePhashes, true)) {
+                unset($wordList[$baseword]);
+                continue;
+            }
+            $uniquePhashes[] = $wordData['hash'];
+        }
+        return $wordList;
     }
 }

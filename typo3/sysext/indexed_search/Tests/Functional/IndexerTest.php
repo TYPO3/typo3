@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -63,5 +64,97 @@ final class IndexerTest extends FunctionalTestCase
         $indexer->indexTypo3PageContent();
 
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/index_dataset.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function indexerDoesNotFailForWordsWithPhashCollision(): void
+    {
+        $indexer = new Indexer();
+        $indexer->init([
+            'id' => 1,
+            'type' => 0,
+            'MP' => '',
+            'staticPageArguments' => null,
+            'sys_language_uid' => 0,
+            'gr_list' => '0,-1',
+            'recordUid' => null,
+            'freeIndexUid' => null,
+            'freeIndexSetId' => null,
+            'index_descrLgd' => 200,
+            'index_metatags' => true,
+            'index_externals' => false,
+            'mtime' => time(),
+            'crdate' => time(),
+            'metaCharset' => 'UTF-8',
+            'content' =>
+                '<html>
+                <head>
+                    <title>Test</title>
+                </head>
+                <body>
+                    graf gettogethers abfluss erworbener
+                </body>
+            </html>',
+            'indexedDocTitle' => '',
+        ]);
+        $indexer->indexerConfig['debugMode'] = false;
+
+        try {
+            $indexer->indexTypo3PageContent();
+        } catch (UniqueConstraintViolationException $_) {
+            self::fail('Indexer failed to index words with phash collision');
+        }
+        self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/phash_collision.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function indexerBuildsCorrectWordIndexWhenIndexingWordsTwice(): void
+    {
+        $indexerConfig = [
+            'id' => 1,
+            'type' => 0,
+            'MP' => '',
+            'staticPageArguments' => null,
+            'sys_language_uid' => 0,
+            'gr_list' => '0,-1',
+            'recordUid' => null,
+            'freeIndexUid' => null,
+            'freeIndexSetId' => null,
+            'index_descrLgd' => 200,
+            'index_metatags' => true,
+            'index_externals' => false,
+            'mtime' => time(),
+            'crdate' => time(),
+            'metaCharset' => 'UTF-8',
+            'content' =>
+                '<html>
+                <head>
+                    <title>Test</title>
+                </head>
+                <body>
+                    graf gettogethers abfluss erworbener
+                </body>
+            </html>',
+            'indexedDocTitle' => '',
+        ];
+
+        $indexer = new Indexer();
+        $indexer->init($indexerConfig);
+        $indexer->indexerConfig['debugMode'] = false;
+        $indexer->indexTypo3PageContent();
+
+        self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/indexing_words_twice_first.csv');
+
+        $indexer = new Indexer();
+        $indexer->init($indexerConfig);
+        $indexer->indexerConfig['debugMode'] = false;
+        $indexer->forceIndexing = true;
+        $indexer->indexTypo3PageContent();
+
+        self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/indexing_words_twice_second.csv');
     }
 }
