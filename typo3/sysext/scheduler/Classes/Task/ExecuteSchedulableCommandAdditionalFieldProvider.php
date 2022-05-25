@@ -72,8 +72,9 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $this->task->setScheduler();
         }
 
-        $fields = [];
-        $fields['action'] = $this->getActionField();
+        $fields = [
+            'schedulableCommands' => $this->getSchedulableCommandsField(),
+        ];
 
         if ($this->task !== null && isset($this->schedulableCommands[$this->task->getCommandIdentifier()])) {
             $command = $this->schedulableCommands[$this->task->getCommandIdentifier()];
@@ -239,7 +240,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      *
      * @return array
      */
-    protected function getActionField(): array
+    protected function getSchedulableCommandsField(): array
     {
         $currentlySelectedCommand = $this->task !== null ? $this->task->getCommandIdentifier() : '';
         $options = [];
@@ -274,7 +275,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
                 $value = implode(',', $value);
             }
 
-            $fields[$name] = [
+            $fields['arguments_' . $name] = [
                 'code' => $this->renderArgumentField($argument, (string)$value),
                 'label' => $this->getArgumentLabel($argument),
             ];
@@ -307,7 +308,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
                 $value = implode(',', $value);
             }
 
-            $fields[$name] = [
+            $fields['options_' . $name] = [
                 'code' => $this->renderOptionField($option, (bool)$enabled, (string)$value),
                 'label' => $this->getOptionLabel($option),
             ];
@@ -348,6 +349,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $selectTag = new TagBuilder();
         $selectTag->setTagName('select');
         $selectTag->forceClosingTag(true);
+        $selectTag->addAttribute('id', 'schedulableCommands');
         $selectTag->addAttribute('class', 'form-select');
         $selectTag->addAttribute('name', 'tx_scheduler[task_executeschedulablecommand][command]');
 
