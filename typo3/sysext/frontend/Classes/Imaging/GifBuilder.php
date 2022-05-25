@@ -539,7 +539,7 @@ class GifBuilder extends GraphicalFunctions
      * Performs caseshift if any.
      *
      * @param array $conf GIFBUILDER object TypoScript properties
-     * @return array Modified $conf array IF the "text" property is not blank
+     * @return array|null Modified $conf array IF the "text" property is not blank
      * @internal
      */
     public function checkTextObj($conf)
@@ -792,14 +792,14 @@ class GifBuilder extends GraphicalFunctions
             } elseif ($sign === '+') {
                 $calculatedValue += $theVal;
             } elseif ($sign === '/' && $theVal) {
-                $calculatedValue = $calculatedValue / $theVal;
+                $calculatedValue /= $theVal;
             } elseif ($sign === '*') {
-                $calculatedValue = $calculatedValue * $theVal;
+                $calculatedValue *= $theVal;
             } elseif ($sign === '%' && $theVal) {
                 $calculatedValue %= $theVal;
             }
         }
-        return round($calculatedValue);
+        return (int)round($calculatedValue);
     }
 
     /**

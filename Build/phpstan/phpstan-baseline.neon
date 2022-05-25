@@ -3621,16 +3621,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Http/RequestHandler.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Imaging\\\\GifBuilder\\:\\:calculateValue\\(\\) should return int but returns float\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Imaging\\\\GifBuilder\\:\\:checkTextObj\\(\\) should return array but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:\\$setup \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 9
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
