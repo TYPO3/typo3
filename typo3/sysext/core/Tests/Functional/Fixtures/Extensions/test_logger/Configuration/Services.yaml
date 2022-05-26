@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TestLogger\ConstructorAttributeChannelTester:
+    public: true
+
+  TYPO3Tests\TestLogger\LoggerAwareClassAttributeChannelTester:
+    public: true

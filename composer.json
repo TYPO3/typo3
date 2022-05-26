@@ -282,7 +282,9 @@
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/",
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/",
-			"TYPO3\\CMS\\T3editor\\Tests\\": "typo3/sysext/t3editor/Tests/"
+			"TYPO3\\CMS\\T3editor\\Tests\\": "typo3/sysext/t3editor/Tests/",
+			"TYPO3\\CMS\\Tstemplate\\Tests\\": "typo3/sysext/tstemplate/Tests/",
+			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/"
 		},
 		"classmap": [
 			"typo3/sysext/core/Tests/Unit/Core/Fixtures/test_extension/",
