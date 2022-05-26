@@ -853,6 +853,12 @@ class DragUploader {
     $(() => {
       $('.t3js-drag-uploader').dragUploader(opts);
     });
+
+    // TODO: Refactor the FormEngine integration of the uploader to instance new uploaders via event handlers
+    const observer = new MutationObserver((): void => {
+      $('.t3js-drag-uploader').dragUploader(opts);
+    });
+    observer.observe(document, {childList: true, subtree: true});
   }
 }
 
