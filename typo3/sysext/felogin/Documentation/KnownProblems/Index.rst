@@ -1,11 +1,10 @@
 .. include:: /Includes.rst.txt
 
-
-
 .. _known-problems:
 
+==============
 Known Problems
---------------
+==============
 
 - If there is more than one felogin plugin on a page the password
   recovery option can cause problems. This is a general problem with
