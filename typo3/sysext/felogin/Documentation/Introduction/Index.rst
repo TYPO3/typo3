@@ -1,17 +1,15 @@
 .. include:: /Includes.rst.txt
 
-
-
 .. _introduction:
 
+============
 Introduction
-------------
-
+============
 
 .. _what-does-it-do:
 
 What does it do?
-^^^^^^^^^^^^^^^^
+================
 
 The Frontend Login for Website Users (felogin) extension is a general
 purpose extension for frontend logins. In addition to the actual login
@@ -21,13 +19,12 @@ and includes forgot password functionality.
 .. _screenshots:
 
 Screenshots
-^^^^^^^^^^^
-
+===========
 
 .. _general-settings:
 
 General Settings
-""""""""""""""""
+----------------
 
 .. figure:: ../Images/GeneralSettings.png
    :alt: General Settings
@@ -38,7 +35,7 @@ General Settings
 .. _redirect-configuration:
 
 Redirect Configuration
-""""""""""""""""""""""
+----------------------
 
 .. figure:: ../Images/RedirectConfiguration.png
    :alt: Redirect Configuration
@@ -49,7 +46,7 @@ Redirect Configuration
 .. _messages-tab:
 
 Messages Tab
-""""""""""""
+------------
 
 .. figure:: ../Images/MessagesConfiguration.png
    :alt: Messages Configuration

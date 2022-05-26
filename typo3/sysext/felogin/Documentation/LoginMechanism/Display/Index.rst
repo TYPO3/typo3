@@ -1,11 +1,10 @@
 .. include:: /Includes.rst.txt
 
-
-
 .. _display:
 
+==================
 What is displayed?
-^^^^^^^^^^^^^^^^^^
+==================
 
 If there is no frontend user logged in, the login form will be
 shown.

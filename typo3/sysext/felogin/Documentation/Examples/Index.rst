@@ -1,11 +1,10 @@
 .. include:: /Includes.rst.txt
 
-
-
 .. _examples:
 
+========
 Examples
---------
+========
 
 In this section some common situations are described.
 
@@ -13,28 +12,28 @@ In this section some common situations are described.
 .. _login-and-back-to-original-page:
 
 Send visitors to login page and redirect to original page
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=========================================================
 
 A common situation is that visitors who go to a page with access
 restrictions should go to a login page first and after logging in
 should be send back to the page they originally requested.
 
-Assume we have a login page with id 2.
+Assume we have a login page with id `2`.
 
 Using TypoScript we can still display links to access restricted pages
 and send visitors to the login page:
 
-::
+.. code-block:: typoscript
 
    config {
-           typolinkLinkAccessRestrictedPages = 2
-           typolinkLinkAccessRestrictedPages_addParams = &return_url=###RETURN_URL###
+       typolinkLinkAccessRestrictedPages = 2
+       typolinkLinkAccessRestrictedPages_addParams = &return_url=###RETURN_URL###
    }
 
 On the login page the login form must be configured to redirect to the
 original page:
 
-::
+.. code-block:: typoscript
 
    plugin.tx_felogin_login.settings.redirectMode = referer
 
@@ -50,30 +49,30 @@ the felogin plugin, but requires a custom page-not-found handler.
 .. _login-link-visibility:
 
 Login link visible when not logged in and logout link visible when logged in
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+============================================================================
 
 Again TypoScript will help you out. The page with the login form has
 id=2:
 
-::
+.. code-block:: typoscript
 
    10 = TEXT
    10 {
-           value = Login
-           typolink.parameter = 2
+       value = Login
+       typolink.parameter = 2
    }
    [loginUser = *]
-   10.value = Logout
-   10.typolink.additionalParams = &logintype=logout
+       10.value = Logout
+       10.typolink.additionalParams = &logintype=logout
    [end]
 
-Of course there can be solutions with HMENU items, etc.
+Of course there can be solutions with :typoscript:`HMENU` items, etc.
 
 
 .. _access-restrictions:
 
 Access restrictions on the felogin plugin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=========================================
 
 A very common issue is that the felogin plugin is set to Access: Hide
 at login. After the core has processed the login request the page will

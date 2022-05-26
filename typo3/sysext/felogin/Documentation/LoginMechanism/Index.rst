@@ -1,11 +1,10 @@
 .. include:: /Includes.rst.txt
 
-
-
 .. _login-mechanism:
 
+===============
 Login mechanism
----------------
+===============
 
 In order to properly use the felogin plugin and its advanced
 capabilities (such as redirect options) it is important to understand
