@@ -371,11 +371,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Uri/NewRecordViewHelper.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Configuration\\\\SiteConfiguration\\\\SiteConfigurationOverridesTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<non\\-empty\\-string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/SiteConfigurationOverridesTest.php
-
-		-
 			message: "#^PHPDoc type string of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\TreeControllerTest\\:\\:\\$backendUserFixture is not covariant with PHPDoc type non\\-empty\\-string of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
@@ -3931,11 +3926,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/ResourceViewHelper.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\View\\\\TemplatesPathsTest\\:\\:\\$configurationToUseInTestInstance is not covariant with PHPDoc type array\\<string, mixed\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$configurationToUseInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Form/SelectViewHelperTest.php
@@ -4671,11 +4661,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Imaging/GifBuilderTest.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\SiteHandling\\\\EidRequestTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<non\\-empty\\-string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EidRequestTest.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EnhancerSiteRequest/AbstractEnhancerSiteRequestTest.php
@@ -4924,16 +4909,6 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/Export/ExportPageTreeViewTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Import\\\\PagesAndTtContentWithImagesInFilledDatabaseTest\\:\\:\\$additionalFoldersToCreate is not covariant with PHPDoc type array\\<non\\-empty\\-string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$additionalFoldersToCreate\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImagesInFilledDatabaseTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Import\\\\PagesAndTtContentWithRteImagesAndFileLinkTest\\:\\:\\$additionalFoldersToCreate is not covariant with PHPDoc type array\\<non\\-empty\\-string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$additionalFoldersToCreate\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithRteImagesAndFileLinkTest.php
 
 		-
 			message: "#^Parameter \\#2 \\$all of method TYPO3\\\\CMS\\\\Impexp\\\\Import\\:\\:loadFile\\(\\) expects bool, int given\\.$#"
@@ -5489,11 +5464,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Seo\\\\Tests\\\\Functional\\\\XmlSitemap\\\\XmlSitemapPagesWithHideIfNotTranslatedTest\\:\\:\\$configurationToUseInTestInstance is not covariant with PHPDoc type array\\<string, mixed\\> of overridden property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\SiteHandling\\\\AbstractTestCase\\:\\:\\$configurationToUseInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/XmlSitemap/XmlSitemapPagesWithHideIfNotTranslatedTest.php
 
 		-
 			message: "#^Elseif condition is always true\\.$#"

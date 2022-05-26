@@ -37,8 +37,6 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     /**
      * Absolute path to files that must be removed
      * after a test - handled in tearDown
-     *
-     * @var array
      */
     protected array $testFilesToDelete = [];
 

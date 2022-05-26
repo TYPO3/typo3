@@ -37,9 +37,6 @@ class TemplatesPathsTest extends FunctionalTestCase
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test',
     ];
 
-    /**
-     * @var array
-     */
     protected $configurationToUseInTestInstance = [
         'EXTCONF' => [
             'extbase' => [

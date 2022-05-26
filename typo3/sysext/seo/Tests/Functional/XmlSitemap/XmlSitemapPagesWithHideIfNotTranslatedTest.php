@@ -27,8 +27,6 @@ class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitemapPages
      * This inverts the meaning of the
      * "Hide page if no translation for current language exists"
      * checkbox (l18n_cfg & 2).
-     *
-     * @var array
      */
     protected $configurationToUseInTestInstance = [
         'FE' => [
