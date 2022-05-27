@@ -97,7 +97,7 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
     public function exists($finisherIdentifier, $key): bool
     {
         try {
-            ArrayUtility::getValueByPath($this->objects[$finisherIdentifier], $key, '.');
+            ArrayUtility::getValueByPath($this->objects[$finisherIdentifier] ?? [], $key, '.');
         } catch (MissingArrayPathException $e) {
             return false;
         }
