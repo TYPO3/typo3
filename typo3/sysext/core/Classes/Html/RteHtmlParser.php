@@ -845,7 +845,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             $builder = $factory->build($build);
         }
         $sanitizer = $builder->build();
-        $initiator = GeneralUtility::makeInstance(SanitizerInitiator::class, get_class($this));
+        $initiator = GeneralUtility::makeInstance(SanitizerInitiator::class, static::class);
         return $sanitizer->sanitize($content, $initiator);
     }
 }

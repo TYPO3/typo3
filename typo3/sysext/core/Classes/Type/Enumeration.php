@@ -69,7 +69,7 @@ abstract class Enumeration implements TypeInterface
      */
     protected static function loadValues()
     {
-        $class = get_called_class();
+        $class = static::class;
 
         if (isset(static::$enumConstants[$class])) {
             return;
