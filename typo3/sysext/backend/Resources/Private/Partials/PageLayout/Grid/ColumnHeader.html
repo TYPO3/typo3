@@ -23,22 +23,12 @@
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}">
         <div class="t3-page-ce-actions t3js-page-new-ce" id="colpos-{column.columnNumber}-page-{column.context.pageId}-{column.uniqueId}">
-            <f:if condition="{column.context.drawingConfiguration.showNewContentWizard}">
-                <f:then>
-                    <typo3-backend-new-content-element-wizard-button url="{column.newContentUrl}" title="{newContentTitle}">
-                        <button type="button" class="btn btn-default btn-sm">
-                            <core:icon identifier="actions-add" />
-                            {newContentTitleShort}
-                        </button>
-                    </typo3-backend-new-content-element-wizard-button>
-                </f:then>
-                <f:else>
-                    <a href="{column.newContentUrl}" title="{newContentTitle}" class="btn btn-default btn-sm">
-                        <core:icon identifier="actions-add" />
-                        {newContentTitleShort}
-                    </a>
-                </f:else>
-            </f:if>
+            <typo3-backend-new-content-element-wizard-button url="{column.newContentUrl}" title="{newContentTitle}">
+                <button type="button" class="btn btn-default btn-sm">
+                    <core:icon identifier="actions-add" />
+                    {newContentTitleShort}
+                </button>
+            </typo3-backend-new-content-element-wizard-button>
         </div>
         <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div>
     </div>

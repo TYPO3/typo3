@@ -59,13 +59,6 @@ class PageLayoutView implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * If TRUE, new-wizards are linked to rather than the regular new-element list.
-     *
-     * @var bool
-     */
-    public $option_newWizard = true;
-
-    /**
      * If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
      *
      * @var bool
@@ -206,7 +199,6 @@ class PageLayoutView implements LoggerAwareInterface
         $pageLayoutView->id = $context->getPageId();
         $pageLayoutView->pageinfo = BackendUtility::readPageAccess($pageLayoutView->id, '') ?: [];
         $pageLayoutView->pageRecord = $context->getPageRecord();
-        $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
         $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
         $pageLayoutView->tt_contentConfig['cols'] = implode(',', $drawingConfiguration->getActiveColumns());
         $pageLayoutView->tt_contentConfig['activeCols'] = implode(',', $drawingConfiguration->getActiveColumns());
@@ -335,39 +327,18 @@ class PageLayoutView implements LoggerAwareInterface
                 if ($this->isContentEditable()
                     && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                 ) {
-                    if ($this->option_newWizard) {
-                        $urlParameters = [
-                            'id' => $id,
-                            'sys_language_uid' => $lP,
-                            'colPos' => $columnId,
-                            'uid_pid' => $id,
-                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-                        ];
-                        $routeName = BackendUtility::getPagesTSconfig($id)['mod.']['newContentElementWizard.']['override']
-                            ?? 'new_content_element_wizard';
-                        $url = (string)$this->uriBuilder->buildUriFromRoute($routeName, $urlParameters);
-                    } else {
-                        $urlParameters = [
-                            'edit' => [
-                                'tt_content' => [
-                                    $id => 'new',
-                                ],
-                            ],
-                            'defVals' => [
-                                'tt_content' => [
-                                    'colPos' => $columnId,
-                                    'sys_language_uid' => $lP,
-                                ],
-                            ],
-                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-                        ];
-                        $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                    }
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('new_content_element_wizard', [
+                        'id' => $id,
+                        'sys_language_uid' => $lP,
+                        'colPos' => $columnId,
+                        'uid_pid' => $id,
+                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                    ]);
                     $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                     $link = '<a href="' . htmlspecialchars($url) . '" '
                         . 'title="' . $title . '"'
                         . 'data-title="' . $title . '"'
-                        . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '">'
+                        . 'class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard disabled">'
                         . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -439,34 +410,19 @@ class PageLayoutView implements LoggerAwareInterface
                                 && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                                 && $columnId !== 'unused'
                             ) {
-                                // New content element:
-                                if ($this->option_newWizard) {
-                                    $urlParameters = [
-                                        'id' => $row['pid'],
-                                        'sys_language_uid' => $row['sys_language_uid'],
-                                        'colPos' => $row['colPos'],
-                                        'uid_pid' => -$row['uid'],
-                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-                                    ];
-                                    $routeName = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['newContentElementWizard.']['override']
-                                        ?? 'new_content_element_wizard';
-                                    $url = (string)$this->uriBuilder->buildUriFromRoute($routeName, $urlParameters);
-                                } else {
-                                    $urlParameters = [
-                                        'edit' => [
-                                            'tt_content' => [
-                                                -$row['uid'] => 'new',
-                                            ],
-                                        ],
-                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-                                    ];
-                                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                                }
+                                // New content element
+                                $url = (string)$this->uriBuilder->buildUriFromRoute('new_content_element_wizard', [
+                                    'id' => $row['pid'],
+                                    'sys_language_uid' => $row['sys_language_uid'],
+                                    'colPos' => $row['colPos'],
+                                    'uid_pid' => -$row['uid'],
+                                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                                ]);
                                 $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                                 $singleElementHTML .= '<a href="' . htmlspecialchars($url) . '" '
                                     . 'title="' . $title . '"'
                                     . 'data-title="' . $title . '"'
-                                    . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '">'
+                                    . 'class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard disabled">'
                                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                                     . ' '
                                     . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';

@@ -871,7 +871,7 @@ class DatabaseRecordList
 
         if ($table === 'tt_content') {
             $url = (string)$this->uriBuilder->buildUriFromRoute(
-                BackendUtility::getPagesTSconfig($this->id)['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard',
+                'new_content_element_wizard',
                 [
                     'id' => $this->id,
                     'returnUrl' => $this->listURL(),

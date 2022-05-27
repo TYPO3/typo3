@@ -80,15 +80,6 @@ class DrawingConfiguration
      */
     protected $activeColumns = [1, 0, 2, 3];
 
-    /**
-     * Whether or not to show the "new content" buttons that open the new content
-     * wizard, when rendering columns. Disabling this will disable the rendering
-     * of new content buttons both in column top and after each content element.
-     *
-     * @var bool
-     */
-    protected $showNewContentWizard = true;
-
     public function getSelectedLanguageId(): int
     {
         return $this->selectedLanguageId;
@@ -150,16 +141,6 @@ class DrawingConfiguration
     public function setActiveColumns(array $activeColumns): void
     {
         $this->activeColumns = $activeColumns;
-    }
-
-    public function getShowNewContentWizard(): bool
-    {
-        return $this->showNewContentWizard;
-    }
-
-    public function setShowNewContentWizard(bool $showNewContentWizard): void
-    {
-        $this->showNewContentWizard = $showNewContentWizard;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

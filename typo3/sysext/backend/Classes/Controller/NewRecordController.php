@@ -574,9 +574,7 @@ class NewRecordController
      */
     protected function renderNewContentElementWizardLink(): string
     {
-        // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
-        $moduleName = BackendUtility::getPagesTSconfig($this->id)['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
-        $url = (string)$this->uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $this->returnUrl]);
+        $url = (string)$this->uriBuilder->buildUriFromRoute('new_content_element_wizard', ['id' => $this->id, 'returnUrl' => $this->returnUrl]);
         $title = $this->getLanguageService()->getLL('newContentElement');
         return '
             <typo3-backend-new-content-element-wizard-button url="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">

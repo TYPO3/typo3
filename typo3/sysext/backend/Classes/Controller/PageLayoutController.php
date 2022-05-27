@@ -134,7 +134,6 @@ class PageLayoutController
         $configuration->setActiveColumns($this->getActiveColumnsArray($pageLayoutContext, $tsConfig));
         $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
         $configuration->setLanguageColumns($this->MOD_MENU['language']);
-        $configuration->setShowNewContentWizard(empty($tsConfig['mod.']['web_layout.']['disableNewContentElementWizard']));
         $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
         if ((int)$this->moduleData->get('function') === 2) {
             $configuration->setLanguageMode(true);

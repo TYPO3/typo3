@@ -255,29 +255,13 @@ class GridColumnItem extends AbstractGridObject
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $pageId = $this->context->getPageId();
 
-        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
-            $urlParameters = [
-                'id' => $pageId,
-                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-                'colPos' => $this->column->getColumnNumber(),
-                'uid_pid' => -$this->record['uid'],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
-                ?? 'new_content_element_wizard';
-        } else {
-            $urlParameters = [
-                'edit' => [
-                    'tt_content' => [
-                        -$this->record['uid'] => 'new',
-                    ],
-                ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = 'record_edit';
-        }
-
-        return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+        return (string)$uriBuilder->buildUriFromRoute('new_content_element_wizard', [
+            'id' => $pageId,
+            'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+            'colPos' => $this->column->getColumnNumber(),
+            'uid_pid' => -$this->record['uid'],
+            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+        ]);
     }
 
     public function getVisibilityToggleUrl(): string
