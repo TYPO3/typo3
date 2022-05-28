@@ -660,13 +660,11 @@ class Indexer
             if ((string)$content !== '') {
                 // Create temporary file:
                 $tmpFile = GeneralUtility::tempnam('EXTERNAL_URL');
-                if ($tmpFile) {
-                    GeneralUtility::writeFile($tmpFile, $content);
-                    // Index that file:
-                    $this->indexRegularDocument($externalUrl, true, $tmpFile, 'html');
-                    // Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
-                    unlink($tmpFile);
-                }
+                GeneralUtility::writeFile($tmpFile, $content);
+                // Index that file:
+                $this->indexRegularDocument($externalUrl, true, $tmpFile, 'html');
+                // Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
+                unlink($tmpFile);
             }
         }
     }

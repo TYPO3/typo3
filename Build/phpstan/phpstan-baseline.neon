@@ -1641,6 +1641,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Routing/RouteSorter.php
 
 		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Service/AbstractService.php
+
+		-
 			message: "#^Comparison operation \"\\>\" between int\\<2, max\\> and 0 is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Session/UserSessionManager.php
@@ -2206,16 +2211,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Http/UriTest.php
 
 		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconProvider/SvgIconProviderTest.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconProvider/SvgSpriteIconProviderTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$data of method TYPO3\\\\CMS\\\\Core\\\\LinkHandling\\\\EmailLinkHandler\\:\\:resolveHandlerData\\(\\) expects array, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/EmailLinkHandlerTest.php
@@ -2487,7 +2482,7 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 4
+			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-

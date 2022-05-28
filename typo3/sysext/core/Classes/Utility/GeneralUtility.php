@@ -2996,7 +2996,7 @@ class GeneralUtility
      *
      * @param string $filePrefix Prefix for temporary file
      * @param string $fileSuffix Suffix for temporary file, for example a special file extension
-     * @return string result from PHP function tempnam() with the temp/var folder prefixed.
+     * @return non-empty-string result from PHP function `tempnam()` with the temp/var folder prefixed.
      * @see unlink_tempfile()
      * @see upload_to_tempfile()
      */

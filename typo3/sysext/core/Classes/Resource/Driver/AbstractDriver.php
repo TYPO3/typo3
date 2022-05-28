@@ -128,7 +128,7 @@ abstract class AbstractDriver implements DriverInterface
      * Returns a temporary path for a given file, including the file extension.
      *
      * @param string $fileIdentifier
-     * @return string
+     * @return non-empty-string
      */
     protected function getTemporaryPathForFile($fileIdentifier)
     {
