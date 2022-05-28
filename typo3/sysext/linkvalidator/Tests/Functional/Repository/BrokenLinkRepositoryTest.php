@@ -794,6 +794,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $results);
     }
 
+    /**
+     * @param non-empty-string $fixtureFile
+     */
     protected function setupBackendUserAndGroup(int $uid, string $fixtureFile, string $groupFixtureFile): void
     {
         if ($groupFixtureFile) {

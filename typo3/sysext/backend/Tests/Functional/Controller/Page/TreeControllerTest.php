@@ -55,11 +55,6 @@ class TreeControllerTest extends FunctionalTestCase
      */
     private $context;
 
-    /**
-     * The fixture which is used when initializing a backend user
-     *
-     * @var string
-     */
     protected string $backendUserFixture = 'EXT:core/Tests/Functional/Fixtures/be_users.xml';
 
     protected function setUp(): void

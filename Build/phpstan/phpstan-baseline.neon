@@ -246,11 +246,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Uri/NewRecordViewHelper.php
 
 		-
-			message: "#^PHPDoc type string of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\TreeControllerTest\\:\\:\\$backendUserFixture is not covariant with PHPDoc type non\\-empty\\-string of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement has an unused parameter \\$data\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/BarElement.php
@@ -2067,7 +2062,7 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 4
+			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
@@ -4291,11 +4286,6 @@ parameters:
 			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
 
 		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture \\(non\\-empty\\-string\\) does not accept string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$softRefEntry of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Linktype\\\\ExternalLinktype\\:\\:checkLink\\(\\) expects array, null given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/linkvalidator/Tests/Unit/Linktype/ExternalLinktypeTest.php
@@ -4354,11 +4344,6 @@ parameters:
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
-
-		-
-			message: "#^PHPDoc type string of property TYPO3\\\\CMS\\\\Recycler\\\\Tests\\\\Functional\\\\Recycle\\\\AbstractRecycleTestCase\\:\\:\\$backendUserFixture is not covariant with PHPDoc type non\\-empty\\-string of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"

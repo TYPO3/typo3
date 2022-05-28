@@ -2401,9 +2401,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($result, $expectedResult);
     }
 
-    /**
-     * @return array
-     */
     public function validFilePathForTypo3tempDirDataProvider(): array
     {
         return [
@@ -2428,7 +2425,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validFilePathForTypo3tempDirDataProvider
-     * @param string $filePath
+     * @param non-empty-string $filePath
      */
     public function writeFileToTypo3tempDirWorksWithValidPath(string $filePath): void
     {
