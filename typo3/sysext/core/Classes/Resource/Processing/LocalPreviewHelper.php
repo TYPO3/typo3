@@ -109,7 +109,7 @@ class LocalPreviewHelper
      * Returns the path to a temporary file for processing
      *
      * @param TaskInterface $task
-     * @return string
+     * @return non-empty-string
      */
     protected function getTemporaryFilePath(TaskInterface $task)
     {

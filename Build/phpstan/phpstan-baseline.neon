@@ -1831,16 +1831,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Http/UriTest.php
 
 		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconProvider/SvgIconProviderTest.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconProvider/SvgSpriteIconProviderTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$data of method TYPO3\\\\CMS\\\\Core\\\\LinkHandling\\\\EmailLinkHandler\\:\\:resolveHandlerData\\(\\) expects array, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/EmailLinkHandlerTest.php
@@ -2058,11 +2048,6 @@ parameters:
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
