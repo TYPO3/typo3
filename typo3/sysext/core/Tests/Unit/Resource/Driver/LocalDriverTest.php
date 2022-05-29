@@ -107,7 +107,6 @@ class LocalDriverTest extends BaseTestCase
             $this->initializeVfs();
             $driverConfiguration['basePath'] = $this->getMountRootUrl();
         }
-        /** @var LocalDriver $driver */
         $mockedDriverMethods[] = 'isPathValid';
         $driver = $this->getAccessibleMock(
             LocalDriver::class,
@@ -270,7 +269,6 @@ class LocalDriverTest extends BaseTestCase
      */
     public function createFolderRecursiveSanitizesFilename(): void
     {
-        /** @var LocalDriver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->createDriver([], ['sanitizeFilename']);
         $driver->expects(self::exactly(2))
             ->method('sanitizeFileName')
@@ -286,7 +284,6 @@ class LocalDriverTest extends BaseTestCase
      */
     public function determineBaseUrlUrlEncodesUriParts(): void
     {
-        /** @var LocalDriver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->getAccessibleMock(
             LocalDriver::class,
             ['hasCapability'],

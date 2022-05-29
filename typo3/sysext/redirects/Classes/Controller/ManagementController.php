@@ -153,7 +153,6 @@ class ManagementController
      */
     protected function getButtons(): void
     {
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();

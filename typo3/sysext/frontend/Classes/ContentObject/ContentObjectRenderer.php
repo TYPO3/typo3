@@ -4521,7 +4521,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($fileUidOrCurrentKeyword === 'current') {
                 $fileObject = $this->getCurrentFile();
             } elseif (MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
-                /** @var ResourceFactory $fileFactory */
                 $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                 $fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
             } else {
@@ -5694,7 +5693,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
             $result = $queryBuilder->executeQuery();
             while ($row = $result->fetchAssociative()) {
-                /** @var VersionState $versionState */
                 $versionState = VersionState::cast($row['t3ver_state']);
                 $tsfe->sys_page->versionOL('pages', $row);
                 if ($row === false

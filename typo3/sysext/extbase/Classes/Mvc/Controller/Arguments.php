@@ -146,7 +146,6 @@ class Arguments extends \ArrayObject
      */
     public function addNewArgument($name, $dataType = 'Text', $isRequired = false, $defaultValue = null)
     {
-        /** @var Argument $argument */
         $argument = GeneralUtility::makeInstance(Argument::class, $name, $dataType);
         $argument->setRequired($isRequired);
         $argument->setDefaultValue($defaultValue);

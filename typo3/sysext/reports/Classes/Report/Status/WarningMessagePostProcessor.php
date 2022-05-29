@@ -40,7 +40,6 @@ class WarningMessagePostProcessor
             return;
         }
         // Get highest severity
-        /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
         $highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', null);
         if ($highestSeverity !== null) {

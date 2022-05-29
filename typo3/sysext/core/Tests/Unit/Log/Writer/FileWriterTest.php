@@ -54,7 +54,6 @@ class FileWriterTest extends UnitTestCase
             $name = StringUtility::getUniqueId('test.core.log.');
         }
         GeneralUtility::makeInstance(LogManager::class)->registerLogger($name);
-        /** @var Logger $logger */
         $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger($name);
         return $logger;
     }
@@ -67,7 +66,6 @@ class FileWriterTest extends UnitTestCase
      */
     protected function createWriter(string $prependName = ''): FileWriter
     {
-        /** @var FileWriter $writer */
         $writer = GeneralUtility::makeInstance(FileWriter::class, [
             'logFile' => $this->getDefaultFileName($prependName),
         ]);

@@ -77,7 +77,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         // @todo Provide functionality of assigning TSconfig to Testing Framework
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages');
-        /** @var $connection \TYPO3\CMS\Core\Database\Connection */
         $connection->update(
             'pages',
             ['TSconfig' => implode(chr(10), [

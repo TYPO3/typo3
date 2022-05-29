@@ -192,7 +192,6 @@ class FormResultCompiler
     protected function JSbottom()
     {
         $pageRenderer = $this->getPageRenderer();
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere

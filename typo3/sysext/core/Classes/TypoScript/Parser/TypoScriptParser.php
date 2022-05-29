@@ -20,7 +20,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
-use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
@@ -761,7 +760,6 @@ class TypoScriptParser
                         $condition = '[' . $condition . ']';
                     }
 
-                    /** @var AbstractConditionMatcher $conditionMatcher */
                     $conditionMatcher = null;
                     if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                         && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()

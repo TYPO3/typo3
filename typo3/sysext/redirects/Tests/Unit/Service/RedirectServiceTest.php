@@ -581,7 +581,6 @@ class RedirectServiceTest extends UnitTestCase
      */
     public function getTargetUrlRespectsAdditionalParametersFromTypolink(): void
     {
-        /** @var RedirectService $redirectService */
         $redirectService = $this->getAccessibleMock(
             RedirectService::class,
             ['getUriFromCustomLinkDetails'],

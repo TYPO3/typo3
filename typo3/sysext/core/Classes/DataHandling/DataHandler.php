@@ -999,8 +999,7 @@ class DataHandler implements LoggerAwareInterface
                                 // new version of a record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
                                 $this->pagetreeNeedsRefresh = true;
 
-                                /** @var DataHandler $tce */
-                                $tce = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
+                                $tce = GeneralUtility::makeInstance(self::class, $this->referenceIndexUpdater);
                                 $tce->enableLogging = $this->enableLogging;
                                 // Setting up command for creating a new version of the record:
                                 $cmd = [];
@@ -1901,7 +1900,6 @@ class DataHandler implements LoggerAwareInterface
     {
         $items = $tcaFieldConf['items'] ?? null;
         if (!empty($tcaFieldConf['itemsProcFunc'])) {
-            /** @var ItemProcessingService $processingService */
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
             $items = $processingService->getProcessingItems(
                 $table,
@@ -2216,7 +2214,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public function checkValue_flexArray2Xml($array, $addPrologue = false)
     {
-        /** @var FlexFormTools $flexObj */
         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
         return $flexObj->flexArray2Xml($array, $addPrologue);
     }
@@ -2800,7 +2797,6 @@ class DataHandler implements LoggerAwareInterface
         $tables = $type === 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'];
         $prep = $type === 'group' ? ($tcaFieldConf['prepend_tname'] ?? '') : '';
         $newRelations = implode(',', $valueArray);
-        /** @var RelationHandler $dbAnalysis */
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
         $dbAnalysis->start($newRelations, $tables, '', 0, $currentTable, $tcaFieldConf);
@@ -2809,7 +2805,6 @@ class DataHandler implements LoggerAwareInterface
             // (only required for MM relations in a workspace context)
             $dbAnalysis->convertItemArray();
             if ($status === 'update') {
-                /** @var RelationHandler $oldRelations_dbAnalysis */
                 $oldRelations_dbAnalysis = $this->createRelationHandlerInstance();
                 $oldRelations_dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
                 // Db analysis with $id will initialize with the existing relations
@@ -3038,7 +3033,6 @@ class DataHandler implements LoggerAwareInterface
         $foreignTable = $tcaFieldConf['foreign_table'];
         $valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
         // Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
-        /** @var RelationHandler $dbAnalysis */
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
         // IRRE with a pointer field (database normalization):
@@ -3187,7 +3181,6 @@ class DataHandler implements LoggerAwareInterface
                 }
             }
         }
-        /** @var DataHandler $copyTCE */
         $copyTCE = $this->getLocalTCE();
         $copyTCE->start($pasteDatamap, [], $this->BE_USER);
         $copyTCE->process_datamap();
@@ -3328,7 +3321,6 @@ class DataHandler implements LoggerAwareInterface
             $data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
         }
         // Do the copy by simply submitting the array through DataHandler:
-        /** @var DataHandler $copyTCE */
         $copyTCE = $this->getLocalTCE();
         $copyTCE->start($data, [], $this->BE_USER);
         $copyTCE->process_datamap();
@@ -3830,7 +3822,6 @@ class DataHandler implements LoggerAwareInterface
         array $workspaceOptions
     ) {
         // Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
-        /** @var RelationHandler $dbAnalysis */
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
         // Walk through the items, copy them and remember the new id:
@@ -4698,7 +4689,6 @@ class DataHandler implements LoggerAwareInterface
         $removeArray = [];
         $mmTable = $inlineSubType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
         // Fetch children from original language parent:
-        /** @var RelationHandler $dbAnalysisOriginal */
         $dbAnalysisOriginal = $this->createRelationHandlerInstance();
         $dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
         $elementsOriginal = [];
@@ -4707,7 +4697,6 @@ class DataHandler implements LoggerAwareInterface
         }
         unset($dbAnalysisOriginal);
         // Fetch children from current localized parent:
-        /** @var RelationHandler $dbAnalysisCurrent */
         $dbAnalysisCurrent = $this->createRelationHandlerInstance();
         $dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
         // Perform synchronization: Possibly removal of already localized records:
@@ -4758,8 +4747,7 @@ class DataHandler implements LoggerAwareInterface
         $this->registerDBList[$table][$id][$field] = $value;
         // Remove child records (if synchronization requested it):
         if (is_array($removeArray) && !empty($removeArray)) {
-            /** @var DataHandler $tce */
-            $tce = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
+            $tce = GeneralUtility::makeInstance(self::class, $this->referenceIndexUpdater);
             $tce->enableLogging = $this->enableLogging;
             $tce->start([], $removeArray, $this->BE_USER);
             $tce->process_cmdmap();
@@ -5317,7 +5305,6 @@ class DataHandler implements LoggerAwareInterface
             if ($foreign_table) {
                 $inlineType = $this->getInlineFieldType($conf);
                 if ($inlineType === 'list' || $inlineType === 'field') {
-                    /** @var RelationHandler $dbAnalysis */
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
                     $dbAnalysis->undeleteRecord = true;
@@ -6354,7 +6341,6 @@ class DataHandler implements LoggerAwareInterface
             if ($inlineType === 'mm') {
                 $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
             } elseif ($inlineType !== false) {
-                /** @var RelationHandler $dbAnalysis */
                 $dbAnalysis = $this->createRelationHandlerInstance();
                 $dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
 
@@ -8708,7 +8694,6 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        /** @var CacheManager $cacheManager */
         $cacheManager = $this->getCacheManager();
         $cacheManager->flushCachesInGroupByTags('pages', array_keys($tagsToClear));
 
@@ -9063,9 +9048,7 @@ class DataHandler implements LoggerAwareInterface
         while ($row = $result->fetchAssociative()) {
             $msg = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
             $msg = $row['error'] . ': ' . $msg;
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
-            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -9202,7 +9185,6 @@ class DataHandler implements LoggerAwareInterface
         $sortingStatement = !empty($sortingField)
             ? [$connection->quoteIdentifier($sortingField)]
             : null;
-        /** @var PlainDataResolver $resolver */
         $resolver = GeneralUtility::makeInstance(
             PlainDataResolver::class,
             $tableName,

@@ -690,7 +690,6 @@ page.10.value = HELLO WORLD!
                 FlashMessage::ERROR
             );
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } elseif (is_callable([$this->extObj, 'main'])) {

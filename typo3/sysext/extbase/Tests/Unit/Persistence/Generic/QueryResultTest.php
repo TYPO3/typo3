@@ -222,7 +222,6 @@ class QueryResultTest extends UnitTestCase
      */
     public function initializeExecutesQueryWithArrayFetchMode(): void
     {
-        /** @var QueryResult|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $queryResult = $this->getAccessibleMock(QueryResult::class, ['dummy'], [], '', false);
         $queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $queryResult->_set('dataMapper', $this->mockDataMapper);

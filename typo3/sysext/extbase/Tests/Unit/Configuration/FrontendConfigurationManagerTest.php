@@ -279,7 +279,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'framework' => 'configuration',
             ],
         ];
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -309,7 +308,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $storagePids = [3, 5, 9];
         $recursive = 99;
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -340,7 +338,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $storagePids = [-3, 5, 9];
         $recursive = 99;
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -371,7 +368,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $storagePids = [1, 2, 3];
 
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -571,7 +567,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromPluginOverridesCorrectly(): void
     {
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $frontendConfigurationManager */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             ['getTypoScriptSetup'],

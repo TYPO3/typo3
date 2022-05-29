@@ -38,7 +38,6 @@ class StringValidatorTest extends UnitTestCase
      */
     public function stringValidatorShouldReturnErrorIfNumberIsGiven(): void
     {
-        /** @var StringValidator $validator */
         $validator = $this->getMockBuilder(StringValidator::class)
             ->onlyMethods(['translateErrorMessage'])
             ->getMock();
@@ -51,7 +50,6 @@ class StringValidatorTest extends UnitTestCase
      */
     public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven(): void
     {
-        /** @var StringValidator $validator */
         $validator = $this->getMockBuilder(StringValidator::class)
             ->onlyMethods(['translateErrorMessage'])
             ->getMock();

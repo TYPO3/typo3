@@ -150,7 +150,6 @@ class Richtext
             if (substr($key, -1) !== '.') {
                 continue;
             }
-            /** @var TypoScriptService $typoScriptService */
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $typoScriptArray[substr($key, 0, -1)] = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptArray[$key]);
         }

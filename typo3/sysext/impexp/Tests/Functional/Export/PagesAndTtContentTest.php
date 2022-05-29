@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
@@ -81,7 +79,6 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContent(): void
     {
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setPid(1);
         $subject->setLevels(1);
@@ -104,7 +101,6 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContentWithComplexConfiguration(): void
     {
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setPid(1);
         $subject->setExcludeMap(['pages:2' => 1]);

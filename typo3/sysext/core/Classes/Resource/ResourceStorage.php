@@ -1685,7 +1685,6 @@ class ResourceStorage implements ResourceStorageInterface
         if ($this->processingFolders === null) {
             $this->processingFolders = [];
             $this->processingFolders[] = $this->getProcessingFolder();
-            /** @var StorageRepository $storageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             $allStorages = $storageRepository->findAll();
             foreach ($allStorages as $storage) {

@@ -106,7 +106,6 @@ class ExtractorServiceTest extends UnitTestCase
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->method('getDriverType')->willReturn('Local');
 
-        /** @var ExtractorService|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(ExtractorService::class)
             ->onlyMethods(['getExtractorRegistry'])
             ->getMock()
@@ -146,7 +145,6 @@ class ExtractorServiceTest extends UnitTestCase
             'keywords' => 'typo3, cms',
         ]);
 
-        /** @var ExtractorRegistry|\PHPUnit\Framework\MockObject\MockObject $extractorRegistryMock */
         $extractorRegistryMock = $this->getMockBuilder(ExtractorRegistry::class)
             ->onlyMethods(['createExtractorInstance'])
             ->getMock();

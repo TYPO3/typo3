@@ -103,7 +103,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         $this->totalCount += (int)$count;
 
-        /** @var InformationStatus $messageSeverity */
         $messageSeverity = InformationStatus::cast($status);
         // define the severity for the badge
         if ($messageSeverity->isGreaterThan($this->highestSeverity)) {

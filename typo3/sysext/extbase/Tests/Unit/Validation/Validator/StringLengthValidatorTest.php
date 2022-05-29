@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -57,7 +58,6 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsErrorForAStringShorterThanThanMinLength(): void
     {
-        /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
             ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 50, 'maximum' => 100]])
@@ -71,7 +71,6 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsErrorsForAStringLongerThanThanMaxLength(): void
     {
-        /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
             ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 5, 'maximum' => 10]])
@@ -158,7 +157,6 @@ class StringLengthValidatorTest extends UnitTestCase
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1238107096);
 
-        /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
             ->onlyMethods(['addError', 'translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 101, 'maximum' => 100]])
@@ -171,7 +169,6 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorInsertsAnErrorObjectIfValidationFails(): void
     {
-        /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
             ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 50, 'maximum' => 100]])
@@ -211,7 +208,7 @@ class StringLengthValidatorTest extends UnitTestCase
         self::assertTrue($result->hasErrors());
         self::assertCount(1, $result->getErrors());
 
-        /** @var \TYPO3\CMS\Extbase\Validation\Error $error */
+        /** @var Error $error */
         $error = current($result->getErrors());
         self::assertSame(1238110957, $error->getCode());
     }

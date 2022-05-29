@@ -711,7 +711,6 @@ class EditDocumentController
                 $relatedPageId = -$nRec['t3ver_oid'];
             }
 
-            /** @var DataHandler $duplicateTce */
             $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
 
             $duplicateCmd = [
@@ -1689,7 +1688,6 @@ class EditDocumentController
                 }
             }
 
-            /** @var ReferenceIndex $referenceIndex */
             $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
             $numberOfReferences = $referenceIndex->getNumberOfReferencedRecords(
                 $this->firstEl['table'],

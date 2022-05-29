@@ -76,14 +76,12 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                     $language->getTwoLetterIsoCode(),
                     $languageId
                 );
-                /** @var FlashMessage $flashMessage */
                 $flashMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,
                     $message,
                     '',
                     FlashMessage::ERROR
                 );
-                /** @var FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);

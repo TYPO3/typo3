@@ -170,7 +170,6 @@ class QueryTest extends UnitTestCase
      */
     public function equalsForCaseSensitiveFalseLowercasesOperand(string $propertyName, $operand, string $expectedOperand): void
     {
-        /** @var QueryObjectModelFactory|MockObject|AccessibleObjectInterface $qomFactory */
         $qomFactory = $this->getAccessibleMock(QueryObjectModelFactory::class, ['comparison']);
         $qomFactory->expects(self::once())->method('comparison')->with(self::anything(), self::anything(), $expectedOperand);
         $this->query->method('getSelectorName')->willReturn('someSelector');

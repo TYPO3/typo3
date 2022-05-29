@@ -27,12 +27,11 @@ class PropertyMappingConfigurationBuilder implements SingletonInterface
     /**
      * Builds the default property mapping configuration.
      *
-     * @param string $type the implementation class name of the PropertyMappingConfiguration to instantiate; must be a subclass of \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
+     * @param class-string<PropertyMappingConfiguration> $type the implementation class to instantiate
+     * @return PropertyMappingConfiguration
      */
     public function build($type = PropertyMappingConfiguration::class)
     {
-        /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $configuration */
         $configuration = new $type();
 
         $configuration->setTypeConverterOptions(PersistentObjectConverter::class, [

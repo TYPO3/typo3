@@ -91,7 +91,6 @@ class LocalizationController
         $pageId = (int)$params['pageId'];
         $languageId = (int)$params['languageId'];
 
-        /** @var TranslationConfigurationProvider $translationProvider */
         $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $systemLanguages = $translationProvider->getSystemLanguages($pageId);
 

@@ -43,7 +43,6 @@ class StandaloneView extends AbstractTemplateView
         if ($contentObject !== null) {
             trigger_error('Argument $contentObject of class ' . __CLASS__ . ' is deprecated since v11, will be removed with v12.', E_USER_DEPRECATED);
         } else {
-            /** @var ContentObjectRenderer $contentObject */
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         }
         $configurationManager->setContentObject($contentObject);

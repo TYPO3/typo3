@@ -141,7 +141,7 @@ class ValidatorResolver implements SingletonInterface
             $classSchema = $this->reflectionService->getClassSchema($targetClassName);
 
             // Model based validator
-            /** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
+            /** @var GenericObjectValidator $objectValidator */
             $objectValidator = GeneralUtility::makeInstance(GenericObjectValidator::class, []);
             foreach ($classSchema->getProperties() as $property) {
                 if ($property->getType() === null) {

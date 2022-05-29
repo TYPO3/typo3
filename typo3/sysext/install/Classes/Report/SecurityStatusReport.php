@@ -79,7 +79,6 @@ class SecurityStatusReport implements StatusProviderInterface
         if ($isDefaultPassword) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = Status::ERROR;
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $changeInstallToolPasswordUrl = (string)$uriBuilder->buildUriFromRoute('tools_toolssettings');
             $message = sprintf(

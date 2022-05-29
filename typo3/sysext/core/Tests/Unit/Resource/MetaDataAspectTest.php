@@ -116,7 +116,6 @@ class MetaDataAspectTest extends UnitTestCase
 
         $file = new File(['uid' => 12], $this->storageMock);
 
-        /** @var MetaDataAspect|MockObject $metaDataAspectMock */
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$file])
             ->onlyMethods(['getMetaDataRepository'])

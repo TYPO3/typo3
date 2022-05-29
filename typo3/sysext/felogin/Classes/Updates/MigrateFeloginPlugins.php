@@ -103,7 +103,6 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
         // Get all tt_content data for login plugins and update their flexforms settings
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
 
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connection->createQueryBuilder();
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')

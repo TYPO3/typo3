@@ -292,10 +292,8 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 ],
                 'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
             ];
-            /** @var OnTheFly $formDataGroup */
             $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
             $formDataGroup->setProviderList([TcaSelectItems::class]);
-            /** @var FormDataCompiler $formDataCompiler */
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $compilerResult = $formDataCompiler->compile($selectDataInput);
             $selectorOrUniquePossibleRecords = $compilerResult['processedTca']['columns'][$foreignFieldName]['config']['items'];
@@ -319,14 +317,11 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
 
-        /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
             'command' => 'edit',
@@ -394,9 +389,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
         // child-child table name is set in child tca "the selector field" foreign_table
         $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
-        /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
 
         $formDataCompilerInput = [
@@ -462,7 +455,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         if (empty($parentConfig['MM'])) {
             $parentUid = $this->getLiveDefaultId($parentTableName, $parentUid);
         }
-        /** @var RelationHandler $relationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->registerNonTableValues = (bool)($parentConfig['allowedIdValues'] ?? false);
         $relationHandler->start($parentFieldValue, $parentConfig['foreign_table'] ?? '', $parentConfig['MM'] ?? '', $parentUid, $parentTableName, $parentConfig);

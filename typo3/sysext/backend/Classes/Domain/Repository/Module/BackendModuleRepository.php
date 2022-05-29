@@ -153,7 +153,6 @@ class BackendModuleRepository implements SingletonInterface
      */
     protected function createEntryFromRawData(array $module)
     {
-        /** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $entry */
         $entry = GeneralUtility::makeInstance(BackendModule::class);
         if (!empty($module['name']) && is_string($module['name'])) {
             $entry->setName($module['name']);
@@ -239,7 +238,6 @@ class BackendModuleRepository implements SingletonInterface
     public function getRawModuleMenuData()
     {
         // Loads the backend modules available for the logged in user.
-        /** @var ModuleLoader $moduleLoader */
         $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
         $moduleLoader->observeWorkspaces = true;
         $moduleLoader->load($GLOBALS['TBE_MODULES']);

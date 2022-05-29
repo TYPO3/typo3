@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
@@ -3210,7 +3211,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function get_cache_timeout()
     {
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $runtimeCache */
+        /** @var AbstractFrontend $runtimeCache */
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
         $cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);
@@ -3283,7 +3284,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function convOutputCharset($content)
     {
         if ($this->metaCharset !== 'utf-8') {
-            /** @var CharsetConverter $charsetConverter */
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             try {
                 $content = $charsetConverter->conv($content, 'utf-8', $this->metaCharset);

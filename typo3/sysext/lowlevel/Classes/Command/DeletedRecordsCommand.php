@@ -143,7 +143,6 @@ class DeletedRecordsCommand extends Command
      */
     protected function findAllFlaggedRecordsInPage(int $pageId, int $depth, array $deletedRecords = []): array
     {
-        /** @var QueryBuilder $queryBuilderForPages */
         $queryBuilderForPages = $this->connectionPool
             ->getQueryBuilderForTable('pages');
         $queryBuilderForPages->getRestrictions()->removeAll();

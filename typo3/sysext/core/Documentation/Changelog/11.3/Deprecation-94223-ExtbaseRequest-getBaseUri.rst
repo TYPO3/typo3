@@ -42,7 +42,6 @@ a typical substitution of this getter looks like this for now:
 
     // @todo Adapt this example as soon as ViewHelpers receive a ServerRequestInterface
     $request = $GLOBALS['TYPO3_REQUEST'];
-    /** @var NormalizedParams $normalizedParams */
     $normalizedParams = $request->getAttribute('normalizedParams');
     $baseUri = $normalizedParams->getSiteUrl();
 

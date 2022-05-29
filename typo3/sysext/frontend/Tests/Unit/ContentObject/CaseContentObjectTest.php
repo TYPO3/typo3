@@ -48,7 +48,6 @@ class CaseContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()

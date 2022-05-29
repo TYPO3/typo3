@@ -89,7 +89,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         $log = InMemoryLogWriter::$log;
 
         $logArray = [];
-        /** @var \TYPO3\CMS\Core\Log\LogRecord $logRecord */
         foreach ($log as $logRecord) {
             $entry = $logRecord->toArray();
             // store only necessary info

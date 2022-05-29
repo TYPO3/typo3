@@ -130,7 +130,6 @@ class CropViewHelper extends AbstractViewHelper
         // It would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
         // but both crop() and cropHTML() are "nearly" static and do not depend on current content object settings, so
         // it is safe to use a fresh instance here directly.
-        /** @var ContentObjectRenderer $contentObject */
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         if ($respectHtml) {
             $content = $contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);

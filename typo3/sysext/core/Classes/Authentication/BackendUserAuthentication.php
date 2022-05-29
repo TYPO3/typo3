@@ -1318,7 +1318,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     protected function initializeFileStorages()
     {
         $this->fileStorages = [];
-        /** @var \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         // Admin users have all file storages visible, without any filters
         if ($this->isAdmin()) {
@@ -1706,7 +1705,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 }
             }
             if (!$uploadFolder instanceof Folder) {
-                /** @var ResourceStorage $storage */
                 foreach ($this->getFileStorages() as $storage) {
                     if ($storage->isWritable()) {
                         try {

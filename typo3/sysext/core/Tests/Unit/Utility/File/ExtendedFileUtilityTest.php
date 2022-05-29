@@ -72,7 +72,6 @@ class ExtendedFileUtilityTest extends UnitTestCase
                 [$file]
             );
 
-        /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
         $subject = $this->getMockBuilder(ExtendedFileUtility::class)
             ->onlyMethods(['addFlashMessage'])
             ->getMock();
@@ -123,7 +122,6 @@ class ExtendedFileUtilityTest extends UnitTestCase
             []
         );
 
-        /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
         $subject = $this->getMockBuilder(ExtendedFileUtility::class)
             ->onlyMethods(['addFlashMessage'])
             ->getMock();

@@ -258,7 +258,6 @@ class ExtendedTemplateService extends TemplateService
         $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
         // Register comments!
         $constants->regComments = true;
-        /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         // Matches ALL conditions in TypoScript
         $matchObj->setSimulateMatchResult(true);
@@ -327,7 +326,6 @@ class ExtendedTemplateService extends TemplateService
         }
         $keyArr_num = [];
         $keyArr_alpha = [];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
@@ -566,9 +564,7 @@ class ExtendedTemplateService extends TemplateService
         }
         $a = 0;
         $c = count($keyArr);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         foreach ($keyArr as $key => $value) {
             $HTML = '';
@@ -833,7 +829,6 @@ class ExtendedTemplateService extends TemplateService
         $subcat = '';
         if (!empty($this->categories[$category]) && is_array($this->categories[$category])) {
             asort($this->categories[$category]);
-            /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $categoryLoop = 0;
             foreach ($this->categories[$category] as $name => $type) {

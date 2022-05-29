@@ -63,7 +63,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         }
 
         // Parse the DOM identifier, add the levels to the structure stack
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
         $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
@@ -84,9 +83,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $childTableName = $parentConfig['foreign_table'];
 
-        /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
             'command' => 'new',
@@ -120,9 +117,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 ];
                 $childData['combinationChild'] = $this->compileChildChild($childData, $parentConfig, $inlineStackProcessor->getStructure());
             } else {
-                /** @var TcaDatabaseRecord $formDataGroup */
                 $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                /** @var FormDataCompiler $formDataCompiler */
                 $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
                 $formDataCompilerInput = [
                     'command' => 'new',
@@ -174,7 +169,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         // Parse the DOM identifier, add the levels to the structure stack
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
         $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
@@ -241,7 +235,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $type = $ajaxArguments[1] ?? null;
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         // Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
@@ -279,9 +272,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 'inlineCompileExistingChildren' => false,
             ];
             // Full TcaDatabaseRecord is required here to have the list of connected uids $oldItemList
-            /** @var TcaDatabaseRecord $formDataGroup */
             $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-            /** @var FormDataCompiler $formDataCompiler */
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
             $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
@@ -311,7 +302,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 ];
             }
 
-            /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], $cmd);
             $tce->process_cmdmap();
@@ -399,7 +389,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
         [$domObjectId, $expand, $collapse] = $ajaxArguments;
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         // Parse the DOM identifier (string), add the levels to the structure stack (array), don't load TCA config
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
@@ -451,7 +440,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
@@ -460,9 +448,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $child = $inlineStackProcessor->getUnstableStructure();
         $childTableName = $child['table'];
 
-        /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
             'command' => 'edit',
@@ -512,9 +498,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
         // child-child table name is set in child tca "the selector field" foreign_table
         $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
-        /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
             'command' => 'edit',

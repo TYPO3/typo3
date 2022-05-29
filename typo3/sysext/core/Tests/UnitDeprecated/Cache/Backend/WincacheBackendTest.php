@@ -203,13 +203,11 @@ class WincacheBackendTest extends UnitTestCase
      */
     public function flushRemovesOnlyOwnEntries(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
         $thisCache = $this->createMock(FrontendInterface::class);
         $thisCache->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = new WincacheBackend('Testing');
         $thisBackend->setCache($thisCache);
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
         $thatCache = $this->createMock(FrontendInterface::class);
         $thatCache->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = new WincacheBackend('Testing');
@@ -266,7 +264,6 @@ class WincacheBackendTest extends UnitTestCase
      */
     protected function setUpBackend(bool $accessible = false)
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = $this->createMock(FrontendInterface::class);
         if ($accessible) {
             $backend = $this->getAccessibleMock(WincacheBackend::class, ['dummy'], ['Testing']);

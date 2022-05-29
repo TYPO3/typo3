@@ -77,7 +77,6 @@ class WorkspacePreview implements MiddlewareInterface
         $addInformationAboutDisabledCache = false;
         $keyword = $this->getPreviewInputCode($request);
         $setCookieOnCurrentRequest = false;
-        /** @var NormalizedParams $normalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
         $context = GeneralUtility::makeInstance(Context::class);
 

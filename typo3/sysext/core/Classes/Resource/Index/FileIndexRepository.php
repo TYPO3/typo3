@@ -542,7 +542,6 @@ class FileIndexRepository implements SingletonInterface
      */
     public function updateRefIndex($id)
     {
-        /** @var ReferenceIndex $refIndexObj */
         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
         $refIndexObj->updateRefIndexTable($this->table, $id);
     }

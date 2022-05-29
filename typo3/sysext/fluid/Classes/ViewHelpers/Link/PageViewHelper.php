@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -111,7 +110,6 @@ class PageViewHelper extends AbstractTagBasedViewHelper
         $absolute = isset($this->arguments['absolute']) ? (bool)$this->arguments['absolute'] : false;
         $addQueryString = isset($this->arguments['addQueryString']) ? (bool)$this->arguments['addQueryString'] : false;
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getUriBuilder();
         $uriBuilder->reset()
             ->setTargetPageType($pageType)

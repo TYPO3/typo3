@@ -17,14 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class InlineStackProcessorTest extends UnitTestCase
@@ -272,7 +270,6 @@ class InlineStackProcessorTest extends UnitTestCase
      */
     public function initializeByParsingDomObjectIdStringParsesStructureString(string $string, array $expectedInlineStructure, array $_): void
     {
-        /** @var InlineStackProcessor|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(InlineStackProcessor::class, ['dummy']);
         $subject->initializeByParsingDomObjectIdString($string);
         $structure = $subject->_get('inlineStructure');
@@ -285,7 +282,6 @@ class InlineStackProcessorTest extends UnitTestCase
      */
     public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
     {
-        /** @var InlineStackProcessor|MockObject|AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor();
         $subject->initializeByParsingDomObjectIdString($string);
         self::assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
@@ -297,7 +293,6 @@ class InlineStackProcessorTest extends UnitTestCase
      */
     public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
     {
-        /** @var InlineStackProcessor|MockObject|AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor();
         $subject->initializeByParsingDomObjectIdString($string);
         self::assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));

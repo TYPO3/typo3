@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -275,7 +273,6 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function formatValueWithGivenConfiguration(array $config, ?string $itemValue, string $expectedResult): void
     {
-        /** @var AbstractFormElement|MockObject|AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(AbstractFormElement::class, ['render'], [], '', false);
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');

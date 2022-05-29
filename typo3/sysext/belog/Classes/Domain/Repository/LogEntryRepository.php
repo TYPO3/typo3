@@ -124,7 +124,6 @@ class LogEntryRepository extends Repository
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
-            /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTree */
             $pageTree = GeneralUtility::makeInstance(PageTreeView::class);
             $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
             $pageTree->makeHTML = 0;

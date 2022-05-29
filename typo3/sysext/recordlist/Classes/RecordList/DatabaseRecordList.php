@@ -2992,7 +2992,6 @@ class DatabaseRecordList
         $idList = $runtimeCache->get($hash);
         if ($idList === false) {
             $backendUser = $this->getBackendUserAuthentication();
-            /** @var PageTreeView $tree */
             $tree = GeneralUtility::makeInstance(PageTreeView::class);
             $tree->init('AND ' . $perms_clause);
             $tree->makeHTML = 0;

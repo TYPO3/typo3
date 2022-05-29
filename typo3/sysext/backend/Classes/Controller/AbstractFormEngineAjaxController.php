@@ -124,7 +124,6 @@ abstract class AbstractFormEngineAjaxController
      */
     protected function getLabelsFromLocalizationFile($file)
     {
-        /** @var LocalizationFactory $languageFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
         $language = $this->getLanguageService()->lang;
         $localizationArray = $languageFactory->getParsedData($file, $language);

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -75,7 +74,6 @@ class UpgradeControllerTest extends UnitTestCase
             ],
         ]);
 
-        /** @var UpgradeController|MockObject $subject */
         $subject = $this->getMockBuilder(UpgradeController::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getDocumentationFiles', 'initializeStandaloneView'])

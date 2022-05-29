@@ -57,7 +57,6 @@ class SimpleLockStrategyTest extends UnitTestCase
             self::markTestSkipped('Test not available on Windows.');
         }
         // Use a very high id to be unique
-        /** @var SimpleLockStrategy|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
 
         $pathOfLockFile = $lock->_get('filePath');
@@ -77,7 +76,6 @@ class SimpleLockStrategyTest extends UnitTestCase
      */
     public function releaseRemovesLockfileInTypo3TempLocks(): void
     {
-        /** @var SimpleLockStrategy|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
 
         $pathOfLockFile = $lock->_get('filePath');
@@ -114,7 +112,6 @@ class SimpleLockStrategyTest extends UnitTestCase
             self::markTestIncomplete('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
         }
         // Create instance, set lock file to invalid path
-        /** @var SimpleLockStrategy|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
         $lock->_set('filePath', $file);
         $lock->_set('isAcquired', true);

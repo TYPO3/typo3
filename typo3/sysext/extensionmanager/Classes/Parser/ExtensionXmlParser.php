@@ -120,7 +120,6 @@ class ExtensionXmlParser implements \SplSubject
         if ($legacyXmlParserResource === null) {
             throw new ExtensionManagerException('Unable to create XML parser.', 1342640663);
         }
-        /** @var resource $parser */
         $parser = $legacyXmlParserResource;
 
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept

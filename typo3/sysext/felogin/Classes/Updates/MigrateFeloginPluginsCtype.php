@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Updates;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\RepeatableInterface;
@@ -76,7 +75,6 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
         // Get all tt_content data for login plugins and update their CTypes and Flexforms settings
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
 
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder
             ->update('tt_content')
@@ -102,7 +100,6 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
      */
     public function updateNecessary(): bool
     {
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $elementCount = $queryBuilder->count('uid')

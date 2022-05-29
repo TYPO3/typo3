@@ -407,7 +407,6 @@ class RemoteServer
     protected function getCommentsForRecord(array $historyEntries, array $additionalChangesFromLog): array
     {
         $allStageChanges = [];
-        /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
 
         foreach ($historyEntries as $entry) {

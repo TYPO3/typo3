@@ -15,11 +15,9 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Impexp\Exception\LoadingFileFailedException;
 use TYPO3\CMS\Impexp\Import;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class ImportTest extends AbstractImportExportTestCase
 {
@@ -314,7 +312,6 @@ class ImportTest extends AbstractImportExportTestCase
         $fileDirectory = Environment::getVarPath() . '/transient';
         $numTemporaryFilesAndFoldersBeforeImport = iterator_count(new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
 
-        /** @var Import|MockObject|AccessibleObjectInterface $subject */
         $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
         $importMock->setPid(0);
         // Simulation of import of TCA field type=group with internal_type=file

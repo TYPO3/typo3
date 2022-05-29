@@ -52,13 +52,11 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
      */
     public function create($className): QueryInterface
     {
-        /** @var QueryInterface $query */
         $query = $this->container->get(QueryInterface::class);
         if ($query instanceof ForwardCompatibleQueryInterface) {
             $query->setType($className);
         } else {
             // @deprecated since v11, will be removed in v12. Use ObjectManager if an implementation does not implement ForwardCompatibleQueryInterface.
-            /** @var QueryInterface $query */
             $query = GeneralUtility::makeInstance(ObjectManager::class)->get(QueryInterface::class, $className);
         }
 

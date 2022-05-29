@@ -662,7 +662,6 @@ class SearchController extends ActionController
         if ((string)$row['item_type'] === '0') {
             // If TypoScript is used to render the flag:
             if (is_array($this->settings['flagRendering'] ?? false)) {
-                /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setCurrentVal($row['sys_language_uid']);
                 $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['flagRendering']);
@@ -695,7 +694,6 @@ class SearchController extends ActionController
             $this->iconFileNameCache[$imageType] = '';
             // If TypoScript is used to render the icon:
             if (is_array($this->settings['iconRendering'] ?? false)) {
-                /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setCurrentVal($imageType);
                 $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['iconRendering']);

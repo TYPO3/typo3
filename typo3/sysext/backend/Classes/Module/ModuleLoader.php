@@ -167,7 +167,6 @@ class ModuleLoader
         $finalModuleConfiguration['name'] = $name;
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
         $this->addLabelsForModule($name, $finalModuleConfiguration['labels'] ?? $setupInformation['labels']);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (isset($setupInformation['configuration']['routeTarget'])) {
             $finalModuleConfiguration['script'] = (string)$uriBuilder->buildUriFromRoute($name);

@@ -63,7 +63,6 @@ class UriViewHelper extends AbstractBackendViewHelper
      */
     public function render()
     {
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $route = $this->arguments['route'];
         $parameters = $this->arguments['parameters'];

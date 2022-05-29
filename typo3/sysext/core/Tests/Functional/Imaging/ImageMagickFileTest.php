@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Type\File\FileInfo;
@@ -345,7 +344,6 @@ class ImageMagickFileTest extends FunctionalTestCase
      */
     private function simulateNextFileInfoInvocation(string $mimeType, array $mimeExtensions = []): void
     {
-        /** @var FileInfo|MockObject $fileInfo */
         $fileInfo = $this->getAccessibleMock(
             FileInfo::class,
             ['getMimeType', 'getMimeExtensions'],

@@ -78,7 +78,6 @@ class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
             $languageKey = 'extensionList.databaseImport';
         }
 
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
         $uriBuilder->reset();

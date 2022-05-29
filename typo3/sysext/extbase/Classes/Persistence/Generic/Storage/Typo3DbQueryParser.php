@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -1073,7 +1072,6 @@ class Typo3DbQueryParser
     protected function replaceTableNameWithAlias($statement, $tableName, $tableAlias)
     {
         if ($tableAlias !== $tableName) {
-            /** @var Connection $connection */
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
             $quotedTableName = $connection->quoteIdentifier($tableName);
             $quotedTableAlias = $connection->quoteIdentifier($tableAlias);

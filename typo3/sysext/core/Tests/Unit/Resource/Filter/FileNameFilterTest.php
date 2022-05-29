@@ -65,7 +65,6 @@ class FileNameFilterTest extends UnitTestCase
      */
     public function filterHiddenFilesAndFoldersFiltersHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
     {
-        /** @var DriverInterface|\PHPUnit\Framework\MockObject\MockObject $driverMock */
         FileNameFilter::setShowHiddenFilesAndFolders(false);
         $driverMock = $this->createMock(DriverInterface::class);
         self::assertSame(
@@ -89,7 +88,6 @@ class FileNameFilterTest extends UnitTestCase
      */
     public function filterHiddenFilesAndFoldersAllowsHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
     {
-        /** @var DriverInterface|\PHPUnit\Framework\MockObject\MockObject $driverMock */
         $driverMock = $this->createMock(DriverInterface::class);
         FileNameFilter::setShowHiddenFilesAndFolders(true);
         self::assertSame(

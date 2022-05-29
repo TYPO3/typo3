@@ -495,7 +495,6 @@ class ExtendedFileUtility extends BasicFileUtility
                     $result = $fileObject->delete(true);
                     if ($result) {
                         // notify the user that the folder was deleted
-                        /** @var FlashMessage $flashMessage */
                         $flashMessage = GeneralUtility::makeInstance(
                             FlashMessage::class,
                             sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
@@ -568,7 +567,6 @@ class ExtendedFileUtility extends BasicFileUtility
 
         $hasReferences = $numberOfReferences > 0;
         if ($hasReferences) {
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences'),
@@ -651,7 +649,7 @@ class ExtendedFileUtility extends BasicFileUtility
     protected function func_copy($cmds)
     {
         $sourceFileObject = $this->getFileObject($cmds['data']);
-        /** @var \TYPO3\CMS\Core\Resource\Folder $targetFolderObject */
+        /** @var Folder $targetFolderObject */
         $targetFolderObject = $this->getFileObject($cmds['target']);
         // Basic check
         if (!$targetFolderObject instanceof Folder) {
@@ -909,7 +907,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * + example "2:targetpath/targetfolder/"
      *
      * @param array $cmds Command details as described above
-     * @return \TYPO3\CMS\Core\Resource\Folder|false Returns the new foldername upon success
+     * @return Folder|false Returns the new foldername upon success
      */
     public function func_newfolder($cmds)
     {
@@ -1219,10 +1217,8 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {
-        /** @var FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
-        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }

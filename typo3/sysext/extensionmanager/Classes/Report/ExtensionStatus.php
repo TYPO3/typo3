@@ -140,7 +140,6 @@ class ExtensionStatus implements StatusProviderInterface
                 array_key_exists('terObject', $information)
                 && $information['terObject'] instanceof Extension
             ) {
-                /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $terObject */
                 $terObject = $information['terObject'];
                 $insecureStatus = $terObject->getReviewState();
                 if ($insecureStatus === -1) {

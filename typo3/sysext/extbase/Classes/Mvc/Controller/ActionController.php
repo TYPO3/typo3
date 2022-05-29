@@ -397,7 +397,7 @@ abstract class ActionController implements ControllerInterface
         $classSchemaMethod = $this->reflectionService->getClassSchema(static::class)
             ->getMethod($this->actionMethodName);
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $classSchemaMethodParameter = $classSchemaMethod->getParameter($argument->getName());
             // At this point validation is skipped if there is an IgnoreValidation annotation.
@@ -446,7 +446,7 @@ abstract class ActionController implements ControllerInterface
      */
     public function initializeControllerArgumentsBaseValidators()
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if ($validator !== null) {
@@ -565,7 +565,7 @@ abstract class ActionController implements ControllerInterface
         // todo: support this via method-reflection
 
         $preparedArguments = [];
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $preparedArguments[] = $argument->getValue();
         }
@@ -897,7 +897,6 @@ abstract class ActionController implements ControllerInterface
      */
     protected function buildControllerContext()
     {
-        /** @var ControllerContext $controllerContext */
         $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
         $controllerContext->setRequest($this->request);
         if ($this->arguments !== null) {
@@ -1036,7 +1035,7 @@ abstract class ActionController implements ControllerInterface
      */
     protected function mapRequestArgumentsToControllerArguments()
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $argumentName = $argument->getName();
             if ($this->request->hasArgument($argumentName)) {

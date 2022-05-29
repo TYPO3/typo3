@@ -89,7 +89,6 @@ class RecordsContentObject extends AbstractContentObject
             }
             $itemArrayCount = count($this->itemArray);
             if ($itemArrayCount > 0) {
-                /** @var ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
@@ -155,7 +154,6 @@ class RecordsContentObject extends AbstractContentObject
      */
     protected function collectRecordsFromSource($source, array $tables)
     {
-        /** @var RelationHandler $loadDB*/
         $loadDB = GeneralUtility::makeInstance(RelationHandler::class);
         $loadDB->start($source, implode(',', $tables));
         foreach ($loadDB->tableArray as $table => $v) {

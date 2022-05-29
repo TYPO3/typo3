@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\LinkHandling\LegacyLinkNotationConverter;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
@@ -269,7 +268,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      */
     public function resolveFileReferencesToSplitParameters(string $input, array $expected): void
     {
-        /** @var ResourceStorage|MockObject $storage */
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -350,7 +348,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->getMock();
             $folderObject->method('getCombinedIdentifier')->willReturn($parameters['folder']);
             $folderData = explode(':', $parameters['folder']);
-            /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)
                 ->onlyMethods(['getUid'])
                 ->disableOriginalConstructor()

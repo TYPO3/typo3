@@ -52,11 +52,9 @@ class CheckFlexFormValueTest extends UnitTestCase
             ],
         ];
 
-        /** @var DataHandler $dataHandler */
         $dataHandler = $this->createMock(DataHandler::class);
 
         $newFlexFormDataArray = [];
-        /** @var CheckFlexFormValue $checkFlexFormValue */
         $checkFlexFormValue = $this->getMockBuilder(CheckFlexFormValue::class)
             ->addMethods(['dummy'])
             ->getMock();

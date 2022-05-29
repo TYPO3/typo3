@@ -60,7 +60,6 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             //   the default storage "1:/user_uploads/" will be used. Uploads are placed
             //   in a dedicated sub-folder (e.g. ".../form_<40-chars-hash>/actual.file").
 
-            /** @var UploadedFileReferenceConverter $typeConverter */
             $typeConverter = GeneralUtility::makeInstance(UploadedFileReferenceConverter::class);
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $renderable->getRootForm()

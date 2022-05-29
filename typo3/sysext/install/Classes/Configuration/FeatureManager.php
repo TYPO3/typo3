@@ -76,7 +76,6 @@ class FeatureManager
         $localConfigurationValuesToSet = [];
         $features = $this->getInitializedFeatures($postValues);
         foreach ($features as $feature) {
-            /** @var FeatureInterface $feature */
             $featureName = $feature->getName();
             $presets = $feature->getPresetsOrderedByPriority();
             foreach ($presets as $preset) {
@@ -107,7 +106,6 @@ class FeatureManager
         $localConfigurationValuesToSet = [];
         $features = $this->getInitializedFeatures([]);
         foreach ($features as $feature) {
-            /** @var FeatureInterface $feature */
             $presets = $feature->getPresetsOrderedByPriority();
             foreach ($presets as $preset) {
                 // Only choose "normal" presets, no custom presets

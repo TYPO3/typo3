@@ -48,7 +48,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
             ],
         ]);
-        /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         $generator->buildClassAliasMapForPackage($packageMock);
@@ -71,7 +70,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
             ],
         ]);
-        /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         $generator->buildClassAliasMapForPackage($packageMock);
@@ -97,7 +95,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
             ],
         ];
         $packageMock = $this->createPackageMock([]);
-        /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
@@ -131,7 +128,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
             ],
         ]);
-        /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
@@ -269,7 +265,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      */
     public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles): void
     {
-        /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__);
         $files = $generator->buildAutoloadInformationFiles();
@@ -379,7 +374,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      */
     public function autoloadDevFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles): void
     {
-        /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__, true);
         $files = $generator->buildAutoloadInformationFiles();

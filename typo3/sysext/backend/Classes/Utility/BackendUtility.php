@@ -962,7 +962,6 @@ class BackendUtility
         }
 
         $fileReferences = [];
-        /** @var RelationHandler $relationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         if ($workspaceId !== null) {
             $relationHandler->setWorkspaceId($workspaceId);
@@ -1970,7 +1969,6 @@ class BackendUtility
         }
         // Add see also arrow if we have more info
         if ($helpTextArray['moreInfo']) {
-            /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $arrow = $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render();
         }

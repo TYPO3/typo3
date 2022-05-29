@@ -168,9 +168,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             'inlineCompileExistingChildren' => false,
             'columnsToProcess' => [$columnToProcess],
         ];
-        /** @var TcaInputPlaceholderRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaInputPlaceholderRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $compilerResult = $formDataCompiler->compile($fakeDataInput);
         return $compilerResult;

@@ -386,7 +386,6 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriCreatesTypoLink(): void
     {
-        /** @var UriBuilder|MockObject|AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['someTypoLinkConfiguration']);
@@ -421,7 +420,6 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriCreatesAbsoluteUrisIfSpecified(): void
     {
-        /** @var UriBuilder|MockObject|AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -437,7 +435,6 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriSetsAbsoluteUriSchemeIfSpecified(): void
     {
-        /** @var UriBuilder|MockObject|AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -454,7 +451,6 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriDoesNotSetAbsoluteUriSchemeIfCreateAbsoluteUriIsFalse(): void
     {
-        /** @var UriBuilder|MockObject|AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -704,7 +700,6 @@ class UriBuilderTest extends UnitTestCase
     {
         $mockValueObject = new ValueObjectFixture();
         $mockValueObject->name = 'foo';
-        /** @var UriBuilder|MockObject|AccessibleObjectInterface $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['convertTransientObjectToArray']);
         $mockUriBuilder->expects(self::once())->method('convertTransientObjectToArray')->willReturn(['foo' => 'bar']);
         $actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockValueObject]);
@@ -721,7 +716,6 @@ class UriBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1260881688);
         $mockEntity = new EntityFixture();
         $mockEntity->name = 'foo';
-        /** @var UriBuilder|MockObject|AccessibleObjectInterface $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['dummy']);
         $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockEntity]);
     }

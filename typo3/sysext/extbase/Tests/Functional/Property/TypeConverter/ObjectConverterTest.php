@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -53,7 +54,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        /** @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object */
+        /** @var DomainObjectInterface $object */
         $object = $propertyMapper->convert(['name' => 'John Doe'], get_class($model));
 
         self::assertInstanceOf(get_class($model), $object);

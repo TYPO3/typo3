@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Collection\EditableCollectionInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -72,7 +73,6 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      */
     public static function create(array $collectionRecord, $fillItems = false)
     {
-        /** @var CategoryCollection $collection */
         $collection = GeneralUtility::makeInstance(
             self::class,
             $collectionRecord['table_name'],
@@ -287,7 +287,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
     public function getItems()
     {
         $itemArray = [];
-        /** @var \TYPO3\CMS\Core\Resource\File $item */
+        /** @var File $item */
         foreach ($this->storage as $item) {
             $itemArray[] = $item;
         }

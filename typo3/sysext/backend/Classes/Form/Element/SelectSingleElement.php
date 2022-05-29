@@ -87,7 +87,6 @@ class SelectSingleElement extends AbstractFormElement
         $classList = ['form-select', 'form-control-adapt'];
 
         // Check against inline uniqueness
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $uniqueIds = [];

@@ -324,7 +324,6 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function assignSettings(array $conf)
     {
         if (isset($conf['settings.'])) {
-            /** @var TypoScriptService $typoScriptService */
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
             $this->view->assign('settings', $settings);

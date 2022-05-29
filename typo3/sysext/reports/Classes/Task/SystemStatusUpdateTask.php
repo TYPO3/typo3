@@ -55,9 +55,7 @@ class SystemStatusUpdateTask extends AbstractTask
      */
     public function execute()
     {
-        /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
-        /** @var \TYPO3\CMS\Reports\Report\Status\Status $statusReport */
         $statusReport = GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Report\Status\Status::class);
         $systemStatus = $statusReport->getDetailedSystemStatus();
         $highestSeverity = $statusReport->getHighestSeverity($systemStatus);

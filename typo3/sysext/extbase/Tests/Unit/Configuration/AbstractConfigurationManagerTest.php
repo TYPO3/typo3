@@ -378,7 +378,6 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function getContentObjectTheCurrentContentObject(): void
     {
-        /** @var ContentObjectRenderer|MockObject $mockContentObject */
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $this->abstractConfigurationManager->setContentObject($mockContentObject);
         self::assertSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);

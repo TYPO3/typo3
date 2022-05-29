@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\ContextMenu;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -48,7 +49,7 @@ class ContextMenu
         $items = [];
         $itemsProviders = $this->getAvailableProviders($table, $identifier, $context);
 
-        /** @var \TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface $provider */
+        /** @var ProviderInterface $provider */
         foreach ($itemsProviders as $provider) {
             $items = $provider->addItems($items);
         }

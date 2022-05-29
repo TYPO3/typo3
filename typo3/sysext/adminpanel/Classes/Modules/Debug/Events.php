@@ -25,6 +25,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\Service\EventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -47,7 +48,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
 
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
-        /** @var \TYPO3\CMS\Adminpanel\Service\EventDispatcher $eventDispatcher */
+        /** @var EventDispatcher $eventDispatcher */
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $cloner = new VarCloner();
         $cloner->setMinDepth(2);

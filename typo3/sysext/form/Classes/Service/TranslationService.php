@@ -92,9 +92,7 @@ class TranslationService implements SingletonInterface
     public static function getInstance(): self
     {
         trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
-        /** @var self $instance */
-        $instance = GeneralUtility::makeInstance(self::class);
-        return $instance;
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**
@@ -572,7 +570,6 @@ class TranslationService implements SingletonInterface
         }
 
         if (!empty($locallangPathAndFilename)) {
-            /** @var LocalizationFactory $languageFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($locallangPathAndFilename, $this->languageKey);
 
@@ -599,7 +596,6 @@ class TranslationService implements SingletonInterface
         ) {
             $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
             if ($this->languageKey !== 'default') {
-                /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
                 $locales = GeneralUtility::makeInstance(Locales::class);
                 if (in_array($this->languageKey, $locales->getLocales(), true)) {
                     foreach ($locales->getLocaleDependencies($this->languageKey) as $language) {

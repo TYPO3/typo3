@@ -247,7 +247,6 @@ class QueryView
             }
             // Show query
             if ($saveArr['queryTable']) {
-                /** @var \TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator */
                 $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
                 $queryGenerator->init('queryConfig', $saveArr['queryTable'], '', $this->settings);
                 $queryGenerator->makeSelectorTable($saveArr);
@@ -688,7 +687,6 @@ class QueryView
             }
         }
         $out .= '<td>';
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         if (!$row['deleted']) {

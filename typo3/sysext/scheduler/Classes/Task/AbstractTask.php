@@ -311,7 +311,6 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function registerSingleExecution($timestamp)
     {
-        /** @var Execution $execution */
         $execution = GeneralUtility::makeInstance(Execution::class);
         $execution->setStart($timestamp);
         $execution->setInterval(0);
@@ -334,7 +333,6 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '')
     {
-        /** @var Execution $execution */
         $execution = GeneralUtility::makeInstance(Execution::class);
         // Set general values
         $execution->setStart($start);

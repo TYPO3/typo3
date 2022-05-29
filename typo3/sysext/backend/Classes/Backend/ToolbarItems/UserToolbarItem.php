@@ -66,7 +66,6 @@ class UserToolbarItem implements ToolbarItemInterface
     {
         $backendUser = $this->getBackendUser();
 
-        /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 

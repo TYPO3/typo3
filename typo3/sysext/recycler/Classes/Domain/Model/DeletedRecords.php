@@ -352,7 +352,6 @@ class DeletedRecords
     public function deleteData($recordsArray)
     {
         if (is_array($recordsArray)) {
-            /** @var DataHandler $tce **/
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], []);
             $tce->disableDeleteClause();

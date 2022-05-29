@@ -297,7 +297,6 @@ class FormEditorController extends AbstractBackendController
             ],
         ];
 
-        /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $currentSiteLanguage */
         $currentSiteLanguage = GeneralUtility::makeInstance(Site::class, 'form-dummy', $pageId, $fakeSiteConfiguration)
             ->getLanguageById($languageId);
         return $currentSiteLanguage;

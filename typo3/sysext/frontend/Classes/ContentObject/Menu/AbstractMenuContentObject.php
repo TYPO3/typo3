@@ -532,7 +532,6 @@ abstract class AbstractMenuContentObject
                     );
                     break;
                 case 'categories':
-                    /** @var CategoryMenuUtility $categoryMenuUtility */
                     $categoryMenuUtility = GeneralUtility::makeInstance(CategoryMenuUtility::class);
                     $menuItems = $categoryMenuUtility->collectPages($value, $this->conf['special.'], $this);
                     break;

@@ -400,7 +400,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         if ($this->getIdentifier() == 0) {
             $data[trim(static::getCollectionDatabaseTable())][$uid]['pid'] = 0;
         }
-        /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         $tce->start($data, []);
         $tce->process_datamap();

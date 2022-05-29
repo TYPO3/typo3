@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
@@ -28,7 +27,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -479,7 +477,6 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function createColumnMapReturnsAValidColumnMap(): void
     {
-        /** @var DataMapFactory|MockObject|AccessibleObjectInterface $dataMapFactory*/
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
 
         $columnMap = $this->getMockBuilder(ColumnMap::class)
@@ -527,10 +524,8 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType): void
     {
-        /** @var DataMapFactory|AccessibleObjectInterface|MockObject $dataMapFactory */
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
 
-        /** @var ColumnMap|MockObject|AccessibleObjectInterface $columnMap */
         $columnMap = $this->getAccessibleMock(ColumnMap::class, ['dummy'], [], '', false);
 
         $dataMapFactory->_call('setType', $columnMap, $columnConfiguration);

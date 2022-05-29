@@ -82,7 +82,6 @@ class TypolinkViewHelperTest extends UnitTestCase
      */
     public function mergeTypoLinkConfigurationDoesNotModifyData(array $decodedConfiguration): void
     {
-        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
         $result = $subject->_call('mergeTypoLinkConfiguration', $decodedConfiguration, []);
         self::assertSame($decodedConfiguration, $result);
@@ -181,7 +180,6 @@ class TypolinkViewHelperTest extends UnitTestCase
      */
     public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expected): void
     {
-        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
         $result = $subject->_call('mergeTypoLinkConfiguration', $decodedConfiguration, $viewHelperArguments);
         self::assertSame($expected, $result);

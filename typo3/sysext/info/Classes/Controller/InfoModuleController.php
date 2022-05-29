@@ -456,7 +456,6 @@ class InfoModuleController
                 $languageService->getLL('title'),
                 FlashMessage::ERROR
             );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {

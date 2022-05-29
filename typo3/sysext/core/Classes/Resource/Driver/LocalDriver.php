@@ -687,7 +687,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $identifier = $this->canonicalizeAndCheckFileIdentifier($containerPath . PathUtility::basename($fileIdentifier));
 
-        /** @var FileInfo $fileInfo */
         $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $fileIdentifier);
         switch ($property) {
             case 'size':
@@ -1079,7 +1078,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $targetFolderPath = $this->getAbsolutePath($newFolderIdentifier);
 
         mkdir($targetFolderPath);
-        /** @var \RecursiveDirectoryIterator $iterator */
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($sourceFolderPath),
             \RecursiveIteratorIterator::SELF_FIRST,

@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 {
@@ -47,7 +45,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);
         $out = $subject->render();
@@ -68,7 +65,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_corrupt.csv');
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);
         $out = $subject->render();
@@ -94,7 +90,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setSaveFilesOutsideExportFile(true);
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);
@@ -117,7 +112,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_invalid_hash.csv');
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setSaveFilesOutsideExportFile(true);
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);

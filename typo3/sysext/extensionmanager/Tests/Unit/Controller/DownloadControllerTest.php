@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -45,7 +44,6 @@ class DownloadControllerTest extends UnitTestCase
         $dummyExtension = new Extension();
         $dummyExtension->setExtensionKey($dummyExtensionName);
 
-        /** @var ExtensionManagementService|MockObject $downloadUtilityMock */
         $extensionManagementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)->disableOriginalConstructor()->getMock();
         $extensionManagementServiceMock->method('setDownloadPath')->willThrowException($dummyException);
 

@@ -55,7 +55,6 @@ class FilesProcessor implements DataProcessorInterface
         }
 
         // gather data
-        /** @var FileCollector $fileCollector */
         $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
 
         // references / relations

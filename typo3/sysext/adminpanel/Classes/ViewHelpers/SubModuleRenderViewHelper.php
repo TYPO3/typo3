@@ -61,7 +61,7 @@ class SubModuleRenderViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ): string {
         $module = $arguments['module'];
-        /** @var \TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection $data */
+        /** @var ModuleDataStorageCollection $data */
         $data = $arguments['data'];
         $moduleData = $data->contains($module) ? $data->offsetGet($module) : new ModuleData();
         return $module->getContent($moduleData);

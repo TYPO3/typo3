@@ -234,7 +234,6 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
             return $this->persistenceManager->getObjectDataByQuery($this);
         }
         if ($this->container->has(QueryResultInterface::class)) {
-            /** @var QueryResultInterface $queryResult */
             $queryResult = $this->container->get(QueryResultInterface::class);
             if ($queryResult instanceof ForwardCompatibleQueryResultInterface) {
                 $queryResult->setQuery($this);
@@ -242,7 +241,6 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
             }
         }
         // @deprecated since v11, will be removed in v12. Fallback to ObjectManager, drop together with ForwardCompatibleQueryResultInterface.
-        /** @var QueryResultInterface $queryResult */
         $queryResult = GeneralUtility::makeInstance(ObjectManager::class)->get(QueryResultInterface::class, $this);
         return $queryResult;
     }

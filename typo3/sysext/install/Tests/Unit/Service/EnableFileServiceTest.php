@@ -18,10 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Service\EnableFileService;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -79,7 +77,6 @@ class EnableFileServiceTest extends UnitTestCase
     {
         $vfs = vfsStream::setup();
         vfsStream::create($structure, $vfs);
-        /** @var EnableFileService|AccessibleObjectInterface|MockObject $subject */
         $subject = $this->getAccessibleMock(EnableFileService::class, ['dummy'], [], '', false);
         Environment::initialize(
             Environment::getContext(),
@@ -151,7 +148,6 @@ class EnableFileServiceTest extends UnitTestCase
     {
         $vfs = vfsStream::setup();
         vfsStream::create($structure, $vfs);
-        /** @var EnableFileService|AccessibleObjectInterface|MockObject $subject */
         $subject = $this->getAccessibleMock(EnableFileService::class, ['dummy'], [], '', false);
         Environment::initialize(
             Environment::getContext(),

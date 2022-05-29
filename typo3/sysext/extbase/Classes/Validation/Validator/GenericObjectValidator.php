@@ -33,7 +33,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      * the Error Messages object which occurred.
      *
      * @param mixed $value The value that should be validated
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      */
     public function validate($value)
     {
@@ -90,7 +90,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      */
     protected function checkProperty($value, $validators, $propertyName)
     {
-        /** @var \TYPO3\CMS\Extbase\Error\Result $result */
+        /** @var Result $result */
         $result = null;
         foreach ($validators as $validator) {
             if ($validator instanceof ObjectValidatorInterface) {

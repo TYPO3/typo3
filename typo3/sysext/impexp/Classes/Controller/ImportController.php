@@ -294,8 +294,6 @@ class ImportController extends ImportExportController
 
         $folder = $this->import->getOrCreateDefaultImportExportFolder();
         if ($folder !== null) {
-
-            /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions(['t3d', 'xml']);
             $folder->getStorage()->addFileAndFolderNameFilter([$filter, 'filterFileList']);

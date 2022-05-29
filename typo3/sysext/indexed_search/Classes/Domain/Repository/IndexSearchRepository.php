@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -346,7 +347,6 @@ class IndexSearchRepository
         // Perform SQL Search / collection of result rows array:
         $resource = false;
         if ($searchData) {
-            /** @var TimeTracker $timeTracker */
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             // Do the search:
             $timeTracker->push('execFinalQuery');
@@ -493,7 +493,6 @@ class IndexSearchRepository
             // filtering out ALL pages that are not accessible due to restriction containers. Does NOT look for "no_search" field!
             $idList = [];
             foreach ($searchRootPageIdList as $rootId) {
-                /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $idList[] = $cObj->getTreeList(-1 * $rootId, 9999);
             }
@@ -1211,7 +1210,7 @@ class IndexSearchRepository
      */
     protected function multiplePagesType($itemType)
     {
-        /** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
+        /** @var FileContentParser|null $fileContentParser */
         $fileContentParser = $this->externalParsers[$itemType] ?? null;
         return is_object($fileContentParser) && $fileContentParser->isMultiplePageExtension($itemType);
     }

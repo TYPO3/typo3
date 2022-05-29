@@ -218,7 +218,6 @@ class GifBuilder extends GraphicalFunctions
                                         if (($maskInfo['processedFile'] ?? null) instanceof ProcessedFile) {
                                             $this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(false);
                                         } elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
-                                            /** @var File $originalFile */
                                             $originalFile = $maskInfo['originalFile'];
                                             $this->setup[$theKey . '.']['mask'] = $originalFile->getForLocalProcessing(false);
                                         } else {

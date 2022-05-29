@@ -131,7 +131,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $tcaFieldConf['richtextConfiguration'] = $queryParameters['P']['richtextConfigurationName'];
         }
 
-        /** @var Richtext $richtextConfigurationProvider */
         $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
         $this->thisConfig = $richtextConfigurationProvider->getConfiguration(
             $this->parameters['table'],

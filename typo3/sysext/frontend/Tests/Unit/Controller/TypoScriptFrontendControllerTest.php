@@ -119,7 +119,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     protected function setupTsfeMockForHeaderFooterReplacementCheck()
     {
-        /** @var MockObject|TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->onlyMethods([
                 'processNonCacheableContentPartsAndSubstituteContentMarkers',

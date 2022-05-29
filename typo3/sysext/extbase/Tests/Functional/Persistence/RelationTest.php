@@ -223,7 +223,6 @@ class RelationTest extends FunctionalTestCase
         ->executeQuery()
         ->fetchOne();
 
-        /** @var Post $newPost */
         $newPost = new Post();
 
         $posts = clone $this->blog->getPosts();

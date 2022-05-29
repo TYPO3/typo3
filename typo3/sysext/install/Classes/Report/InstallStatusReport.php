@@ -188,7 +188,6 @@ class InstallStatusReport implements StatusProviderInterface
         $value = $languageService->getLL('status_updateComplete');
         $message = '';
         $severity = Status::OK;
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // check if there are update wizards left to perform
         $incompleteWizards = $this->getIncompleteWizards();
@@ -212,7 +211,6 @@ class InstallStatusReport implements StatusProviderInterface
     {
         $typoVersion = GeneralUtility::makeInstance(Typo3Version::class);
         $languageService = $this->getLanguageService();
-        /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
         $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
 
         // No updates for development versions

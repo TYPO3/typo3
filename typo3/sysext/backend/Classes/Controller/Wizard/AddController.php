@@ -99,9 +99,7 @@ class AddController extends AbstractWizardController
             if ($this->processDataFlag) {
                 // Because OnTheFly can't handle MM relations with intermediate tables we use TcaDatabaseRecord here
                 // Otherwise already stored relations are overwritten with the new entry
-                /** @var TcaDatabaseRecord $formDataGroup */
                 $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                /** @var FormDataCompiler $formDataCompiler */
                 $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
                 $input = [
                     'tableName' => $this->P['table'],
@@ -114,7 +112,6 @@ class AddController extends AbstractWizardController
                 // If that record was found (should absolutely be...), then init DataHandler and set, prepend or append
                 // the record
                 if (is_array($currentParentRow)) {
-                    /** @var DataHandler $dataHandler */
                     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                     $data = [];
                     $recordId = $this->table . '_' . $this->id;
@@ -197,9 +194,7 @@ class AddController extends AbstractWizardController
 
         // Redirecting to FormEngine with instructions to create a new record
         // AND when closing to return back with information about that records ID etc.
-        /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
             'returnEditConf' => 1,

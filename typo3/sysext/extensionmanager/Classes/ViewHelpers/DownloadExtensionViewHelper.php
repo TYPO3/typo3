@@ -84,7 +84,6 @@ class DownloadExtensionViewHelper extends AbstractFormViewHelper
 			</li>';
         }
         $pathSelector .= '</ul>';
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
         $action = 'checkDependencies';

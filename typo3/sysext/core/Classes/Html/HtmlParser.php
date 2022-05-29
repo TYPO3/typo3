@@ -561,7 +561,6 @@ class HtmlParser
                                             if ($params['prefixLocalAnchors'] ?? false) {
                                                 if ($tagAttrib[0][$attr][0] === '#') {
                                                     if ($params['prefixLocalAnchors'] == 2) {
-                                                        /** @var ContentObjectRenderer $contentObjectRenderer */
                                                         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                                                         $prefix = $contentObjectRenderer->getUrlToCurrentLocation();
                                                     } else {

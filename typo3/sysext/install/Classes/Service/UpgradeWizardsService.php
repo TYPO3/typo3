@@ -214,7 +214,6 @@ class UpgradeWizardsService
      */
     public function isDatabaseCharsetUtf8(): bool
     {
-        /** @var \TYPO3\CMS\Core\Database\Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 

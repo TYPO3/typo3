@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Request;
 
 use Psr\Http\Message\StreamFactoryInterface;
-use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -232,7 +231,6 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
             $request = $request->withAddedHeader($headerName, $headerValue);
         }
         if ($body) {
-            /** @var StreamFactory $streamFactory */
             $streamFactory = $this->get(StreamFactoryInterface::class);
             $request = $request->withBody($streamFactory->createStream($body));
         }

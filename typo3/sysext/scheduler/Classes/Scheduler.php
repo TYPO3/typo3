@@ -217,7 +217,6 @@ class Scheduler implements SingletonInterface
         if ($type !== 'manual' && $type !== 'cli-by-id') {
             $type = 'cron';
         }
-        /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
         $runInformation = ['start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type];
         $registry->set('tx_scheduler', 'lastRun', $runInformation);

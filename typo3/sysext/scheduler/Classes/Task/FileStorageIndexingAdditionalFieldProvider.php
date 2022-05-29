@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -55,7 +56,7 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
      */
     protected function getAllStoragesField(FileStorageIndexingTask $task = null, $taskInfo)
     {
-        /** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
+        /** @var ResourceStorage[] $storages */
         $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
         $options = [];
         foreach ($storages as $storage) {

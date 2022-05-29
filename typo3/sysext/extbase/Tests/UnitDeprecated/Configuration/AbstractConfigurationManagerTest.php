@@ -300,7 +300,6 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     */
     public function switchableControllerActionsAreNotOverriddenIfPluginNameIsSpecified(): void
     {
-        /** @var AbstractConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
             [
@@ -327,7 +326,6 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function switchableControllerActionsAreOverriddenIfSpecifiedPluginIsTheCurrentPlugin(): void
     {
-        /** @var AbstractConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $configuration = [
             'extensionName' => 'CurrentExtensionName',
             'pluginName' => 'CurrentPluginName',
@@ -360,7 +358,6 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function switchableControllerActionsAreOverriddenIfPluginNameIsNotSpecified(): void
     {
-        /** @var AbstractConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $configuration = ['switchableControllerActions' => ['overriddenSwitchableControllerActions']];
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,

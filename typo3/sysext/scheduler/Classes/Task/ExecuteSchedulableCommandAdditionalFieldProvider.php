@@ -104,7 +104,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
         $command = $this->schedulableCommands[$submittedData['task_executeschedulablecommand']['command']];
 
-        /** @var FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
         $hasErrors = false;

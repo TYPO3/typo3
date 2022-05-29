@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case for ResourceStorage class
@@ -66,7 +65,6 @@ class ResourceStorageTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var FileRepository|MockObject $fileRepositoryMock */
         $fileRepositoryMock = $this->createMock(FileRepository::class);
         GeneralUtility::setSingletonInstance(
             FileRepository::class,
@@ -237,7 +235,6 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function addFileFailsIfFileDoesNotExist(): void
     {
-        /** @var Folder|MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1319552745);
@@ -308,7 +305,6 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver = $this->createMock(LocalDriver::class);
         $mockedDriver->method('getPermissions')->willReturn($permissionsFromDriver);
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var Folder|MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
         // Let all other checks pass
         $subject = $this->getMockBuilder(ResourceStorage::class)
@@ -505,7 +501,7 @@ class ResourceStorageTest extends BaseTestCase
         $folderMock = $this->createMock(Folder::class);
         $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
         $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
-        /** @var ResourceStorage|MockObject|AccessibleObjectInterface $subject */
+
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);
@@ -534,7 +530,6 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver = $this->createDriverMock([], $this->subject, ['renameFile']);
         $mockedDriver->expects(self::once())->method('renameFile')->willReturn('bar');
         $this->prepareSubject([], true, $mockedDriver, null);
-        /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $result = $this->subject->renameFile($file, 'bar');
         // fake what the indexer does in updateIndexEntry
@@ -565,7 +560,6 @@ class ResourceStorageTest extends BaseTestCase
             ['getUniqueName', 'createFolderObject']
         );
         $this->subject->expects(self::once())->method('createFolderObject')->willReturn(new Folder($this->subject, '', ''));
-        /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $this->subject->method('getUniqueName')->willReturn('bar_01');
         $result = $this->subject->renameFile($file, 'bar');
@@ -585,7 +579,6 @@ class ResourceStorageTest extends BaseTestCase
             1489593099
         )));
         $this->prepareSubject([], true, $mockedDriver);
-        /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $this->expectException(ExistingTargetFileNameException::class);
         $this->subject->renameFile($file, 'bar', DuplicationBehavior::CANCEL);
@@ -611,7 +604,6 @@ class ResourceStorageTest extends BaseTestCase
         $file = $this->prophesize(FileInterface::class);
         $resourceFactory->getFileObjectFromCombinedIdentifier(Argument::any())->willReturn($file->reveal());
         $this->subject->expects(self::once())->method('replaceFile')->willReturn($file->reveal());
-        /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo', 'missing' => false], $this->subject);
         $this->subject->renameFile($file, 'bar', DuplicationBehavior::REPLACE);
     }

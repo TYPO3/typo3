@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Belog\Domain\Model\Workspace;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -127,7 +128,7 @@ class BackendLogController extends ActionController
      */
     public function deleteMessageAction(int $errorUid): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry */
+        /** @var LogEntry $logEntry */
         $logEntry = $this->logEntryRepository->findByUid($errorUid);
         if (!$logEntry) {
             $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog') ?? '', '', AbstractMessage::WARNING);
@@ -256,7 +257,7 @@ class BackendLogController extends ActionController
         $workspaceArray[-99] = LocalizationUtility::translate('any', 'Belog');
         $workspaceArray[0] = LocalizationUtility::translate('live', 'Belog');
         $workspaces = $this->workspaceRepository->findAll();
-        /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
+        /** @var Workspace $workspace */
         foreach ($workspaces as $workspace) {
             $workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();
         }

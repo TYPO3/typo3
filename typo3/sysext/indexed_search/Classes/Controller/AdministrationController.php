@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
+use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
@@ -504,7 +505,7 @@ class AdministrationController extends ActionController
     public function statisticAction($depth = 1, $mode = 'overview'): ResponseInterface
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
-            /** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
+            /** @var FileContentParser $fileContentParser */
             $fileContentParser = GeneralUtility::makeInstance($className);
             if ($fileContentParser->softInit($extension)) {
                 $this->external_parsers[$extension] = $fileContentParser;

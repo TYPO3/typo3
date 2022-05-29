@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\Status as ReportStatus;
@@ -54,12 +55,11 @@ class FalStatus implements StatusProviderInterface
         $message = '';
         $severity = ReportStatus::OK;
 
-        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storageObjects = $storageRepository->findAll();
         $storages = [];
 
-        /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject */
+        /** @var ResourceStorage $storageObject */
         foreach ($storageObjects as $storageObject) {
 
             // We only check missing files for storages that are online

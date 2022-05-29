@@ -74,7 +74,6 @@ class IconForRecordViewHelper extends AbstractViewHelper
         $size = $arguments['size'];
         $row = $arguments['row'];
         $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIconForRecord($table, $row, $size)->render($alternativeMarkupIdentifier);
     }

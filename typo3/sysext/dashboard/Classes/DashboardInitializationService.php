@@ -110,7 +110,6 @@ class DashboardInitializationService
             $userConfig['options.']['dashboard.']['dashboardPresetsForNewUsers'] ?? 'default'
         );
 
-        /** @var DashboardPreset $dashboardPreset */
         foreach ($this->dashboardPresetRegistry->getDashboardPresets() as $dashboardPreset) {
             if (in_array($dashboardPreset->getIdentifier(), $dashboardsToCreate, true)) {
                 $dashboard = $this->dashboardRepository->create(

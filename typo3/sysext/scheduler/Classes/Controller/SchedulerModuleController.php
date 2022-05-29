@@ -556,7 +556,7 @@ class SchedulerModuleController
                 }
 
                 // Get the task object
-                /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask $task */
+                /** @var AbstractTask $task */
                 $task = unserialize($taskRecord['serialized_task_object']);
 
                 // Set some task information
@@ -907,7 +907,7 @@ class SchedulerModuleController
                 $isRunning = false;
                 $showAsDisabled = false;
                 // Restore the serialized task and pass it a reference to the scheduler object
-                /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask|ProgressProviderInterface $task */
+                /** @var AbstractTask|ProgressProviderInterface $task */
                 $exceptionWithClass = false;
                 $task = null;
                 try {
@@ -1068,7 +1068,7 @@ class SchedulerModuleController
         if (!empty($this->submittedData['uid'])) {
             try {
                 $taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
-                /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask $task */
+                /** @var AbstractTask $task */
                 $task = unserialize($taskRecord['serialized_task_object']);
             } catch (\OutOfBoundsException $e) {
                 // If the task could not be fetched, issue an error message

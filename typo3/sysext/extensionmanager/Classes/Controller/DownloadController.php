@@ -196,7 +196,6 @@ class DownloadController extends AbstractController
         if ($errorMessages) {
             foreach ($errorMessages as $extensionKey => $messages) {
                 foreach ($messages as $message) {
-                    /** @var string $message */
                     $this->addFlashMessage(
                         $message['message'],
                         LocalizationUtility::translate(

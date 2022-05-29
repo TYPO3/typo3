@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -33,7 +32,6 @@ class RegularExpressionValidatorTest extends UnitTestCase
     public function regularExpressionValidatorMatchesABasicExpressionCorrectly(): void
     {
         $options = ['regularExpression' => '/^simple[0-9]expression$/'];
-        /** @var MockObject|RegularExpressionValidator $validator */
         $validator = $this->getMockBuilder(RegularExpressionValidator::class)
             ->onlyMethods(['getErrorMessage'])
             ->setConstructorArgs([$options])
@@ -48,7 +46,6 @@ class RegularExpressionValidatorTest extends UnitTestCase
     public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch(): void
     {
         $options = ['regularExpression' => '/^simple[0-9]expression$/'];
-        /** @var MockObject|RegularExpressionValidator $validator */
         $validator = $this->getMockBuilder(RegularExpressionValidator::class)
             ->onlyMethods(['getErrorMessage'])
             ->setConstructorArgs([$options])
@@ -82,7 +79,6 @@ class RegularExpressionValidatorTest extends UnitTestCase
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',
         ];
-        /** @var RegularExpressionValidator|MockObject $validator */
         $validator = $this->getMockBuilder(RegularExpressionValidator::class)
                           ->onlyMethods(['translateErrorMessage'])
                           ->setConstructorArgs([$options])
@@ -104,7 +100,6 @@ class RegularExpressionValidatorTest extends UnitTestCase
             'regularExpression' => '/^simple[0-9]expression$/',
             'errorMessage' => 'LLL:demo/Resources/',
         ];
-        /** @var RegularExpressionValidator|MockObject $validator */
         $validator = $this->getMockBuilder(RegularExpressionValidator::class)
                           ->onlyMethods(['translateErrorMessage'])
                           ->setConstructorArgs([$options])
