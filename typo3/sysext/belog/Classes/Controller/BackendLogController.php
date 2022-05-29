@@ -138,7 +138,7 @@ class BackendLogController extends ActionController
      */
     public function deleteMessageAction(int $errorUid): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry */
+        /** @var LogEntry $logEntry */
         $logEntry = $this->logEntryRepository->findByUid($errorUid);
         if (!$logEntry) {
             $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog') ?? '', '', AbstractMessage::WARNING);

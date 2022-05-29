@@ -170,8 +170,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedSetsUpStoragePathToPropertySaveToFileMountIfItExists(): void
     {
-        // Resource Factory
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
@@ -204,8 +202,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedSetsUpStoragePathToToFormDefinitionPathIfSaveToFileMountIsNotDefinedAndFormWasNotAddedProgrammatically(): void
     {
-        // Resource Factory
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 

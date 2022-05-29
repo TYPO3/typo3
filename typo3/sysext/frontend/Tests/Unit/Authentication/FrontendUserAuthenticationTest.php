@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -350,7 +349,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $userSessionManager->elevateToFixatedUserSession(Argument::cetera())->shouldBeCalled()->willReturn($elevatedUserSession);
 
         // Mock the login data and auth services here since fully prophesize this is a lot of hassle
-        /** @var AccessibleObjectInterface|FrontendUserAuthentication $subject */
         $subject = $this->getAccessibleMock(
             FrontendUserAuthentication::class,
             [

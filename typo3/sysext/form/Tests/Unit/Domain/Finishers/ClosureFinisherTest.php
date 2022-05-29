@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -28,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ClosureFinisherTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -38,9 +40,7 @@ class ClosureFinisherTest extends UnitTestCase
             return 'foobar';
         };
 
-        /** @var ClosureFinisher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockClosureFinisher */
         $mockClosureFinisher = $this->getAccessibleMock(ClosureFinisher::class, ['dummy'], [], '', false);
-
         $mockClosureFinisher->_set('options', [
             'closure' => $closure,
         ]);

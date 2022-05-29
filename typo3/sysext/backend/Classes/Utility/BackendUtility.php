@@ -921,7 +921,6 @@ class BackendUtility
         }
 
         $fileReferences = [];
-        /** @var RelationHandler $relationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         if ($workspaceId !== null) {
             $relationHandler->setWorkspaceId($workspaceId);

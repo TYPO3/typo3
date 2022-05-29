@@ -59,7 +59,6 @@ class VimeoHelperTest extends UnitTestCase
      */
     public function transformUrlToFileReturnsExpectedResult($url, $videoId, $expectedResult): void
     {
-        /** @var Folder|MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
 
         $this->subject->method('transformMediaIdToFile')

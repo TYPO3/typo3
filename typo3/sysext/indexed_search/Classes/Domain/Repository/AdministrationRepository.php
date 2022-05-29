@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -472,7 +471,6 @@ class AdministrationRepository
         if (!$pageRecord) {
             return $allLines;
         }
-        /** @var PageTreeView $tree */
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
         $tree->init('AND ' . $perms_clause);
@@ -761,7 +759,6 @@ class AdministrationRepository
                 }
 
                 if (!empty($idList)) {
-                    /** @var FrontendInterface $pageCache */
                     $pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
                     foreach ($idList as $pageId) {
                         $pageCache->flushByTag('pageId_' . $pageId);

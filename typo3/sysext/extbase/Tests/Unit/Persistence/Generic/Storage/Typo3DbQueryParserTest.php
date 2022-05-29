@@ -710,7 +710,6 @@ class Typo3DbQueryParserTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $mockQuerySettings */
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()

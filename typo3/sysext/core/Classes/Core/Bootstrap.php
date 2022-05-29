@@ -231,7 +231,7 @@ class Bootstrap
     public static function createPackageManager($packageManagerClassName, PackageCacheInterface $packageCache): PackageManager
     {
         $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-        /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
+        /** @var PackageManager $packageManager */
         $packageManager = new $packageManagerClassName($dependencyOrderingService);
         $packageManager->setPackageCache($packageCache);
         $packageManager->initialize();
@@ -503,7 +503,7 @@ class Bootstrap
      */
     public static function initializeBackendUser($className = BackendUserAuthentication::class, ServerRequestInterface $request = null)
     {
-        /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUser */
+        /** @var BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
@@ -528,7 +528,6 @@ class Bootstrap
      */
     public static function initializeLanguageObject()
     {
-        /** @var \TYPO3\CMS\Core\Localization\LanguageService $GLOBALS['LANG'] */
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
     }
 }

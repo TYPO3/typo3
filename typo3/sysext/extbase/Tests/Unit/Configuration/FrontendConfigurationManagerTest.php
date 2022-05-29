@@ -280,7 +280,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'framework' => 'configuration',
             ],
         ];
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -455,7 +454,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromPluginOverridesCorrectly(): void
     {
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $frontendConfigurationManager */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             ['getTypoScriptSetup'],

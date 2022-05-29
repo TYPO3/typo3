@@ -622,7 +622,6 @@ class DataHandlerTest extends UnitTestCase
      */
     public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse(): void
     {
-        /** @var DataHandler $subject */
         $subject = $this->getMockBuilder(DataHandler::class)
             ->onlyMethods(['log'])
             ->getMock();
@@ -1110,7 +1109,6 @@ class DataHandlerTest extends UnitTestCase
      */
     public function deletePagesOnRootLevelIsDenied(): void
     {
-        /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $dataHandlerMock */
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
             ->onlyMethods(['canDeletePage', 'log'])
             ->getMock();
@@ -1139,13 +1137,11 @@ class DataHandlerTest extends UnitTestCase
             ],
         ];
 
-        /** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
         $mockRelationHandler = $this->createMock(RelationHandler::class);
         $mockRelationHandler->itemArray = [
             '1' => ['table' => StringUtility::getUniqueId('bar_'), 'id' => 67],
         ];
 
-        /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $mockDataHandler */
         $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
         $mockDataHandler->expects(self::once())->method('getInlineFieldType')->willReturn('field');
         $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);

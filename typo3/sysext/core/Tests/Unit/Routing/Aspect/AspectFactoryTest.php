@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Aspect;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
@@ -62,7 +61,6 @@ class AspectFactoryTest extends UnitTestCase
             'Persisted' => $this->persistedMockClass,
             'Aspect' => $this->aspectMockClass,
         ];
-        /** @var Context|MockObject $contextMock */
         $contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
             ->getMock();

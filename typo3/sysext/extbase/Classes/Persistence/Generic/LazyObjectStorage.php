@@ -95,7 +95,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
         if ($dataMapper === null) {
             $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         }
-        /** @var DataMapper $dataMapper */
         $this->dataMapper = $dataMapper;
     }
 

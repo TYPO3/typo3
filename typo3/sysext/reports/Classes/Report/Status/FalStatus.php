@@ -60,7 +60,6 @@ class FalStatus implements StatusProviderInterface
         $message = '';
         $severity = ReportStatus::OK;
 
-        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storageObjects = $storageRepository->findAll();
         $storages = [];

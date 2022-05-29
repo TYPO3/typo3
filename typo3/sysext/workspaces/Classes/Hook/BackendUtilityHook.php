@@ -69,8 +69,9 @@ class BackendUtilityHook
                 $stageName = $stages->getStageTitle($record['t3ver_stage']);
                 $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
                 $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
+
                 $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', FlashMessage::INFO, true);
-                /** @var FlashMessageService $flashMessageService */
+
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);

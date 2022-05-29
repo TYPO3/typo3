@@ -71,7 +71,6 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
-        /** @var SiteFinder $finderMock */
         $finderMock = $this
             ->getMockBuilder(SiteFinder::class)
             ->onlyMethods(['getAllSites'])

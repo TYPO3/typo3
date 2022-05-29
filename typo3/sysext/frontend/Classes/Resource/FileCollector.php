@@ -289,7 +289,6 @@ class FileCollector implements \Countable, LoggerAwareInterface
      */
     protected function getFileReferences($tableName, $fieldName, array $element): array
     {
-        /** @var FileRepository $fileRepository */
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $currentId = !empty($element['uid']) ? $element['uid'] : 0;
 

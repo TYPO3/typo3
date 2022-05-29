@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -162,10 +163,9 @@ class ResourceFactory implements SingletonInterface
      */
     public function createCollectionObject(array $collectionData)
     {
-        /** @var Collection\FileCollectionRegistry $registry */
         $registry = GeneralUtility::makeInstance(FileCollectionRegistry::class);
 
-        /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $class */
+        /** @var AbstractRecordCollection $class */
         $class = $registry->getFileCollectionClass($collectionData['type']);
 
         return $class::create($collectionData);
@@ -409,7 +409,6 @@ class ResourceFactory implements SingletonInterface
         } else {
             throw new \RuntimeException('A file needs to reside in a Storage', 1381570997);
         }
-        /** @var File $fileObject */
         $fileObject = GeneralUtility::makeInstance(File::class, $fileData, $storageObject);
         return $fileObject;
     }
@@ -459,7 +458,6 @@ class ResourceFactory implements SingletonInterface
      */
     public function createFileReferenceObject(array $fileReferenceData)
     {
-        /** @var FileReference $fileReferenceObject */
         $fileReferenceObject = GeneralUtility::makeInstance(FileReference::class, $fileReferenceData);
         return $fileReferenceObject;
     }

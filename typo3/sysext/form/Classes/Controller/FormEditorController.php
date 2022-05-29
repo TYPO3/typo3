@@ -299,7 +299,6 @@ class FormEditorController extends AbstractBackendController
             ],
         ];
 
-        /** @var SiteLanguage $currentSiteLanguage */
         $currentSiteLanguage = GeneralUtility::makeInstance(Site::class, 'form-dummy', $pageId, $fakeSiteConfiguration)
             ->getLanguageById($languageId);
         return $currentSiteLanguage;

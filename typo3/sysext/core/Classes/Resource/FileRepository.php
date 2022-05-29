@@ -108,7 +108,6 @@ class FileRepository extends AbstractRepository
             }
         } else {
             $workspaceId ??= GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0);
-            /** @var RelationHandler $relationHandler */
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->setWorkspaceId($workspaceId);
             $relationHandler->start(

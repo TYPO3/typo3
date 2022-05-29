@@ -145,7 +145,7 @@ class FolderTest extends UnitTestCase
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects(self::once())->method('hasFolderInFolder')->with(self::equalTo('someSubfolder'))->willReturn(true);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Resource\ResourceFactory $mockedFactory */
+
         $mockedFactory = $this->createMock(ResourceFactory::class);
         $folderFixture = $this->createFolderFixture(
             '/somePath/someFolder/',

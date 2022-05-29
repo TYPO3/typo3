@@ -4310,7 +4310,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($fileUidOrCurrentKeyword === 'current') {
                 $fileObject = $this->getCurrentFile();
             } elseif (MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
-                /** @var ResourceFactory $fileFactory */
                 $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                 $fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
             } else {

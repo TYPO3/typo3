@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendConfigurationOptionFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendDefaultFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendFixture;
@@ -324,7 +326,6 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
@@ -350,7 +351,6 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
@@ -434,7 +434,6 @@ class CacheManagerTest extends UnitTestCase
      */
     public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = 'aTest';
 
@@ -470,7 +469,6 @@ class CacheManagerTest extends UnitTestCase
      */
     public function flushCachesInGroupByTagsDeletesByTag(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = 'aTest';
 
@@ -510,12 +508,11 @@ class CacheManagerTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1596980032);
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
         $manager->setCacheConfigurations([
             '' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'frontend' => VariableFrontend::class,
+                'backend' => Typo3DatabaseBackend::class,
                 'options' => [
                     'compression' => true,
                 ],

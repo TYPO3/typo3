@@ -107,7 +107,6 @@ class InlineControlContainer extends AbstractContainer
 
         $this->inlineData = $this->data['inlineData'];
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $this->inlineStackProcessor = $inlineStackProcessor;
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);

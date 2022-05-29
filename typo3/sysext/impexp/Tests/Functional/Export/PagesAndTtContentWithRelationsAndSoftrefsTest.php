@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExportTestCase
 {
@@ -94,7 +92,6 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
     </ROOT>
 </T3DataStructure>';
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setPid(1);
         $subject->setLevels(1);
@@ -142,7 +139,6 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
     </ROOT>
 </T3DataStructure>';
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setPid(1);
         $subject->setLevels(1);
@@ -202,7 +198,6 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
     </sheets>
 </T3DataStructure>';
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setPid(1);
         $subject->setLevels(1);

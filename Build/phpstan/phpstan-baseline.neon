@@ -1826,29 +1826,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/EmailLinkHandlerTest.php
 
 		-
-			message: "#^Variable \\$storageMock in PHPDoc tag @var does not match assigned variable \\$factory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/FileLinkHandlerTest.php
-
-		-
-			message: "#^Variable \\$storageMock in PHPDoc tag @var does not match assigned variable \\$storage\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/FileLinkHandlerTest.php
-
-		-
 			message: "#^Method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\>\\:\\:getMock\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/FolderLinkHandlerTest.php
-
-		-
-			message: "#^Variable \\$storageMock in PHPDoc tag @var does not match assigned variable \\$storage\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/FolderLinkHandlerTest.php
-
-		-
-			message: "#^Variable \\$storageMock in PHPDoc tag @var does not match assigned variable \\$storage\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/LegacyLinkNotationConverterTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$data of method TYPO3\\\\CMS\\\\Core\\\\LinkHandling\\\\UrlLinkHandler\\:\\:resolveHandlerData\\(\\) expects array, string given\\.$#"
@@ -1906,11 +1886,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Page/AssetRendererTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:expects\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php
-
-		-
 			message: "#^Cannot call method withCurrentPageNumber\\(\\) on array\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
@@ -1961,19 +1936,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
 
 		-
-			message: "#^Variable \\$driver in PHPDoc tag @var does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectedMergedProperties$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/FileReferenceTest.php
-
-		-
-			message: "#^Variable \\$driverMock in PHPDoc tag @var does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Filter/FileNameFilterTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<ad9195e2487eea33c8a2abd5cf33cba4\\>, string given\\.$#"
@@ -1989,11 +1954,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<db76010e5c24658c35ea1605cce2391d\\>, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
-
-		-
-			message: "#^PHPDoc tag @var for variable \\$fileResourceMock contains unknown class PHPUnit_Framework_MockObject_MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Rendering/VimeoRendererTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractRepository\\:\\:findByUid\\(\\) expects int, string given\\.$#"
@@ -2012,7 +1972,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\:\\:method\\(\\)\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Routing/SiteMatcherTest.php
 
 		-
@@ -2451,7 +2411,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 
 		-
-			message: "#^Property class@anonymous/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest\\.php\\:340\\:\\:\\$name is unused\\.$#"
+			message: "#^Property class@anonymous/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest\\.php\\:341\\:\\:\\$name is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 
@@ -2522,7 +2482,7 @@ parameters:
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with DateTime&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface will always evaluate to false\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
 
 		-
@@ -2809,11 +2769,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/ViewHelpers/ToggleExtensionInstallationStateViewHelper.php
-
-		-
-			message: "#^Variable \\$downloadUtilityMock in PHPDoc tag @var does not match assigned variable \\$extensionManagementServiceMock\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Controller/DownloadControllerTest.php
 
 		-
 			message: "#^Method PHPUnit\\\\Framework\\\\TestCase\\:\\:count\\(\\) invoked with 1 parameter, 0 required\\.$#"
@@ -3811,11 +3766,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/SiteRequestTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:method\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/Authentication/FrontendUserAuthenticationTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertFalse\\(\\) with string will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
@@ -3944,11 +3894,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$all of method TYPO3\\\\CMS\\\\Impexp\\\\Import\\:\\:loadFile\\(\\) expects bool, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/ImportExportTest.php
-
-		-
-			message: "#^Variable \\$subject in PHPDoc tag @var does not match assigned variable \\$importMock\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/ImportTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:setArguments\\(\\)\\.$#"
@@ -4279,11 +4224,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Unit/Task/CleanerFieldProviderTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Redirects\\\\Service\\\\RedirectService\\:\\:method\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Unit/Service/RedirectServiceTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Menu\\\\MenuItem\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"

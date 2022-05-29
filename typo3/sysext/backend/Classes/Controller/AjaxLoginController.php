@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -47,7 +48,7 @@ class AjaxLoginController
         if ($this->isAuthorizedBackendSession()) {
             $result = ['success' => true];
             if ($this->hasLoginBeenProcessed($request)) {
-                /** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $formProtection */
+                /** @var BackendFormProtection $formProtection */
                 $formProtection = FormProtectionFactory::get();
                 $formProtection->setSessionTokenFromRegistry();
                 $formProtection->persistSessionToken();

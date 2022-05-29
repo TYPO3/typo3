@@ -77,7 +77,6 @@ class InMemoryLogWriter extends AbstractWriter
     protected function lockWriter(): void
     {
         self::$memoryLock = true;
-        /** @var LogRecord $record */
         $record = GeneralUtility::makeInstance(
             LogRecord::class,
             'TYPO3.CMS.AdminPanel.Log.InMemoryLogWriter',

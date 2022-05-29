@@ -991,8 +991,7 @@ class DataHandler implements LoggerAwareInterface
                                 // new version of a record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
                                 $this->pagetreeNeedsRefresh = true;
 
-                                /** @var DataHandler $tce */
-                                $tce = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
+                                $tce = GeneralUtility::makeInstance(self::class, $this->referenceIndexUpdater);
                                 $tce->enableLogging = $this->enableLogging;
                                 // Setting up command for creating a new version of the record:
                                 $cmd = [];
@@ -2153,7 +2152,6 @@ class DataHandler implements LoggerAwareInterface
     {
         $items = $tcaFieldConf['items'] ?? null;
         if (!empty($tcaFieldConf['itemsProcFunc'])) {
-            /** @var ItemProcessingService $processingService */
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
             $items = $processingService->getProcessingItems(
                 $table,
@@ -2476,7 +2474,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public function checkValue_flexArray2Xml($array, $addPrologue = false)
     {
-        /** @var FlexFormTools $flexObj */
         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
         return $flexObj->flexArray2Xml($array, $addPrologue);
     }
@@ -4911,8 +4908,7 @@ class DataHandler implements LoggerAwareInterface
         $this->registerDBList[$table][$id][$field] = $value;
         // Remove child records (if synchronization requested it):
         if (is_array($removeArray) && !empty($removeArray)) {
-            /** @var DataHandler $tce */
-            $tce = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
+            $tce = GeneralUtility::makeInstance(self::class, $this->referenceIndexUpdater);
             $tce->enableLogging = $this->enableLogging;
             $tce->start([], $removeArray, $this->BE_USER);
             $tce->process_cmdmap();
@@ -9212,9 +9208,7 @@ class DataHandler implements LoggerAwareInterface
         while ($row = $result->fetchAssociative()) {
             $msg = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
             $msg = $row['error'] . ': ' . $msg;
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
-            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -9351,7 +9345,6 @@ class DataHandler implements LoggerAwareInterface
         $sortingStatement = !empty($sortingField)
             ? [$connection->quoteIdentifier($sortingField)]
             : null;
-        /** @var PlainDataResolver $resolver */
         $resolver = GeneralUtility::makeInstance(
             PlainDataResolver::class,
             $tableName,

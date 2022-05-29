@@ -115,7 +115,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1365429656);
 
         $packageName = StringUtility::getUniqueId('foo');
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
@@ -137,7 +136,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->disableOriginalConstructor()
                 ->onlyMethods(['getPackagePath'])
                 ->getMock();
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
@@ -1126,7 +1124,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function loadExtLocalconfDoesNotReadFromCacheIfCachingIsDenied(): void
     {
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1147,7 +1144,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1263,7 +1259,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function loadBaseTcaDoesNotReadFromCacheIfCachingIsDenied(): void
     {
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1309,7 +1304,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1335,7 +1329,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1370,7 +1363,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function loadExtTablesDoesNotReadFromCacheIfCachingIsDenied(): void
     {
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1391,7 +1383,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
@@ -1521,7 +1512,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->getMock();
         $packageMetaData->method('getVersion')->willReturn('1.2.3');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey, ['getPackagePath', 'getPackageKey', 'getPackageMetaData']);
-        /** @var \PHPUnit\Framework\MockObject\MockObject $package */
+        /** @var Package&MockObject $package */
         $package = $packageManager->getPackage($extensionKey);
         $package
                 ->method('getPackageMetaData')
@@ -1559,7 +1550,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1342345487);
 
         $packageName = StringUtility::getUniqueId('foo');
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
@@ -1578,7 +1568,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function unloadExtensionCallsPackageManagerToDeactivatePackage(): void
     {
         $packageName = StringUtility::getUniqueId('foo');
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->onlyMethods(['isPackageActive', 'deactivatePackage'])
             ->disableOriginalConstructor()

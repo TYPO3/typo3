@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -309,7 +310,6 @@ class IndexSearchRepository
         // Perform SQL Search / collection of result rows array:
         $resource = false;
         if ($searchData) {
-            /** @var TimeTracker $timeTracker */
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             // Do the search:
             $timeTracker->push('execFinalQuery');
@@ -1127,7 +1127,7 @@ class IndexSearchRepository
      */
     protected function multiplePagesType(string $itemType): bool
     {
-        /** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
+        /** @var FileContentParser|null $fileContentParser */
         $fileContentParser = $this->externalParsers[$itemType] ?? null;
         return is_object($fileContentParser) && $fileContentParser->isMultiplePageExtension($itemType);
     }

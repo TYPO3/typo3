@@ -335,7 +335,6 @@ class RootlineUtilityTest extends UnitTestCase
     {
         $this->subject->method('resolvePageId')->willReturn(42);
 
-        /** @var AbstractFrontend $cacheFrontendMock */
         $cacheFrontendMock = $this->getMockForAbstractClass(
             AbstractFrontend::class,
             [],

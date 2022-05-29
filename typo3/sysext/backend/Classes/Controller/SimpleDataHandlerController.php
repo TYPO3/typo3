@@ -134,7 +134,6 @@ class SimpleDataHandlerController
         $this->initializeClipboard($request);
         $this->processRequest();
 
-        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
         $content = [

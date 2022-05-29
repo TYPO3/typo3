@@ -2128,9 +2128,7 @@ class PageRenderer implements SingletonInterface
     {
         $ajaxUrls = [];
         // Add the ajax-based routes
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        /** @var Router $router */
         $router = GeneralUtility::makeInstance(Router::class);
         foreach ($router->getRoutes() as $routeIdentifier => $route) {
             if ($publicRoutesOnly && $route->getOption('access') !== 'public') {

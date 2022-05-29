@@ -319,7 +319,6 @@ class RootlineUtility
         if ($parentUid > 0) {
             // Get rootline of (and including) parent page
             $mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
-            /** @var RootlineUtility $rootlineUtility */
             $rootlineUtility = GeneralUtility::makeInstance(self::class, $parentUid, $mountPointParameter, $this->context);
             $rootline = $rootlineUtility->get();
             // retrieve cache tags of parent rootline

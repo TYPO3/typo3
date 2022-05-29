@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Error;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Error\ErrorHandler;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ErrorHandlerTest extends FunctionalTestCase
@@ -83,7 +81,6 @@ class ErrorHandlerTest extends FunctionalTestCase
         $logManagerMock->expects(self::never())->method('getLogger')->with('TYPO3.CMS.deprecations');
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
 
-        /** @var Logger|MockObject $logger */
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['log'])
@@ -92,7 +89,6 @@ class ErrorHandlerTest extends FunctionalTestCase
         // Make sure the assigned logger does not log
         $logger->expects(self::never())->method('log');
 
-        /** @var ErrorHandler|AccessibleObjectInterface $coreErrorHandler */
         $coreErrorHandler = new ErrorHandler(
             E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)
         );

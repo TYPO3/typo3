@@ -271,7 +271,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             return;
         }
 
-        /** @var Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
 
         // A large set of tags was detected. Process it in chunks to guard against exceeding
@@ -331,7 +330,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             return;
         }
 
-        /** @var Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
 
         $quotedTag = '\'' . $tag . '\'';

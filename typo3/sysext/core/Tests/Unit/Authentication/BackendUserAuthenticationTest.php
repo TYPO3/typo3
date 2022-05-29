@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
@@ -112,7 +111,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
         $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);
 
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -182,7 +180,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
@@ -322,7 +319,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
@@ -358,7 +354,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, int $storageUid, array $storagePermissions): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
@@ -507,7 +502,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
@@ -528,7 +522,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsGrantsAllPermissionsToAdminUsers(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
@@ -563,7 +556,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['getTSConfig'])
             ->getMock();
@@ -581,7 +573,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationAllowsSettingMultipleBitsInValue(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['getTSConfig'])
             ->getMock();
@@ -652,7 +643,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['getTSConfig'])
             ->getMock();
@@ -670,7 +660,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationReturnsTrueIfConfigurationIsMissing(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['getTSConfig'])
             ->getMock();
@@ -754,7 +743,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
             GeneralUtility::addInstance(ConnectionPool::class, $databaseProphecy->reveal());
         }
 
-        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
@@ -777,7 +765,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function checkAuthModeReturnsExpectedValue(string $theValue, bool $expectedResult): void
     {
-        /** @var BackendUserAuthentication|MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['isAdmin'])

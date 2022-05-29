@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
@@ -328,6 +327,7 @@ class PersistenceManagerTest extends UnitTestCase
 			class  ' . $className . 'Repository extends \\TYPO3\\CMS\\Extbase\\Persistence\\Repository {}
 		');
         $classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
+        /** @var class-string<RepositoryInterface> $repositoryClassNameWithNamespace */
         $repositoryClassNameWithNamespace = __NAMESPACE__ . '\\Domain\\Repository\\' . $className . 'Repository';
 
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
@@ -338,10 +338,10 @@ class PersistenceManagerTest extends UnitTestCase
         $session = new Session();
         $changedEntities = new ObjectStorage();
         $entity1 = new $classNameWithNamespace();
-        /** @var RepositoryInterface|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $repository */
+
         $repository = $this->getAccessibleMock($repositoryClassNameWithNamespace, ['dummy']);
         $repository->_set('objectType', get_class($entity1));
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
+
         $mockBackend = $this->getMockBuilder(Backend::class)
             ->onlyMethods(['commit', 'setChangedEntities'])
             ->disableOriginalConstructor()
@@ -368,7 +368,6 @@ class PersistenceManagerTest extends UnitTestCase
      */
     public function tearDownWithBackendSupportingTearDownDelegatesCallToBackend(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
         $mockBackend = $this->getMockBuilder(BackendInterface::class)
             ->onlyMethods(get_class_methods(BackendInterface::class))
             ->addMethods(['tearDown'])
@@ -402,7 +401,7 @@ class PersistenceManagerTest extends UnitTestCase
         $classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
         $entity1 = new $classNameWithNamespace();
         $aggregateRootObjects->attach($entity1);
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
+
         $mockBackend = $this->getMockBuilder(Backend::class)
             ->onlyMethods(['commit', 'setAggregateRootObjects', 'setDeletedEntities'])
             ->disableOriginalConstructor()

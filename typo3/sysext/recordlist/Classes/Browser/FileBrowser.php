@@ -380,7 +380,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected function getFilesInFolder(Folder $folder, array $extensionList)
     {
         if (!empty($extensionList)) {
-            /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions($extensionList);
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);

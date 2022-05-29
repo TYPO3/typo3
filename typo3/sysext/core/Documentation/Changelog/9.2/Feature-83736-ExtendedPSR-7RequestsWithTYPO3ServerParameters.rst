@@ -18,7 +18,6 @@ is given to controllers, example:
 
 .. code-block:: php
 
-    /** @var NormalizedParams $normalizedParams */
     $normalizedParams = $request->getAttribute('normalizedParams');
     $requestPort = $normalizedParams->getRequestPort();
 

@@ -102,7 +102,6 @@ class InheritancesResolverService
      */
     public static function create(array $configuration = []): InheritancesResolverService
     {
-        /** @var InheritancesResolverService $inheritancesResolverService */
         $inheritancesResolverService = GeneralUtility::makeInstance(self::class);
         $inheritancesResolverService->setReferenceConfiguration($configuration);
         return $inheritancesResolverService;

@@ -74,7 +74,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     public function addSystemMessage($text, $status = InformationStatus::STATUS_OK, $count = 0, $module = '', $params = ''): void
     {
         $this->systemMessageTotalCount += (int)$count;
-        /** @var InformationStatus $messageSeverity */
         $messageSeverity = InformationStatus::cast($status);
         // define the severity for the badge
         if ($messageSeverity->isGreaterThan($this->highestSeverity)) {

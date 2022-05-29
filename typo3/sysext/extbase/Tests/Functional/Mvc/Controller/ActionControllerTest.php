@@ -107,7 +107,6 @@ class ActionControllerTest extends FunctionalTestCase
         $conjunctionValidator = $argument->getValidator();
         self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 
-        /** @var \SplObjectStorage $validators */
         $validators = $conjunctionValidator->getValidators();
         self::assertInstanceOf(\SplObjectStorage::class, $validators);
         self::assertCount(1, $validators);

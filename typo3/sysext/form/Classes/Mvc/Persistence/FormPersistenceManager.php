@@ -399,7 +399,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $parentFolder = $storage->getRootLevelFolder(false);
 
             foreach ($storage->getFileMounts() as $storageFileMount) {
-                /** @var \TYPO3\CMS\Core\Resource\Folder */
+                /** @var Folder */
                 $storageFileMountFolder = $storageFileMount['folder'];
 
                 // Normally should use ResourceStorage::isWithinFolder() to check if the configured file mount path is within a storage file mount but this requires a valid Folder object and thus a directory which already exists. And the folder could simply not exist yet.

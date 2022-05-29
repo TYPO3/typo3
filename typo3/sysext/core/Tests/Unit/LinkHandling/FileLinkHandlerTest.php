@@ -98,11 +98,9 @@ class FileLinkHandlerTest extends UnitTestCase
      */
     public function resolveFileReferencesToSplitParameters(array $input, array $expected): void
     {
-        /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var ResourceFactory|\PHPUnit\Framework\MockObject\MockObject $storageMock */
         $factory = $this->getMockBuilder(ResourceFactory::class)
             ->disableOriginalConstructor()
             ->getMock();

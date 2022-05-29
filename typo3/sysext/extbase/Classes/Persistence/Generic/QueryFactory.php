@@ -50,7 +50,6 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
      */
     public function create($className): QueryInterface
     {
-        /** @var QueryInterface $query */
         $query = $this->container->get(QueryInterface::class);
         $query->setType($className);
 

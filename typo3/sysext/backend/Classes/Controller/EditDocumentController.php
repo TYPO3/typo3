@@ -664,7 +664,6 @@ class EditDocumentController
                 $relatedPageId = -$nRec['t3ver_oid'];
             }
 
-            /** @var DataHandler $duplicateTce */
             $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
 
             $duplicateCmd = [

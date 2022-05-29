@@ -255,7 +255,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function buildRepresentationForNode(TreeNode $basicNode, DatabaseTreeNode $parent = null, $level = 0)
     {
-        /** @var DatabaseTreeNode $node */
         $node = GeneralUtility::makeInstance(DatabaseTreeNode::class);
         $row = [];
         if ($basicNode->getId() == 0) {
@@ -276,7 +275,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $node->setParentNode($parent);
         if ($basicNode->hasChildNodes()) {
             $node->setHasChildren(true);
-            /** @var \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection $childNodes */
             $childNodes = GeneralUtility::makeInstance(SortedTreeNodeCollection::class);
             $tempNodes = [];
             foreach ($basicNode->getChildNodes() as $child) {
@@ -335,10 +333,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             // this with a separate TreeNodeCollection that gets attached to the root node with uid 0. This has the
             // nasty side effect we cannot avoid the root node being rendered.
 
-            /** @var TreeNodeCollection $treeNodeCollection */
             $treeNodeCollection = GeneralUtility::makeInstance(TreeNodeCollection::class);
             foreach ($startingPoints as $startingPoint) {
-                /** @var TreeNode $treeData */
                 $treeData = GeneralUtility::makeInstance(TreeNode::class);
                 $treeData->setId($startingPoint);
 
@@ -390,7 +386,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $storage = null;
         $children = $this->getRelatedRecords($nodeData);
         if (!empty($children)) {
-            /** @var TreeNodeCollection $storage */
             $storage = GeneralUtility::makeInstance(TreeNodeCollection::class);
             foreach ($children as $child) {
                 $node = GeneralUtility::makeInstance(TreeNode::class);
@@ -441,7 +436,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $uid = $row['uid'];
         if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline'], true)) {
             if ($this->columnConfiguration['MM'] ?? null) {
-                /** @var \TYPO3\CMS\Core\Database\RelationHandler $dbGroup */
                 $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                 // Dummy field for setting "look from other site"
                 $this->columnConfiguration['MM_oppositeField'] = 'children';

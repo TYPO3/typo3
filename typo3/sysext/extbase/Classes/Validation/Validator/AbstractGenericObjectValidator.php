@@ -84,7 +84,7 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
      */
     protected function checkProperty(mixed $value, \Traversable $validators, string $propertyName): void
     {
-        /** @var \TYPO3\CMS\Extbase\Error\Result $result */
+        /** @var Result|null $result */
         $result = null;
         foreach ($validators as $validator) {
             if ($validator instanceof ObjectValidatorInterface) {

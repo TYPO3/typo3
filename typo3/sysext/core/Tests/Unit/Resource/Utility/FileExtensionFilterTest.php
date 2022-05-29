@@ -17,13 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -110,7 +108,6 @@ class FileExtensionFilterTest extends UnitTestCase
      */
     public function extensionFilterIgnoresCaseInAllowedExtensionCheck($fileExtension, $allowedExtensions, $disallowedExtensions, $isAllowed): void
     {
-        /** @var FileExtensionFilter|MockObject|AccessibleObjectInterface $filter */
         $filter = $this->getAccessibleMock(FileExtensionFilter::class, ['dummy']);
         $filter->setAllowedFileExtensions($allowedExtensions);
         $filter->setDisallowedFileExtensions($disallowedExtensions);

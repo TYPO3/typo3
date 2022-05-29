@@ -62,9 +62,9 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      * @param string|int $source
      * @param string $targetType
      * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @throws \TYPO3\CMS\Extbase\Property\Exception
-     * @return \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+     * @param PropertyMappingConfigurationInterface|null $configuration
+     * @return AbstractFileFolder
+     * @throws Exception
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): AbstractFileFolder
     {
@@ -72,7 +72,7 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
         if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
             throw new Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . (is_object($object) ? get_class($object) : 'null'), 1342895975);
         }
-        /** @var \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder $subject */
+        /** @var AbstractFileFolder $subject */
         $subject = GeneralUtility::makeInstance($targetType);
         $subject->setOriginalResource($object);
         return $subject;

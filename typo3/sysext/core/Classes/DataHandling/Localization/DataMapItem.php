@@ -110,7 +110,6 @@ class DataMapItem
         array $persistedValues,
         array $configurationFieldNames
     ) {
-        /** @var DataMapItem $item */
         $item = GeneralUtility::makeInstance(
             static::class,
             $tableName,

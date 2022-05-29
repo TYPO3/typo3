@@ -105,7 +105,6 @@ abstract class AbstractItemProvider
                 $fieldLabel,
                 $exception->getMessage()
             );
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $message,
@@ -113,7 +112,6 @@ abstract class AbstractItemProvider
                 FlashMessage::ERROR,
                 true
             );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -278,9 +276,7 @@ abstract class AbstractItemProvider
             $msg = $databaseError . '. ';
             $msg .= $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
             $msgTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $msgTitle, FlashMessage::ERROR, true);
-            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -543,7 +539,6 @@ abstract class AbstractItemProvider
         $foreignTableClauseArray = $this->processForeignTableClause($result, $foreignTableName, $localFieldName);
 
         $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($foreignTableName);
 
@@ -948,7 +943,6 @@ abstract class AbstractItemProvider
         }
 
         if (isset($fieldConfig['config']['foreign_table']) && !empty($fieldConfig['config']['foreign_table'])) {
-            /** @var RelationHandler $relationHandler */
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->registerNonTableValues = !empty($fieldConfig['config']['allowNonIdValues']);
             if (!empty($fieldConfig['config']['MM']) && $result['command'] !== 'new') {

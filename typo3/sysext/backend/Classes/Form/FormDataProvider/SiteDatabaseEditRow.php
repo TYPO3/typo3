@@ -54,7 +54,6 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
         }
 
         $tableName = $result['tableName'];
-        /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class, $this->siteConfiguration);
         if ($tableName === 'site') {
             $rootPageId = (int)$result['vanillaUid'];

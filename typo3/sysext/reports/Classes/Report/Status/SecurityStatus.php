@@ -85,7 +85,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         $message = '';
         $severity = ReportStatus::OK;
 
-        /** @var \TYPO3\CMS\Core\Http\NormalizedParams $normalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
 
         if (!$normalizedParams->isHttps()) {
@@ -103,7 +102,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      */
     protected function getLockSslStatus(ServerRequestInterface $request): ?ReportStatus
     {
-        /** @var \TYPO3\CMS\Core\Http\NormalizedParams $normalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
 
         if ($normalizedParams->isHttps()) {

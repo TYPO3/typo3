@@ -250,7 +250,6 @@ class Execution
      */
     public function getNextCronExecution()
     {
-        /** @var \TYPO3\CMS\Scheduler\CronCommand\CronCommand $cronCmd */
         $cronCmd = GeneralUtility::makeInstance(CronCommand::class, $this->getCronCmd());
         $cronCmd->calculateNextValue();
         return $cronCmd->getTimestamp();

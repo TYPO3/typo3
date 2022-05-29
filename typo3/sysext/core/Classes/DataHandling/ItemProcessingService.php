@@ -66,7 +66,6 @@ class ItemProcessingService
                 $fieldLabel,
                 $exception->getMessage()
             );
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $message,
@@ -74,7 +73,6 @@ class ItemProcessingService
                 FlashMessage::ERROR,
                 true
             );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);

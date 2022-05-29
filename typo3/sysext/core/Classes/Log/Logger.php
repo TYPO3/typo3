@@ -204,7 +204,6 @@ class Logger implements LoggerInterface
         if ($level > $this->minimumLogLevel) {
             return $this;
         }
-        /** @var \TYPO3\CMS\Core\Log\LogRecord $record */
         $record = GeneralUtility::makeInstance(LogRecord::class, $this->name, LogLevel::getInternalName($level), $message, $data, $this->requestId);
         $record = $this->callProcessors($record);
         $this->writeLog($record);

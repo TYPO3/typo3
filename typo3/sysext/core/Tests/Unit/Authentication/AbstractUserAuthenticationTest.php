@@ -60,7 +60,6 @@ class AbstractUserAuthenticationTest extends UnitTestCase
 
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
-        /** @var AbstractUserAuthentication $mock */
         $mock = $this->getMockBuilder(AbstractUserAuthentication::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()

@@ -94,7 +94,6 @@ class ClassLoadingInformation
         $composerClassLoader = static::getClassLoader();
         $activeExtensionPackages = static::getActiveExtensionPackages();
 
-        /** @var ClassLoadingInformationGenerator  $generator */
         $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, Environment::getPublicPath() . '/', self::isTestingContext());
         $classInfoFiles = $generator->buildAutoloadInformationFiles();
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
@@ -174,7 +173,6 @@ class ClassLoadingInformation
         $composerClassLoader = static::getClassLoader();
         $activeExtensionPackages = static::getActiveExtensionPackages();
 
-        /** @var ClassLoadingInformationGenerator  $generator */
         $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, Environment::getPublicPath() . '/', self::isTestingContext());
 
         $classInformation = $generator->buildClassLoadingInformationForPackage($package);

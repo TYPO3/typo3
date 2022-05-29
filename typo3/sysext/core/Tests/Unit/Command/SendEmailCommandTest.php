@@ -55,7 +55,6 @@ class SendEmailCommandTest extends UnitTestCase
             ->method('getRealTransport')
             ->willReturn($realTransportProphecy->reveal());
 
-        /** @var SendEmailCommand|\PHPUnit\Framework\MockObject\MockObject $command */
         $command = $this->getMockBuilder(SendEmailCommand::class)
             ->setConstructorArgs(['mailer:spool:send'])
             ->onlyMethods(['getMailer'])

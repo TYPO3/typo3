@@ -55,12 +55,10 @@ class UserFileMountService
             $storageUid = (int)($PA['row']['storage'][0] ?? 0);
         }
         if ($storageUid > 0 && in_array($storageUid, $allowedStorageIds, true)) {
-            /** @var StorageRepository $storageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
+            /** @var ResourceStorage $storage */
             $storage = $storageRepository->findByUid($storageUid);
             if ($storage === null) {
-                /** @var FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $queue = $flashMessageService->getMessageQueueByIdentifier();
                 $queue->enqueue(new FlashMessage('Storage #' . $storageUid . ' does not exist. No folder is currently selectable.', '', FlashMessage::ERROR));
@@ -92,7 +90,6 @@ class UserFileMountService
                     }
                 }
             } else {
-                /** @var FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $queue = $flashMessageService->getMessageQueueByIdentifier();
                 $queue->enqueue(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));

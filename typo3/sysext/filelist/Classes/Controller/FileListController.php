@@ -299,7 +299,6 @@ class FileListController implements LoggerAwareInterface
                     $this->filelist->clipObj->removeElement($clipboardIdentifier);
                 }
                 // Init file processing object for deleting and pass the cmd array.
-                /** @var ExtendedFileUtility $fileProcessor */
                 $fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
                 $fileProcessor->setActionPermissions();
                 $fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);

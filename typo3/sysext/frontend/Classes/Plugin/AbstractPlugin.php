@@ -228,7 +228,6 @@ class AbstractPlugin
         }
         $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
 
-        /** @var Locales $locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
         if (in_array($this->LLkey, $locales->getLocales())) {
             foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
@@ -950,7 +949,6 @@ class AbstractPlugin
             $languageFilePath = 'EXT:' . $this->extKey . '/' . PathUtility::dirname($this->scriptRelPath) . '/locallang.xlf';
         }
         if ($languageFilePath !== '') {
-            /** @var LocalizationFactory $languageFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($languageFilePath, $this->LLkey);
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);

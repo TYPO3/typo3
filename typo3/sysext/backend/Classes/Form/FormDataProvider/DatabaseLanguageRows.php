@@ -76,7 +76,6 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 // @todo: The TranslationConfigurationProvider is more stupid than good for us ... invent a better translation overlay api!
                 if (!empty($result['userTsConfig']['options.']['additionalPreviewLanguages'])) {
                     $additionalLanguageUids = GeneralUtility::intExplode(',', $result['userTsConfig']['options.']['additionalPreviewLanguages'], true);
-                    /** @var TranslationConfigurationProvider $translationProvider */
                     $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
                     foreach ($additionalLanguageUids as $additionalLanguageUid) {
                         // Continue if this system language record does not exist or if 0 or -1 is requested

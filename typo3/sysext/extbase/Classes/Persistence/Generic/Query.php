@@ -229,7 +229,6 @@ class Query implements QueryInterface
         if ($returnRawQueryResult) {
             return $this->persistenceManager->getObjectDataByQuery($this);
         }
-        /** @var QueryResultInterface $queryResult */
         $queryResult = $this->container->get(QueryResultInterface::class);
         $queryResult->setQuery($this);
         return $queryResult;

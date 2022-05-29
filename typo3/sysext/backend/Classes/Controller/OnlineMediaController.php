@@ -142,7 +142,6 @@ class OnlineMediaController
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {
-        /** @var FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();

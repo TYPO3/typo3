@@ -68,7 +68,6 @@ class RecordStateFactory
         $node = $this->createEntityPointer($pageId, 'pages');
         $subject = $this->createEntityPointer($recordId);
 
-        /** @var RecordState $target */
         $target = GeneralUtility::makeInstance(
             RecordState::class,
             $context,

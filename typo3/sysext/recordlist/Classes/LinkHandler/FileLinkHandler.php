@@ -188,7 +188,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     protected function getFolderContent(Folder $folder, $extensionList)
     {
         if ($extensionList !== '') {
-            /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions($extensionList);
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);

@@ -162,7 +162,6 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);

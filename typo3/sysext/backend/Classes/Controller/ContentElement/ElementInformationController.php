@@ -389,7 +389,6 @@ class ElementInformationController
                         if ($rowValue) {
                             $creatorRecord = BackendUtility::getRecord('be_users', (int)$rowValue);
                             if ($creatorRecord) {
-                                /** @var Avatar $avatar */
                                 $avatar = GeneralUtility::makeInstance(Avatar::class);
                                 $creatorRecord['icon'] = $avatar->render($creatorRecord);
                                 $rowValue = $creatorRecord;

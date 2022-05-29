@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class ExportPageTreeViewTest extends AbstractImportExportTestCase
 {
@@ -57,7 +55,6 @@ class ExportPageTreeViewTest extends AbstractImportExportTestCase
         $exportPageTreeView = $this->getAccessibleMock(ExportPageTreeView::class, ['dummy']);
         GeneralUtility::addInstance(ExportPageTreeView::class, $exportPageTreeView);
 
-        /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, [
             'setMetaData', 'exportAddRecordsFromRelations', 'exportAddFilesFromRelations', 'exportAddFilesFromSysFilesRecords',
         ]);

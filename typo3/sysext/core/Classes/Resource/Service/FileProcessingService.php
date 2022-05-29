@@ -92,9 +92,7 @@ class FileProcessingService
             }
         }
 
-        /** @var Resource\ProcessedFileRepository $processedFileRepository */
         $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-
         $processedFile = $processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($fileObject, $taskType, $configuration);
 
         // set the storage of the processed file
@@ -139,7 +137,6 @@ class FileProcessingService
             $processor->processTask($task);
 
             if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
-                /** @var Resource\ProcessedFileRepository $processedFileRepository */
                 $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
                 $processedFileRepository->add($processedFile);
             }

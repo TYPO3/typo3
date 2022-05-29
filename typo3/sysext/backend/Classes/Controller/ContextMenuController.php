@@ -64,7 +64,6 @@ class ContextMenuController
      */
     public function clipboardAction(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var Clipboard $clipboard */
         $clipboard = GeneralUtility::makeInstance(Clipboard::class);
         $clipboard->initializeClipboard($request);
         $clipboard->lockToNormal();

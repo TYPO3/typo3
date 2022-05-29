@@ -283,7 +283,6 @@ class NodeFactoryTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1431872546);
         $mockNode = new \stdClass();
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->onlyMethods(['instantiate'])
             ->disableOriginalConstructor()

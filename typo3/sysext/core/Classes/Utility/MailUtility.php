@@ -182,7 +182,6 @@ class MailUtility
      */
     public static function parseAddresses(string $rawAddresses): array
     {
-        /** @var \TYPO3\CMS\Core\Mail\Rfc822AddressesParser $addressParser */
         $addressParser = GeneralUtility::makeInstance(
             Rfc822AddressesParser::class,
             $rawAddresses

@@ -34,9 +34,6 @@ class EditDocumentControllerTest extends FunctionalTestCase
 {
     protected EditDocumentController $subject;
 
-    /**
-     * @var NormalizedParams
-     */
     protected NormalizedParams $normalizedParams;
 
     /**

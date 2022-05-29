@@ -36,7 +36,6 @@ trait DefaultJavaScriptAssetTrait
             return;
         }
         $filePath = $this->defaultFrontendJavaScriptFile;
-        /** @var AssetCollector $collector */
         $collector = GeneralUtility::makeInstance(AssetCollector::class);
         // `config.removeDefaultJS = external` - persist JavaScript to `typo3temp/assets/`
         if ($this->shallExportDefaultFrontendJavaScript()) {

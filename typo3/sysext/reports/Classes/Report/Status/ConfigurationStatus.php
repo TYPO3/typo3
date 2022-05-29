@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -82,7 +81,7 @@ class ConfigurationStatus implements StatusProviderInterface
 
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->getLL('status_empty');
@@ -238,7 +237,6 @@ class ConfigurationStatus implements StatusProviderInterface
         $charset = '';
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connection->createQueryBuilder();
         $defaultDatabaseCharset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
             ->from('information_schema.SCHEMATA')

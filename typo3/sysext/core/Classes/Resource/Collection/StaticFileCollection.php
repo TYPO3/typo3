@@ -51,7 +51,6 @@ class StaticFileCollection extends AbstractFileCollection
      */
     public function loadContents()
     {
-        /** @var FileRepository $fileRepository */
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $fileReferences = $fileRepository->findByRelation('sys_file_collection', 'files', $this->getIdentifier());
         foreach ($fileReferences as $file) {

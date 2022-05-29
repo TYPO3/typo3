@@ -360,7 +360,6 @@ class TemplateService
     public function matching($cc)
     {
         if (is_array($cc['all'])) {
-            /** @var ConditionMatcher $matchObj */
             $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
             $matchObj->setRootline((array)($cc['rootLine'] ?? []));
             $sectionsMatch = [];
@@ -906,9 +905,7 @@ class TemplateService
         // Parse TypoScript Constants
         // ****************************
         // Initialize parser and match-condition classes:
-        /** @var Parser\TypoScriptParser $constants */
         $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
-        /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         $matchObj->setSimulateMatchConditions($this->matchAlternative);
         $matchObj->setSimulateMatchResult((bool)$this->matchAll);
@@ -924,7 +921,6 @@ class TemplateService
         // Parse TypoScript Setup (here called "config")
         // ***********************************************
         // Initialize parser and match-condition classes:
-        /** @var Parser\TypoScriptParser $config */
         $config = GeneralUtility::makeInstance(TypoScriptParser::class);
         $config->regLinenumbers = $this->ext_regLinenumbers;
         $config->regComments = $this->ext_regComments;

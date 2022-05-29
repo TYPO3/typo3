@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -50,7 +49,6 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
                 'backend' => AbstractBackend::class,
             ],
         ];
-        /** @var CachingFrameworkGarbageCollectionTask|MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -79,7 +77,6 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
                 'frontend' => 'foo',
             ],
         ];
-        /** @var CachingFrameworkGarbageCollectionTask|MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()

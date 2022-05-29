@@ -987,7 +987,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             new PageRenderer(...$this->getPageRendererConstructorArgs()),
         );
 
-        /** @var TypoScriptService|MockObject $typoScriptServiceMock */
         $typoScriptServiceMock = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $typoScriptServiceMock
             ->expects(self::once())

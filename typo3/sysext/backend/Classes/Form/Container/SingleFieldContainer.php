@@ -159,7 +159,6 @@ class SingleFieldContainer extends AbstractContainer
      */
     protected function isInlineChildAndLabelField($table, $field)
     {
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $level = $inlineStackProcessor->getStructureLevel(-1);
@@ -189,7 +188,6 @@ class SingleFieldContainer extends AbstractContainer
             'foreign_field' => '',
         ];
 
-        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $structureDepth = $inlineStackProcessor->getStructureDepth();

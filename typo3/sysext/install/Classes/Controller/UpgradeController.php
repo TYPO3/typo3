@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\CoreVersion\CoreRelease;
+use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
@@ -816,7 +817,7 @@ class UpgradeController extends AbstractController
         // Gather code matches
         $matches = [[]];
         foreach ($matchers as $matcher) {
-            /** @var \TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface $matcher */
+            /** @var CodeScannerInterface $matcher */
             $matches[] = $matcher->getMatches();
         }
         $matches = array_merge(...$matches);

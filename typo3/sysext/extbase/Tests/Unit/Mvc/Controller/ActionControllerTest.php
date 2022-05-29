@@ -66,7 +66,6 @@ class ActionControllerTest extends UnitTestCase
     {
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getControllerActionName')->willReturn('fooBar');
-        /** @var ActionController|MockObject|AccessibleObjectInterface */
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['fooBarAction']);
         $mockController->_set('request', $mockRequest);
         self::assertEquals('fooBarAction', $mockController->_call('resolveActionMethodName'));
@@ -81,7 +80,6 @@ class ActionControllerTest extends UnitTestCase
         $this->expectExceptionCode(1186669086);
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getControllerActionName')->willReturn('fooBar');
-        /** @var ActionController|MockObject|AccessibleObjectInterface */
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['otherBarAction']);
         $mockController->_set('request', $mockRequest);
         $mockController->_call('resolveActionMethodName');
@@ -283,9 +281,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function setViewConfigurationResolvesTemplateRootPathsForTemplateRootPath(array $configuration, array $expected): void
     {
-        /** @var ActionController|MockObject|AccessibleObjectInterface $mockController */
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
-        /** @var ConfigurationManagerInterface|MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
@@ -362,9 +358,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function setViewConfigurationResolvesLayoutRootPathsForLayoutRootPath(array $configuration, array $expected): void
     {
-        /** @var ActionController|MockObject|AccessibleObjectInterface $mockController */
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
-        /** @var ConfigurationManagerInterface|MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
@@ -441,9 +435,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function setViewConfigurationResolvesPartialRootPathsForPartialRootPath(array $configuration, array $expected): void
     {
-        /** @var ActionController|MockObject|AccessibleObjectInterface $mockController */
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
-        /** @var ConfigurationManagerInterface|MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);

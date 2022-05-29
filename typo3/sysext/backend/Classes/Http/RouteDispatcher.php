@@ -83,7 +83,6 @@ class RouteDispatcher extends Dispatcher
      */
     protected function enforceReferrer(ServerRequestInterface $request, Route $route): ?ResponseInterface
     {
-        /** @var Features $features */
         $features = GeneralUtility::makeInstance(Features::class);
         if (!$features->isFeatureEnabled('security.backend.enforceReferrer')) {
             return null;
@@ -92,7 +91,6 @@ class RouteDispatcher extends Dispatcher
         if (!in_array('required', $referrerFlags, true)) {
             return null;
         }
-        /** @var ReferrerEnforcer $referrerEnforcer */
         $referrerEnforcer = GeneralUtility::makeInstance(ReferrerEnforcer::class, $request);
         return $referrerEnforcer->handle([
             'flags' => $referrerFlags,
