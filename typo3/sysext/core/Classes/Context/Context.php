@@ -79,17 +79,17 @@ class Context implements SingletonInterface
     public function hasAspect(string $name): bool
     {
         switch ($name) {
-        // Ensure the default aspects are available, this is mostly necessary for tests to not set up everything
-        case 'date':
-        case 'visibility':
-        case 'backend.user':
-        case 'frontend.user':
-        case 'workspace':
-        case 'language':
-        case 'typoscript':
-            return true;
-        default:
-            return isset($this->aspects[$name]);
+            // Ensure the default aspects are available, this is mostly necessary for tests to not set up everything
+            case 'date':
+            case 'visibility':
+            case 'backend.user':
+            case 'frontend.user':
+            case 'workspace':
+            case 'language':
+            case 'typoscript':
+                return true;
+            default:
+                return isset($this->aspects[$name]);
         }
     }
 
@@ -105,29 +105,29 @@ class Context implements SingletonInterface
         if (!isset($this->aspects[$name])) {
             // Ensure the default aspects are available, this is mostly necessary for tests to not set up everything
             switch ($name) {
-            case 'date':
-                $this->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
-                break;
-            case 'visibility':
-                $this->setAspect('visibility', new VisibilityAspect());
-                break;
-            case 'backend.user':
-                $this->setAspect('backend.user', new UserAspect());
-                break;
-            case 'frontend.user':
-                $this->setAspect('frontend.user', new UserAspect());
-                break;
-            case 'workspace':
-                $this->setAspect('workspace', new WorkspaceAspect());
-                break;
-            case 'language':
-                $this->setAspect('language', new LanguageAspect());
-                break;
-            case 'typoscript':
-                $this->setAspect('typoscript', new TypoScriptAspect());
-                break;
-            default:
-                throw new AspectNotFoundException('No aspect named "' . $name . '" found.', 1527777641);
+                case 'date':
+                    $this->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
+                    break;
+                case 'visibility':
+                    $this->setAspect('visibility', new VisibilityAspect());
+                    break;
+                case 'backend.user':
+                    $this->setAspect('backend.user', new UserAspect());
+                    break;
+                case 'frontend.user':
+                    $this->setAspect('frontend.user', new UserAspect());
+                    break;
+                case 'workspace':
+                    $this->setAspect('workspace', new WorkspaceAspect());
+                    break;
+                case 'language':
+                    $this->setAspect('language', new LanguageAspect());
+                    break;
+                case 'typoscript':
+                    $this->setAspect('typoscript', new TypoScriptAspect());
+                    break;
+                default:
+                    throw new AspectNotFoundException('No aspect named "' . $name . '" found.', 1527777641);
             }
         }
         return $this->aspects[$name];
