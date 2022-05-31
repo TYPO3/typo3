@@ -125,6 +125,7 @@ class BackendLogController extends ActionController
 
         return $this->moduleTemplateFactory
             ->create($this->request)
+            ->setFlashMessageQueue($this->getFlashMessageQueue())
             ->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'))
             ->assignMultiple($viewVariables)
             ->renderResponse('BackendLog/List');
