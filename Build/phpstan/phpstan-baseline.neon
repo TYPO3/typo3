@@ -3861,16 +3861,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/ResourceViewHelperTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$arguments\\)\\: Unexpected token \"\\$arguments\", expected type at offset 102$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Unit/ViewHelpers/FormViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResults\\)\\: Unexpected token \"\\$expectedResults\", expected type at offset 127$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Unit/ViewHelpers/FormViewHelperTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:setCurrentFile\\(\\) expects string\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid_styled_content/Classes/ViewHelpers/Link/ClickEnlargeViewHelper.php
@@ -5391,7 +5381,7 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
 
 		-
-			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
+			message: "#^Comparison operation \"\\>\" between 1 and 0 is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 
