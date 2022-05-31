@@ -45,8 +45,8 @@ class PageTreeFilterCest
     public function filterTreeForPage(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'Group');
-        $this->waitForAjaxRequestToFinish($I);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 10);
+        $this->waitForPageTreeLoad($I);
+        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
 
         // [#91884] no Enter key press on purpose. The search should start by itself without additional Enter key press
         // and this assertion makes sure the filter worked
@@ -61,8 +61,7 @@ class PageTreeFilterCest
 
         $I->click($this->pageTreeSecondaryOptions);
         $I->click($this->pageTreeReloadButton);
-        $this->waitForAjaxRequestToFinish($I);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
+        $this->waitForPageTreeLoad($I);
 
         // [#91885] filter must still apply after page tree reload
         $I->amGoingTo('prove the filter applies after page tree reload');
@@ -73,14 +72,14 @@ class PageTreeFilterCest
     public function clearFilterReloadsPageTreeWithoutFilterApplied(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'Group');
-        $this->waitForAjaxRequestToFinish($I);
+        $this->waitForPageTreeLoad($I);
 
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
         $I->cantSee('inline expandsingle', $this->inPageTree);
 
         $I->pressKey($this->filterInputField, WebDriverKeys::ESCAPE);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->waitForPageTreeLoad($I);
 
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
@@ -93,23 +92,24 @@ class PageTreeFilterCest
     public function deletingPageWithFilterAppliedRespectsFilterUponPageTreeReload(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->fillField($this->filterInputField, 'Group');
-        $this->waitForAjaxRequestToFinish($I);
+        $this->waitForPageTreeLoad($I);
 
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
 
+        $I->waitForElement('//*[text()=\'inline mn\']');
         $I->clickWithRightButton('//*[text()=\'inline mn\']');
-
-        $I->canSeeElement('#contentMenu0');
+        $I->waitForElement('#contentMenu0');
         $I->click('[data-callback-action="deleteRecord"]', '#contentMenu0');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
         $modalDialog->canSeeDialog();
         $I->click('button[name="delete"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->waitForPageTreeLoad($I);
 
         $I->canSee('elements group', $this->inPageTree);
+        $I->waitForElementNotVisible('//*[text()=\'inline mn\']');
         $I->cantSee('inline mngroup', $this->inPageTree);
         $I->cantSee('inline expandsingle', $this->inPageTree);
     }
@@ -121,10 +121,9 @@ class PageTreeFilterCest
         $I->click($this->pageTreeReloadButton);
     }
 
-    protected function waitForAjaxRequestToFinish(ApplicationTester $I): void
+    protected function waitForPageTreeLoad(ApplicationTester $I): void
     {
-        $I->waitForJS('return $.active == 0;', 10);
-        // sometimes rendering is still slower that ajax being finished.
-        $I->wait(0.5);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 10);
+        $I->waitForElementNotVisible('#typo3-pagetree .svg-tree-loader', 10);
     }
 }
