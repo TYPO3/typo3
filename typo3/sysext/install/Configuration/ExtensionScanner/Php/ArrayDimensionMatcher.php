@@ -784,4 +784,22 @@ return [
             'Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/backend.php\'][\'constructorPostProcess\']' => [
+        'restFiles' => [
+            'Breaking-97451-RemoveBackendControllerPageHooks.rst',
+            'Feature-97451-PSR-14EventsForBackendPageController.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/backend.php\'][\'renderPreProcess\']' => [
+        'restFiles' => [
+            'Breaking-97451-RemoveBackendControllerPageHooks.rst',
+            'Feature-97451-PSR-14EventsForBackendPageController.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/backend.php\'][\'renderPostProcess\']' => [
+        'restFiles' => [
+            'Breaking-97451-RemoveBackendControllerPageHooks.rst',
+            'Feature-97451-PSR-14EventsForBackendPageController.rst',
+        ],
+    ],
 ];

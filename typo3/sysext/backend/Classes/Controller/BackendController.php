@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Backend\Module\MenuModule;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -50,8 +52,6 @@ class BackendController
 {
     use PageRendererBackendSetupTrait;
 
-    protected string $css = '';
-
     /**
      * @var ModuleInterface[]
      */
@@ -65,9 +65,8 @@ class BackendController
         protected readonly ToolbarItemsRegistry $toolbarItemsRegistry,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
-        // @todo: This hook is essentially useless.
-        $this->executeHook('constructPostProcess');
         $this->modules = $this->moduleProvider->getModulesForModuleMenu($this->getBackendUser());
     }
 
@@ -78,8 +77,6 @@ class BackendController
     {
         $backendUser = $this->getBackendUser();
         $pageRenderer = $this->pageRenderer;
-
-        $this->executeHook('renderPreProcess');
 
         $this->setUpBasicPageRendererForBackend($pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
 
@@ -131,7 +128,6 @@ class BackendController
         $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
         // Needed for FormEngine manipulation (date picker)
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
-        $pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
         $pageRenderer->setTitle($title);
@@ -148,7 +144,7 @@ class BackendController
             'sitenameFirstInBackendTitle' => ($backendUser->uc['backendTitleFormat'] ?? '') === 'sitenameFirst',
         ]);
         $content = $view->render('Backend/Main');
-        $this->executeHook('renderPostProcess', ['content' => &$content]);
+        $content = $this->eventDispatcher->dispatch(new AfterBackendPageRenderEvent($content, $view))->getContent();
         $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $this->modules ? ' scaffold-modulemenu-expanded' : '') . '">';
         $pageRenderer->addBodyContent($bodyTag . $content);
         return $pageRenderer->renderResponse();
@@ -175,16 +171,6 @@ class BackendController
         $view = $this->viewFactory->create($request);
         $this->assignTopbarDetailsToView($request, $view);
         return new JsonResponse(['topbar' => $view->render('Backend/Topbar')]);
-    }
-
-    /**
-     * Adds a css snippet to the backend. This method is old and its purpose
-     * seems to be that hooks (see executeHook()) can add css?
-     * @todo: Candidate for deprecation / removal.
-     */
-    public function addCss(string $css): void
-    {
-        $this->css .= $css;
     }
 
     /**
@@ -363,22 +349,6 @@ class BackendController
         }
 
         return $modules;
-    }
-
-    /**
-     * Executes defined hooks functions for the given identifier.
-     *
-     * These hook identifiers are valid:
-     * + constructPostProcess
-     * + renderPreProcess
-     * + renderPostProcess
-     */
-    protected function executeHook(string $identifier, array $hookConfiguration = []): void
-    {
-        $options = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
-        foreach ($options[$identifier] ?? [] as $hookFunction) {
-            GeneralUtility::callUserFunction($hookFunction, $hookConfiguration, $this);
-        }
     }
 
     protected function getCollapseStateOfMenu(): bool

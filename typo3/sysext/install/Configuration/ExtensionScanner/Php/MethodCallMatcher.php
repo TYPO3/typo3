@@ -5323,4 +5323,11 @@ return [
             'Deprecation-97531-ContextRelatedMethodsWithinTSFE.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\BackendController->addCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-97451-RemoveBackendControllerPageHooks.rst',
+        ],
+    ],
 ];
