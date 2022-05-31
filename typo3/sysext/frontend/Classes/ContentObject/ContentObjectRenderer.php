@@ -5302,11 +5302,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $matchEnd = '(\\s*,|\\s*$)/';
         $necessaryFields = ['uid', 'pid'];
         $wsFields = ['t3ver_state'];
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false;
         if (isset($GLOBALS['TCA'][$table]) && !preg_match($matchStart . '\\*' . $matchEnd, $selectPart) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)|distinct/i', $selectPart)) {
             foreach ($necessaryFields as $field) {
                 $match = $matchStart . $field . $matchEnd;
                 if (!preg_match($match, $selectPart)) {
                     $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $field) . ' AS ' . $connection->quoteIdentifier($field);
+                }
+            }
+            if (is_string($languageField)) {
+                $match = $matchStart . $languageField . $matchEnd;
+                if (!preg_match($match, $selectPart)) {
+                    $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $languageField) . ' AS ' . $connection->quoteIdentifier($languageField);
                 }
             }
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ?? false) {
