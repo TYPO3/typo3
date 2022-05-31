@@ -4211,7 +4211,7 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
 
 		-
-			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
+			message: "#^Comparison operation \"\\>\" between 1 and 0 is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 
