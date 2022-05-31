@@ -29,8 +29,8 @@ Example:
         * @TYPO3\CMS\Extbase\Annotation\Validate(
         *    "RegularExpression",
         *    options={
-        *       "regularExpression": '/^SO[0-9]$/',
-        *       "errorMessage": 'explain how to provide a valid value'
+        *       "regularExpression": "/^SO[0-9]$/",
+        *       "errorMessage": "explain how to provide a valid value"
         *    }
         * )
         */
