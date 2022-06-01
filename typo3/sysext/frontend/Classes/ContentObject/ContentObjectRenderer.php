@@ -4201,7 +4201,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $cropArea = null;
         // Resolve TypoScript configured cropping.
         $cropSettings = isset($fileArray['crop.'])
-            ? $this->stdWrap($fileArray['crop'], $fileArray['crop.'])
+            ? $this->stdWrap($fileArray['crop'] ?? '', $fileArray['crop.'])
             : ($fileArray['crop'] ?? null);
 
         if (is_string($cropSettings)) {
