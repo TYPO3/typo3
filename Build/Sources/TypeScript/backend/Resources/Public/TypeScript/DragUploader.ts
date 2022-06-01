@@ -48,7 +48,7 @@ interface UploadedFile {
   // formatted as ddmmyy
   date: string;
 
-  mtime: Date;
+  mtime: number;
   thumbUrl: string;
   type: string;
   path: string;
@@ -420,7 +420,7 @@ class DragUploaderPlugin {
         ),
         $('<td />').html(
           this.askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm'),
+          '<br>' + moment.unix(this.askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').html(
           this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +
