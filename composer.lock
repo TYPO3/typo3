@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a95c5cbcaa6790f89eca17f59f1953f",
+    "content-hash": "7b690f9d894fba5f19a97c186850abdf",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5033,16 +5033,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.2.7",
+            "version": "2.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "061d154dfdde157cbf453c4695e6af21c0e93903"
+                "reference": "de11c9819ac45659fb0fafb2e704912f9994ed60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/061d154dfdde157cbf453c4695e6af21c0e93903",
-                "reference": "061d154dfdde157cbf453c4695e6af21c0e93903",
+                "url": "https://api.github.com/repos/composer/composer/zipball/de11c9819ac45659fb0fafb2e704912f9994ed60",
+                "reference": "de11c9819ac45659fb0fafb2e704912f9994ed60",
                 "shasum": ""
             },
             "require": {
@@ -5112,7 +5112,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.2.7"
+                "source": "https://github.com/composer/composer/tree/2.2.13"
             },
             "funding": [
                 {
@@ -5128,7 +5128,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-25T10:12:27+00:00"
+            "time": "2022-05-25T19:37:25+00:00"
         },
         {
             "name": "composer/metadata-minifier",
