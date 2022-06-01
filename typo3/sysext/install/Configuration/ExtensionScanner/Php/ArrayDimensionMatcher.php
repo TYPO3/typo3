@@ -802,4 +802,10 @@ return [
             'Feature-97451-PSR-14EventsForBackendPageController.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'LinkBrowser\'][\'hooks\']' => [
+        'restFiles' => [
+            'Breaking-97454-RemoveLinkBrowserHooks.rst',
+            'Feature-97454-PSR14EventsForLinkBrowserLifecycle.rst',
+        ],
+    ],
 ];

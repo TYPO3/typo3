@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recordlist\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -32,6 +33,8 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Recordlist\Event\ModifyAllowedItemsEvent;
+use TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent;
 use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 
 /**
@@ -94,14 +97,15 @@ abstract class AbstractLinkBrowserController
      * @var string[]
      */
     protected array $linkAttributeValues = [];
+
     protected array $parameters;
-    protected array $hookObjects = [];
 
     protected DependencyOrderingService $dependencyOrderingService;
     protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected ExtensionConfiguration $extensionConfiguration;
     protected BackendViewFactory $backendViewFactory;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function injectDependencyOrderingService(DependencyOrderingService $dependencyOrderingService): void
     {
@@ -128,6 +132,11 @@ abstract class AbstractLinkBrowserController
         $this->backendViewFactory = $backendViewFactory;
     }
 
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     abstract public function getConfiguration(): array;
 
     abstract protected function initDocumentTemplate(): void;
@@ -143,10 +152,6 @@ abstract class AbstractLinkBrowserController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $hooks = $this->dependencyOrderingService->orderByDependencies($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'] ?? []);
-        foreach ($hooks as $hook) {
-            $this->hookObjects[] = GeneralUtility::makeInstance($hook['handler']);
-        }
         $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
@@ -280,13 +285,9 @@ abstract class AbstractLinkBrowserController
     protected function getLinkHandlers(): array
     {
         $linkHandlers = (array)(BackendUtility::getPagesTSconfig($this->getCurrentPageId())['TCEMAIN.']['linkHandler.'] ?? []);
-        foreach ($this->hookObjects as $hookObject) {
-            if (method_exists($hookObject, 'modifyLinkHandlers')) {
-                $linkHandlers = $hookObject->modifyLinkHandlers($linkHandlers, $this->currentLinkParts);
-            }
-        }
-
-        return $linkHandlers;
+        return $this->eventDispatcher
+            ->dispatch(new ModifyLinkHandlersEvent($linkHandlers, $this->currentLinkParts))
+            ->getLinkHandlers();
     }
 
     /**
@@ -391,13 +392,9 @@ abstract class AbstractLinkBrowserController
      */
     protected function getAllowedItems(): array
     {
-        $allowedItems = array_keys($this->linkHandlers);
-
-        foreach ($this->hookObjects as $hookObject) {
-            if (method_exists($hookObject, 'modifyAllowedItems')) {
-                $allowedItems = $hookObject->modifyAllowedItems($allowedItems, $this->currentLinkParts);
-            }
-        }
+        $allowedItems = $this->eventDispatcher
+            ->dispatch(new ModifyAllowedItemsEvent(array_keys($this->linkHandlers), $this->currentLinkParts))
+            ->getAllowedItems();
 
         if (isset($this->parameters['params']['allowedTypes'])) {
             $allowedItems = array_intersect($allowedItems, GeneralUtility::trimExplode(',', $this->parameters['params']['allowedTypes'], true));
