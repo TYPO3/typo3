@@ -28,6 +28,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 /**
  * Formats an object implementing :php:`\DateTimeInterface`.
  *
+ * A documentation with possible values for the `format` attribute can be found here: https://www.php.net/manual/de/datetime.format.php
+ *
  * Examples
  * ========
  *
