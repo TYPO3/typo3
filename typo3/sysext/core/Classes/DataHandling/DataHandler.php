@@ -3440,7 +3440,7 @@ class DataHandler implements LoggerAwareInterface
 
         // Initializing:
         $theNewID = StringUtility::getUniqueId('NEW');
-        $enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
+        $enableField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? '';
         $headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
         // Getting "copy-after" fields if applicable:
         $copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), false) : [];
