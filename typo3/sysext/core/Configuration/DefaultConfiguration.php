@@ -45,6 +45,7 @@ return [
     'SYS' => [
         // System related concerning both frontend and backend.
         'lang' => [
+            'requireApprovedLocalizations' => true,
             'format' => [
                 'priority' => 'xlf',
             ],

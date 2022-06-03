@@ -29,8 +29,9 @@ class XliffParserTest extends UnitTestCase
      * @test
      * @dataProvider canParseXliffDataProvider
      */
-    public function canParseXliff(string $languageKey, array $expectedLabels): void
+    public function canParseXliff(string $languageKey, array $expectedLabels, bool $requireApprovedLocalizations): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['requireApprovedLocalizations'] = $requireApprovedLocalizations;
         $LOCAL_LANG = (new XliffParser())->getParsedData(__DIR__ . '/Fixtures/locallang.xlf', $languageKey);
         self::assertArrayHasKey($languageKey, $LOCAL_LANG, sprintf('%s key not found in $LOCAL_LANG', $languageKey));
         foreach ($expectedLabels as $key => $expectedLabel) {
@@ -47,14 +48,23 @@ class XliffParserTest extends UnitTestCase
                 'label2' => 'This is label #2',
                 'label3' => 'This is label #3',
             ],
+            false,
         ];
-        yield 'Can handle translation' => [
+        yield 'Can handle translation with approved only' => [
+            'languageKey' => 'fr',
+            'expectedLabels' => [
+                'label2' => 'Ceci est le libellé no. 2 [approved]',
+            ],
+            true,
+        ];
+        yield 'Can handle translation with non approved' => [
             'languageKey' => 'fr',
             'expectedLabels' => [
                 'label1' => 'Ceci est le libellé no. 1',
-                'label2' => 'Ceci est le libellé no. 2',
-                'label3' => 'Ceci est le libellé no. 3',
+                'label2' => 'Ceci est le libellé no. 2 [approved]',
+                'label3' => 'Ceci est le libellé no. 3 [not approved]',
             ],
+            false,
         ];
     }
 }

@@ -7,13 +7,13 @@
 				<source>This is label #1</source>
 				<target>Ceci est le libellé no. 1</target>
 			</trans-unit>
-			<trans-unit id="label2" resname="label2">
+			<trans-unit id="label2" resname="label2" approved="yes">
 				<source>This is label #2</source>
-				<target>Ceci est le libellé no. 2</target>
+				<target>Ceci est le libellé no. 2 [approved]</target>
 			</trans-unit>
-			<trans-unit id="label3" resname="label3">
+			<trans-unit id="label3" resname="label3" approved="no">
 				<source>This is label #3</source>
-				<target>Ceci est le libellé no. 3</target>
+				<target>Ceci est le libellé no. 3 [not approved]</target>
 			</trans-unit>
 		</body>
 	</file>

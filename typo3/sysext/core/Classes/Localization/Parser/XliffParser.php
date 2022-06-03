@@ -31,6 +31,7 @@ class XliffParser extends AbstractXmlParser
     {
         $parsedData = [];
         $bodyOfFileTag = $root->file->body;
+        $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['requireApprovedLocalizations'] ?? true);
         if ($bodyOfFileTag instanceof \SimpleXMLElement) {
             foreach ($bodyOfFileTag->children() as $translationElement) {
                 /** @var \SimpleXMLElement $translationElement */
@@ -43,11 +44,13 @@ class XliffParser extends AbstractXmlParser
                             'target' => (string)$translationElement->source,
                         ];
                     } else {
-                        // @todo Support "approved" attribute
-                        $parsedData[(string)$translationElement['id']][0] = [
-                            'source' => (string)$translationElement->source,
-                            'target' => (string)$translationElement->target,
-                        ];
+                        $approved = (string)($translationElement['approved'] ?? '');
+                        if (!$requireApprovedLocalizations || $approved === 'yes') {
+                            $parsedData[(string)$translationElement['id']][0] = [
+                                'source' => (string)$translationElement->source,
+                                'target' => (string)$translationElement->target,
+                            ];
+                        }
                     }
                 } elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string)$translationElement['restype'] === 'x-gettext-plurals') {
                     // This is a translation with plural forms
@@ -64,11 +67,13 @@ class XliffParser extends AbstractXmlParser
                                     'target' => (string)$translationPluralForm->source,
                                 ];
                             } else {
-                                // @todo Support "approved" attribute
-                                $parsedTranslationElement[(int)$formIndex] = [
-                                    'source' => (string)$translationPluralForm->source,
-                                    'target' => (string)$translationPluralForm->target,
-                                ];
+                                $approved = (string)($translationPluralForm['approved'] ?? '');
+                                if (!$requireApprovedLocalizations || $approved === 'yes') {
+                                    $parsedTranslationElement[(int)$formIndex] = [
+                                        'source' => (string)$translationPluralForm->source,
+                                        'target' => (string)$translationPluralForm->target,
+                                    ];
+                                }
                             }
                         }
                     }
