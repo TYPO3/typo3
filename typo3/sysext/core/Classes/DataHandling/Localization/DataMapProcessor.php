@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -1316,7 +1317,6 @@ class DataMapProcessor
      */
     protected function prefixLanguageTitle(string $tableName, $fromId, int $language, array $data): array
     {
-        $prefix = '';
         $prefixFieldNames = array_intersect(
             array_keys($data),
             $this->getPrefixLanguageTitleFieldNames($tableName)
@@ -1325,8 +1325,23 @@ class DataMapProcessor
             return $data;
         }
 
-        $languageService = $this->getLanguageService();
         [$pageId] = BackendUtility::getTSCpid($tableName, (int)$fromId, $data['pid'] ?? null);
+        $tsConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.'] ?? [];
+        if (($translateToMessage = (string)($tsConfig['translateToMessage'] ?? '')) === '') {
+            // Return in case translateToMessage had been unset
+            return $data;
+        }
+
+        $tableRelatedConfig = $tsConfig['default.'] ?? [];
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $tableRelatedConfig,
+            $tsConfig['table.'][$tableName . '.'] ?? []
+        );
+        if ($tableRelatedConfig['disablePrependAtCopy'] ?? false) {
+            // Return in case "disablePrependAtCopy" is set for this table
+            return $data;
+        }
+
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
             $siteLanguage = $site->getLanguageById($language);
@@ -1335,25 +1350,21 @@ class DataMapProcessor
             $languageTitle = '';
         }
 
-        $tsConfigTranslateToMessage = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['translateToMessage'] ?? '';
-        if (!empty($tsConfigTranslateToMessage)) {
-            $prefix = $tsConfigTranslateToMessage;
-            if ($languageService !== null) {
-                $prefix = $languageService->sL($prefix);
-            }
-            $prefix = sprintf($prefix, $languageTitle);
+        $languageService = $this->getLanguageService();
+        if ($languageService !== null) {
+            $translateToMessage = $languageService->sL($translateToMessage);
         }
-        if (empty($prefix)) {
-            if ($languageTitle) {
-                $prefix = 'Translate to ' . $languageTitle . ':';
-            } else {
-                $prefix = 'Translate:';
-            }
+        $translateToMessage = sprintf($translateToMessage, $languageTitle);
+
+        if ($translateToMessage === '') {
+            // Return for edge cases when the translateToMessage got empty, e.g. because the referenced LLL
+            // label is empty or only contained a placeholder which is replaced by an empty language title.
+            return $data;
         }
 
         foreach ($prefixFieldNames as $prefixFieldName) {
             // @todo The hook in DataHandler is not applied here
-            $data[$prefixFieldName] = '[' . $prefix . '] ' . $data[$prefixFieldName];
+            $data[$prefixFieldName] = '[' . $translateToMessage . '] ' . $data[$prefixFieldName];
         }
 
         return $data;
