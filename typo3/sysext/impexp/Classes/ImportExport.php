@@ -851,8 +851,8 @@ abstract class ImportExport
                 '<em>%s, "%s"</em> : <span title="%s">%s</span>',
                 $softref['field'],
                 $softref['spKey'],
-                htmlspecialchars($softref['matchString']),
-                htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['matchString'], 60))
+                htmlspecialchars($softref['matchString'] ?? ''),
+                htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['matchString'] ?? '', 60))
             );
             if ($softref['subst']['type'] ?? false) {
                 if ($softref['subst']['title'] ?? false) {
