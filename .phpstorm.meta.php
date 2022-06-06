@@ -8,10 +8,6 @@
  */
 
 namespace PHPSTORM_META {
-    // Tests
-    override(\TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMock(0), type(0));
-    override(\TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMockForAbstractClass(0), type(0));
-
     // Contexts
     // @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
     expectedArguments(
