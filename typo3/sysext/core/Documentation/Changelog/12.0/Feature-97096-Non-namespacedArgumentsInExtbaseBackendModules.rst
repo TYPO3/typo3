@@ -30,14 +30,15 @@ attention to the namespace of the parameters.
 
 A link may look like this:
 
-`https://example.org/typo3/module/web/BeuserTxBeuser?action=groups&controller=BackendUser`
+:samp:`https://example.org/typo3/module/web/BeuserTxBeuser?action=groups&controller=BackendUser`
 
 If a module explicitly wants to keep using the namespaced version of the arguments,
 the feature flag can be set:
 
 .. code-block:: typoscript
+    :caption: EXT:my_extension/ext_typoscript_setup.typoscript
 
-    module.tx_extensionmanager {
+    module.tx_myextension_somemodule {
         features {
             enableNamespacedArgumentsForBackend = 1
         }
