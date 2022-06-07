@@ -871,11 +871,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LegacyLinkNotationConverter.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php

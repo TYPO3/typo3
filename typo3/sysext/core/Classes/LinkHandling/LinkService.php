@@ -118,7 +118,7 @@ class LinkService implements SingletonInterface
             }
             $fragment = $urnParsed['fragment'] ?? null;
 
-            if (is_object($this->handlers[$type])) {
+            if (isset($this->handlers[$type])) {
                 $result = $this->handlers[$type]->resolveHandlerData($data);
                 $result['type'] = $type;
             } else {
