@@ -25,6 +25,8 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
+use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 
@@ -100,7 +102,15 @@ class Mailer implements MailerInterface
             $message->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
         }
 
-        $this->sentMessage = $this->transport->send($message, $envelope);
+        // After static enrichment took place, allow listeners to further manipulate message and envelope
+        $event = new BeforeMailerSentMessageEvent($this, $message, $envelope);
+        $this->eventDispatcher?->dispatch($event);
+
+        // Send message using the defined transport, with message and envelope from the event
+        $this->sentMessage = $this->transport->send($event->getMessage(), $event->getEnvelope());
+
+        // Finally, allow further processing by listeners after the message has been sent
+        $this->eventDispatcher?->dispatch(new AfterMailerSentMessageEvent($this));
     }
 
     public function getSentMessage(): ?SentMessage
