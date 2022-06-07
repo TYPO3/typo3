@@ -228,7 +228,7 @@ export class ClipboardPanel extends LitElement {
     if (this.returnUrl) {
       this.ownerDocument.location.href = this.returnUrl
     } else {
-      this.ownerDocument.location.reload(true);
+      this.ownerDocument.location.reload();
     }
   }
 }

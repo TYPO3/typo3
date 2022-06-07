@@ -42,20 +42,20 @@ var __decorate=this&&this.__decorate||function(t,e,l,a){var n,i=arguments.length
             @change="${n}" .value="${t.replace(/<br[ ]*\/?>/g,"\n")}"></textarea>
         `}}renderTypeButton(){return l.html`
       <span class="btn-group">
-        <button class="btn btn-default" type="button" title="${n.lll("table_smallFields")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_smallFields")}"
                 @click="${t=>this.toggleType(t)}">
           <typo3-backend-icon identifier="${"input"===this.type?"actions-chevron-expand":"actions-chevron-contract"}" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${n.lll("table_setCount")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_setCount")}"
                 @click="${t=>this.showTableConfigurationModal(t)}">
           <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${n.lll("table_showCode")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_showCode")}"
                 @click="${t=>this.showTableSyntax(t)}">
           <typo3-backend-icon identifier="actions-code" size="small"></typo3-backend-icon>
         </button>
       </span>
-    `}renderColButtons(t,e){const a={title:0===t?n.lll("table_end"):n.lll("table_left"),class:0===t?"bar-right":"left",target:0===t?e:t-1},i={title:t===e?n.lll("table_start"):n.lll("table_right"),class:t===e?"bar-left":"right",target:t===e?0:t+1};return l.html`
+    `}renderColButtons(t,e){const a={title:0===t?(0,n.lll)("table_end"):(0,n.lll)("table_left"),class:0===t?"bar-right":"left",target:0===t?e:t-1},i={title:t===e?(0,n.lll)("table_start"):(0,n.lll)("table_right"),class:t===e?"bar-left":"right",target:t===e?0:t+1};return l.html`
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${a.title}"
                 @click="${e=>this.moveColumn(e,t,a.target)}">
@@ -65,16 +65,16 @@ var __decorate=this&&this.__decorate||function(t,e,l,a){var n,i=arguments.length
                 @click="${e=>this.moveColumn(e,t,i.target)}">
           <typo3-backend-icon identifier="actions-chevron-${i.class}" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${n.lll("table_removeColumn")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_removeColumn")}"
                 @click="${e=>this.removeColumn(e,t)}">
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${n.lll("table_addColumn")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_addColumn")}"
                 @click="${e=>this.appendColumn(e,t)}">
           <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
         </button>
       </span>
-    `}renderRowButtons(t,e){const a={title:0===t?n.lll("table_bottom"):n.lll("table_up"),class:0===t?"bar-down":"up",target:0===t?e:t-1},i={title:t===e?n.lll("table_top"):n.lll("table_down"),class:t===e?"bar-up":"down",target:t===e?0:t+1};return l.html`
+    `}renderRowButtons(t,e){const a={title:0===t?(0,n.lll)("table_bottom"):(0,n.lll)("table_up"),class:0===t?"bar-down":"up",target:0===t?e:t-1},i={title:t===e?(0,n.lll)("table_top"):(0,n.lll)("table_down"),class:t===e?"bar-up":"down",target:t===e?0:t+1};return l.html`
       <span class="btn-group${"input"===this.type?"":"-vertical"}">
         <button class="btn btn-default" type="button" title="${a.title}"
                 @click="${e=>this.moveRow(e,t,a.target)}">
@@ -84,22 +84,22 @@ var __decorate=this&&this.__decorate||function(t,e,l,a){var n,i=arguments.length
                 @click="${e=>this.moveRow(e,t,i.target)}">
           <typo3-backend-icon identifier="actions-chevron-${i.class}" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${n.lll("table_removeRow")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_removeRow")}"
                 @click="${e=>this.removeRow(e,t)}">
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${n.lll("table_addRow")}"
+        <button class="btn btn-default" type="button" title="${(0,n.lll)("table_addRow")}"
                 @click="${e=>this.appendRow(e,t)}">
           <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
         </button>
       </span>
-    `}showTableConfigurationModal(t){const e=this.firstRow.length,a=this.table.length,r=a||1,c=e||1;o.advanced({content:"",title:n.lll("table_setCountHeadline"),severity:s.SeverityEnum.notice,size:o.sizes.small,buttons:[{text:n.lll("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>o.dismiss()},{text:n.lll("table_buttonApply")||"Apply",btnClass:"btn-"+i.getCssClass(s.SeverityEnum.info),name:"apply",trigger:()=>{const l=o.currentModal[0].querySelector("#t3js-expand-rows"),n=o.currentModal[0].querySelector("#t3js-expand-cols");if(null!==l&&null!==n)if(l.checkValidity()&&n.checkValidity()){const i=Number(l.value)-a,s=Number(n.value)-e;this.setColAndRowCount(t,s,i),o.dismiss()}else l.reportValidity(),n.reportValidity()}}],callback:t=>{l.render(l.html`
+    `}showTableConfigurationModal(t){const e=this.firstRow.length,a=this.table.length,r=a||1,c=e||1;o.advanced({content:"",title:(0,n.lll)("table_setCountHeadline"),severity:s.SeverityEnum.notice,size:o.sizes.small,buttons:[{text:(0,n.lll)("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>o.dismiss()},{text:(0,n.lll)("table_buttonApply")||"Apply",btnClass:"btn-"+i.getCssClass(s.SeverityEnum.info),name:"apply",trigger:()=>{const l=o.currentModal[0].querySelector("#t3js-expand-rows"),n=o.currentModal[0].querySelector("#t3js-expand-cols");if(null!==l&&null!==n)if(l.checkValidity()&&n.checkValidity()){const i=Number(l.value)-a,s=Number(n.value)-e;this.setColAndRowCount(t,s,i),o.dismiss()}else l.reportValidity(),n.reportValidity()}}],callback:t=>{(0,l.render)(l.html`
             <div class="form-group ">
-              <label>${n.lll("table_rowCount")}</label>
+              <label>${(0,n.lll)("table_rowCount")}</label>
               <input id="t3js-expand-rows" class="form-control" type="number" min="1" required value="${r}">
             </div>
             <div class="form-group ">
-              <label>${n.lll("table_colCount")}</label>
+              <label>${(0,n.lll)("table_colCount")}</label>
               <input id="t3js-expand-cols" class="form-control" type="number" min="1" required value="${c}">
             </div>
-          `,t[0].querySelector(".t3js-modal-body"))}})}showTableSyntax(t){o.advanced({content:"",title:n.lll("table_showCode"),severity:s.SeverityEnum.notice,size:o.sizes.small,buttons:[{text:n.lll("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>o.dismiss()},{text:n.lll("table_buttonApply")||"Apply",btnClass:"btn-"+i.getCssClass(s.SeverityEnum.info),name:"apply",trigger:()=>{document.querySelector(this.selectorData).value=o.currentModal[0].querySelector("textarea").value,this.readTableFromTextarea(),this.requestUpdate(),o.dismiss()}}],callback:t=>{let e=document.querySelector(this.selectorData);l.render(l.html`<textarea style="width: 100%;">${e.value}</textarea>`,t[0].querySelector(".t3js-modal-body"))}})}setColAndRowCount(t,e,l){const a=this.table.length;if(l>0)for(let e=0;e<l;e++)this.appendRow(t,a);else for(let e=0;e<Math.abs(l);e++)this.removeRow(t,this.table.length-1);if(e>0)for(let l=0;l<e;l++)this.appendColumn(t,e);else for(let l=0;l<Math.abs(e);l++)this.removeColumn(t,this.firstRow.length-1)}};__decorate([a.property({type:String})],r.prototype,"type",void 0),__decorate([a.property({type:String})],r.prototype,"selectorData",void 0),__decorate([a.property({type:String})],r.prototype,"delimiter",void 0),__decorate([a.property({type:String})],r.prototype,"enclosure",void 0),__decorate([a.property({type:Number,attribute:"append-rows"})],r.prototype,"appendRows",void 0),__decorate([a.property({type:Object})],r.prototype,"l10n",void 0),r=__decorate([a.customElement("typo3-backend-table-wizard")],r),e.TableWizardElement=r}));
+          `,t[0].querySelector(".t3js-modal-body"))}})}showTableSyntax(t){o.advanced({content:"",title:(0,n.lll)("table_showCode"),severity:s.SeverityEnum.notice,size:o.sizes.small,buttons:[{text:(0,n.lll)("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>o.dismiss()},{text:(0,n.lll)("table_buttonApply")||"Apply",btnClass:"btn-"+i.getCssClass(s.SeverityEnum.info),name:"apply",trigger:()=>{document.querySelector(this.selectorData).value=o.currentModal[0].querySelector("textarea").value,this.readTableFromTextarea(),this.requestUpdate(),o.dismiss()}}],callback:t=>{let e=document.querySelector(this.selectorData);(0,l.render)(l.html`<textarea style="width: 100%;">${e.value}</textarea>`,t[0].querySelector(".t3js-modal-body"))}})}setColAndRowCount(t,e,l){const a=this.table.length;if(l>0)for(let e=0;e<l;e++)this.appendRow(t,a);else for(let e=0;e<Math.abs(l);e++)this.removeRow(t,this.table.length-1);if(e>0)for(let l=0;l<e;l++)this.appendColumn(t,e);else for(let l=0;l<Math.abs(e);l++)this.removeColumn(t,this.firstRow.length-1)}};__decorate([(0,a.property)({type:String})],r.prototype,"type",void 0),__decorate([(0,a.property)({type:String})],r.prototype,"selectorData",void 0),__decorate([(0,a.property)({type:String})],r.prototype,"delimiter",void 0),__decorate([(0,a.property)({type:String})],r.prototype,"enclosure",void 0),__decorate([(0,a.property)({type:Number,attribute:"append-rows"})],r.prototype,"appendRows",void 0),__decorate([(0,a.property)({type:Object})],r.prototype,"l10n",void 0),r=__decorate([(0,a.customElement)("typo3-backend-table-wizard")],r),e.TableWizardElement=r}));

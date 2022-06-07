@@ -15,9 +15,9 @@ var __decorate=this&&this.__decorate||function(e,t,i,o){var n,r=arguments.length
   :host([raw]) .icon-size-${e} {
     font-size: ${t}px;
   }
-`;let c=class extends i.LitElement{constructor(){super(...arguments),this.size=s.Sizes.default,this.state=s.States.default,this.overlay=null,this.markup=s.MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return i.html`${n.unsafeHTML(this.raw)}`;if(!this.identifier)return i.html``;const e=a.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>i.html`
-          ${n.unsafeHTML(e)}
-        `);return i.html`${r.until(e,i.html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};c.styles=[i.css`
+`;let c=class extends i.LitElement{constructor(){super(...arguments),this.size=s.Sizes.default,this.state=s.States.default,this.overlay=null,this.markup=s.MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return i.html`${(0,n.unsafeHTML)(this.raw)}`;if(!this.identifier)return i.html``;const e=a.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>i.html`
+          ${(0,n.unsafeHTML)(e)}
+        `);return i.html`${(0,r.until)(e,i.html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};c.styles=[i.css`
       :host {
         display: flex;
         width: 1em;
@@ -94,4 +94,4 @@ var __decorate=this&&this.__decorate||function(e,t,i,o){var n,r=arguments.length
           transform: rotate(360deg);
         }
       }
-    `,l(i.unsafeCSS(s.Sizes.small),16),l(i.unsafeCSS(s.Sizes.default),32),l(i.unsafeCSS(s.Sizes.large),48),l(i.unsafeCSS(s.Sizes.mega),64)],__decorate([o.property({type:String})],c.prototype,"identifier",void 0),__decorate([o.property({type:String})],c.prototype,"size",void 0),__decorate([o.property({type:String})],c.prototype,"state",void 0),__decorate([o.property({type:String})],c.prototype,"overlay",void 0),__decorate([o.property({type:String})],c.prototype,"markup",void 0),__decorate([o.property({type:String})],c.prototype,"raw",void 0),c=__decorate([o.customElement("typo3-backend-icon")],c),t.IconElement=c}));
+    `,l((0,i.unsafeCSS)(s.Sizes.small),16),l((0,i.unsafeCSS)(s.Sizes.default),32),l((0,i.unsafeCSS)(s.Sizes.large),48),l((0,i.unsafeCSS)(s.Sizes.mega),64)],__decorate([(0,o.property)({type:String})],c.prototype,"identifier",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"size",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"state",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"overlay",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"markup",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"raw",void 0),c=__decorate([(0,o.customElement)("typo3-backend-icon")],c),t.IconElement=c}));

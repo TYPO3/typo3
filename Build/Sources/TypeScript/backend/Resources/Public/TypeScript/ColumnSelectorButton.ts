@@ -188,7 +188,7 @@ class ColumnSelectorButton extends LitElement {
         if (data.success === true) {
           // @todo This does not jump to the anchor (#t3-table-some_table) after the reload!!!
           this.ownerDocument.location.href = this.target
-          this.ownerDocument.location.reload(true);
+          this.ownerDocument.location.reload();
         } else {
           Notification.error(data.message || 'No update was performed');
         }

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","lit/html"],(function(e,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.lll=n.renderHTML=n.renderNodes=void 0,n.renderNodes=e=>{const n=document.createElement("div");return r.render(e,n),n.childNodes},n.renderHTML=e=>{const n=document.createElement("div");return r.render(e,n),n.innerHTML},n.lll=e=>window.TYPO3&&window.TYPO3.lang&&"string"==typeof window.TYPO3.lang[e]?window.TYPO3.lang[e]:""}));
+define(["require","exports","lit/html"],(function(e,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.lll=n.renderHTML=n.renderNodes=void 0;n.renderNodes=e=>{const n=document.createElement("div");return(0,r.render)(e,n),n.childNodes};n.renderHTML=e=>{const n=document.createElement("div");return(0,r.render)(e,n),n.innerHTML};n.lll=e=>window.TYPO3&&window.TYPO3.lang&&"string"==typeof window.TYPO3.lang[e]?window.TYPO3.lang[e]:""}));

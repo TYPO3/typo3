@@ -191,7 +191,7 @@ class ViewPage {
     // Add event for refresh button click
     $(document).on('click', Selectors.refreshSelector, (): void =>  {
       let iframe = <HTMLIFrameElement>document.getElementById('tx_viewpage_iframe');
-      iframe.contentWindow.location.reload(true);
+      iframe.contentWindow.location.reload();
     });
 
     // Initialize the jQuery UI Resizable plugin

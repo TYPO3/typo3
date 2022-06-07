@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery"],(function(e,t,r,u){"use strict";u=__importDefault(u);return class{registerEvent(e){u.default(e),u.default(r.ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}}));
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery"],(function(e,t,r,u){"use strict";u=__importDefault(u);return class{registerEvent(e){(0,u.default)(e),(0,u.default)(r.ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}}));

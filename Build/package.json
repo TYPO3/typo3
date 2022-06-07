@@ -15,7 +15,6 @@
     "@rollup/plugin-replace": "^2.4.2",
     "@types/bootstrap": "^5.1.6",
     "@types/chosen-js": "^1.8.1",
-    "@types/chrome": "^0.0.123",
     "@types/ckeditor": "^4.9.10",
     "@types/d3-dispatch": "^2.0.0",
     "@types/d3-drag": "^2.0.0",
@@ -67,7 +66,7 @@
     "stylefmt": "^6.0.3",
     "stylelint": "^13.12.0",
     "terser": "^5.3.2",
-    "typescript": "~4.0.3"
+    "typescript": "~4.7.0"
   },
   "scripts": {
     "build-css": "./node_modules/.bin/grunt css",
