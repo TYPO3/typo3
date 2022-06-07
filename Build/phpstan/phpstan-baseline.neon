@@ -1373,11 +1373,6 @@ parameters:
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Classes/Type/File/ImageInfo.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/ExtendedTemplateService.php
 
 		-

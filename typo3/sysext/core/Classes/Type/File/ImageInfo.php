@@ -145,16 +145,15 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
 
         // First check if width+height are set
         if (!empty($xmlAttributes['width']) && !empty($xmlAttributes['height'])) {
-            $imagesSizes = [(int)$xmlAttributes['width'], (int)$xmlAttributes['height']];
-        } elseif (!empty($xmlAttributes['viewBox'])) {
+            return [(int)$xmlAttributes['width'], (int)$xmlAttributes['height']];
+        }
+        if (!empty($xmlAttributes['viewBox'])) {
             // Fallback to viewBox
             $viewBox = explode(' ', $xmlAttributes['viewBox']);
-            $imagesSizes = [(int)$viewBox[2], (int)$viewBox[3]];
-        } else {
-            // To not fail image processing, we just assume an SVG image dimension here
-            $imagesSizes = [64, 64];
+            return [(int)$viewBox[2], (int)$viewBox[3]];
         }
 
-        return $imagesSizes !== [] ? $imagesSizes : false;
+        // To not fail image processing, we just assume an SVG image dimension here
+        return [64, 64];
     }
 }
