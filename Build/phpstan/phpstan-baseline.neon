@@ -1341,11 +1341,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/ExtendedTemplateService.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:getRootlineLevel\\(\\) should return int but returns false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php

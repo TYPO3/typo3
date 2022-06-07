@@ -164,10 +164,8 @@ class TemplateService
 
     /**
      * Rootline all the way to the root. Set but runThroughTemplates
-     *
-     * @var array
      */
-    protected $absoluteRootLine;
+    protected array $absoluteRootLine = [];
 
     /**
      * Array of arrays with title/uid of templates in hierarchy

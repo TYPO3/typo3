@@ -722,6 +722,6 @@ class ExtendedTemplateService extends TemplateService
      */
     public function getRootLine(): array
     {
-        return is_array($this->absoluteRootLine) ? $this->absoluteRootLine : [];
+        return $this->absoluteRootLine;
     }
 }
