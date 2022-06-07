@@ -130,12 +130,7 @@ class QueryParser
     public function getCommandForTable($tableName)
     {
         $commandArray = array_keys($GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'], $tableName);
-        if (is_array($commandArray)) {
-            $command = $commandArray[0];
-        } else {
-            $command = false;
-        }
-        return $command;
+        return $commandArray[0] ?? '';
     }
 
     /**

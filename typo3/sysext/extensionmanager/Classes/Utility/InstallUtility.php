@@ -381,7 +381,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             }
 
             $statements = array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true));
-            $statements = is_array($statements) ? $statements : [];
             $selectedStatements = array_merge(
                 $selectedStatements,
                 $statements

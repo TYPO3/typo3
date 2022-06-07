@@ -537,9 +537,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         }
 
         $records = $queryBuilder->executeQuery()->fetchAllAssociative();
-        $uidArray = is_array($records) ? array_column($records, 'uid') : [];
-
-        return $uidArray;
+        return array_column($records, 'uid');
     }
 
     protected function getLanguageService(): ?LanguageService

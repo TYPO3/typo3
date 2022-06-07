@@ -121,11 +121,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/LiveSearch.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/QueryParser.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Search\\\\LiveSearch\\\\QueryParser\\:\\:getId\\(\\) should return int but returns string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/QueryParser.php
@@ -1316,11 +1311,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
-
-		-
 			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
@@ -1369,11 +1359,6 @@ parameters:
 			message: "#^If condition is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/CommandUtility.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/CsvUtility.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"
@@ -2714,11 +2699,6 @@ parameters:
 			message: "#^Offset string does not exist on null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/EmConfUtility.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Utility/InstallUtility.php
 
 		-
 			message: "#^Parameter \\#2 \\$selectedStatements of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\SchemaMigrator\\:\\:migrate\\(\\) expects array\\<string\\>, array\\<int\\|string, true\\> given\\.$#"
