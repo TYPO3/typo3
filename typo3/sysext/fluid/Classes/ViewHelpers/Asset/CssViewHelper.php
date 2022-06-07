@@ -116,7 +116,7 @@ final class CssViewHelper extends AbstractTagBasedViewHelper
             $attributes['disabled'] = 'disabled';
         }
 
-        $file = $this->tag->getAttribute('href');
+        $file = $attributes['href'] ?? null;
         unset($attributes['href']);
         $options = [
             'priority' => $this->arguments['priority'],

@@ -2706,16 +2706,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/View/TemplatePaths.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Asset/CssViewHelper.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Asset/ScriptViewHelper.php
-
-		-
 			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/LinkViewHelper.php

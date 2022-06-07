@@ -112,7 +112,7 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        $src = $this->tag->getAttribute('src');
+        $src = $attributes['src'] ?? null;
         unset($attributes['src']);
         $options = [
             'priority' => $this->arguments['priority'],
