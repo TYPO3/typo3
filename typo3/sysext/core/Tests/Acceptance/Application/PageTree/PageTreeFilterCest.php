@@ -46,11 +46,9 @@ class PageTreeFilterCest
     {
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForPageTreeLoad($I);
-        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
-
         // [#91884] no Enter key press on purpose. The search should start by itself without additional Enter key press
         // and this assertion makes sure the filter worked
-        $I->cantSee('inline expandsingle', $this->inPageTree);
+        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
 
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
@@ -73,17 +71,17 @@ class PageTreeFilterCest
     {
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForPageTreeLoad($I);
+        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
 
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
-        $I->cantSee('inline expandsingle', $this->inPageTree);
 
         $I->pressKey($this->filterInputField, WebDriverKeys::ESCAPE);
         $this->waitForPageTreeLoad($I);
 
+        $I->waitForElementVisible('//*[text()=\'inline expandsingle\']');
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
-        $I->canSee('inline expandsingle', $this->inPageTree);
     }
 
     /**
