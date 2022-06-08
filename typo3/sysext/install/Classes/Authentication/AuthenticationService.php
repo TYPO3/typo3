@@ -25,7 +25,7 @@ use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
@@ -138,7 +138,8 @@ class AuthenticationService
     protected function sendEmail(RawMessage $email): void
     {
         try {
-            GeneralUtility::makeInstance(Mailer::class)->send($email);
+            // TODO: DI should be used to inject the MailerInterface
+            GeneralUtility::makeInstance(MailerInterface::class)->send($email);
         } catch (TransportException $e) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->warning('Could not send notification email to ' . $this->getSenderEmailAddress() . ' due to mailer settings error', [

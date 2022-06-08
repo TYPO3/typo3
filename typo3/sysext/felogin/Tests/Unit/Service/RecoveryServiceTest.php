@@ -24,7 +24,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -103,7 +103,7 @@ class RecoveryServiceTest extends UnitTestCase
 
         $fluidEmailProphecy = $this->setupFluidEmailProphecy($receiver, $expectedViewVariables, $recoveryConfiguration);
 
-        $mailer = $this->prophesize(Mailer::class);
+        $mailer = $this->prophesize(MailerInterface::class);
         $mailer->send($fluidEmailProphecy)->shouldBeCalledOnce();
 
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);

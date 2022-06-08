@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -158,7 +158,8 @@ class PasswordReset implements LoggerAwareInterface
             ->assign('email', $emailAddress)
             ->setTemplate('PasswordReset/AmbiguousResetRequested');
 
-        GeneralUtility::makeInstance(Mailer::class)->send($emailObject);
+        // TODO: DI should be used to inject the MailerInterface
+        GeneralUtility::makeInstance(MailerInterface::class)->send($emailObject);
         $this->logger->warning('Password reset sent to email address {email} but multiple accounts found', ['email' => $emailAddress]);
         $this->log(
             'Sent password reset email to email address %s but with multiple accounts attached.',
@@ -194,7 +195,8 @@ class PasswordReset implements LoggerAwareInterface
             ->assign('resetLink', $resetLink)
             ->setTemplate('PasswordReset/ResetRequested');
 
-        GeneralUtility::makeInstance(Mailer::class)->send($emailObject);
+        // TODO: DI should be used to inject the MailerInterface
+        GeneralUtility::makeInstance(MailerInterface::class)->send($emailObject);
         $this->logger->info('Sent password reset email to email address {email} for user {username}', [
             'email' => $emailAddress,
             'username' => $user['username'],

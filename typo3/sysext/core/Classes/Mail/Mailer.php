@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Mail;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Envelope;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;

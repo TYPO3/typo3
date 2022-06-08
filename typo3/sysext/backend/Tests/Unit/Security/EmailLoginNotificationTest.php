@@ -23,7 +23,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -49,9 +49,9 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy = $this->prophesize(MailerInterface::class);
         $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
+        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
@@ -125,9 +125,9 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy = $this->prophesize(MailerInterface::class);
         $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
+        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
@@ -155,9 +155,9 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy = $this->prophesize(MailerInterface::class);
         $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
+        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
@@ -185,9 +185,9 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy = $this->prophesize(MailerInterface::class);
         $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
+        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);

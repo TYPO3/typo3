@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MailMessage extends Email
 {
-    protected Mailer $mailer;
+    protected MailerInterface $mailer;
 
     /**
      * TRUE if the message has been sent.
@@ -35,7 +35,8 @@ class MailMessage extends Email
 
     private function initializeMailer(): void
     {
-        $this->mailer ??= GeneralUtility::makeInstance(Mailer::class);
+        // TODO: DI should be used to inject the MailerInterface
+        $this->mailer ??= GeneralUtility::makeInstance(MailerInterface::class);
     }
 
     /**

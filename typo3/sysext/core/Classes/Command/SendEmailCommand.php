@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\FileSpool;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,11 +84,10 @@ class SendEmailCommand extends Command
 
     /**
      * Returns the TYPO3 mailer.
-     *
-     * @return Mailer
      */
-    protected function getMailer(): Mailer
+    protected function getMailer(): MailerInterface
     {
-        return GeneralUtility::makeInstance(Mailer::class);
+        // TODO: DI should be used to inject the MailerInterface
+        return GeneralUtility::makeInstance(MailerInterface::class);
     }
 }

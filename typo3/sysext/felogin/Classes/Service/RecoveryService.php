@@ -23,7 +23,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -39,7 +39,7 @@ class RecoveryService
     protected array $settings;
 
     public function __construct(
-        protected Mailer $mailer,
+        protected readonly MailerInterface $mailer,
         protected EventDispatcherInterface $eventDispatcher,
         ConfigurationManager $configurationManager,
         protected RecoveryConfiguration $recoveryConfiguration,

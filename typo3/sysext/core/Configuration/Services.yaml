@@ -394,6 +394,9 @@ services:
   GuzzleHttp\ClientInterface:
     alias: GuzzleHttp\Client
     public: true
+  TYPO3\CMS\Core\Mail\MailerInterface:
+    alias: TYPO3\CMS\Core\Mail\Mailer
+    public: true
 
   # External dependencies
 

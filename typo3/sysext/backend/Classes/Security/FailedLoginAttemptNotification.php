@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -163,7 +163,8 @@ class FailedLoginAttemptNotification
         }
 
         try {
-            GeneralUtility::makeInstance(Mailer::class)->send($email);
+            // TODO: DI should be used to inject the MailerInterface
+            GeneralUtility::makeInstance(MailerInterface::class)->send($email);
         } catch (TransportExceptionInterface $e) {
             // Sending mail failed. Probably broken smtp setup.
             // @todo: Maybe log that sending mail failed.

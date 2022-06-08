@@ -22,7 +22,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -466,7 +466,8 @@ class ValidatorTask extends AbstractTask
         }
 
         try {
-            GeneralUtility::makeInstance(Mailer::class)->send($fluidEmail);
+            // TODO: DI should be used to inject the MailerInterface
+            GeneralUtility::makeInstance(MailerInterface::class)->send($fluidEmail);
         } catch (TransportExceptionInterface $e) {
             return false;
         }

@@ -26,7 +26,7 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
@@ -44,26 +44,11 @@ class StageChangeNotification implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var StagesService
-     */
-    protected $stagesService;
-
-    /**
-     * @var PreviewUriBuilder
-     */
-    protected $previewUriBuilder;
-
-    /**
-     * @var Mailer
-     */
-    protected $mailer;
-
-    public function __construct()
-    {
-        $this->stagesService = GeneralUtility::makeInstance(StagesService::class);
-        $this->previewUriBuilder = GeneralUtility::makeInstance(PreviewUriBuilder::class);
-        $this->mailer = GeneralUtility::makeInstance(Mailer::class);
+    public function __construct(
+        private readonly StagesService $stagesService,
+        private readonly PreviewUriBuilder $previewUriBuilder,
+        private readonly MailerInterface $mailer
+    ) {
     }
 
     /**

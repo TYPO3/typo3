@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Reports\Task;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -130,7 +130,8 @@ class SystemStatusUpdateTask extends AbstractTask
             $email->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
 
-        GeneralUtility::makeInstance(Mailer::class)->send($email);
+        // TODO: DI should be used to inject the MailerInterface
+        GeneralUtility::makeInstance(MailerInterface::class)->send($email);
     }
 
     /**

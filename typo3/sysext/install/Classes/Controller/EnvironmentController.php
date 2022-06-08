@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -286,7 +286,8 @@ class EnvironmentController extends AbstractController
                     ->setRequest($request)
                     ->assignMultiple($variables);
 
-                GeneralUtility::makeInstance(Mailer::class)->send($mailMessage);
+                // TODO: DI should be used to inject the MailerInterface
+                GeneralUtility::makeInstance(MailerInterface::class)->send($mailMessage);
                 $messages->enqueue(new FlashMessage(
                     'Recipient: ' . $recipient,
                     'Test mail sent'

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
@@ -157,7 +157,8 @@ class EmailFinisher extends AbstractFinisher
             }
         }
 
-        GeneralUtility::makeInstance(Mailer::class)->send($mail);
+        // TODO: DI should be used to inject the MailerInterface
+        GeneralUtility::makeInstance(MailerInterface::class)->send($mail);
     }
 
     protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail

@@ -68,7 +68,8 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
      */
     public function __destruct()
     {
-        $mailer = GeneralUtility::makeInstance(Mailer::class);
+        // TODO: DI should be used to inject the MailerInterface
+        $mailer = GeneralUtility::makeInstance(MailerInterface::class);
         try {
             $this->flushQueue($mailer->getRealTransport());
         } catch (TransportExceptionInterface $exception) {
