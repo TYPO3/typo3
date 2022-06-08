@@ -56,6 +56,7 @@ class GlobalVariableProvider extends AbstractProvider
                 'ssl_key' => '******',
             ],
             'MAIL' => [
+                'dsn' => '******',
                 'transport_smtp_encrypt' => '******',
                 'transport_smtp_password' => '******',
                 'transport_smtp_server' => '******',
