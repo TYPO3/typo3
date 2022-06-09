@@ -1062,7 +1062,7 @@ class PageRepository implements LoggerAwareInterface
         if ((int)$page['doktype'] === self::DOKTYPE_SHORTCUT) {
             if (!in_array($page['uid'], $pageLog) && $iteration > 0) {
                 $pageLog[] = $page['uid'];
-                $page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $iteration - 1, $pageLog, $disableGroupCheck);
+                $page = $this->getPageShortcut((string)$page['shortcut'], $page['shortcut_mode'], $page['uid'], $iteration - 1, $pageLog, $disableGroupCheck);
             } else {
                 $pageLog[] = $page['uid'];
                 $this->logger->error('Page shortcuts were looping in uids {uids}', ['uids' => implode(', ', array_values($pageLog))]);

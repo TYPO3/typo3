@@ -463,7 +463,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         $relatedUids = [];
         $uid = $row['uid'];
-        $value = $row[$this->getLookupField()];
+        $value = (string)$row[$this->getLookupField()];
         switch ((string)$this->columnConfiguration['type']) {
             case 'inline':
                 // Intentional fall-through

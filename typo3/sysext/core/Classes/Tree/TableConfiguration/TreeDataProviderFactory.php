@@ -89,7 +89,7 @@ class TreeDataProviderFactory
 
             $treeConfiguration = $tcaConfiguration['treeConfig'];
             if (isset($treeConfiguration['startingPoints'])) {
-                $dataProvider->setStartingPoints(array_unique(GeneralUtility::intExplode(',', $treeConfiguration['startingPoints'])));
+                $dataProvider->setStartingPoints(array_unique(GeneralUtility::intExplode(',', (string)$treeConfiguration['startingPoints'])));
             }
             if (isset($treeConfiguration['appearance']['expandAll'])) {
                 $dataProvider->setExpandAll((bool)$treeConfiguration['appearance']['expandAll']);

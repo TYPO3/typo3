@@ -473,7 +473,7 @@ class GraphicalFunctions
     {
         $cpW = imagesx($cpImg);
         $cpH = imagesy($cpImg);
-        $tile = GeneralUtility::intExplode(',', $conf['tile'] ?? '');
+        $tile = GeneralUtility::intExplode(',', (string)($conf['tile'] ?? ''));
         $tile[0] = MathUtility::forceIntegerInRange($tile[0], 1, 20);
         $tile[1] = MathUtility::forceIntegerInRange($tile[1] ?? 0, 1, 20);
         $cpOff = $this->objPosition($conf, $workArea, [$cpW * $tile[0], $cpH * $tile[1]]);
@@ -715,7 +715,7 @@ class GraphicalFunctions
                 $result[0] = 0;
                 $result[1] = 0;
         }
-        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset'] ?? ''));
+        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', (string)($conf['offset'] ?? '')));
         $result = $this->applyOffset($result, $workArea);
         return $result;
     }
@@ -1079,7 +1079,7 @@ class GraphicalFunctions
                             // Initialize range:
                             $ranges = GeneralUtility::trimExplode(',', $cfg['value'], true);
                             foreach ($ranges as $i => $rangeDef) {
-                                $ranges[$i] = GeneralUtility::intExplode('-', (string)$ranges[$i]);
+                                $ranges[$i] = GeneralUtility::intExplode('-', $rangeDef);
                                 if (!isset($ranges[$i][1])) {
                                     $ranges[$i][1] = $ranges[$i][0];
                                 }
@@ -1385,7 +1385,7 @@ class GraphicalFunctions
     {
         $conf['color'] = $conf['highColor'];
         $this->makeShadow($im, $conf, $workArea, $txtConf);
-        $newOffset = GeneralUtility::intExplode(',', $conf['offset']);
+        $newOffset = GeneralUtility::intExplode(',', (string)($conf['offset'] ?? ''));
         $newOffset[0] *= -1;
         $newOffset[1] *= -1;
         $conf['offset'] = implode(',', $newOffset);
@@ -1407,7 +1407,7 @@ class GraphicalFunctions
      */
     public function makeShadow(&$im, $conf, $workArea, $txtConf)
     {
-        $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', $conf['offset']));
+        $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', (string)($conf['offset'])));
         $blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
         // No effects if ImageMagick ver. 5+
         if (!$blurRate || !$this->processorEffectsEnabled) {
@@ -2056,7 +2056,7 @@ class GraphicalFunctions
             default:
                 $result[1] = 0;
         }
-        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset'] ?? ''));
+        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', (string)($conf['offset'] ?? '')));
         $result = $this->applyOffset($result, $workArea);
         return $result;
     }

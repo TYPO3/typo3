@@ -407,7 +407,7 @@ class PageRouter implements RouterInterface
         $prefixesToRemove = [];
         $slugPrefixesToAdd = [];
         foreach ($mountPointPairs as $mountPointPair) {
-            [$mountRoot, $mountedPage] = GeneralUtility::intExplode('-', $mountPointPair);
+            [$mountRoot, $mountedPage] = GeneralUtility::intExplode('-', (string)$mountPointPair);
             $mountPageInformation = $pageRepository->getMountPointInfo($mountedPage);
             if ($mountPageInformation) {
                 if ($pageId === $mountedPage) {

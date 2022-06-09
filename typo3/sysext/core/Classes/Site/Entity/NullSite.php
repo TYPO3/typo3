@@ -150,7 +150,7 @@ class NullSite implements SiteInterface
         $pageTs = BackendUtility::getPagesTSconfig((int)$pageId);
         $pageTs = $pageTs['mod.']['SHARED.'] ?? [];
 
-        $disabledLanguages = GeneralUtility::intExplode(',', $pageTs['disableLanguages'] ?? '', true);
+        $disabledLanguages = GeneralUtility::intExplode(',', (string)($pageTs['disableLanguages'] ?? ''), true);
         // Do not add the ones that are not allowed by the user
         foreach ($this->languages as $language) {
             if ($user->checkLanguageAccess($language->getLanguageId()) && !in_array($language->getLanguageId(), $disabledLanguages, true)) {

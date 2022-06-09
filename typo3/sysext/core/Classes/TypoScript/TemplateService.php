@@ -619,10 +619,11 @@ class TemplateService
         }
         // Include "Based On" sys_templates:
         // 'basedOn' is a list of templates to include
-        if (trim($row['basedOn'] ?? '')) {
+        $basedOn = trim($row['basedOn'] ?? '');
+        if ($basedOn !== '') {
             // Normal Operation, which is to include the "based-on" sys_templates,
             // if they are not already included, and maintaining the sorting of the templates
-            $basedOnIds = GeneralUtility::intExplode(',', $row['basedOn'], true);
+            $basedOnIds = GeneralUtility::intExplode(',', $basedOn, true);
             // skip template if it's already included
             foreach ($basedOnIds as $key => $basedOnId) {
                 if (GeneralUtility::inList($idList, 'sys_' . $basedOnId)) {

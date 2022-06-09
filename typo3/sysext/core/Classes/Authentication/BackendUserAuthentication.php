@@ -1004,7 +1004,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return;
         }
         if ($append) {
-            $currentWebMounts = GeneralUtility::intExplode(',', $this->groupData['webmounts']);
+            $currentWebMounts = GeneralUtility::intExplode(',', (string)($this->groupData['webmounts'] ?? ''));
             $mountPointUids = array_merge($currentWebMounts, $mountPointUids);
         }
         $this->groupData['webmounts'] = implode(',', array_unique($mountPointUids));
@@ -1344,11 +1344,11 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // Processing file mounts (both from the user and the groups)
-        $fileMounts = array_unique(GeneralUtility::intExplode(',', $this->groupData['filemounts'] ?? '', true));
+        $fileMounts = array_unique(GeneralUtility::intExplode(',', (string)($this->groupData['filemounts'] ?? ''), true));
 
         // Limit file mounts if set in workspace record
         if ($this->workspace > 0 && !empty($this->workspaceRec['file_mountpoints'])) {
-            $workspaceFileMounts = GeneralUtility::intExplode(',', $this->workspaceRec['file_mountpoints'], true);
+            $workspaceFileMounts = GeneralUtility::intExplode(',', (string)$this->workspaceRec['file_mountpoints'], true);
             $fileMounts = array_intersect($fileMounts, $workspaceFileMounts);
         }
 
@@ -1756,7 +1756,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             // but make sure they match against the users' DB mounts
 
             $workspaceWebMounts = GeneralUtility::intExplode(',', $dbMountpoints);
-            $webMountsOfUser = GeneralUtility::intExplode(',', $this->groupData['webmounts']);
+            $webMountsOfUser = GeneralUtility::intExplode(',', (string)($this->groupData['webmounts'] ?? ''));
             $webMountsOfUser = array_combine($webMountsOfUser, $webMountsOfUser) ?: [];
 
             $entryPointRootLineUids = [];

@@ -58,7 +58,7 @@ class GroupResolver
     public function resolveGroupsForUser(array $userRecord, string $sourceTable): array
     {
         $this->sourceTable = $sourceTable;
-        $originalGroupIds = GeneralUtility::intExplode(',', $userRecord[$this->sourceField] ?? '', true);
+        $originalGroupIds = GeneralUtility::intExplode(',', (string)($userRecord[$this->sourceField] ?? ''), true);
         $resolvedGroups = $this->fetchGroupsRecursive($originalGroupIds);
         $event = $this->eventDispatcher->dispatch(new AfterGroupsResolvedEvent($sourceTable, $resolvedGroups, $originalGroupIds, $userRecord));
         return $event->getGroups();
@@ -88,7 +88,7 @@ class GroupResolver
                 continue;
             }
             // Add sub groups first
-            $subgroupIds = GeneralUtility::intExplode(',', $foundGroups[$groupId][$this->recursiveSourceField] ?? '', true);
+            $subgroupIds = GeneralUtility::intExplode(',', (string)($foundGroups[$groupId][$this->recursiveSourceField] ?? ''), true);
             if (!empty($subgroupIds)) {
                 $subgroups = $this->fetchGroupsRecursive($subgroupIds, array_merge($processedGroupIds, [$groupId]));
                 $validGroups = array_merge($validGroups, $subgroups);
