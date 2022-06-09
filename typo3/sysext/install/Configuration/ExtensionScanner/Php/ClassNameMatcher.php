@@ -1979,4 +1979,9 @@ return [
             'Deprecation-97576-TYPO3CMSCoreUtilityResourceUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Mail\MailerAdapterInterface' => [
+        'restFiles' => [
+            'Breaking-97752-MailerAdapterInterfaceRemoved.rst',
+        ],
+    ],
 ];
