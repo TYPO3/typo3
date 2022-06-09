@@ -209,7 +209,7 @@ class FileStorageTreeProvider
             }
 
             $items[] = array_merge(
-                $this->prepareFolderInformation($subFolder, is_string($subFolderName) ? $subFolderName : null),
+                $this->prepareFolderInformation($subFolder, $subFolderName),
                 [
                     'depth' => $currentDepth,
                     'expanded' => $expanded,

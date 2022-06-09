@@ -28,7 +28,7 @@ class ListUtility
      * Resolve special folders (by their role) into localised string
      *
      * @param Folder[] $folders
-     * @return array Array of \TYPO3\CMS\Core\Resource\Folder; folder name or role with folder name as keys
+     * @return array<string, Folder> array with Folders using the Folder name (with our without role) as key
      */
     public static function resolveSpecialFolderNames(array $folders)
     {
