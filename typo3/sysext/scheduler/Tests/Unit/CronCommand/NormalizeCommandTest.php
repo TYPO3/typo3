@@ -542,7 +542,7 @@ class NormalizeCommandTest extends UnitTestCase
             'string seven' => ['seven', 1291083486],
             'string 13' => ['13', 1291083486],
             'integer 13' => [13, 1291083486],
-            'integer 100' => [100, 1291083486],
+            'integer 99' => [99, 1291083486],
             'integer 2010' => [2010, 1291083486],
             'string minus 7' => ['-7', 1291083486],
             'negative integer 7' => [-7, 1291083486],
