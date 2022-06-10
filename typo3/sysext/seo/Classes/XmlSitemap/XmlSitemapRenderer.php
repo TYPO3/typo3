@@ -18,10 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\InvalidConfigurationException;
 
 /**
@@ -122,7 +124,7 @@ class XmlSitemapRenderer
      */
     protected function renderSitemap(ServerRequestInterface $request, string $sitemap, string $sitemapType): string
     {
-        if (!empty($sitemapConfig = $this->configuration['config'][$sitemapType]['sitemaps'][$sitemap])) {
+        if (!empty($sitemapConfig = $this->configuration['config'][$sitemapType]['sitemaps'][$sitemap] ?? null)) {
             if (class_exists($sitemapConfig['provider']) &&
                 is_subclass_of($sitemapConfig['provider'], XmlSitemapDataProviderInterface::class)) {
                 /** @var XmlSitemapDataProviderInterface $provider */
@@ -146,7 +148,13 @@ class XmlSitemapRenderer
             throw new InvalidConfigurationException('No valid provider set for ' . $sitemap, 1535578522);
         }
 
-        throw new InvalidConfigurationException('No valid configuration found for sitemap ' . $sitemap, 1535578569);
+        throw new PropagateResponseException(
+            GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'No valid configuration found for sitemap ' . $sitemap
+            ),
+            1535578569
+        );
     }
 
     protected function getStandaloneView(): StandaloneView
