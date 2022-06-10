@@ -115,6 +115,7 @@ cleanTestFiles() {
 }
 
 # Load help text into $HELP
+# @todo Remove xdebug / php8.2 note after PHP8.2 image contains working xdebug.
 read -r -d '' HELP <<EOF
 TYPO3 core test runner. Execute acceptance, unit, functional and other test suites in
 a docker based test environment. Handles execution of single test files, sending
@@ -226,11 +227,12 @@ Options:
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         Example -c 3/13
 
-    -p <7.4|8.0|8.1>
+    -p <7.4|8.0|8.1|8.2>
         Specifies the PHP minor version to be used
             - 7.4: (default) use PHP 7.4
             - 8.0: use PHP 8.0
             - 8.1: use PHP 8.1
+            - 8.2: use PHP 8.2 (note that xdebug is currently not available for PHP8.2)
 
     -e "<phpunit options>"
         Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
@@ -418,7 +420,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1|8.2)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
@@ -455,6 +457,12 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
     esac
 done
+
+# @todo Remove this check after PHP8.2 image contains xdebug
+if [ "${PHP_VERSION}" == "8.2" -a ${PHP_XDEBUG_ON} -eq 1 ]; then
+    echo "xdebug not available for PHP 8.2; either use other PHP version or do not use -x"
+    exit 1
+fi
 
 # Exit on invalid options
 if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
