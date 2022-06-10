@@ -106,6 +106,7 @@ cleanTestFiles() {
 }
 
 # Load help text into $HELP
+# @todo Remove xdebug / php8.2 note after PHP8.2 image contains working xdebug.
 read -r -d '' HELP <<EOF
 TYPO3 core test runner. Execute acceptance, unit, functional and other test suites in
 a docker based test environment. Handles execution of single test files, sending
@@ -207,9 +208,10 @@ Options:
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         Example -c 3/13
 
-    -p <8.1>
+    -p <8.1|8.2>
         Specifies the PHP minor version to be used
             - 8.1 (default): use PHP 8.1
+            - 8.2: use PHP 8.2 (note that xdebug is currently not available for PHP8.2)
 
     -e "<phpunit options>"
         Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
@@ -258,7 +260,7 @@ Examples:
     # Run all core units tests and enable xdebug (have a PhpStorm listening on port 9003!)
     ./Build/Scripts/runTests.sh -x
 
-    # Run unit tests in phpunit verbose mode with xdebug on PHP 8.0 and filter for test canRetrieveValueWithGP
+    # Run unit tests in phpunit verbose mode with xdebug on PHP 8.1 and filter for test canRetrieveValueWithGP
     ./Build/Scripts/runTests.sh -x -p 8.1 -e "-v --filter canRetrieveValueWithGP"
 
     # Run functional tests in phpunit with a filtered test method name in a specified file
@@ -268,7 +270,7 @@ Examples:
     # Run unit tests with PHP 8.1 and have xdebug enabled
     ./Build/Scripts/runTests.sh -x -p 8.1
 
-    # Run functional tests on postgres with xdebug, php 8.0 and execute a restricted set of tests
+    # Run functional tests on postgres with xdebug, php 8.1 and execute a restricted set of tests
     ./Build/Scripts/runTests.sh -x -p 8.1 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
     # Run functional tests on mariadb 10.5
@@ -397,7 +399,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(8.1)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.1|8.2)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
@@ -434,6 +436,12 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
     esac
 done
+
+# @todo Remove this check after PHP8.2 image contains xdebug
+if [ "${PHP_VERSION}" == "8.2" -a ${PHP_XDEBUG_ON} -eq 1 ]; then
+    echo "xdebug not available for PHP 8.2; either use other PHP version or do not use -x"
+    exit 1
+fi
 
 # Exit on invalid options
 if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
