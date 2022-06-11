@@ -1,0 +1,6 @@
+.. code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
+
+    services:
+      _defaults:
+        autoconfigure: true
