@@ -16,8 +16,9 @@ To familiarize yourself with the configuration, look at the existing configurati
 in your TYPO3 website:
 
 To view the existing RTE presets in the "Global Configuration", go to
-:guilabel:`SYSTEM > Configuration` in the backend, choose
-:guilabel:`$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)` and select RTE:
+:guilabel:`System > Configuration` in the backend, choose
+:guilabel:`$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)` and select
+:guilabel:`RTE`:
 
 .. figure:: images/global-configuration-rte.png
    :class: with-shadow

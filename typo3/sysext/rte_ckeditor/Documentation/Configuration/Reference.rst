@@ -12,7 +12,7 @@ Configuration Reference
 YAML Configuration Reference
 ============================
 
-When configurating the CKEditor using YAML, these are the property
+When configuring the CKEditor using YAML, these are the property
 names that are currently used:
 
 .. contents::

@@ -8,7 +8,7 @@ TYPO3 Configuration Basics
 ==========================
 
 Just in case you are not familiar with how to configure TYPO3, we will
-give you a very brief introduction. In case you are , you can safely
+give you a very brief introduction. Otherwise, you can safely
 skip this part and continue reading
 :ref:`config-concepts`.
 
@@ -34,9 +34,9 @@ Page TSconfig can be used to change:
       RTE.config.tt_content.bodytext.preset = myCustomPreset
       RTE.config.tx_news_domain_model_news.bodytext.preset = minimal
 
-#. Override for one field defined in flexform (:typoscript:`RTE.config.[tableName].[flexForm\.field\.name].preset`)::
+#. Override for one field defined in flexform (:typoscript:`RTE.config.[tableName].[flexForm.field.name].preset`)::
 
-      RTE.config.tt_content.settings\.notifications\.emailText.preset = myCustomPreset
+      RTE.config.tt_content.settings.notifications.emailText.preset = myCustomPreset
 
 #. Override for one field, if type matches (:typoscript:`RTE.config.[tableName].[fieldName].types.[type].preset`)::
 
@@ -50,15 +50,14 @@ How to change values
 As Page TSconfig always applies to a page and its subpages, you can modify it by
 editing a page.
 
-#. Go to the :guilabel:`"WEB" > "Page"` module.
-#. Select a page in the page tree (usually
-   your root page).
+#. Go to the :guilabel:`Web > Page` module.
+#. Select a page in the page tree (usually your root page).
 #. Click on the button to :guilabel:`Edit page properties`
 
    .. figure:: images/edit_page_properties.png
       :class: with-shadow
 
-#. Select the :guilabel:`"Resources"` tab
+#. Select the :guilabel:`Resources` tab
 #. Enter the Page TSconfig in the field :guilabel:`"Page TSconfig"`
 
 
@@ -68,9 +67,7 @@ Additionally, you can add Page TSconfig in an extension: :file:`Configuration/TS
 How to view settings
 --------------------
 
-Go to the module :guilabel:`"WEB" > "Info"` and select :guilabel:`"Page TSconfig"`.
-
-
+Go to the module :guilabel:`Web > Info` and select :guilabel:`Page TSconfig`.
 
 
 .. _config-typo3-global-configuration:
@@ -78,7 +75,7 @@ Go to the module :guilabel:`"WEB" > "Info"` and select :guilabel:`"Page TSconfig
 Global Configuration
 ====================
 
-Global Configuration is system wide general configuration.
+Global Configuration is a system-wide general configuration.
 
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
@@ -95,7 +92,7 @@ How to change values
 --------------------
 
 Usually, Global Configuration can be configured in the backend in
-:guilabel:`"ADMIN TOOLS" > "Settings" > "Configure Installation-Wide Options"`.
+:guilabel:`Admin Tools > Settings > Configure Installation-Wide Options`.
 
 However, the settings relevant for rich text editing, :php:`$GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']`
 cannot be configured in the backend.
@@ -116,7 +113,7 @@ How to view settings
 --------------------
 
 You can view the Global Configuration in
-:guilabel:`"SYSTEM" > "Configuration" > "$GLOBAL['TYPO3_CONF_VARS'] (Global Configuration)" > "RTE"`.
+:guilabel:`System > Configuration > $GLOBAL['TYPO3_CONF_VARS'] (Global Configuration) > RTE`.
 
 .. figure:: images/global-configuration-rte.png
    :class: with-shadow
@@ -171,7 +168,7 @@ How to view settings
 --------------------
 
 You can view TCA in the backend:
-:guilabel:`"SYSTEM" > "Configuration" > "$GLOBAL['TCA'] (Table configuration array)"`.
+:guilabel:`System > Configuration > $GLOBAL['TCA'] (Table configuration array)`.
 
 For example, look at :guilabel:`tt_content > columns > bodytext`.
 
