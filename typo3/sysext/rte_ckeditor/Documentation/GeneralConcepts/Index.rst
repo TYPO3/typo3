@@ -12,7 +12,7 @@ Editing Modes
 
 CKEditor has three editing modes:
 
-Article Edito mode (classic RTE)
+Article Editor mode (classic RTE)
    Editing is done within a fixed container.
    It is possible to customize how the editor behaves and how the content is styled.
 

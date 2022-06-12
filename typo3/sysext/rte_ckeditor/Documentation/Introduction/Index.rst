@@ -37,12 +37,11 @@ History
 CKEditor was officially integrated as the default rich text editor in TYPO3 v8 LTS,
 within an extension called `rte_ckeditor`.
 
-Before TYPO3 v8, a custom fork of “HtmlArea”, another open-source WYSIWYG editor
+Before TYPO3 v8, a custom fork of "HtmlArea", another open-source WYSIWYG editor
 was shipped with TYPO3 Core in a separate extension `rtehtmlarea`. "HtmlArea"
 isn't supported anymore since TYPO3 v9 LTS. You have to migrate to `rte_ckeditor`
 when upgrading from previous TYPO3 versions (=< v8).
 
-It's highly recommended to use CKEditor as the editor in TYPO3 v8 LTS instances.
 
 .. _features:
 
