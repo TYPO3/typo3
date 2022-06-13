@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -35,6 +36,21 @@ class StreamTest extends UnitTestCase
     {
         parent::setUp();
         $this->stream = new Stream('php://memory', 'wb+');
+    }
+
+    /**
+     * Helper method to create a random directory and return the path.
+     * The path will be registered for deletion upon test ending
+     *
+     * @param string $prefix
+     * @return string
+     */
+    protected function getTestDirectory(string $prefix = 'root_'): string
+    {
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
+        $this->testFilesToDelete[] = $path;
+        GeneralUtility::mkdir_deep($path);
+        return $path;
     }
 
     /**
@@ -60,9 +76,8 @@ class StreamTest extends UnitTestCase
      */
     public function isReadableReturnsFalseIfStreamIsNotReadable(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $stream = new Stream($fileName, 'w');
         self::assertFalse($stream->isReadable());
     }
@@ -110,9 +125,8 @@ class StreamTest extends UnitTestCase
      */
     public function toStringSerializationReturnsEmptyStringWhenStreamIsNotReadable(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $stream = new Stream($fileName, 'w');
 
@@ -124,9 +138,8 @@ class StreamTest extends UnitTestCase
      */
     public function closeClosesResource(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->close();
@@ -142,9 +155,8 @@ class StreamTest extends UnitTestCase
      */
     public function closeUnsetsResource(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->close();
@@ -157,9 +169,8 @@ class StreamTest extends UnitTestCase
      */
     public function closeDoesNothingAfterDetach(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $detached = $stream->detach();
@@ -183,8 +194,7 @@ class StreamTest extends UnitTestCase
      */
     public function tellReportsCurrentPositionInResource(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -199,8 +209,7 @@ class StreamTest extends UnitTestCase
      */
     public function tellRaisesExceptionIfResourceIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -217,8 +226,7 @@ class StreamTest extends UnitTestCase
      */
     public function eofReportsFalseWhenNotAtEndOfStream(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -232,8 +240,7 @@ class StreamTest extends UnitTestCase
      */
     public function eofReportsTrueWhenAtEndOfStream(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -249,8 +256,7 @@ class StreamTest extends UnitTestCase
      */
     public function eofReportsTrueWhenStreamIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -265,8 +271,7 @@ class StreamTest extends UnitTestCase
      */
     public function isSeekableReturnsTrueForReadableStreams(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -278,8 +283,7 @@ class StreamTest extends UnitTestCase
      */
     public function isSeekableReturnsFalseForDetachedStreams(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -292,8 +296,7 @@ class StreamTest extends UnitTestCase
      */
     public function seekAdvancesToGivenOffsetOfStream(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -306,8 +309,7 @@ class StreamTest extends UnitTestCase
      */
     public function rewindResetsToStartOfStream(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -321,8 +323,7 @@ class StreamTest extends UnitTestCase
      */
     public function seekRaisesExceptionWhenStreamIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -337,8 +338,7 @@ class StreamTest extends UnitTestCase
      */
     public function isWritableReturnsFalseWhenStreamIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -351,8 +351,7 @@ class StreamTest extends UnitTestCase
      */
     public function writeRaisesExceptionWhenStreamIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -367,8 +366,7 @@ class StreamTest extends UnitTestCase
      */
     public function isReadableReturnsFalseWhenStreamIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
@@ -381,8 +379,7 @@ class StreamTest extends UnitTestCase
      */
     public function readRaisesExceptionWhenStreamIsDetached(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'r');
         $stream = new Stream($resource);
@@ -397,8 +394,7 @@ class StreamTest extends UnitTestCase
      */
     public function readReturnsEmptyStringWhenAtEndOfFile(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'r');
         $stream = new Stream($resource);
@@ -413,8 +409,7 @@ class StreamTest extends UnitTestCase
      */
     public function getContentsReturnsEmptyStringIfStreamIsNotReadable(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
-        $this->testFilesToDelete[] = $fileName;
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'w');
         $stream = new Stream($resource);
@@ -466,9 +461,8 @@ class StreamTest extends UnitTestCase
      */
     public function attachWithResourceAttachesResource(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 
@@ -483,9 +477,8 @@ class StreamTest extends UnitTestCase
      */
     public function attachWithStringRepresentingResourceCreatesAndAttachesResource(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $this->stream->attach($fileName);
 
         $resource = fopen($fileName, 'r+');
@@ -501,9 +494,8 @@ class StreamTest extends UnitTestCase
      */
     public function getContentsShouldGetFullStreamContents(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 
@@ -520,9 +512,8 @@ class StreamTest extends UnitTestCase
      */
     public function getContentsShouldReturnStreamContentsFromCurrentPointer(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 
@@ -539,9 +530,8 @@ class StreamTest extends UnitTestCase
      */
     public function getMetadataReturnsAllMetadataWhenNoKeyPresent(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 
@@ -556,9 +546,8 @@ class StreamTest extends UnitTestCase
      */
     public function getMetadataReturnsDataForSpecifiedKey(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 
@@ -575,9 +564,8 @@ class StreamTest extends UnitTestCase
      */
     public function getMetadataReturnsNullIfNoDataExistsForKey(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 

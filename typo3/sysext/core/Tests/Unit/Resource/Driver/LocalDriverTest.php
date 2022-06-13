@@ -39,21 +39,16 @@ class LocalDriverTest extends BaseTestCase
     protected bool $backupEnvironment = true;
 
     protected ?LocalDriver $localDriver;
-    protected array $testDirs = [];
     protected string $iso88591GreaterThan127 = '';
     protected string $utf8Latin1Supplement = '';
     protected string $utf8Latin1ExtendedA = '';
 
-    /**
-     * Tear down
-     */
-    protected function tearDown(): void
+    protected function setUp(): void
     {
-        foreach ($this->testDirs as $dir) {
-            chmod($dir, 0777);
-            GeneralUtility::rmdir($dir, true);
-        }
-        parent::tearDown();
+        $testRoot = Environment::getVarPath() . '/tests';
+        $this->testFilesToDelete[] = $testRoot;
+        GeneralUtility::mkdir_deep($testRoot);
+        parent::setUp();
     }
 
     /**
@@ -67,8 +62,7 @@ class LocalDriverTest extends BaseTestCase
     protected function createRealTestdir(): string
     {
         $basedir = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('fal-test-');
-        mkdir($basedir);
-        $this->testDirs[] = $basedir;
+        GeneralUtility::mkdir_deep($basedir);
         return $basedir;
     }
 

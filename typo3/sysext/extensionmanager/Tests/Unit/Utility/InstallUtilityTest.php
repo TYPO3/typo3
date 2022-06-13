@@ -143,7 +143,7 @@ class InstallUtilityTest extends UnitTestCase
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
-        GeneralUtility::mkdir($absExtPath);
+        GeneralUtility::mkdir_deep($absExtPath);
         $this->fakedExtensions[$extKey] = [
             'packagePath' => $absExtPath,
         ];

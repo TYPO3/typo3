@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\AbstractNode;
 use TYPO3\CMS\Install\FolderStructure\Exception;
@@ -121,24 +122,25 @@ class AbstractNodeTest extends FolderStructureTestCase
     public function existsReturnsTrueIfNodeExists(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('exists'));
     }
 
     /**
      * @test
-     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function existsReturnsTrueIfIsLinkAndTargetIsDead(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('notExists_');
+        $testRoot = Environment::getVarPath() . '/tests/';
+        $this->testFilesToDelete[] = $testRoot;
+        GeneralUtility::mkdir_deep($testRoot);
+        $path = $testRoot . StringUtility::getUniqueId('link_');
+        $target = $testRoot . StringUtility::getUniqueId('notExists_');
         touch($target);
         symlink($target, $path);
         unlink($target);
-        $this->testFilesToDelete[] = $path;
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('exists'));
     }
@@ -149,7 +151,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     public function existsReturnsFalseIfNodeNotExists(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->_call('exists'));
     }
@@ -187,7 +189,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         );
         $node->method('getRelativePathBelowSiteRoot')->willReturn('');
         $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
-        $path = $this->getVirtualTestDir();
+        $path = $this->getTestDirectory();
         $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02770);
@@ -226,11 +228,11 @@ class AbstractNodeTest extends FolderStructureTestCase
     public function getCurrentPermissionReturnsCurrentDirectoryPermission(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('dir_');
-        chmod($path, 02775);
+        $path = $this->getTestDirectory('dir_');
+        chmod($path, 00444);
         clearstatcache();
         $node->method('getAbsolutePath')->willReturn($path);
-        self::assertSame('2775', $node->_call('getCurrentPermission'));
+        self::assertSame('0444', $node->_call('getCurrentPermission'));
     }
 
     /**
@@ -239,7 +241,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     public function getCurrentPermissionReturnsCurrentFilePermission(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
-        $file = $this->getVirtualTestFilePath('file_');
+        $file = $this->getTestFilePath('file_');
         touch($file);
         chmod($file, 0770);
         clearstatcache();

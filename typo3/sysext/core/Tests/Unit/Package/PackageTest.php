@@ -17,11 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
-use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -29,10 +30,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PackageTest extends UnitTestCase
 {
+    protected string $testRoot;
+
     protected function setUp(): void
     {
         parent::setUp();
-        vfsStream::setup('Packages');
+        $this->testRoot = Environment::getVarPath() . '/tests/Packages/';
+        GeneralUtility::mkdir_deep($this->testRoot);
+        $this->testFilesToDelete[] = $this->testRoot;
     }
 
     /**
@@ -65,7 +70,7 @@ class PackageTest extends UnitTestCase
      */
     public function constructAcceptsValidPackageKeys($packageKey): void
     {
-        $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
+        $packagePath = $this->testRoot . str_replace('\\', '/', $packageKey) . '/';
         mkdir($packagePath, 0777, true);
         file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
         file_put_contents($packagePath . 'ext_emconf.php', '');
@@ -94,7 +99,7 @@ class PackageTest extends UnitTestCase
         $this->expectException(InvalidPackageKeyException::class);
         $this->expectExceptionCode(1217959511);
 
-        $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
+        $packagePath = $this->testRoot . str_replace('\\', '/', $packageKey) . '/';
         mkdir($packagePath, 0777, true);
 
         $packageManagerMock = $this->createMock(PackageManager::class);
@@ -106,7 +111,7 @@ class PackageTest extends UnitTestCase
      */
     public function aPackageCanBeFlaggedAsProtected(): void
     {
-        $packagePath = 'vfs://Packages/Application/Vendor/Dummy/';
+        $packagePath = $this->testRoot . 'Application/Vendor/Dummy/';
         mkdir($packagePath, 0700, true);
         file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
         file_put_contents($packagePath . 'ext_emconf.php', '');

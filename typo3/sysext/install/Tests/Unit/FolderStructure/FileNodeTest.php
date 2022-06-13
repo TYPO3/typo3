@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -141,7 +142,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
-        $targetFile = $this->getVirtualTestFilePath('test_');
+        $targetFile = $this->getTestFilePath('test_');
         $targetContent = StringUtility::getUniqueId('content_');
         file_put_contents($targetFile, $targetContent);
         $structure = [
@@ -161,7 +162,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectExceptionCode(1380364362);
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
-        $targetFile = $this->getVirtualTestFilePath('test_');
+        $targetFile = $this->getTestFilePath('test_');
         $structure = [
             'name' => 'foo',
             'targetContentFile' => $targetFile,
@@ -196,7 +197,10 @@ class FileNodeTest extends FolderStructureTestCase
             false
         );
         // do not use var path here, as file nodes explicitly check for public path
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
+        $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
+        $this->testFilesToDelete[] = $testRoot;
+        GeneralUtility::mkdir_deep($testRoot);
+        $path = $testRoot . StringUtility::getUniqueId('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('exists')->willReturn(true);
         $node->method('isFile')->willReturn(true);
@@ -218,7 +222,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->method('exists')->willReturn(false);
@@ -242,7 +246,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -267,7 +271,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -292,7 +296,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -317,7 +321,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -342,7 +346,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -538,7 +542,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function createFileReturnsOkStatusIfFileWasCreated(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -551,7 +555,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function createFileCreatesFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -565,8 +569,10 @@ class FileNodeTest extends FolderStructureTestCase
     public function createFileReturnsErrorStatusIfFileWasNotCreated(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestDir();
-        chmod($path, 02550);
+        // using vfs here to avoid inconsistent behaviour of file systems concerning permissions
+        $root = vfsStream::setup();
+        $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId();
+        chmod($path, 00440);
         $subPath = $path . '/' . StringUtility::getUniqueId('file_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($subPath);
@@ -582,7 +588,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1367056363);
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->_call('isContentCorrect');
     }
@@ -593,7 +599,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function isContentCorrectReturnsTrueIfTargetContentPropertyIsNull(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->_set('targetContent', null);
@@ -606,7 +612,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function isContentCorrectReturnsTrueIfTargetContentEqualsCurrentContent(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         $content = StringUtility::getUniqueId('content_');
         file_put_contents($path, $content);
         $node->method('getAbsolutePath')->willReturn($path);
@@ -620,7 +626,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function isContentCorrectReturnsFalseIfTargetContentNotEqualsCurrentContent(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         $content = StringUtility::getUniqueId('content1_');
         $targetContent = StringUtility::getUniqueId('content2_');
         file_put_contents($path, $content);
@@ -655,7 +661,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1367060201);
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->_set('targetContent', 'foo');
         $node->_call('setContent');
@@ -669,7 +675,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1367060202);
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->_set('targetContent', null);
@@ -682,7 +688,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function setContentSetsContentToFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $targetContent = StringUtility::getUniqueId('content_');
@@ -698,7 +704,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function setContentReturnsOkStatusIfContentWasSuccessfullySet(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $targetContent = StringUtility::getUniqueId('content_');
@@ -712,7 +718,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function isFileReturnsTrueIfNameIsFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('file_');
+        $path = $this->getTestFilePath('file_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('isFile'));
@@ -720,14 +726,15 @@ class FileNodeTest extends FolderStructureTestCase
 
     /**
      * @test
-     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function isFileReturnsFalseIfNameIsALinkFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
+        // do not use var path here, as file nodes explicitly check for public path
+        $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
+        $path = $testRoot . StringUtility::getUniqueId('root_');
+        $this->testFilesToDelete[] = $testRoot;
         GeneralUtility::mkdir_deep($path);
-        $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $file = StringUtility::getUniqueId('file_');
         touch($path . '/' . $file);

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -28,6 +29,21 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class StreamFactoryTest extends UnitTestCase
 {
+    /**
+     * Helper method to create a random directory and return the path.
+     * The path will be registered for deletion upon test ending
+     *
+     * @param string $prefix
+     * @return string
+     */
+    protected function getTestDirectory(string $prefix = 'root_'): string
+    {
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
+        GeneralUtility::mkdir_deep($path);
+        $this->testFilesToDelete[] = $path;
+        return $path;
+    }
+
     /**
      * @test
      */
@@ -94,7 +110,7 @@ class StreamFactoryTest extends UnitTestCase
      */
     public function createStreamFromFile(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'Foo');
 
         $factory = new StreamFactory();
@@ -107,7 +123,7 @@ class StreamFactoryTest extends UnitTestCase
      */
     public function createStreamFromFileWithMode(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
 
         $factory = new StreamFactory();
         $stream = $factory->createStreamFromFile($fileName, 'w');
@@ -122,7 +138,7 @@ class StreamFactoryTest extends UnitTestCase
      */
     public function createStreamFromFileWithInvalidMode(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -148,7 +164,7 @@ class StreamFactoryTest extends UnitTestCase
      */
     public function createStreamFromResource(): void
     {
-        $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
+        $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         file_put_contents($fileName, 'Foo');
 

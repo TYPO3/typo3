@@ -43,10 +43,11 @@ class ActionControllerTest extends UnitTestCase
      */
     protected function createFakeExtension(): array
     {
+        $testRoot = Environment::getVarPath() . '/tests';
+        $this->testFilesToDelete[] = $testRoot;
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
-        $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
-        GeneralUtility::mkdir($absExtPath);
-        $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/ext-' . $extKey;
+        $absExtPath = $testRoot . '/ext-' . $extKey . '/';
+        GeneralUtility::mkdir_deep($absExtPath);
         return [
             'extensionKey' => $extKey,
             'version' => '0.0.0',

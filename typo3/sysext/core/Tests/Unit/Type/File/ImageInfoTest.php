@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
-use org\bovigo\vfs\vfsStream;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -113,9 +113,14 @@ class ImageInfoTest extends UnitTestCase
     {
         $this->resetSingletonInstances = true;
 
-        $root = vfsStream::setup('root');
-        $testFile = 'test.svg';
-        vfsStream::newFile($testFile)->at($root)->setContent($svg);
+        $testDirectory = Environment::getVarPath() . '/ImageTest';
+        $this->testFilesToDelete[] = $testDirectory;
+        $testFile = $testDirectory . '/test.svg';
+        if (!is_dir($testDirectory)) {
+            mkdir($testDirectory);
+        }
+        touch($testFile);
+        file_put_contents($testFile, $svg);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'] = [
             'svg' => 'image/svg+xml',
@@ -124,12 +129,12 @@ class ImageInfoTest extends UnitTestCase
         ];
 
         $graphicalFunctionsProphecy = $this->prophesize(GraphicalFunctions::class);
-        $graphicalFunctionsProphecy->imageMagickIdentify($root->url() . '/' . $testFile)->willReturn(null);
+        $graphicalFunctionsProphecy->imageMagickIdentify($testFile)->willReturn(null);
         GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsProphecy->reveal());
 
         $loggerProphecy = $this->prophesize(Logger::class);
 
-        $imageInfo = new ImageInfo($root->url() . '/' . $testFile);
+        $imageInfo = new ImageInfo($testFile);
         $imageInfo->setLogger($loggerProphecy->reveal());
 
         self::assertSame($width, $imageInfo->getWidth());

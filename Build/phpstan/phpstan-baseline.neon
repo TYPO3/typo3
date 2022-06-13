@@ -1811,11 +1811,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Log/Fixtures/WriterFixture.php
 
 		-
-			message: "#^Call to an undefined method org\\\\bovigo\\\\vfs\\\\vfsStreamContent\\:\\:hasChild\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Log/Writer/FileWriterTest.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mime\\\\Header\\\\HeaderInterface\\:\\:getAddress\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailMessageTest.php

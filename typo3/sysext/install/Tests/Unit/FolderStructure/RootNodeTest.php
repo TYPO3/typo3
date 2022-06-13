@@ -182,9 +182,10 @@ class RootNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as root nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
+        $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
+        $this->testFilesToDelete[] = $testRoot;
+        $path = $testRoot . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
-        $this->testFilesToDelete[] = $path;
         $node->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::once())->method('exists')->willReturn(true);
         $node->expects(self::once())->method('isDirectory')->willReturn(true);
@@ -207,9 +208,10 @@ class RootNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as root nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
+        $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
+        $this->testFilesToDelete[] = $testRoot;
+        $path = $testRoot . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
-        $this->testFilesToDelete[] = $path;
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('exists')->willReturn(true);
         $node->method('isDirectory')->willReturn(true);

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -42,6 +43,21 @@ class ConfigurationManagerTest extends UnitTestCase
     }
 
     /**
+     * Helper method to create a random directory and return the path.
+     * The path will be registered for deletion upon test ending
+     *
+     * @param string $prefix
+     * @return string
+     */
+    protected function getTestDirectory(string $prefix = 'root_'): string
+    {
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
+        GeneralUtility::mkdir_deep($path);
+        $this->testFilesToDelete[] = $path;
+        return $path;
+    }
+
+    /**
      * @param array $methods
      */
     protected function createSubjectWithMockedMethods(array $methods): void
@@ -59,12 +75,11 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1310203814);
 
-        $defaultConfigurationFile = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('defaultConfiguration');
+        $defaultConfigurationFile = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('defaultConfiguration');
         file_put_contents(
             $defaultConfigurationFile,
             '<?php throw new \RuntimeException(\'foo\', 1310203814); ?>'
         );
-        $this->testFilesToDelete[] = $defaultConfigurationFile;
 
         $this->subject
             ->expects(self::once())
@@ -80,12 +95,11 @@ class ConfigurationManagerTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $configurationFile = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('localConfiguration');
+        $configurationFile = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('localConfiguration');
         file_put_contents(
             $configurationFile,
             '<?php throw new \RuntimeException(\'foo\', 1310203815); ?>'
         );
-        $this->testFilesToDelete[] = $configurationFile;
 
         $this->subject
             ->expects(self::once())
@@ -378,13 +392,12 @@ class ConfigurationManagerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
 
         $directory = StringUtility::getUniqueId('test_');
-        $absoluteDirectory = Environment::getVarPath() . '/tests/' . $directory;
+        $absoluteDirectory = $this->getTestDirectory() . '/' . $directory;
         mkdir($absoluteDirectory);
 
         $file = StringUtility::getUniqueId('test_');
-        $absoluteFile1 = Environment::getVarPath() . '/tests/' . $file;
+        $absoluteFile1 = $absoluteDirectory . '/' . $file;
         touch($absoluteFile1);
-        $this->testFilesToDelete[] = $absoluteFile1;
         $subject->_set('localConfigurationFile', $absoluteFile1);
 
         clearstatcache();
@@ -392,7 +405,6 @@ class ConfigurationManagerTest extends UnitTestCase
         $result = $subject->canWriteConfiguration();
 
         self::assertTrue($result);
-        $this->testFilesToDelete[] = $absoluteDirectory;
     }
 
     /**
@@ -400,7 +412,7 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function writeLocalConfigurationWritesSortedContentToConfigurationFile(): void
     {
-        $configurationFile = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('localConfiguration');
+        $configurationFile = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('localConfiguration');
         if (!is_file($configurationFile)) {
             if (!$fh = fopen($configurationFile, 'wb')) {
                 self::markTestSkipped('Can not create file ' . $configurationFile . '. Please check your write permissions.');
@@ -414,7 +426,6 @@ class ConfigurationManagerTest extends UnitTestCase
                 1346364362
             );
         }
-        $this->testFilesToDelete[] = $configurationFile;
 
         $this->subject
             ->method('getLocalConfigurationFileLocation')
@@ -444,11 +455,10 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getLocalConfigurationFileLocation']);
 
-        $file = 'tests/' . StringUtility::getUniqueId('test_');
-        $absoluteFile = Environment::getVarPath() . '/' . $file;
+        $file = StringUtility::getUniqueId('test_');
+        $absoluteFile = $this->getTestDirectory() . '/' . $file;
         touch($absoluteFile);
         $subject->method('getLocalConfigurationFileLocation')->willReturn($absoluteFile);
-        $this->testFilesToDelete[] = $absoluteFile;
         $subject->_set('localConfigurationFile', $file);
 
         $subject->createLocalConfigurationFromFactoryConfiguration();
@@ -464,8 +474,8 @@ class ConfigurationManagerTest extends UnitTestCase
         $subject->_set('localConfigurationFile', $localConfigurationFile);
         $subject->method('getLocalConfigurationFileLocation')->willReturn(Environment::getVarPath() . '/' . $localConfigurationFile);
 
-        $factoryConfigurationFile = 'tests/' . StringUtility::getUniqueId('test_') . '.php';
-        $factoryConfigurationAbsoluteFile = Environment::getVarPath() . '/' . $factoryConfigurationFile;
+        $factoryConfigurationFile = StringUtility::getUniqueId('test_') . '.php';
+        $factoryConfigurationAbsoluteFile = $this->getTestDirectory() . '/' . $factoryConfigurationFile;
         $subject->method('getFactoryConfigurationFileLocation')->willReturn($factoryConfigurationAbsoluteFile);
         $uniqueContentString = StringUtility::getUniqueId('string_');
         $validFactoryConfigurationFileContent =
@@ -477,7 +487,6 @@ class ConfigurationManagerTest extends UnitTestCase
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
         );
-        $this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
 
         $subject->_set('factoryConfigurationFile', $factoryConfigurationFile);
 
@@ -494,12 +503,13 @@ class ConfigurationManagerTest extends UnitTestCase
     public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getLocalConfigurationFileLocation', 'getFactoryConfigurationFileLocation', 'getAdditionalFactoryConfigurationFileLocation']);
-        $localConfigurationFile = '/tests/' . StringUtility::getUniqueId('dummy_');
+        $testDirectory = $this->getTestDirectory() . '/';
+        $localConfigurationFile = $testDirectory . StringUtility::getUniqueId('dummy_');
         $subject->_set('localConfigurationFile', $localConfigurationFile);
-        $subject->method('getLocalConfigurationFileLocation')->willReturn(Environment::getVarPath() . '/' . $localConfigurationFile);
+        $subject->method('getLocalConfigurationFileLocation')->willReturn($localConfigurationFile);
 
-        $factoryConfigurationFile = 'tests/' . StringUtility::getUniqueId('test_') . '.php';
-        $factoryConfigurationAbsoluteFile = Environment::getVarPath() . '/' . $factoryConfigurationFile;
+        $factoryConfigurationFile =  StringUtility::getUniqueId('test_') . '.php';
+        $factoryConfigurationAbsoluteFile = $testDirectory . $factoryConfigurationFile;
         $subject->method('getFactoryConfigurationFileLocation')->willReturn($factoryConfigurationAbsoluteFile);
         $validFactoryConfigurationFileContent =
             '<?php' . LF .
@@ -508,11 +518,10 @@ class ConfigurationManagerTest extends UnitTestCase
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
         );
-        $this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
         $subject->_set('factoryConfigurationFile', $factoryConfigurationFile);
 
-        $additionalFactoryConfigurationFile = 'tests/' . StringUtility::getUniqueId('test_') . '.php';
-        $additionalFactoryConfigurationAbsoluteFile = Environment::getVarPath() . '/' . $additionalFactoryConfigurationFile;
+        $additionalFactoryConfigurationFile = StringUtility::getUniqueId('test_') . '.php';
+        $additionalFactoryConfigurationAbsoluteFile = $testDirectory . $additionalFactoryConfigurationFile;
         $subject->method('getAdditionalFactoryConfigurationFileLocation')->willReturn($additionalFactoryConfigurationAbsoluteFile);
         $uniqueContentString = StringUtility::getUniqueId('string_');
         $validAdditionalFactoryConfigurationFileContent =
@@ -524,7 +533,6 @@ class ConfigurationManagerTest extends UnitTestCase
             $additionalFactoryConfigurationAbsoluteFile,
             $validAdditionalFactoryConfigurationFileContent
         );
-        $this->testFilesToDelete[] = $additionalFactoryConfigurationAbsoluteFile;
         $subject->_set('additionalFactoryConfigurationFile', $additionalFactoryConfigurationFile);
 
         $subject

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit;
 
-use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -28,27 +28,29 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 abstract class FolderStructureTestCase extends UnitTestCase
 {
     /**
-     * Create a random directory in the virtual file system and return the path.
+     * Create a random directory in the file system and return the path.
+     * Created directories are registered for deletion upon test ending.
      *
      * @param string $prefix
      * @return string
      */
-    protected function getVirtualTestDir($prefix = 'root_'): string
+    protected function getTestDirectory($prefix = 'root_'): string
     {
-        $root = vfsStream::setup();
-        $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId($prefix);
+        $testRoot = Environment::getVarPath() . '/tests/';
+        $this->testFilesToDelete[] = $testRoot;
+        $path = $testRoot . StringUtility::getUniqueId($prefix);
         GeneralUtility::mkdir_deep($path);
+        chmod($testRoot, 02777);
         return $path;
     }
 
     /**
      * Return a random test filename within a virtual test directory
      *
-     * @param string $prefix
-     * @return string
+     * @return non-empty-string
      */
-    protected function getVirtualTestFilePath($prefix = 'file_'): string
+    protected function getTestFilePath($prefix = 'file_'): string
     {
-        return $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId($prefix);
+        return $this->getTestDirectory() . '/' . StringUtility::getUniqueId($prefix);
     }
 }

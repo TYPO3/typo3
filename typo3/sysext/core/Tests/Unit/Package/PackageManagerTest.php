@@ -17,11 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
+use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
@@ -44,13 +45,17 @@ class PackageManagerTest extends UnitTestCase
      */
     protected $packageManager;
 
+    protected string $testRoot;
+
     /**
      * Sets up this test case
      */
     protected function setUp(): void
     {
         parent::setUp();
-        vfsStream::setup('Test');
+
+        $this->testRoot = Environment::getVarPath() . '/tests/PackageManager/';
+        $this->testFilesToDelete[] = $this->testRoot;
 
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['has', 'set', 'getBackend'])
@@ -64,36 +69,37 @@ class PackageManagerTest extends UnitTestCase
         $mockCache->method('has')->willReturn(false);
         $mockCache->method('set')->willReturn(true);
         $mockCache->method('getBackend')->willReturn($mockCacheBackend);
-        $mockCacheBackend->method('getCacheDirectory')->willReturn('vfs://Test/Cache');
+        $mockCacheBackend->method('getCacheDirectory')->willReturn($this->testRoot . 'Cache');
         $this->packageManager = $this->getAccessibleMock(
             PackageManager::class,
             ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
             [new DependencyOrderingService()]
         );
 
-        mkdir('vfs://Test/Packages/Application', 0700, true);
-        mkdir('vfs://Test/Configuration');
-        file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 5); ");
+        if (!is_dir($this->testRoot . 'Packages/Application')) {
+            mkdir($this->testRoot . 'Packages/Application', 0700, true);
+        }
+        if (!is_dir($this->testRoot . 'Configuration')) {
+            mkdir($this->testRoot . 'Configuration');
+        }
+        file_put_contents($this->testRoot . 'Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 5); ");
 
         $composerNameToPackageKeyMap = [
             'typo3/flow' => 'TYPO3.Flow',
         ];
 
-        $this->packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
+        $this->packageManager->setPackageCache(new PackageStatesPackageCache($this->testRoot . 'Configuration/PackageStates.php', $mockCache));
         $this->packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
-        $this->packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $this->packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $this->packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
+        $this->packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
     }
 
-    /**
-     * @param string $packageKey
-     * @return Package
-     * @throws InvalidPackageStateException
-     */
     protected function createPackage(string $packageKey): Package
     {
-        $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
-        mkdir($packagePath, 0770, true);
+        $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
+        if (!is_dir($packagePath)) {
+            mkdir($packagePath, 0770, true);
+        }
         file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         file_put_contents($packagePath . 'composer.json', '{}');
         $package = new Package($this->packageManager, $packageKey, $packagePath);
@@ -106,7 +112,6 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @test
      * @throws UnknownPackageException
-     * @throws InvalidPackageStateException
      */
     public function getPackageReturnsTheSpecifiedPackage(): void
     {
@@ -141,20 +146,20 @@ class PackageManagerTest extends UnitTestCase
         ];
 
         foreach ($expectedPackageKeys as $packageKey) {
-            $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
+            $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-test"}');
         }
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates'], [new DependencyOrderingService()]);
-        $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
+        $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
 
         $packageManager->_set('packages', []);
         $packageManager->_call('scanAvailablePackages');
 
-        $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
+        $packageStates = require $this->testRoot . 'Configuration/PackageStates.php';
         $actualPackageKeys = array_keys($packageStates['packages']);
         self::assertEquals(sort($expectedPackageKeys), sort($actualPackageKeys));
     }
@@ -173,7 +178,7 @@ class PackageManagerTest extends UnitTestCase
 
         $packagePaths = [];
         foreach ($expectedPackageKeys as $packageKey) {
-            $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
+            $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
             $packagePaths[] = $packagePath;
 
             mkdir($packagePath, 0770, true);
@@ -183,10 +188,10 @@ class PackageManagerTest extends UnitTestCase
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy'], [new DependencyOrderingService()]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
-        $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
+        $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
         $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
-        $packageManager->_set('packageCache', new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
+        $packageManager->_set('packageCache', new PackageStatesPackageCache($this->testRoot . 'Configuration/PackageStates.php', $mockCache));
 
         $packageKey = $expectedPackageKeys[0];
         $packageManager->_set('packageStatesConfiguration', [
@@ -200,7 +205,7 @@ class PackageManagerTest extends UnitTestCase
         $packageManager->_call('scanAvailablePackages');
         $packageManager->_call('sortAndSavePackageStates');
 
-        $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
+        $packageStates = require $this->testRoot . 'Configuration/PackageStates.php';
         self::assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
     }
 
@@ -225,12 +230,12 @@ class PackageManagerTest extends UnitTestCase
         $this->expectException(UnknownPackageException::class);
         $this->expectExceptionCode(1631630764);
 
-        $this->packageManager->extractPackageKeyFromPackagePath('vfs://Test/Packages/Application/InvalidPackage/');
+        $this->packageManager->extractPackageKeyFromPackagePath($this->testRoot . 'Packages/Application/InvalidPackage/');
     }
 
     /**
      * @test
-     * @throws UnknownPackagePathException
+     * @throws UnknownPackageException
      */
     public function extractPackageKeyFromPackagePathThrowsExceptionOnInvalidPackagePaths(): void
     {
@@ -253,7 +258,7 @@ class PackageManagerTest extends UnitTestCase
 
         $packagePaths = [];
         foreach ($packageKeys as $packageKey) {
-            $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
+            $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
@@ -263,8 +268,8 @@ class PackageManagerTest extends UnitTestCase
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates', 'registerTransientClassLoadingInformationForPackage'], [new DependencyOrderingService()]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
-        $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
+        $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
 
         $packageManager->_set('packages', []);
         $packageManager->_call('scanAvailablePackages');
@@ -289,22 +294,21 @@ class PackageManagerTest extends UnitTestCase
     public function packageKeysAndPaths(): array
     {
         return [
-            ['TYPO3.YetAnotherTestPackage', 'vfs://Test/Packages/Application/TYPO3.YetAnotherTestPackage/'],
-            ['Lolli.Pop.NothingElse', 'vfs://Test/Packages/Application/Lolli.Pop.NothingElse/'],
+            ['TYPO3.YetAnotherTestPackage', 'Packages/Application/TYPO3.YetAnotherTestPackage/'],
+            ['Lolli.Pop.NothingElse', 'Packages/Application/Lolli.Pop.NothingElse/'],
         ];
     }
 
     /**
      * @test
      * @dataProvider packageKeysAndPaths
-     * @throws InvalidPackageStateException
      */
     public function createPackageCreatesPackageFolderAndReturnsPackage($packageKey, $expectedPackagePath): void
     {
         $actualPackage = $this->createPackage($packageKey);
         $actualPackagePath = $actualPackage->getPackagePath();
 
-        self::assertEquals($expectedPackagePath, $actualPackagePath);
+        self::assertEquals($this->testRoot . $expectedPackagePath, $actualPackagePath);
         self::assertDirectoryExists($actualPackagePath, 'Package path should exist after createPackage()');
         self::assertEquals($packageKey, $actualPackage->getPackageKey());
         self::assertTrue($this->packageManager->isPackageAvailable($packageKey));
@@ -312,7 +316,6 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @throws InvalidPackageStateException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
      * @throws PackageStatesFileNotWritableException
@@ -334,7 +337,6 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @throws InvalidPackageStateException
      * @throws PackageStatesFileNotWritableException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
@@ -354,7 +356,7 @@ class PackageManagerTest extends UnitTestCase
      * @test
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
-     * @throws \TYPO3\CMS\Core\Package\Exception
+     * @throws Exception
      */
     public function deletePackageThrowsErrorIfPackageIsNotAvailable(): void
     {
@@ -370,7 +372,7 @@ class PackageManagerTest extends UnitTestCase
      * @throws InvalidPackageStateException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
-     * @throws \TYPO3\CMS\Core\Package\Exception
+     * @throws Exception
      */
     public function deletePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
@@ -387,7 +389,7 @@ class PackageManagerTest extends UnitTestCase
      * @throws InvalidPackageStateException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
-     * @throws \TYPO3\CMS\Core\Package\Exception
+     * @throws Exception
      */
     public function deletePackageRemovesPackageFromAvailableAndActivePackagesAndDeletesThePackageDirectory(): void
     {
@@ -399,8 +401,10 @@ class PackageManagerTest extends UnitTestCase
         self::assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
 
         $this->packageManager->deletePackage('Acme.YetAnotherTestPackage');
+        // unregister from test file removal, else error will be thrown
+        unset($this->testFilesToDelete[ array_search($this->testRoot . 'Packages/Application/' . 'Acme.YetAnotherTestPackage', $this->testFilesToDelete)]);
 
-        self::assertFalse($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
+        self::assertFalse($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage/'));
         self::assertFalse($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
     }
 
@@ -588,9 +592,6 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $unsortedPackageStatesConfiguration
-     * @param array $frameworkPackageKeys
-     * @param array $expectedGraph
      * @dataProvider buildDependencyGraphBuildsCorrectGraphDataProvider
      */
     public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph): void

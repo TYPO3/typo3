@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\LinkNode;
@@ -31,6 +32,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LinkNodeTest extends UnitTestCase
 {
+    protected string $testRoot;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        // do not use var path here, as link nodes get checked for public path as first part
+        $this->testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
+        $this->testFilesToDelete[] = $this->testRoot;
+        GeneralUtility::mkdir_deep($this->testRoot);
+    }
+
     /**
      * @test
      */
@@ -108,8 +120,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        // do not use var path here, as link nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
+        $path = $this->testRoot . StringUtility::getUniqueId('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertIsArray($node->getStatus());
     }
@@ -126,8 +137,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        // do not use var path here, as link nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/tests/' . StringUtility::getUniqueId('dir_');
+        $path = $this->testRoot . StringUtility::getUniqueId('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
         $statusArray = $node->getStatus();
@@ -146,8 +156,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        // do not use var path here, as link nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/tests/' . StringUtility::getUniqueId('dir_');
+        $path = $this->testRoot . StringUtility::getUniqueId('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('isWindowsOs')->willReturn(false);
         $node->expects(self::once())->method('exists')->willReturn(false);
@@ -250,12 +259,10 @@ class LinkNodeTest extends UnitTestCase
     public function isLinkReturnsTrueIfNameIsLink(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('linkTarget_');
+        $path = $this->testRoot . StringUtility::getUniqueId('link_');
+        $target = $this->testRoot . StringUtility::getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
-        $this->testFilesToDelete[] = $path;
-        $this->testFilesToDelete[] = $target;
         $node->method('exists')->willReturn(true);
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('isLink'));
@@ -267,9 +274,8 @@ class LinkNodeTest extends UnitTestCase
     public function isFileReturnsFalseIfNameIsAFile(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
+        $path = $this->testRoot . StringUtility::getUniqueId('file_');
         touch($path);
-        $this->testFilesToDelete[] = $path;
         $node->method('exists')->willReturn(true);
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->_call('isLink'));
@@ -327,16 +333,13 @@ class LinkNodeTest extends UnitTestCase
 
     /**
      * @test
-     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget(): void
     {
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('linkTarget_');
+        $path = $this->testRoot . StringUtility::getUniqueId('link_');
+        $target = $this->testRoot . StringUtility::getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
-        $this->testFilesToDelete[] = $path;
-        $this->testFilesToDelete[] = $target;
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],
@@ -353,16 +356,13 @@ class LinkNodeTest extends UnitTestCase
 
     /**
      * @test
-     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget(): void
     {
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('linkTarget_');
+        $path = $this->testRoot . StringUtility::getUniqueId('link_');
+        $target = $this->testRoot . StringUtility::getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
-        $this->testFilesToDelete[] = $path;
-        $this->testFilesToDelete[] = $target;
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],

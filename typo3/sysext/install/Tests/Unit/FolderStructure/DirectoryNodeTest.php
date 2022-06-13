@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -131,7 +132,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->method('exists')->willReturn(true);
@@ -153,7 +154,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->method('exists')->willReturn(false);
@@ -176,7 +177,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -200,7 +201,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -224,7 +225,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -248,7 +249,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         touch($path);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -425,7 +426,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function createDirectoryCreatesDirectory(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -439,7 +440,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function createDirectoryReturnsOkStatusIfDirectoryWasCreated(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
@@ -452,8 +453,10 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function createDirectoryReturnsErrorStatusIfDirectoryWasNotCreated(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $path = $this->getVirtualTestDir('root_');
-        chmod($path, 02550);
+        // using vfs here to avoid inconsistent behaviour of file systems concerning permissions
+        $root = vfsStream::setup();
+        $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId('root_');
+        chmod($path, 00440);
         $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($subPath);
@@ -546,7 +549,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function isWritableReturnsFalseIfNodeDoesNotExist(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestFilePath('dir_');
+        $path = $this->getTestFilePath('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->isWritable());
     }
@@ -557,7 +560,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function isWritableReturnsTrueIfNodeExistsAndFileCanBeCreated(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('root_');
+        $path = $this->getTestDirectory('root_');
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->isWritable());
     }
@@ -568,21 +571,21 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function isDirectoryReturnsTrueIfNameIsADirectory(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('dir_');
+        $path = $this->getTestDirectory('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('isDirectory'));
     }
 
     /**
      * @test
-     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function isDirectoryReturnsFalseIfNameIsALinkToADirectory(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
+        $testRoot = Environment::getVarPath() . '/tests/';
+        $this->testFilesToDelete[] = $testRoot;
+        $path = $testRoot . StringUtility::getUniqueId('root_');
         GeneralUtility::mkdir_deep($path);
-        $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $dir = StringUtility::getUniqueId('dir_');
         mkdir($path . '/' . $dir);
