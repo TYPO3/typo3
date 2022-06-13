@@ -35,7 +35,7 @@
                     <tr>
                         <th></th>
                         <th>
-                            <a href="{f:uri.action(action:'deleteIndexedItem', arguments:'{id:\'ALL\', depth:depth, mode:mode}')}" title="{f:translate(key:'administration.removeAllEntries')}">
+                            <a href="{f:uri.action(action:'deleteIndexedItem', arguments:'{itemId:\'ALL\', depth:depth, mode:mode}')}" title="{f:translate(key:'administration.removeAllEntries')}">
                                 <core:icon identifier="actions-edit-delete" />
                             </a>
                         </th>
@@ -80,7 +80,7 @@
                                             <f:if condition="{i.index} == 0"> {line.row.title}</f:if>
                                         </td>
                                         <td>
-                                            <a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
+                                            <a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{itemId:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
                                                 <core:icon identifier="actions-edit-delete" />
                                             </a>
                                         </td>

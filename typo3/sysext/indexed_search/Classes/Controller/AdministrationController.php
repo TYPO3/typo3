@@ -488,13 +488,13 @@ class AdministrationController extends ActionController
     /**
      * Remove item from index
      *
-     * @param string $id
+     * @param string $itemId
      * @param int $depth
      * @param string $mode
      */
-    protected function deleteIndexedItemAction($id, $depth = 1, $mode = 'overview'): ResponseInterface
+    protected function deleteIndexedItemAction($itemId, $depth = 1, $mode = 'overview'): ResponseInterface
     {
-        $this->administrationRepository->removeIndexedPhashRow($id, $this->pageUid, $depth);
+        $this->administrationRepository->removeIndexedPhashRow($itemId, $this->pageUid, $depth);
         return $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
     }
 
