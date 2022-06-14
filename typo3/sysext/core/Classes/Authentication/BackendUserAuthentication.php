@@ -2368,4 +2368,26 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             || ($globalConfig === 3 && $isAdmin)
             || ($globalConfig === 4 && $this->isSystemMaintainer());
     }
+
+    /**
+     * Returns if import functionality is available for current user
+     *
+     * @internal
+     */
+    public function isImportEnabled(): bool
+    {
+        return $this->isAdmin()
+            || ($this->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
+    }
+
+    /**
+     * Returns if export functionality is available for current user
+     *
+     * @internal
+     */
+    public function isExportEnabled(): bool
+    {
+        return $this->isAdmin()
+            || ($this->getTSConfig()['options.']['impexp.']['enableExportForNonAdminUser'] ?? false);
+    }
 }

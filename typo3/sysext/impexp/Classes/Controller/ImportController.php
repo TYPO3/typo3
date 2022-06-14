@@ -76,7 +76,7 @@ class ImportController extends ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->isImportEnabled() === false) {
+        if ($this->getBackendUser()->isImportEnabled() === false) {
             throw new \RuntimeException(
                 'Import module is disabled for non admin users and '
                 . 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
@@ -105,17 +105,6 @@ class ImportController extends ImportExportController
         $this->moduleTemplate->setContent($this->standaloneView->render());
 
         return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Check if import functionality is available for current user
-     *
-     * @return bool
-     */
-    protected function isImportEnabled(): bool
-    {
-        return $this->getBackendUser()->isAdmin()
-            || (bool)($this->getBackendUser()->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
     }
 
     protected function preprocessInputData(array $inData): array

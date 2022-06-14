@@ -97,10 +97,10 @@ class ItemProvider extends AbstractProvider
         $canRender = false;
         switch ($itemName) {
             case 'exportT3d':
-                $canRender = true;
+                $canRender = $this->backendUser->isExportEnabled();
                 break;
             case 'importT3d':
-                $canRender = $this->table === 'pages' && $this->isImportEnabled();
+                $canRender = $this->table === 'pages' && $this->backendUser->isImportEnabled();
                 break;
         }
         return $canRender;
@@ -130,14 +130,5 @@ class ItemProvider extends AbstractProvider
         }
 
         return $attributes;
-    }
-
-    /**
-     * Check if import functionality is available for current user
-     */
-    protected function isImportEnabled(): bool
-    {
-        return $this->backendUser->isAdmin()
-            || (bool)($this->backendUser->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
     }
 }

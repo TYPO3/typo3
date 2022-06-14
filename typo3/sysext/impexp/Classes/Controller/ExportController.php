@@ -96,6 +96,14 @@ class ExportController extends ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        if ($this->getBackendUser()->isExportEnabled() === false) {
+            throw new \RuntimeException(
+                'Export module is disabled for non admin users and '
+                . 'userTsConfig options.impexp.enableExportForNonAdminUser is not enabled.',
+                1636901978
+            );
+        }
+
         $this->main($request);
 
         // Input data
