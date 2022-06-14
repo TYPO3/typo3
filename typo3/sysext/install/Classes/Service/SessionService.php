@@ -15,11 +15,19 @@
 
 namespace TYPO3\CMS\Install\Service;
 
+use Doctrine\DBAL\FetchMode;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
+use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Exception;
@@ -202,14 +210,28 @@ class SessionService implements SingletonInterface
     /**
      * Marks this session as an "authorized by backend user" one.
      * This is called by BackendModuleController from backend context.
+     *
+     * @param BackendUserAuthentication $backendUser current backend user
      */
-    public function setAuthorizedBackendSession()
+    public function setAuthorizedBackendSession(BackendUserAuthentication $backendUser)
     {
+        $nonce = bin2hex(random_bytes(20));
+        $sessionBackend = $this->getBackendUserSessionBackend();
+        // use hash mechanism of session backend, or pass plain value through generic hmac
+        $sessionHmac = $sessionBackend instanceof HashableSessionBackendInterface
+            ? $sessionBackend->hash($backendUser->id)
+            : hash_hmac('sha256', $backendUser->id, $nonce);
+
         $_SESSION['authorized'] = true;
         $_SESSION['lastSessionId'] = time();
         $_SESSION['tstamp'] = time();
         $_SESSION['expires'] = time() + $this->expireTimeInMinutes * 60;
         $_SESSION['isBackendSession'] = true;
+        $_SESSION['backendUserSession'] = [
+            'nonce' => $nonce,
+            'userId' => (int)$backendUser->user['uid'],
+            'hmac' => $sessionHmac,
+        ];
         // Renew the session id to avoid session fixation
         $this->renewSession();
     }
@@ -236,7 +258,7 @@ class SessionService implements SingletonInterface
      *
      * @return bool TRUE if this session has been authorized before and initialized by a backend system maintainer
      */
-    public function isAuthorizedBackendUserSession()
+    public function isAuthorizedBackendUserSession(): bool
     {
         if (!$this->hasSessionCookie()) {
             return false;
@@ -246,6 +268,49 @@ class SessionService implements SingletonInterface
             return false;
         }
         return !$this->isExpired();
+    }
+
+    /**
+     * Evaluates whether the backend user that initiated this admin tool session,
+     * has an active role (is still admin & system maintainer) and has an active backend user interface session.
+     *
+     * @return bool whether the backend user has an active role and backend user interface session
+     */
+    public function hasActiveBackendUserRoleAndSession(): bool
+    {
+        // @see \TYPO3\CMS\Install\Controller\BackendModuleController::setAuthorizedAndRedirect()
+        $backendUserSession = $this->getBackendUserSession();
+        $backendUserRecord = $this->getBackendUserRecord($backendUserSession['userId']);
+        if ($backendUserRecord === null || empty($backendUserRecord['uid'])) {
+            return false;
+        }
+        $isAdmin = (($backendUserRecord['admin'] ?? 0) & 1) === 1;
+        $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
+        // stop here, in case the current admin tool session does not belong to a backend user having admin & maintainer privileges
+        if (!$isAdmin || !in_array((int)$backendUserRecord['uid'], $systemMaintainers, true)) {
+            return false;
+        }
+
+        $sessionBackend = $this->getBackendUserSessionBackend();
+        foreach ($sessionBackend->getAll() as $sessionRecord) {
+            $sessionUserId = (int)($sessionRecord['ses_userid'] ?? 0);
+            // skip, in case backend user id does not match
+            if ($backendUserSession['userId'] !== $sessionUserId) {
+                continue;
+            }
+            $sessionId = (string)($sessionRecord['ses_id'] ?? '');
+            // use persisted hashed `ses_id` directly, or pass through hmac for plain values
+            $sessionHmac = $sessionBackend instanceof HashableSessionBackendInterface
+                ? $sessionId
+                : hash_hmac('sha256', $sessionId, $backendUserSession['nonce']);
+            // skip, in case backend user session id does not match
+            if ($backendUserSession['hmac'] !== $sessionHmac) {
+                continue;
+            }
+            // backend user id and session id matched correctly
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -314,6 +379,20 @@ class SessionService implements SingletonInterface
     }
 
     /**
+     * @return array{userId: int, nonce: string, hmac: string} backend user session references
+     */
+    public function getBackendUserSession(): array
+    {
+        if (empty($_SESSION['backendUserSession'])) {
+            throw new Exception(
+                'The backend user session is only available if invoked via the backend user interface.',
+                1624879295
+            );
+        }
+        return $_SESSION['backendUserSession'];
+    }
+
+    /**
      * Check if php session.auto_start is enabled
      *
      * @return bool TRUE if session.auto_start is enabled, FALSE if disabled
@@ -336,5 +415,53 @@ class SessionService implements SingletonInterface
             FILTER_VALIDATE_BOOLEAN,
             [FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE]
         );
+    }
+
+    /**
+     * Fetching a user record with uid=$uid.
+     * Functionally similar to TYPO3\CMS\Core\Authentication\BackendUserAuthentication::setBeUserByUid().
+     *
+     * @param int $uid The UID of the backend user
+     * @return array<string, int>|null The backend user record or NULL
+     */
+    protected function getBackendUserRecord(int $uid): ?array
+    {
+        $restrictionContainer = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
+        $restrictionContainer->add(GeneralUtility::makeInstance(RootLevelRestriction::class, ['be_users']));
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->setRestrictions($restrictionContainer);
+        $queryBuilder->select('uid', 'admin')
+            ->from('be_users')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
+
+        $resetBeUsersTca = false;
+        if (!isset($GLOBALS['TCA']['be_users'])) {
+            // The admin tool intentionally does not load any TCA information at this time.
+            // The database restictions, needs the enablecolumns TCA information
+            // for 'be_users' to load the user correctly.
+            // That is why this part of the TCA ($GLOBALS['TCA']['be_users']['ctrl']['enablecolumns'])
+            // is simulated.
+            // The simulation state will be removed later to avoid unexpected side effects.
+            $GLOBALS['TCA']['be_users']['ctrl']['enablecolumns'] = [
+                'rootLevel' => 1,
+                'deleted' => 'deleted',
+                'disabled' => 'disable',
+                'starttime' => 'starttime',
+                'endtime' => 'endtime',
+            ];
+            $resetBeUsersTca = true;
+        }
+        $result = $queryBuilder->execute()->fetch(FetchMode::ASSOCIATIVE);
+        if ($resetBeUsersTca) {
+            unset($GLOBALS['TCA']['be_users']);
+        }
+
+        return is_array($result) ? $result : null;
+    }
+
+    protected function getBackendUserSessionBackend(): SessionBackendInterface
+    {
+        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
     }
 }

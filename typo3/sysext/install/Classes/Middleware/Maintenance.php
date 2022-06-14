@@ -145,6 +145,21 @@ class Maintenance implements MiddlewareInterface
 
         // session related actions
         $session = new SessionService();
+
+        // the backend user has an active session but the admin / maintainer
+        // rights have been revoked or the user was disabled or deleted in the meantime
+        if ($session->isAuthorizedBackendUserSession() && !$session->hasActiveBackendUserRoleAndSession()) {
+            // log out the user and destroy the session
+            $session->resetSession();
+            $session->destroySession();
+            $formProtection = FormProtectionFactory::get(
+                InstallToolFormProtection::class
+            );
+            $formProtection->clean();
+
+            return new HtmlResponse('', 403);
+        }
+
         if ($actionName === 'preAccessCheck') {
             $response = new JsonResponse([
                 'installToolLocked' => !$this->checkEnableInstallToolFile(),
