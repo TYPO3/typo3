@@ -210,7 +210,8 @@ class BackendModuleController
      */
     protected function setAuthorizedAndRedirect(string $controller): ResponseInterface
     {
-        $this->getSessionService()->setAuthorizedBackendSession();
+        $userSession = $this->getBackendUser()->getSession();
+        $this->getSessionService()->setAuthorizedBackendSession($userSession);
         $redirectLocation = PathUtility::getAbsoluteWebPath('install.php?install[controller]=' . $controller . '&install[context]=backend');
         return new RedirectResponse($redirectLocation, 303);
     }
