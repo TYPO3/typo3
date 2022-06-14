@@ -513,10 +513,10 @@ function factory($, Helper, Icons) {
      */
     function setStageHeadline(title) {
       if (getUtility().isUndefinedOrNull(title)) {
-        title = buildTitleByFormElement();
+        title = buildTitleByFormElement().text();
       }
 
-      $(getHelper().getDomElementDataIdentifierSelector('stageHeadline')).html(title);
+      $(getHelper().getDomElementDataIdentifierSelector('stageHeadline')).text(title);
     };
 
     /**
@@ -981,10 +981,10 @@ function factory($, Helper, Icons) {
 
       getHelper()
         .getTemplatePropertyDomElement('_type', template)
-        .append(getFormElementDefinition(formElement, 'label'));
+        .append(document.createTextNode(getFormElementDefinition(formElement, 'label')));
       getHelper()
         .getTemplatePropertyDomElement('_identifier', template)
-        .append(formElement.get('identifier'));
+        .append(document.createTextNode(formElement.get('identifier')));
     };
 
     /**
@@ -1029,7 +1029,7 @@ function factory($, Helper, Icons) {
 
             getHelper()
               .getTemplatePropertyDomElement('_label', rowTemplate)
-              .append(collectionElementConfiguration['label']);
+              .append(document.createTextNode(collectionElementConfiguration['label']));
             $(getHelper().getDomElementDataIdentifierSelector('validatorsContainer'), $(template))
               .append(rowTemplate.html());
           }
@@ -1089,7 +1089,7 @@ function factory($, Helper, Icons) {
           }
         }
 
-        getHelper().getTemplatePropertyDomElement('_label', rowTemplate).append(label);
+        getHelper().getTemplatePropertyDomElement('_label', rowTemplate).append(document.createTextNode(label));
 
         if (isPreselected) {
           getHelper().getTemplatePropertyDomElement('_label', rowTemplate).addClass(
