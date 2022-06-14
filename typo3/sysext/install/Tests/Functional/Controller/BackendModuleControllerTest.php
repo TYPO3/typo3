@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Controller\BackendModuleController;
@@ -84,7 +85,13 @@ class BackendModuleControllerTest extends FunctionalTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
 
-        // Authorized redirect to the install tool is performed, sudo mode is not required
+        // Authorized redirect to the admin tool is performed
+        // sudo mode is not required (due to development context)
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        // using anonymous user session, which is fine for this test case
+        $GLOBALS['BE_USER']->initializeUserSessionManager();
+        $GLOBALS['BE_USER']->user = ['uid' => 1];
+
         $response = $subject->{$action}();
         self::assertEquals(303, $response->getStatusCode());
         self::assertNotEmpty($response->getHeader('location'));
