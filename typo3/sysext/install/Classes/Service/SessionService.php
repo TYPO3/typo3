@@ -286,8 +286,12 @@ class SessionService implements SingletonInterface
         }
         $isAdmin = (($backendUserRecord['admin'] ?? 0) & 1) === 1;
         $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
+        // in case no system maintainers are configured, all admin users are considered to be system maintainers
+        $isSystemMaintainer = empty($systemMaintainers) || in_array((int)$backendUserRecord['uid'], $systemMaintainers, true);
+        // in development context, all admin users are considered to be system maintainers
+        $hasDevelopmentContext = Environment::getContext()->isDevelopment();
         // stop here, in case the current admin tool session does not belong to a backend user having admin & maintainer privileges
-        if (!$isAdmin || !in_array((int)$backendUserRecord['uid'], $systemMaintainers, true)) {
+        if (!$isAdmin || !$hasDevelopmentContext && !$isSystemMaintainer) {
             return false;
         }
 
