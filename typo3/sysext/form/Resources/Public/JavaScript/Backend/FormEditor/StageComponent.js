@@ -455,10 +455,10 @@ define(['jquery',
      */
     function setStageHeadline(title) {
       if (getUtility().isUndefinedOrNull(title)) {
-        title = buildTitleByFormElement();
+        title = buildTitleByFormElement().text();
       }
 
-      $(getHelper().getDomElementDataIdentifierSelector('stageHeadline')).html(title);
+      $(getHelper().getDomElementDataIdentifierSelector('stageHeadline')).text(title);
     };
 
     /**
@@ -923,10 +923,10 @@ define(['jquery',
 
       getHelper()
         .getTemplatePropertyDomElement('_type', template)
-        .append(formElement.get('type'));
+        .append(document.createTextNode(getFormElementDefinition(formElement, 'type')));
       getHelper()
         .getTemplatePropertyDomElement('_identifier', template)
-        .append(formElement.get('identifier'));
+        .append(document.createTextNode(formElement.get('identifier')));
     };
 
     /**
@@ -971,7 +971,7 @@ define(['jquery',
 
             getHelper()
               .getTemplatePropertyDomElement('_label', rowTemplate)
-              .append(collectionElementConfiguration['label']);
+              .append(document.createTextNode(collectionElementConfiguration['label']));
             $(getHelper().getDomElementDataIdentifierSelector('validatorsContainer'), $(template))
               .append(rowTemplate.html());
           }
@@ -1031,7 +1031,7 @@ define(['jquery',
           }
         }
 
-        getHelper().getTemplatePropertyDomElement('_label', rowTemplate).append(label);
+        getHelper().getTemplatePropertyDomElement('_label', rowTemplate).append(document.createTextNode(label));
 
         if (isPreselected) {
           getHelper().getTemplatePropertyDomElement('_label', rowTemplate).addClass(
