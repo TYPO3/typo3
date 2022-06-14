@@ -55,6 +55,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
             'exceptionHandler' => $this->getExceptionHandlerStatus(),
+            'exportedFiles' => $this->getExportedFilesStatus(),
         ];
 
         if ($request !== null) {
@@ -263,6 +264,51 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             $message = $this->getLanguageService()->getLL('status_exceptionHandler_warningMessage');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exceptionHandler'), $value, $message, $severity);
+    }
+
+    protected function getExportedFilesStatus(): ReportStatus
+    {
+        $value = $this->getLanguageService()->getLL('status_ok');
+        $message = '';
+        $severity = ReportStatus::OK;
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
+        $exportedFiles = $queryBuilder
+            ->select('storage', 'identifier')
+            ->from('sys_file')
+            ->where(
+                $queryBuilder->expr()->like(
+                    'identifier',
+                    $queryBuilder->createNamedParameter('%/_temp_/importexport/%')
+                ),
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->like(
+                        'identifier',
+                        $queryBuilder->createNamedParameter('%.xml')
+                    ),
+                    $queryBuilder->expr()->like(
+                        'identifier',
+                        $queryBuilder->createNamedParameter('%.t3d')
+                    )
+                ),
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        if (count($exportedFiles) > 0) {
+            $files = [];
+            foreach ($exportedFiles as $exportedFile) {
+                $files[] = '<li>' . htmlspecialchars($exportedFile['storage'] . ':' . $exportedFile['identifier']) . '</li>';
+            }
+
+            $value = $this->getLanguageService()->getLL('status_insecure');
+            $severity = ReportStatus::WARNING;
+            $message = $this->getLanguageService()->getLL('status_exportedFiles_warningMessage');
+            $message .= '<ul>' . implode(PHP_EOL, $files) . '</ul>';
+            $message .= $this->getLanguageService()->getLL('status_exportedFiles_warningRecommendation');
+        }
+
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exportedFiles'), $value, $message, $severity);
     }
 
     protected function getLanguageService(): LanguageService

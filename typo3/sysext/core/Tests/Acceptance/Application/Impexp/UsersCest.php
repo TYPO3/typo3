@@ -52,7 +52,7 @@ class UsersCest extends AbstractCest
     /**
      * @throws \Exception
      */
-    public function doNotShowImportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
+    public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -65,7 +65,7 @@ class UsersCest extends AbstractCest
         $I->click($selectedPageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore]);
         $I->waitForElementVisible('#contentMenu1', 5);
-        $I->seeElement($this->contextMenuExport);
+        $I->dontSeeElement($this->contextMenuExport);
         $I->dontSeeElement($this->contextMenuImport);
 
         $I->useExistingSession('admin');
@@ -74,19 +74,19 @@ class UsersCest extends AbstractCest
     /**
      * @throws \Exception
      */
-    public function showImportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
+    public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
 
-        $this->setUserTsConfig($I, 2, 'options.impexp.enableImportForNonAdminUser = 1');
+        $this->setUserTsConfig($I, 2, "options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1");
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore]);
         $I->waitForElementVisible('#contentMenu1', 5);
-        $I->seeElement($this->contextMenuExport);
         $I->seeElement($this->contextMenuImport);
+        $I->seeElement($this->contextMenuExport);
 
         $I->useExistingSession('admin');
     }

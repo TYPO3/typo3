@@ -147,4 +147,70 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         // which should fail since the user in the fixture has MFA activated but not yet passed.
         $this->setUpBackendUser(4);
     }
+
+    public function isImportEnabledDataProvider(): array
+    {
+        return [
+            'admin user' => [
+                1,
+                '',
+                true,
+            ],
+            'editor user' => [
+                2,
+                '',
+                false,
+            ],
+            'editor user - enableImportForNonAdminUser = 1' => [
+                2,
+                'options.impexp.enableImportForNonAdminUser = 1',
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isImportEnabledDataProvider
+     */
+    public function isImportEnabledReturnsExpectedValues(int $userId, string $tsConfig, bool $expected): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = $tsConfig;
+
+        $subject = $this->setUpBackendUser($userId);
+        self::assertEquals($expected, $subject->isImportEnabled());
+    }
+
+    public function isExportEnabledDataProvider(): array
+    {
+        return [
+            'admin user' => [
+                1,
+                '',
+                true,
+            ],
+            'editor user' => [
+                2,
+                '',
+                false,
+            ],
+            'editor user - enableExportForNonAdminUser = 1' => [
+                2,
+                'options.impexp.enableExportForNonAdminUser = 1',
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isExportEnabledDataProvider
+     */
+    public function isExportEnabledReturnsExpectedValues(int $userId, string $tsConfig, bool $expected): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = $tsConfig;
+
+        $subject = $this->setUpBackendUser($userId);
+        self::assertEquals($expected, $subject->isExportEnabled());
+    }
 }

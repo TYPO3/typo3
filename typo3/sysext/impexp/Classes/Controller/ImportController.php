@@ -59,7 +59,7 @@ class ImportController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        if (!$this->isImportEnabled()) {
+        if (!$this->getBackendUser()->isImportEnabled()) {
             throw new \RuntimeException(
                 'Import module is disabled for non admin users and userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
                 1464435459
@@ -140,15 +140,6 @@ class ImportController
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setDataAttributes($previewDataAttributes ?? []);
         $buttonBar->addButton($viewButton);
-    }
-
-    /**
-     * Check if import functionality is available for current user.
-     */
-    protected function isImportEnabled(): bool
-    {
-        $backendUser = $this->getBackendUser();
-        return $backendUser->isAdmin() || ($backendUser->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
     }
 
     protected function handleFileUpload(ServerRequestInterface $request): ?File

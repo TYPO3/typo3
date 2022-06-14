@@ -156,11 +156,20 @@
 			<trans-unit id="status_exceptionHandler" resname="status_exceptionHandler">
 				<source>Exception Handler / Error Reporting</source>
 			</trans-unit>
+			<trans-unit id="status_exportedFiles" resname="status_exportedFiles">
+				<source>XML/T3D export files</source>
+			</trans-unit>
 			<trans-unit id="status_exceptionHandler_warningMessage" resname="status_exceptionHandler_warningMessage">
 				<source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
 			</trans-unit>
 			<trans-unit id="status_exceptionHandler_errorMessage" resname="status_exceptionHandler_errorMessage">
 				<source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+			</trans-unit>
+			<trans-unit id="status_exportedFiles_warningMessage" resname="status_exportedFiles_warningMessage">
+				<source>The following exported files where found:</source>
+			</trans-unit>
+			<trans-unit id="status_exportedFiles_warningRecommendation" resname="status_exportedFiles_warningRecommendation">
+				<source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
 			</trans-unit>
 			<trans-unit id="status_installTool" resname="status_installTool">
 				<source>Install Tool</source>
