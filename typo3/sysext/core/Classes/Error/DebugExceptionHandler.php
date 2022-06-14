@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Information\Typo3Information;
  */
 class DebugExceptionHandler extends AbstractExceptionHandler
 {
+    protected $logExceptionStackTrace = true;
+
     /**
      * Constructs this exception handler - registers itself as the default exception handler.
      */

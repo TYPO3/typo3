@@ -37,6 +37,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     const CONTEXT_WEB = 'WEB';
     const CONTEXT_CLI = 'CLI';
 
+    protected $logExceptionStackTrace = false;
+
     private const IGNORED_EXCEPTION_CODES = [
         1396795884, // Current host header value does not match the configured trusted hosts pattern
         1581862822, // Failed HMAC validation due to modified __trustedProperties in extbase property mapping
@@ -88,7 +90,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
             if ($this->logger) {
                 $this->logger->critical($logTitle . ': ' . $logMessage, [
                     'TYPO3_MODE' => TYPO3_MODE,
-                    'exception' => $exception
+                    'exception' => $this->logExceptionStackTrace ? $exception : null
                 ]);
             }
             // Write error message to sys_log table
