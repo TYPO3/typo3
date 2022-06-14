@@ -108,9 +108,7 @@ class ImportController extends ImportExportController
         $this->standaloneView->assign('id', $this->id);
         $this->standaloneView->assign('inData', $inData);
 
-        $backendUser = $this->getBackendUser();
-        $isEnabledForNonAdmin = (bool)($backendUser->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
-        if (!$backendUser->isAdmin() && !$isEnabledForNonAdmin) {
+        if ($this->getBackendUser()->isImportEnabled() === false) {
             throw new \RuntimeException(
                 'Import module is disabled for non admin users and '
                 . 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
