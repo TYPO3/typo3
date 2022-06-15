@@ -56,7 +56,7 @@ abstract class AbstractImagePreset extends AbstractPreset
 
     /**
      * Check is preset is currently active on the system.
-     * Overwrites parent method to ignore processor_path and processor_path_lzw settings
+     * Overwrites parent method to ignore processor_path setting
      *
      * @return bool TRUE if preset is active
      */
@@ -64,9 +64,7 @@ abstract class AbstractImagePreset extends AbstractPreset
     {
         $isActive = true;
         foreach ($this->configurationValues as $configurationKey => $configurationValue) {
-            if ($configurationKey !== 'GFX/processor_path'
-                && $configurationKey !== 'GFX/processor_path_lzw'
-            ) {
+            if ($configurationKey !== 'GFX/processor_path') {
                 $currentValue = $this->configurationManager->getConfigurationValueByPath($configurationKey);
                 if ($currentValue !== $configurationValue) {
                     $isActive = false;
@@ -98,7 +96,6 @@ abstract class AbstractImagePreset extends AbstractPreset
         $this->findExecutableInPath($this->getSearchPaths());
         $configurationValues = $this->configurationValues;
         $configurationValues['GFX/processor_path'] = $this->getFoundPath();
-        $configurationValues['GFX/processor_path_lzw'] = $this->getFoundPath();
         return $configurationValues;
     }
 
@@ -123,13 +120,6 @@ abstract class AbstractImagePreset extends AbstractPreset
         $imPath = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'];
         if ((string)$imPath !== '' && !in_array($imPath, $searchPaths)) {
             $path = $this->cleanUpPath($imPath);
-            array_unshift($searchPaths, $path);
-        }
-
-        // Add configured processor_path_lzw on top
-        $imLzwSearchPath = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'];
-        if ((string)$imLzwSearchPath !== '' && !in_array($imLzwSearchPath, $searchPaths)) {
-            $path = $this->cleanUpPath($imLzwSearchPath);
             array_unshift($searchPaths, $path);
         }
 

@@ -1183,7 +1183,7 @@ class EnvironmentController extends AbstractController
         return new FlashMessage(
             'ImageMagick / GraphicsMagick handling is enabled, but the execute'
             . ' command returned an error. Please check your settings, especially'
-            . ' [\'GFX\'][\'processor_path\'] and [\'GFX\'][\'processor_path_lzw\'] and ensure Ghostscript is installed on your server.',
+            . ' [\'GFX\'][\'processor_path\'] and ensure Ghostscript is installed on your server.',
             'Image generation failed',
             FlashMessage::ERROR
         );

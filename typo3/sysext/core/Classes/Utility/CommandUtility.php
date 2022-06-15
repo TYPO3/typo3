@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * checkCommand() returns TRUE if a command is available
  *
  * Search paths that are included:
- * $TYPO3_CONF_VARS['GFX']['processor_path_lzw'] or $TYPO3_CONF_VARS['GFX']['processor_path']
+ * $TYPO3_CONF_VARS['GFX']['processor_path']
  * $TYPO3_CONF_VARS['SYS']['binPath']
  * $GLOBALS['_SERVER']['PATH']
  * '/usr/bin/,/usr/local/bin/' on Unix
@@ -377,8 +377,7 @@ class CommandUtility
         $sysPathArr = [];
 
         // Image magick paths first
-        // processor_path_lzw take precedence over processor_path
-        if ($imPath = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']) {
+        if ($imPath = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']) {
             $imPath = self::fixPath($imPath);
             $pathsArr[$imPath] = $imPath;
         }

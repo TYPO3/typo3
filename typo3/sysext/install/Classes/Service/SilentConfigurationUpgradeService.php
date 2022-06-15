@@ -175,6 +175,9 @@ class SilentConfigurationUpgradeService
         'EXT/allowLocalInstall',
         // #97265
         'BE/explicitADmode',
+        // Please note that further migrations in this file are kept in order to remove the setting at the very end
+        // #97797
+        'GFX/processor_path_lzw',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)
@@ -476,12 +479,6 @@ class SilentConfigurationUpgradeService
         }
 
         try {
-            $currentPathLzwValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path_lzw');
-        } catch (MissingArrayPathException $e) {
-            $currentPathLzwValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path_lzw');
-        }
-
-        try {
             $currentImageFileExtValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/imagefile_ext');
         } catch (MissingArrayPathException $e) {
             $currentImageFileExtValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/imagefile_ext');
@@ -496,9 +493,6 @@ class SilentConfigurationUpgradeService
         if (!$currentEnabledValue) {
             if ($currentPathValue != '') {
                 $changedValues['GFX/processor_path'] = '';
-            }
-            if ($currentPathLzwValue != '') {
-                $changedValues['GFX/processor_path_lzw'] = '';
             }
             if ($currentImageFileExtValue !== 'gif,jpg,jpeg,png') {
                 $changedValues['GFX/imagefile_ext'] = 'gif,jpg,jpeg,png';

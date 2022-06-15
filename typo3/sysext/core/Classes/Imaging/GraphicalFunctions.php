@@ -2178,7 +2178,6 @@ class GraphicalFunctions
                 $info = $this->getImageDimensions($info[3]);
             }
             if ($info[2] == $this->gifExtension && !$this->dontCompress) {
-                // Compress with IM (lzw) or GD (rle)  (Workaround for the absence of lzw-compression in GD)
                 self::gifCompress($info[3], '');
             }
             return $info;
@@ -2538,12 +2537,12 @@ class GraphicalFunctions
     }
 
     /**
-     * Compressing a GIF file if not already LZW compressed.
+     * Compressing a GIF file if not already compressed.
      * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimum size (that is RLE or no compression used)
      *
      * The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
      * GIF:
-     * If $type is not set, the compression is done with ImageMagick (provided that $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] is pointing to the path of a lzw-enabled version of 'convert') else with GD (should be RLE-enabled!)
+     * If $type is not set, the compression is done with ImageMagick
      * If $type is set to either 'IM' or 'GD' the compression is done with ImageMagick and GD respectively
      * PNG:
      * No changes.
@@ -2562,7 +2561,7 @@ class GraphicalFunctions
             return '';
         }
 
-        if (($type === 'IM' || !$type) && $gfxConf['processor_enabled'] && $gfxConf['processor_path_lzw']) {
+        if (($type === 'IM' || !$type) && $gfxConf['processor_enabled']) {
             // Use temporary file to prevent problems with read and write lock on same file on network file systems
             $temporaryName = PathUtility::dirname($theFile) . '/' . md5(StringUtility::getUniqueId()) . '.gif';
             // Rename could fail, if a simultaneous thread is currently working on the same thing
@@ -2570,7 +2569,7 @@ class GraphicalFunctions
                 $cmd = CommandUtility::imageMagickCommand(
                     'convert',
                     ImageMagickFile::fromFilePath($temporaryName) . ' ' . CommandUtility::escapeShellArgument($theFile),
-                    $gfxConf['processor_path_lzw']
+                    $gfxConf['processor_path']
                 );
                 CommandUtility::exec($cmd);
                 unlink($temporaryName);

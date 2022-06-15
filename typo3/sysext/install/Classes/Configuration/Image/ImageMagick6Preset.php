@@ -39,9 +39,8 @@ class ImageMagick6Preset extends AbstractImagePreset
      */
     protected $configurationValues = [
         'GFX/processor_enabled' => true,
-        // processor_path and processor_path_lzw are determined and set by path lookup methods
+        // processor_path is determined and set by path lookup methods
         'GFX/processor_path' => '',
-        'GFX/processor_path_lzw' => '',
         'GFX/processor' => 'ImageMagick',
         'GFX/processor_effects' => true,
         'GFX/processor_allowTemporaryMasksAsPng' => false,

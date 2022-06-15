@@ -385,7 +385,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $currentLocalConfiguration = [
             ['GFX/im', 0],
             ['GFX/im_path', ''],
-            ['GFX/im_path_lzw', ''],
             ['GFX/imagefile_ext', 'gif,jpg,png'],
             ['GFX/thumbnails', 0],
         ];
@@ -396,7 +395,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'setLocalConfigurationValuesByPathValuePairs',
             ]
         );
-        $this->configurationManager->expects(self::exactly(5))
+        $this->configurationManager->expects(self::exactly(4))
             ->method('getLocalConfigurationValueByPath')
             ->willReturnMap($currentLocalConfiguration);
         $this->configurationManager->expects(self::never())
@@ -430,7 +429,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $currentLocalConfiguration = [
             ['GFX/im', 1],
             ['GFX/im_path', ''],
-            ['GFX/im_path_lzw', ''],
             ['GFX/imagefile_ext', 'gif,jpg,jpeg,png'],
             ['GFX/thumbnails', 0],
         ];
@@ -441,7 +439,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'setLocalConfigurationValuesByPathValuePairs',
             ]
         );
-        $this->configurationManager->expects(self::exactly(5))
+        $this->configurationManager->expects(self::exactly(4))
             ->method('getLocalConfigurationValueByPath')
             ->willReturnMap($currentLocalConfiguration);
         $this->configurationManager->expects(self::never())

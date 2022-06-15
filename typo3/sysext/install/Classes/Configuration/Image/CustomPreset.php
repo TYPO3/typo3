@@ -30,7 +30,6 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
     protected $configurationValues = [
         'GFX/processor_enabled' => false,
         'GFX/processor_path' => '',
-        'GFX/processor_path_lzw' => '',
         'GFX/processor' => '',
         'GFX/processor_effects' => false,
         'GFX/processor_allowTemporaryMasksAsPng' => true,

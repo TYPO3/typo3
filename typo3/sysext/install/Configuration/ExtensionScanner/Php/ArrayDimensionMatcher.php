@@ -755,4 +755,9 @@ return [
             'Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'processor_path_lzw\']' => [
+        'restFiles' => [
+            'Breaking-97797-GFXSettingProcessor_path_lzwRemoved.rst',
+        ],
+    ],
 ];

@@ -31,7 +31,6 @@ return [
         'gdlib_png' => false,
         'processor_enabled' => true,
         'processor_path' => '/usr/bin/',
-        'processor_path_lzw' => '/usr/bin/',
         'processor' => 'ImageMagick',
         'processor_effects' => false,
         'processor_allowUpscaling' => true,

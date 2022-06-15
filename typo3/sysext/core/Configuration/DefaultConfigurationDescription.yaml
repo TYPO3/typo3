@@ -26,9 +26,6 @@ GFX:
         processor_path:
             type: text
             description: 'Path to the IM tools ''convert'', ''combine'', ''identify''.'
-        processor_path_lzw:
-            type: text
-            description: 'Path to the IM tool ''convert'' with LZW enabled! See ''gif_compress''. If your version 4.2.9 of ImageMagick is compiled with LZW you may leave this field blank AND disable the flag ''gif_compress''! Tip: You can call LZW ''convert'' with a prefix like ''myver_convert'' by setting this path with it, eg. <code>/usr/bin/myver_</code> instead of just <code>/usr/bin/</code>.'
         processor:
             type: dropdown
             allowedValues:
