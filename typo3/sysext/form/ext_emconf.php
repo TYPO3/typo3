@@ -9,15 +9,15 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',
-    'version' => '11.5.12',
+    'version' => '11.5.13',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.12',
+            'typo3' => '11.5.13',
         ],
         'conflicts' => [],
         'suggests' => [
-            'filelist' => '11.5.12',
-            'impexp' => '11.5.12',
+            'filelist' => '11.5.13',
+            'impexp' => '11.5.13',
         ],
     ],
 ];
