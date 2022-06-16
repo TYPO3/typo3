@@ -1,6 +1,8 @@
 // Module
 .module.module {
-    background-color: $dashboard-background;
+    .module-body {
+        background-color: $dashboard-background;
+    }
 
     h1 {
         line-height: calc(48 / 32);
