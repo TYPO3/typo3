@@ -111,7 +111,7 @@
 # This affects Frontend and Backend and increases performance.
 <IfModule mod_expires.c>
 
-	ExpiresActive on
+	ExpiresActive On
 	ExpiresDefault                                      "access plus 1 month"
 
 	ExpiresByType text/css                              "access plus 1 year"
@@ -259,7 +259,7 @@ AddDefaultCharset utf-8
 # Send the CORS header for images when browsers request it.
 <IfModule mod_setenvif.c>
 	<IfModule mod_headers.c>
-		<FilesMatch "\.(bmp|cur|gif|ico|jpe?g|png|svgz?|webp)$">
+		<FilesMatch "\.(avifs?|bmp|cur|gif|ico|jpe?g|png|svgz?|webp)$">
 			SetEnvIf Origin ":" IS_CORS
 			Header set Access-Control-Allow-Origin "*" env=IS_CORS
 		</FilesMatch>
@@ -375,7 +375,7 @@ Options -MultiViews
 <IfModule mod_headers.c>
 	# Force IE to render pages in the highest available mode
 	Header set X-UA-Compatible "IE=edge"
-	<FilesMatch "\.(appcache|crx|css|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|otf|pdf|png|safariextz|svgz?|ttf|vcf|webapp|webm|webp|woff2?|xml|xpi)$">
+	<FilesMatch "\.(appcache|avifs?|crx|css|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|otf|pdf|png|safariextz|svgz?|ttf|vcf|webapp|webm|webp|woff2?|xml|xpi)$">
 		Header unset X-UA-Compatible
 	</FilesMatch>
 
