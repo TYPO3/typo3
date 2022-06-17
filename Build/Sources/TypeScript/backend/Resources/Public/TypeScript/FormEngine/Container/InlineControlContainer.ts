@@ -40,6 +40,7 @@ enum Selectors {
   uniqueValueSelectors = 'select.t3js-inline-unique',
   revertUniqueness = '.t3js-revert-unique',
   controlContainer = '.t3js-inline-controls',
+  controlTopOuterContainer = '.t3js-inline-controls-top-outer-container',
 }
 
 enum States {
@@ -789,13 +790,18 @@ class InlineControlContainer {
    * @param {boolean} visible
    */
   private toggleContainerControls(visible: boolean): void {
-    const controlContainer = this.container.querySelector(Selectors.controlContainer);
+    const controlContainer = this.container.querySelectorAll(
+      ':scope > ' + Selectors.controlContainer + ', '
+      + ':scope > ' + Selectors.controlTopOuterContainer + ' ' + Selectors.controlContainer
+    );
     if (controlContainer === null) {
       return;
     }
-    const controlContainerButtons = controlContainer.querySelectorAll('button, a');
-    controlContainerButtons.forEach((button: HTMLElement): void => {
-      button.style.display = visible ? null : 'none';
+    controlContainer.forEach((container: HTMLElement): void => {
+      let controlContainerButtons = container.querySelectorAll('button, a');
+      controlContainerButtons.forEach((button: HTMLElement): void => {
+        button.style.display = visible ? null : 'none';
+      });
     });
   }
 
