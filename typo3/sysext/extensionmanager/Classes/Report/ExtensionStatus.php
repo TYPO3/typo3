@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Report;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
@@ -106,15 +107,15 @@ class ExtensionStatus implements StatusProviderInterface
         if (!$this->remoteRegistry->hasDefaultRemote()) {
             $value = $this->languageService->getLL('report.status.mainRepository.notFound.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notFound.message');
-            $severity = Status::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
         } elseif ($this->remoteRegistry->getDefaultRemote()->needsUpdate()) {
             $value = $this->languageService->getLL('report.status.mainRepository.notUpToDate.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notUpToDate.message');
-            $severity = Status::NOTICE;
+            $severity = ContextualFeedbackSeverity::NOTICE;
         } else {
             $value = $this->languageService->getLL('report.status.mainRepository.upToDate.value');
             $message = '';
-            $severity = Status::OK;
+            $severity = ContextualFeedbackSeverity::OK;
         }
 
         $status = GeneralUtility::makeInstance(
@@ -186,7 +187,7 @@ class ExtensionStatus implements StatusProviderInterface
         if (empty($loadedInsecure)) {
             $value = $this->languageService->getLL('report.status.loadedExtensions.noInsecureExtensionLoaded.value');
             $message = '';
-            $severity = Status::OK;
+            $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.value'),
@@ -204,7 +205,7 @@ class ExtensionStatus implements StatusProviderInterface
                 $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.message'),
                 implode('', $extensionList)
             );
-            $severity = Status::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
         }
         $result->loaded = GeneralUtility::makeInstance(
             Status::class,
@@ -217,7 +218,7 @@ class ExtensionStatus implements StatusProviderInterface
         if (empty($existingInsecure)) {
             $value = $this->languageService->getLL('report.status.existingExtensions.noInsecureExtensionExists.value');
             $message = '';
-            $severity = Status::OK;
+            $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.value'),
@@ -235,7 +236,7 @@ class ExtensionStatus implements StatusProviderInterface
                 $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.message'),
                 implode('', $extensionList)
             );
-            $severity = Status::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
         }
         $result->existing = GeneralUtility::makeInstance(
             Status::class,
@@ -248,7 +249,7 @@ class ExtensionStatus implements StatusProviderInterface
         if (empty($loadedOutdated)) {
             $value = $this->languageService->getLL('report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value');
             $message = '';
-            $severity = Status::OK;
+            $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value'),
@@ -266,7 +267,7 @@ class ExtensionStatus implements StatusProviderInterface
                 $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message'),
                 implode('', $extensionList)
             );
-            $severity = Status::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
         }
         $result->loadedoutdated = GeneralUtility::makeInstance(
             Status::class,
@@ -279,7 +280,7 @@ class ExtensionStatus implements StatusProviderInterface
         if (empty($existingOutdated)) {
             $value = $this->languageService->getLL('report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value');
             $message = '';
-            $severity = Status::OK;
+            $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.value'),
@@ -297,7 +298,7 @@ class ExtensionStatus implements StatusProviderInterface
                 $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.message'),
                 implode('', $extensionList)
             );
-            $severity = Status::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
         }
         $result->existingoutdated = GeneralUtility::makeInstance(
             Status::class,

@@ -177,14 +177,14 @@ options.severity
       No
 
 :aspect:`Default value`
-      \TYPO3\CMS\Core\Messaging\AbstractMessage::OK (0)
+      \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK (0)
 
 :aspect:`Good to know`
       - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
 
 :aspect:`Description`
       The flash message severity code.
-      See \TYPO3\CMS\Core\Messaging\AbstractMessage constants for the codes.
+      See \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity cases for the codes.
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.translation.translationfiles:

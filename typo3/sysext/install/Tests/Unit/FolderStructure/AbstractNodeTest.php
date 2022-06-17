@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\AbstractNode;
@@ -195,7 +195,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         chmod($path, 02770);
         $node->_set('targetPermission', '2770');
         $node->method('getAbsolutePath')->willReturn($subPath);
-        self::assertEquals(FlashMessage::OK, $node->_call('fixPermission')->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::OK, $node->_call('fixPermission')->getSeverity());
         $resultDirectoryPermissions = substr(decoct(fileperms($subPath)), 1);
         self::assertSame('2770', $resultDirectoryPermissions);
     }

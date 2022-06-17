@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Install\Report;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
@@ -89,19 +89,19 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
         ];
         foreach ($statusMessageQueue->toArray() as $message) {
             switch ($message->getSeverity()) {
-                case FlashMessage::ERROR:
+                case ContextualFeedbackSeverity::ERROR:
                     $reportStatusTypes['error'][] = $message;
                     break;
-                case FlashMessage::WARNING:
+                case ContextualFeedbackSeverity::WARNING:
                     $reportStatusTypes['warning'][] = $message;
                     break;
-                case FlashMessage::OK:
+                case ContextualFeedbackSeverity::OK:
                     $reportStatusTypes['ok'][] = $message;
                     break;
-                case FlashMessage::INFO:
+                case ContextualFeedbackSeverity::INFO:
                     $reportStatusTypes['information'][] = $message;
                     break;
-                case FlashMessage::NOTICE:
+                case ContextualFeedbackSeverity::NOTICE:
                     $reportStatusTypes['notice'][] = $message;
                     break;
             }
@@ -113,7 +113,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
             $message = '';
             if ($verbose) {
                 foreach ($statusObjects as $statusObject) {
-                    $message .= '### ' . $statusObject->getTitle() . ': ' . $statusObject->getSeverity() . CRLF;
+                    $message .= '### ' . $statusObject->getTitle() . ': ' . $statusObject->getSeverity()->value . CRLF;
                 }
             }
 

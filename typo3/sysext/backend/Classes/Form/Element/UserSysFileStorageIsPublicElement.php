@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -70,7 +71,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
                         FlashMessage::class,
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.message.storage_is_no_public'),
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header.storage_is_no_public'),
-                        FlashMessage::WARNING
+                        ContextualFeedbackSeverity::WARNING
                     );
                     $defaultFlashMessageQueue->enqueue($message);
                 }
@@ -79,7 +80,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
                     FlashMessage::class,
                     $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.message'),
                     $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.title'),
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
                 $defaultFlashMessageQueue->enqueue($message);
             }

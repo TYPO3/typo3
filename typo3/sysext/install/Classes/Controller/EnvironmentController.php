@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -146,11 +147,11 @@ class EnvironmentController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => [
-                'error' => $messageQueue->getAllMessages(FlashMessage::ERROR),
-                'warning' => $messageQueue->getAllMessages(FlashMessage::WARNING),
-                'ok' => $messageQueue->getAllMessages(FlashMessage::OK),
-                'information' => $messageQueue->getAllMessages(FlashMessage::INFO),
-                'notice' => $messageQueue->getAllMessages(FlashMessage::NOTICE),
+                'error' => $messageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR),
+                'warning' => $messageQueue->getAllMessages(ContextualFeedbackSeverity::WARNING),
+                'ok' => $messageQueue->getAllMessages(ContextualFeedbackSeverity::OK),
+                'information' => $messageQueue->getAllMessages(ContextualFeedbackSeverity::INFO),
+                'notice' => $messageQueue->getAllMessages(ContextualFeedbackSeverity::NOTICE),
             ],
             'html' => $view->render('Environment/EnvironmentCheck'),
             'buttons' => [
@@ -178,8 +179,8 @@ class EnvironmentController extends AbstractController
         $errorQueue = new FlashMessageQueue('install');
         $okQueue = new FlashMessageQueue('install');
         foreach ($structureMessages as $message) {
-            if ($message->getSeverity() === FlashMessage::ERROR
-                || $message->getSeverity() === FlashMessage::WARNING
+            if ($message->getSeverity() === ContextualFeedbackSeverity::ERROR
+                || $message->getSeverity() === ContextualFeedbackSeverity::WARNING
             ) {
                 $errorQueue->enqueue($message);
             } else {
@@ -268,7 +269,7 @@ class EnvironmentController extends AbstractController
             $messages->enqueue(new FlashMessage(
                 'Given address is not a valid email address.',
                 'Mail not sent',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             try {
@@ -295,14 +296,14 @@ class EnvironmentController extends AbstractController
                     'Please verify $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'defaultMailFromAddress\'] is a valid mail address.'
                     . ' Error message: ' . $exception->getMessage(),
                     'RFC compliance problem',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } catch (\Throwable $throwable) {
                 $messages->enqueue(new FlashMessage(
                     'Please verify $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][*] settings are valid.'
                     . ' Error message: ' . $throwable->getMessage(),
                     'Could not deliver mail',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         }
@@ -469,13 +470,13 @@ class EnvironmentController extends AbstractController
                     'Method used by compress: ' . $methodUsed . LF
                     . ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize,
                     'Compressed gif',
-                    FlashMessage::INFO
+                    ContextualFeedbackSeverity::INFO
                 ));
             } else {
                 $messages->enqueue(new FlashMessage(
                     '',
                     'Gif compression not enabled by [GFX][gif_compress]',
-                    FlashMessage::INFO
+                    ContextualFeedbackSeverity::INFO
                 ));
             }
             $result = [
@@ -1024,7 +1025,7 @@ class EnvironmentController extends AbstractController
                     new FlashMessage(
                         'Handling format ' . $inputFormat . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']',
                         'Skipped test',
-                        FlashMessage::WARNING
+                        ContextualFeedbackSeverity::WARNING
                     ),
                 ],
             ]);
@@ -1185,7 +1186,7 @@ class EnvironmentController extends AbstractController
             . ' command returned an error. Please check your settings, especially'
             . ' [\'GFX\'][\'processor_path\'] and ensure Ghostscript is installed on your server.',
             'Image generation failed',
-            FlashMessage::ERROR
+            ContextualFeedbackSeverity::ERROR
         );
     }
 
@@ -1211,7 +1212,7 @@ class EnvironmentController extends AbstractController
         return new FlashMessage(
             'ImageMagick / GraphicsMagick handling is disabled or not configured correctly.',
             'Tests not executed',
-            FlashMessage::ERROR
+            ContextualFeedbackSeverity::ERROR
         );
     }
 

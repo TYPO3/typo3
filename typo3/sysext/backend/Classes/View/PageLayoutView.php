@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -359,7 +360,7 @@ class PageLayoutView implements LoggerAwareInterface
                         FlashMessage::class,
                         $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:error.invalidBackendLayout'),
                         '',
-                        FlashMessage::WARNING
+                        ContextualFeedbackSeverity::WARNING
                     );
                     $service = GeneralUtility::makeInstance(FlashMessageService::class);
                     $queue = $service->getMessageQueueByIdentifier();
@@ -444,7 +445,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 FlashMessage::class,
                                 $this->getLanguageService()->getLL('staleUnusedElementsWarning'),
                                 $this->getLanguageService()->getLL('staleUnusedElementsWarningTitle'),
-                                FlashMessage::WARNING
+                                ContextualFeedbackSeverity::WARNING
                             );
                             $service = GeneralUtility::makeInstance(FlashMessageService::class);
                             $queue = $service->getMessageQueueByIdentifier();
@@ -1695,7 +1696,7 @@ class PageLayoutView implements LoggerAwareInterface
                     FlashMessage::class,
                     $this->getLanguageService()->getLL('staleTranslationWarning'),
                     sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $siteLanguage->getTitle()),
-                    FlashMessage::WARNING
+                    ContextualFeedbackSeverity::WARNING
                 );
                 $service = GeneralUtility::makeInstance(FlashMessageService::class);
                 $queue = $service->getMessageQueueByIdentifier();

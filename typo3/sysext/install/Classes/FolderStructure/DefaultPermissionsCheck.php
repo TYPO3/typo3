@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * Service class to check the default folder permissions
@@ -75,29 +76,29 @@ class DefaultPermissionsCheck
         $extraMessage = '';
         $groupPermissions = false;
         if (!$perms['uw'] || !$perms['ur']) {
-            $permissionStatus = FlashMessage::ERROR;
+            $permissionStatus = ContextualFeedbackSeverity::ERROR;
             $extraMessage = ' (not read or writable by the user)';
         } elseif ($perms['ow']) {
             if (Environment::isWindows()) {
-                $permissionStatus = FlashMessage::INFO;
+                $permissionStatus = ContextualFeedbackSeverity::INFO;
                 $extraMessage = ' (writable by anyone on the server). This is the default behavior on a Windows system';
             } else {
-                $permissionStatus = FlashMessage::ERROR;
+                $permissionStatus = ContextualFeedbackSeverity::ERROR;
                 $extraMessage = ' (writable by anyone on the server)';
             }
         } elseif ($perms['or']) {
-            $permissionStatus = FlashMessage::NOTICE;
+            $permissionStatus = ContextualFeedbackSeverity::NOTICE;
             $extraMessage = ' (readable by anyone on the server). This is the default set by TYPO3 CMS to be as much compatible as possible but if your system allows, please consider to change rights';
         } elseif ($perms['gw']) {
-            $permissionStatus = FlashMessage::OK;
+            $permissionStatus = ContextualFeedbackSeverity::OK;
             $extraMessage = ' (group writable)';
             $groupPermissions = true;
         } elseif ($perms['gr']) {
-            $permissionStatus = FlashMessage::OK;
+            $permissionStatus = ContextualFeedbackSeverity::OK;
             $extraMessage = ' (group readable)';
             $groupPermissions = true;
         } else {
-            $permissionStatus = FlashMessage::OK;
+            $permissionStatus = ContextualFeedbackSeverity::OK;
         }
         $message = 'Recommended: ' . $this->recommended[$which] . '.';
         $message .= ' Currently configured as ';

@@ -17,86 +17,62 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Messaging;
 
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * A class used for any kind of messages.
  */
 abstract class AbstractMessage implements \JsonSerializable
 {
-    const NOTICE = -2;
-    const INFO = -1;
-    const OK = 0;
-    const WARNING = 1;
-    const ERROR = 2;
-
     /**
-     * The message's title
-     *
-     * @var string
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE instead
      */
-    protected $title = '';
-
+    public const NOTICE = -2;
     /**
-     * The message
-     *
-     * @var string
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO instead
      */
-    protected $message = '';
-
+    public const INFO = -1;
     /**
-     * The message's severity
-     *
-     * @var int
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK instead
      */
-    protected $severity = self::OK;
-
+    public const OK = 0;
     /**
-     * Gets the message's title.
-     *
-     * @return string The message's title.
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING instead
      */
+    public const WARNING = 1;
+    /**
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR instead
+     */
+    public const ERROR = 2;
+
+    protected string $title = '';
+    protected string $message = '';
+    protected ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK;
+
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the message's title
-     *
-     * @param string $title The message's title
-     */
-    public function setTitle(string $title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Gets the message.
-     *
-     * @return string The message.
-     */
     public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * Sets the message
-     *
-     * @param string $message The message
-     */
-    public function setMessage(string $message)
+    public function setMessage(string $message): void
     {
         $this->message = $message;
     }
 
     /**
-     * Gets the message' severity.
-     *
-     * @return int The message' severity, must be one of AbstractMessage::INFO or similar constants
+     * @internal
      */
-    public function getSeverity(): int
+    public function getSeverity(): ContextualFeedbackSeverity
     {
         return $this->severity;
     }
@@ -104,11 +80,17 @@ abstract class AbstractMessage implements \JsonSerializable
     /**
      * Sets the message' severity
      *
-     * @param int $severity The severity, must be one of AbstractMessage::INFO or similar constants
+     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity $severity
+     *
+     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    public function setSeverity(int $severity = self::OK)
+    public function setSeverity(int|ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
-        $this->severity = MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
+        if (is_int($severity)) {
+            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
+            $severity = ContextualFeedbackSeverity::transform($severity) ?? ContextualFeedbackSeverity::OK;
+        }
+        $this->severity = $severity;
     }
 
     /**
@@ -119,18 +101,11 @@ abstract class AbstractMessage implements \JsonSerializable
      */
     public function __toString()
     {
-        $severities = [
-            self::NOTICE => 'NOTICE',
-            self::INFO => 'INFO',
-            self::OK => 'OK',
-            self::WARNING => 'WARNING',
-            self::ERROR => 'ERROR',
-        ];
         $title = '';
         if ($this->title !== '') {
             $title = ' - ' . $this->title;
         }
-        return $severities[$this->severity] . $title . ': ' . $this->message;
+        return $this->severity->name . $title . ': ' . $this->message;
     }
 
     /**
@@ -139,7 +114,7 @@ abstract class AbstractMessage implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'severity' => $this->getSeverity(),
+            'severity' => $this->getSeverity()->value,
             'title' => $this->getTitle(),
             'message' => $this->getMessage(),
         ];

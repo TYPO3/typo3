@@ -41,18 +41,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 class PlaintextRenderer implements FlashMessageRendererInterface
 {
     /**
-     * Message types
-     * @var array
-     */
-    protected static $type = [
-        FlashMessage::NOTICE => 'NOTICE',
-        FlashMessage::INFO => 'INFO',
-        FlashMessage::OK => 'SUCCESS',
-        FlashMessage::WARNING => 'WARNING',
-        FlashMessage::ERROR => 'DANGER',
-    ];
-
-    /**
      * Render method
      *
      * @param FlashMessage[] $flashMessages
@@ -67,7 +55,7 @@ class PlaintextRenderer implements FlashMessageRendererInterface
             if ($flashMessage->getTitle() !== '') {
                 $message = $flashMessage->getTitle() . ': ' . $message;
             }
-            $messages[] = '[' . self::$type[$flashMessage->getSeverity()] . '] ' . $message;
+            $messages[] = '[' . $flashMessage->getSeverity()->name . '] ' . $message;
         }
         return implode(LF, $messages);
     }

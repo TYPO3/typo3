@@ -63,6 +63,7 @@ use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -9214,7 +9215,7 @@ class DataHandler implements LoggerAwareInterface
 
             $msg = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
             $msg = $row['error'] . ': ' . $msg;
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::ERROR, true);
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);

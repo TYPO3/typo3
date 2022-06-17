@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -367,7 +368,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     FlashMessage::class,
                     $message,
                     '',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
                 GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->enqueue($flashMessage);
             }

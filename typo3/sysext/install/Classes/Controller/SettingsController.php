@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -127,13 +128,13 @@ class SettingsController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 'Given passwords do not match.',
                 'Install tool password not changed',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif (strlen($password) < 8) {
             $messageQueue->enqueue(new FlashMessage(
                 'Given password must be at least eight characters long.',
                 'Install tool password not changed',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
@@ -255,13 +256,13 @@ class SettingsController extends AbstractController
             $messages[] = new FlashMessage(
                 'The system has no maintainers enabled anymore. Please use the standalone Admin Tools from now on.',
                 'Cleared system maintainer list',
-                FlashMessage::INFO
+                ContextualFeedbackSeverity::INFO
             );
         } else {
             $messages[] = new FlashMessage(
                 'New system maintainer uid list: ' . implode(', ', $validatedUserList),
                 'Updated system maintainers',
-                FlashMessage::INFO
+                ContextualFeedbackSeverity::INFO
             );
         }
         return new JsonResponse([
@@ -323,7 +324,7 @@ class SettingsController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 'No configuration changes have been detected in the submitted form.',
                 'Configuration not updated',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         }
         return new JsonResponse([
@@ -391,7 +392,7 @@ class SettingsController extends AbstractController
             $messages->enqueue(new FlashMessage(
                 '',
                 'No configuration change selected',
-                FlashMessage::INFO
+                ContextualFeedbackSeverity::INFO
             ));
         }
         return new JsonResponse([
@@ -452,7 +453,7 @@ class SettingsController extends AbstractController
             new FlashMessage(
                 'Successfully saved configuration for extension "' . $extensionKey . '".',
                 'Configuration saved',
-                FlashMessage::OK
+                ContextualFeedbackSeverity::OK
             ),
         ];
         return new JsonResponse([
@@ -540,14 +541,14 @@ class SettingsController extends AbstractController
             if ($success) {
                 $configurationManager->exportConfiguration();
                 $message = "Successfully updated the following feature toggles:\n" . implode(",\n", $updatedFeatures);
-                $severity = FlashMessage::OK;
+                $severity = ContextualFeedbackSeverity::OK;
             } else {
                 $message = 'An error occured while saving. Some settings may not have been updated.';
-                $severity = FlashMessage::ERROR;
+                $severity = ContextualFeedbackSeverity::ERROR;
             }
         } else {
             $message = 'Nothing to update';
-            $severity = FlashMessage::INFO;
+            $severity = ContextualFeedbackSeverity::INFO;
         }
         return new JsonResponse([
             'success' => true,

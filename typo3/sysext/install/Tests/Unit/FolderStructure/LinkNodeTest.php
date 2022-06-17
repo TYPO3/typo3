@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
@@ -141,7 +141,7 @@ class LinkNodeTest extends UnitTestCase
         $node->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::INFO, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::INFO, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -161,7 +161,7 @@ class LinkNodeTest extends UnitTestCase
         $node->method('isWindowsOs')->willReturn(false);
         $node->expects(self::once())->method('exists')->willReturn(false);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -180,7 +180,7 @@ class LinkNodeTest extends UnitTestCase
         $node->method('exists')->willReturn(true);
         $node->expects(self::once())->method('isLink')->willReturn(false);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::WARNING, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -201,7 +201,7 @@ class LinkNodeTest extends UnitTestCase
         $node->method('isLink')->willReturn(true);
         $node->expects(self::once())->method('isLink')->willReturn(false);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -222,7 +222,7 @@ class LinkNodeTest extends UnitTestCase
         $node->expects(self::once())->method('isTargetCorrect')->willReturn(true);
         $node->expects(self::once())->method('getRelativePathBelowSiteRoot')->willReturn('');
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
     /**

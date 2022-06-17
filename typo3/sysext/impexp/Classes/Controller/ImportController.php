@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
@@ -92,7 +92,7 @@ class ImportController
             $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_nodata'),
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_error'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         if ($request->getMethod() === 'POST' && isset($parsedBody['_upload'])) {
@@ -184,7 +184,7 @@ class ImportController
                     BackendUtility::setUpdateSignal('updatePageTree');
                 }
             } catch (\Exception $e) {
-                $view->addFlashMessage($e->getMessage(), '', AbstractMessage::ERROR);
+                $view->addFlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::ERROR);
             }
         }
         return $import;

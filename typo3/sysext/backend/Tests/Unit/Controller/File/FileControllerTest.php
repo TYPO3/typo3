@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -187,7 +188,7 @@ class FileControllerTest extends UnitTestCase
     public function processAjaxRequestReturnsStatus500IfErrorOccurs(): void
     {
         $messageQueue = new FlashMessageQueue('test');
-        $messageQueue->addMessage(new FlashMessage('Error occurred', 'Error occurred', FlashMessage::ERROR));
+        $messageQueue->addMessage(new FlashMessage('Error occurred', 'Error occurred', ContextualFeedbackSeverity::ERROR));
         $this->flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($messageQueue);
         $subject = $this->getAccessibleMock(
             FileController::class,

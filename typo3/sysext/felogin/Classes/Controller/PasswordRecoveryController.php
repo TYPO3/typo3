@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -71,7 +71,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $this->addFlashMessage(
                 $this->getTranslation('forgot_reset_message_error'),
                 '',
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } else {
             $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));

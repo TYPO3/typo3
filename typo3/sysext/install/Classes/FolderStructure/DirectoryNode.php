@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
@@ -77,7 +78,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
             $status = new FlashMessage(
                 'The Install Tool can try to create it',
                 'Directory ' . $this->getRelativePathBelowSiteRoot() . ' does not exist',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
             $result[] = $status;
         } else {
@@ -135,7 +136,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
         if (!$this->exists()) {
             $resultCreateDirectory = $this->createDirectory();
             $result[] = $resultCreateDirectory;
-            if ($resultCreateDirectory->getSeverity() === FlashMessage::OK &&
+            if ($resultCreateDirectory->getSeverity() === ContextualFeedbackSeverity::OK &&
                 !$this->isPermissionCorrect()
             ) {
                 $result[] = $this->fixPermission();
@@ -160,7 +161,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
             $result[] = new FlashMessage(
                 $messageBody,
                 'Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a directory',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         return $result;
@@ -191,7 +192,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
             'The target directory could not be created. There is probably a'
                 . ' group or owner permission problem on the parent directory.',
             'Directory ' . $this->getRelativePathBelowSiteRoot() . ' not created!',
-            FlashMessage::ERROR
+            ContextualFeedbackSeverity::ERROR
         );
     }
 
@@ -208,21 +209,21 @@ class DirectoryNode extends AbstractNode implements NodeInterface
                 'Directory ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,'
                     . ' but is of type ' . filetype($this->getAbsolutePath()),
                 $this->getRelativePathBelowSiteRoot() . ' is not a directory',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } elseif (!$this->isWritable()) {
             $result[] = new FlashMessage(
                 'Path ' . $this->getAbsolutePath() . ' exists, but no file underneath it'
                     . ' can be created.',
                 'Directory ' . $this->getRelativePathBelowSiteRoot() . ' is not writable',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } elseif (!$this->isPermissionCorrect()) {
             $result[] = new FlashMessage(
                 'Default configured permissions are ' . $this->getTargetPermission()
                     . ' but current permissions are ' . $this->getCurrentPermission(),
                 'Directory ' . $this->getRelativePathBelowSiteRoot() . ' permissions mismatch',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             );
         } else {
             $result[] = new FlashMessage(

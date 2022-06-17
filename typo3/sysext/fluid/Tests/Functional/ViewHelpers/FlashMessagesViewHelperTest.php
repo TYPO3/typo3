@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -55,11 +55,11 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $flashMessage = new FlashMessage('test message body', 'test message title', AbstractMessage::OK, true);
+        $flashMessage = new FlashMessage('test message body', 'test message title', ContextualFeedbackSeverity::OK, true);
         (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
-        self::assertSame('[SUCCESS] test message title: test message body', (new TemplateView($context))->render());
+        self::assertSame('[OK] test message title: test message body', (new TemplateView($context))->render());
     }
 }

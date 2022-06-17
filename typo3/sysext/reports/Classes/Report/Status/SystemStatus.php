@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Reports\Report\Status;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
@@ -78,11 +79,11 @@ class SystemStatus implements StatusProviderInterface
             $value = $this->getLanguageService()->getLL('status_phpModulesMissing');
             $message = sprintf($this->getLanguageService()->getLL('status_phpModulesList'), implode(', ', $missingPhpModules));
             $message .= ' ' . $this->getLanguageService()->getLL('status_phpModulesInfo');
-            $severity = ReportStatus::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
         } else {
             $value = $this->getLanguageService()->getLL('status_phpModulesPresent');
             $message = '';
-            $severity = ReportStatus::OK;
+            $severity = ContextualFeedbackSeverity::OK;
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_phpModules'), $value, $message, $severity);
     }

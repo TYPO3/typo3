@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -153,7 +154,7 @@ class Check implements CheckInterface
                     . ' it is an unusual setting that may introduce problems for'
                     . ' some extensions.',
                 'Current directory (./) is not within PHP include path',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -177,7 +178,7 @@ class Check implements CheckInterface
                     . ' the server - ALL content in the forms are discarded and therefore'
                     . ' nothing at all will be editable if you don\'t set this flag!',
                 'File uploads not allowed in PHP',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -202,7 +203,7 @@ class Check implements CheckInterface
                     . ' exceeds the allowed size for POST requests. Therefore the'
                     . ' file uploads can also not be larger than ' . ini_get('post_max_size') . '.',
                 'Maximum size for POST requests is smaller than maximum upload filesize in PHP',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif ($maximumPostSize === $maximumUploadFilesize) {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -232,7 +233,7 @@ class Check implements CheckInterface
                     . ' To be safe, set a limit in PHP, but with a minimum of ' . $recommendedMemoryLimit . 'MB:' . LF
                     . 'memory_limit=' . $recommendedMemoryLimit . 'M',
                 'Unlimited memory limit for PHP',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } elseif ($memoryLimit < 1024 * 1024 * $minimumMemoryLimit) {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -242,7 +243,7 @@ class Check implements CheckInterface
                     . ' We recommend a minimum PHP memory limit of ' . $recommendedMemoryLimit . 'MB:' . LF
                     . 'memory_limit=' . $recommendedMemoryLimit . 'M',
                 'PHP Memory limit below ' . $minimumMemoryLimit . 'MB',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif ($memoryLimit < 1024 * 1024 * $recommendedMemoryLimit) {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -255,7 +256,7 @@ class Check implements CheckInterface
                     . $recommendedMemoryLimit . 'MB:' . LF
                     . 'memory_limit=' . $recommendedMemoryLimit . 'M',
                 'PHP Memory limit below ' . $recommendedMemoryLimit . 'MB',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -277,7 +278,7 @@ class Check implements CheckInterface
                 'Your PHP version ' . $currentPhpVersion . ' is too old. TYPO3 CMS does not run'
                     . ' with this version. Update to at least PHP ' . $minimumPhpVersion,
                 'PHP version too low',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -299,7 +300,7 @@ class Check implements CheckInterface
                     . ' in your environment. Change your environment to provide this extension'
                     . ' in with minimum version ' . $minimumPcreVersion . '.',
                 'PHP extension pcre not loaded',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $installedPcreVersionString = trim(PCRE_VERSION); // '8.39 2016-06-14'
@@ -310,7 +311,7 @@ class Check implements CheckInterface
                     'Your PCRE version ' . PCRE_VERSION . ' is too old. TYPO3 CMS may trigger PHP segmentantion'
                         . ' faults with this version. Update to at least PCRE ' . $minimumPcreVersion,
                     'PCRE version too low',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $this->messageQueue->enqueue(new FlashMessage(
@@ -337,7 +338,7 @@ class Check implements CheckInterface
                     . ' if it is reduced to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF
                     . 'max_execution_time=' . $recommendedMaximumExecutionTime,
                 'Infinite PHP script execution time',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } elseif ($currentMaximumExecutionTime < $minimumMaximumExecutionTime) {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -346,7 +347,7 @@ class Check implements CheckInterface
                     . ' It is recommended to raise the limit to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF
                     . 'max_execution_time=' . $recommendedMaximumExecutionTime,
                 'Low PHP script execution time',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif ($currentMaximumExecutionTime < $recommendedMaximumExecutionTime) {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -358,7 +359,7 @@ class Check implements CheckInterface
                     . ' and maybe raise the limit to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF
                     . 'max_execution_time=' . $recommendedMaximumExecutionTime,
                 'Low PHP script execution time',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -402,7 +403,7 @@ class Check implements CheckInterface
                         . ' exec() which is used by TYPO3 at various places. Depending on which exact functions'
                         . ' are disabled, some parts of the system may just break without further notice.',
                     'Some PHP functions disabled',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $this->messageQueue->enqueue(new FlashMessage(
@@ -434,7 +435,7 @@ class Check implements CheckInterface
                     . ' TYPO3 CMS core code is linked to some different location.'
                     . ' If that is a problem, the setting must be changed.',
                 'doc_root is set',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -458,7 +459,7 @@ class Check implements CheckInterface
                     . ' if for example your TYPO3 CMS core is linked to a different directory'
                     . ' not included in this path.',
                 'PHP open_basedir is set',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -487,7 +488,7 @@ class Check implements CheckInterface
                         . ' if the value is not raised significantly to:' . LF
                         . 'xdebug.max_nesting_level=' . $recommendedMaxNestingLevel,
                     'PHP xdebug.max_nesting_level is critically low',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } elseif ($currentMaxNestingLevel < $recommendedMaxNestingLevel) {
                 $this->messageQueue->enqueue(new FlashMessage(
@@ -498,7 +499,7 @@ class Check implements CheckInterface
                         . ' raised further. A value of ' . $recommendedMaxNestingLevel . ' is recommended.' . LF
                         . 'xdebug.max_nesting_level=' . $recommendedMaxNestingLevel,
                     'PHP xdebug.max_nesting_level is low',
-                    FlashMessage::WARNING
+                    ContextualFeedbackSeverity::WARNING
                 ));
             } else {
                 $this->messageQueue->enqueue(new FlashMessage(
@@ -531,7 +532,7 @@ class Check implements CheckInterface
                     . ' to at least ' . $recommendedMaxInputVars . ':' . LF
                     . 'max_input_vars=' . $recommendedMaxInputVars,
                 'PHP max_input_vars too low',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif ($currentMaxInputVars < $recommendedMaxInputVars) {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -541,7 +542,7 @@ class Check implements CheckInterface
                     . ' to at least ' . $recommendedMaxInputVars . ':' . LF
                     . 'max_input_vars=' . $recommendedMaxInputVars,
                 'PHP max_input_vars very low',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -575,7 +576,7 @@ class Check implements CheckInterface
                     . ' This compile flag must be specified, otherwise TYPO3 CMS will not work.' . LF
                     . 'For more information take a look in our documentation ' . Typo3Information::URL_OPCACHE . '.',
                 'PHP Doc comment reflection broken',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -602,7 +603,7 @@ class Check implements CheckInterface
                     . ' to httpd.conf and restarting Apache afterwards:' . LF
                     . '<IfModule mpm_winnt_module>ThreadStackSize 8388608</IfModule>',
                 'Windows apache thread stack size',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -627,7 +628,7 @@ class Check implements CheckInterface
                     . ' in your environment. Change your environment to provide this extension. '
                     . $purpose,
                 'PHP extension "' . $extension . '" not loaded',
-                $required ? FlashMessage::ERROR : FlashMessage::WARNING
+                $required ? ContextualFeedbackSeverity::ERROR : ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
@@ -655,14 +656,14 @@ class Check implements CheckInterface
                     'GD is loaded, but calling imagecreatetruecolor() fails.'
                         . ' This must be fixed, TYPO3 CMS won\'t work well otherwise.',
                     'PHP GD library true color support broken',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 'Gdlib is essential for TYPO3 CMS to work properly.',
                 'PHP GD library true color support missing',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
     }
@@ -688,14 +689,14 @@ class Check implements CheckInterface
                 $this->messageQueue->enqueue(new FlashMessage(
                     'GD is loaded, but calling imagecreatefromgif() fails. This must be fixed, TYPO3 CMS won\'t work well otherwise.',
                     'PHP GD library gif support broken',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 'GD must be compiled with gif support. This is essential for TYPO3 CMS to work properly.',
                 'PHP GD library gif support missing',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
     }
@@ -717,7 +718,7 @@ class Check implements CheckInterface
             $this->messageQueue->enqueue(new FlashMessage(
                 'GD must be compiled with jpg support. This is essential for TYPO3 CMS to work properly.',
                 'PHP GD library jpg support missing',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
     }
@@ -745,14 +746,14 @@ class Check implements CheckInterface
                         . ' Check your environment and fix it, png in GD lib is important'
                         . ' for TYPO3 CMS to work properly.',
                     'PHP GD library png support broken',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 'GD must be compiled with png support. This is essential for TYPO3 CMS to work properly',
                 'PHP GD library png support missing',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
     }
@@ -775,7 +776,7 @@ class Check implements CheckInterface
                     . ' to render fonts on images. This support is missing'
                     . ' in your environment. Install it.',
                 'PHP GD library freetype support missing',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
     }

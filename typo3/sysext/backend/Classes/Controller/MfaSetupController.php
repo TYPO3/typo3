@@ -31,10 +31,10 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 
@@ -249,7 +249,7 @@ class MfaSetupController extends AbstractMfaController
                 FlashMessage::class,
                 sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.message'), $lang->sL($mfaProviderTitle)),
                 $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.title'),
-                AbstractMessage::OK,
+                ContextualFeedbackSeverity::OK,
                 true
             )
         );

@@ -28,10 +28,10 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
@@ -138,7 +138,7 @@ class LinkValidatorController
         $view->setTitle($this->getModuleTitle());
 
         if ($backendUser->workspace !== 0 || !(($this->id && $this->pageRecord !== []) || (!$this->id && $backendUser->isAdmin()))) {
-            $view->addFlashMessage($languageService->getLL('no.access'), $languageService->getLL('no.access.title'), AbstractMessage::ERROR);
+            $view->addFlashMessage($languageService->getLL('no.access'), $languageService->getLL('no.access.title'), ContextualFeedbackSeverity::ERROR);
             return $view->renderResponse('Backend/Empty');
         }
 
@@ -354,7 +354,7 @@ class LinkValidatorController
             FlashMessage::class,
             $languageService->getLL('list.no.broken.links'),
             $languageService->getLL('list.no.broken.links.title'),
-            AbstractMessage::OK,
+            ContextualFeedbackSeverity::OK,
             false
         );
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -46,6 +45,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -142,7 +142,7 @@ class FileListController implements LoggerAwareInterface
             $this->addFlashMessage(
                 sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsMessage'), $this->id),
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsTitle'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } catch (Exception $fileException) {
             $this->folderObject = null;
@@ -159,7 +159,7 @@ class FileListController implements LoggerAwareInterface
                 $this->addFlashMessage(
                     sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:folderNotFoundMessage'), $this->id),
                     $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:folderNotFoundTitle'),
-                    AbstractMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
             }
         } catch (\RuntimeException $e) {
@@ -167,7 +167,7 @@ class FileListController implements LoggerAwareInterface
             $this->addFlashMessage(
                 $e->getMessage() . ' (' . $e->getCode() . ')',
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:folderNotFoundTitle'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
 
@@ -646,9 +646,9 @@ class FileListController implements LoggerAwareInterface
      *
      * @param string $message
      * @param string $title
-     * @param int $severity
+     * @param ContextualFeedbackSeverity $severity
      */
-    protected function addFlashMessage(string $message, string $title = '', int $severity = AbstractMessage::INFO): void
+    protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

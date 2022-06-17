@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
@@ -160,7 +161,7 @@ abstract class AbstractNode
             'Permissions could not be changed to ' . $this->getTargetPermission()
                 . '. This only is a problem if files and folders within this node cannot be written.',
             'Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
     }
 

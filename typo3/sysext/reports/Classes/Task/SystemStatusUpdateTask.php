@@ -20,6 +20,7 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Reports\Status;
@@ -60,7 +61,7 @@ class SystemStatusUpdateTask extends AbstractTask
         $systemStatus = $statusReport->getDetailedSystemStatus();
         $highestSeverity = $statusReport->getHighestSeverity($systemStatus);
         $registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-        if (($highestSeverity > Status::OK) || $this->getNotificationAll()) {
+        if (($highestSeverity > ContextualFeedbackSeverity::OK->value) || $this->getNotificationAll()) {
             $this->sendNotificationEmail($systemStatus);
         }
         return true;
@@ -96,7 +97,7 @@ class SystemStatusUpdateTask extends AbstractTask
         $systemIssues = [];
         foreach ($systemStatus as $statusProvider) {
             foreach ($statusProvider as $status) {
-                if ($this->getNotificationAll() || ($status->getSeverity() > Status::OK)) {
+                if ($this->getNotificationAll() || ($status->getSeverity()->value > ContextualFeedbackSeverity::OK->value)) {
                     $systemIssues[] = (string)$status . CRLF . $status->getMessage() . CRLF . CRLF;
                 }
             }

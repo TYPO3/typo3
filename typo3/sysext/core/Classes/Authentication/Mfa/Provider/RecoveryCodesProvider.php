@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -163,7 +164,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
                     $this->addFlashMessage(
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.noActiveProviders.message'),
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.noActiveProviders.title'),
-                        FlashMessage::WARNING
+                        ContextualFeedbackSeverity::WARNING
                     );
                     if (($normalizedParams = $request->getAttribute('normalizedParams'))) {
                         $returnUrl = $normalizedParams->getHttpReferer();
@@ -300,7 +301,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
                     implode(' ', array_keys($recoveryCodes))
                 ),
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:unlock.recoveryCodes.title'),
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
         }
 
@@ -334,7 +335,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
                     implode(' ', array_keys($recoveryCodes))
                 ),
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:update.recoveryCodes.title'),
-                FlashMessage::OK
+                ContextualFeedbackSeverity::OK
             );
         }
 
@@ -388,9 +389,9 @@ class RecoveryCodesProvider implements MfaProviderInterface
      *
      * @param string $message
      * @param string $title
-     * @param int $severity
+     * @param ContextualFeedbackSeverity $severity
      */
-    protected function addFlashMessage(string $message, string $title = '', int $severity = FlashMessage::INFO): void
+    protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
             GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true)

@@ -22,6 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
@@ -132,7 +133,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::ERROR, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::ERROR, $statusObject->getSeverity());
     }
 
     /**
@@ -166,7 +167,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::NOTICE, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::NOTICE, $statusObject->getSeverity());
     }
 
     /**
@@ -183,7 +184,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::OK, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::OK, $statusObject->getSeverity());
     }
 
     /**
@@ -204,7 +205,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::ERROR, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::ERROR, $statusObject->getSeverity());
     }
 
     /**
@@ -225,7 +226,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         foreach ($status as $statusObject) {
             self::assertInstanceOf(Status::class, $statusObject);
-            self::assertEquals(Status::OK, $statusObject->getSeverity());
+            self::assertEquals(ContextualFeedbackSeverity::OK, $statusObject->getSeverity());
         }
     }
 
@@ -247,7 +248,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::WARNING, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::WARNING, $statusObject->getSeverity());
     }
 
     /**
@@ -268,7 +269,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::WARNING, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::WARNING, $statusObject->getSeverity());
     }
 
     /**
@@ -289,7 +290,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals(Status::WARNING, $statusObject->getSeverity());
+        self::assertEquals(ContextualFeedbackSeverity::WARNING, $statusObject->getSeverity());
     }
 
     /**

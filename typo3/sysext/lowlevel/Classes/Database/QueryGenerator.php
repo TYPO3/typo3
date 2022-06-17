@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -704,7 +705,7 @@ class QueryGenerator
                             FlashMessage::class,
                             $languageService->getLL('query_notsaved'),
                             '',
-                            FlashMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         );
                     }
                 } else {
@@ -1375,7 +1376,7 @@ class QueryGenerator
      */
     private function renderNoResultsFoundMessage()
     {
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, 'No rows selected!', '', FlashMessage::INFO);
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, 'No rows selected!', '', ContextualFeedbackSeverity::INFO);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);

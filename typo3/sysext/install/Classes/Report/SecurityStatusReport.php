@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Report;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ServerResponseCheck;
@@ -58,10 +59,10 @@ class SecurityStatusReport implements StatusProviderInterface
         $enableInstallToolFile = Environment::getPublicPath() . '/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
         $value = $this->getLanguageService()->getLL('status_disabled');
         $message = '';
-        $severity = Status::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         if (EnableFileService::installToolEnableFileExists()) {
             if (EnableFileService::isInstallToolEnableFilePermanent()) {
-                $severity = Status::WARNING;
+                $severity = ContextualFeedbackSeverity::WARNING;
                 $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                 $value = $this->getLanguageService()->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledPermanently');
                 $message = sprintf(
@@ -74,7 +75,7 @@ class SecurityStatusReport implements StatusProviderInterface
                 if (EnableFileService::installToolEnableFileLifetimeExpired()) {
                     EnableFileService::removeInstallToolEnableFile();
                 } else {
-                    $severity = Status::NOTICE;
+                    $severity = ContextualFeedbackSeverity::NOTICE;
                     $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                     $value = $this->getLanguageService()->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledTemporarily');
                     $message = sprintf(

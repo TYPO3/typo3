@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
@@ -192,7 +193,7 @@ class RootNodeTest extends UnitTestCase
         $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
         $node->expects(self::once())->method('isWritable')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -217,12 +218,12 @@ class RootNodeTest extends UnitTestCase
         $node->method('isDirectory')->willReturn(true);
         $node->method('isPermissionCorrect')->willReturn(true);
         $node->method('isWritable')->willReturn(true);
-        $childStatus = new FlashMessage('foo', '', FlashMessage::ERROR);
+        $childStatus = new FlashMessage('foo', '', ContextualFeedbackSeverity::ERROR);
         $node->expects(self::once())->method('getChildrenStatus')->willReturn([$childStatus]);
         $statusArray = $node->getStatus();
         $statusSelf = $statusArray[0];
         $statusOfChild = $statusArray[1];
-        self::assertSame(FlashMessage::OK, $statusSelf->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $statusSelf->getSeverity());
         self::assertSame($childStatus, $statusOfChild);
     }
 

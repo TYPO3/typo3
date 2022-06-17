@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Scheduler;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,10 +31,16 @@ abstract class AbstractAdditionalFieldProvider implements AdditionalFieldProvide
      * Add a flash message
      *
      * @param string $message the flash message content
-     * @param int $severity the flash message severity
+     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity $severity the flash message severity
+     *
+     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    protected function addMessage(string $message, int $severity = FlashMessage::OK): void
+    protected function addMessage(string $message, int|ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
+        if (is_int($severity)) {
+            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
+            $severity = ContextualFeedbackSeverity::transform($severity);
+        }
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity);
         $service = GeneralUtility::makeInstance(FlashMessageService::class);
         $queue = $service->getMessageQueueByIdentifier();

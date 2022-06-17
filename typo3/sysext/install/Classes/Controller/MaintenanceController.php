@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\ClearCacheService;
 use TYPO3\CMS\Install\Service\ClearTableService;
@@ -176,7 +177,7 @@ class MaintenanceController extends AbstractController
                 $messageQueue->enqueue(new FlashMessage(
                     'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/log/typo3_*.log)',
                     'Failed to delete files',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $messageQueue->enqueue(new FlashMessage(
@@ -203,7 +204,7 @@ class MaintenanceController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 'Skipped generating additional class loading information in Composer mode.',
                 'Autoloader not dumped',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
             ClassLoadingInformation::dumpClassLoadingInformation();
@@ -392,7 +393,7 @@ class MaintenanceController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 $e->getMessage(),
                 'Database analysis failed',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
         return new JsonResponse([
@@ -417,7 +418,7 @@ class MaintenanceController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 'Please select any change by activating their respective checkboxes.',
                 'No database changes selected',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $sqlReader = $container->get(SqlReader::class);
@@ -430,7 +431,7 @@ class MaintenanceController extends AbstractController
                 $messageQueue->enqueue(new FlashMessage(
                     'Error: ' . $errorMessage,
                     'Database update failed',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
             $messageQueue->enqueue(new FlashMessage(
@@ -540,19 +541,19 @@ class MaintenanceController extends AbstractController
             $messages->enqueue(new FlashMessage(
                 'No username given.',
                 'Administrator user not created',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif ($password !== $passwordCheck) {
             $messages->enqueue(new FlashMessage(
                 'Passwords do not match.',
                 'Administrator user not created',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif (strlen($password) < 8) {
             $messages->enqueue(new FlashMessage(
                 'Password must be at least eight characters long.',
                 'Administrator user not created',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -566,7 +567,7 @@ class MaintenanceController extends AbstractController
                 $messages->enqueue(new FlashMessage(
                     'A user with username "' . $username . '" exists already.',
                     'Administrator user not created',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $hashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
@@ -690,7 +691,7 @@ class MaintenanceController extends AbstractController
             );
         } else {
             $messageQueue->enqueue(
-                new FlashMessage('Language with ISO code "' . $iso . '" not found or already active.', '', FlashMessage::ERROR)
+                new FlashMessage('Language with ISO code "' . $iso . '" not found or already active.', '', ContextualFeedbackSeverity::ERROR)
             );
         }
         return new JsonResponse([
@@ -738,7 +739,7 @@ class MaintenanceController extends AbstractController
                     . ' other languages depend on it and need to be deactivated before:'
                     . implode(', ', $dependentArray),
                     '',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 )
             );
         } else {
@@ -765,7 +766,7 @@ class MaintenanceController extends AbstractController
                     new FlashMessage(
                         'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has not been deactivated',
                         '',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     )
                 );
             }

@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
@@ -85,7 +85,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
         // If not, fail validation and issue error message
         if (!is_numeric($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']) || (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'] < 0) {
             $result = false;
-            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), ContextualFeedbackSeverity::ERROR);
         }
         return $result;
     }

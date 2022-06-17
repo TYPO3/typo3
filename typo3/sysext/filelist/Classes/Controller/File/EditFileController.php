@@ -31,11 +31,11 @@ use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -131,7 +131,7 @@ class EditFileController
 
         if (!$file->isTextFile()) {
             $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
-            $view->addFlashMessage('Files with that extension are not editable. Allowed extensions are: ' . $extList, '', AbstractMessage::ERROR, true);
+            $view->addFlashMessage('Files with that extension are not editable. Allowed extensions are: ' . $extList, '', ContextualFeedbackSeverity::ERROR, true);
             return $this->responseFactory->createResponse(400)->withHeader('location', $returnUrl);
         }
 

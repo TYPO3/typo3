@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Scheduler\Example;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -81,7 +81,7 @@ class TestTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
         if (empty($submittedData['email'])) {
             $this->addMessage(
                 $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noEmail'),
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             $result = false;
         } else {

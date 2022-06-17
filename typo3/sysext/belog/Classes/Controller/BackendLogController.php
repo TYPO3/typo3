@@ -25,8 +25,8 @@ use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -142,7 +142,7 @@ class BackendLogController extends ActionController
         /** @var LogEntry $logEntry */
         $logEntry = $this->logEntryRepository->findByUid($errorUid);
         if (!$logEntry) {
-            $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog') ?? '', '', AbstractMessage::WARNING);
+            $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog') ?? '', '', ContextualFeedbackSeverity::WARNING);
             return new ForwardResponse('list');
         }
         $numberOfDeletedRows = $this->logEntryRepository->deleteByMessageDetails($logEntry);

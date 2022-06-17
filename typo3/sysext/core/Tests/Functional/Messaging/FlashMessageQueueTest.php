@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Messaging;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FlashMessageQueueTest extends FunctionalTestCase
@@ -30,7 +31,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
+        $flashMessage = new FlashMessage('Foo', 'Bar', ContextualFeedbackSeverity::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
         self::assertEquals([$flashMessage], $flashMessageQueue->getAllMessages());
@@ -45,13 +46,13 @@ class FlashMessageQueueTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $messages = [
-            0 => new FlashMessage('This is a test message', '1', FlashMessage::NOTICE),
-            1 => new FlashMessage('This is another test message', '2', FlashMessage::WARNING),
+            0 => new FlashMessage('This is a test message', '1', ContextualFeedbackSeverity::NOTICE),
+            1 => new FlashMessage('This is another test message', '2', ContextualFeedbackSeverity::WARNING),
         ];
         $flashMessageQueue->enqueue($messages[0]);
         $flashMessageQueue->enqueue($messages[1]);
 
-        $filteredFlashMessages = $flashMessageQueue->getAllMessages(FlashMessage::NOTICE);
+        $filteredFlashMessages = $flashMessageQueue->getAllMessages(ContextualFeedbackSeverity::NOTICE);
 
         self::assertCount(1, $filteredFlashMessages);
 
@@ -67,7 +68,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
+        $flashMessage = new FlashMessage('Foo', 'Bar', ContextualFeedbackSeverity::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
         self::assertEquals([$flashMessage], $flashMessageQueue->getAllMessagesAndFlush());
@@ -80,7 +81,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
+        $flashMessage = new FlashMessage('Foo', 'Bar', ContextualFeedbackSeverity::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
         $flashMessageQueue->getAllMessagesAndFlush();
@@ -96,13 +97,13 @@ class FlashMessageQueueTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $messages = [
-            0 => new FlashMessage('This is a test message', '1', FlashMessage::NOTICE),
-            1 => new FlashMessage('This is another test message', '2', FlashMessage::WARNING),
+            0 => new FlashMessage('This is a test message', '1', ContextualFeedbackSeverity::NOTICE),
+            1 => new FlashMessage('This is another test message', '2', ContextualFeedbackSeverity::WARNING),
         ];
         $flashMessageQueue->addMessage($messages[0]);
         $flashMessageQueue->addMessage($messages[1]);
 
-        $filteredFlashMessages = $flashMessageQueue->getAllMessagesAndFlush(FlashMessage::NOTICE);
+        $filteredFlashMessages = $flashMessageQueue->getAllMessagesAndFlush(ContextualFeedbackSeverity::NOTICE);
 
         self::assertCount(1, $filteredFlashMessages);
 
@@ -110,7 +111,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
         $flashMessage = current($filteredFlashMessages);
         self::assertEquals($messages[0], $flashMessage);
 
-        self::assertEquals([], $flashMessageQueue->getAllMessages(FlashMessage::NOTICE));
+        self::assertEquals([], $flashMessageQueue->getAllMessages(ContextualFeedbackSeverity::NOTICE));
         self::assertEquals([$messages[1]], array_values($flashMessageQueue->getAllMessages()));
     }
 
@@ -122,8 +123,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
-        $flashMessage1 = new FlashMessage('Transient', 'Title', FlashMessage::OK, false);
-        $flashMessage2 = new FlashMessage('Session', 'Title', FlashMessage::OK, true);
+        $flashMessage1 = new FlashMessage('Transient', 'Title', ContextualFeedbackSeverity::OK, false);
+        $flashMessage2 = new FlashMessage('Session', 'Title', ContextualFeedbackSeverity::OK, true);
         $flashMessageQueue->addMessage($flashMessage1);
         $flashMessageQueue->addMessage($flashMessage2);
 
@@ -137,7 +138,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
+        $flashMessage = new FlashMessage('Foo', 'Bar', ContextualFeedbackSeverity::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
         $flashMessageQueue->clear();
@@ -152,8 +153,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
-        $flashMessage1 = new FlashMessage('Transient', 'Title', FlashMessage::OK, false);
-        $flashMessage2 = new FlashMessage('Session', 'Title', FlashMessage::OK, true);
+        $flashMessage1 = new FlashMessage('Transient', 'Title', ContextualFeedbackSeverity::OK, false);
+        $flashMessage2 = new FlashMessage('Session', 'Title', ContextualFeedbackSeverity::OK, true);
         $flashMessageQueue->addMessage($flashMessage1);
         $flashMessageQueue->addMessage($flashMessage2);
 

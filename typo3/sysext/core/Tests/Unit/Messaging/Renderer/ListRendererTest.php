@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\ListRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,7 +38,7 @@ class ListRendererTest extends UnitTestCase
             FlashMessage::class,
             'messageBody',
             'messageTitle',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
         self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
     }
@@ -52,7 +53,7 @@ class ListRendererTest extends UnitTestCase
             FlashMessage::class,
             'messageBody',
             '',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
         self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
     }

@@ -19,10 +19,10 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -83,7 +83,7 @@ class ActionController extends AbstractController
                 }
             }
         } catch (ExtensionManagerException|PackageStatesFileNotWritableException $e) {
-            $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
+            $this->addFlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::ERROR);
         }
         return $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
@@ -129,7 +129,7 @@ class ActionController extends AbstractController
                 ) ?? ''
             );
         } catch (ExtensionManagerException|Exception $e) {
-            $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
+            $this->addFlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::ERROR);
         }
 
         return $this->htmlResponse('');

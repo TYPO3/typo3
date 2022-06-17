@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -163,19 +163,19 @@ class ExportController
                 if ($presetUid > 0) {
                     // Update existing
                     $this->presetRepository->updatePreset($presetUid, $inputData);
-                    $view->addFlashMessage('Preset #' . $presetUid . ' saved!', 'Presets', AbstractMessage::INFO);
+                    $view->addFlashMessage('Preset #' . $presetUid . ' saved!', 'Presets', ContextualFeedbackSeverity::INFO);
                 } else {
                     // Insert new
                     $this->presetRepository->createPreset($inputData);
-                    $view->addFlashMessage('New preset "' . $inputData['preset']['title'] . '" is created', 'Presets', AbstractMessage::INFO);
+                    $view->addFlashMessage('New preset "' . $inputData['preset']['title'] . '" is created', 'Presets', ContextualFeedbackSeverity::INFO);
                 }
             }
             if (isset($presetAction['delete'])) {
                 if ($presetUid > 0) {
                     $this->presetRepository->deletePreset($presetUid);
-                    $view->addFlashMessage('Preset #' . $presetUid . ' deleted!', 'Presets', AbstractMessage::INFO);
+                    $view->addFlashMessage('Preset #' . $presetUid . ' deleted!', 'Presets', ContextualFeedbackSeverity::INFO);
                 } else {
-                    $view->addFlashMessage('ERROR: No preset selected for deletion.', 'Presets', AbstractMessage::ERROR);
+                    $view->addFlashMessage('ERROR: No preset selected for deletion.', 'Presets', ContextualFeedbackSeverity::ERROR);
                 }
             }
             if (isset($presetAction['load']) || isset($presetAction['merge'])) {
@@ -190,17 +190,17 @@ class ExportController
                         if (is_array($presetData['list'] ?? null)) {
                             $inputData['list'] = array_merge((array)$inputData['list'], $presetData['list']);
                         }
-                        $view->addFlashMessage('Preset #' . $presetUid . ' merged!', 'Presets', AbstractMessage::INFO);
+                        $view->addFlashMessage('Preset #' . $presetUid . ' merged!', 'Presets', ContextualFeedbackSeverity::INFO);
                     } else {
                         $inputData = $presetData;
-                        $view->addFlashMessage('Preset #' . $presetUid . ' loaded!', 'Presets', AbstractMessage::INFO);
+                        $view->addFlashMessage('Preset #' . $presetUid . ' loaded!', 'Presets', ContextualFeedbackSeverity::INFO);
                     }
                 } else {
-                    $view->addFlashMessage('ERROR: No preset selected for loading.', 'Presets', AbstractMessage::ERROR);
+                    $view->addFlashMessage('ERROR: No preset selected for loading.', 'Presets', ContextualFeedbackSeverity::ERROR);
                 }
             }
         } catch (PresetNotFoundException|InsufficientUserPermissionsException|MalformedPresetException $e) {
-            $view->addFlashMessage($e->getMessage(), 'Presets', AbstractMessage::ERROR);
+            $view->addFlashMessage($e->getMessage(), 'Presets', ContextualFeedbackSeverity::ERROR);
         }
         return $inputData;
     }
@@ -264,7 +264,7 @@ class ExportController
             $view->addFlashMessage(
                 sprintf($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_badPathS'), $saveFolder->getPublicUrl()),
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_problemsSavingFile'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
     }

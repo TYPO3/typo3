@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\Report\Status\Typo3Status;
-use TYPO3\CMS\Reports\Status;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -51,7 +51,7 @@ class Typo3StatusTest extends UnitTestCase
         $fixture = new Typo3Status();
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
-        self::assertSame(Status::OK, $statusObject->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $statusObject->getSeverity());
     }
 
     /**
@@ -67,6 +67,6 @@ class Typo3StatusTest extends UnitTestCase
         $fixture = new Typo3Status();
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
-        self::assertSame(Status::NOTICE, $statusObject->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusObject->getSeverity());
     }
 }

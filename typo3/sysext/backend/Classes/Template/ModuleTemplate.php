@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ResponsableViewInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -235,9 +235,15 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     /**
      * Creates a message object and adds it to the FlashMessageQueue.
      * These messages are automatically rendered when the view is rendered.
+     *
+     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    public function addFlashMessage(string $messageBody, string $messageTitle = '', int $severity = AbstractMessage::OK, bool $storeInSession = true): self
+    public function addFlashMessage(string $messageBody, string $messageTitle = '', int|ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, bool $storeInSession = true): self
     {
+        if (is_int($severity)) {
+            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
+            $severity = ContextualFeedbackSeverity::transform($severity);
+        }
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageBody, $messageTitle, $severity, $storeInSession);
         $this->flashMessageQueue->enqueue($flashMessage);
         return $this;

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
@@ -106,7 +107,7 @@ class FileNode extends AbstractNode implements NodeInterface
             $result[] = new FlashMessage(
                 'By using "Try to fix errors" we can try to create it',
                 'File ' . $this->getRelativePathBelowSiteRoot() . ' does not exist',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
         } else {
             $result = $this->getSelfStatus();
@@ -138,7 +139,7 @@ class FileNode extends AbstractNode implements NodeInterface
         if (!$this->exists()) {
             $resultCreateFile = $this->createFile();
             $result[] = $resultCreateFile;
-            if ($resultCreateFile->getSeverity() === FlashMessage::OK
+            if ($resultCreateFile->getSeverity() === ContextualFeedbackSeverity::OK
                 && $this->targetContent !== null
             ) {
                 $result[] = $this->setContent();
@@ -162,7 +163,7 @@ class FileNode extends AbstractNode implements NodeInterface
             $result[] = new FlashMessage(
                 $messageBody,
                 'Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a file',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } elseif (!$this->isPermissionCorrect()) {
             $result[] = $this->fixPermission();
@@ -195,7 +196,7 @@ class FileNode extends AbstractNode implements NodeInterface
             'The target file could not be created. There is probably a'
                 . ' group or owner permission problem on the parent directory.',
             'File ' . $this->getRelativePathBelowSiteRoot() . ' not created!',
-            FlashMessage::ERROR
+            ContextualFeedbackSeverity::ERROR
         );
     }
 
@@ -212,20 +213,20 @@ class FileNode extends AbstractNode implements NodeInterface
                 'Path ' . $this->getAbsolutePath() . ' should be a file,'
                     . ' but is of type ' . filetype($this->getAbsolutePath()),
                 $this->getRelativePathBelowSiteRoot() . ' is not a file',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } elseif (!$this->isWritable()) {
             $result[] = new FlashMessage(
                 'File ' . $this->getRelativePathBelowSiteRoot() . ' exists, but is not writable.',
                 'File ' . $this->getRelativePathBelowSiteRoot() . ' is not writable',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             );
         } elseif (!$this->isPermissionCorrect()) {
             $result[] = new FlashMessage(
                 'Default configured permissions are ' . $this->getTargetPermission()
                     . ' but file permissions are ' . $this->getCurrentPermission(),
                 'File ' . $this->getRelativePathBelowSiteRoot() . ' permissions mismatch',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             );
         }
         if ($this->isFile() && !$this->isContentCorrect()) {
@@ -233,7 +234,7 @@ class FileNode extends AbstractNode implements NodeInterface
                 'File content is not identical to default content. This file may have been changed manually.'
                     . ' The Install Tool will not overwrite the current version!',
                 'File ' . $this->getRelativePathBelowSiteRoot() . ' content differs',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             );
         } else {
             $result[] = new FlashMessage(
@@ -303,7 +304,7 @@ class FileNode extends AbstractNode implements NodeInterface
         return new FlashMessage(
             'Setting content of the file failed for unknown reasons.',
             'Setting content to ' . $this->getRelativePathBelowSiteRoot() . ' failed',
-            FlashMessage::ERROR
+            ContextualFeedbackSeverity::ERROR
         );
     }
 

@@ -52,6 +52,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\SysLog\Action\File as SystemLogFileAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -304,10 +305,10 @@ class ExtendedFileUtility extends BasicFileUtility
      *
      * @param string $localizationKey
      * @param array $replaceMarkers
-     * @param int $severity
+     * @param ContextualFeedbackSeverity $severity
      * @throws \InvalidArgumentException
      */
-    protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = FlashMessage::ERROR)
+    protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = ContextualFeedbackSeverity::ERROR)
     {
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
@@ -351,7 +352,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $cmds['data']
                 ),
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileNotFound'),
-                FlashMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 true
             );
             $this->addFlashMessage($flashMessage);
@@ -407,7 +408,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         FlashMessage::class,
                         sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileHasBrokenReferences'), count($brokenReferences)),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileHasBrokenReferences'),
-                        FlashMessage::INFO,
+                        ContextualFeedbackSeverity::INFO,
                         true
                     );
                     $this->addFlashMessage($flashMessage);
@@ -418,7 +419,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         FlashMessage::class,
                         sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . ' ' . implode(', ', $shortcutContent),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
-                        FlashMessage::WARNING,
+                        ContextualFeedbackSeverity::WARNING,
                         true
                     );
                     $this->addFlashMessage($flashMessage);
@@ -435,7 +436,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         FlashMessage::class,
                         sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileDeleted'), $fileObject->getName()),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileDeleted'),
-                        FlashMessage::OK,
+                        ContextualFeedbackSeverity::OK,
                         true
                     );
                     $this->addFlashMessage($flashMessage);
@@ -463,7 +464,7 @@ class ExtendedFileUtility extends BasicFileUtility
                             FlashMessage::class,
                             sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderDeleted'),
-                            FlashMessage::OK,
+                            ContextualFeedbackSeverity::OK,
                             true
                         );
                         $this->addFlashMessage($flashMessage);
@@ -535,7 +536,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences'),
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences'),
-                FlashMessage::WARNING,
+                ContextualFeedbackSeverity::WARNING,
                 true
             );
             $this->addFlashMessage($flashMessage);
@@ -650,7 +651,7 @@ class ExtendedFileUtility extends BasicFileUtility
             }
             if ($resultObject) {
                 $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::MESSAGE, 'File "{identifier}" copied to "{destination}"', ['identifier' => $sourceFileObject->getIdentifier(), 'destination' => $resultObject->getIdentifier()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.FileCopiedTo', [$sourceFileObject->getIdentifier(), $resultObject->getIdentifier()], FlashMessage::OK);
+                $this->addMessageToFlashMessageQueue('FileUtility.FileCopiedTo', [$sourceFileObject->getIdentifier(), $resultObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             }
         } else {
             // Else means this is a Folder
@@ -681,7 +682,7 @@ class ExtendedFileUtility extends BasicFileUtility
             }
             if ($resultObject) {
                 $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::MESSAGE, 'Directory "{identifier}" copied to "{destination}"', ['identifier' => $sourceFolderObject->getIdentifier(), 'destination' => $targetFolderObject->getIdentifier()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCopiedTo', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()], FlashMessage::OK);
+                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCopiedTo', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             }
         }
         return $resultObject;
@@ -723,7 +724,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $resultObject = $sourceFileObject->moveTo($targetFolderObject, null, DuplicationBehavior::CANCEL);
                 }
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::MESSAGE, 'File "{identifier}" moved to "{destination}"', ['identifier' => $sourceFileObject->getIdentifier(), 'destination' => $resultObject->getIdentifier()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.FileMovedTo', [$sourceFileObject->getIdentifier(), $resultObject->getIdentifier()], FlashMessage::OK);
+                $this->addMessageToFlashMessageQueue('FileUtility.FileMovedTo', [$sourceFileObject->getIdentifier(), $resultObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to move files');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToMoveFiles');
@@ -755,7 +756,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $resultObject = $sourceFolderObject->moveTo($targetFolderObject, null, DuplicationBehavior::RENAME);
                 }
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::MESSAGE, 'Directory "{identifier}" moved to "{destination}"', ['identifier' => $sourceFolderObject->getIdentifier(), 'destination' => $targetFolderObject->getIdentifier()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryMovedTo', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()], FlashMessage::OK);
+                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryMovedTo', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to move directories');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToMoveDirectories');
@@ -805,14 +806,14 @@ class ExtendedFileUtility extends BasicFileUtility
                 $resultObject = $sourceFileObject->rename($targetFile, $this->existingFilesConflictMode);
                 if ($resultObject->getName() !== $targetFile) {
                     $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'File renamed from "{identifier}" to "{destination}". Filename had to be sanitized', ['identifier' => $sourceFile, 'destination' => $targetFile]);
-                    $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$targetFile, $resultObject->getName()], FlashMessage::WARNING);
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$targetFile, $resultObject->getName()], ContextualFeedbackSeverity::WARNING);
                 } else {
                     $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::MESSAGE, 'File renamed from "{identifier}" to "{destination}"', ['identifier' => $sourceFile, 'destination' => $targetFile]);
                 }
                 if ($sourceFile === $resultObject->getName()) {
-                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedSameName', [$sourceFile], FlashMessage::INFO);
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedSameName', [$sourceFile], ContextualFeedbackSeverity::INFO);
                 } else {
-                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $resultObject->getName()], FlashMessage::OK);
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $resultObject->getName()], ContextualFeedbackSeverity::OK);
                 }
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to rename files');
@@ -838,12 +839,12 @@ class ExtendedFileUtility extends BasicFileUtility
                 $newFolderName = $resultObject->getName();
                 $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::MESSAGE, 'Directory renamed from "{identifier}" to "{destination}"', ['identifier' => $sourceFile, 'destination' => $targetFile]);
                 if ($sourceFile === $newFolderName) {
-                    $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedSameName', [$sourceFile], FlashMessage::INFO);
+                    $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedSameName', [$sourceFile], ContextualFeedbackSeverity::INFO);
                 } else {
                     if ($newFolderName === $targetFile) {
-                        $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromTo', [$sourceFile, $newFolderName], FlashMessage::OK);
+                        $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromTo', [$sourceFile, $newFolderName], ContextualFeedbackSeverity::OK);
                     } else {
-                        $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromToCharReplaced', [$sourceFile, $newFolderName], FlashMessage::WARNING);
+                        $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromToCharReplaced', [$sourceFile, $newFolderName], ContextualFeedbackSeverity::WARNING);
                     }
                 }
             } catch (InsufficientUserPermissionsException $e) {
@@ -886,7 +887,7 @@ class ExtendedFileUtility extends BasicFileUtility
         try {
             $resultObject = $targetFolderObject->createFolder($folderName);
             $this->writeLog(SystemLogFileAction::NEW_FOLDER, SystemLogErrorClassification::MESSAGE, 'Directory "{identifier}" created in "{destination}"', ['identifier' => $folderName, 'destination' => $targetFolderObject->getIdentifier()]);
-            $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCreatedIn', [$folderName, $targetFolderObject->getIdentifier()], FlashMessage::OK);
+            $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCreatedIn', [$folderName, $targetFolderObject->getIdentifier()], ContextualFeedbackSeverity::OK);
         } catch (InvalidFileNameException $e) {
             $this->writeLog(SystemLogFileAction::NEW_FOLDER, SystemLogErrorClassification::USER_ERROR, 'Invalid folder name "{identifier}"', ['identifier' => $folderName]);
             $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToCreateDirectories', [$folderName]);
@@ -929,9 +930,9 @@ class ExtendedFileUtility extends BasicFileUtility
             $resultObject = $targetFolderObject->createFile($fileName);
             $this->writeLog(SystemLogFileAction::NEW_FILE, SystemLogErrorClassification::MESSAGE, 'File "{identifier}" created', ['identifier' => $fileName]);
             if ($resultObject->getName() !== $fileName) {
-                $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$fileName, $resultObject->getName()], FlashMessage::WARNING);
+                $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$fileName, $resultObject->getName()], ContextualFeedbackSeverity::WARNING);
             }
-            $this->addMessageToFlashMessageQueue('FileUtility.FileCreated', [$resultObject->getName()], FlashMessage::OK);
+            $this->addMessageToFlashMessageQueue('FileUtility.FileCreated', [$resultObject->getName()], ContextualFeedbackSeverity::OK);
         } catch (IllegalFileExtensionException $e) {
             $this->writeLog(SystemLogFileAction::NEW_FILE, SystemLogErrorClassification::USER_ERROR, 'Extension of file "{identifier}" was not allowed', ['identifier' => $fileName]);
             $this->addMessageToFlashMessageQueue('FileUtility.ExtensionOfFileWasNotAllowed', [$fileName]);
@@ -983,7 +984,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $fileObject->setContents($content);
             clearstatcache();
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::MESSAGE, 'File saved to "{identifier}", bytes: {size}', ['identifier' => $fileObject->getIdentifier(), 'size' => $fileObject->getSize()]);
-            $this->addMessageToFlashMessageQueue('FileUtility.FileSavedToBytesMd5', [$fileObject->getIdentifier(), $fileObject->getSize(), md5($content)], FlashMessage::OK);
+            $this->addMessageToFlashMessageQueue('FileUtility.FileSavedToBytesMd5', [$fileObject->getIdentifier(), $fileObject->getSize(), md5($content)], ContextualFeedbackSeverity::OK);
             return true;
         } catch (InsufficientUserPermissionsException $e) {
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to edit files');
@@ -1068,10 +1069,10 @@ class ExtendedFileUtility extends BasicFileUtility
                 $resultObjects[] = $fileObject;
                 $this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
                 if ($fileObject->getName() !== $fileInfo['name']) {
-                    $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$fileInfo['name'], $fileObject->getName()], FlashMessage::WARNING);
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$fileInfo['name'], $fileObject->getName()], ContextualFeedbackSeverity::WARNING);
                 }
                 $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::MESSAGE, 'Uploading file "{identifier}" to "{destination}"', ['identifier' => $fileInfo['name'], 'destination' => $targetFolderObject->getIdentifier()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.UploadingFileTo', [$fileInfo['name'], $targetFolderObject->getIdentifier()], FlashMessage::OK);
+                $this->addMessageToFlashMessageQueue('FileUtility.UploadingFileTo', [$fileInfo['name'], $targetFolderObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             } catch (InsufficientFileWritePermissionsException $e) {
                 $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to override {identifier}', ['identifier' => $fileInfo['name']]);
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToOverride', [$fileInfo['name']]);
@@ -1146,7 +1147,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
 
             $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::MESSAGE, 'Replacing file "{identifier}" to "{destination}"', ['identifier' => $fileInfo['name'], 'destination' => $fileObjectToReplace->getIdentifier()]);
-            $this->addMessageToFlashMessageQueue('FileUtility.ReplacingFileTo', [$fileInfo['name'], $fileObjectToReplace->getIdentifier()], FlashMessage::OK);
+            $this->addMessageToFlashMessageQueue('FileUtility.ReplacingFileTo', [$fileInfo['name'], $fileObjectToReplace->getIdentifier()], ContextualFeedbackSeverity::OK);
         } catch (InsufficientFileWritePermissionsException $e) {
             $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to override "{destination}"', ['destination' => $fileInfo['name']]);
             $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToOverride', [$fileInfo['name']]);

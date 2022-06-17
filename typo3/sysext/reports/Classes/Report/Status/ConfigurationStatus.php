@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Reports\Status;
@@ -70,7 +71,7 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
         $count = $queryBuilder
@@ -85,7 +86,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->getLL('status_empty');
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $url = (string)$uriBuilder->buildUriFromRoute('system_dbint', ['id' => 0, 'SET' => ['function' => 'refindex']]);
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
@@ -138,7 +139,7 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         $failedConnections = [];
         $defaultMemcachedPort = ini_get('memcache.default_port');
         $defaultMemcachedPort = MathUtility::canBeInterpretedAsInteger($defaultMemcachedPort) ? (int)$defaultMemcachedPort : 11211;
@@ -171,7 +172,7 @@ class ConfigurationStatus implements StatusProviderInterface
         }
         if (!empty($failedConnections)) {
             $value = $this->getLanguageService()->getLL('status_connectionFailed');
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br /><ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
@@ -186,10 +187,10 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->getLL('status_CreatedFilePermissions.writable');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
@@ -204,10 +205,10 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions.writable');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
@@ -250,7 +251,7 @@ class ConfigurationStatus implements StatusProviderInterface
             ->executeQuery()
             ->fetchOne();
 
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         $statusValue = $this->getLanguageService()->getLL('status_ok');
         // also allow utf8mb4
         if (!str_starts_with($defaultDatabaseCharset, 'utf8')) {
@@ -271,11 +272,11 @@ class ConfigurationStatus implements StatusProviderInterface
             if ($nonUtf8TableCollationsFound->rowCount() > 0) {
                 $message = sprintf($this->getLanguageService()
                     ->getLL('status_MysqlDatabaseCharacterSet_Unsupported'), $defaultDatabaseCharset);
-                $severity = ReportStatus::ERROR;
+                $severity = ContextualFeedbackSeverity::ERROR;
                 $statusValue = $this->getLanguageService()->getLL('status_wrongValue');
             } else {
                 $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Info');
-                $severity = ReportStatus::INFO;
+                $severity = ContextualFeedbackSeverity::INFO;
                 $statusValue = $this->getLanguageService()->getLL('status_info');
             }
         } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['tableoptions'])) {
@@ -305,7 +306,7 @@ class ConfigurationStatus implements StatusProviderInterface
 
                 if ($wrongCollationTablesFound->rowCount() > 0) {
                     $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
-                    $severity = ReportStatus::ERROR;
+                    $severity = ContextualFeedbackSeverity::ERROR;
                     $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
                 } else {
                     if (isset($tableOptions['collate'])) {
@@ -328,7 +329,7 @@ class ConfigurationStatus implements StatusProviderInterface
 
                     if ($wrongCollationColumnsFound->rowCount() > 0) {
                         $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
-                        $severity = ReportStatus::ERROR;
+                        $severity = ContextualFeedbackSeverity::ERROR;
                         $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
                     }
                 }

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
@@ -84,13 +85,13 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $normalizedParams = $request->getAttribute('normalizedParams');
 
         if (!$normalizedParams->isHttps()) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_encryptedConnectionStatus_insecure');
         }
 
@@ -108,12 +109,12 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         if ($normalizedParams->isHttps()) {
             $value = $this->getLanguageService()->getLL('status_ok');
             $message = '';
-            $severity = ReportStatus::OK;
+            $severity = ContextualFeedbackSeverity::OK;
 
             if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) {
                 $value = $this->getLanguageService()->getLL('status_insecure');
                 $message = $this->getLanguageService()->getLL('status_lockSslStatus_insecure');
-                $severity = ReportStatus::WARNING;
+                $severity = ContextualFeedbackSeverity::WARNING;
             }
 
             return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_lockSslStatus'), $value, $message, $severity);
@@ -131,11 +132,11 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === VerifyHostHeader::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_trustedhosts');
         }
 
@@ -151,7 +152,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()
@@ -178,7 +179,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                     // We're checking since the (very) old installer created instances like this in dark old times.
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $value = $this->getLanguageService()->getLL('status_insecure');
-                    $severity = ReportStatus::ERROR;
+                    $severity = ContextualFeedbackSeverity::ERROR;
                     $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
                         'record_edit',
                         [
@@ -209,12 +210,12 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $fileAccessCheck = GeneralUtility::makeInstance(FileNameValidator::class);
         if ($fileAccessCheck->missingImportantPatterns()) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
             $message = sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
                 '<br /><pre>' . htmlspecialchars($fileAccessCheck::DEFAULT_FILE_DENY_PATTERN) . '</pre><br />'
@@ -234,13 +235,13 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $fileNameAccess = GeneralUtility::makeInstance(FileNameValidator::class);
         if ($fileNameAccess->customFileDenyPatternConfigured()
             && $fileNameAccess->isValid('.htaccess')) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_htaccess');
         }
 
@@ -251,16 +252,16 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         if (
             str_contains($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug') ||
             (Environment::getContext()->isProduction() && (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1)
         ) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::ERROR;
+            $severity = ContextualFeedbackSeverity::ERROR;
             $message = $this->getLanguageService()->getLL('status_exceptionHandler_errorMessage');
         } elseif ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1) {
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->getLL('status_exceptionHandler_warningMessage');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exceptionHandler'), $value, $message, $severity);
@@ -270,7 +271,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = ReportStatus::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
         $exportedFiles = $queryBuilder
@@ -302,7 +303,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             }
 
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->getLL('status_exportedFiles_warningMessage');
             $message .= '<ul>' . implode(PHP_EOL, $files) . '</ul>';
             $message .= $this->getLanguageService()->getLL('status_exportedFiles_warningRecommendation');

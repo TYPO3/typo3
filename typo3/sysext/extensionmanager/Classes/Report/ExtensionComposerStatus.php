@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Report;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
@@ -101,7 +102,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
                 $this->getLanguageService()->getLL($labelPrefix . $deficit),
                 $this->getLanguageService()->getLL($extensionsToReport ? 'status_checkFailed' : 'status_none'),
                 $message,
-                $extensionsToReport ? ReportStatus::WARNING : ReportStatus::OK
+                $extensionsToReport ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::OK
             );
         }
 

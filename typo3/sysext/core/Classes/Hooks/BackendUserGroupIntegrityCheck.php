@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -47,7 +48,7 @@ class BackendUserGroupIntegrityCheck
                         FlashMessage::class,
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.header'),
-                        FlashMessage::WARNING,
+                        ContextualFeedbackSeverity::WARNING,
                         true
                     );
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

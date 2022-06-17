@@ -25,10 +25,10 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
@@ -178,7 +178,7 @@ class ListController extends AbstractController
                     $remote->getAvailablePackages();
                 }
             } catch (ExtensionManagerException $e) {
-                $this->addFlashMessage($e->getMessage(), $e->getCode(), AbstractMessage::ERROR);
+                $this->addFlashMessage($e->getMessage(), $e->getCode(), ContextualFeedbackSeverity::ERROR);
             }
             $officialDistributions = $this->extensionRepository->findAllOfficialDistributions($showUnsuitableDistributions);
             $communityDistributions = $this->extensionRepository->findAllCommunityDistributions($showUnsuitableDistributions);
@@ -252,7 +252,7 @@ class ListController extends AbstractController
                     'composerMode.title',
                     'extensionmanager'
                 ) ?? '',
-                AbstractMessage::INFO
+                ContextualFeedbackSeverity::INFO
             );
         }
     }

@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
@@ -70,7 +71,7 @@ class BackendUtilityHook
                 $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
                 $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
 
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', FlashMessage::INFO, true);
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', ContextualFeedbackSeverity::INFO, true);
 
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();

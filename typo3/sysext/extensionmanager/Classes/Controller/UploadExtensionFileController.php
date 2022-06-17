@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Exception\InvalidFileException;
@@ -120,7 +120,7 @@ class UploadExtensionFileController extends AbstractController
                 $this->addFlashMessage(
                     $this->translate('extensionList.uploadFlashMessage.message', [$extensionKey]),
                     $this->translate('extensionList.uploadFlashMessage.title'),
-                    FlashMessage::OK
+                    ContextualFeedbackSeverity::OK
                 );
             } else {
                 // @todo This cannot work without reloading the package information
@@ -128,7 +128,7 @@ class UploadExtensionFileController extends AbstractController
                     $this->addFlashMessage(
                         $this->translate('extensionList.installedFlashMessage.message', [$extensionKey]),
                         '',
-                        FlashMessage::OK
+                        ContextualFeedbackSeverity::OK
                     );
                 } else {
                     return $this->redirect(
@@ -143,12 +143,12 @@ class UploadExtensionFileController extends AbstractController
                 }
             }
         } catch (InvalidFileException $exception) {
-            $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
+            $this->addFlashMessage($exception->getMessage(), '', ContextualFeedbackSeverity::ERROR);
         } catch (\Exception $exception) {
             if ($fileName !== null) {
                 $this->removeExtensionAndRestoreFromBackup($fileName);
             }
-            $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
+            $this->addFlashMessage($exception->getMessage(), '', ContextualFeedbackSeverity::ERROR);
         }
         return $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,

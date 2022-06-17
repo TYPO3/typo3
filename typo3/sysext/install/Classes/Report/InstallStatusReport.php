@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
@@ -71,7 +72,7 @@ class InstallStatusReport implements StatusProviderInterface
         $languageService = $this->getLanguageService();
         $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_writable');
         $message = '';
-        $severity = Status::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         // Requirement level
         // -1 = not required, but if it exists may be writable or not
         //  0 = not required, if it exists the dir should be writable
@@ -117,16 +118,16 @@ class InstallStatusReport implements StatusProviderInterface
                     // directory is required
                     $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_missingDirectory');
                     $message .= sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryDoesNotExistCouldNotCreate'), $relPath) . '<br />';
-                    $severity = Status::ERROR;
+                    $severity = ContextualFeedbackSeverity::ERROR;
                 } else {
                     $message .= sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryDoesNotExist'), $relPath);
                     if ($requirementLevel == 0) {
                         $message .= ' ' . $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldAlsoBeWritable');
                     }
                     $message .= '<br />';
-                    if ($severity < Status::WARNING) {
+                    if ($severity->value < ContextualFeedbackSeverity::WARNING->value) {
                         $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_nonExistingDirectory');
-                        $severity = Status::WARNING;
+                        $severity = ContextualFeedbackSeverity::WARNING;
                     }
                 }
             } else {
@@ -137,9 +138,9 @@ class InstallStatusReport implements StatusProviderInterface
                                 $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'),
                                 $path
                             ) . '<br />';
-                            if ($severity < Status::WARNING) {
+                            if ($severity->value < ContextualFeedbackSeverity::WARNING->value) {
                                 $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
-                                $severity = Status::WARNING;
+                                $severity = ContextualFeedbackSeverity::WARNING;
                             }
                             break;
                         case 2:
@@ -148,7 +149,7 @@ class InstallStatusReport implements StatusProviderInterface
                                 $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'),
                                 $path
                             ) . '<br />';
-                            $severity = Status::ERROR;
+                            $severity = ContextualFeedbackSeverity::ERROR;
                             break;
                         default:
                     }
@@ -189,14 +190,14 @@ class InstallStatusReport implements StatusProviderInterface
         $languageService = $this->getLanguageService();
         $value = $languageService->getLL('status_updateComplete');
         $message = '';
-        $severity = Status::OK;
+        $severity = ContextualFeedbackSeverity::OK;
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // check if there are update wizards left to perform
         $incompleteWizards = $this->getIncompleteWizards();
         if (count($incompleteWizards)) {
             // At least one incomplete wizard was found
             $value = $languageService->getLL('status_updateIncomplete');
-            $severity = Status::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
             $url = (string)$uriBuilder->buildUriFromRoute('tools_toolsupgrade');
             $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
         }
@@ -217,7 +218,7 @@ class InstallStatusReport implements StatusProviderInterface
 
         // No updates for development versions
         if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
-            return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), Status::NOTICE);
+            return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), ContextualFeedbackSeverity::NOTICE);
         }
 
         try {
@@ -230,17 +231,17 @@ class InstallStatusReport implements StatusProviderInterface
                 $languageService->sL(
                     'LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remoteFetchException'
                 ),
-                Status::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             );
         }
 
         if (!$versionMaintenanceWindow->isSupportedByCommunity() && !$versionMaintenanceWindow->isSupportedByElts()) {
             // Version is not maintained
             $message = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_versionOutdated');
-            $status = Status::ERROR;
+            $status = ContextualFeedbackSeverity::ERROR;
         } else {
             $message = '';
-            $status = Status::OK;
+            $status = ContextualFeedbackSeverity::OK;
 
             // There is an update available
             $availableReleases = [];
@@ -267,20 +268,20 @@ class InstallStatusReport implements StatusProviderInterface
                         $typoVersion->getVersion(),
                         '<a href="https://typo3.com/elts" target="_blank" rel="noopener">https://typo3.com/elts</a>'
                     );
-                    $status = Status::WARNING;
+                    $status = ContextualFeedbackSeverity::WARNING;
                 }
             }
 
             if ($availableReleases !== []) {
                 $messages = [];
-                $status = Status::WARNING;
+                $status = ContextualFeedbackSeverity::WARNING;
                 foreach ($availableReleases as $availableRelease) {
                     $versionString = $availableRelease->getVersion();
                     if ($availableRelease->isElts()) {
                         $versionString .= ' ELTS';
                     }
                     if ($coreVersionService->isUpdateSecurityRelevant($availableRelease)) {
-                        $status = Status::ERROR;
+                        $status = ContextualFeedbackSeverity::ERROR;
                         $updateMessage = sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersionSecurityRelevant'), $versionString);
                     } else {
                         $updateMessage = sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersion'), $versionString);

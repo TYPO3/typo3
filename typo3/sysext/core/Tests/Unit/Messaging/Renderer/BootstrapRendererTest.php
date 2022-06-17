@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,7 +38,7 @@ class BootstrapRendererTest extends UnitTestCase
             FlashMessage::class,
             'messageBody',
             'messageTitle',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
         $output = $rendererClass->render([$flashMessage]);
         self::assertStringContainsString('<div class="typo3-messages">', $output);
@@ -57,7 +58,7 @@ class BootstrapRendererTest extends UnitTestCase
             FlashMessage::class,
             'messageBody',
             '',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
         $output = $rendererClass->render([$flashMessage]);
         self::assertStringContainsString('<div class="typo3-messages">', $output);

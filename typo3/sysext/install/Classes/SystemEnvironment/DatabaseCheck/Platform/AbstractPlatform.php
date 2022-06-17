@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
@@ -79,7 +80,7 @@ abstract class AbstractPlatform implements PlatformCheckInterface
                 . ' and consist solely of basic latin letters (a-z), digits (0-9), dollar signs ($)'
                 . ' and underscores (_).',
                 'Database name not valid',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             )
         );
     }

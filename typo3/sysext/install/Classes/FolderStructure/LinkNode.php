@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
@@ -75,7 +76,7 @@ class LinkNode extends AbstractNode implements NodeInterface
                 new FlashMessage(
                     'This node is not handled for Windows OS and should be checked manually.',
                     $this->getRelativePathBelowSiteRoot() . ' should be a link, but this support is incomplete for Windows.',
-                    FlashMessage::INFO
+                    ContextualFeedbackSeverity::INFO
                 ),
             ];
         }
@@ -85,7 +86,7 @@ class LinkNode extends AbstractNode implements NodeInterface
                 new FlashMessage(
                     'Links cannot be fixed by this system',
                     $this->getRelativePathBelowSiteRoot() . ' should be a link, but it does not exist',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ),
             ];
         }
@@ -107,7 +108,7 @@ class LinkNode extends AbstractNode implements NodeInterface
                 new FlashMessage(
                     $messageBody,
                     'Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a link',
-                    FlashMessage::WARNING
+                    ContextualFeedbackSeverity::WARNING
                 ),
             ];
         }
@@ -117,7 +118,7 @@ class LinkNode extends AbstractNode implements NodeInterface
                 new FlashMessage(
                     'Link target should be ' . $this->getTarget() . ' but is ' . $this->getCurrentTarget(),
                     $this->getRelativePathBelowSiteRoot() . ' is a link, but link target is not as specified',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ),
             ];
         }

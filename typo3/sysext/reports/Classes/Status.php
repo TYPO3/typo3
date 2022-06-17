@@ -15,18 +15,33 @@
 
 namespace TYPO3\CMS\Reports;
 
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * A class representing a certain status
  */
 class Status
 {
-    const NOTICE = -2;
-    const INFO = -1;
-    const OK = 0;
-    const WARNING = 1;
-    const ERROR = 2;
+    /**
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE instead
+     */
+    public const NOTICE = -2;
+    /**
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO instead
+     */
+    public const INFO = -1;
+    /**
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK instead
+     */
+    public const OK = 0;
+    /**
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING instead
+     */
+    public const WARNING = 1;
+    /**
+     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR instead
+     */
+    public const ERROR = 2;
 
     /**
      * @var string
@@ -43,10 +58,7 @@ class Status
      */
     protected $message;
 
-    /**
-     * @var int
-     */
-    protected $severity;
+    protected ContextualFeedbackSeverity $severity;
 
     /**
      * Construct a status
@@ -58,14 +70,20 @@ class Status
      * @param string $value Status value, eg. "Disabled"
      * @param string $message Optional message further describing the title/value combination
      *        Example:, eg "The deprecation log is important and does foo, to disable it do bar"
-     * @param int $severity A severity level. Use one of the constants above!
+     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity $severity A severity level. Use one of the constants above!
+     *
+     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    public function __construct($title, $value, $message = '', $severity = self::OK)
+    public function __construct($title, $value, $message = '', int|ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK)
     {
         $this->title = (string)$title;
         $this->value = (string)$value;
         $this->message = (string)$message;
-        $this->severity = MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
+        if (is_int($severity)) {
+            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
+            $severity = ContextualFeedbackSeverity::transform($severity) ?? ContextualFeedbackSeverity::OK;
+        }
+        $this->severity = $severity;
     }
 
     /**
@@ -98,12 +116,7 @@ class Status
         return $this->message;
     }
 
-    /**
-     * Gets the status' severity
-     *
-     * @return int
-     */
-    public function getSeverity()
+    public function getSeverity(): ContextualFeedbackSeverity
     {
         return $this->severity;
     }
@@ -115,15 +128,8 @@ class Status
      */
     public function __toString()
     {
-        $severity = [
-            self::NOTICE => 'NOTE',
-            self::INFO => 'INFO',
-            self::OK => 'OK',
-            self::WARNING => 'WARN',
-            self::ERROR => 'ERR',
-        ];
         // Max length 80 characters
-        $stringRepresentation = str_pad('[' . $severity[$this->severity] . ']', 7) . str_pad($this->title, 40) . ' - ' . substr($this->value, 0, 30);
+        $stringRepresentation = str_pad('[' . $this->severity->name . ']', 7) . str_pad($this->title, 40) . ' - ' . substr($this->value, 0, 30);
         return $stringRepresentation;
     }
 }

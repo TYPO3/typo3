@@ -31,11 +31,11 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
@@ -285,7 +285,7 @@ class SchedulerModuleController
             $task = $this->scheduler->fetchTask($taskUid);
             if ($task->isExecutionRunning()) {
                 // If the task is currently running, it may not be deleted
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.canNotDeleteRunningTask'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.canNotDeleteRunningTask'), ContextualFeedbackSeverity::ERROR);
             } else {
                 if ($this->scheduler->removeTask($task)) {
                     $backendUser->writelog(
@@ -307,11 +307,11 @@ class SchedulerModuleController
             if ($result) {
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
             } else {
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'), ContextualFeedbackSeverity::ERROR);
             }
         } catch (\OutOfBoundsException $e) {
             // The task was not found, for some reason
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
         }
     }
 
@@ -335,16 +335,16 @@ class SchedulerModuleController
                 if ($result) {
                     $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopSuccess'));
                 } else {
-                    $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopError'), AbstractMessage::ERROR);
+                    $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopError'), ContextualFeedbackSeverity::ERROR);
                 }
             } else {
                 // The task is not running, nothing to unmark
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotStopNonRunningTask'), AbstractMessage::WARNING);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotStopNonRunningTask'), ContextualFeedbackSeverity::WARNING);
             }
         } catch (\OutOfBoundsException $e) {
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
         } catch (\UnexpectedValueException $e) {
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopTaskFailed'), $taskUid, $e->getMessage()), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopTaskFailed'), $taskUid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
         }
     }
 
@@ -378,9 +378,9 @@ class SchedulerModuleController
             }
             $task->save();
         } catch (\OutOfBoundsException $e) {
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
         } catch (\UnexpectedValueException $e) {
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.toggleDisableFailed'), $taskUid, $e->getMessage()), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.toggleDisableFailed'), $taskUid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
         }
     }
 
@@ -469,13 +469,13 @@ class SchedulerModuleController
             $taskRecord = $this->scheduler->fetchTaskRecord($taskUid);
         } catch (\OutOfBoundsException $e) {
             // Task not found - removed meanwhile?
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
         }
 
         if (!empty($taskRecord['serialized_executions'])) {
             // If there's a registered execution, the task should not be edited. May happen if a cron started the task meanwhile.
-            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotEditRunningTask'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotEditRunningTask'), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
         }
 
@@ -491,7 +491,7 @@ class SchedulerModuleController
 
         if ($isInvalidTask || !isset($registeredClasses[$class]) || !$this->scheduler->isValidTaskObject($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $class), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $class), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
         }
 
@@ -577,13 +577,13 @@ class SchedulerModuleController
                 if ($result) {
                     $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executed'), $name));
                 } else {
-                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.notExecuted'), $name), AbstractMessage::ERROR);
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.notExecuted'), $name), ContextualFeedbackSeverity::ERROR);
                 }
                 $this->scheduler->recordLastRun('manual');
             } catch (\OutOfBoundsException $e) {
-                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), ContextualFeedbackSeverity::ERROR);
             } catch (\Exception $e) {
-                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailed'), $uid, $e->getMessage()), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailed'), $uid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
             }
         }
     }
@@ -612,9 +612,9 @@ class SchedulerModuleController
                 }
                 $task->save();
             } catch (\OutOfBoundsException $e) {
-                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), ContextualFeedbackSeverity::ERROR);
             } catch (\UnexpectedValueException $e) {
-                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.schedulingFailed'), $uid, $e->getMessage()), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.schedulingFailed'), $uid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
             }
         }
     }
@@ -755,7 +755,7 @@ class SchedulerModuleController
             $taskClass = $parsedBody['class'] ?? '';
             if (!class_exists($taskClass)) {
                 $result = false;
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTaskClassFound'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTaskClassFound'), ContextualFeedbackSeverity::ERROR);
             }
         } else {
             try {
@@ -764,22 +764,22 @@ class SchedulerModuleController
                 $taskClass = get_class($task);
             } catch (\OutOfBoundsException|\UnexpectedValueException $e) {
                 $result = false;
-                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
             }
         }
         if ($type !== AbstractTask::TYPE_SINGLE && $type !== AbstractTask::TYPE_RECURRING) {
             $result = false;
-            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType'), ContextualFeedbackSeverity::ERROR);
         }
         if (empty($startTime)) {
             $result = false;
-            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noStartDate'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noStartDate'), ContextualFeedbackSeverity::ERROR);
         } else {
             try {
                 $startTime = $this->getTimestampFromDateString($startTime);
             } catch (InvalidDateException $e) {
                 $result = false;
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), ContextualFeedbackSeverity::ERROR);
             }
         }
         if ($type === AbstractTask::TYPE_RECURRING && !empty($endTime)) {
@@ -787,23 +787,23 @@ class SchedulerModuleController
                 $endTime = $this->getTimestampFromDateString($endTime);
             } catch (InvalidDateException $e) {
                 $result = false;
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), ContextualFeedbackSeverity::ERROR);
             }
         }
         if ($type === AbstractTask::TYPE_RECURRING && $endTime < $startTime) {
             $result = false;
-            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate'), ContextualFeedbackSeverity::ERROR);
         }
         if ($type === AbstractTask::TYPE_RECURRING) {
             if (empty(trim($parsedBody['frequency']))) {
                 $result = false;
-                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noFrequency'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noFrequency'), ContextualFeedbackSeverity::ERROR);
             } elseif (!is_numeric(trim($parsedBody['frequency']))) {
                 try {
                     NormalizeCommand::normalize(trim($parsedBody['frequency']));
                 } catch (\InvalidArgumentException $e) {
                     $result = false;
-                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.frequencyError'), $e->getMessage(), $e->getCode()), AbstractMessage::ERROR);
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.frequencyError'), $e->getMessage(), $e->getCode()), ContextualFeedbackSeverity::ERROR);
                 }
             }
         }
@@ -1114,7 +1114,7 @@ class SchedulerModuleController
     /**
      * Add a flash message to the flash message queue of this module.
      */
-    protected function addMessage(ModuleTemplate $moduleTemplate, string $message, int $severity = AbstractMessage::OK): void
+    protected function addMessage(ModuleTemplate $moduleTemplate, string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
         $moduleTemplate->addFlashMessage($message, '', $severity);
     }

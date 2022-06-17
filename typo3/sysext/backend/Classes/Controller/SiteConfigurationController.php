@@ -50,6 +50,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action\Site as SiteAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -410,7 +411,7 @@ class SiteConfigurationController
                     $this->getBackendUser()->writelog(Type::SITE, SiteAction::UPDATE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was updated.', [$siteIdentifier], 'site');
                 }
             } catch (SiteConfigurationWriteException $e) {
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -453,7 +454,7 @@ class SiteConfigurationController
                     $identifier
                 );
                 $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierRenamed.title');
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -477,7 +478,7 @@ class SiteConfigurationController
                         $identifier
                     );
                     $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierExists.title');
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
+                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                     $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -515,7 +516,7 @@ class SiteConfigurationController
                 $fieldName
             );
             $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.required.title');
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -586,7 +587,7 @@ class SiteConfigurationController
                         $child['errorCode']
                     );
                     $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateErrorCode.title');
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
+                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                     $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -618,7 +619,7 @@ class SiteConfigurationController
                     $child['languageId']
                 );
                 $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateLanguageId.title');
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
@@ -650,7 +651,7 @@ class SiteConfigurationController
             GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
             $this->getBackendUser()->writelog(Type::SITE, SiteAction::DELETE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was deleted.', [$siteIdentifier], 'site');
         } catch (SiteConfigurationWriteException $e) {
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);

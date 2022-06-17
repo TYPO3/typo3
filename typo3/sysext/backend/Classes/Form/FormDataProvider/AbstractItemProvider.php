@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -109,7 +110,7 @@ abstract class AbstractItemProvider
                 FlashMessage::class,
                 $message,
                 '',
-                FlashMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 true
             );
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -276,7 +277,7 @@ abstract class AbstractItemProvider
             $msg = $databaseError . '. ';
             $msg .= $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
             $msgTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $msgTitle, FlashMessage::ERROR, true);
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $msgTitle, ContextualFeedbackSeverity::ERROR, true);
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);

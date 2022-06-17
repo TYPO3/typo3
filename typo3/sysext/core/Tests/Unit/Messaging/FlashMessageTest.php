@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,9 +31,9 @@ class FlashMessageTest extends UnitTestCase
      */
     public function jsonSerializeReturnsArrayWithDetailData(): void
     {
-        $message = new FlashMessage('aMessage', 'aTitle', FlashMessage::INFO);
+        $message = new FlashMessage('aMessage', 'aTitle', ContextualFeedbackSeverity::INFO);
         $expected = [
-            'severity' => FlashMessage::INFO,
+            'severity' => ContextualFeedbackSeverity::INFO->value,
             'title' => 'aTitle',
             'message' => 'aMessage',
             'storeInSession' => false,

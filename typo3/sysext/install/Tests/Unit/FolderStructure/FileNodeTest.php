@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception;
@@ -231,7 +232,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('isWritable')->willReturn(true);
         $node->method('isContentCorrect')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::WARNING, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -256,7 +257,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('isWritable')->willReturn(true);
         $node->method('isContentCorrect')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -281,7 +282,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('isWritable')->willReturn(false);
         $node->method('isContentCorrect')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -306,7 +307,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('isWritable')->willReturn(true);
         $node->method('isContentCorrect')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -331,7 +332,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('isWritable')->willReturn(true);
         $node->method('isContentCorrect')->willReturn(false);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -356,7 +357,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('isWritable')->willReturn(true);
         $node->method('isContentCorrect')->willReturn(true);
         $statusArray = $node->getStatus();
-        self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -438,7 +439,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('exists')->willReturn(false);
         $node->method('isFile')->willReturn(true);
         $node->method('isPermissionCorrect')->willReturn(true);
-        $message = new FlashMessage('foo', '', FlashMessage::ERROR);
+        $message = new FlashMessage('foo', '', ContextualFeedbackSeverity::ERROR);
         $node->method('createFile')->willReturn($message);
         $node->_set('targetContent', 'foo');
         $node->expects(self::never())->method('setContent');
@@ -546,7 +547,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
-        self::assertSame(FlashMessage::OK, $node->_call('createFile')->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('createFile')->getSeverity());
     }
 
     /**
@@ -577,7 +578,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($subPath);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($subPath);
-        self::assertSame(FlashMessage::ERROR, $node->_call('createFile')->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $node->_call('createFile')->getSeverity());
     }
 
     /**
@@ -709,7 +710,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('getAbsolutePath')->willReturn($path);
         $targetContent = StringUtility::getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
-        self::assertSame(FlashMessage::OK, $node->_call('setContent')->getSeverity());
+        self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('setContent')->getSeverity());
     }
 
     /**

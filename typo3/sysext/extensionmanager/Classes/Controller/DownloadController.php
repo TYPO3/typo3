@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -253,7 +254,7 @@ class DownloadController extends AbstractController
                 $this->translate('extensionList.updateFlashMessage.title')
             );
         } catch (\Exception $e) {
-            $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
+            $this->addFlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::ERROR);
         }
 
         return $this->jsonResponse();

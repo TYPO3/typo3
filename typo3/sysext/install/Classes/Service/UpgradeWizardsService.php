@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
 use TYPO3\CMS\Install\Updates\ConfirmableInterface;
@@ -419,7 +420,7 @@ class UpgradeWizardsService
                 new FlashMessage(
                     (string)stream_get_contents($stream),
                     'Update failed!',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 )
             );
         }

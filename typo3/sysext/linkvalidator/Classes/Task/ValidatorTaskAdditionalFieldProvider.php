@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -251,7 +251,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
                     $isValid = false;
                     $this->addMessage(
                         $lang->sL($this->languageFile . ':tasks.validate.invalidEmail'),
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -262,14 +262,14 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             $isValid = false;
             $this->addMessage(
                 $lang->sL($this->languageFile . ':tasks.validate.invalidPage'),
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         if ((int)$submittedData['linkvalidator']['depth'] < 0) {
             $isValid = false;
             $this->addMessage(
                 $lang->sL($this->languageFile . ':tasks.validate.invalidDepth'),
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         return $isValid;

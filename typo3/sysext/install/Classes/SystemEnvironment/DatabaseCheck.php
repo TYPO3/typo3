@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as TYPO3PDOPgSqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as TYPO3PDOSqliteDriver;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\Exception;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\Mysqli as DatabaseCheckDriverMysqli;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver\PdoMysql as DatabaseCheckDriverPdoMysql;
@@ -133,7 +134,7 @@ class DatabaseCheck implements CheckInterface
                     new FlashMessage(
                         '',
                         $exception->getMessage(),
-                        FlashMessage::INFO
+                        ContextualFeedbackSeverity::INFO
                     )
                 );
             }
@@ -148,7 +149,7 @@ class DatabaseCheck implements CheckInterface
                     new FlashMessage(
                         '',
                         $exception->getMessage(),
-                        FlashMessage::INFO
+                        ContextualFeedbackSeverity::INFO
                     )
                 );
             }

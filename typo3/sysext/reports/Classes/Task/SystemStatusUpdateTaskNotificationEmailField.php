@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Reports\Task;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -108,7 +108,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
             }
         }
         if (!$validInput || empty($submittedData[$this->fieldPrefix . 'NotificationEmail'])) {
-            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), FlashMessage::ERROR);
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), ContextualFeedbackSeverity::ERROR);
             $validInput = false;
         }
         return $validInput;

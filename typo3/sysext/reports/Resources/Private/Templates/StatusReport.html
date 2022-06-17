@@ -11,10 +11,10 @@
     <h2>{title}</h2>
     <div class="statusreport-wrapper">
         <f:for each="{statuses}" as="status">
-            <div class="statusreport" data-severity="{severityClassMapping.{status.severity}}">
+            <div class="statusreport" data-severity="{status.severity.cssClass}">
                 <div class="statusreport-indicator">
                     <div class="statusreport-indicator-icon">
-                        <core:icon identifier="{severityIconMapping.{status.severity}}" size="default" />
+                        <core:icon identifier="{severityIconMapping.{status.severity.value}}" size="default" />
                     </div>
                 </div>
                 <div class="statusreport-title">

@@ -23,6 +23,7 @@ use function GuzzleHttp\Promise\settle;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 use TYPO3\CMS\Reports\Status;
@@ -87,20 +88,20 @@ class ServerResponseCheck implements CheckInterface
             'https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/9.5.x/Feature-91354-IntegrateServerResponseSecurityChecks.html',
             'Please see documentation for further details...'
         );
-        if ($messageQueue->getAllMessages(FlashMessage::ERROR) !== []) {
+        if ($messageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR) !== []) {
             $title = 'Potential vulnerabilities';
             $label = $detailsLink;
-            $severity = Status::ERROR;
-        } elseif ($messageQueue->getAllMessages(FlashMessage::WARNING) !== []) {
+            $severity = ContextualFeedbackSeverity::ERROR;
+        } elseif ($messageQueue->getAllMessages(ContextualFeedbackSeverity::WARNING) !== []) {
             $title = 'Warnings';
             $label = $detailsLink;
-            $severity = Status::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
         }
         return new Status(
             'Server Response on static files',
             $title ?? 'OK',
             $this->wrapList($messages, $label ?? '', self::WRAP_NESTED),
-            $severity ?? Status::OK
+            $severity ?? ContextualFeedbackSeverity::OK
         );
     }
 
@@ -112,7 +113,7 @@ class ServerResponseCheck implements CheckInterface
                 new FlashMessage(
                     'Skipped for PHP_SAPI=cli-server',
                     'Checks skipped',
-                    FlashMessage::WARNING
+                    ContextualFeedbackSeverity::WARNING
                 )
             );
             return $messageQueue;
@@ -223,7 +224,7 @@ class ServerResponseCheck implements CheckInterface
                             $response['reason']->getRequest()->getUri()
                         ),
                         'HTTP warning',
-                        FlashMessage::WARNING
+                        ContextualFeedbackSeverity::WARNING
                     )
                 );
                 continue;
@@ -235,7 +236,7 @@ class ServerResponseCheck implements CheckInterface
                 new FlashMessage(
                     $this->createMismatchMessage($fileDeclaration, $response['value']),
                     'Unexpected server response',
-                    $fileDeclaration->shallFail() ? FlashMessage::ERROR : FlashMessage::WARNING
+                    $fileDeclaration->shallFail() ? ContextualFeedbackSeverity::ERROR : ContextualFeedbackSeverity::WARNING
                 )
             );
         }
@@ -243,15 +244,15 @@ class ServerResponseCheck implements CheckInterface
 
     protected function finishMessageQueue(FlashMessageQueue $messageQueue): void
     {
-        if ($messageQueue->getAllMessages(FlashMessage::WARNING) !== []
-            || $messageQueue->getAllMessages(FlashMessage::ERROR) !== []) {
+        if ($messageQueue->getAllMessages(ContextualFeedbackSeverity::WARNING) !== []
+            || $messageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR) !== []) {
             return;
         }
         $messageQueue->addMessage(
             new FlashMessage(
                 sprintf('All %d files processed correctly', count($this->fileDeclarations)),
                 'Expected server response',
-                FlashMessage::OK
+                ContextualFeedbackSeverity::OK
             )
         );
     }

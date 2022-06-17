@@ -21,9 +21,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Message;
@@ -43,7 +43,7 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
  *     'messageBody' => 'Some message body',
  *     'messageTitle' => 'Some message title',
  *     'messageArguments' => ['foo' => 'bar'],
- *     'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
+ *     'severity' => \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
  *   ]
  * );
  * $formDefinition->addFinisher($flashMessageFinisher);
@@ -62,7 +62,7 @@ class FlashMessageFinisher extends AbstractFinisher
         'messageTitle' => '',
         'messageArguments' => [],
         'messageCode' => null,
-        'severity' => AbstractMessage::OK,
+        'severity' => ContextualFeedbackSeverity::OK,
     ];
 
     private ExtensionService $extensionService;
@@ -94,19 +94,22 @@ class FlashMessageFinisher extends AbstractFinisher
         $messageArguments = $this->parseOption('messageArguments');
         $messageCode = $this->parseOption('messageCode');
         $severity = $this->parseOption('severity');
+        if (is_int($severity)) {
+            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
+            $severity = ContextualFeedbackSeverity::transform($severity);
+        }
         switch ($severity) {
-            case AbstractMessage::NOTICE:
+            case ContextualFeedbackSeverity::NOTICE:
                 $message = GeneralUtility::makeInstance(Notice::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
-            case AbstractMessage::WARNING:
+            case ContextualFeedbackSeverity::WARNING:
                 $message = GeneralUtility::makeInstance(Warning::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
-            case AbstractMessage::ERROR:
+            case ContextualFeedbackSeverity::ERROR:
                 $message = GeneralUtility::makeInstance(Error::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
             default:
                 $message = GeneralUtility::makeInstance(Message::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
-                break;
         }
 
         $flashMessage = GeneralUtility::makeInstance(

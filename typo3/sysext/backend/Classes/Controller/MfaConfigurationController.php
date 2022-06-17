@@ -31,9 +31,9 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -79,7 +79,7 @@ class MfaConfigurationController extends AbstractMfaController
         // All actions expect "overview" require a provider to deal with.
         // If non is found at this point, initiate a redirect to the overview.
         if ($mfaProvider === null && $action !== 'overview') {
-            $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotFound'), '', AbstractMessage::ERROR);
+            $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotFound'), '', ContextualFeedbackSeverity::ERROR);
             return new RedirectResponse($this->getActionUri('overview'));
         }
         // If a valid provider is given, check if the requested action can be performed on this provider
@@ -89,12 +89,12 @@ class MfaConfigurationController extends AbstractMfaController
             );
             // Some actions require the provider to be inactive
             if ($isProviderActive && in_array($action, $this->providerActionsWhenInactive, true)) {
-                $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerActive'), '', AbstractMessage::ERROR);
+                $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerActive'), '', ContextualFeedbackSeverity::ERROR);
                 return new RedirectResponse($this->getActionUri('overview'));
             }
             // Some actions require the provider to be active
             if (!$isProviderActive && in_array($action, $this->providerActionsWhenActive, true)) {
-                $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotActive'), '', AbstractMessage::ERROR);
+                $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotActive'), '', ContextualFeedbackSeverity::ERROR);
                 return new RedirectResponse($this->getActionUri('overview'));
             }
         }
@@ -161,7 +161,7 @@ class MfaConfigurationController extends AbstractMfaController
         $languageService = $this->getLanguageService();
         // Check whether activation operation was successful and the provider is now active.
         if (!$mfaProvider->activate($request, $propertyManager) || !$mfaProvider->isActive($propertyManager)) {
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::ERROR);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::ERROR);
             return new RedirectResponse($this->getActionUri('setup', ['identifier' => $mfaProvider->getIdentifier()]));
         }
         if ($isRecommendedProvider
@@ -179,7 +179,7 @@ class MfaConfigurationController extends AbstractMfaController
         if (!(bool)($backendUser->getSessionData('mfa') ?? false)) {
             $backendUser->setSessionData('mfa', true);
         }
-        $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.success'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::OK);
+        $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.success'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::OK);
         return new RedirectResponse($this->getActionUri('overview'));
     }
 
@@ -193,12 +193,12 @@ class MfaConfigurationController extends AbstractMfaController
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $languageService = $this->getLanguageService();
         if (!$mfaProvider->deactivate($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.failure'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::ERROR);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.failure'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::ERROR);
         } else {
             if ($this->isDefaultProvider($mfaProvider)) {
                 $this->removeDefaultProvider();
             }
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.success'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::OK);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.success'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::OK);
         }
         return new RedirectResponse($this->getActionUri('overview'));
     }
@@ -211,9 +211,9 @@ class MfaConfigurationController extends AbstractMfaController
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $languageService = $this->getLanguageService();
         if (!$mfaProvider->unlock($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.failure'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::ERROR);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.failure'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::ERROR);
         } else {
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.success'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::OK);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.success'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::OK);
         }
         return new RedirectResponse($this->getActionUri('overview'));
     }
@@ -226,7 +226,7 @@ class MfaConfigurationController extends AbstractMfaController
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         if ($mfaProvider->isLocked($propertyManager)) {
             // Do not show edit view for locked providers
-            $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerIsLocked'), '', AbstractMessage::ERROR);
+            $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerIsLocked'), '', ContextualFeedbackSeverity::ERROR);
             return new RedirectResponse($this->getActionUri('overview'));
         }
         $this->addFormButtons();
@@ -248,14 +248,14 @@ class MfaConfigurationController extends AbstractMfaController
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $languageService = $this->getLanguageService();
         if (!$mfaProvider->update($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.failure'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::ERROR);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.failure'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::ERROR);
         } else {
             if ($request->getParsedBody()['defaultProvider'] ?? false) {
                 $this->setDefaultProvider($mfaProvider);
             } elseif ($this->isDefaultProvider($mfaProvider)) {
                 $this->removeDefaultProvider();
             }
-            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.success'), $languageService->sL($mfaProvider->getTitle())), '', AbstractMessage::OK);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.success'), $languageService->sL($mfaProvider->getTitle())), '', ContextualFeedbackSeverity::OK);
         }
         if (!$mfaProvider->isActive($propertyManager)) {
             return new RedirectResponse($this->getActionUri('overview'));
@@ -344,7 +344,7 @@ class MfaConfigurationController extends AbstractMfaController
         $this->getBackendUser()->writeUC();
     }
 
-    protected function addFlashMessage(string $message, string $title = '', int $severity = AbstractMessage::INFO): void
+    protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

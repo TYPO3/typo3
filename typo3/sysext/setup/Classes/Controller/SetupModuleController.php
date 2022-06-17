@@ -39,13 +39,13 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SysLog\Action\Setting as SystemLogSettingAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
 
@@ -831,15 +831,15 @@ class SetupModuleController
             $view->addFlashMessage($languageService->getLL('settingsAreReset'), $languageService->getLL('resetConfiguration'));
         }
         if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-            $view->addFlashMessage($languageService->getLL('activateChanges'), '', AbstractMessage::INFO);
+            $view->addFlashMessage($languageService->getLL('activateChanges'), '', ContextualFeedbackSeverity::INFO);
         }
         if ($this->passwordIsSubmitted) {
             switch ($this->passwordIsUpdated) {
                 case self::PASSWORD_OLD_WRONG:
-                    $view->addFlashMessage($languageService->getLL('oldPassword_failed'), $languageService->getLL('newPassword'), AbstractMessage::ERROR);
+                    $view->addFlashMessage($languageService->getLL('oldPassword_failed'), $languageService->getLL('newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;
                 case self::PASSWORD_NOT_THE_SAME:
-                    $view->addFlashMessage($languageService->getLL('newPassword_failed'), $languageService->getLL('newPassword'), AbstractMessage::ERROR);
+                    $view->addFlashMessage($languageService->getLL('newPassword_failed'), $languageService->getLL('newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;
                 case self::PASSWORD_UPDATED:
                     $view->addFlashMessage($languageService->getLL('newPassword_ok'), $languageService->getLL('newPassword'));

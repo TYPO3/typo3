@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Recycler\Tests\Unit\Task;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Recycler\Task\CleanerFieldProvider;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -104,7 +104,7 @@ class CleanerFieldProviderTest extends UnitTestCase
         $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
         $this->subject->expects(self::atLeastOnce())
             ->method('addMessage')
-            ->with(self::equalTo('titleTest'), FlashMessage::ERROR);
+            ->with(self::equalTo('titleTest'), ContextualFeedbackSeverity::ERROR);
 
         $this->subject->validateAdditionalFields($submittedData, $scheduleModuleControllerMock);
     }

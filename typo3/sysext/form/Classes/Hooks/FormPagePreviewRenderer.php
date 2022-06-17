@@ -21,10 +21,10 @@ use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
@@ -128,7 +128,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
                     FlashMessage::class,
                     $messageText,
                     $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
-                    AbstractMessage::ERROR,
+                    ContextualFeedbackSeverity::ERROR,
                     true
                 )
             );

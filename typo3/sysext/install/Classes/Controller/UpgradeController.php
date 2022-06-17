@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -323,7 +324,7 @@ class UpgradeController extends AbstractController
                 $messages[] = [
                     'title' => 'Outdated version',
                     'message' => 'The currently installed TYPO3 version ' . $this->coreVersionService->getInstalledVersion() . ' does not receive any further updates, please consider upgrading to a supported version!',
-                    'severity' => FlashMessage::ERROR,
+                    'severity' => ContextualFeedbackSeverity::ERROR,
                 ];
                 $renderVersionInformation = true;
             } else {
@@ -355,7 +356,7 @@ class UpgradeController extends AbstractController
                         $messages[] = [
                             'title' => 'ELTS will be available soon',
                             'message' => sprintf('The currently installed TYPO3 version %s doesn\'t receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Please read the information below.', $currentVersion),
-                            'severity' => FlashMessage::WARNING,
+                            'severity' => ContextualFeedbackSeverity::WARNING,
                         ];
                         $renderVersionInformation = true;
                     }
@@ -365,7 +366,7 @@ class UpgradeController extends AbstractController
                     $messages[] = [
                         'title' => 'Up to date',
                         'message' => 'There are no TYPO3 updates available.',
-                        'severity' => FlashMessage::NOTICE,
+                        'severity' => ContextualFeedbackSeverity::NOTICE,
                     ];
                 } else {
                     foreach ($availableReleases as $availableRelease) {
@@ -378,11 +379,11 @@ class UpgradeController extends AbstractController
                         if ($isUpdateSecurityRelevant) {
                             $title = ($availableRelease->isElts() ? 'ELTS ' : '') . 'Security update available!';
                             $message = sprintf('The currently installed version is %s, update to security relevant released version %s is available.', $currentVersion, $versionString);
-                            $severity = FlashMessage::ERROR;
+                            $severity = ContextualFeedbackSeverity::ERROR;
                         } else {
                             $title = ($availableRelease->isElts() ? 'ELTS ' : '') . 'Update available!';
                             $message = sprintf('Currently installed version is %s, update to regular released version %s is available.', $currentVersion, $versionString);
-                            $severity = FlashMessage::WARNING;
+                            $severity = ContextualFeedbackSeverity::WARNING;
                         }
 
                         if ($availableRelease->isElts()) {
@@ -417,7 +418,7 @@ class UpgradeController extends AbstractController
                 $messages[] = [
                     'title' => 'TYPO3 Version information',
                     'message' => implode(' ', $supportMessages),
-                    'severity' => FlashMessage::INFO,
+                    'severity' => ContextualFeedbackSeverity::INFO,
                 ];
             }
 
@@ -428,7 +429,7 @@ class UpgradeController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 '',
                 'Current version is a development version and can not be updated',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         }
         $responseData = [
@@ -605,13 +606,13 @@ class UpgradeController extends AbstractController
                 $messageQueue->enqueue(new FlashMessage(
                     'Extension "' . $extension . '" unloaded.',
                     '',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } catch (\Exception $e) {
                 $messageQueue->enqueue(new FlashMessage(
                     $e->getMessage(),
                     '',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         }
@@ -899,7 +900,7 @@ class UpgradeController extends AbstractController
                     $messageQueue->enqueue(new FlashMessage(
                         '',
                         $extensionKey,
-                        FlashMessage::NOTICE
+                        ContextualFeedbackSeverity::NOTICE
                     ));
                 }
                 $baseTca = $newTca;
@@ -937,7 +938,7 @@ class UpgradeController extends AbstractController
             $messageQueue->enqueue(new FlashMessage(
                 '',
                 $tcaMessage,
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         }
         return new JsonResponse([
@@ -1085,7 +1086,7 @@ class UpgradeController extends AbstractController
                 $messages->enqueue(new FlashMessage(
                     'Error: ' . $error,
                     'Failed to execute: ' . $query,
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         }
@@ -1238,7 +1239,7 @@ class UpgradeController extends AbstractController
             $messages->enqueue(new FlashMessage(
                 'The wizard "' . $wizardToBeMarkedAsUndone['title'] . '" has not been marked as undone.',
                 'Wizard has not been marked undone',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
         return new JsonResponse([

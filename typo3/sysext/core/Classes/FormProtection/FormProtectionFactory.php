@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -184,7 +185,7 @@ class FormProtectionFactory
                 FlashMessage::class,
                 $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.formProtection.tokenInvalid'),
                 '',
-                FlashMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 !$isAjaxCall
             );
             $messageQueue->enqueue($flashMessage);

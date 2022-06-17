@@ -142,7 +142,7 @@ abstract class AbstractFinisher implements FinisherInterface
      * If $optionName was not found, the corresponding default option is returned (from $this->defaultOptions)
      *
      * @param string $optionName
-     * @return string|array|null
+     * @return string|array|int|null
      */
     protected function parseOption(string $optionName)
     {

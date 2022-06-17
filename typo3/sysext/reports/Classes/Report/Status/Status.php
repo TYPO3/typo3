@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\Registry\StatusRegistry;
@@ -123,20 +124,20 @@ class Status implements RequestAwareReportInterface
      */
     public function getHighestSeverity(array $statusCollection): int
     {
-        $highestSeverity = ReportStatus::NOTICE;
+        $highestSeverity = ContextualFeedbackSeverity::NOTICE;
         foreach ($statusCollection as $providerStatuses) {
             /** @var ReportStatus $status */
             foreach ($providerStatuses as $status) {
-                if ($status->getSeverity() > $highestSeverity) {
+                if ($status->getSeverity()->value > $highestSeverity->value) {
                     $highestSeverity = $status->getSeverity();
                 }
                 // Reached the highest severity level, no need to go on
-                if ($highestSeverity == ReportStatus::ERROR) {
+                if ($highestSeverity === ContextualFeedbackSeverity::ERROR) {
                     break;
                 }
             }
         }
-        return $highestSeverity;
+        return $highestSeverity->value;
     }
 
     /**
@@ -160,18 +161,11 @@ class Status implements RequestAwareReportInterface
         return $view->assignMultiple([
             'statusCollection' => $statusCollection,
             'severityIconMapping' => [
-                ReportStatus::NOTICE => 'actions-info',
-                ReportStatus::INFO => 'actions-info',
-                ReportStatus::OK => 'actions-check',
-                ReportStatus::WARNING => 'actions-exclamation',
-                ReportStatus::ERROR => 'actions-exclamation',
-            ],
-            'severityClassMapping' => [
-                ReportStatus::NOTICE => 'notice',
-                ReportStatus::INFO => 'info',
-                ReportStatus::OK => 'success',
-                ReportStatus::WARNING => 'warning',
-                ReportStatus::ERROR => 'danger',
+                ContextualFeedbackSeverity::NOTICE->value => 'actions-info',
+                ContextualFeedbackSeverity::INFO->value => 'actions-info',
+                ContextualFeedbackSeverity::OK->value => 'actions-check',
+                ContextualFeedbackSeverity::WARNING->value => 'actions-exclamation',
+                ContextualFeedbackSeverity::ERROR->value => 'actions-exclamation',
             ],
         ])->render('StatusReport');
     }

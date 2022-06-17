@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\PlaintextRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,7 +38,7 @@ class PlaintextRendererTest extends UnitTestCase
             FlashMessage::class,
             'messageBody',
             'messageTitle',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
         self::assertSame('[NOTICE] messageTitle: messageBody', $rendererClass->render([$flashMessage]));
     }
@@ -52,7 +53,7 @@ class PlaintextRendererTest extends UnitTestCase
             FlashMessage::class,
             'messageBody',
             '',
-            FlashMessage::NOTICE
+            ContextualFeedbackSeverity::NOTICE
         );
         self::assertSame('[NOTICE] messageBody', $rendererClass->render([$flashMessage]));
     }

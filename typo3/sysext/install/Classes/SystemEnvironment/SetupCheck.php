@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,7 +72,7 @@ class SetupCheck implements CheckInterface
                     . ' Tools -> Settings -> Configure Installation-Wide Options -> System -> trustedHostsPattern'
                     . ' and adapt it to expected host value(s).',
                 'Trusted hosts pattern is insecure',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $verifyHostHeader = new VerifyHostHeader($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] ?? '');
@@ -88,7 +89,7 @@ class SetupCheck implements CheckInterface
                         . ' Tools -> Settings -> Configure Installation-Wide Options -> System -> trustedHostsPattern'
                         . ' and adapt it to expected host value(s).',
                     'Trusted hosts pattern mismatch',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             }
         }
@@ -111,7 +112,7 @@ class SetupCheck implements CheckInterface
             $this->messageQueue->enqueue(new FlashMessage(
                 'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or compile curl into your PHP with --with-curl.',
                 'Fetching external URLs is not allowed',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         }
     }
@@ -128,14 +129,14 @@ class SetupCheck implements CheckInterface
             $this->messageQueue->enqueue(new FlashMessage(
                 '$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8 file system is used.',
                 'Empty systemLocale setting',
-                FlashMessage::INFO
+                ContextualFeedbackSeverity::INFO
             ));
         } elseif (setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']) === false) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. A locale with'
                     . ' this name doesn\'t exist in the operating system.',
                 'Incorrect systemLocale setting',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
             setlocale(LC_CTYPE, $currentLocale);
         } else {
@@ -159,7 +160,7 @@ class SetupCheck implements CheckInterface
                     '$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale]'
                         . ' is empty. Make sure a valid locale which supports UTF-8 is set.',
                     'System locale not set on UTF-8 file system',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
@@ -175,7 +176,7 @@ class SetupCheck implements CheckInterface
                     $this->messageQueue->enqueue(new FlashMessage(
                         'Please check your $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] setting.',
                         'System locale setting doesn\'t support UTF-8 file names.',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 }
                 setlocale(LC_CTYPE, $currentLocale);
@@ -203,16 +204,16 @@ class SetupCheck implements CheckInterface
                     . ' server in general. A parse time reduction by factor three for fully cached'
                     . ' pages can be achieved easily if using an opcode cache.',
                 'No PHP opcode cache loaded',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
-            $status = FlashMessage::OK;
+            $status = ContextualFeedbackSeverity::OK;
             $message = '';
             foreach ($opcodeCaches as $opcodeCache => $properties) {
                 $message .= 'Name: ' . $opcodeCache . ' Version: ' . $properties['version'];
                 $message .= LF;
                 if ($properties['warning']) {
-                    $status = FlashMessage::WARNING;
+                    $status = ContextualFeedbackSeverity::WARNING;
                     $message .= ' ' . $properties['warning'];
                 } else {
                     $message .= ' This opcode cache should work correctly and has good performance.';
@@ -221,10 +222,10 @@ class SetupCheck implements CheckInterface
             }
             // Set title of status depending on severity
             switch ($status) {
-                case FlashMessage::WARNING:
+                case ContextualFeedbackSeverity::WARNING:
                     $title = 'A possibly malfunctioning PHP opcode cache is loaded';
                     break;
-                case FlashMessage::OK:
+                case ContextualFeedbackSeverity::OK:
                 default:
                     $title = 'A PHP opcode cache is loaded';
                     break;
@@ -265,7 +266,7 @@ class SetupCheck implements CheckInterface
                         . 'This server does not render fonts as expected. '
                         . 'Please check your FreeType 2 module.',
                     'FreeType True Type Font DPI',
-                    FlashMessage::NOTICE
+                    ContextualFeedbackSeverity::NOTICE
                 ));
             }
         } else {
@@ -273,7 +274,7 @@ class SetupCheck implements CheckInterface
                 'The core relies on GD library compiled into PHP with freetype2'
                     . ' support. This is missing on your system. Please install it.',
                 'PHP GD library freetype2 support missing',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
     }
@@ -292,7 +293,7 @@ class SetupCheck implements CheckInterface
                     . ' To fix this, enable [BE][flexformForceCDATA] in'
                     . ' All Configuration.',
                 'PHP libxml bug present',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(

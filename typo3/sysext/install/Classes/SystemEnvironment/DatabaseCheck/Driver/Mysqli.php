@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * Check database configuration status for MySQLi driver
@@ -59,7 +60,7 @@ class Mysqli extends AbstractDriver
                 . ' Warning: If (e.g. during a long-running task) the connection is dropped and automatically reconnected, '
                 . ' it may not be reinitialized properly (e.g. charset) and write mangled data to the database!',
                 'PHP mysqli.reconnect is enabled',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $this->getMessageQueue()->enqueue(new FlashMessage(

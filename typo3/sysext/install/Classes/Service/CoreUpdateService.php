@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -136,8 +137,8 @@ class CoreUpdateService
         // Folder structure test: Update can be done only if folder structure returns no errors
         $folderStructureFacade = GeneralUtility::makeInstance(DefaultFactory::class)->getStructure();
         $folderStructureMessageQueue = $folderStructureFacade->getStatus();
-        $folderStructureErrors = $folderStructureMessageQueue->getAllMessages(FlashMessage::ERROR);
-        $folderStructureWarnings = $folderStructureMessageQueue->getAllMessages(FlashMessage::WARNING);
+        $folderStructureErrors = $folderStructureMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR);
+        $folderStructureWarnings = $folderStructureMessageQueue->getAllMessages(ContextualFeedbackSeverity::WARNING);
         if (!empty($folderStructureErrors) || !empty($folderStructureWarnings) || !is_link(Environment::getPublicPath() . '/typo3_src')) {
             $success = false;
             $this->messages->enqueue(new FlashMessage(
@@ -146,7 +147,7 @@ class CoreUpdateService
                 . ' and may be hazardous to your system. Please check your directory status in the'
                 . ' “Environment” module under “Directory Status”.',
                 'Automatic TYPO3 CMS core update not possible: Folder structure has errors or warnings',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
 
@@ -156,7 +157,7 @@ class CoreUpdateService
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'Automatic TYPO3 CMS core update not possible: Update not supported on Windows OS',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
 
@@ -170,7 +171,7 @@ class CoreUpdateService
                     'Could not write a file in path "' . Environment::getPublicPath() . '/"!'
                     . ' Please check your directory status in the “Environment” module under “Directory Status”.',
                     'Automatic TYPO3 CMS core update not possible: No write access to document root',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 // Check symlink creation
@@ -182,7 +183,7 @@ class CoreUpdateService
                         'Could not create a symbolic link in path "' . Environment::getPublicPath() . '/"!'
                         . ' Please check your directory status in the “Environment” module under “Directory Status”.',
                         'Automatic TYPO3 CMS core update not possible: No symlink creation possible',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 } else {
                     unlink($link);
@@ -201,7 +202,7 @@ class CoreUpdateService
                         'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!'
                         . ' Please check your directory status in the “Environment” module under “Directory Status”.',
                         'Automatic TYPO3 CMS core update not possible: No write access to TYPO3 CMS core location',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 } else {
                     unlink($file);
@@ -216,7 +217,7 @@ class CoreUpdateService
                     . ' This is a development version and can not be updated automatically. If this is a "git"'
                     . ' checkout, please update using git directly.',
                 'Automatic TYPO3 CMS core update not possible: You are running a development version of TYPO3',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         }
 
@@ -237,7 +238,7 @@ class CoreUpdateService
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'Skipped download of TYPO3 CMS core. A core source directory already exists in destination path. Using this instead.',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
             $downloadUri = $this->downloadBaseUri . '/' . $version;
@@ -248,7 +249,7 @@ class CoreUpdateService
                 $this->messages->enqueue(new FlashMessage(
                     '',
                     'TYPO3 CMS core download exists in download location: ' . PathUtility::stripPathSitePrefix($this->downloadTargetPath),
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $fileContent = GeneralUtility::getUrl($downloadUri);
@@ -257,7 +258,7 @@ class CoreUpdateService
                     $this->messages->enqueue(new FlashMessage(
                         'Failed to download ' . $downloadUri,
                         'Download not successful',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 } else {
                     $fileStoreResult = file_put_contents($fileLocation, $fileContent);
@@ -266,7 +267,7 @@ class CoreUpdateService
                         $this->messages->enqueue(new FlashMessage(
                             '',
                             'Unable to store download content',
-                            FlashMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         ));
                     } else {
                         $this->messages->enqueue(new FlashMessage(
@@ -294,7 +295,7 @@ class CoreUpdateService
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'Verifying existing TYPO3 CMS core checksum is not possible',
-                FlashMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             ));
         } else {
             $fileLocation = $this->getDownloadTarGzTargetPath($version);
@@ -304,7 +305,7 @@ class CoreUpdateService
                 $this->messages->enqueue(new FlashMessage(
                     '',
                     'Downloaded TYPO3 CMS core not found',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $actualChecksum = sha1_file($fileLocation);
@@ -316,7 +317,7 @@ class CoreUpdateService
                             . ' The actual checksum is ' . $actualChecksum . '. The update is stopped. This may be a'
                             . ' failed download, an attack, or an issue with the typo3.org infrastructure.',
                         'New TYPO3 CMS core checksum mismatch',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 } else {
                     $this->messages->enqueue(new FlashMessage(
@@ -343,7 +344,7 @@ class CoreUpdateService
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'Unpacking TYPO3 CMS core files skipped',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
             $fileLocation = $this->downloadTargetPath . $version . '.tar.gz';
@@ -352,14 +353,14 @@ class CoreUpdateService
                 $this->messages->enqueue(new FlashMessage(
                     '',
                     'Downloaded TYPO3 CMS core not found',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } elseif (@file_exists($this->downloadTargetPath . 'typo3_src-' . $version)) {
                 $success = false;
                 $this->messages->enqueue(new FlashMessage(
                     '',
                     'Unpacked TYPO3 CMS core exists in download location: ' . PathUtility::stripPathSitePrefix($this->downloadTargetPath),
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $unpackCommand = 'tar xf ' . escapeshellarg($fileLocation) . ' -C ' . escapeshellarg($this->downloadTargetPath) . ' 2>&1';
@@ -369,7 +370,7 @@ class CoreUpdateService
                     $this->messages->enqueue(new FlashMessage(
                         '',
                         'Unpacking TYPO3 CMS core not successful',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 } else {
                     $removePackedFileResult = unlink($fileLocation);
@@ -378,7 +379,7 @@ class CoreUpdateService
                         $this->messages->enqueue(new FlashMessage(
                             '',
                             'Removing packed TYPO3 CMS core not successful',
-                            FlashMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         ));
                     } else {
                         $this->messages->enqueue(new FlashMessage(
@@ -406,7 +407,7 @@ class CoreUpdateService
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'Moving TYPO3 CMS core files skipped',
-                FlashMessage::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             ));
         } else {
             $downloadedCoreLocation = $this->downloadTargetPath . 'typo3_src-' . $version;
@@ -417,7 +418,7 @@ class CoreUpdateService
                 $this->messages->enqueue(new FlashMessage(
                     '',
                     'Unpacked TYPO3 CMS core not found',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 $moveResult = rename($downloadedCoreLocation, $newCoreLocation);
@@ -426,7 +427,7 @@ class CoreUpdateService
                     $this->messages->enqueue(new FlashMessage(
                         '',
                         'Moving TYPO3 CMS core to ' . $newCoreLocation . ' failed',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 } else {
                     $this->messages->enqueue(new FlashMessage(
@@ -454,14 +455,14 @@ class CoreUpdateService
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'New TYPO3 CMS core not found',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } elseif (!is_link($this->symlinkToCoreFiles)) {
             $success = false;
             $this->messages->enqueue(new FlashMessage(
                 '',
                 'TYPO3 CMS core source directory (typo3_src) is not a link',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             ));
         } else {
             $isCurrentCoreSymlinkAbsolute = PathUtility::isAbsolutePath((string)readlink($this->symlinkToCoreFiles));
@@ -471,7 +472,7 @@ class CoreUpdateService
                 $this->messages->enqueue(new FlashMessage(
                     '',
                     'Removing old symlink failed',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 ));
             } else {
                 if (!$isCurrentCoreSymlinkAbsolute) {
@@ -485,7 +486,7 @@ class CoreUpdateService
                     $this->messages->enqueue(new FlashMessage(
                         '',
                         'Linking new TYPO3 CMS core failed',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ));
                 }
             }

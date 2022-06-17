@@ -455,4 +455,79 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Messaging\AbstractMessage::NOTICE' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\AbstractMessage::INFO' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\AbstractMessage::OK' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\FlashMessage::INFO' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\FlashMessage::OK' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\FlashMessage::WARNING' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Messaging\FlashMessage::ERROR' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Reports\Status::NOTICE' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Reports\Status::INFO' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Reports\Status::OK' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Reports\Status::WARNING' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Reports\Status::ERROR' => [
+        'restFiles' => [
+            'Deprecation-97787-SeveritiesOfFlashMessagesAndReportsDeprecated.rst',
+        ],
+    ],
 ];

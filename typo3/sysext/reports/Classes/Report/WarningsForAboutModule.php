@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Reports\Status as ReportStatus;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * Adds a warning message about problems in the current installation to the About module
@@ -52,7 +52,7 @@ final class WarningsForAboutModule
         }
         // Get the highest severity
         $highestSeverity = $this->registry->get('tx_reports', 'status.highestSeverity');
-        if ($highestSeverity === null || $highestSeverity <= ReportStatus::OK) {
+        if ($highestSeverity === null || $highestSeverity <= ContextualFeedbackSeverity::OK->value) {
             return;
         }
         // Display a message that there's something wrong and that

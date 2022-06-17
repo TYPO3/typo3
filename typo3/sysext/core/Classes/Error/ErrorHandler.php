@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -192,10 +193,10 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         switch ($errorLevel) {
             case E_USER_WARNING:
             case E_WARNING:
-                $flashMessageSeverity = FlashMessage::WARNING;
+                $flashMessageSeverity = ContextualFeedbackSeverity::WARNING;
                 break;
             default:
-                $flashMessageSeverity = FlashMessage::NOTICE;
+                $flashMessageSeverity = ContextualFeedbackSeverity::NOTICE;
         }
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,

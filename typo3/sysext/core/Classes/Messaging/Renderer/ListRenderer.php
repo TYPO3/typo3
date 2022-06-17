@@ -30,28 +30,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 class ListRenderer implements FlashMessageRendererInterface
 {
     /**
-     * @var string[] The message severity class names
-     */
-    protected static $classes = [
-        FlashMessage::NOTICE => 'notice',
-        FlashMessage::INFO => 'info',
-        FlashMessage::OK => 'success',
-        FlashMessage::WARNING => 'warning',
-        FlashMessage::ERROR => 'danger',
-    ];
-
-    /**
-     * @var string[] The message severity icon names
-     */
-    protected static $icons = [
-        FlashMessage::NOTICE => 'lightbulb-o',
-        FlashMessage::INFO => 'info',
-        FlashMessage::OK => 'check',
-        FlashMessage::WARNING => 'exclamation',
-        FlashMessage::ERROR => 'times',
-    ];
-
-    /**
      * Render method
      *
      * @param FlashMessage[] $flashMessages
@@ -71,7 +49,7 @@ class ListRenderer implements FlashMessageRendererInterface
      */
     protected function getClass(FlashMessage $flashMessage): string
     {
-        return 'alert-' . self::$classes[$flashMessage->getSeverity()];
+        return 'alert-' . $flashMessage->getSeverity()->getCssClass();
     }
 
     /**
@@ -83,7 +61,7 @@ class ListRenderer implements FlashMessageRendererInterface
      */
     protected function getIconName(FlashMessage $flashMessage): string
     {
-        return self::$icons[$flashMessage->getSeverity()];
+        return $flashMessage->getSeverity()->getIconIdentifier();
     }
 
     /**

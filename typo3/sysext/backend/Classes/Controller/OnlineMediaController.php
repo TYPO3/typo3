@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -86,7 +87,7 @@ class OnlineMediaController
                         FlashMessage::class,
                         $file->getName(),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.added'),
-                        FlashMessage::OK,
+                        ContextualFeedbackSeverity::OK,
                         true
                     );
                 } else {
@@ -94,7 +95,7 @@ class OnlineMediaController
                         FlashMessage::class,
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url'),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.new_media.failed'),
-                        FlashMessage::ERROR,
+                        ContextualFeedbackSeverity::ERROR,
                         true
                     );
                 }

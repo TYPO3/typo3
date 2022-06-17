@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
 
@@ -74,7 +75,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface
             $result[] = new FlashMessage(
                 '',
                 $this->getAbsolutePath() . ' does not exist',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } else {
             $result = $this->getSelfStatus();

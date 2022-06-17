@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status;
@@ -55,14 +56,14 @@ class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProvi
     protected function getConflictingRedirects(ServerRequestInterface $request): Status
     {
         $value = $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects.none');
-        $severity = Status::OK;
+        $severity = ContextualFeedbackSeverity::OK;
 
         $registry = GeneralUtility::makeInstance(Registry::class);
         $reportedConflicts = $registry->get('tx_redirects', 'conflicting_redirects', []);
         $count = count($reportedConflicts);
         if ($count > 0) {
             $value = sprintf($this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects.count'), $count);
-            $severity = Status::WARNING;
+            $severity = ContextualFeedbackSeverity::WARNING;
         }
 
         $view = $this->backendViewFactory->create($request, ['typo3/cms-redirects']);

@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Hooks;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
@@ -341,7 +341,7 @@ class DataStructureIdentifierHook
                     FlashMessage::class,
                     $messageText,
                     $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
-                    AbstractMessage::ERROR,
+                    ContextualFeedbackSeverity::ERROR,
                     true
                 )
             );

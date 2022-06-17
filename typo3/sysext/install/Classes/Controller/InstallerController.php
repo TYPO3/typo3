@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -240,9 +241,9 @@ class InstallerController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Installer/ShowEnvironmentAndFolders'),
-            'environmentStatusErrors' => $systemCheckMessageQueue->getAllMessages(FlashMessage::ERROR),
-            'environmentStatusWarnings' => $systemCheckMessageQueue->getAllMessages(FlashMessage::WARNING),
-            'structureErrors' => $structureMessageQueue->getAllMessages(FlashMessage::ERROR),
+            'environmentStatusErrors' => $systemCheckMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR),
+            'environmentStatusWarnings' => $systemCheckMessageQueue->getAllMessages(ContextualFeedbackSeverity::WARNING),
+            'structureErrors' => $structureMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR),
         ]);
     }
 
@@ -256,7 +257,7 @@ class InstallerController
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
         $structureFixMessageQueue = $structureFacade->fix();
-        $errorsFromStructure = $structureFixMessageQueue->getAllMessages(FlashMessage::ERROR);
+        $errorsFromStructure = $structureFixMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR);
 
         if (@is_dir(Environment::getLegacyConfigPath())) {
             $this->configurationManager->createLocalConfigurationFromFactoryConfiguration();
@@ -511,7 +512,7 @@ class InstallerController
                     $messages[] = new FlashMessage(
                         'Given driver must be one of ' . implode(', ', $validDrivers),
                         'Database driver unknown',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -523,7 +524,7 @@ class InstallerController
                     $messages[] = new FlashMessage(
                         'Given username must be shorter than fifty characters.',
                         'Database username not valid',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -538,7 +539,7 @@ class InstallerController
                     $messages[] = new FlashMessage(
                         'Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than 255 characters.',
                         'Database host not valid',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -550,7 +551,7 @@ class InstallerController
                     $messages[] = new FlashMessage(
                         'Given port is not numeric or within range 1 to 65535.',
                         'Database port not valid',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -561,7 +562,7 @@ class InstallerController
                     $messages[] = new FlashMessage(
                         'Given socket location does not exist on server.',
                         'Socket does not exist',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -573,7 +574,7 @@ class InstallerController
                     $messages[] = new FlashMessage(
                         'Given database name must be shorter than fifty characters.',
                         'Database name not valid',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -618,7 +619,7 @@ class InstallerController
                 $messages[] = new FlashMessage(
                     'Connecting to the database with given settings failed: ' . $e->getMessage(),
                     'Database connect not successful',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
             }
             $localConfigurationPathValuePairs = [];
@@ -708,7 +709,7 @@ class InstallerController
                     new FlashMessage(
                         'You must select a database.',
                         'No Database selected',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ),
                 ],
             ]);
@@ -717,7 +718,7 @@ class InstallerController
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['dbname'] = $databaseName;
 
         foreach ($this->checkDatabaseRequirementsForDriver($databaseDriverName) as $message) {
-            if ($message->getSeverity() === FlashMessage::ERROR) {
+            if ($message->getSeverity() === ContextualFeedbackSeverity::ERROR) {
                 $success = false;
                 $messages[] = $message;
             }
@@ -729,7 +730,7 @@ class InstallerController
             $statusMessages[] = new FlashMessage(
                 $checkRequiredPermission,
                 'Missing required permissions',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         if ($statusMessages !== []) {
@@ -759,7 +760,7 @@ class InstallerController
                     $databaseName
                 ),
                 '',
-                FlashMessage::INFO
+                ContextualFeedbackSeverity::INFO
             );
             array_unshift($messages, $message);
         }
@@ -806,7 +807,7 @@ class InstallerController
                 new FlashMessage(
                     '',
                     $exception->getMessage(),
-                    FlashMessage::INFO
+                    ContextualFeedbackSeverity::INFO
                 )
             );
             return $flashMessageQueue;
@@ -842,7 +843,7 @@ class InstallerController
                     new FlashMessage(
                         'You must select a database.',
                         'No Database selected',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     ),
                 ],
             ]);
@@ -851,7 +852,7 @@ class InstallerController
         $postValues = $request->getParsedBody()['install']['values'];
         if ($postValues['type'] === 'new') {
             $status = $this->createNewDatabase($databaseName);
-            if ($status->getSeverity() === FlashMessage::ERROR) {
+            if ($status->getSeverity() === ContextualFeedbackSeverity::ERROR) {
                 return new JsonResponse([
                     'success' => false,
                     'status' => [$status],
@@ -859,7 +860,7 @@ class InstallerController
             }
         } elseif ($postValues['type'] === 'existing') {
             $status = $this->checkExistingDatabase($databaseName);
-            if ($status->getSeverity() === FlashMessage::ERROR) {
+            if ($status->getSeverity() === ContextualFeedbackSeverity::ERROR) {
                 return new JsonResponse([
                     'success' => false,
                     'status' => [$status],
@@ -925,7 +926,7 @@ class InstallerController
                 'You are setting an important password here! It gives an attacker full control over your instance if cracked.'
                 . ' It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.',
                 'Administrator password not secure enough!',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return new JsonResponse([
                 'success' => false,
@@ -948,7 +949,7 @@ class InstallerController
             $messages[] = new FlashMessage(
                 'Error detected in SQL statement:' . LF . $exception->getMessage(),
                 'Import of database data could not be performed',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return new JsonResponse([
                 'success' => false,
@@ -973,7 +974,7 @@ class InstallerController
                 'The administrator account could not be created. The following error occurred:' . LF
                 . $exception->getPrevious()->getMessage(),
                 'Administrator account not created!',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return new JsonResponse([
                 'success' => false,
@@ -1338,7 +1339,7 @@ For each website you need a TypoScript template on the main page of your website
                 . ' user does not have sufficient permissions to create it or the database already exists.'
                 . ' Please choose an existing (empty) database, choose another name or contact administration.',
                 'Unable to create database',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         return new FlashMessage(
@@ -1370,7 +1371,7 @@ For each website you need a TypoScript template on the main page of your website
                     sprintf('Cannot use database "%s"', $dbName)
                         . ', because it already contains tables. Please select a different database or choose to create one!',
                     'Selected database is not empty!',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
             }
         } catch (\Exception $e) {
@@ -1378,15 +1379,13 @@ For each website you need a TypoScript template on the main page of your website
                 sprintf('Could not connect to database "%s"', $dbName)
                     . '! Make sure it really exists and your database user has the permissions to select it!',
                 'Could not connect to selected database!',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
 
-        if ($result->getSeverity() === FlashMessage::OK) {
+        if ($result->getSeverity() === ContextualFeedbackSeverity::OK) {
             $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $dbName;
-        }
 
-        if ($result->getSeverity() === FlashMessage::OK && !empty($localConfigurationPathValuePairs)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
         }
 
@@ -1456,7 +1455,7 @@ For each website you need a TypoScript template on the main page of your website
             $message = new FlashMessage(
                 'Query:' . LF . ' ' . $statement . LF . 'Error:' . LF . ' ' . $message,
                 'Database query failed!',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
         return array_values($results);

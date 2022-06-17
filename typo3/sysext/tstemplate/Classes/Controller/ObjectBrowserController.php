@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -124,7 +124,7 @@ class ObjectBrowserController extends AbstractTemplateModuleController
                 $view->addFlashMessage(
                     $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:noCurrentTemplate'),
                     $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:edit'),
-                    AbstractMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
             }
             [$theSetup, $theSetupValue] = $this->getSetup($theSetup, $sObj);
@@ -143,7 +143,7 @@ class ObjectBrowserController extends AbstractTemplateModuleController
                     $view->addFlashMessage(
                         sprintf($languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:error.' . $e->getCode()), $postSearchField),
                         '',
-                        AbstractMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             }
@@ -322,7 +322,7 @@ class ObjectBrowserController extends AbstractTemplateModuleController
                             $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:noSpaces')
                             . $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:nothingUpdated'),
                             $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:badProperty'),
-                            AbstractMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         );
                     } else {
                         $propertyLine = $name . '.' . $property . ' = ' . trim($parsedBody['data'][$name]['propertyValue']);

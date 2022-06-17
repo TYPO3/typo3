@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -582,43 +583,43 @@ class ActionControllerTest extends UnitTestCase
                 new FlashMessage('Simple Message'),
                 'Simple Message',
                 '',
-                FlashMessage::OK,
+                ContextualFeedbackSeverity::OK,
                 false,
             ],
             [
-                new FlashMessage('Some OK', 'Message Title', FlashMessage::OK, true),
+                new FlashMessage('Some OK', 'Message Title', ContextualFeedbackSeverity::OK, true),
                 'Some OK',
                 'Message Title',
-                FlashMessage::OK,
+                ContextualFeedbackSeverity::OK,
                 true,
             ],
             [
-                new FlashMessage('Some Info', 'Message Title', FlashMessage::INFO, true),
+                new FlashMessage('Some Info', 'Message Title', ContextualFeedbackSeverity::INFO, true),
                 'Some Info',
                 'Message Title',
-                FlashMessage::INFO,
+                ContextualFeedbackSeverity::INFO,
                 true,
             ],
             [
-                new FlashMessage('Some Notice', 'Message Title', FlashMessage::NOTICE, true),
+                new FlashMessage('Some Notice', 'Message Title', ContextualFeedbackSeverity::NOTICE, true),
                 'Some Notice',
                 'Message Title',
-                FlashMessage::NOTICE,
+                ContextualFeedbackSeverity::NOTICE,
                 true,
             ],
 
             [
-                new FlashMessage('Some Warning', 'Message Title', FlashMessage::WARNING, true),
+                new FlashMessage('Some Warning', 'Message Title', ContextualFeedbackSeverity::WARNING, true),
                 'Some Warning',
                 'Message Title',
-                FlashMessage::WARNING,
+                ContextualFeedbackSeverity::WARNING,
                 true,
             ],
             [
-                new FlashMessage('Some Error', 'Message Title', FlashMessage::ERROR, true),
+                new FlashMessage('Some Error', 'Message Title', ContextualFeedbackSeverity::ERROR, true),
                 'Some Error',
                 'Message Title',
-                FlashMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 true,
             ],
         ];
@@ -632,7 +633,7 @@ class ActionControllerTest extends UnitTestCase
         $expectedMessage,
         $messageBody,
         $messageTitle = '',
-        $severity = FlashMessage::OK,
+        $severity = ContextualFeedbackSeverity::OK,
         $storeInSession = true
     ): void {
         $flashMessageQueue = $this->getMockBuilder(FlashMessageQueue::class)

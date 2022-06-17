@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\EnvironmentController;
@@ -196,7 +197,7 @@ class Maintenance implements MiddlewareInterface
             } else {
                 if ($password === null || empty($password)) {
                     $messageQueue = (new FlashMessageQueue('install'))->enqueue(
-                        new FlashMessage('Please enter the install tool password', '', FlashMessage::ERROR)
+                        new FlashMessage('Please enter the install tool password', '', ContextualFeedbackSeverity::ERROR)
                     );
                 } else {
                     $hashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
@@ -205,7 +206,7 @@ class Maintenance implements MiddlewareInterface
                         new FlashMessage(
                             'Given password does not match the install tool login password. Calculated hash: ' . $hashedPassword,
                             '',
-                            FlashMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         )
                     );
                 }

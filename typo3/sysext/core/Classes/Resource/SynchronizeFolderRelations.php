@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -147,7 +148,7 @@ class SynchronizeFolderRelations
 
         $this->flashMessageService
             ->getMessageQueueByIdentifier()
-            ->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $message, '', FlashMessage::OK, true));
+            ->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $message, '', ContextualFeedbackSeverity::OK, true));
     }
 
     protected function getPreparedQueryBuilder(string $table): QueryBuilder

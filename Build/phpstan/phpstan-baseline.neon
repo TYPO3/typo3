@@ -2901,11 +2901,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Configuration/ConfigurationService.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\AbstractFinisher\\:\\:parseOption\\(\\) should return array\\|string\\|null but returns mixed\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
