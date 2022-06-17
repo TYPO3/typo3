@@ -311,7 +311,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons before all child records:
         if (in_array($config['appearance']['levelLinksPosition'] ?? null, ['both', 'top'], true)) {
-            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $newRecordButton . $localizationButtons . '</div>';
+            $html .= '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $newRecordButton . $localizationButtons . '</div>';
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
