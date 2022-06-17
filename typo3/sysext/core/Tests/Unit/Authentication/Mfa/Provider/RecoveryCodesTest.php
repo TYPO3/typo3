@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider;
 
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
+use TYPO3\CMS\Core\Tests\Fixtures\Crypto\PasswordHashing\NoopPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,7 +30,16 @@ class RecoveryCodesTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        NoopPasswordHash::registerNoopPasswordHash();
         $this->subject = GeneralUtility::makeInstance(RecoveryCodes::class, 'BE');
+    }
+
+    protected function tearDown(): void
+    {
+        NoopPasswordHash::unregisterNoopPasswordHash();
+
+        parent::tearDown();
     }
 
     /**
@@ -39,13 +48,8 @@ class RecoveryCodesTest extends UnitTestCase
     public function generateRecoveryCodesTest(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
-            'className' => Argon2iPasswordHash::class,
-            'options' => [
-                // Reduce default costs for quicker unit tests
-                'memory_cost' => 65536,
-                'time_cost' => 4,
-                'threads' => 2,
-            ],
+            'className' => NoopPasswordHash::class,
+            'options' => [],
         ];
 
         $codes = $this->subject->generateRecoveryCodes();
@@ -54,7 +58,7 @@ class RecoveryCodesTest extends UnitTestCase
 
         $plainCodes = array_keys($codes);
         $hashedCodes = array_values($codes);
-        $hashInstance = (new Argon2iPasswordHash());
+        $hashInstance = (new NoopPasswordHash());
 
         foreach ($hashedCodes as $key => $code) {
             self::assertTrue($hashInstance->isValidSaltedPW($code));
@@ -123,13 +127,8 @@ class RecoveryCodesTest extends UnitTestCase
     public function verifyRecoveryCodeTest(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
-            'className' => Argon2iPasswordHash::class,
-            'options' => [
-                // Reduce default costs for quicker unit tests
-                'memory_cost' => 65536,
-                'time_cost' => 4,
-                'threads' => 2,
-            ],
+            'className' => NoopPasswordHash::class,
+            'options' => [],
         ];
 
         $recoveryCode = '18742989';
@@ -156,13 +155,7 @@ class RecoveryCodesTest extends UnitTestCase
     public function verifyRecoveryCodeUsesTheCorrectHashInstanceTest(): void
     {
         $code = '18742989';
-        $argonOptionsSpeedup = [
-            // Reduce default costs for quicker unit tests
-            'memory_cost' => 65536,
-            'time_cost' => 4,
-            'threads' => 2,
-        ];
-        $codes = [(new Argon2iPasswordHash($argonOptionsSpeedup))->getHashedPassword($code)];
+        $codes = [(new NoopPasswordHash())->getHashedPassword($code)];
 
         // Ensure we have another default hash instance
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
