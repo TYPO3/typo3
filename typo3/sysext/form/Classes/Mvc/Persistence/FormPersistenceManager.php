@@ -313,6 +313,30 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
+     * Check if any form definition is available
+     *
+     * @internal
+     */
+    public function hasForms(): bool
+    {
+        foreach ($this->retrieveYamlFilesFromStorageFolders() as $file) {
+            $form = $this->loadMetaData($file);
+
+            if ($this->looksLikeAFormDefinition($form)) {
+                return true;
+            }
+        }
+        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $file) {
+            $form = $this->loadMetaData($file);
+
+            if ($this->looksLikeAFormDefinition($form)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Retrieves yaml files from storage folders for further processing.
      * At this time it's not determined yet, whether these files contain form data.
      *

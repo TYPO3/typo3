@@ -67,16 +67,19 @@ class FormManagerController extends AbstractBackendController
     /**
      * Display the Form Manager. The main showing available forms.
      */
-    protected function indexAction(int $page = 1): ResponseInterface
+    protected function indexAction(int $page = 1, string $searchTerm = ''): ResponseInterface
     {
-        $forms = $this->getAvailableFormDefinitions();
+        $hasForms = $this->formPersistenceManager->hasForms();
+        $forms = $hasForms ? $this->getAvailableFormDefinitions(trim($searchTerm)) : [];
         $arrayPaginator = new ArrayPaginator($forms, $page, $this->limit);
         $pagination = new SimplePagination($arrayPaginator);
 
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
         $moduleTemplate->assignMultiple([
             'paginator' => $arrayPaginator,
             'pagination' => $pagination,
+            'searchTerm' => $searchTerm,
+            'hasForms' => $hasForms,
             'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
             'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData()),
         ]);
@@ -369,7 +372,7 @@ class FormManagerController extends AbstractBackendController
      * List all formDefinitions which can be loaded through t form persistence
      * manager. Enrich this data by a reference counter.
      */
-    protected function getAvailableFormDefinitions(): array
+    protected function getAvailableFormDefinitions(string $searchTerm = ''): array
     {
         $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
         $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
@@ -387,10 +390,20 @@ class FormManagerController extends AbstractBackendController
             }
 
             $formDefinition['referenceCount'] = $referenceCount;
-            $availableFormDefinitions[] = $formDefinition;
+            if ($searchTerm === ''
+                || $this->valueContainsSearchTerm($formDefinition['name'], $searchTerm)
+                || $this->valueContainsSearchTerm($formDefinition['persistenceIdentifier'], $searchTerm)
+            ) {
+                $availableFormDefinitions[] = $formDefinition;
+            }
         }
 
         return $availableFormDefinitions;
+    }
+
+    protected function valueContainsSearchTerm(string $value, string $searchTerm): bool
+    {
+        return str_contains(strtolower($value), strtolower($searchTerm));
     }
 
     /**
@@ -469,7 +482,7 @@ class FormManagerController extends AbstractBackendController
     /**
      * Init ModuleTemplate and register document header buttons
      */
-    protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
+    protected function initializeModuleTemplate(ServerRequestInterface $request, int $page, string $searchTerm): ModuleTemplate
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
 
@@ -492,8 +505,18 @@ class FormManagerController extends AbstractBackendController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
+        $arguments = [];
+        if ($searchTerm) {
+            $arguments['tx_form_web_formformbuilder']['searchTerm'] = $searchTerm;
+            $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
+        }
+        if ($page > 1) {
+            $arguments['tx_form_web_formformbuilder']['page'] = $page;
+            $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
+        }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('web_FormFormbuilder')
+            ->setArguments($arguments)
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 

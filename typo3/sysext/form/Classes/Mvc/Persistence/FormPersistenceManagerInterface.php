@@ -84,4 +84,9 @@ interface FormPersistenceManagerInterface
      * Check if an identifier is already used by a formDefinition.
      */
     public function checkForDuplicateIdentifier(string $identifier): bool;
+
+    /**
+     * Check if any form definition is available
+     */
+    public function hasForms(): bool;
 }

@@ -14,6 +14,28 @@
     />
 
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
+    <f:if condition="{hasForms}">
+        <form style="display:inline;"
+                data-global-event="submit"
+                data-action-navigate="$form=~s/$value/"
+                data-navigate-value="{f:uri.action(arguments:'{searchTerm: \'$[value]\'}')}"
+                data-value-selector="input[name='searchTerm']"
+        >
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="input-group">
+                        <button class="btn btn-default" type="submit" name="search">
+                            <core:icon identifier="actions-search" size="small" />
+                        </button>
+                        <label for="search_field" class="visually-hidden">
+                            <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+                        </label>
+                        <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </f:if>
     <f:if condition="{paginator.paginatedItems}">
         <f:then>
             <div class="table-fit">
@@ -135,6 +157,14 @@
             </div>
             <f:render partial="Backend/FormManager/Pagination" arguments="{_all}" />
         </f:then>
+        <f:else if="{hasForms}">
+            <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
+                <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found_by_search_term.message" arguments="{0: searchTerm}" /></p>
+                <a class="btn btn-primary" href="{f:be.uri(route:'web_FormFormbuilder')}">
+                    <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.remove_search_term"/>
+                </a>
+            </f:be.infobox>
+        </f:else>
         <f:else>
             <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.message" /></p>
@@ -142,7 +172,6 @@
             </f:be.infobox>
         </f:else>
     </f:if>
-
 </f:section>
 
 </html>
