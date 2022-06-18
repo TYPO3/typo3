@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Labels;
+namespace TYPO3\CMS\Fluid\Tests\FunctionalDeprecated\ViewHelpers\Be\Labels;
 
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
