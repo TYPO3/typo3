@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Tests\Functional\Database;
+namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.
