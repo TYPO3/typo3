@@ -650,6 +650,20 @@ services:
         git status | grep -q \"nothing to commit, working tree clean\"
       "
 
+  check_namespace_integrity:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -dxdebug.mode=off Build/Scripts/checkNamespaceIntegrity.php;
+      "
+
   check_permissions:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
