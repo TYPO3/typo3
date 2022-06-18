@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\core\Tests\Acceptance\Application\Topbar;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Topbar;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
