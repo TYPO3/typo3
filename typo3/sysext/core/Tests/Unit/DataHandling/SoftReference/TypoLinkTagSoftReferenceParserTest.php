@@ -15,12 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Unit\DataHandling\SoftReference;
+namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference\AbstractSoftReferenceParserTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
