@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Database;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

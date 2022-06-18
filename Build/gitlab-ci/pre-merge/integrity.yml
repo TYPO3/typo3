@@ -56,6 +56,7 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkBom -p 7.4
     - Build/Scripts/runTests.sh -s checkComposer -p 7.4
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 7.4
+    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 7.4
 
 lint scss ts html pre-merge:
   stage: main
