@@ -156,14 +156,21 @@ class TemplateService
     protected $rootId;
 
     /**
-     * The rootline from current page to the root page
+     * The rootline from current page to the root page.
+     * This is exactly the same as $absoluteRootLine, just in reversed order, so
+     * first entry with key 0 is site-root page, last node is requested page with
+     * the highest key.
+     * This is set up by runThroughTemplates().
      *
      * @var array
      */
     public $rootLine;
 
     /**
-     * Rootline all the way to the root. Set but runThroughTemplates
+     * Rootline all the way to the root. Set by runThroughTemplates.
+     * This is basically the direct output of RootlineUtility: First node
+     * has the highest key and is the deepest page (typically the uid of the requested page),
+     * the last node is the root node of the site and has key 0.
      */
     protected array $absoluteRootLine = [];
 

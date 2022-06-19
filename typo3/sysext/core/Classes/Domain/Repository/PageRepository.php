@@ -1573,7 +1573,7 @@ class PageRepository implements LoggerAwareInterface
      * usage might produce undesired results and that should be evaluated on
      * individual basis.
      *
-     * Principle; Record online! => Find offline?
+     * Principle: Record online! => Find offline?
      *
      * @param string $table Table name
      * @param array $row Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_state" fields must exist! The record MAY be set to FALSE in which case the calling function should act as if the record is forbidden to access!

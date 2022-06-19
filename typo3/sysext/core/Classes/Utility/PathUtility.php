@@ -313,7 +313,7 @@ class PathUtility
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
      *
      * Resolves all dots and slashes between that paths of both files.
-     * Whether the result is absolute or not, depends of the base file name.
+     * Whether the result is absolute or not, depends on the base file name.
      *
      * If the include file goes higher than a relative base file, then the result
      * will contain dots as a relative part.
