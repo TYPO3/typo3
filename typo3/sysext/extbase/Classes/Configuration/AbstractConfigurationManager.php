@@ -176,7 +176,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
 
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {
                 $storagePids = $this->getRecursiveStoragePids(
-                    GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']),
+                    GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? '')),
                     (int)$frameworkConfiguration['persistence']['recursive']
                 );
                 $frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);

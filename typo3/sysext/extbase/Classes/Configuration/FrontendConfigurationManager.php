@@ -121,8 +121,8 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
      */
     protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration): array
     {
-        $pages = $this->contentObject->data['pages'] ?? '';
-        if (is_string($pages) && $pages !== '') {
+        $pages = (string)($this->contentObject->data['pages'] ?? '');
+        if ($pages !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pages, true);
             $recursionDepth = (int)($this->contentObject->data['recursive'] ?? 0);
             $recursiveStoragePids = $this->pageRepository->getPageIdsRecursive($storagePids, $recursionDepth);

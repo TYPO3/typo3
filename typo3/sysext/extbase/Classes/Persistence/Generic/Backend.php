@@ -936,7 +936,7 @@ class Backend implements BackendInterface, SingletonInterface
                 return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
             }
         }
-        $storagePidList = GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
+        $storagePidList = GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? ''));
         return (int)$storagePidList[0];
     }
 

@@ -484,7 +484,8 @@ class DataMapper
                 );
             }
         } else {
-            $constraint = $query->in('uid', GeneralUtility::intExplode(',', $fieldValue));
+            // Note: $fieldValue is annotated as a string, but this cannot be trusted as the callers do not ensure this.
+            $constraint = $query->in('uid', GeneralUtility::intExplode(',', (string)$fieldValue));
         }
         if (!empty($relationTableMatchFields)) {
             foreach ($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
