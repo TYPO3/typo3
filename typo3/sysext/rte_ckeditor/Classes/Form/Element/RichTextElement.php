@@ -196,6 +196,19 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
+     * Determine the language direction
+     */
+    protected function getLanguageDirectionOfContent(): string
+    {
+        $currentLanguageUid = ($this->data['databaseRow']['sys_language_uid'] ?? 0);
+        if (is_array($currentLanguageUid)) {
+            $currentLanguageUid = $currentLanguageUid[0];
+        }
+        $contentLanguageUid = (int)max($currentLanguageUid, 0);
+        return $this->data['systemLanguageRows'][$contentLanguageUid]['direction'] ?? '';
+    }
+
+    /**
      * Gets the JavaScript code for CKEditor module
      * Compiles the configuration, and then adds plugins
      *
@@ -364,6 +377,7 @@ class RichTextElement extends AbstractFormElement
             $configuration['language'] = $userLang === 'default' ? 'en' : $userLang;
         }
         $configuration['contentsLanguage'] = $this->getLanguageIsoCodeOfContent();
+        $configuration['contentsLangDirection'] = $this->getLanguageDirectionOfContent();
 
         // Replace all label references
         $configuration = $this->replaceLanguageFileReferences($configuration);

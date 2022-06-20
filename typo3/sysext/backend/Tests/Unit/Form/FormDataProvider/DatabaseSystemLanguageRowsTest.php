@@ -59,15 +59,18 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $siteLanguageMinusOne->getLanguageId()->willReturn(-1);
         $siteLanguageMinusOne->getTitle()->willReturn('All');
         $siteLanguageMinusOne->getFlagIdentifier()->willReturn('flags-multiple');
+        $siteLanguageMinusOne->getDirection()->willReturn('');
         $siteLanguageZero = $this->prophesize(SiteLanguage::class);
         $siteLanguageZero->getLanguageId()->willReturn(0);
         $siteLanguageZero->getTitle()->willReturn('English');
         $siteLanguageZero->getFlagIdentifier()->willReturn('empty-empty');
+        $siteLanguageZero->getDirection()->willReturn('ltr');
         $siteLanguageOne = $this->prophesize(SiteLanguage::class);
         $siteLanguageOne->getLanguageId()->willReturn(1);
         $siteLanguageOne->getTitle()->willReturn('Dutch');
         $siteLanguageOne->getFlagIdentifier()->willReturn('flag-nl');
         $siteLanguageOne->getTwoLetterIsoCode()->willReturn('NL');
+        $siteLanguageOne->getDirection()->willReturn('rtl');
         $siteLanguages = [
             $siteLanguageMinusOne->reveal(),
             $siteLanguageZero->reveal(),
@@ -85,18 +88,21 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                     'title' => 'All',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'flags-multiple',
+                    'direction' => '',
                 ],
                 0 => [
                     'uid' => 0,
                     'title' => 'English',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'empty-empty',
+                    'direction' => 'ltr',
                 ],
                 1 => [
                     'uid' => 1,
                     'title' => 'Dutch',
                     'iso' => 'NL',
                     'flagIconIdentifier' => 'flag-nl',
+                    'direction' => 'rtl',
                 ],
             ],
         ];
