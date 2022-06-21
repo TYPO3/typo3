@@ -1130,7 +1130,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 101, 'No unique filename available in "%s"!', [$targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.NoUniqueFilenameAvailableIn', [$targetFolderObject->getIdentifier()]);
             } catch (\RuntimeException $e) {
-                $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 100, 'Uploaded file could not be moved! Write-permission problem in "%s"?', [$targetFolderObject->getIdentifier()]);
+                $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 100, 'Uploaded file could not be moved. Write-permission problem in "%s"? Error: %s', [$targetFolderObject->getIdentifier(), $e->getMessage()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.UploadedFileCouldNotBeMoved', [$targetFolderObject->getIdentifier()]);
             }
         }
