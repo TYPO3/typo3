@@ -136,7 +136,7 @@ class RedirectHandler
      * @param string $redirectFirstMethod
      * @return string
      */
-    protected function fetchReturnUrlFromList(array $redirectUrlList, $redirectFirstMethod): string
+    protected function fetchReturnUrlFromList(array $redirectUrlList, string $redirectFirstMethod): string
     {
         if (count($redirectUrlList) === 0) {
             return '';

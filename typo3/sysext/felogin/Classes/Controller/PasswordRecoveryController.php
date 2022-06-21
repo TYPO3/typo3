@@ -272,14 +272,10 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
     /**
      * Validates that $hash is in the expected format (timestamp|forgot_hash)
-     *
-     * @param string $hash
-     *
-     * @return bool
      */
-    protected function hasValidHash($hash): bool
+    protected function hasValidHash(string $hash): bool
     {
-        return !empty($hash) && is_string($hash) && strpos($hash, '|') === 10;
+        return !empty($hash) && strpos($hash, '|') === 10;
     }
 
     /**
