@@ -134,7 +134,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 [
                     'pid' => 1,
                     'root' => 1,
-                    'clear' => 1,
+                    'clear' => 3,
                     'config' => <<<EOT
 constants.PROJECT = TYPO3
 constants.FOO = BAR
