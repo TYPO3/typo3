@@ -2709,8 +2709,9 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDeadLinkToFile(): void
     {
-        $notExistingFile = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('notExists_');
-        $symlinkName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
+        $testDirectory = $this->getTestDirectory() . '/';
+        $notExistingFile = $testDirectory . StringUtility::getUniqueId('notExists_');
+        $symlinkName = $testDirectory . StringUtility::getUniqueId('link_');
         touch($notExistingFile);
         symlink($notExistingFile, $symlinkName);
         unlink($notExistingFile);
