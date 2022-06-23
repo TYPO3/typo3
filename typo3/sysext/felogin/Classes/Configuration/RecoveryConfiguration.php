@@ -23,7 +23,6 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
@@ -33,11 +32,6 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
 class RecoveryConfiguration implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    /**
-     * @var Context
-     */
-    protected $context;
 
     /**
      * @var string
@@ -69,22 +63,12 @@ class RecoveryConfiguration implements LoggerAwareInterface
      */
     protected $timestamp;
 
-    /**
-     * @param Context $context
-     * @param ConfigurationManager $configurationManager
-     * @param Random $random
-     * @param HashService $hashService
-     *
-     * @throws IncompleteConfigurationException
-     * @throws InvalidConfigurationTypeException
-     */
     public function __construct(
-        Context $context,
+        protected Context $context,
         ConfigurationManager $configurationManager,
         Random $random,
         HashService $hashService
     ) {
-        $this->context = $context;
         $this->settings = $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
         $this->forgotHash = $this->getLifeTimeTimestamp() . '|' . $this->generateHash($random, $hashService);
         $this->resolveFromTypoScript();

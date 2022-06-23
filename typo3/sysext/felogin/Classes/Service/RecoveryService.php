@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
@@ -40,59 +39,19 @@ use TYPO3\CMS\FrontendLogin\Event\SendRecoveryEmailEvent;
 class RecoveryService implements RecoveryServiceInterface
 {
     /**
-     * @var RecoveryConfiguration
-     */
-    protected $recoveryConfiguration;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var Mailer
-     */
-    protected $mailer;
-
-    /**
      * @var array
      */
     protected $settings;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var FrontendUserRepository
-     */
-    protected $userRepository;
-
-    /**
-     * @param Mailer $mailer
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ConfigurationManager $configurationManager
-     * @param RecoveryConfiguration $recoveryConfiguration
-     * @param UriBuilder $uriBuilder
-     * @param FrontendUserRepository $userRepository
-     *
-     * @throws InvalidConfigurationTypeException
-     */
     public function __construct(
-        Mailer $mailer,
-        EventDispatcherInterface $eventDispatcher,
+        protected Mailer $mailer,
+        protected EventDispatcherInterface $eventDispatcher,
         ConfigurationManager $configurationManager,
-        RecoveryConfiguration $recoveryConfiguration,
-        UriBuilder $uriBuilder,
-        FrontendUserRepository $userRepository
+        protected RecoveryConfiguration $recoveryConfiguration,
+        protected UriBuilder $uriBuilder,
+        protected FrontendUserRepository $userRepository
     ) {
-        $this->mailer = $mailer;
-        $this->eventDispatcher = $eventDispatcher;
         $this->settings = $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
-        $this->recoveryConfiguration = $recoveryConfiguration;
-        $this->uriBuilder = $uriBuilder;
-        $this->userRepository = $userRepository;
     }
 
     /**

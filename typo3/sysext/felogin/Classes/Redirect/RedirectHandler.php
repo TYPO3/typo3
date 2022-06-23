@@ -33,23 +33,11 @@ class RedirectHandler
      */
     protected $userIsLoggedIn = false;
 
-    /**
-     * @var ServerRequestHandler
-     */
-    protected $requestHandler;
-
-    /**
-     * @var RedirectModeHandler
-     */
-    protected $redirectModeHandler;
-
     public function __construct(
-        ServerRequestHandler $requestHandler,
-        RedirectModeHandler $redirectModeHandler,
+        protected ServerRequestHandler $requestHandler,
+        protected RedirectModeHandler $redirectModeHandler,
         Context $context
     ) {
-        $this->requestHandler = $requestHandler;
-        $this->redirectModeHandler = $redirectModeHandler;
         $this->userIsLoggedIn = (bool)$context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 

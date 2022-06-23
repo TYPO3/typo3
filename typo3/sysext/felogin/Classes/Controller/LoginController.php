@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
@@ -55,11 +54,6 @@ class LoginController extends AbstractLoginFormController
     public const MESSAGEKEY_LOGOUT = 'logout';
 
     /**
-     * @var RedirectHandler
-     */
-    protected $redirectHandler;
-
-    /**
      * @var string
      */
     protected $loginType = '';
@@ -70,24 +64,9 @@ class LoginController extends AbstractLoginFormController
     protected $redirectUrl = '';
 
     /**
-     * @var ServerRequestHandler
-     */
-    protected $requestHandler;
-
-    /**
-     * @var UserService
-     */
-    protected $userService;
-
-    /**
      * @var RedirectConfiguration
      */
     protected $configuration;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
 
     /**
      * @var UserAspect
@@ -100,15 +79,10 @@ class LoginController extends AbstractLoginFormController
     protected $showCookieWarning = false;
 
     public function __construct(
-        RedirectHandler $redirectHandler,
-        ServerRequestHandler $requestHandler,
-        UserService $userService,
-        EventDispatcherInterface $eventDispatcher
+        protected RedirectHandler $redirectHandler,
+        protected ServerRequestHandler $requestHandler,
+        protected UserService $userService
     ) {
-        $this->redirectHandler = $redirectHandler;
-        $this->requestHandler = $requestHandler;
-        $this->userService = $userService;
-        $this->eventDispatcher = $eventDispatcher;
         $this->userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
     }
 

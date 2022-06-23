@@ -33,23 +33,9 @@ class FrontendUserRepository
      */
     protected $connection;
 
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * @var UserService
-     */
-    protected $userService;
-
-    public function __construct(
-        UserService $userService,
-        Context $context
-    ) {
-        $this->userService = $userService;
+    public function __construct(protected UserService $userService, protected Context $context)
+    {
         $this->connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTable());
-        $this->context = $context;
     }
 
     public function getTable(): string

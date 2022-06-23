@@ -37,47 +37,17 @@ class RedirectModeHandler
      */
     protected $redirectUrlValidator;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var ServerRequestHandler
-     */
-    protected $serverRequestHandler;
-
-    /**
-     * @var UserService
-     */
-    private $userService;
-
-    /**
-     * @var FrontendUserRepository
-     */
-    private $frontendUserRepository;
-
-    /**
-     * @var FrontendUserGroupRepository
-     */
-    private $frontendUserGroupRepository;
-
     public function __construct(
-        UriBuilder $uriBuilder,
-        ServerRequestHandler $serverRequestHandler,
-        UserService $userService,
-        FrontendUserRepository $frontendUserRepository,
-        FrontendUserGroupRepository $frontendUserGroupRepository
+        protected UriBuilder $uriBuilder,
+        protected ServerRequestHandler $serverRequestHandler,
+        private UserService $userService,
+        private FrontendUserRepository $frontendUserRepository,
+        private FrontendUserGroupRepository $frontendUserGroupRepository
     ) {
-        $this->uriBuilder = $uriBuilder;
         $this->redirectUrlValidator = GeneralUtility::makeInstance(
             RedirectUrlValidator::class,
             GeneralUtility::makeInstance(SiteFinder::class)
         );
-        $this->serverRequestHandler = $serverRequestHandler;
-        $this->userService = $userService;
-        $this->frontendUserRepository = $frontendUserRepository;
-        $this->frontendUserGroupRepository = $frontendUserGroupRepository;
     }
 
     /**

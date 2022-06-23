@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -40,29 +39,10 @@ use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
  */
 class PasswordRecoveryController extends AbstractLoginFormController
 {
-    /**
-     * @var RecoveryServiceInterface
-     */
-    protected $recoveryService;
-
-    /**
-     * @var FrontendUserRepository
-     */
-    protected $userRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        RecoveryServiceInterface $recoveryService,
-        FrontendUserRepository $userRepository
+        protected RecoveryServiceInterface $recoveryService,
+        protected FrontendUserRepository $userRepository
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->recoveryService = $recoveryService;
-        $this->userRepository = $userRepository;
     }
 
     /**
