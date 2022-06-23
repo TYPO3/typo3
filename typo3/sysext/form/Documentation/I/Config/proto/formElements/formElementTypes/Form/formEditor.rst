@@ -58,6 +58,9 @@ formEditor
                    50:
                      value: DeleteUploads
                      label: formEditor.elements.Form.editor.finishers.DeleteUploads.label
+                   60:
+                     value: Confirmation
+                     label: formEditor.elements.Form.editor.finishers.Confirmation.label
              _isCompositeFormElement: false
              _isTopLevelFormElement: true
              saveSuccessFlashMessageTitle: formEditor.elements.Form.saveSuccessFlashMessageTitle
@@ -98,24 +101,25 @@ formEditor
                        propertyValidators:
                          10: NotEmpty
                          20: FormElementIdentifierWithinCurlyBracesInclusive
-                     300:
-                       identifier: recipientAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.label
-                       propertyPath: options.recipientAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
+                     350:
+                       identifier: recipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label
+                       propertyPath: options.recipients
                        propertyValidators:
-                         10: NaiveEmail
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     400:
-                       identifier: recipientName
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.label
-                       propertyPath: options.recipientName
-                       enableFormelementSelectionButton: true
-                       propertyValidators:
-                         10: FormElementIdentifierWithinCurlyBracesInclusive
+                         10: NotEmpty
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.fieldExplanationText
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
                      500:
                        identifier: senderAddress
                        templateName: Inspector-TextEditor
@@ -134,53 +138,83 @@ formEditor
                        enableFormelementSelectionButton: true
                        propertyValidators:
                          10: FormElementIdentifierWithinCurlyBracesInclusive
-                     700:
-                       identifier: replyToAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label
-                       propertyPath: options.replyToAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
-                       propertyValidators:
-                         10: NaiveEmailOrEmpty
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     800:
-                       identifier: carbonCopyAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyAddress.label
-                       propertyPath: options.carbonCopyAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
-                       propertyValidators:
-                         10: NaiveEmailOrEmpty
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     900:
-                       identifier: blindCarbonCopyAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyAddress.label
-                       propertyPath: options.blindCarbonCopyAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
-                       propertyValidators:
-                         10: NaiveEmailOrEmpty
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     1000:
-                       identifier: format
-                       templateName: Inspector-SingleSelectEditor
-                       label: formEditor.elements.Form.finisher.EmailToSender.editor.format.label
-                       propertyPath: options.format
-                       selectOptions:
-                         10:
-                           value: plaintext
-                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.1
-                         20:
-                           value: html
-                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.2
+                     750:
+                       identifier: replyToRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label
+                       propertyPath: options.replyToRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                     850:
+                       identifier: carbonCopyRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label
+                       propertyPath: options.carbonCopyRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                     950:
+                       identifier: blindCarbonCopyRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label
+                       propertyPath: options.blindCarbonCopyRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                     1050:
+                       identifier: addHtmlPart
+                       templateName: Inspector-CheckboxEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label
+                       propertyPath: options.addHtmlPart
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText
                      1100:
                        identifier: attachUploads
                        templateName: Inspector-CheckboxEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label
                        propertyPath: options.attachUploads
+                     1200:
+                       identifier: language
+                       templateName: Inspector-SingleSelectEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.language.label
+                       propertyPath: options.translation.language
+                       selectOptions:
+                         10:
+                           value: default
+                           label: formEditor.elements.Form.finisher.EmailToSender.editor.language.1
+                     1400:
+                       identifier: title
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.title.label
+                       propertyPath: options.title
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText
+                       enableFormelementSelectionButton: true
+                       propertyValidators:
+                         10: FormElementIdentifierWithinCurlyBracesInclusive
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor
@@ -200,24 +234,25 @@ formEditor
                        propertyValidators:
                          10: NotEmpty
                          20: FormElementIdentifierWithinCurlyBracesInclusive
-                     300:
-                       identifier: recipientAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.label
-                       propertyPath: options.recipientAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
+                     350:
+                       identifier: recipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label
+                       propertyPath: options.recipients
                        propertyValidators:
-                         10: NaiveEmail
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     400:
-                       identifier: recipientName
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.label
-                       propertyPath: options.recipientName
-                       enableFormelementSelectionButton: true
-                       propertyValidators:
-                         10: FormElementIdentifierWithinCurlyBracesInclusive
+                         10: NotEmpty
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.fieldExplanationText
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
                      500:
                        identifier: senderAddress
                        templateName: Inspector-TextEditor
@@ -236,48 +271,60 @@ formEditor
                        enableFormelementSelectionButton: true
                        propertyValidators:
                          10: FormElementIdentifierWithinCurlyBracesInclusive
-                     700:
-                       identifier: replyToAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToAddress.label
-                       propertyPath: options.replyToAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
-                       propertyValidators:
-                         10: NaiveEmailOrEmpty
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     800:
-                       identifier: carbonCopyAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyAddress.label
-                       propertyPath: options.carbonCopyAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
-                       propertyValidators:
-                         10: NaiveEmailOrEmpty
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     900:
-                       identifier: blindCarbonCopyAddress
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyAddress.label
-                       propertyPath: options.blindCarbonCopyAddress
-                       enableFormelementSelectionButton: true
-                       propertyValidatorsMode: OR
-                       propertyValidators:
-                         10: NaiveEmailOrEmpty
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
-                     1000:
-                       identifier: format
-                       templateName: Inspector-SingleSelectEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.format.label
-                       propertyPath: options.format
-                       selectOptions:
-                         10:
-                           value: plaintext
-                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.1
-                         20:
-                           value: html
-                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.2
+                     750:
+                       identifier: replyToRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label
+                       propertyPath: options.replyToRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                     850:
+                       identifier: carbonCopyRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label
+                       propertyPath: options.carbonCopyRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                     950:
+                       identifier: blindCarbonCopyRecipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label
+                       propertyPath: options.blindCarbonCopyRecipients
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                     1050:
+                       identifier: addHtmlPart
+                       templateName: Inspector-CheckboxEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label
+                       propertyPath: options.addHtmlPart
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.fieldExplanationText
                      1100:
                        identifier: attachUploads
                        templateName: Inspector-CheckboxEditor
@@ -292,6 +339,15 @@ formEditor
                          10:
                            value: default
                            label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1
+                     1400:
+                       identifier: title
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label
+                       propertyPath: options.title
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText
+                       enableFormelementSelectionButton: true
+                       propertyValidators:
+                         10: FormElementIdentifierWithinCurlyBracesInclusive
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor
@@ -339,6 +395,24 @@ formEditor
                        identifier: header
                        templateName: Inspector-CollectionElementHeaderEditor
                        label: formEditor.elements.Form.finisher.Confirmation.editor.header.label
+                     200:
+                       identifier: contentElement
+                       templateName: Inspector-Typo3WinBrowserEditor
+                       label: formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label
+                       buttonLabel: formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel
+                       browsableType: tt_content
+                       iconIdentifier: mimetypes-x-content-text
+                       propertyPath: options.contentElementUid
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: IntegerOrEmpty
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     300:
+                       identifier: message
+                       templateName: Inspector-TextareaEditor
+                       label: formEditor.elements.Form.finisher.Confirmation.editor.message.label
+                       propertyPath: options.message
+                       fieldExplanationText: formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor

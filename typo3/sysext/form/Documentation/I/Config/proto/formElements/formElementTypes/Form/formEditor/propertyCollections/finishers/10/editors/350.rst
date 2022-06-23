@@ -1,0 +1,49 @@
+.. include:: /Includes.rst.txt
+
+formEditor.propertyCollections.finishers.10.editors.350
+-------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.10.editors.350
+
+:aspect:`Data type`
+      array/ :ref:`[PropertyGridEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 10:
+                   identifier: EmailToSender
+                   editors:
+                     350:
+                       identifier: recipients
+                       templateName: Inspector-PropertyGridEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label
+                       propertyPath: options.recipients
+                       propertyValidators:
+                         10: NotEmpty
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.fieldExplanationText
+                       isSortable: true
+                       enableAddRow: true
+                       enableDeleteRow: true
+                       useLabelAsFallbackValue: false
+                       gridColumns:
+                         -
+                           name: value
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                         -
+                           name: label
+                           title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+

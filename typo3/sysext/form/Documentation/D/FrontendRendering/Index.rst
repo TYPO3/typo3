@@ -263,7 +263,9 @@ Implement a ``FormFactory`` and build the form::
 
            $form->createFinisher('EmailToSender', [
                'subject' => 'Hello',
-               'recipientAddress' => 'foo@example.com',
+               'recipients' => [
+                   'your.company@example.com' => 'Your Company name'
+               ],
                'senderAddress' => 'bar@example.com',
            ]);
 

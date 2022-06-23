@@ -54,7 +54,7 @@ by this.
                    elements:
                      senderAddress: ~
                      senderName: ~
-                     replyToAddress: ~
+                     replyToRecipients: ~
                      translation: ~
 
 

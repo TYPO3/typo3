@@ -496,7 +496,9 @@ The same mechanism (YAML, YAML + TypoScript) works for finisher options:
        identifier: EmailToReceiver
        options:
          subject: My %s subject
-         recipientAddress: foo@example.org
+         recipients:
+           your.company@example.com: 'Your Company name'
+           ceo@example.com: 'CEO'
          senderAddress: bar@example.org
          translation:
            translationFiles:

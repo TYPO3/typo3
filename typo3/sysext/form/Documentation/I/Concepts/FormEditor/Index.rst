@@ -491,17 +491,22 @@ you a ``form definition`` and the debug output of the corresponding
        identifier: EmailToReceiver
        options:
          subject: 'Your message: {subject}'
-         recipientAddress: your.company@example.com
-         recipientName: 'Your Company name'
+         recipients:
+           your.company@example.com: 'Your Company name'
+           ceo@example.com: 'CEO'
          senderAddress: '{email}'
          senderName: '{name}'
-         replyToAddress: ''
-         carbonCopyAddress: ''
-         blindCarbonCopyAddress: ''
-         format: html
+         replyToRecipients:
+           replyTo.company@example.com: 'Your Company name'
+         carbonCopyRecipients:
+           cc.company@example.com: 'Your Company name'
+         blindCarbonCopyRecipients:
+           bcc.company@example.com: 'Your Company name'
+         addHtmlPart: true
          attachUploads: 'true'
          translation:
            language: ''
+         title: ''
    renderables:
      -
        identifier: page-1
@@ -534,18 +539,27 @@ you a ``form definition`` and the debug output of the corresponding
          "identifier": "EmailToReceiver",
          "options": {
            "subject": "Your message: {subject}",
-           "recipientAddress": "your.company@example.com",
-           "recipientName": "Your Company name",
+           "recipients": {
+             "your.company@example.com": "Your Company name",
+             "ceo@example.com": "CEO"
+           },
            "senderAddress": "{email}",
            "senderName": "{name}",
-           "replyToAddress": "",
-           "carbonCopyAddress": "",
-           "blindCarbonCopyAddress": "",
-           "format": "html",
+           "replyToRecipients": {
+             "replyTo.company@example.com": "Your Company name"
+           },
+           "carbonCopyRecipients": {
+             "cc.company@example.com": "Your Company name"
+           },
+           "blindCarbonCopyRecipients": {
+             "bcc.company@example.com": "Your Company name"
+           },
+           "addHtmlPart": true,
            "attachUploads": true,
            "translation": {
              "language": ""
-           }
+           },
+           "title": ""
          }
        }
      ],

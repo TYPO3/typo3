@@ -1,10 +1,10 @@
 .. include:: /Includes.rst.txt
 
-formEditor.propertyCollections.finishers.20.editors.1100
+formEditor.propertyCollections.finishers.20.editors.1050
 --------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1100
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1050
 
 :aspect:`Data type`
       array/ :ref:`[CheckboxEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor>`
@@ -27,9 +27,10 @@ formEditor.propertyCollections.finishers.20.editors.1100
                  20:
                    identifier: EmailToReceiver
                    editors:
-                     1100:
-                       identifier: attachUploads
+                     1050:
+                       identifier: addHtmlPart
                        templateName: Inspector-CheckboxEditor
-                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label
-                       propertyPath: options.attachUploads
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label
+                       propertyPath: options.addHtmlPart
+                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.fieldExplanationText
 
