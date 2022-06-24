@@ -446,12 +446,6 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
     esac
 done
 
-# @todo Remove this check after PHP8.2 image contains xdebug
-if [ "${PHP_VERSION}" == "8.2" -a ${PHP_XDEBUG_ON} -eq 1 ]; then
-    echo "xdebug not available for PHP 8.2; either use other PHP version or do not use -x"
-    exit 1
-fi
-
 # Exit on invalid options
 if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
     echo "Invalid option(s):" >&2
