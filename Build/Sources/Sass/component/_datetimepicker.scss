@@ -468,7 +468,7 @@ span.flatpickr-weekday {
 .flatpickr-day {
     background: none;
     border: 1px solid transparent;
-    border-radius: $border-radius-base;
+    border-radius: $border-radius;
     box-sizing: border-box;
     color: $dropdown-link-color;
     cursor: pointer;
@@ -537,13 +537,13 @@ span.flatpickr-weekday {
 .flatpickr-day.selected.startRange,
 .flatpickr-day.startRange.startRange,
 .flatpickr-day.endRange.startRange {
-    border-radius: $border-radius-base 0 0 $border-radius-base;
+    border-radius: $border-radius 0 0 $border-radius;
 }
 
 .flatpickr-day.selected.endRange,
 .flatpickr-day.startRange.endRange,
 .flatpickr-day.endRange.endRange {
-    border-radius: 0 $border-radius-base $border-radius-base 0;
+    border-radius: 0 $border-radius $border-radius 0;
 }
 
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
@@ -555,7 +555,7 @@ span.flatpickr-weekday {
 .flatpickr-day.selected.startRange.endRange,
 .flatpickr-day.startRange.startRange.endRange,
 .flatpickr-day.endRange.startRange.endRange {
-    border-radius: $border-radius-base;
+    border-radius: $border-radius;
 }
 
 .flatpickr-day.inRange {

@@ -127,17 +127,6 @@ $grid-float-breakpoint: $screen-sm-min !default;
 $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !default;
 $popover-title-bg: darken($popover-bg, 3%) !default;
 
-// Typography
-$font-size-h1: $h1-font-size;
-$font-size-h2: $h2-font-size;
-$font-size-h3: $h3-font-size;
-$font-size-h4: $h4-font-size;
-
-// Components
-$border-radius-base: $border-radius;
-$border-radius-large: $border-radius-lg;
-$border-radius-small: $border-radius-sm;
-
 .hidden,
 .hide {
     display: none !important;

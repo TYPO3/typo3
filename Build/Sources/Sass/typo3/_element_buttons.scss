@@ -12,7 +12,7 @@
     font-size: 0;
 
     .collapse + .btn.collapsed:last-child {
-        border-radius: $border-radius-base;
+        border-radius: $border-radius;
     }
 
     .btn-default.disabled {
