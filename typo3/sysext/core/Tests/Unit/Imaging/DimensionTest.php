@@ -36,7 +36,7 @@ class DimensionTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new Dimension(Icon::SIZE_DEFAULT);
+        $this->subject = new Dimension(Icon::SIZE_MEDIUM);
     }
 
     /**

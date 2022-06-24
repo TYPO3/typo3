@@ -37,15 +37,16 @@ class Dimension
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($size = Icon::SIZE_DEFAULT)
+    public function __construct($size = Icon::SIZE_MEDIUM)
     {
         switch ($size) {
             case Icon::SIZE_LARGE:
                 $sizeInPixel = 48;
                 break;
-            case Icon::SIZE_DEFAULT:
+            case Icon::SIZE_MEDIUM:
                 $sizeInPixel = 32;
                 break;
+            case Icon::SIZE_DEFAULT:
             case Icon::SIZE_SMALL:
             case Icon::SIZE_OVERLAY:
                 $sizeInPixel = 16;

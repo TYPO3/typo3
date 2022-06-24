@@ -83,12 +83,12 @@ class IconFactory
 
     /**
      * @param string $identifier
-     * @param string $size "large", "small" or "default", see the constants of the Icon class
+     * @param string $size "default", "small", "medium" or "large", see the constants of the Icon class
      * @param string $overlayIdentifier
      * @param IconState $state
      * @return Icon
      */
-    public function getIcon($identifier, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = null, IconState $state = null)
+    public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, IconState $state = null)
     {
         $cacheIdentifier = md5($identifier . $size . $overlayIdentifier . (string)$state);
         if (!empty(static::$iconCache[$cacheIdentifier])) {
@@ -123,10 +123,10 @@ class IconFactory
      *
      * @param string $table The TCA table name
      * @param array $row The DB record of the TCA table
-     * @param string $size "large" "small" or "default", see the constants of the Icon class
+     * @param string $size "default", "small", "medium" or "large", see the constants of the Icon class
      * @return Icon
      */
-    public function getIconForRecord($table, array $row, $size = Icon::SIZE_DEFAULT)
+    public function getIconForRecord($table, array $row, $size = Icon::SIZE_MEDIUM)
     {
         $iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row);
         $overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row);
@@ -400,7 +400,7 @@ class IconFactory
      * @param string $overlayIdentifier
      * @return Icon
      */
-    public function getIconForFileExtension($fileExtension, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = null)
+    public function getIconForFileExtension($fileExtension, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null)
     {
         $iconName = $this->iconRegistry->getIconIdentifierForFileExtension($fileExtension);
         return $this->getIcon($iconName, $size, $overlayIdentifier);
@@ -426,7 +426,7 @@ class IconFactory
      */
     public function getIconForResource(
         ResourceInterface $resource,
-        $size = Icon::SIZE_DEFAULT,
+        $size = Icon::SIZE_MEDIUM,
         $overlayIdentifier = null,
         array $options = []
     ) {

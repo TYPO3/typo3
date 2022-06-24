@@ -41,7 +41,9 @@ $toolbar-item-padding-horizontal: 15px;
     color: $gray-100;
     position: absolute;
     top: 0;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     border: 0;
     background-color: $topbar-button-bg;
     height: $topbar-height;
@@ -123,7 +125,7 @@ $toolbar-item-padding-horizontal: 15px;
 
 .topbar-button-toolbar,
 .topbar-button-search {
-    display: block;
+    display: inline-flex;
 }
 
 @media (min-width: $scaffold-breakpoint) {

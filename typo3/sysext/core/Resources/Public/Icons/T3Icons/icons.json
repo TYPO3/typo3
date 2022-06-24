@@ -600,6 +600,12 @@
       "svg": "svgs/actions/actions-comment.svg",
       "sprite": "sprites/actions.svg#actions-comment"
     },
+    "actions-container": {
+      "identifier": "actions-container",
+      "category": "actions",
+      "svg": "svgs/actions/actions-container.svg",
+      "sprite": "sprites/actions.svg#actions-container"
+    },
     "actions-cookie-bite": {
       "identifier": "actions-cookie-bite",
       "category": "actions",
@@ -623,6 +629,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-credit-card.svg",
       "sprite": "sprites/actions.svg#actions-credit-card"
+    },
+    "actions-crop": {
+      "identifier": "actions-crop",
+      "category": "actions",
+      "svg": "svgs/actions/actions-crop.svg",
+      "sprite": "sprites/actions.svg#actions-crop"
     },
     "actions-cut-release": {
       "identifier": "actions-cut-release",
@@ -1241,6 +1253,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-logout.svg",
       "sprite": "sprites/actions.svg#actions-logout"
+    },
+    "actions-magnet": {
+      "identifier": "actions-magnet",
+      "category": "actions",
+      "svg": "svgs/actions/actions-magnet.svg",
+      "sprite": "sprites/actions.svg#actions-magnet"
     },
     "actions-map": {
       "identifier": "actions-map",
@@ -2562,6 +2580,12 @@
       "svg": "svgs/content/content-container-columns-4.svg",
       "sprite": "sprites/content.svg#content-container-columns-4"
     },
+    "content-container": {
+      "identifier": "content-container",
+      "category": "content",
+      "svg": "svgs/content/content-container.svg",
+      "sprite": "sprites/content.svg#content-container"
+    },
     "content-cpu": {
       "identifier": "content-cpu",
       "category": "content",
@@ -2687,6 +2711,12 @@
       "category": "content",
       "svg": "svgs/content/content-listgroup.svg",
       "sprite": "sprites/content.svg#content-listgroup"
+    },
+    "content-magnet": {
+      "identifier": "content-magnet",
+      "category": "content",
+      "svg": "svgs/content/content-magnet.svg",
+      "sprite": "sprites/content.svg#content-magnet"
     },
     "content-map": {
       "identifier": "content-map",

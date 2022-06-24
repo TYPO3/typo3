@@ -1018,7 +1018,7 @@ class BackendUtility
                                     . ' '
                                     . htmlspecialchars($fileObject->getName())
                                 . '">'
-                                    . $iconFactory->getIcon('mimetypes-other-other', Icon::SIZE_DEFAULT, 'overlay-missing')->render()
+                                    . $iconFactory->getIcon('mimetypes-other-other', Icon::SIZE_MEDIUM, 'overlay-missing')->render()
                                 . '</span>'
                             . '</div>'
                         . '</div>';
@@ -1055,7 +1055,7 @@ class BackendUtility
                 } else {
                     // Icon
                     $imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">'
-                        . $iconFactory->getIconForResource($fileObject, Icon::SIZE_DEFAULT)->render()
+                        . $iconFactory->getIconForResource($fileObject, Icon::SIZE_MEDIUM)->render()
                         . '</span>';
                 }
                 if ($linkInfoPopup) {

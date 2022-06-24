@@ -25,7 +25,7 @@
                     {f:if(condition: module.path, then: 'href="{f:be.uri(route: module.identifier)}"')}
                     {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
                 >
-                    <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="{module.iconIdentifier}" size="default" alternativeMarkupIdentifier="inline"/></span>
+                    <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="{module.iconIdentifier}" size="medium" alternativeMarkupIdentifier="inline"/></span>
                     <span class="modulemenu-name"><f:translate key="{module.title}">{module.title}</f:translate></span>
                     <span class="modulemenu-indicator" aria-hidden="true"></span>
                 </a>
@@ -36,23 +36,22 @@
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
     <h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></h3>
-    <div class="dropdown-table">
+    <ul class="modulemenu-group-container">
         <f:for each="{recentUsers}" as="user">
-            <div class="dropdown-table-row">
-                <div class="dropdown-table-column dropdown-table-title">
-                    <typo3-backend-switch-user mode="switch" targetUser="{user.uid}">
-                        <button
-                            type="button"
-                            class="modulemenu-action"
-                            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.tooltip', arguments: '{0: user.username}')}"
-                        >
-                            <be:avatar backendUser="{user.uid}" size="32" />&nbsp;{f:if(condition: user.realName, then: user.realName, else: user.username)}
-                        </button>
-                    </typo3-backend-switch-user>
-                </div>
-            </div>
+            <li>
+                <typo3-backend-switch-user mode="switch" targetUser="{user.uid}">
+                    <button
+                        type="button"
+                        class="modulemenu-action"
+                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.tooltip', arguments: '{0: user.username}')}"
+                    >
+                        <span class="modulemenu-icon" aria-hidden="true"><be:avatar backendUser="{user.uid}" size="32" /></span>
+                        <span class="modulemenu-name">{f:if(condition: user.realName, then: user.realName, else: user.username)}</span>
+                    </button>
+                </typo3-backend-switch-user>
+            </li>
         </f:for>
-    </div>
+    </ul>
     <hr>
 </f:if>
 <f:if condition="{switchUserMode}">

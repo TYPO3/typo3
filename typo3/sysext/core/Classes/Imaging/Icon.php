@@ -25,19 +25,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Icon
 {
     /**
+     * @var string the default size
+     */
+    const SIZE_DEFAULT = 'default'; // 1em
+
+    /**
      * @var string the small size
      */
-    const SIZE_SMALL = 'small'; // 16
+    const SIZE_SMALL = 'small'; // 16px
 
     /**
      * @var string the default size
      */
-    const SIZE_DEFAULT = 'default'; // 32
+    const SIZE_MEDIUM = 'medium'; // 32px
 
     /**
      * @var string the large size
      */
-    const SIZE_LARGE = 'large'; // 48
+    const SIZE_LARGE = 'large'; // 48px
 
     /**
      * @internal

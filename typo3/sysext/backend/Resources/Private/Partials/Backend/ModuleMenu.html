@@ -62,7 +62,7 @@
         {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
         {f:if(condition: showChildren, then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
     >
-        <span class="modulemenu-icon" aria-hidden="true"><core:icon size="default" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>
+        <span class="modulemenu-icon" aria-hidden="true"><core:icon size="medium" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>
         <span class="modulemenu-name"><f:translate key="{module.title}">{module.title}</f:translate></span>
         <span class="modulemenu-indicator" aria-hidden="true"></span>
     </{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}>

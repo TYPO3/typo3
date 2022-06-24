@@ -147,6 +147,10 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     }
 }
 
+.toolbar-item-icon {
+    display: inline-flex;
+}
+
 .toolbar-item-badge {
     position: absolute;
     bottom: 4px;
@@ -165,7 +169,9 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     text-overflow: ellipsis;
     border: 1px solid rgba(0, 0, 0, 0.5);
     position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
     text-decoration: none;
     padding: $toolbar-item-padding-vertical $toolbar-item-padding-horizontal;
     height: $toolbar-height;

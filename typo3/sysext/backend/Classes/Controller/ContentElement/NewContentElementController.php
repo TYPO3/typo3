@@ -131,7 +131,7 @@ class NewContentElementController
                 $viewVariables = [
                     'wizardInformation' => $wizardItem,
                     'wizardKey' => $wizardKey,
-                    'icon' => $this->iconFactory->getIcon(($wizardItem['iconIdentifier'] ?? ''), Icon::SIZE_DEFAULT, ($wizardItem['iconOverlay'] ?? ''))->render(),
+                    'icon' => $this->iconFactory->getIcon(($wizardItem['iconIdentifier'] ?? ''), Icon::SIZE_MEDIUM, ($wizardItem['iconOverlay'] ?? ''))->render(),
                 ];
                 // Get default values for the wizard item
                 $defVals = (array)($wizardItem['tt_content_defValues'] ?? []);

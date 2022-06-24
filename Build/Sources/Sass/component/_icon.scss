@@ -1,136 +1,12 @@
-//
-// Icon
-// ====
-// General CSS for Icons
-//
-//
-// Example Usage
-// -------------
-//
-// <span class="icon icon-size-large">
-//   <span class="icon-markup">
-//     <img src="#" width="16" height="16">
-//   </span>
-//   <span class="icon-overlay">
-//     <img src="#" width="8" height="8">
-//   </span>
-// </span>
-//
+@import "../../../node_modules/@typo3/icons/dist/icons.scss";
+@import "../../../node_modules/@typo3/icons/dist/icons-bootstrap.scss";
 
 //
-// Variables
-//
-$icon-size-small: 16px !default;
-$icon-size-default: 32px !default;
-$icon-size-large: 48px !default;
-$icon-size-mega: 64px !default;
-$icon-unify-modifier: 0.86 !default;
-$icon-opacity-disabled: 0.5 !default;
-
-//
-// Component
+// Icon alignment
 //
 .icon {
-    position: relative;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    height: 1em;
-    width: 1em;
     vertical-align: -22%;
-
-    svg,
-    img {
-        display: block;
-        height: 100%;
-        width: 100%;
-        transform: translate3d(0, 0, 0);
-    }
-
-    * {
-        display: block;
-        line-height: inherit;
-    }
 }
-
-.icon-markup {
-    position: absolute;
-    display: block;
-    text-align: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.icon-overlay {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 68.75%;
-    width: 68.75%;
-    text-align: center;
-}
-
-.icon-color {
-    fill: currentColor;
-}
-
-//
-// Icon Animation
-//
-.icon-spin {
-    .icon-markup {
-        animation: icon-spin 2s infinite linear;
-    }
-}
-
-@keyframes icon-spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-//
-// States
-//
-.icon-state-disabled {
-    .icon-markup {
-        opacity: $icon-opacity-disabled;
-    }
-}
-
-//
-// Variants
-//
-@mixin icon-size($identifier, $size) {
-    .icon-size-#{$identifier} {
-        height: $size;
-        width: $size;
-        line-height: $size;
-
-        .icon-unify {
-            line-height: $size;
-            font-size: ceil($size * $icon-unify-modifier);
-        }
-
-        .icon-overlay {
-            .icon-unify {
-                line-height: ceil($size / 1.6);
-                font-size: ceil(ceil($size / 1.6) * $icon-unify-modifier);
-            }
-        }
-    }
-}
-
-@include icon-size(small, $icon-size-small);
-@include icon-size(default, $icon-size-default);
-@include icon-size(large, $icon-size-large);
-@include icon-size(mega, $icon-size-mega);
 
 //
 // Special icons
@@ -140,32 +16,32 @@ $icon-opacity-disabled: 0.5 !default;
 .icon-status-status-current,
 .icon-status-dialog-error,
 .icon-status-status-permission-denied {
-    color: $danger;
+    --icon-color-primary: #{$danger};
 }
 
 .icon-status-status-sorting-light-asc,
 .icon-status-status-sorting-light-desc {
-    color: #fff;
+    --icon-color-primary: #fff;
 }
 
 .icon-status-status-sorting-asc,
 .icon-status-status-sorting-desc {
-    color: $gray-600;
+    --icon-color-primary: #{$gray-600};
 }
 
 .icon-status-dialog-information {
-    color: $info;
+    --icon-color-primary: #{$info};
 }
 
 .icon-status-dialog-ok,
 .icon-status-status-permission-granted {
-    color: $success;
+    --icon-color-primary: #{$success};
 }
 
 .icon-status-dialog-notification {
-    color: $notice;
+    --icon-color-primary: #{$notice};
 }
 
 .icon-status-dialog-warning {
-    color: $warning;
+    --icon-color-primary: #{$warning};
 }

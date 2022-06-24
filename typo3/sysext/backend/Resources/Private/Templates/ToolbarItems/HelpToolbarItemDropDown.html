@@ -17,7 +17,7 @@
                         {f:if(condition: module.path, then: 'href="{f:be.uri(route: module.identifier)}"')}
                         {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
                     >
-                        <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="{module.iconIdentifier}" size="default" alternativeMarkupIdentifier="inline"/></span>
+                        <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="{module.iconIdentifier}" size="medium" alternativeMarkupIdentifier="inline"/></span>
                         <span class="modulemenu-name"><f:translate key="{module.title}">{module.title}</f:translate></span>
                         <span class="modulemenu-indicator" aria-hidden="true"></span>
                     </a>
@@ -28,7 +28,7 @@
                     class="modulemenu-action"
                     role="menuitem"
                     href="https://docs.typo3.org/" target="_blank" rel="noreferrer">
-                    <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-cshmanual" size="default" alternativeMarkupIdentifier="inline"/></span>
+                    <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-cshmanual" size="medium" alternativeMarkupIdentifier="inline"/></span>
                     <span class="modulemenu-name"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:onlineDocumentation">TYPO3 Online Documentation</f:translate></span>
                     <span class="modulemenu-indicator" aria-hidden="true"></span>
                 </a>
