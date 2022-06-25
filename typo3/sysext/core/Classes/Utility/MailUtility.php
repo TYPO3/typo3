@@ -27,7 +27,12 @@ class MailUtility
      *
      * Ready to be passed to $mail->setFrom()
      *
-     * @return array key=Valid email address which can be used as sender, value=Valid name which can be used as a sender. NULL if no address is configured
+     * This method can return three different variants:
+     * 1. An assoc. array: key => Valid email address which can be used as sender; value => Valid name which can be used as a sender
+     * 2. A numeric array with one entry: Valid email address which can be used as sender
+     * 3. Null, if no address is configured
+     *
+     * @return array<string|int, string>|null
      */
     public static function getSystemFrom()
     {
@@ -47,7 +52,7 @@ class MailUtility
      *
      * As configured in Install Tool.
      *
-     * @return string The name (unquoted, unformatted). NULL if none is set
+     * @return string|null The name (unquoted, unformatted). NULL if none is set or an invalid non-string value.
      */
     public static function getSystemFromName()
     {
@@ -90,7 +95,13 @@ class MailUtility
      *
      * Ready to be passed to $mail->setReplyTo()
      *
-     * @return array List of email-addresses. Specifying a realname can be done in the form of "replyToName <replyTo@example.com>".
+     * This method returns a list of email addresses, but depending on the existence of "defaultMailReplyToName"
+     * the array can have a different shape:
+     *
+     * 1. An assoc. array: key => a valid reply-to address which can be used as sender; value => a valid reply-to name which can be used as a sender
+     * 2. A numeric array with one entry: a valid reply-to address which can be used as sender
+     *
+     * @return array<string|int, string>
      */
     public static function getSystemReplyTo(): array
     {

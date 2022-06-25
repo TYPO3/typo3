@@ -1826,16 +1826,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MailUtility\\:\\:getSystemFrom\\(\\) should return array but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/MailUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MailUtility\\:\\:getSystemFromName\\(\\) should return string but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/MailUtility.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MathUtility\\:\\:calculateWithParentheses\\(\\) should return int but returns string\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Utility/MathUtility.php
