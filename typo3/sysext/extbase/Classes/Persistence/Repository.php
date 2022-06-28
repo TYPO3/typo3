@@ -32,18 +32,18 @@ class Repository implements RepositoryInterface, SingletonInterface
     protected $persistenceManager;
 
     /**
-     * @var string
+     * @var class-string
      */
     protected $objectType;
 
     /**
-     * @var array
+     * @var array<non-empty-string, QueryInterface::ORDER_*>
      */
     protected $defaultOrderings = [];
 
     /**
      * Override query settings created by extbase natively.
-     * Be careful if using this, see the comment on setDefaultQuerySettings() for more insights.
+     * Be careful if using this, see the comment on `setDefaultQuerySettings()` for more insights.
      *
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
      */
@@ -169,7 +169,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @param array<string,string> $defaultOrderings The property names to order by
+     * @param array<non-empty-string, QueryInterface::ORDER_*> $defaultOrderings The property names to order by
      */
     public function setDefaultOrderings(array $defaultOrderings)
     {
@@ -212,8 +212,8 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Dispatches magic methods (findBy[Property]())
      *
-     * @param string $methodName The name of the magic method
-     * @param string $arguments The arguments of the magic method
+     * @param non-empty-string $methodName The name of the magic method
+     * @param array<int, mixed> $arguments The arguments of the magic method
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
      * @return mixed
      */
@@ -248,7 +248,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Returns the class name of this class.
      *
-     * @return string Class name of the repository.
+     * @return class-string<RepositoryInterface> Class name of the repository.
      */
     protected function getRepositoryClassName()
     {

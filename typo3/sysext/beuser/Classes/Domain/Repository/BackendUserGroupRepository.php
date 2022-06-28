@@ -24,9 +24,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class BackendUserGroupRepository extends Repository
 {
-    /**
-     * @var array Default order is by title ascending
-     */
     protected $defaultOrderings = [
         'title' => QueryInterface::ORDER_ASCENDING,
     ];

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
+
 /**
  * Several functions related to naming and conversions of names
  * such as translation between Repository and Model names or
@@ -42,6 +44,10 @@ class ClassNamingUtility
      * Translates a repository name to an appropriate model name
      * e.g. Tx_Extbase_Domain_Repository_FooRepository to Tx_Extbase_Domain_Model_Foo
      * or \TYPO3\CMS\Extbase\Domain\Repository\FooRepository to \TYPO3\CMS\Extbase\Domain\Model\Foo
+     *
+     * @param class-string<RepositoryInterface> $repositoryName
+     *
+     * @return class-string
      */
     public static function translateRepositoryNameToModelName(string $repositoryName): string
     {

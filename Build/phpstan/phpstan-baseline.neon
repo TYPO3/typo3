@@ -2541,11 +2541,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$arguments of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:__call\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$key of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:getConfigurationValue\\(\\) expects string, int given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationBuilderTest.php
