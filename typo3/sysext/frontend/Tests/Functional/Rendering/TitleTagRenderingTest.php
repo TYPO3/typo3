@@ -29,16 +29,6 @@ class TitleTagRenderingTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['seo'];
 
-    protected array $configurationToUseInTestInstance = [
-        'SC_OPTIONS' => [
-            'Core/TypoScript/TemplateService' => [
-                'runThroughTemplatesPostProcessing' => [
-                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
-                ],
-            ],
-        ],
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
