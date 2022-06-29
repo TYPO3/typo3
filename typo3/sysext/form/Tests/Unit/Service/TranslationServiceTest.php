@@ -91,6 +91,9 @@ class TranslationServiceTest extends UnitTestCase
         $localizationFactory
             ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf', 'default')
             ->willReturn(include __DIR__ . '/Fixtures/locallang_text.php');
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf', 'default')
+            ->willReturn(include __DIR__ . '/Fixtures/locallang_empty_values.php');
 
         GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactory->reveal());
 
@@ -1286,5 +1289,125 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'form-runtime-identifier FooFinisher test EN';
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, 'Foo', 'test', 'value', []));
+    }
+
+    /**
+     * @test
+     */
+    public function translateFormElementErrorTranslatesErrorsWithEmptyTranslatedValues(): void
+    {
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf'];
+
+        $formRuntimeIdentifier = 'form-runtime-identifier-42';
+        $formElementIdentifier = 'form-element-identifier';
+
+        $formRuntimeRenderingOptions = [
+            '_originalIdentifier' => 'form-runtime-identifier',
+            'translation' => [
+                'translationFiles' => $formRuntimeXlfPaths,
+                'translatePropertyValueIfEmpty' => true,
+            ],
+        ];
+
+        foreach ($formRuntimeXlfPaths as $formRuntimeXlfPath) {
+            $this->store->flushData($formRuntimeXlfPath);
+        }
+
+        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
+
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getProperties')->willReturn([]);
+
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+
+        $mockFormElement->_set('type', 'Text');
+        $mockFormElement->_set('identifier', $formElementIdentifier);
+        $mockFormElement->_set('label', '');
+        $mockFormElement->_set('properties', []);
+
+        $expected = '0';
+        self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementError', $mockFormElement, 123, [], 'default value', $mockFormRuntime));
+
+        $expected = 'default value';
+        self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementError', $mockFormElement, 124, [], 'default value', $mockFormRuntime));
+    }
+
+    /**
+     * @test
+     */
+    public function translateFormElementTranslatesFormElementsWithEmptyTranslatedValues(): void
+    {
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf'];
+
+        $formRuntimeIdentifier = 'form-runtime-identifier-42';
+        $formElementIdentifier = 'form-element-identifier';
+
+        $formRuntimeRenderingOptions = [
+            'submitButtonLabel' => '',
+            '_originalIdentifier' => 'form-runtime-identifier',
+            'translation' => [
+                'translationFiles' => $formRuntimeXlfPaths,
+                'translatePropertyValueIfEmpty' => true,
+            ],
+        ];
+
+        foreach ($formRuntimeXlfPaths as $formRuntimeXlfPath) {
+            $this->store->flushData($formRuntimeXlfPath);
+        }
+
+        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+
+        $mockFormElement->_set('type', 'Text');
+        $mockFormElement->_set('identifier', $formElementIdentifier);
+        $mockFormElement->_set('label', 'test');
+
+        $expected = '0';
+        self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormRuntime, ['submitButtonLabel'], $mockFormRuntime));
+
+        $expected = 'test';
+        self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
+    }
+
+    /**
+     * @test
+     */
+    public function translateFinisherOptionTranslatesFinisherOptionsWithEmptyTranslatedValues(): void
+    {
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf'];
+
+        $formRuntimeIdentifier = 'form-runtime-identifier-42';
+
+        $formRuntimeRenderingOptions = [
+            '_originalIdentifier' => 'form-runtime-identifier',
+            'translation' => [
+                'translationFiles' => $formRuntimeXlfPaths,
+                'translatePropertyValueIfEmpty' => true,
+            ],
+        ];
+
+        foreach ($formRuntimeXlfPaths as $formRuntimeXlfPath) {
+            $this->store->flushData($formRuntimeXlfPath);
+        }
+
+        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
+
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getProperties')->willReturn([]);
+
+        $expected = '0';
+        self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, 'Foo', 'test1', 'value', []));
+
+        $expected = 'value';
+        self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, 'Foo', 'test2', 'value', []));
     }
 }

@@ -128,7 +128,7 @@ class TranslationService implements SingletonInterface
         $this->initializeLocalization($locallangPathAndFilename ?? '');
 
         // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-        if (!empty($this->LOCAL_LANG[$this->languageKey][$key][0]['target'])
+        if (isset($this->LOCAL_LANG[$this->languageKey][$key][0]['target'])
             || isset($this->LOCAL_LANG_UNSET[$this->languageKey][$key])
         ) {
             // Local language translation for key exists
@@ -136,7 +136,7 @@ class TranslationService implements SingletonInterface
         } elseif (!empty($this->alternativeLanguageKeys)) {
             $languages = array_reverse($this->alternativeLanguageKeys);
             foreach ($languages as $language) {
-                if (!empty($this->LOCAL_LANG[$language][$key][0]['target'])
+                if (isset($this->LOCAL_LANG[$language][$key][0]['target'])
                     || isset($this->LOCAL_LANG_UNSET[$language][$key])
                 ) {
                     // Alternative language translation for key exists
@@ -146,7 +146,7 @@ class TranslationService implements SingletonInterface
             }
         }
 
-        if ($value === null && (!empty($this->LOCAL_LANG['default'][$key][0]['target'])
+        if ($value === null && (isset($this->LOCAL_LANG['default'][$key][0]['target'])
             || isset($this->LOCAL_LANG_UNSET['default'][$key]))
         ) {
             // Default language translation for key exists
@@ -157,7 +157,7 @@ class TranslationService implements SingletonInterface
         if (is_array($arguments) && !empty($arguments) && $value !== null) {
             $value = vsprintf($value, $arguments);
         } else {
-            if (empty($value)) {
+            if ($value === null) {
                 $value = $defaultValue;
             }
         }
@@ -298,7 +298,7 @@ class TranslationService implements SingletonInterface
         }
 
         $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-        $translatedValue = empty($translatedValue) ? $optionValue : $translatedValue;
+        $translatedValue = $this->isEmptyTranslatedValue($translatedValue) ? $optionValue : $translatedValue;
 
         return $translatedValue;
     }
@@ -349,11 +349,11 @@ class TranslationService implements SingletonInterface
             $translatePropertyValueIfEmpty = true;
         }
 
-        if (empty($defaultValue) && !$translatePropertyValueIfEmpty) {
+        if ($this->isEmptyTranslatedValue($defaultValue) && !$translatePropertyValueIfEmpty) {
             return $defaultValue;
         }
 
-        $defaultValue = empty($defaultValue) ? '' : $defaultValue;
+        $defaultValue = $this->isEmptyTranslatedValue($defaultValue) ? '' : $defaultValue;
         $translationFiles = $renderingOptions['translation']['translationFiles'] ?? [];
         if (empty($translationFiles)) {
             $translationFiles = $formRuntime->getRenderingOptions()['translation']['translationFiles'];
@@ -395,7 +395,7 @@ class TranslationService implements SingletonInterface
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-                $optionLabel = empty($translatedValue) ? $optionLabel : $translatedValue;
+                $optionLabel = $this->isEmptyTranslatedValue($translatedValue) ? $optionLabel : $translatedValue;
             }
             $translatedValue = $defaultValue;
         } elseif ($property === 'fluidAdditionalAttributes' && is_array($defaultValue)) {
@@ -416,7 +416,7 @@ class TranslationService implements SingletonInterface
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-                $propertyValue = empty($translatedValue) ? $propertyValue : $translatedValue;
+                $propertyValue = $this->isEmptyTranslatedValue($translatedValue) ? $propertyValue : $translatedValue;
             }
             $translatedValue = $defaultValue;
         } else {
@@ -436,7 +436,7 @@ class TranslationService implements SingletonInterface
             }
 
             $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-            $translatedValue = empty($translatedValue) ? $defaultValue : $translatedValue;
+            $translatedValue = $this->isEmptyTranslatedValue($translatedValue) ? $defaultValue : $translatedValue;
         }
 
         return $translatedValue;
@@ -508,7 +508,7 @@ class TranslationService implements SingletonInterface
         }
 
         $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-        $translatedValue = empty($translatedValue) ? $defaultValue : $translatedValue;
+        $translatedValue = $this->isEmptyTranslatedValue($translatedValue) ? $defaultValue : $translatedValue;
         return $translatedValue;
     }
 
@@ -544,7 +544,7 @@ class TranslationService implements SingletonInterface
         $translatedValue = null;
         foreach ($translationKeyChain as $translationKey) {
             $translatedValue = $this->translate($translationKey, $arguments, null, $language);
-            if (!empty($translatedValue)) {
+            if (!$this->isEmptyTranslatedValue($translatedValue)) {
                 break;
             }
         }
@@ -678,6 +678,37 @@ class TranslationService implements SingletonInterface
             krsort($array);
         }
         return $array;
+    }
+
+    /**
+     * Check if given translated value is considered "empty".
+     *
+     * A translated value is considered "empty" if it's either NULL or
+     * an empty string. This helper method exists to perform a less strict
+     * check than the native {@see empty()} function, because it is too
+     * strict in terms of supported translated values. For example, the
+     * value "0" is valid, whereas {@see empty()} would handle it as "empty"
+     * and therefore invalid.
+     */
+    protected function isEmptyTranslatedValue(mixed $translatedValue): bool
+    {
+        if ($translatedValue === null) {
+            return true;
+        }
+
+        if (is_string($translatedValue)) {
+            return trim($translatedValue) === '';
+        }
+
+        if (is_bool($translatedValue)) {
+            return !$translatedValue;
+        }
+
+        if (is_array($translatedValue)) {
+            return $translatedValue === [];
+        }
+
+        return false;
     }
 
     /**

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf" date="2022-06-30T03:38:32Z" product-name="tests">
+        <header/>
+        <body>
+            <trans-unit id="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" resname="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" xml:space="preserve">
+                <source>0</source>
+            </trans-unit>
+            <trans-unit id="form-runtime-identifier-42.element.form-element-identifier.properties.label" resname="form-runtime-identifier-42.element.form-element-identifier.properties.label" xml:space="preserve">
+                <source></source>
+            </trans-unit>
+
+            <trans-unit id="form-runtime-identifier-42.validation.error.form-element-identifier.123" resname="form-runtime-identifier-42.validation.error.form-element-identifier.123" xml:space="preserve">
+                <source>0</source>
+            </trans-unit>
+            <trans-unit id="form-runtime-identifier-42.validation.error.form-element-identifier.124" resname="form-runtime-identifier-42.validation.error.form-element-identifier.124" xml:space="preserve">
+                <source></source>
+            </trans-unit>
+
+            <trans-unit id="form-runtime-identifier-42.finisher.Foo.test1" resname="form-runtime-identifier-42.finisher.Foo.test1" xml:space="preserve">
+                <source>0</source>
+            </trans-unit>
+            <trans-unit id="form-runtime-identifier-42.finisher.Foo.test2" resname="form-runtime-identifier-42.finisher.Foo.test2" xml:space="preserve">
+                <source></source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
