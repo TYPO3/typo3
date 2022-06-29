@@ -115,7 +115,7 @@ class WorkspacePreview implements MiddlewareInterface
         // This option is solely used to ensure that a be-user can preview the live version of a page in the
         // workspace preview module.
         if ($keyword === 'LIVE' && isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            // We need to set the workspace to live here
+            // We need to set the workspace to "live" here
             $GLOBALS['BE_USER']->setTemporaryWorkspace(0);
             // Register the backend user as aspect
             $this->setBackendUserAspect($context, $GLOBALS['BE_USER']);
@@ -416,9 +416,6 @@ class WorkspacePreview implements MiddlewareInterface
 
     /**
      * Register or override the backend user as aspect, as well as the workspace information the user object is holding
-     *
-     * @param Context $context
-     * @param BackendUserAuthentication $user
      */
     protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user = null)
     {

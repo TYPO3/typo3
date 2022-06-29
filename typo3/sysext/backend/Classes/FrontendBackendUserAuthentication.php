@@ -203,4 +203,14 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
         }
         return $allow;
     }
+
+    /**
+     * If a user is in a workspace, but previews the live workspace (GET keyword "LIVE") even if the user
+     * has no editing permissions for this, it should still be visible, even though "be_users.workspace_perms" is set to "0".
+     * If this ain't true, users without the live permission cannot see the live page, only the preview of the workspace of the user.
+     */
+    protected function hasEditAccessToLiveWorkspace(): bool
+    {
+        return true;
+    }
 }

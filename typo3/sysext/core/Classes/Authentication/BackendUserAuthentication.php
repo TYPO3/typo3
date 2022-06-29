@@ -1879,7 +1879,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
             switch ((string)$wsRec['uid']) {
                 case '0':
-                    $retVal = (($this->groupData['workspace_perms'] ?? 0) & 1)
+                    $retVal = $this->hasEditAccessToLiveWorkspace()
                         ? array_merge($wsRec, ['_ACCESS' => 'online'])
                         : false;
                     break;
@@ -1907,6 +1907,15 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
         }
         return $retVal;
+    }
+
+    /**
+     * Checks if the user (or the group) has the workspace_perms set to 1 in order to allow
+     * editing records in live workspace.
+     */
+    protected function hasEditAccessToLiveWorkspace(): bool
+    {
+        return (bool)(($this->groupData['workspace_perms'] ?? 0) & 1);
     }
 
     /**
