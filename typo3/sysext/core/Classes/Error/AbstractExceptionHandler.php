@@ -44,10 +44,13 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
 
     private const IGNORED_EXCEPTION_CODES = [
         1396795884, // Current host header value does not match the configured trusted hosts pattern
+        1616175867, // Backend login request is rate limited
+        1616175847, // Frontend login request is rate limited
+    ];
+
+    public const IGNORED_HMAC_EXCEPTION_CODES = [
         1581862822, // Failed HMAC validation due to modified __trustedProperties in extbase property mapping
         1581862823, // Failed HMAC validation due to modified form state in ext:forms
-        1616175867, // Backend login request is rate limited
-        1616175847,  // Frontend login request is rate limited
     ];
 
     /**
@@ -78,7 +81,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     protected function writeLogEntries(\Throwable $exception, string $mode): void
     {
         // Do not write any logs for some messages to avoid filling up tables or files with illegal requests
-        if (in_array($exception->getCode(), self::IGNORED_EXCEPTION_CODES, true)) {
+        $ignoredCodes = array_merge(self::IGNORED_EXCEPTION_CODES, self::IGNORED_HMAC_EXCEPTION_CODES);
+        if (in_array($exception->getCode(), $ignoredCodes, true)) {
             return;
         }
 

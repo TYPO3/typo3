@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Error\AbstractExceptionHandler;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 
@@ -78,8 +79,10 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
         // "%s" has to be replaced by {code} for b/w compatibility
         $errorMessage = str_replace('%s', '{code}', $errorMessage);
 
-        // Log exception
-        $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code]);
+        // Log exception except HMAC validation exceptions caused by potentially forged requests
+        if (!in_array($exception->getCode(), AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES, true)) {
+            $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code]);
+        }
 
         // Return error message by replacing {code} with the actual code, generated above
         return str_replace('{code}', $code, $errorMessage);
