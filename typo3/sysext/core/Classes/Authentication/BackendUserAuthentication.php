@@ -1826,7 +1826,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         }
         // User is in live, and be_groups.workspace_perms has bitmask=1 included
         if ($wsRec['uid'] === 0) {
-            return (($this->groupData['workspace_perms'] ?? 0) & 1)
+            return $this->hasEditAccessToLiveWorkspace()
                 ? array_merge($wsRec, ['_ACCESS' => 'online'])
                 : false;
         }
@@ -1851,6 +1851,15 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the user (or the group) has the workspace_perms set to 1 in order to allow
+     * editing records in live workspace.
+     */
+    protected function hasEditAccessToLiveWorkspace(): bool
+    {
+        return (bool)(($this->groupData['workspace_perms'] ?? 0) & 1);
     }
 
     /**
