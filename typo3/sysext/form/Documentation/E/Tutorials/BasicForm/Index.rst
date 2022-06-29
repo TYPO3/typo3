@@ -96,7 +96,7 @@ Let's get started:
    .. figure:: Images/6_textarea_1.png
       :alt: Choose textarea field.
 
-   The "Textarea" type in the overview.
+      The "Textarea" type in the overview.
 
 #. Add options for the message field
 
@@ -105,7 +105,7 @@ Let's get started:
    .. figure:: Images/6_textarea_2.png
       :alt: Configure textarea field.
 
-   Configure the message field.
+      Configure the message field.
 
 #. Send an email on form submit
 
@@ -114,7 +114,7 @@ Let's get started:
    .. figure:: Images/7_addFinisherEmail_1.png
       :alt: Adding a finisher
 
-   Adding a finisher
+      Adding a finisher
 
    1. Click on the form name on the top left - here you can edit general form settings.
    2. Choose a finisher on the right - to send an email to yourself, choose "Email to receiver (you)".
