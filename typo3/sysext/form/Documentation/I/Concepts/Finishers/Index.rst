@@ -10,7 +10,7 @@ The form framework ships a bunch of finishers, which will be briefly
 described here. For more details, please head to the API reference and check
 out the section regarding :ref:`Finisher Options<apireference-finisheroptions>`.
 
-.. note::
+.. important::
 
    Finishers are executed in the order defined in your form definition. This is
    especially important when you are using the ``Redirect finisher``. Make sure
@@ -50,8 +50,9 @@ within your TYPO3 installation.
 
 .. note::
 
-   Finishers are only executed on successfully submitted forms. If a user uploads a file but
-   does not finish the form successfully, the uploaded files will not be deleted.
+   Finishers are only executed on successfully submitted forms. If a user uploads
+   a file but does not finish the form successfully, the uploaded files will not
+   be deleted.
 
 
 .. _concepts-finishers-emailfinisher:
@@ -155,7 +156,7 @@ Redirect finisher
 The 'Redirect finisher' is a simple finisher that redirects to another page.
 Additional link parameters can be added to the URL.
 
-.. note::
+.. important::
 
    This finisher stops the execution of all subsequent finishers in order to perform
    the redirect. Therefore, this finisher should always be the last finisher to be

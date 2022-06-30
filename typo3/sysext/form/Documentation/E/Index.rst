@@ -55,6 +55,7 @@ directly to your CRM or similar tools.
 .. toctree::
    :maxdepth: 1
 
-   Tutorials/Index
    FormElements/Index
    Validators/Index
+   Finishers/Index
+   Tutorials/Index

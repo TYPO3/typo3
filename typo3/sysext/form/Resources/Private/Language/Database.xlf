@@ -666,7 +666,7 @@
                 <source>Title</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
-                <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject your email.</source>
+                <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve">
@@ -721,7 +721,7 @@
                 <source>Title</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
-                <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject your email.</source>
+                <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" resname="formEditor.elements.Form.finisher.Redirect.editor.header.label" xml:space="preserve">
