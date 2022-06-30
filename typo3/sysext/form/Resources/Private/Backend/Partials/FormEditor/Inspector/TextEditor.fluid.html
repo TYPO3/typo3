@@ -9,15 +9,7 @@
             <div data-identifier="inspectorEditorControlsWrapper">
                 <input data-random-id data-random-id-attribute="id" data-random-id-number="1" type="text" value="" data-template-property="propertyPath" class="form-control">
             </div>
-            <span class="input-group-btn" role="group" data-identifier="inspectorEditorFormElementSelectorControlsWrapper">
-                <span class="btn-group" data-identifier="inspectorEditorFormElementSelectorSplitButtonContainer">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.formelement_selector.title')}">
-                        <core:icon identifier="actions-variable-select" />
-                        <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" data-identifier="inspectorEditorFormElementSelectorSplitButtonListContainer"></ul>
-                </span>
-            </span>
+            <typo3-form-element-selector></typo3-form-element-selector>
         </div>
         <div class="form-text" data-template-property="validationErrors"></div>
     </div>

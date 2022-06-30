@@ -16,28 +16,32 @@
  */
 
 import $ from 'jquery';
+import type { Configuration as HelperConfiguration } from '@typo3/form/backend/form-editor/helper';
 import * as Helper from '@typo3/form/backend/form-editor/helper';
 import Icons from '@typo3/backend/icons';
 import Modal from '@typo3/backend/modal';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import Sortable from 'sortablejs';
 import { selector } from '@typo3/core/literals';
-import { PropertyGridEditorUpdateEvent, type PropertyGridEditorEntry } from '@typo3/form/backend/form-editor/component/property-grid-editor';
+import {
+  type PropertyGridEditorEntry,
+  PropertyGridEditorUpdateEvent
+} from '@typo3/form/backend/form-editor/component/property-grid-editor';
 
+import type { FormEditor } from '@typo3/form/backend/form-editor';
 import type {
-  FormEditor,
-} from '@typo3/form/backend/form-editor';
-import type {
-  Utility,
   EditorConfiguration,
   FormEditorDefinitions,
   FormElement,
   FormElementDefinition,
   PublisherSubscriber,
+  Utility,
 } from '@typo3/form/backend/form-editor/core';
-import type {
-  Configuration as HelperConfiguration,
-} from '@typo3/form/backend/form-editor/helper';
+import {
+  type FormElementSelectorEntry,
+  FormElementSelectorSelectedEvent
+} from '@typo3/form/backend/form-editor/component/form-element-selector';
+
 type ViewModel = typeof import('./view-model');
 
 interface Configuration extends Partial<HelperConfiguration> {
@@ -1711,14 +1715,19 @@ export function renderPropertyGridEditor(
     editorConfiguration.gridColumns.forEach(gridColumnConfig => {
       if (gridColumnConfig.name === 'label') {
         propertyGridEditor.labelLabel = gridColumnConfig.title;
+        propertyGridEditor.enableLabelFormElementSelectionButton = gridColumnConfig.enableFormelementSelectionButton;
       }
       if (gridColumnConfig.name === 'value') {
         propertyGridEditor.labelValue = gridColumnConfig.title;
+        propertyGridEditor.enableValueFormElementSelectionButton = gridColumnConfig.enableFormelementSelectionButton;
       }
       if (gridColumnConfig.name === 'selected') {
         propertyGridEditor.labelSelected = gridColumnConfig.title;
       }
     });
+  }
+  if (propertyGridEditor.enableLabelFormElementSelectionButton || propertyGridEditor.enableValueFormElementSelectionButton) {
+    propertyGridEditor.formElements = getFormElementSelectorEntries();
   }
 
   propertyGridEditor.addEventListener(PropertyGridEditorUpdateEvent.eventName, (event: PropertyGridEditorUpdateEvent) => {
@@ -2184,80 +2193,46 @@ export function renderFormElementSelectorEditorAddition(
     1484574706
   );
 
-  const formElementSelectorControlsWrapper = $(
-    getHelper().getDomElementDataIdentifierSelector('formElementSelectorControlsWrapper'), editorHtml
-  );
+  const formElementSelector = editorHtml instanceof HTMLElement ?
+    editorHtml.querySelector('typo3-form-element-selector') :
+    editorHtml.get(0).querySelector('typo3-form-element-selector');
+
+  if (!formElementSelector) {
+    return;
+  }
 
   if (editorConfiguration.enableFormelementSelectionButton === true) {
-    if (formElementSelectorControlsWrapper.length === 0) {
-      return;
-    }
+    formElementSelector.elements = getFormElementSelectorEntries();
+    formElementSelector.addEventListener(FormElementSelectorSelectedEvent.eventName, (event: FormElementSelectorSelectedEvent) => {
+      let propertyData;
 
-    const formElementSelectorSplitButtonListContainer = $(
-      getHelper().getDomElementDataIdentifierSelector('formElementSelectorSplitButtonListContainer'), editorHtml
-    );
+      propertyData = getCurrentlySelectedFormElement().get(propertyPath) || '';
 
-    formElementSelectorSplitButtonListContainer.off().empty();
+      if (propertyData.length === 0) {
+        propertyData = `{${event.value}}`;
+      } else {
+        propertyData = `${propertyData} {${event.value}}`;
+      }
+
+      getCurrentlySelectedFormElement().set(propertyPath, propertyData);
+      getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(propertyData);
+      validateCollectionElement(propertyPath, editorHtml);
+    });
+  } else {
+    formElementSelector.remove();
+  }
+}
+
+function getFormElementSelectorEntries(): FormElementSelectorEntry[] {
+  return ((): FormElementSelectorEntry[] => {
     const nonCompositeNonToplevelFormElements = getFormEditorApp().getNonCompositeNonToplevelFormElements();
 
-    if (nonCompositeNonToplevelFormElements.length === 0) {
-      Icons.getIcon(
-        getHelper().getDomElementDataAttributeValue('iconNotAvailable'),
-        Icons.sizes.small,
-        null,
-        Icons.states.default
-      ).then(function(icon) {
-        const itemTemplate = $('<li data-no-sorting>'
-          + '<span class="dropdown-item"></span>'
-          + '</li>');
-
-        itemTemplate.find('span')
-          .append($(icon))
-          .append(' ' + getFormElementDefinition(getRootFormElement(), 'inspectorEditorFormElementSelectorNoElements'));
-        formElementSelectorSplitButtonListContainer.append(itemTemplate);
-      });
-    } else {
-      $.each(nonCompositeNonToplevelFormElements, function(i, nonCompositeNonToplevelFormElement) {
-        Icons.getIcon(
-          getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier'),
-          Icons.sizes.small,
-          null,
-          Icons.states.default
-        ).then(function(icon) {
-          const itemTemplate = $('<li data-no-sorting>'
-            + '<a href="#" class="dropdown-item" data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '">'
-            + '</a>'
-            + '</li>');
-
-          $(selector`[data-formelement-identifier="${nonCompositeNonToplevelFormElement.get('identifier')}"]`, itemTemplate)
-            .append($(icon))
-            .append(' ' + nonCompositeNonToplevelFormElement.get('label'));
-
-          $('a', itemTemplate).on('click', function(this: HTMLElement) {
-            let propertyData;
-
-            propertyData = getCurrentlySelectedFormElement().get(propertyPath) || '';
-
-            if (propertyData.length === 0) {
-              propertyData = '{' + $(this).attr('data-formelement-identifier') + '}';
-            } else {
-              propertyData = propertyData + ' ' + '{' + $(this).attr('data-formelement-identifier') + '}';
-            }
-
-            getCurrentlySelectedFormElement().set(propertyPath, propertyData);
-            getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(propertyData);
-            validateCollectionElement(propertyPath, editorHtml);
-          });
-
-          formElementSelectorSplitButtonListContainer.append(itemTemplate);
-        });
-      });
-    }
-  } else {
-    $(getHelper().getDomElementDataIdentifierSelector('editorControlsInputGroup'), editorHtml)
-      .removeClass(getHelper().getDomElementClassName('inspectorInputGroup'));
-    formElementSelectorControlsWrapper.off().empty().remove();
-  }
+    return nonCompositeNonToplevelFormElements.map((nonCompositeNonToplevelFormElement: FormElement): FormElementSelectorEntry => ({
+      icon: getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier'),
+      label: nonCompositeNonToplevelFormElement.get('label'),
+      value: nonCompositeNonToplevelFormElement.get('identifier'),
+    }));
+  })();
 }
 
 /**

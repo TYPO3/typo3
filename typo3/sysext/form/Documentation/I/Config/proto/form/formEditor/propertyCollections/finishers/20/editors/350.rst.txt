@@ -43,7 +43,9 @@ formEditor.propertyCollections.finishers.20.editors.350
                          -
                            name: value
                            title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                           enableFormelementSelectionButton: true
                          -
                            name: label
                            title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                           enableFormelementSelectionButton: true
 

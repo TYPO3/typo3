@@ -1275,9 +1275,6 @@ If you need higher values contact your administrator for help.
       <trans-unit id="formEditor.inspector.editor.formelement_selector.title">
         <source>Insert formelement identifier</source>
       </trans-unit>
-      <trans-unit id="formEditor.inspector.editor.formelement_selector.no_elements">
-        <source>No elements available</source>
-      </trans-unit>
       <trans-unit id="formEditor.inspector.editor.formelement.remove">
         <source>Remove this Element</source>
       </trans-unit>

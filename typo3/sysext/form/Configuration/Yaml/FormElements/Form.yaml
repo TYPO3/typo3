@@ -63,7 +63,6 @@ prototypes:
           modalRemoveElementCancelButton: formEditor.modals.removeElement.cancelButton
           modalRemoveElementLastAvailablePageFlashMessageTitle: formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle
           modalRemoveElementLastAvailablePageFlashMessageMessage: formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage
-          inspectorEditorFormElementSelectorNoElements: formEditor.inspector.editor.formelement_selector.no_elements
           paginationTitle: formEditor.pagination.title
           iconIdentifier: content-form
           propertyCollections:
@@ -99,9 +98,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   500:
                     identifier: senderAddress
                     templateName: Inspector-TextEditor
@@ -135,9 +136,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   850:
                     identifier: carbonCopyRecipients
                     templateName: Inspector-PropertyGridEditor
@@ -151,9 +154,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   950:
                     identifier: blindCarbonCopyRecipients
                     templateName: Inspector-PropertyGridEditor
@@ -167,9 +172,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   1050:
                     identifier: addHtmlPart
                     templateName: Inspector-CheckboxEditor
@@ -237,9 +244,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   500:
                     identifier: senderAddress
                     templateName: Inspector-TextEditor
@@ -273,9 +282,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   850:
                     identifier: carbonCopyRecipients
                     templateName: Inspector-PropertyGridEditor
@@ -289,9 +300,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   950:
                     identifier: blindCarbonCopyRecipients
                     templateName: Inspector-PropertyGridEditor
@@ -305,9 +318,11 @@ prototypes:
                       -
                         name: value
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+                        enableFormelementSelectionButton: true
                       -
                         name: label
                         title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+                        enableFormelementSelectionButton: true
                   1050:
                     identifier: addHtmlPart
                     templateName: Inspector-CheckboxEditor

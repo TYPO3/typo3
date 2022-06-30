@@ -933,7 +933,6 @@
 .property-grid-editor {
     &__entries {
         display: grid;
-        overflow: hidden;
         border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
         border-radius: var(--typo3-component-border-radius);
         gap: 1px;

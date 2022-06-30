@@ -17,6 +17,11 @@ import { classMap } from 'lit/directives/class-map.js';
 import { live } from 'lit/directives/live.js';
 import { customElement, property, state } from 'lit/decorators.js';
 import '@typo3/backend/element/icon-element';
+import '@typo3/form/backend/form-editor/component/form-element-selector';
+import {
+  type FormElementSelectorEntry,
+  FormElementSelectorSelectedEvent
+} from '@typo3/form/backend/form-editor/component/form-element-selector';
 
 export interface PropertyGridEditorEntry {
   id: string;
@@ -39,6 +44,7 @@ export class PropertyGridEditorUpdateEvent extends Event {
 export class PropertyGridEditor extends LitElement {
 
   @property({ type: Array, attribute: 'entries' }) entries: PropertyGridEditorEntry[] = [];
+  @property({ type: Array, attribute: 'form-elements' }) formElements: FormElementSelectorEntry[] = [];
 
   @property({ type: String, attribute: 'label-label' }) labelLabel: string = 'Label';
   @property({ type: String, attribute: 'label-value' }) labelValue: string = 'Value';
@@ -53,6 +59,8 @@ export class PropertyGridEditor extends LitElement {
   @property({ type: Boolean }) enableMultiSelection: boolean = false;
   @property({ type: Boolean }) enableSorting: boolean = false;
   @property({ type: Boolean }) enableLabelAsFallbackValue: boolean = false;
+  @property({ type: Boolean }) enableLabelFormElementSelectionButton: boolean = false;
+  @property({ type: Boolean }) enableValueFormElementSelectionButton: boolean = false;
 
   @state() private draggedEntry: PropertyGridEditorEntry | null = null;
   @state() private movedEntry: PropertyGridEditorEntry | null = null;
@@ -112,26 +120,32 @@ export class PropertyGridEditor extends LitElement {
         <div class="property-grid-editor__entry-inputs">
           <div class="form-group">
             <label for="${entry.id}-label" class="form-label">${this.labelLabel}</label>
-            <input
-              id="${entry.id}-label"
-              class="form-control form-control-sm"
-              type="text"
-              @change=${(event: Event) => this.handleChange(event, 'label', entry)}
-              @keyup=${(event: Event) => this.handleChange(event, 'label', entry)}
-              @focusout=${(event: FocusEvent) => this.handleFocusOut(event, entry)}
-              .value=${live(entry.label)}
-            />
+            <div class="input-group form-control-wrap">
+              <input
+                id="${entry.id}-label"
+                class="form-control form-control-sm"
+                type="text"
+                @change=${(event: Event) => this.handleChange(event, 'label', entry)}
+                @keyup=${(event: Event) => this.handleChange(event, 'label', entry)}
+                @focusout=${() => this.handleFocusOut(entry)}
+                .value=${live(entry.label)}
+              />
+              ${this.renderFormElementSelectionButton(this.enableLabelFormElementSelectionButton, 'label', entry)}
+            </div>
           </div>
           <div class="form-group">
             <label for="${entry.id}-value" class="form-label">${this.labelValue}</label>
-            <input
-              id="${entry.id}-value"
-              class="form-control form-control-sm"
-              type="text"
-              @change=${(event: Event) => this.handleChange(event, 'value', entry)}
-              @keyup=${(event: Event) => this.handleChange(event, 'value', entry)}
-              .value=${live(entry.value)}
-            />
+            <div class="input-group form-control-wrap">
+              <input
+                id="${entry.id}-value"
+                class="form-control form-control-sm"
+                type="text"
+                @change=${(event: Event) => this.handleChange(event, 'value', entry)}
+                @keyup=${(event: Event) => this.handleChange(event, 'value', entry)}
+                .value=${live(entry.value)}
+              />
+              ${this.renderFormElementSelectionButton(this.enableValueFormElementSelectionButton, 'value', entry)}
+            </div>
           </div>
           ${(this.enableSelection || this.enableMultiSelection) ? html`
             <div class="form-check">
@@ -175,7 +189,25 @@ export class PropertyGridEditor extends LitElement {
     `;
   }
 
-  protected handleFocusOut(event: FocusEvent, entry: PropertyGridEditorEntry): void {
+  protected renderFormElementSelectionButton(enabled: boolean, property: string, entry: PropertyGridEditorEntry): TemplateResult {
+    if (!enabled || !this.formElements?.length) {
+      return html`${nothing}`;
+    }
+    return html`
+      <typo3-form-element-selector @typo3:backend:form-editor:component:form-element-selector:selected=${(e: FormElementSelectorSelectedEvent) => this.handleFormElementSelection(e, property, entry)} elements=${JSON.stringify(this.formElements)} size="small"></typo3-form-element-selector>
+    `;
+  }
+
+  protected handleFormElementSelection(event: FormElementSelectorSelectedEvent, property: string, entry: PropertyGridEditorEntry): void {
+    const currentValue = entry[property as keyof PropertyGridEditorEntry];
+    if (currentValue) {
+      this.setEntryProperty(entry, property, `${currentValue} {${event.value}}`);
+    } else {
+      this.setEntryProperty(entry, property, `{${event.value}}`);
+    }
+  }
+
+  protected handleFocusOut(entry: PropertyGridEditorEntry): void {
     if (this.enableLabelAsFallbackValue && entry.value === '') {
       this.setEntryProperty(entry, 'value', entry.label);
     }

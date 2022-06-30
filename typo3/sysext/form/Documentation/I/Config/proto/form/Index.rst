@@ -141,9 +141,6 @@ Properties
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.form.formeditor.modalremoveelementlastavailablepageflashmessagemessage:
 ..  include:: formEditor/modalRemoveElementLastAvailablePageFlashMessageMessage.rst.txt
 
-..  _prototypes.prototypeIdentifier.formelementsdefinition.form.formeditor.inspectoreditorformelementselectornoelements:
-..  include:: formEditor/inspectorEditorFormElementSelectorNoElements.rst.txt
-
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.form.formeditor.paginationtitle:
 ..  include:: formEditor/paginationTitle.rst.txt
 

@@ -47,6 +47,7 @@ export type EditorConfiguration = {
   gridColumns?: Array<{
     name: string,
     title: string,
+    enableFormelementSelectionButton: boolean,
   }>,
   iconIdentifier?: string,
   isSortable?: boolean,
@@ -91,7 +92,6 @@ export type BaseFormElementDefinition = {
 };
 
 type RootFormElementDefinition = {
-  inspectorEditorFormElementSelectorNoElements: string,
   modalCloseCancelButton: string,
   modalCloseConfirmButton: string,
   modalCloseDialogMessage: string,
