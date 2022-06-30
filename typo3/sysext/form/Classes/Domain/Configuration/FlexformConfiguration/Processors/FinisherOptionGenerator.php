@@ -89,16 +89,16 @@ class FinisherOptionGenerator extends AbstractProcessor
         } catch (MissingArrayPathException $exception) {
         }
 
+        if (isset($elementConfiguration['config'])) {
+            $elementConfiguration['config']['default'] = $optionValue;
+        }
+
         if (empty($optionValue)) {
             $optionValue = $this->languageService->getLL('empty');
         } elseif (is_array($optionValue)) {
             $optionValue = implode(',', $optionValue);
         }
         $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $this->languageService->getLL('default'), $optionValue);
-
-        if (isset($elementConfiguration['config'])) {
-            $elementConfiguration['config']['default'] = $optionValue;
-        }
 
         $sheetElements = $this->converterDto->getResult();
         $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey]['TCEforms'] = $elementConfiguration;
