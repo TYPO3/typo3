@@ -63,7 +63,7 @@ class AddHmacDataConverter extends AbstractConverter
             GeneralUtility::makeInstance(
                 ArrayProcessing::class,
                 'addHmacData',
-                '^(?!(.*\._label|.*\._value)$).*',
+                '^.*',
                 GeneralUtility::makeInstance(
                     AddHmacDataToFormElementPropertyConverter::class,
                     $this->converterDto,
