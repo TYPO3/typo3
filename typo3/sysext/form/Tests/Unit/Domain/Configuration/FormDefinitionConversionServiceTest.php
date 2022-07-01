@@ -83,6 +83,14 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
             'klaus1' => [
                 '_label' => 'x',
                 '_value' => 'y',
+                '_orig__label' => [
+                    'value' => 'x',
+                    'hmac' => '8b62cd2971adeac49e8900530c9c2067a81e8b53',
+                ],
+                '_orig__value' => [
+                    'value' => 'y',
+                    'hmac' => '582e4c76c9e6589b4ca1a85860ac774af6c5a5e0',
+                ],
             ],
             'sabine' => [
                 'heinz' => '2',
@@ -137,6 +145,14 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
             'klaus1' => [
                 '_label' => 'x',
                 '_value' => 'y',
+                '_orig__label' => [
+                    'value' => 'x',
+                    'hmac' => '8b62cd2971adeac49e8900530c9c2067a81e8b53',
+                ],
+                '_orig__value' => [
+                    'value' => 'y',
+                    'hmac' => '582e4c76c9e6589b4ca1a85860ac774af6c5a5e0',
+                ],
             ],
             'sabine' => [
                 'heinz' => '2',
