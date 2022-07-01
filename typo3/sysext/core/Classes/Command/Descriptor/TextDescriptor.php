@@ -86,7 +86,7 @@ class TextDescriptor extends SymfonyTextDescriptor
             // calculate max. width based on available commands per namespace
             $width = $this->getColumnWidth($namespaces);
             foreach ($namespaces as $namespace) {
-                if (ApplicationDescription::GLOBAL_NAMESPACE !== $namespace['id']) {
+                if ($namespace['id'] !== ApplicationDescription::GLOBAL_NAMESPACE) {
                     $this->write("\n");
                     $this->write(' <comment>' . $namespace['id'] . '</comment>', true);
                 }

@@ -199,7 +199,7 @@ If you want to get more detailed information, use the --verbose option.')
         if (!empty($customPaths)) {
             $customPaths = GeneralUtility::trimExplode(',', $customPaths, true);
             foreach ($customPaths as $customPath) {
-                if (false === realpath(Environment::getPublicPath() . '/' . $customPath)
+                if (realpath(Environment::getPublicPath() . '/' . $customPath) === false
                     || !str_starts_with((string)realpath(Environment::getPublicPath() . '/' . $customPath), (string)realpath(Environment::getPublicPath()))) {
                     throw new \Exception('The path: "' . $customPath . '" is invalid', 1450086736);
                 }

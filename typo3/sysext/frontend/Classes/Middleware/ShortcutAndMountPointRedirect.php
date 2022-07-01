@@ -61,7 +61,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
         /** @var TypoScriptFrontendController */
         $controller = $request->getAttribute('frontend.controller');
         if (empty($controller->config['config']['disablePageExternalUrl'] ?? null)
-            && PageRepository::DOKTYPE_LINK === (int)$controller->page['doktype']) {
+            && (int)$controller->page['doktype'] === PageRepository::DOKTYPE_LINK) {
             $externalUrl = $this->prefixExternalPageUrl(
                 $controller->page['url'],
                 $request->getAttribute('normalizedParams')->getSiteUrl()

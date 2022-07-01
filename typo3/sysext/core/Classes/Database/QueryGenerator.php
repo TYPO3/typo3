@@ -584,7 +584,7 @@ class QueryGenerator
                 default:
                     $verifiedName = $this->verifyType($fieldName);
                     $queryConfig[$key]['type'] = 'FIELD_' . $this->verifyType($verifiedName);
-                    if ($conf['comparison'] >> 5 != $this->comp_offsets[$fieldType]) {
+                    if ($this->comp_offsets[$fieldType] != $conf['comparison'] >> 5) {
                         $conf['comparison'] = $this->comp_offsets[$fieldType] << 5;
                     }
                     $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
@@ -621,7 +621,7 @@ class QueryGenerator
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
                 $fieldType = $this->fields[$fieldName]['type'];
-                if ($conf['comparison'] >> 5 != $this->comp_offsets[$fieldType]) {
+                if ($this->comp_offsets[$fieldType] != $conf['comparison'] >> 5) {
                     $conf['comparison'] = $this->comp_offsets[$fieldType] << 5;
                 }
                 //nasty nasty...

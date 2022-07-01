@@ -494,7 +494,7 @@ STYLESHEET;
         return sprintf(
             '<span class="block trace-file-path">in <strong>%s</strong>%s</span>',
             $this->escapeHtml($path),
-            0 < $line ? ' line ' . $line : ''
+            $line > 0 ? ' line ' . $line : ''
         );
     }
 
@@ -508,15 +508,15 @@ STYLESHEET;
     {
         $result = [];
         foreach ($args as $key => $item) {
-            if ('object' === $item[0]) {
+            if ($item[0] === 'object') {
                 $formattedValue = sprintf('<em>object</em>(%s)', $item[1]);
-            } elseif ('array' === $item[0]) {
+            } elseif ($item[0] === 'array') {
                 $formattedValue = sprintf('<em>array</em>(%s)', is_array($item[1]) ? $this->formatArgs($item[1]) : $item[1]);
-            } elseif ('null' === $item[0]) {
+            } elseif ($item[0] === 'null') {
                 $formattedValue = '<em>null</em>';
-            } elseif ('boolean' === $item[0]) {
+            } elseif ($item[0] === 'boolean') {
                 $formattedValue = '<em>' . strtolower(var_export($item[1], true)) . '</em>';
-            } elseif ('resource' === $item[0]) {
+            } elseif ($item[0] === 'resource') {
                 $formattedValue = '<em>resource</em>';
             } else {
                 $formattedValue = str_replace("\n", '', $this->escapeHtml(var_export($item[1], true)));
@@ -546,7 +546,7 @@ STYLESHEET;
                 } else {
                     $result[$key] = ['array', $this->flattenArgs($value, $level + 1, $count)];
                 }
-            } elseif (null === $value) {
+            } elseif ($value === null) {
                 $result[$key] = ['null', null];
             } elseif (is_bool($value)) {
                 $result[$key] = ['boolean', $value];

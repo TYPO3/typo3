@@ -116,7 +116,7 @@ class CharsetConverter implements SingletonInterface
         if ($toCharset === 'utf-8') {
             // Returns FALSE for unsupported charsets
             $convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
-            if (false !== $convertedString) {
+            if ($convertedString !== false) {
                 return $convertedString;
             }
         }

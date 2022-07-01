@@ -1538,12 +1538,12 @@ class Indexer
                 ->fetchAssociative();
             // If there was an indexing of the page...:
             if (!empty($row)) {
-                if ($this->tstamp_maxAge && $row['tstamp'] + $this->tstamp_maxAge < $GLOBALS['EXEC_TIME']) {
+                if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
                     // If max age is exceeded, index the page
                     // The configured max-age was exceeded for the document and thus it's indexed.
                     $result = 1;
                 } else {
-                    if (!$this->tstamp_minAge || $row['tstamp'] + $this->tstamp_minAge < $GLOBALS['EXEC_TIME']) {
+                    if (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
                         // if minAge is not set or if minAge is exceeded, consider at mtime
                         if ($mtime) {
                             // It mtime is set, then it's tested. If not, the page must clearly be indexed.
