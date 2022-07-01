@@ -823,11 +823,9 @@ define(['jquery',
         if ('renderables' !== args[0]) {
           if (!getFormEditorApp().isRootFormElementSelected() && 'label' === args[0]) {
             getViewModel().getStructure().setTreeNodeTitle();
-            getViewModel().setInspectorFormElementHeaderEditorContent();
           } else if (!getFormEditorApp().getUtility().isUndefinedOrNull(args[3]) && getRootFormElement().get('__identifierPath') === args[3]) {
             getViewModel().setStructureRootElementTitle();
             getViewModel().setStageHeadline();
-            getViewModel().setInspectorFormElementHeaderEditorContent();
           }
 
           if (getViewModel().getPreviewMode()) {

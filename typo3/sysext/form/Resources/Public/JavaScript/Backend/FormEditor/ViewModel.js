@@ -882,6 +882,7 @@ define(['jquery',
      *
      * @param string content
      * @return void
+     * @deprecated not used anymore, will be removed in TYPO3 v12.0
      */
     function setInspectorFormElementHeaderEditorContent(content) {
       getInspector().setFormElementHeaderEditorContent(content);
