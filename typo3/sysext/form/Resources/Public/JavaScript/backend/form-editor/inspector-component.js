@@ -45,8 +45,7 @@ const {
   renderMultiSelectEditor,
   renderTextareaEditor,
   renderTextEditor,
-  renderTypo3WinBrowserEditor,
-  setFormElementHeaderEditorContent
+  renderTypo3WinBrowserEditor
 } = factory($, Helper, Icons, Notification, Modal, MessageUtility);
 
 export {
@@ -71,8 +70,7 @@ export {
   renderMultiSelectEditor,
   renderTextareaEditor,
   renderTextEditor,
-  renderTypo3WinBrowserEditor,
-  setFormElementHeaderEditorContent
+  renderTypo3WinBrowserEditor
 };
 
 function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
@@ -2639,22 +2637,6 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
     /**
      * @public
      *
-     * @param string content
-     * @return void
-     */
-    function setFormElementHeaderEditorContent(content) {
-      if (getFormEditorApp().getUtility().isUndefinedOrNull(content)) {
-        content = buildTitleByFormElement();
-      }
-
-      $(getHelper()
-        .getDomElementDataIdentifierSelector('formElementHeaderEditor'), getInspectorDomElement())
-        .html(content);
-    };
-
-    /**
-     * @public
-     *
      * @param object
      * @return object
      * @throws 1478967319
@@ -2717,8 +2699,7 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
       renderMultiSelectEditor: renderMultiSelectEditor,
       renderTextareaEditor: renderTextareaEditor,
       renderTextEditor: renderTextEditor,
-      renderTypo3WinBrowserEditor: renderTypo3WinBrowserEditor,
-      setFormElementHeaderEditorContent: setFormElementHeaderEditorContent
+      renderTypo3WinBrowserEditor: renderTypo3WinBrowserEditor
     };
   })($, Helper, Icons, Notification);
 }

@@ -75,7 +75,6 @@ const {
   selectPageBatch,
   setButtonActive,
   setElementValidationErrorClass,
-  setInspectorFormElementHeaderEditorContent,
   setPreviewMode,
   setStageHeadline,
   setStructureRootElementTitle,
@@ -145,7 +144,6 @@ export {
   selectPageBatch,
   setButtonActive,
   setElementValidationErrorClass,
-  setInspectorFormElementHeaderEditorContent,
   setPreviewMode,
   setStageHeadline,
   setStructureRootElementTitle,
@@ -1039,16 +1037,6 @@ function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageCom
      */
     function renderInspectorCollectionElementEditors(collectionName, collectionElementIdentifier) {
       getInspector().renderCollectionElementEditors(collectionName, collectionElementIdentifier);
-    };
-
-    /**
-     * @public
-     *
-     * @param string content
-     * @return void
-     */
-    function setInspectorFormElementHeaderEditorContent(content) {
-      getInspector().setFormElementHeaderEditorContent(content);
     };
 
     /* *************************************************************
@@ -1983,7 +1971,6 @@ function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageCom
       selectPageBatch: selectPageBatch,
       setButtonActive: setButtonActive,
       setElementValidationErrorClass: setElementValidationErrorClass,
-      setInspectorFormElementHeaderEditorContent: setInspectorFormElementHeaderEditorContent,
       setPreviewMode: setPreviewMode,
       setStageHeadline: setStageHeadline,
       setStructureRootElementTitle: setStructureRootElementTitle,
