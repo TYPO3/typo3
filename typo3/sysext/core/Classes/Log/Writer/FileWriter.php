@@ -154,7 +154,7 @@ class FileWriter extends AbstractWriter
             $data
         );
 
-        if (false === fwrite(self::$logFileHandles[$this->logFile], $message . LF)) {
+        if (fwrite(self::$logFileHandles[$this->logFile], $message . LF) === false) {
             throw new \RuntimeException('Could not write log record to log file', 1345036335);
         }
 

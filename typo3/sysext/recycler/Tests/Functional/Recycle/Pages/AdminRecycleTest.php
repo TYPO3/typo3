@@ -47,8 +47,8 @@ class AdminRecycleTest extends AbstractRecycleTestCase
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(3, $deletedPages['pages']);
-        self::assertTrue(0 < (int)($assertData['pages'][0]['uid'] ?? 0));
-        self::assertTrue(0 < (int)($deletedPages['pages'][0]['uid'] ?? 0));
+        self::assertGreaterThan(0, (int)($assertData['pages'][0]['uid'] ?? 0));
+        self::assertGreaterThan(0, (int)($deletedPages['pages'][0]['uid'] ?? 0));
         self::assertSame((int)$assertData['pages'][0]['uid'], (int)$deletedPages['pages'][0]['uid']);
     }
 
@@ -62,8 +62,8 @@ class AdminRecycleTest extends AbstractRecycleTestCase
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(4, $deletedPages['pages']);
-        self::assertTrue(0 < (int)($assertData['pages'][0]['uid'] ?? 0));
-        self::assertTrue(0 < (int)($deletedPages['pages'][0]['uid'] ?? 0));
+        self::assertGreaterThan(0, (int)($assertData['pages'][0]['uid'] ?? 0));
+        self::assertGreaterThan(0, (int)($deletedPages['pages'][0]['uid'] ?? 0));
         self::assertSame((int)$assertData['pages'][0]['uid'], (int)$deletedPages['pages'][0]['uid']);
     }
 }

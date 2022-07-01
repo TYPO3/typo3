@@ -55,7 +55,7 @@ class CompressionUtility implements SingletonInterface
             if (0 != ($mode & PHP_OUTPUT_HANDLER_END)) {
                 // Check if we have content-length header
                 foreach (headers_list() as $header) {
-                    if (0 == strncasecmp('Content-length:', $header, 15)) {
+                    if (strncasecmp('Content-length:', $header, 15) == 0) {
                         header('Content-length: ' . $this->contentLength);
                         break;
                     }

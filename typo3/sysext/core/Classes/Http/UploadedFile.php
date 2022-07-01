@@ -97,7 +97,7 @@ class UploadedFile implements UploadedFileInterface
         }
         $this->size = $size;
 
-        if (!is_int($errorStatus) || 0 > $errorStatus || 8 < $errorStatus) {
+        if (!is_int($errorStatus) || $errorStatus < 0 || $errorStatus > 8) {
             throw new \InvalidArgumentException('Invalid error status for an uploaded file. See UPLOAD_ERR_* constant in PHP.', 1436717303);
         }
         $this->error = $errorStatus;

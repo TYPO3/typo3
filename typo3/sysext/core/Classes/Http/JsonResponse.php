@@ -98,7 +98,7 @@ class JsonResponse extends Response
         // Clear json_last_error()
         json_encode(null);
         $json = json_encode($data, $encodingOptions);
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to encode data to JSON in %s: %s',
                 __CLASS__,

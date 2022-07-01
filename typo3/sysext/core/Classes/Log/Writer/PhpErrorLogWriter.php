@@ -51,7 +51,7 @@ class PhpErrorLogWriter extends AbstractWriter
             $this->interpolate($message, $context),
             $data
         );
-        if (false === error_log($message)) {
+        if (error_log($message) === false) {
             throw new \RuntimeException('Could not write log record to PHP error log', 1345036336);
         }
         return $this;

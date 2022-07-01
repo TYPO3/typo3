@@ -82,7 +82,7 @@ class PageUriMatcher
             $compiledRoute = $route->compile();
 
             // check the static prefix of the URL first. Only use the more expensive preg_match when it matches
-            if ('' !== $compiledRoute->getStaticPrefix() && !str_starts_with($urlPath, $compiledRoute->getStaticPrefix())) {
+            if ($compiledRoute->getStaticPrefix() !== '' && !str_starts_with($urlPath, $compiledRoute->getStaticPrefix())) {
                 continue;
             }
 
@@ -155,7 +155,7 @@ class PageUriMatcher
     protected function mergeDefaults(array $params, array $defaults): array
     {
         foreach ($params as $key => $value) {
-            if (!is_int($key) && null !== $value) {
+            if (!is_int($key) && $value !== null) {
                 $defaults[$key] = $value;
             }
         }

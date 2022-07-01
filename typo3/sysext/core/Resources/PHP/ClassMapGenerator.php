@@ -90,7 +90,7 @@ class ClassMapGenerator
 
             foreach ($classes as $class) {
                 // skip classes not within the given namespace prefix
-                if (null !== $namespace && !str_starts_with($class, $namespace)) {
+                if ($namespace !== null && !str_starts_with($class, $namespace)) {
                     continue;
                 }
 
@@ -154,7 +154,7 @@ class ClassMapGenerator
         $contents = preg_replace('{\?>.+<\?}s', '?><?', $contents);
         // strip trailing non-php code if needed
         $pos = strrpos($contents, '?>');
-        if (false !== $pos && !str_contains(substr($contents, $pos), '<?')) {
+        if ($pos !== false && !str_contains(substr($contents, $pos), '<?')) {
             $contents = substr($contents, 0, $pos);
         }
 

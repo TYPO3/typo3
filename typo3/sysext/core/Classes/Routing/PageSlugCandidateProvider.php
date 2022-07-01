@@ -274,7 +274,7 @@ class PageSlugCandidateProvider
                 // it must never be accessible directly, but only in the MountPoint context. Therefore we change
                 // the current ID and slug.
                 // This needs to happen before the regular case, as the $pageToAdd contains the MPvar information
-                if (PageRepository::DOKTYPE_MOUNTPOINT === (int)$row['doktype'] && $row['mount_pid_ol']) {
+                if ((int)$row['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT && $row['mount_pid_ol']) {
                     // If the mounted page was already added from above, this should not be added again (to include
                     // the mount point parameter).
                     if (in_array((int)$mountedPage['uid'], $excludeUids, true)) {

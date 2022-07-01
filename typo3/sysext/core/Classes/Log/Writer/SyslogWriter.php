@@ -135,7 +135,7 @@ class SyslogWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record)
     {
-        if (false === syslog(LogLevel::normalizeLevel($record->getLevel()), $this->getMessageForSyslog($record))) {
+        if (syslog(LogLevel::normalizeLevel($record->getLevel()), $this->getMessageForSyslog($record)) === false) {
             throw new \RuntimeException('Could not write log record to syslog', 1345036337);
         }
         return $this;

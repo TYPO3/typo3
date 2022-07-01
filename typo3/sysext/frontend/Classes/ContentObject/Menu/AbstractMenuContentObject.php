@@ -1821,7 +1821,7 @@ abstract class AbstractMenuContentObject
      */
     protected function hasParentMenuItemKey()
     {
-        return null !== $this->parentMenuArrItemKey;
+        return $this->parentMenuArrItemKey !== null;
     }
 
     /**

@@ -64,7 +64,7 @@ class RenderableVariant implements RenderableVariantInterface
         array $options,
         VariableRenderableInterface $renderable
     ) {
-        if ('' === $identifier) {
+        if ($identifier === '') {
             throw new IdentifierNotValidException('The given variant identifier was empty.', 1519998923);
         }
         $this->identifier = $identifier;
