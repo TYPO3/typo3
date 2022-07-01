@@ -83,6 +83,38 @@ bin/typo3 extension:activate styleguide
 For non-composer projects, the extension is available in TER as extension key `styleguide` and can
 be installed using the extension manager.
 
+# Initialization
+
+With styleguide, it is possible to automatically create sample pages and content for 2 purposes:
+
+1. "styleguide TCA demo" to showcase various TCA features
+2. "styleguide frontend demo" to create pages which can be used for Frontend testing
+
+These pages can be created either in the backend or on the command line:
+
+```
+# show help
+bin/typo3 styleguide:generate -h
+
+# create pages
+bin/typo3 styleguide:generate -c
+```
+
+Alternatively, the pages can be created in the TYPO3 backend:
+
+1. Access the styleguide module by clicking on the question mark in the top bar:
+   ? | Styleguide | TCA / Records / Frontend
+2. Click the available buttons
+
+# Usage
+
+Styleguide comes with a module which is available by clicking on the question mark in the top bar:
+? | Styleguide.
+
+You can also peruse through the TCA demo by selecting the pages in the page tree. Use the list module to
+get access to the records.
+
+The TYPO3 TCA reference documentation often uses examples from the styleguide.
 
 # Running tests
 
