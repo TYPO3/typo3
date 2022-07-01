@@ -254,6 +254,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         $propertySegmentsCount = count($propertySegments);
         for ($i = 1; $i < $propertySegmentsCount; $i++) {
             $object = ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
+            if (!is_object($object)) {
+                $object = null;
+            }
             $objectName .= '[' . $propertySegments[$i - 1] . ']';
             $hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
             // Add the hidden identity field to the ViewHelperVariableContainer
