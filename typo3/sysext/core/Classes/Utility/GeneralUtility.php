@@ -1696,7 +1696,7 @@ class GeneralUtility
      * If you are having trouble with proxies when reading URLs you can configure your way out of that with settings within $GLOBALS['TYPO3_CONF_VARS']['HTTP'].
      *
      * @param string $url File/URL to read
-     * @return mixed The content from the resource given as input. FALSE if an error has occurred.
+     * @return string|false The content from the resource given as input. FALSE if an error has occurred.
      */
     public static function getUrl($url)
     {
