@@ -52,7 +52,7 @@ The usage is as following:
    return $reponse;
 
    // or throw PropagateResponseException
-   new PropagateResponseException($response);
+   throw new PropagateResponseException($response);
 
 .. note::
 
