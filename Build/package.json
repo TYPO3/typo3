@@ -96,7 +96,7 @@
     "d3-drag": "^2.0.0",
     "d3-selection": "^2.0.0",
     "devbridge-autocomplete": "^1.4.11",
-    "flatpickr": "^4.6.3",
+    "flatpickr": "^4.6.13",
     "font-awesome": "^4.7.0",
     "imagesloaded": "^4.1.4",
     "jquery": "^3.6.0",

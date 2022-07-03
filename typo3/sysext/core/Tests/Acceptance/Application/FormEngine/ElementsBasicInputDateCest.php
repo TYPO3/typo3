@@ -124,8 +124,8 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'label' => 'inputdatetime_11',
                 'inputValue' => '',
                 'expectedValue' => '',
-                'expectedInternalValue' => '',
-                'expectedValueAfterSave' => '',
+                'expectedInternalValue' => '0',
+                'expectedValueAfterSave' => '0',
                 'comment' => 'inputdatetime_11 eval=datetime range.lower=1627208536 Check range validation is ignored',
             ],
         ];

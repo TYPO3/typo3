@@ -126,6 +126,12 @@ class DateTimePicker {
       }
     });
 
+    inputElement.addEventListener('keyup', (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') {
+        dateTimePicker.close();
+      }
+    });
+
     inputElement.addEventListener('change', (e: Event): void => {
       e.stopImmediatePropagation();
 
