@@ -61,7 +61,7 @@ id=2:
        value = Login
        typolink.parameter = 2
    }
-   [loginUser = *]
+   [loginUser('*')]
        10.value = Logout
        10.typolink.additionalParams = &logintype=logout
    [end]
