@@ -182,7 +182,7 @@ class TcaItemsProcessorFunctions
                 }
                 $fieldDefinition['items'][] = [
                     $languageService->sL($itemConfig[0] ?? ''),
-                    $customOptionsKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
+                    $customOptionsKey . ':' . preg_replace('/[:|,]/', '', (string)$itemKey),
                     $icon,
                     null,
                     $helpText,
