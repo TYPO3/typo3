@@ -201,6 +201,7 @@ class FileStorageTreeProvider
 
         $subFolderCounter = 0;
         foreach ($subFolders as $subFolderName => $subFolder) {
+            $subFolderName = (string)$subFolderName; // Enforce string cast in case $subFolderName contains numeric chars only
             $expanded = $this->isExpanded($subFolder);
             if (!($subFolder instanceof InaccessibleFolder)) {
                 $children = $subFolder->getSubfolders();
