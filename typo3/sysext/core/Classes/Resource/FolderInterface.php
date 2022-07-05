@@ -33,9 +33,7 @@ interface FolderInterface extends ResourceInterface
     const ROLE_USER_MOUNT = 'user-mount';
 
     /**
-     * Returns a list of all subfolders
-     *
-     * @return Folder[]
+     * @return array<string|int, Folder>
      */
     public function getSubfolders();
 

@@ -437,7 +437,8 @@ interface DriverInterface
      *                     If a driver does not support the given property, it
      *                     should fall back to "name".
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return array of Folder Identifier
+     * @return array<string|int, string> folder identifiers (where key and value are identical, but int-like identifiers
+     *         will get converted to int array keys)
      */
     public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = [], $sort = '', $sortRev = false);
 
