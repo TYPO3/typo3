@@ -33,7 +33,7 @@ class InaccessibleFolder extends Folder
      *
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    protected function throwInaccessibleException()
+    protected function throwInaccessibleException(): never
     {
         throw new InsufficientFolderReadPermissionsException(
             'You are trying to use a method on the inaccessible folder "' . $this->getName() . '".',
@@ -48,7 +48,7 @@ class InaccessibleFolder extends Folder
      *
      * @param string $name The new name
      */
-    public function setName($name)
+    public function setName($name): never
     {
         $this->throwInaccessibleException();
     }
@@ -58,13 +58,10 @@ class InaccessibleFolder extends Folder
      *
      * WARNING: Access to the folder may be restricted by further means, e.g. some
      * web-based authentication. You have to take care of this yourself.
-     *
-     * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl()
+    public function getPublicUrl(): never
     {
         $this->throwInaccessibleException();
-        return null;
     }
 
     /**
@@ -81,7 +78,7 @@ class InaccessibleFolder extends Folder
      * @param bool $sortRev
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false, $sort = '', $sortRev = false)
+    public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false, $sort = '', $sortRev = false): never
     {
         $this->throwInaccessibleException();
     }
@@ -94,7 +91,7 @@ class InaccessibleFolder extends Folder
      * @param bool $recursive
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function getFileCount(array $filterMethods = [], $recursive = false)
+    public function getFileCount(array $filterMethods = [], $recursive = false): never
     {
         $this->throwInaccessibleException();
     }
@@ -105,7 +102,7 @@ class InaccessibleFolder extends Folder
      * @param string $name Name of the subfolder
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function getSubfolder($name)
+    public function getSubfolder($name): never
     {
         $this->throwInaccessibleException();
     }
@@ -119,7 +116,7 @@ class InaccessibleFolder extends Folder
      * @param bool $recursive
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false)
+    public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false): never
     {
         $this->throwInaccessibleException();
     }
@@ -133,7 +130,7 @@ class InaccessibleFolder extends Folder
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
+    public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL): never
     {
         $this->throwInaccessibleException();
     }
@@ -145,7 +142,7 @@ class InaccessibleFolder extends Folder
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
+    public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL): never
     {
         $this->throwInaccessibleException();
     }
@@ -156,7 +153,7 @@ class InaccessibleFolder extends Folder
      * @param string $newName
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function rename($newName)
+    public function rename($newName): never
     {
         $this->throwInaccessibleException();
     }
@@ -167,7 +164,7 @@ class InaccessibleFolder extends Folder
      * @param bool $deleteRecursively
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function delete($deleteRecursively = true)
+    public function delete($deleteRecursively = true): never
     {
         $this->throwInaccessibleException();
     }
@@ -178,7 +175,7 @@ class InaccessibleFolder extends Folder
      * @param string $fileName
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function createFile($fileName)
+    public function createFile($fileName): never
     {
         $this->throwInaccessibleException();
     }
@@ -189,7 +186,7 @@ class InaccessibleFolder extends Folder
      * @param string $folderName
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function createFolder($folderName)
+    public function createFolder($folderName): never
     {
         $this->throwInaccessibleException();
     }
@@ -202,7 +199,7 @@ class InaccessibleFolder extends Folder
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
+    public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME): never
     {
         $this->throwInaccessibleException();
     }
@@ -215,7 +212,7 @@ class InaccessibleFolder extends Folder
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function moveTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
+    public function moveTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME): never
     {
         $this->throwInaccessibleException();
     }
@@ -226,7 +223,7 @@ class InaccessibleFolder extends Folder
      * @param string $name
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function hasFile($name)
+    public function hasFile($name): never
     {
         $this->throwInaccessibleException();
     }
@@ -237,7 +234,7 @@ class InaccessibleFolder extends Folder
      * @param string $name
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function hasFolder($name)
+    public function hasFolder($name): never
     {
         $this->throwInaccessibleException();
     }
@@ -250,7 +247,7 @@ class InaccessibleFolder extends Folder
      * @param array $properties
      * @internal
      */
-    public function updateProperties(array $properties)
+    public function updateProperties(array $properties): never
     {
         $this->throwInaccessibleException();
     }
@@ -261,7 +258,7 @@ class InaccessibleFolder extends Folder
      *
      * @param array $filters
      */
-    public function setFileAndFolderNameFilters(array $filters)
+    public function setFileAndFolderNameFilters(array $filters): never
     {
         $this->throwInaccessibleException();
     }
