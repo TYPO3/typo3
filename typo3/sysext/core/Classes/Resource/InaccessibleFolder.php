@@ -31,6 +31,7 @@ class InaccessibleFolder extends Folder
      * Throws an Exception,
      * used to prevent duplicate code in all the methods
      *
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     protected function throwInaccessibleException()
@@ -47,6 +48,7 @@ class InaccessibleFolder extends Folder
      * as the name is more seen as a label
      *
      * @param string $name The new name
+     * @return never
      */
     public function setName($name)
     {
@@ -60,13 +62,12 @@ class InaccessibleFolder extends Folder
      * web-based authentication. You have to take care of this yourself.
      *
      * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver). Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     * @return string|null NULL if file is missing or deleted, the generated url otherwise
+     * @return never
      */
     public function getPublicUrl($relativeToCurrentScript = false)
     {
         // @deprecated $relativeToCurrentScript since v11, will be removed in TYPO3 v12.0
         $this->throwInaccessibleException();
-        return null;
     }
 
     /**
@@ -81,6 +82,7 @@ class InaccessibleFolder extends Folder
      * @param bool $recursive
      * @param string $sort
      * @param bool $sortRev
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false, $sort = '', $sortRev = false)
@@ -94,6 +96,7 @@ class InaccessibleFolder extends Folder
      *
      * @param array $filterMethods
      * @param bool $recursive
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getFileCount(array $filterMethods = [], $recursive = false)
@@ -105,6 +108,7 @@ class InaccessibleFolder extends Folder
      * Returns the object for a subfolder of the current folder, if it exists.
      *
      * @param string $name Name of the subfolder
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getSubfolder($name)
@@ -119,6 +123,7 @@ class InaccessibleFolder extends Folder
      * @param int $numberOfItems The number of items to return
      * @param int $filterMode The filter mode to use for the filelist.
      * @param bool $recursive
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false)
@@ -133,6 +138,7 @@ class InaccessibleFolder extends Folder
      * @param string $localFilePath
      * @param string $fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
@@ -145,6 +151,7 @@ class InaccessibleFolder extends Folder
      *
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
@@ -156,6 +163,7 @@ class InaccessibleFolder extends Folder
      * Renames this folder.
      *
      * @param string $newName
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function rename($newName)
@@ -167,6 +175,7 @@ class InaccessibleFolder extends Folder
      * Deletes this folder from its storage. This also means that this object becomes useless.
      *
      * @param bool $deleteRecursively
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function delete($deleteRecursively = true)
@@ -178,6 +187,7 @@ class InaccessibleFolder extends Folder
      * Creates a new blank file
      *
      * @param string $fileName
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function createFile($fileName)
@@ -189,6 +199,7 @@ class InaccessibleFolder extends Folder
      * Creates a new folder
      *
      * @param string $folderName
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function createFolder($folderName)
@@ -202,6 +213,7 @@ class InaccessibleFolder extends Folder
      * @param Folder $targetFolder Target folder to copy to.
      * @param string $targetFolderName an optional destination fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
@@ -215,6 +227,7 @@ class InaccessibleFolder extends Folder
      * @param Folder $targetFolder Target folder to move to.
      * @param string $targetFolderName an optional destination fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function moveTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
@@ -226,6 +239,7 @@ class InaccessibleFolder extends Folder
      * Checks if a file exists in this folder
      *
      * @param string $name
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function hasFile($name)
@@ -237,6 +251,7 @@ class InaccessibleFolder extends Folder
      * Checks if a folder exists in this folder.
      *
      * @param string $name
+     * @return never
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function hasFolder($name)
@@ -250,6 +265,7 @@ class InaccessibleFolder extends Folder
      * NOTE: This method should not be called from outside the File Abstraction Layer (FAL)!
      *
      * @param array $properties
+     * @return never
      * @internal
      */
     public function updateProperties(array $properties)
@@ -262,6 +278,7 @@ class InaccessibleFolder extends Folder
      * FILTER_MODE_USE_OWN_FILTERS and FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS
      *
      * @param array $filters
+     * @return never
      */
     public function setFileAndFolderNameFilters(array $filters)
     {
