@@ -357,13 +357,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected string $uniqueString = '';
 
     /**
-     * This value will be used as the title for the page in the indexer (if
-     * indexing happens)
-     * @internal only used by TYPO3 Core, use PageTitle API instead.
-     */
-    public string $indexedDocTitle = '';
-
-    /**
      * The base URL set for the page header.
      * @var string
      */
@@ -1183,11 +1176,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Restore the current tags as they can be retrieved by getPageCacheTags()
         $this->pageCacheTags = $cachedData['cacheTags'] ?? [];
 
-        // Restore page title information, this is needed to generate the page title for
-        // partially cached pages.
-        $this->page['title'] = $cachedData['pageTitleInfo']['title'];
-        $this->indexedDocTitle = $cachedData['pageTitleInfo']['indexedDocTitle'];
-
         if (isset($this->config['config']['debug'])) {
             $debugCacheTime = (bool)$this->config['config']['debug'];
         } else {
@@ -1666,10 +1654,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'cache_data' => $data,
             'expires' => $expirationTstamp,
             'tstamp' => $GLOBALS['EXEC_TIME'],
-            'pageTitleInfo' => [
-                'title' => $this->page['title'],
-                'indexedDocTitle' => $this->indexedDocTitle,
-            ],
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
@@ -1820,8 +1804,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        // Global vars...
-        $this->indexedDocTitle = $this->page['title'] ?? null;
         // Base url:
         if (isset($this->config['config']['baseURL'])) {
             $this->baseUrl = $this->config['config']['baseURL'];
@@ -1928,10 +1910,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $pageTitle = $titleProvider->getTitle();
         $this->config['config']['pageTitleCache'] = $titleProvider->getPageTitleCache();
-
-        if ($pageTitle !== '') {
-            $this->indexedDocTitle = $pageTitle;
-        }
 
         $titleTagContent = $this->printTitle(
             $pageTitle,

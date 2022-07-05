@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -276,34 +275,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $this->subject->baseUrl = $baseUrl;
         self::assertSame($expected, $this->subject->baseUrlWrap($url));
-    }
-
-    /**
-     * @test
-     * @see https://forge.typo3.org/issues/88041
-     */
-    public function indexedSearchHookUsesPageTitleApi(): void
-    {
-        $pageTitle = 'This is a test page title coming from PageTitleProviderManager';
-
-        $pageTitleProvider = $this->prophesize(PageTitleProviderManager::class);
-        $pageTitleProvider->getTitle()->willReturn($pageTitle);
-        $pageTitleProvider->getPageTitleCache()->willReturn([]);
-        GeneralUtility::setSingletonInstance(PageTitleProviderManager::class, $pageTitleProvider->reveal());
-
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-
-        $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-        $contentObjectRendererProphecy->stdWrapValue(Argument::cetera())->willReturn('');
-        $this->subject->cObj = $contentObjectRendererProphecy->reveal();
-
-        $this->subject->generatePageTitle();
-        self::assertSame($pageTitle, $this->subject->indexedDocTitle);
     }
 
     /**

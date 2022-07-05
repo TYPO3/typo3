@@ -18,6 +18,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -107,10 +108,14 @@ class TypoScriptFrontendHook
         // Content of page
         $configuration['content'] = $tsfe->content;
         // Content string (HTML of TYPO3 page)
-        $configuration['indexedDocTitle'] = $tsfe->indexedDocTitle;
+
         // Alternative title for indexing
-        $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $tsfe->page['SYS_LASTCHANGED'];
+        // @see https://forge.typo3.org/issues/88041
+        $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
+        $configuration['indexedDocTitle'] = $titleProvider->getTitle();
+
         // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
+        $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $tsfe->page['SYS_LASTCHANGED'];
         // Configuration of behavior
         $configuration['index_externals'] = $tsfe->config['config']['index_externals'];
         // Whether to index external documents like PDF, DOC etc. (if possible)
