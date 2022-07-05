@@ -19,12 +19,11 @@ import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
  */
 class RedirectsModule {
   public constructor() {
-    const filterForm: HTMLFormElement = document.querySelector('form[data-on-submit="processNavigate"]');
-    if (filterForm !== null) {
+    const filterForms = document.querySelectorAll('form[data-on-submit="processNavigate"]');
+    if (filterForms.length > 0) {
       new RegularEvent('change', this.executeSubmit.bind(this))
         .delegateTo(document, '[data-on-change="submit"]');
-      new RegularEvent('submit', this.processNavigate.bind(this))
-        .bindTo(filterForm);
+      filterForms.forEach((form: HTMLFormElement) => new RegularEvent('submit', this.processNavigate.bind(this)).bindTo(form));
     }
   }
 
