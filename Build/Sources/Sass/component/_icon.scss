@@ -2,6 +2,18 @@
 @import "../../../node_modules/@typo3/icons/dist/icons-bootstrap.scss";
 
 //
+// Mixins
+//
+@mixin icon-background($icon, $iconColor: $white) {
+    content: '';
+    vertical-align: middle;
+    mask: escape-svg($icon);
+    background-color: $iconColor;
+    background-size: contain;
+    display: inline-block;
+}
+
+//
 // Icon alignment
 //
 .icon {

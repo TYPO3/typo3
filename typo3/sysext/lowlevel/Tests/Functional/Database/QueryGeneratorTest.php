@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\Database;
 
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
@@ -25,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class QueryGeneratorTest extends FunctionalTestCase
 {
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -366,7 +372,14 @@ class QueryGeneratorTest extends FunctionalTestCase
         $settings = $this->prepareSettings($settings, $replacements);
         $settings['queryConfig'] = serialize($settings['queryConfig']);
 
+        $iconProphecy = $this->prophesize(Icon::class);
+        $iconProphecy->render()->willReturn('');
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        $iconFactoryProphecy->getIcon(Argument::cetera())->willReturn($iconProphecy->reveal());
+
         $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject->_set('iconFactory', $iconFactoryProphecy->reveal());
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings);
         $subject->_set('enablePrefix', true);

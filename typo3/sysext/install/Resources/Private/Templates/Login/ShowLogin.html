@@ -1,4 +1,4 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="container">
     <div class="page-header">
@@ -22,7 +22,7 @@
                     <div class="col-8 col-md-auto ms-auto">
                         <f:if condition="!{installToolEnableFilePermanent}">
                             <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool">
-                                <i class="fa fa-lock"></i> Lock Install Tool again
+                                <core:icon identifier="actions-lock" size="small" /> Lock Install Tool again
                             </button>
                         </f:if>
                     </div>

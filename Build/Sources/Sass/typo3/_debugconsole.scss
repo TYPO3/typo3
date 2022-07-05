@@ -9,8 +9,6 @@ $console-border-color: darken($gray-300, 15%);
     border: 1px solid $console-border-color;
 
     .topbar {
-        @extend .clearfix;
-
         background-color: $gray-300;
         padding: $padding-base-vertical $padding-base-horizontal;
         border-bottom: 1px solid $console-border-color;

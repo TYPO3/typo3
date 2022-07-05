@@ -12,6 +12,7 @@
  */
 
 import $ from 'jquery';
+import '@typo3/backend/element/icon-element';
 
 /**
  * Module: @typo3/backend/debug-console
@@ -120,13 +121,12 @@ class DebugConsole {
 
     this.$consoleDom =
       $('<div />', {id: 'typo3-debug-console'}).append(
-        $('<div />', {'class': 't3js-topbar topbar'}).append(
-          $('<p />', {'class': 'pull-left'}).text(' TYPO3 Debug Console').prepend(
-            $('<span />', {'class': 'fa fa-terminal topbar-icon'}),
-          ).append(
+        $('<div />', {'class': 't3js-topbar topbar d-flex justify-content-between align-items-center'}).append(
+          $('<typo3-backend-icon />', {identifier: 'actions-terminal', size: 'small'}),
+          $('<span />', {'class': 'flex-fill'}).text('TYPO3 Debug Console').append(
             $('<span />', {'class': 'badge'}),
           ),
-          $('<div />', {'class': 't3js-buttons btn-group pull-right'}),
+          $('<div />', {'class': 't3js-buttons btn-group'}),
         ),
         $('<div />').append(
           $('<div />', {role: 'tabpanel'}).append(
@@ -140,7 +140,7 @@ class DebugConsole {
       $('<button />', {
         'class': 'btn btn-default btn-sm ' + (this.settings.autoscroll ? 'active' : ''),
         title: TYPO3.lang['debuggerconsole.autoscroll'],
-      }).append($('<span />', {'class': 't3-icon fa fa-magnet'})),
+      }).append($('<typo3-backend-icon />', {identifier: 'actions-magnet', size: 'small'})),
       (): void => {
         $(this).button('toggle');
         this.settings.autoscroll = !this.settings.autoscroll;
@@ -149,32 +149,32 @@ class DebugConsole {
       $('<button />', {
         'class': 'btn btn-default btn-sm',
         title: TYPO3.lang['debuggerconsole.toggle.collapse'],
-      }).append($('<span />', {'class': 't3-icon fa fa-chevron-down'})),
+      }).append($('<typo3-backend-icon />', {identifier: 'actions-chevron-down', size: 'small'})),
       (e: Event): void => {
         let $button = $(e.currentTarget);
-        let $icon = $button.find('.t3-icon');
+        let $icon = $button.find('typo3-backend-icon');
         let $innerContainer = this.$consoleDom.find('.t3js-topbar').next();
         $innerContainer.toggle();
         if ($innerContainer.is(':visible')) {
           $button.attr('title', TYPO3.lang['debuggerconsole.toggle.collapse']);
-          $icon.toggleClass('fa-chevron-down', true).toggleClass('fa-chevron-up', false);
+          $icon.replaceWith($('<typo3-backend-icon />', {identifier: 'actions-chevron-down', size: 'small'}))
           this.resetGlobalUnreadCounter();
         } else {
           $button.attr('title', TYPO3.lang['debuggerconsole.toggle.expand']);
-          $icon.toggleClass('fa-chevron-down', false).toggleClass('fa-chevron-up', true);
+          $icon.replaceWith($('<typo3-backend-icon />', {identifier: 'actions-chevron-up', size: 'small'}))
         }
       },
     ).addButton(
       $('<button />', {
         'class': 'btn btn-default btn-sm',
-        title: TYPO3.lang['debuggerconsole.clear']}).append($('<span />', {class: 't3-icon fa fa-undo'})),
+        title: TYPO3.lang['debuggerconsole.clear']}).append($('<typo3-backend-icon />', {identifier: 'actions-undo', size: 'small'})),
       (): void => {
         this.flush();
       },
     ).addButton(
       $('<button />', {
         'class': 'btn btn-default btn-sm',
-        title: TYPO3.lang['debuggerconsole.close']}).append($('<span />', {'class': 't3-icon fa fa-times'})),
+        title: TYPO3.lang['debuggerconsole.close']}).append($('<typo3-backend-icon />', {identifier: 'actions-close', size: 'small'})),
       (): void => {
         this.destroy();
         this.createDom();

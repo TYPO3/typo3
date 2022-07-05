@@ -21,6 +21,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {topLevelModuleImport} from '@typo3/backend/utility/top-level-module-import';
 import Router from '../../router';
 import DebounceEvent from '@typo3/core/event/debounce-event';
+import '@typo3/backend/element/icon-element';
 
 /**
  * Module: @typo3/install/module/upgrade-docs
@@ -288,7 +289,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     const executeToken = this.getModuleContent().data('upgrade-docs-mark-read-token');
     const $button = $(element).closest('button');
     $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
-    $button.find('i').toggleClass('fa-check fa-ban');
+    $button.find('typo3-backend-icon,.t3js-icon').replaceWith('<typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>');
     $button.closest('.panel').appendTo(this.findInModal('.panel-body-read'));
     (new AjaxRequest(Router.getUrl()))
       .post({
@@ -309,7 +310,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     const $button = $(element).closest('button');
     const version = $button.closest('.panel').data('item-version');
     $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');
-    $button.find('i').toggleClass('fa-check fa-ban');
+    $button.find('typo3-backend-icon,.t3js-icon').replaceWith('<typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>');
     $button.closest('.panel').appendTo(this.findInModal('*[data-group-version="' + version + '"] .panel-body'));
     (new AjaxRequest(Router.getUrl()))
       .post({

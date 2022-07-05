@@ -1,4 +1,5 @@
 <html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
@@ -36,7 +37,7 @@
                                     data-file-field="{config.file_field}"
                                     data-field="{formEngine.field.id}"
                                 >
-                                    <span class="t3-icon fa fa-crop"></span>
+                                    <core:icon identifier="actions-crop" size="small" />
                                     <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.open-editor"/>
                                 </button>
                             </div>

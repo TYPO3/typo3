@@ -14,6 +14,7 @@
 import 'bootstrap';
 import $ from 'jquery';
 import FormEngine from '@typo3/backend/form-engine';
+import '@typo3/backend/element/icon-element';
 
 /**
  * Module: @typo3/backend/form-engine-review
@@ -58,7 +59,7 @@ class FormEngineReview {
       href: '#',
       title: TYPO3.lang['buttons.reviewFailedValidationFields'],
     }).append(
-      $('<span />', {class: 'fa fa-fw fa-info'}),
+      $('<typo3-backend-icon/>', {identifier: 'actions-info', size: 'small'}),
     );
 
     $button.popover({

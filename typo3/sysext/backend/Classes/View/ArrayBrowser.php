@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -95,6 +97,8 @@ class ArrayBrowser
      */
     public function tree($array, $positionKey)
     {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
         $output = '<ul class="list-tree text-monospace">';
         if ($positionKey) {
             $positionKey .= '.';
@@ -111,8 +115,16 @@ class ArrayBrowser
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
             $output .= '<span class="list-tree-group">';
             if ($isArray && !$this->expAll && $this->route) {
+                if ($isExpanded) {
+                    $class = 'list-tree-control-open';
+                    $icon = $iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL);
+                } else {
+                    $class = 'list-tree-control-closed';
+                    $icon = $iconFactory->getIcon('actions-caret-right', Icon::SIZE_SMALL);
+                }
+
                 $goto = 'a' . substr(md5($depth), 0, 6);
-                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->route->getOption('_identifier'), ['node' => [rawurldecode($depth) => $isExpanded ? 0 : 1]]) . '#' . $goto) . '"><i class="fa"></i></a> ';
+                $output .= '<a class="list-tree-control ' . $class . '" id="' . $goto . '" href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->route->getOption('_identifier'), ['node' => [rawurldecode($depth) => $isExpanded ? 0 : 1]]) . '#' . $goto) . '">' . $icon->render() . '</a> ';
             }
             $output .= '<span class="list-tree-label">' . htmlspecialchars((string)$key) . '</span>';
             if (!$isArray) {

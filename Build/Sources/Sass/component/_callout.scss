@@ -15,15 +15,18 @@
 // </div>
 //
 //
-// Advanded Usage
+// Advanced Usage
 // --------------
 //
 // <div class="callout callout-info">
 //   <div class="media">
 //     <div class="media-left">
-//       <span class="fa-stack fa-lg callout-icon">
-//         <i class="fa fa-circle fa-stack-2x"></i>
-//         <i class="fa fa-info fa-stack-1x"></i>
+//       <span class="icon-emphasized">
+//         <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-info" data-identifier="actions-info">
+//           <span class="icon-markup">
+//             <svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-info"></use></svg>
+//           </span>
+//         </span>
 //       </span>
 //     </div>
 //     <div class="media-body">
@@ -82,12 +85,9 @@ $callout-notice-border: $state-notice-border;
     .media {
         margin: 0;
 
-        .fa-stack {
+        .icon-emphasized {
             color: $callout-icon-color;
-
-            > .fa:first-child {
-                color: $callout-border;
-            }
+            background-color: $callout-border;
         }
     }
 }
@@ -131,12 +131,9 @@ $callout-notice-border: $state-notice-border;
     .media {
         margin: 0;
 
-        .fa-stack {
+        .icon-emphasized {
             color: $icon-color;
-
-            > .fa:first-child {
-                color: $border;
-            }
+            background-color: $border;
         }
     }
 }

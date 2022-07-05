@@ -49,11 +49,11 @@ enum ContextualFeedbackSeverity: int
     public function getIconIdentifier(): string
     {
         return match ($this) {
-            self::NOTICE => 'lightbulb-o',
-            self::INFO => 'info',
-            self::OK => 'check',
-            self::WARNING => 'exclamation',
-            self::ERROR => 'times',
+            self::NOTICE => 'actions-lightbulb',
+            self::INFO => 'actions-info',
+            self::OK => 'actions-check',
+            self::WARNING => 'actions-exclamation',
+            self::ERROR => 'actions-close',
         };
     }
 

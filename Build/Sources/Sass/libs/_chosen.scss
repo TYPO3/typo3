@@ -1,3 +1,5 @@
+@import "../../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
+
 //
 // Base
 //
@@ -256,7 +258,7 @@
             background-color: $warning;
             background-clip: padding-box;
             color: #fff;
-            line-height: 13px;
+            line-height: 16px;
             cursor: default;
 
             span {
@@ -265,22 +267,21 @@
 
             .search-choice-close {
                 position: absolute;
-                top: 4px;
-                right: 5px;
+                top: 3px;
+                right: 0;
                 display: block;
-                width: 12px;
-                height: 12px;
+                width: 16px;
+                height: 16px;
 
                 &:hover {
                     text-decoration: none;
                 }
 
                 &:after {
-                    content: $fa-var-times;
-                    font-family: FontAwesome;
-                    padding-left: 2px;
-                    vertical-align: top;
-                    color: #fff;
+                    @include icon-background($icon-actions-close, $white);
+
+                    width: 16px;
+                    height: 16px;
                 }
             }
         }

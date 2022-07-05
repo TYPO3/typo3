@@ -1188,9 +1188,8 @@ class EditDocumentController
         return '<div class="callout callout-danger">' .
                 '<div class="media">' .
                     '<div class="media-left">' .
-                        '<span class="fa-stack fa-lg callout-icon">' .
-                            '<i class="fa fa-circle fa-stack-2x"></i>' .
-                            '<i class="fa fa-times fa-stack-1x"></i>' .
+                        '<span class="icon-emphasized">' .
+                            $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render() .
                         '</span>' .
                     '</div>' .
                     '<div class="media-body">' .

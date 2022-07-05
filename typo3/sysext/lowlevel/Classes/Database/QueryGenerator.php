@@ -1858,17 +1858,17 @@ class QueryGenerator
                 $lineHTML[] = '<div class="btn-group">';
                 $lineHTML[] = $this->updateIcon();
                 if ($loopCount) {
-                    $lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '"><i class="fa fa-trash fa-fw"></i></button>';
+                    $lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render() . '</button>';
                 }
-                $lineHTML[] = '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '"><i class="fa fa-plus fa-fw"></i></button>';
+                $lineHTML[] = '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . '</button>';
                 if ($c != 0) {
-                    $lineHTML[] = '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-up fa-fw"></i></button>';
+                    $lineHTML[] = '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-chevron-up', Icon::SIZE_SMALL)->render() . '</button>';
                 }
                 if ($c != 0 && $fieldType !== 'newlevel') {
-                    $lineHTML[] = '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-right fa-fw"></i></button>';
+                    $lineHTML[] = '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL)->render() . '</button>';
                 }
                 if ($fieldType === 'newlevel') {
-                    $lineHTML[] = '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-left fa-fw"></i></button>';
+                    $lineHTML[] = '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-chevron-left', Icon::SIZE_SMALL)->render() . '</button>';
                 }
                 $lineHTML[] = '</div>';
                 $lineHTML[] = '</div>';
@@ -2499,7 +2499,7 @@ class QueryGenerator
      */
     protected function updateIcon()
     {
-        return '<button class="btn btn-default" title="Update" name="just_update"><i class="fa fa-refresh fa-fw"></i></button>';
+        return '<button class="btn btn-default" title="Update" name="just_update">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</button>';
     }
 
     /**
@@ -2787,7 +2787,7 @@ class QueryGenerator
         $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
         $html[] = '	   <span class="input-group-btn">';
         $html[] = '	     <label class="btn btn-default" for="' . $id . '">';
-        $html[] = '		   <span class="fa fa-calendar"></span>';
+        $html[] =            $this->iconFactory->getIcon('actions-calendar-alternative', Icon::SIZE_SMALL)->render();
         $html[] = '		 </label>';
         $html[] = '    </span>';
         $html[] = '  </div>';

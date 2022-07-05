@@ -22,7 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -87,9 +87,9 @@ class IconRegistryTest extends UnitTestCase
         $unregisteredIcon = 'foo-bar-unregistered';
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal(), 'BackendIcons');
         self::assertFalse($subject->isRegistered($unregisteredIcon));
-        $subject->registerIcon($unregisteredIcon, FontawesomeIconProvider::class, [
+        $subject->registerIcon($unregisteredIcon, BitmapIconProvider::class, [
             'name' => 'pencil',
-            'additionalClasses' => 'fa-fw',
+            'source' => 'EXT:core/Resoureces/Public/Icons/pencil.png',
         ]);
         self::assertTrue($subject->isRegistered($unregisteredIcon));
     }

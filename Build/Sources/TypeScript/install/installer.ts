@@ -18,6 +18,7 @@ import PasswordStrength from './module/password-strength';
 import InfoBox from './renderable/info-box';
 import ProgressBar from './renderable/progress-bar';
 import Severity from './renderable/severity';
+import '@typo3/backend/element/icon-element';
 
 /**
  * Walk through the installation process of TYPO3
@@ -70,11 +71,11 @@ class Installer {
       const $toggleIcon = $element.find($element.data('toggleIcon'));
       const isPassword = $toggleTarget.attr('type') === 'password';
       if (isPassword) {
-        $toggleIcon.removeClass('fa-lock').addClass('fa-eye');
+        $toggleIcon.replaceWith('<typo3-backend-icon identifier="actions-eye" size="small"></typo3-backend-icon>');
         $toggleTarget.attr('type', 'text');
       } else {
         $toggleTarget.attr('type', 'password');
-        $toggleIcon.removeClass('fa-eye').addClass('fa-lock');
+        $toggleIcon.replaceWith('<typo3-backend-icon identifier="actions-lock" size="small"></typo3-backend-icon>');
       }
     });
     $(document).on('keyup', '.t3-install-form-password-strength', (): void => {

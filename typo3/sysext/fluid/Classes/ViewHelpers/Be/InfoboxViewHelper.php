@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -85,6 +89,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $title = $arguments['title'];
         $message = $renderChildrenClosure();
         $state = $arguments['state'];
@@ -93,34 +98,15 @@ final class InfoboxViewHelper extends AbstractViewHelper
             $state = -2;
         }
 
-        $iconName = $arguments['iconName'];
+        $severity = ContextualFeedbackSeverity::from($state);
         $disableIcon = $arguments['disableIcon'];
-        $classes = [
-            self::STATE_NOTICE => 'notice',
-            self::STATE_INFO => 'info',
-            self::STATE_OK => 'success',
-            self::STATE_WARNING => 'warning',
-            self::STATE_ERROR => 'danger',
-        ];
-        $icons = [
-            self::STATE_NOTICE => 'lightbulb-o',
-            self::STATE_INFO => 'info',
-            self::STATE_OK => 'check',
-            self::STATE_WARNING => 'exclamation',
-            self::STATE_ERROR => 'times',
-        ];
-        $stateClass = $classes[$state];
-        $icon = $icons[$state];
-        if ($iconName !== null) {
-            $icon = $iconName;
-        }
+        $icon = $arguments['iconName'] ?? $severity->getIconIdentifier();
         $iconTemplate = '';
         if (!$disableIcon) {
             $iconTemplate = '' .
                 '<div class="media-left">' .
-                    '<span class="fa-stack fa-lg callout-icon">' .
-                        '<i class="fa fa-circle fa-stack-2x"></i>' .
-                        '<i class="fa fa-' . htmlspecialchars($icon) . ' fa-stack-1x"></i>' .
+                    '<span class="icon-emphasized">' .
+                        $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() .
                     '</span>' .
                 '</div>';
         }
@@ -128,7 +114,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
         if ($title !== null) {
             $titleTemplate = '<h4 class="callout-title">' . htmlspecialchars($title) . '</h4>';
         }
-        return '<div class="callout callout-' . htmlspecialchars($stateClass) . '">' .
+        return '<div class="callout callout-' . htmlspecialchars($severity->getCssClass()) . '">' .
                 '<div class="media">' .
                     $iconTemplate .
                     '<div class="media-body">' .

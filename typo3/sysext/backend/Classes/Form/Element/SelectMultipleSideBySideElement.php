@@ -222,7 +222,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         // Html stuff for filter and select filter on top of right side of multi select boxes
         $filterTextfield[] = '<span class="input-group input-group-sm">';
         $filterTextfield[] =    '<span class="input-group-text">';
-        $filterTextfield[] =        '<span class="fa fa-filter"></span>';
+        $filterTextfield[] =        $this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL)->render();
         $filterTextfield[] =    '</span>';
         $filterTextfield[] =    '<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
         $filterTextfield[] = '</span>';

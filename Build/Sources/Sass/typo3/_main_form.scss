@@ -1,3 +1,5 @@
+@import "../../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
+
 //
 // Disable ms-clear pseudo-element globally to avoid confusion with the
 // existing clearable integration in TYPO3
@@ -125,12 +127,11 @@ fieldset[disabled] .form-control {
 //
 .form-group.has-error {
     label:before {
-        font-family: FontAwesome;
-        font-size: 12px;
-        text-align: center;
-        content: $fa-var-exclamation-circle;
-        color: $danger;
-        display: inline-block;
+        @include icon-background($icon-actions-exclamation-circle, $danger);
+
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
     }
 
     .btn-toolbar {

@@ -287,9 +287,8 @@ class InlineRecordContainer extends AbstractContainer
             $markup[] = '<div class="alert alert-warning">';
             $markup[] = '    <div class="media">';
             $markup[] = '        <div class="media-left">';
-            $markup[] = '            <span class="fa-stack fa-lg">';
-            $markup[] = '                <i class="fa fa-circle fa-stack-2x"></i>';
-            $markup[] = '                <i class="fa fa-exclamation fa-stack-1x"></i>';
+            $markup[] = '            <span class="icon-emphasized">';
+            $markup[] = '                ' . $this->iconFactory->getIcon('actions-exclamation', Icon::SIZE_SMALL)->render();
             $markup[] = '            </span>';
             $markup[] = '        </div>';
             $markup[] = '        <div class="media-body">';

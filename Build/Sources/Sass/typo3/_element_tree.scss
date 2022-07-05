@@ -84,7 +84,14 @@ $tree-control-icon-size: 12px;
         position: relative;
 
         .icon {
-            margin-right: 2px;
+            margin-right: -4px;
+            margin-top: 4px;
+
+            svg {
+                width: $tree-control-icon-size;
+                height: $tree-control-icon-size;
+                background-color: $tree-bg;
+            }
         }
     }
 }
@@ -143,27 +150,6 @@ $tree-control-icon-size: 12px;
     &:hover {
         outline: none;
         text-decoration: none;
-    }
-
-    > .fa {
-        display: inline-block;
-        text-align: center;
-        cursor: pointer;
-
-        &:before {
-            width: $tree-control-icon-size;
-            height: $tree-control-icon-size;
-            background-color: $tree-bg;
-            display: block;
-        }
-    }
-
-    &.list-tree-control-open > .fa:before {
-        content: "\f0d7";
-    }
-
-    &.list-tree-control-closed > .fa:before {
-        content: "\f0da";
     }
 }
 

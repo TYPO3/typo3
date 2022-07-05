@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconProvider\AbstractSvgIconProvider;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -214,6 +217,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_getObjTree($arr, $depth_in, $depthData, bool $alphaSort = false, string $targetRoute = 'web_ts')
     {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $HTML = '';
         if ($alphaSort) {
             ksort($arr);
@@ -252,8 +256,15 @@ class ExtendedTemplateService extends TemplateService
                         'id' => (int)GeneralUtility::_GP('id'),
                         'tsbr[' . $depth . ']' => $deeper ? 0 : 1,
                     ];
+                    if ($PM === 'minus') {
+                        $class = 'list-tree-control-open';
+                        $icon = $iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL);
+                    } else {
+                        $class = 'list-tree-control-closed';
+                        $icon = $iconFactory->getIcon('actions-caret-right', Icon::SIZE_SMALL);
+                    }
                     $aHref = $uriBuilder->buildUriFromRoute($targetRoute, $urlParameters) . '#' . $goto;
-                    $HTML .= '<a class="list-tree-control' . ($PM === 'minus' ? ' list-tree-control-open' : ' list-tree-control-closed') . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '"><i class="fa"></i></a>';
+                    $HTML .= '<a class="list-tree-control ' . $class . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
                 }
                 $label = $key;
                 // Read only...

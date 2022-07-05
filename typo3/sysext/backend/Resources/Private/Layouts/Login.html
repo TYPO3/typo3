@@ -59,7 +59,7 @@
                                                 id="t3-login-submit"
                                                 type="submit"
                                                 name="commandLI"
-                                                data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.process')}"
+                                                data-loading-text="{core:icon(identifier: 'spinner-circle', size: 'small')->f:format.htmlspecialchars()} {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.process')}"
                                                 autocomplete="off"
                                             >
                                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.submit" />
@@ -166,10 +166,10 @@
                                     <nav aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.navigation.typo3')}">
                                         <f:comment>role is for VoiceOver</f:comment>
                                         <ul class="list-unstyled" role="list">
-                                            <li><a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3"><i class="fa fa-external-link"></i> TYPO3.org</a></li>
+                                            <li><a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3"><core:icon identifier="actions-window-open" size="small" /> TYPO3.org</a></li>
                                             <li>
                                                 <a href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate">
-                                                    <i class="fa fa-external-link"></i> <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.donate" />
+                                                    <core:icon identifier="actions-window-open" size="small" /> <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.donate" />
                                                 </a>
                                             </li>
                                         </ul>

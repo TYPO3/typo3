@@ -7,7 +7,9 @@
 //
 // Load global variables
 //
+@import "../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
 @import "variables/main";
+@import "minimal";
 
 //
 // Variables
@@ -1131,26 +1133,18 @@ $tree-line-height: 20px;
             z-index: 1;
             position: absolute;
             display: inline-block;
-            width: 15px;
-            height: 15px;
-            font-family: FontAwesome;
-            vertical-align: middle;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            font-size: 1em;
-            line-height: 1.4;
-            text-align: center;
             background: none;
         }
     }
 
     #t3-form-navigation-component & {
         &:before {
+            @include icon-background($icon-actions-exclamation-circle, $danger);
+
             margin-top: 0.2em;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 800;
-            content: "\f12a";
-            background-color: $danger;
         }
     }
 
@@ -1163,9 +1157,10 @@ $tree-line-height: 20px;
         border-color: $danger;
 
         &:before {
+            @include icon-background($icon-actions-exclamation-circle, $danger);
+
             left: 4.5em;
             margin-top: 1.9em;
-            content: "\f071";
         }
 
         .element-label {

@@ -17,6 +17,7 @@ import {SeverityEnum} from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from './icons';
 import Wizard from './wizard';
+import '@typo3/backend/element/icon-element';
 
 type LanguageRecord = {
   uid: number;
@@ -107,7 +108,7 @@ class Localization {
               + '<div class="alert alert-warning">'
               + '<div class="media">'
               + '<div class="media-left">'
-              + '<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-exclamation fa-stack-1x"></i></span>'
+              + '<span class="icon-emphasized"><typo3-backend-icon identifier="actions-exclamation" size="small"></typo3-backend-icon></span>'
               + '</div>'
               + '<div class="media-body">'
               + '<p class="alert-message">' + TYPO3.lang['localize.educate.noTranslate'] + '</p>'

@@ -1,129 +1,152 @@
+:root {
+    --grideditor-grid-spacing: 1rem;
+
+    --grideditor-cell-spacing: 1rem;
+
+    --grideditor-cell-bg: #fff;
+
+    --grideditor-cell-border-radius: 4px;
+
+    --grideditor-cell-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
+
+    --grideditor-action-size: 32px;
+
+    --grideditor-action-spacing: 2px;
+
+    --grideditor-action-bg: #fafafa;
+
+    --grideditor-action-focus-bg: #{tint-color($primary, 90%)};
+
+    --grideditor-action-focus-outline-color: #{tint-color($primary, 20%)};
+
+    --grideditor-action-hover-bg: #{tint-color($primary, 95%)};
+}
+
 .grideditor {
-    td {
-        vertical-align: middle;
+    display: grid;
+    grid-template: "grideditor-control-top ." "grideditor-editor grideditor-control-right" "grideditor-control-bottom ." "grideditor-preview grideditor-preview" auto / minmax(auto, 1fr);
+    gap: var(--grideditor-grid-spacing);
 
-        &.editor_cell {
-            height: 100%;
+    &-control {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        &-top {
+            grid-area: grideditor-control-top;
+        }
+
+        &-right {
+            grid-area: grideditor-control-right;
+        }
+
+        &-bottom {
+            grid-area: grideditor-control-bottom;
         }
     }
 
-    table.editor {
-        border: 0;
-        border-left: 1px $gray-300 solid;
-        border-top: 1px $gray-300 solid;
+    &-editor {
+        grid-area: grideditor-editor;
 
-        td {
-            vertical-align: middle;
-            border: 0;
-            border-bottom: 1px $gray-300 solid;
-            border-right: 1px $gray-300 solid;
-            text-align: center;
-            background-color: white;
-            min-height: 100px;
+        &-grid {
+            display: grid;
+            gap: 1em;
+            width: 100%;
         }
     }
 
-    div#editor {
-        height: 100%;
+    &-preview {
+        grid-area: grideditor-preview;
+
+        typo3-t3editor-codemirror {
+            border: 1px solid $border-color;
+        }
+    }
+}
+
+// Cell
+.grideditor-cell {
+    --grideditor-cell-col-start: var(--grideditor-cell-col, 1);
+
+    --grideditor-cell-col-end: calc(var(--grideditor-cell-col, 1) + var(--grideditor-cell-colspan, 1));
+
+    --grideditor-cell-row-start: var(--grideditor-cell-row, 1);
+
+    --grideditor-cell-row-end: calc(var(--grideditor-cell-row, 1) + var(--grideditor-cell-rowspan, 1));
+
+    grid-column: var(--grideditor-cell-col-start) / var(--grideditor-cell-col-end);
+    grid-row: var(--grideditor-cell-row-start) / var(--grideditor-cell-row-end);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    min-height: 100px;
+    flex-direction: column;
+    border: 1px solid var(--grideditor-cell-bg);
+    background-color: var(--grideditor-cell-bg);
+    border-radius: var(--grideditor-cell-border-radius);
+    box-shadow: var(--grideditor-cell-shadow);
+
+    > * {
+        width: 100%;
     }
 
-    div.cell_container {
-        width: 80px;
-        height: 80px;
+    &-actions {
         position: relative;
-        left: 50%;
-        margin-top: 30px;
-        margin-left: -30px;
-        opacity: 0.3;
+        flex-grow: 1;
+        min-height: calc(var(--grideditor-cell-spacing) + (var(--grideditor-action-size) + var(--grideditor-action-spacing)) * 3);
+        min-width: calc(var(--grideditor-cell-spacing) + (var(--grideditor-action-size) + var(--grideditor-action-spacing)) * 3);
     }
 
-    div.cell_container:hover {
-        opacity: 0.5;
+    &-info {
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        line-height: 1.2em;
+        padding: calc(var(--grideditor-cell-spacing) / 2) var(--grideditor-cell-spacing);
+        background-color: rgba(0, 0, 0, 0.05);
+        border-bottom-left-radius: var(--grideditor-cell-border-radius);
+        border-bottom-right-radius: var(--grideditor-cell-border-radius);
+    }
+}
+
+.grideditor-action {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--grideditor-action-size);
+    height: var(--grideditor-action-size);
+    border-radius: 2px;
+    background-color: var(--grideditor-action-bg);
+
+    &:hover,
+    &:focus {
+        outline: none;
+        background-color: var(--grideditor-action-hover-bg);
     }
 
-    .grideditor-preview {
-        margin-top: 5px;
+    &:focus {
+        z-index: 1;
+        background-color: var(--grideditor-action-focus-bg);
+        outline: 1px solid var(--grideditor-action-focus-outline-color);
+        outline-offset: 0;
     }
 
-    .link {
-        display: block;
-        position: absolute;
-        width: 20px;
-        height: 40px;
-        overflow: hidden;
-        opacity: 0.5;
+    &-expand-down {
+        top: calc(50% + var(--grideditor-action-size) + var(--grideditor-action-spacing));
+    }
 
-        &:hover {
-            text-decoration: none;
-            opacity: 1;
-        }
+    &-expand-right {
+        left: calc(50% + var(--grideditor-action-size) + var(--grideditor-action-spacing));
+    }
 
-        &_expand_down,
-        &_shrink_up {
-            width: 40px;
-            height: 20px;
-        }
+    &-shrink-up {
+        top: calc(50% - var(--grideditor-action-size) - var(--grideditor-action-spacing));
+    }
 
-        &_expand_right {
-            left: 52px;
-            top: 0;
-
-            &:before {
-                font-family: FontAwesome;
-                content: "#{$fa-var-caret-right}";
-                font-size: 42px;
-                line-height: 42px;
-            }
-        }
-
-        &_shrink_left {
-            left: -8px;
-            top: 0;
-
-            &:before {
-                font-family: FontAwesome;
-                content: "#{$fa-var-caret-left}";
-                font-size: 42px;
-                line-height: 42px;
-            }
-        }
-
-        &_expand_down {
-            left: 12px;
-            top: 40px;
-
-            &:before {
-                font-family: FontAwesome;
-                content: "#{$fa-var-caret-down}";
-                font-size: 42px;
-                line-height: 19px;
-            }
-        }
-
-        &_shrink_up {
-            left: 12px;
-            top: -20px;
-
-            &:before {
-                font-family: FontAwesome;
-                content: "#{$fa-var-caret-up}";
-                font-size: 42px;
-                line-height: 20px;
-            }
-        }
-
-        &_editor {
-            width: 40px;
-            height: 40px;
-            left: 12px;
-            top: 0;
-
-            &:before {
-                font-family: FontAwesome;
-                content: "#{$fa-var-pencil-square}";
-                font-size: 42px;
-                line-height: 42px;
-            }
-        }
+    &-shrink-left {
+        left: calc(50% - var(--grideditor-action-size) - var(--grideditor-action-spacing));
     }
 }

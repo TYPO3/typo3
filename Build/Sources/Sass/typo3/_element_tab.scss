@@ -1,3 +1,5 @@
+@import "../../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
+
 //
 // Tab menu
 //
@@ -28,20 +30,8 @@
             }
         }
 
-        &[class*="has-"] > a.nav-link {
+        &[class*='has-'] > a.nav-link {
             &:before {
-                font-family: FontAwesome;
-                margin-right: 2px;
-                margin-top: -2px;
-                vertical-align: middle;
-                font-size: 10px;
-                text-align: center;
-                background-color: rgba(255, 255, 255, 0.25);
-                border-radius: 50%;
-                width: 15px;
-                height: 15px;
-                display: inline-block;
-
                 @include transition(all 0.25s ease-in-out);
             }
         }
@@ -60,7 +50,11 @@
                 }
 
                 &:before {
-                    content: $fa-var-exclamation;
+                    @include icon-background($icon-actions-exclamation-circle, $white);
+
+                    border-radius: 50%;
+                    width: 14px;
+                    height: 14px;
                 }
 
                 &.active {

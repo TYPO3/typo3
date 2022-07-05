@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -38,10 +40,16 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
     protected $tagName = 'form';
 
     protected ExtensionService $extensionService;
+    protected IconFactory $iconFactory;
 
     public function injectExtensionService(ExtensionService $extensionService): void
     {
         $this->extensionService = $extensionService;
+    }
+
+    public function injectIconFactory(IconFactory $iconFactory): void
+    {
+        $this->iconFactory = $iconFactory;
     }
 
     public function initializeArguments(): void
@@ -88,7 +96,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
                     class="btn btn-default"
                     value="' . htmlspecialchars($titleAndValue) . '"
                 >
-                    <span class="t3-icon fa fa-cloud-download"></span>
+                    ' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '
                 </button>
             </div>';
 

@@ -224,6 +224,7 @@ $login-container-padding-horizontal: 2.5em;
     text-align: center;
     position: absolute;
     opacity: 0.75;
+    padding: 0;
 
     @include transition(opacity 0.2s ease-in-out);
 
@@ -264,10 +265,6 @@ $login-container-padding-horizontal: 2.5em;
     font-size: 0.95em;
     padding-top: 1em;
     color: $login-copyright-text;
-
-    .fa {
-        font-size: 13px;
-    }
 
     > *:first-child {
         margin-top: 0;

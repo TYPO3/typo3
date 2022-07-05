@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconProvider\AbstractSvgIconProvider;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -273,10 +274,19 @@ abstract class AbstractTreeView
      */
     public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
         $anchor = $bMark ? '#' . $bMark : '';
         $name = $bMark ? ' name="' . $bMark . '"' : '';
         $aUrl = $this->getThisScript() . $anchor;
-        return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
+        if ($isOpen) {
+            $class = 'list-tree-control-open';
+            $icon = $iconFactory->getIcon('actions-chevron-down', Icon::SIZE_SMALL);
+        } else {
+            $class = 'list-tree-control-closed';
+            $icon = $iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL);
+        }
+        return '<a class="list-tree-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
     }
 
     /**

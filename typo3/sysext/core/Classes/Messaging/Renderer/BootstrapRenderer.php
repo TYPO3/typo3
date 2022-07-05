@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Messaging\Renderer;
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class representing a bootstrap flash messages.
@@ -28,6 +31,13 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  */
 class BootstrapRenderer implements FlashMessageRendererInterface
 {
+    protected IconFactory $iconFactory;
+
+    public function __construct(IconFactory $iconFactory = null)
+    {
+        $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
+    }
+
     /**
      * Render method
      *
@@ -78,9 +88,8 @@ class BootstrapRenderer implements FlashMessageRendererInterface
             $markup[] = '<div class="alert ' . htmlspecialchars($this->getClass($flashMessage)) . '">';
             $markup[] = '  <div class="media">';
             $markup[] = '    <div class="media-left">';
-            $markup[] = '      <span class="fa-stack fa-lg">';
-            $markup[] = '        <i class="fa fa-circle fa-stack-2x"></i>';
-            $markup[] = '        <i class="fa fa-' . htmlspecialchars($this->getIconName($flashMessage)) . ' fa-stack-1x"></i>';
+            $markup[] = '      <span class="icon-emphasized">';
+            $markup[] =            $this->iconFactory->getIcon($this->getIconName($flashMessage), Icon::SIZE_SMALL)->render();
             $markup[] = '      </span>';
             $markup[] = '    </div>';
             $markup[] = '    <div class="media-body">';

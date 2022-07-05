@@ -23,7 +23,7 @@
                             data-crop-variant-id="{cropVariant.id}"
                             data-crop-variant
                         >
-                        <span><i class="fa fa-chevron-{f:if(condition:cropVariantIterator.isFirst, then:'up', else:'down')}" aria-hidden="true"></i> {cropVariant.title -> f:translate(id: cropVariant.title)}</span>
+                        <span><core:icon identifier="actions-chevron-{f:if(condition:cropVariantIterator.isFirst, then:'up', else:'down')}" size="small" /> {cropVariant.title -> f:translate(id: cropVariant.title)}</span>
                             <div
                                 class="cropper-preview-thumbnail {f:if(condition:'{image.properties.width}>{image.properties.height}', then:'wide', else: 'tall')}"
                             >
@@ -65,7 +65,7 @@
                                                     value="{cropVariant.id}"
                                                     type="radio"
                                                 />
-                                                <span class="t3-js-ratio-title" data-ratio-id="{cropVariant.id}{ratio.id}">{ratio.title -> f:translate(id: ratio.title)}</span> <i class="fa fa-check"></i>
+                                                <span class="t3-js-ratio-title" data-ratio-id="{cropVariant.id}{ratio.id}">{ratio.title -> f:translate(id: ratio.title)}</span> <core:icon identifier="actions-check" size="small" />
                                             </label>
                                         </f:for>
                                     </div>
@@ -84,7 +84,7 @@
                                     data-crop-variant="{cropVariant -> f:format.json()}"
                                     title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}"
                                 >
-                                    <i class="fa fa-refresh"></i>
+                                    <core:icon identifier="actions-refresh" size="small" />
                                     {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}
                                 </button>
                             </div>

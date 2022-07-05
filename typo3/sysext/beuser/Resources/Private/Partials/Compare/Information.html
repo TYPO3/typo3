@@ -42,8 +42,8 @@
                                 {group.row.title}
                             </be:link.editRecord>
                         </td>
-                        <td class="text-center"><f:if condition="{group.direct}"><span class="t3-icon change-permission fa fa-check text-success"></span></f:if></td>
-                        <td class="text-center"><f:if condition="{group.diff}"><span class="t3-icon change-permission fa fa-check text-success"></span></f:if></td>
+                        <td class="text-center"><f:if condition="{group.direct}"><span class="text-success"><core:icon identifier="actions-check" size="small" /></span></f:if></td>
+                        <td class="text-center"><f:if condition="{group.diff}"><span class="text-success"><core:icon identifier="actions-check" size="small" /></span></f:if></td>
                     </tr>
                 </f:for>
             </tbody>
@@ -192,16 +192,16 @@
                 </td>
                 <td class="text-center">
                     <bu:display.tableAccess table="{table}" select="{tables.tables_select}" modify="{tables.tables_modify}">
-                        <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
+                        <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span>
                         </f:then>
-                        <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
+                        <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span></f:else>
                     </bu:display.tableAccess>
                 </td>
                 <td class="text-center">
                     <bu:display.tableAccess table="{table}" modify="{tables.tables_modify}">
-                        <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
+                        <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span>
                         </f:then>
-                        <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
+                        <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span></f:else>
                     </bu:display.tableAccess>
                 </td>
             </tr>
@@ -252,8 +252,8 @@
 
 <f:section name="yesno">
     <f:if condition="{value}">
-        <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>{f:translate(key:'yes')}</f:then>
-        <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span>{f:translate(key:'no')}</f:else>
+        <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span> {f:translate(key:'yes')}</f:then>
+        <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span> {f:translate(key:'no')}</f:else>
     </f:if>
 </f:section>
 

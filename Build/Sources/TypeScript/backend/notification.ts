@@ -18,6 +18,7 @@ import {ifDefined} from 'lit/directives/if-defined';
 import {AbstractAction} from './action-button/abstract-action';
 import {SeverityEnum} from './enum/severity';
 import Severity from './severity';
+import '@typo3/backend/element/icon-element';
 
 interface Action {
   label: string;
@@ -183,20 +184,20 @@ class NotificationMessage extends LitElement {
     let icon = '';
     switch (this.severity) {
       case SeverityEnum.notice:
-        icon = 'lightbulb-o';
+        icon = 'actions-lightbulb';
         break;
       case SeverityEnum.ok:
-        icon = 'check';
+        icon = 'actions-check';
         break;
       case SeverityEnum.warning:
-        icon = 'exclamation';
+        icon = 'actions-exclamation';
         break;
       case SeverityEnum.error:
-        icon = 'times';
+        icon = 'actions-close';
         break;
       case SeverityEnum.info:
       default:
-        icon = 'info';
+        icon = 'actions-info';
     }
 
     /* eslint-disable @typescript-eslint/indent */
@@ -206,14 +207,13 @@ class NotificationMessage extends LitElement {
         class="${'alert alert-' + className + ' alert-dismissible fade' + (this.visible ? ' in' : '')}"
         role="alert">
         <button type="button" class="close" @click="${async (e: Event) => this.close()}">
-          <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+          <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
           <span class="sr-only">Close</span>
         </button>
         <div class="media">
           <div class="media-left">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="${'fa fa-' + icon + ' fa-stack-1x'}"></i>
+            <span class="icon-emphasized">
+              <typo3-backend-icon identifier="${icon}" size="small"></typo3-backend-icon>
             </span>
           </div>
           <div class="media-body">

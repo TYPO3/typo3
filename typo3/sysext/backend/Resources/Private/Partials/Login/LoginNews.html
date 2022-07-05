@@ -1,4 +1,5 @@
 <html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
@@ -13,11 +14,11 @@
                 <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews"
                     data-bs-interval="0" data-bs-ride="carousel">
                     <button class="left typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="prev">
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <core:icon identifier="actions-chevron-left" size="small" />
                         <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.previous"/></span>
                     </button>
                     <button type="button" class="right typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="next">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        <core:icon identifier="actions-chevron-right" size="small" />
                         <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.next"/></span>
                     </button>
                     <div class="carousel-inner" aria-live="polite">

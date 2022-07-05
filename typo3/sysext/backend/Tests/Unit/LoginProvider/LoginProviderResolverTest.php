@@ -102,7 +102,7 @@ class LoginProviderResolverTest extends UnitTestCase
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
                 'sorting' => 30,
-                'icon-class' => 'foo',
+                'iconIdentifier' => 'foo',
             ],
         ];
         new LoginProviderResolver();
@@ -136,7 +136,7 @@ class LoginProviderResolverTest extends UnitTestCase
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
                 'label' => 'foo',
-                'icon-class' => 'foo',
+                'iconIdentifier' => 'foo',
             ],
         ];
         new LoginProviderResolver();
@@ -152,7 +152,7 @@ class LoginProviderResolverTest extends UnitTestCase
                 'provider' => UsernamePasswordLoginProvider::class,
                 'sorting' => 30,
                 'label' => 'foo',
-                'icon-class' => 'foo',
+                'iconIdentifier' => 'foo',
             ],
         ];
 
@@ -277,13 +277,13 @@ class LoginProviderResolverTest extends UnitTestCase
                 'provider' => UsernamePasswordLoginProvider::class,
                 'sorting' => 20,
                 'label' => 'foo',
-                'icon-class' => 'foo',
+                'iconIdentifier' => 'foo',
             ],
             '987654321' => [
                 'provider' => UsernamePasswordLoginProvider::class,
                 'sorting' => 30,
                 'label' => 'bar',
-                'icon-class' => 'bar',
+                'iconIdentifier' => 'bar',
             ],
         ];
     }
