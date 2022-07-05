@@ -33,22 +33,22 @@ const alwaysUpdate = (newVal: string, oldVal: string) => true;
 export class ModuleRouter extends LitElement {
 
   @property({type: String, hasChanged: alwaysUpdate})
-  module: string = '';
+    module: string = '';
 
   @property({type: String, hasChanged: alwaysUpdate})
-  endpoint: string = '';
+    endpoint: string = '';
 
   @property({type: String, attribute: 'state-tracker'})
-  stateTrackerUrl: string;
+    stateTrackerUrl: string;
 
   @property({type: String, attribute: 'sitename'})
-  sitename: string;
+    sitename: string;
 
   @property({type: Boolean, attribute: 'sitename-first'})
-  sitenameFirst: boolean;
+    sitenameFirst: boolean;
 
   @query('slot', true)
-  slotElement: HTMLSlotElement;
+    slotElement: HTMLSlotElement;
 
   public static styles = css`
     :host {
