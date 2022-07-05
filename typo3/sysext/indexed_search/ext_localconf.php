@@ -8,7 +8,6 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\IndexedSearch\Controller\SearchController;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Hook\DeleteIndexedData;
-use TYPO3\CMS\IndexedSearch\Hook\TypoScriptFrontendHook;
 use TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility;
 
 defined('TYPO3') or die();
@@ -21,7 +20,6 @@ ExtensionUtility::configurePlugin(
     [SearchController::class => 'form,search']
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached']['indexed_search'] = TypoScriptFrontendHook::class . '->indexPageContent';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval']['indexed_search'] = DeleteIndexedData::class . '->delete';
 
 // Configure default document parsers:

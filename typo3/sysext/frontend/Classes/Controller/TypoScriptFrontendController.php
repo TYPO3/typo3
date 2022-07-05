@@ -68,6 +68,8 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
+use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
 use TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent;
 use TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent;
 use TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent;
@@ -1629,42 +1631,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Set cache content to $this->content
-     */
-    protected function realPageCacheContent()
-    {
-        // seconds until a cached page is too old
-        $cacheTimeout = $this->get_cache_timeout();
-        $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-        $usePageCache = true;
-        // Hook for deciding whether page cache should be written to the cache backend or not
-        // NOTE: as hooks are called in a loop, the last hook will have the final word (however each
-        // hook receives the current status of the $usePageCache flag)
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] ?? [] as $className) {
-            $usePageCache = GeneralUtility::makeInstance($className)->usePageCache($this, $usePageCache);
-        }
-        // Write the page to cache, if necessary
-        if ($usePageCache) {
-            $this->setPageCacheContent($this->content, $this->config, $timeOutTime);
-        }
-        // Hook for cache post processing (eg. writing static files!)
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] ?? [] as $className) {
-            GeneralUtility::makeInstance($className)->insertPageIncache($this, $timeOutTime);
-        }
-    }
-
-    /**
-     * Sets cache content; Inserts the content string into the cache_pages cache.
+     * Sets cache content; Inserts the content string into the pages cache.
      *
      * @param string $content The content to store in the HTML field of the cache table
-     * @param mixed $data The additional cache_data array, fx. $this->config
+     * @param array $data The additional cache_data array, fx. $this->config
      * @param int $expirationTstamp Expiration timestamp
-     * @see realPageCacheContent()
+     * @see populatePageDataFromCache()
      */
-    protected function setPageCacheContent($content, $data, $expirationTstamp)
+    protected function setPageCacheContent(string $content, array $data, int $expirationTstamp): array
     {
         $cacheData = [
-            'identifier' => $this->newHash,
             'page_id' => $this->id,
             'content' => $content,
             'cache_data' => $data,
@@ -1672,7 +1648,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'tstamp' => $GLOBALS['EXEC_TIME'],
         ];
         $this->cacheExpires = $expirationTstamp;
-        $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
+        $this->pageCacheTags[] = 'pageId_' . $this->id;
         // Respect the page cache when content of pid is shown
         if ($this->id !== $this->contentPid) {
             $this->pageCacheTags[] = 'pageId_' . $this->contentPid;
@@ -1681,9 +1657,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $tags = GeneralUtility::trimExplode(',', $this->page['cache_tags'], true);
             $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
         }
+        $this->pageCacheTags = array_unique($this->pageCacheTags);
         // Add the cache themselves as well, because they are fetched by getPageCacheTags()
         $cacheData['cacheTags'] = $this->pageCacheTags;
         $this->pageCache->set($this->newHash, $cacheData, $this->pageCacheTags, $expirationTstamp - $GLOBALS['EXEC_TIME']);
+        return $cacheData;
     }
 
     /**
@@ -1878,30 +1856,30 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * This includes caching the page, indexing the page (if configured) and setting sysLastChanged
      */
-    public function generatePage_postProcessing()
+    public function generatePage_postProcessing(ServerRequestInterface $request)
     {
         $this->setAbsRefPrefix();
-        // This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
+        // This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated.
+        // This is a safety precaution, as it could have been unset by some script.
         if ($this->no_cacheBeforePageGen) {
             $this->set_no_cache('no_cache has been set before the page was generated - safety check', true);
         }
-        // Hook for post-processing of page content cached/non-cached:
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+        $event = new AfterCacheableContentIsGeneratedEvent($request, $this, $this->newHash, !$this->no_cache);
+        $event = $eventDispatcher->dispatch($event);
+
+        // Processing if caching is enabled
+        if ($event->isCachingEnabled()) {
+            // Seconds until a cached page is too old
+            $cacheTimeout = $this->get_cache_timeout();
+            $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
+            // Write the page to cache
+            $cachedInformation = $this->setPageCacheContent($this->content, $this->config, $timeOutTime);
+
+            // Event for cache post processing (eg. writing static files)
+            $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $cachedInformation, $cacheTimeout);
+            $eventDispatcher->dispatch($event);
         }
-        // Processing if caching is enabled:
-        if (!$this->no_cache) {
-            // Hook for post-processing of page content before being cached:
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'] ?? [] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
-        // Storing for cache:
-        if (!$this->no_cache) {
-            $this->realPageCacheContent();
-        }
-        // Sets sys-last-change:
         $this->setSysLastChanged();
     }
 

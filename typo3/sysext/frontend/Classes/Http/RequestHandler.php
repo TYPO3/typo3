@@ -143,7 +143,7 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
             $this->timeTracker->decStackPointer();
 
-            $controller->generatePage_postProcessing();
+            $controller->generatePage_postProcessing($request);
             $this->timeTracker->pull();
         }
         $controller->releaseLocks();
@@ -151,7 +151,7 @@ class RequestHandler implements RequestHandlerInterface
         // Render non-cached page parts by replacing placeholders which are taken from cache or added during page generation
         if ($controller->isINTincScript()) {
             if (!$controller->isGeneratePage()) {
-                // When page was generated, this was already called. Avoid calling this twice.
+                // When the page was generated, this was already called. Avoid calling this twice.
                 $controller->preparePageContentGeneration($request);
 
                 // Make sure all FAL resources are prefixed with absPrefPrefix

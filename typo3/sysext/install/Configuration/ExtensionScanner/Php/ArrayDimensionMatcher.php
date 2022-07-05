@@ -760,4 +760,28 @@ return [
             'Breaking-97797-GFXSettingProcessor_path_lzwRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'contentPostProc-cached\']' => [
+        'restFiles' => [
+            'Breaking-97862-HooksRelatedToGeneratingPageContentRemoved.rst',
+            'Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'contentPostProc-all\']' => [
+        'restFiles' => [
+            'Breaking-97862-HooksRelatedToGeneratingPageContentRemoved.rst',
+            'Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'usePageCache\']' => [
+        'restFiles' => [
+            'Breaking-97862-HooksRelatedToGeneratingPageContentRemoved.rst',
+            'Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'insertPageIncache\']' => [
+        'restFiles' => [
+            'Breaking-97862-HooksRelatedToGeneratingPageContentRemoved.rst',
+            'Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour.rst',
+        ],
+    ],
 ];
