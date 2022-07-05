@@ -1199,8 +1199,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeTsfe(): void
     {
-        $GLOBALS['TSFE']->intTarget = 'foo';
-        self::assertEquals($GLOBALS['TSFE']->intTarget, $this->subject->getData('tsfe:intTarget'));
+        $GLOBALS['TSFE']->linkVars = 'foo';
+        self::assertEquals($GLOBALS['TSFE']->linkVars, $this->subject->getData('tsfe:linkVars'));
     }
 
     /**
@@ -2721,7 +2721,6 @@ class ContentObjectRendererTest extends UnitTestCase
         string $mailAddress,
         string $expected
     ): void {
-        $this->getFrontendController()->spamProtectEmailAddresses = $settings['spamProtectEmailAddresses'];
         $this->getFrontendController()->config['config'] = $settings;
         $typoScript = ['parameter' => $mailAddress];
         GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory());

@@ -376,8 +376,9 @@ class RequestHandler implements RequestHandlerInterface
         }
         $pageRenderer->setHeadTag($headTag);
         $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
-        if ($controller->baseUrl) {
-            $pageRenderer->setBaseUrl($controller->baseUrl);
+        $baseUrl = $controller->config['config']['baseURL'] ?? '';
+        if ($baseUrl) {
+            $pageRenderer->setBaseUrl($baseUrl);
         }
         if ($controller->pSetup['shortcutIcon'] ?? false) {
             try {

@@ -273,7 +273,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function baseUrlWrapHandlesDifferentUrls(string $baseUrl, string $url, string $expected): void
     {
-        $this->subject->baseUrl = $baseUrl;
+        $this->subject->config['config']['baseURL'] = $baseUrl;
         self::assertSame($expected, $this->subject->baseUrlWrap($url));
     }
 

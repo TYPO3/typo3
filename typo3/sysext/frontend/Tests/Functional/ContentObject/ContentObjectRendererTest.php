@@ -353,7 +353,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
 
-        $tsfe->spamProtectEmailAddresses = 1;
+        $tsfe->config['config']['spamProtectEmailAddresses'] = 1;
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
         self::assertEquals('<a href="#" data-mailto-token="nbjmup+uftuAfybnqmf/dpn" data-mailto-vector="1">Send me an email</a>', $result);
     }

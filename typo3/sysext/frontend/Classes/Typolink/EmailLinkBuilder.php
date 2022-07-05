@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Builds a TypoLink to an email address, also takes care of additional functionality for the time being
@@ -64,11 +65,14 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
 
         // no processing happened, therefore, the default processing kicks in
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe->spamProtectEmailAddresses) {
-            $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
+        $spamProtectEmailAddresses = (int)($tsfe->config['config']['spamProtectEmailAddresses'] ?? 0);
+        $spamProtectEmailAddresses = MathUtility::forceIntegerInRange($spamProtectEmailAddresses, -10, 10, 0);
+
+        if ($spamProtectEmailAddresses) {
+            $mailToUrl = $this->encryptEmail($mailToUrl, $spamProtectEmailAddresses);
             $attributes = [
                 'data-mailto-token' => $mailToUrl,
-                'data-mailto-vector' => $tsfe->spamProtectEmailAddresses,
+                'data-mailto-vector' => $spamProtectEmailAddresses,
             ];
             $mailToUrl = '#';
             $this->addDefaultFrontendJavaScript();

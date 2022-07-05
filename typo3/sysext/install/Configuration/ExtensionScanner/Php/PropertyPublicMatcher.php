@@ -964,4 +964,29 @@ return [
             'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->spamProtectEmailAddresses' => [
+        'restFiles' => [
+            'Deprecation-97866-VariousPublicTSFEProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->intTarget' => [
+        'restFiles' => [
+            'Deprecation-97866-VariousPublicTSFEProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->extTarget' => [
+        'restFiles' => [
+            'Deprecation-97866-VariousPublicTSFEProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fileTarget' => [
+        'restFiles' => [
+            'Deprecation-97866-VariousPublicTSFEProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrl' => [
+        'restFiles' => [
+            'Deprecation-97866-VariousPublicTSFEProperties.rst',
+        ],
+    ],
 ];

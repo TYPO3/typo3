@@ -304,11 +304,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         $tsfe = $this->getTypoScriptFrontendController();
         if ($treatAsExternalLink) {
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, (string)($tsfe->config['config']['extTarget'] ?? ''));
         } else {
             $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
             if (empty($target)) {
-                $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
+                $target = $this->resolveTargetAttribute($conf, 'target', true, (string)($tsfe->config['config']['intTarget'] ?? ''));
             }
         }
         return $target;

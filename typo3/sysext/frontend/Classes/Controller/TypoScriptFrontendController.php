@@ -24,6 +24,7 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -93,6 +94,15 @@ use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+
+    protected array $deprecatedPublicProperties = [
+        'intTarget' => '$TSFE->intTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'intTarget\'] instead.',
+        'extTarget' => '$TSFE->extTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'extTarget\'] instead.',
+        'fileTarget' => '$TSFE->fileTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'fileTarget\'] instead.',
+        'spamProtectEmailAddresses' => '$TSFE->spamProtectEmailAddresses will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'spamProtectEmailAddresses\'] instead.',
+        'baseUrl' => '$TSFE->baseUrl will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'baseURL\'] instead.',
+    ];
 
     /**
      * The page id (int)
@@ -283,25 +293,29 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Default internal target
      * @var string
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
      */
-    public $intTarget = '';
+    protected $intTarget = '';
 
     /**
      * Default external target
      * @var string
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
      */
-    public $extTarget = '';
+    protected $extTarget = '';
 
     /**
      * Default file link target
      * @var string
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
      */
-    public $fileTarget = '';
+    protected $fileTarget = '';
 
     /**
      * If set, typolink() function encrypts email addresses.
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
      */
-    public int $spamProtectEmailAddresses = 0;
+    protected int $spamProtectEmailAddresses = 0;
 
     /**
      * Absolute Reference prefix
@@ -313,6 +327,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * A string prepared for insertion in all links on the page as url-parameters.
      * Based on configuration in TypoScript where you defined which GET parameters you
      * would like to pass on.
+     * @internal if needed, generate linkVars via LinkVarsCalculator
      */
     public string $linkVars = '';
 
@@ -359,8 +374,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * The base URL set for the page header.
      * @var string
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
      */
-    public $baseUrl = '';
+    protected $baseUrl = '';
 
     /**
      * Page content render object
@@ -1804,10 +1820,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        // Base url:
-        if (isset($this->config['config']['baseURL'])) {
-            $this->baseUrl = $this->config['config']['baseURL'];
-        }
+        // @deprecated: these properties can be removed in TYPO3 v13.0
+        $this->baseUrl = (string)($this->config['config']['baseURL'] ?? '');
         // Internal and External target defaults
         $this->intTarget = (string)($this->config['config']['intTarget'] ?? '');
         $this->extTarget = (string)($this->config['config']['extTarget'] ?? '');
@@ -1816,6 +1830,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->logDeprecatedTyposcript('config.spamProtectEmailAddresses = ascii', 'This setting has no effect anymore. Change it to a number between -10 and 10 or remove it completely');
             $this->config['config']['spamProtectEmailAddresses'] = 0;
         }
+        // @deprecated: these properties can be removed in TYPO3 v13.0
         $this->spamProtectEmailAddresses = (int)($this->config['config']['spamProtectEmailAddresses'] ?? 0);
         $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
         // calculate the absolute path prefix
@@ -2287,13 +2302,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $url Input URL, relative or absolute
      * @return string Processed input value.
+     * @internal only for TYPO3 Core internal purposes. Might be removed at a later point as it was related to RealURL functionality.
      */
     public function baseUrlWrap($url)
     {
-        if ($this->baseUrl) {
+        if ($this->config['config']['baseURL'] ?? false) {
             $urlParts = parse_url($url);
             if (empty($urlParts['scheme']) && $url[0] !== '/') {
-                $url = $this->baseUrl . $url;
+                $url = $this->config['config']['baseURL'] . $url;
             }
         }
         return $url;
