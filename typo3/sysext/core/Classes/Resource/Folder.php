@@ -284,13 +284,11 @@ class Folder implements FolderInterface
     }
 
     /**
-     * Returns a list of subfolders
-     *
      * @param int $start The item to start at
      * @param int $numberOfItems The number of items to return
      * @param int $filterMode The filter mode to use for the filelist.
      * @param bool $recursive
-     * @return Folder[]
+     * @return array<string|int, Folder>
      */
     public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false)
     {

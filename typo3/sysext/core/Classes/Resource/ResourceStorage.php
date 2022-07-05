@@ -2428,7 +2428,7 @@ class ResourceStorage implements ResourceStorageInterface
      *                     If a driver does not support the given property, it
      *                     should fall back to "name".
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return Folder[]
+     * @return array<string|int, Folder>
      */
     public function getFoldersInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = true, $recursive = false, $sort = '', $sortRev = false)
     {
@@ -2446,6 +2446,7 @@ class ResourceStorage implements ResourceStorageInterface
 
         $folders = [];
         foreach ($folderIdentifiers as $folderIdentifier) {
+            // The folder identifier can also be an int-like string, resulting in int array keys.
             $folders[$folderIdentifier] = $this->getFolder($folderIdentifier, true);
         }
         return $folders;
