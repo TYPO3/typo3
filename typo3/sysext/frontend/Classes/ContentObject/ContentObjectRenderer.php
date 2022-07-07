@@ -4723,7 +4723,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // Evaluate "parameter." stdWrap but keep additional information (like target, class and title)
             $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
             $linkParameterParts = $typoLinkCodecService->decode($conf['parameter'] ?? '');
-            $linkParameterParts['url'] = $this->stdWrap($linkParameterParts['url'], $conf['parameter.']);
+            $modifiedLinkParameterString = $this->stdWrap($linkParameterParts['url'], $conf['parameter.'] ?? []);
+            // As the stdWrap result might contain target etc. as well again (".field = header_link")
+            // the result is then taken from the stdWrap and overridden if the value is not empty.
+            $modifiedLinkParameterParts = $typoLinkCodecService->decode($modifiedLinkParameterString);
+            $linkParameterParts = array_replace($linkParameterParts, array_filter($modifiedLinkParameterParts, 'trim'));
             $linkParameter = $typoLinkCodecService->encode($linkParameterParts);
         } else {
             $linkParameter = trim(($conf['parameter'] ?? ''));

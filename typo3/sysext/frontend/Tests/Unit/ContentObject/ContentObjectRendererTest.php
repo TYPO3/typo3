@@ -2378,6 +2378,33 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 '<a href="http://typo3.com" class="url-class">TYPO3</a>',
             ],
+            'Link url using stdWrap with class attribute in parameter and overridden target' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org default-target url-class',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com new-target different-url-class',
+                        ],
+                    ],
+                ],
+                '<a href="http://typo3.com" target="new-target" class="different-url-class" rel="noreferrer">TYPO3</a>',
+            ],
+            'Link url using stdWrap with class attribute in parameter and overridden target and returnLast' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org default-target url-class',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com new-target different-url-class',
+                        ],
+                    ],
+                    'returnLast' => 'url',
+                ],
+                'http://typo3.com',
+            ],
         ];
     }
 
