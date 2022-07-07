@@ -44,7 +44,7 @@ Migrate custom commands within CommandControllers as symfony commands as TYPO3 C
 definitions on what parameters will be available.
 
 See documentation https://symfony.com/doc/current/console.html and
-https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/BackendModules/CliScripts/Index.html for detailed
+:ref:`t3coreapi:symfony-console-commands` for detailed
 descriptions on how to write Console Commands and how to integrate them into TYPO3.
 
 Think twice whether you need all of Extbase's power of Dependency Injection (ObjectManager / ObjectContainer) and Domain
