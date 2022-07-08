@@ -3213,7 +3213,7 @@ class GeneralUtility
      * @throws \RuntimeException
      * @return object|string[]|false The service object or an array with error infos, or false if no service was found.
      */
-    public static function makeInstanceService($serviceType, $serviceSubType = '', array $excludeServiceKeys = [])
+    public static function makeInstanceService(string $serviceType, string $serviceSubType = '', array $excludeServiceKeys = []): array|object|false
     {
         $error = false;
         $requestInfo = [

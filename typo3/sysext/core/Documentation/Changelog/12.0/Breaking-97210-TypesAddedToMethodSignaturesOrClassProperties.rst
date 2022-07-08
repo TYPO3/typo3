@@ -9,9 +9,9 @@ See :issue:`97210`
 Description
 ===========
 
-The following PHP classes have had parameter and return types added to their method
-signatures. The types are consistent with existing docblock-documented type
-expectations and existing behavior.
+The following PHP classes have had parameter and return types added to some or
+all of their method signatures. The types are consistent with existing
+docblock-documented type expectations and existing behavior.
 
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ClassNamingUtility`
@@ -20,6 +20,7 @@ expectations and existing behavior.
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility`
 - :php:`\TYPO3\CMS\Core\Utility\DiffUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility`
 - :php:`\TYPO3\CMS\Core\Utility\MailUtility`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility`
