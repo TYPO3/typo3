@@ -10,88 +10,96 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,i,o){var n,r=arguments.length,s=r<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,i,o);else for(var c=e.length-1;c>=0;c--)(n=e[c])&&(s=(r<3?n(s):r>3?n(t,i,s):n(t,i))||s);return r>3&&s&&Object.defineProperty(t,i,s),s};import{html,css,unsafeCSS,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{until}from"lit/directives/until.js";import{Sizes,States,MarkupIdentifiers}from"@typo3/backend/enum/icon-types.js";import Icons from"@typo3/backend/icons.js";import"@typo3/backend/element/spinner-element.js";const iconUnifyModifier=.86,iconSize=(e,t)=>css`
-  :host([size=${e}]),
+var __decorate=function(e,i,t,o){var n,r=arguments.length,s=r<3?i:null===o?o=Object.getOwnPropertyDescriptor(i,t):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,i,t,o);else for(var c=e.length-1;c>=0;c--)(n=e[c])&&(s=(r<3?n(s):r>3?n(i,t,s):n(i,t))||s);return r>3&&s&&Object.defineProperty(i,t,s),s};import{html,css,unsafeCSS,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{until}from"lit/directives/until.js";import{Sizes,States,MarkupIdentifiers}from"@typo3/backend/enum/icon-types.js";import Icons from"@typo3/backend/icons.js";import"@typo3/backend/element/spinner-element.js";const iconSize=e=>css`
+  :host([size=${e}]) .icon-size-${e},
   :host([raw]) .icon-size-${e} {
-    font-size: ${t}px;
+    --icon-size: var(--icon-size-${e})
+  }
+  :host([size=${e}]) .icon-size-${e} .icon-unify,
+  :host([raw]) .icon-size-${e} .icon-unify {
+    line-height: var(--icon-size);
+    font-size: calc(var(--icon-size) * var(--icon-unify-modifier))
+  }
+  :host([size=${e}]) .icon-size-${e} .icon-overlay .icon-unify,
+  :host([raw]) .icon-size-${e} .icon-overlay .icon-unify {
+    line-height: calc(var(--icon-size) / 1.6);
+    font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
   }
 `;let IconElement=class extends LitElement{constructor(){super(...arguments),this.size=Sizes.default,this.state=States.default,this.overlay=null,this.markup=MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return html`${unsafeHTML(this.raw)}`;if(!this.identifier)return html``;const e=Icons.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>html`
           ${unsafeHTML(e)}
         `);return html`${until(e,html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};IconElement.styles=[css`
       :host {
-        display: flex;
-        width: 1em;
-        height: 1em;
-        line-height: 0;
+        --icon-color-primary: currentColor;
+        --icon-size-small: 16px;
+        --icon-size-medium: 32px;
+        --icon-size-large: 48px;
+        --icon-size-mega: 64px;
+        --icon-unify-modifier: 0.86;
+        --icon-opacity-disabled: 0.5
       }
 
       .icon {
         position: relative;
-        display: block;
+        display: inline-flex;
         overflow: hidden;
         white-space: nowrap;
-        height: 1em;
-        width: 1em;
-        line-height: 1;
+        height: var(--icon-size, 1em);
+        width: var(--icon-size, 1em);
+        line-height: var(--icon-size, 1em);
+        flex-shrink: 0;
+        /** copied from typo3_src/Build/Sources/Sass/component/_icon.scss */
+        vertical-align: -22%
       }
 
-      .icon svg,
-      .icon img {
+      .icon img, .icon svg {
         display: block;
-        height: 1em;
-        width: 1em;
-        transform: translate3d(0, 0, 0);
+        height: 100%;
+        width: 100%
       }
 
       .icon * {
         display: block;
-        line-height: inherit;
+        line-height: inherit
       }
 
       .icon-markup {
         position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         text-align: center;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: 0
       }
 
       .icon-overlay {
         position: absolute;
         bottom: 0;
         right: 0;
-        font-size: 0.6875em;
-        text-align: center;
+        height: 68.75%;
+        width: 68.75%;
+        text-align: center
       }
 
       .icon-color {
-        fill: currentColor;
-      }
-
-      .icon-state-disabled .icon-markup {
-        opacity: .5;
-      }
-
-      .icon-unify {
-        font-size: ${.86}em;
-        line-height: ${1/.86};
+        fill: var(--icon-color-primary)
       }
 
       .icon-spin .icon-markup {
-        animation: icon-spin 2s infinite linear;
+        -webkit-animation: icon-spin 2s infinite linear;
+        animation: icon-spin 2s infinite linear
       }
 
       @keyframes icon-spin {
         0% {
-          transform: rotate(0deg);
+          transform: rotate(0)
         }
-
         100% {
-          transform: rotate(360deg);
+          transform: rotate(360deg)
         }
       }
-    `,iconSize(unsafeCSS(Sizes.small),16),iconSize(unsafeCSS(Sizes.default),32),iconSize(unsafeCSS(Sizes.large),48),iconSize(unsafeCSS(Sizes.mega),64)],__decorate([property({type:String})],IconElement.prototype,"identifier",void 0),__decorate([property({type:String})],IconElement.prototype,"size",void 0),__decorate([property({type:String})],IconElement.prototype,"state",void 0),__decorate([property({type:String})],IconElement.prototype,"overlay",void 0),__decorate([property({type:String})],IconElement.prototype,"markup",void 0),__decorate([property({type:String})],IconElement.prototype,"raw",void 0),IconElement=__decorate([customElement("typo3-backend-icon")],IconElement);export{IconElement};
+
+      .icon-state-disabled .icon-markup {
+        opacity: var(--icon-opacity-disabled)
+      }
+    `,iconSize(unsafeCSS(Sizes.small)),iconSize(unsafeCSS(Sizes.default)),iconSize(unsafeCSS(Sizes.large)),iconSize(unsafeCSS(Sizes.mega))],__decorate([property({type:String})],IconElement.prototype,"identifier",void 0),__decorate([property({type:String})],IconElement.prototype,"size",void 0),__decorate([property({type:String})],IconElement.prototype,"state",void 0),__decorate([property({type:String})],IconElement.prototype,"overlay",void 0),__decorate([property({type:String})],IconElement.prototype,"markup",void 0),__decorate([property({type:String})],IconElement.prototype,"raw",void 0),IconElement=__decorate([customElement("typo3-backend-icon")],IconElement);export{IconElement};

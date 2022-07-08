@@ -19,11 +19,20 @@ import {Sizes, States, MarkupIdentifiers} from '../enum/icon-types';
 import Icons from '../icons';
 import '@typo3/backend/element/spinner-element';
 
-const iconUnifyModifier = 0.86;
-const iconSize = (identifier: CSSResult, size: number) => css`
-  :host([size=${identifier}]),
+const iconSize = (identifier: CSSResult) => css`
+  :host([size=${identifier}]) .icon-size-${identifier},
   :host([raw]) .icon-size-${identifier} {
-    font-size: ${size}px;
+    --icon-size: var(--icon-size-${identifier})
+  }
+  :host([size=${identifier}]) .icon-size-${identifier} .icon-unify,
+  :host([raw]) .icon-size-${identifier} .icon-unify {
+    line-height: var(--icon-size);
+    font-size: calc(var(--icon-size) * var(--icon-unify-modifier))
+  }
+  :host([size=${identifier}]) .icon-size-${identifier} .icon-overlay .icon-unify,
+  :host([raw]) .icon-size-${identifier} .icon-overlay .icon-unify {
+    line-height: calc(var(--icon-size) / 1.6);
+    font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
   }
 `;
 
@@ -53,89 +62,88 @@ export class IconElement extends LitElement {
    */
   @property({type: String}) raw?: string = null;
 
+  // @todo the css of the @typo3/icons should be included instead
   static styles = [
     css`
       :host {
-        display: flex;
-        width: 1em;
-        height: 1em;
-        line-height: 0;
+        --icon-color-primary: currentColor;
+        --icon-size-small: 16px;
+        --icon-size-medium: 32px;
+        --icon-size-large: 48px;
+        --icon-size-mega: 64px;
+        --icon-unify-modifier: 0.86;
+        --icon-opacity-disabled: 0.5
       }
 
       .icon {
         position: relative;
-        display: block;
+        display: inline-flex;
         overflow: hidden;
         white-space: nowrap;
-        height: 1em;
-        width: 1em;
-        line-height: 1;
+        height: var(--icon-size, 1em);
+        width: var(--icon-size, 1em);
+        line-height: var(--icon-size, 1em);
+        flex-shrink: 0;
+        /** copied from typo3_src/Build/Sources/Sass/component/_icon.scss */
+        vertical-align: -22%
       }
 
-      .icon svg,
-      .icon img {
+      .icon img, .icon svg {
         display: block;
-        height: 1em;
-        width: 1em;
-        transform: translate3d(0, 0, 0);
+        height: 100%;
+        width: 100%
       }
 
       .icon * {
         display: block;
-        line-height: inherit;
+        line-height: inherit
       }
 
       .icon-markup {
         position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         text-align: center;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: 0
       }
 
       .icon-overlay {
         position: absolute;
         bottom: 0;
         right: 0;
-        font-size: 0.6875em;
-        text-align: center;
+        height: 68.75%;
+        width: 68.75%;
+        text-align: center
       }
 
       .icon-color {
-        fill: currentColor;
-      }
-
-      .icon-state-disabled .icon-markup {
-        opacity: .5;
-      }
-
-      .icon-unify {
-        font-size: ${iconUnifyModifier}em;
-        line-height: ${1 / iconUnifyModifier};
+        fill: var(--icon-color-primary)
       }
 
       .icon-spin .icon-markup {
-        animation: icon-spin 2s infinite linear;
+        -webkit-animation: icon-spin 2s infinite linear;
+        animation: icon-spin 2s infinite linear
       }
 
       @keyframes icon-spin {
         0% {
-          transform: rotate(0deg);
+          transform: rotate(0)
         }
-
         100% {
-          transform: rotate(360deg);
+          transform: rotate(360deg)
         }
       }
+
+      .icon-state-disabled .icon-markup {
+        opacity: var(--icon-opacity-disabled)
+      }
     `,
-    iconSize(unsafeCSS(Sizes.small), 16),
-    iconSize(unsafeCSS(Sizes.default), 32),
-    iconSize(unsafeCSS(Sizes.large), 48),
-    iconSize(unsafeCSS(Sizes.mega), 64),
+    iconSize(unsafeCSS(Sizes.small)),
+    iconSize(unsafeCSS(Sizes.default)),
+    iconSize(unsafeCSS(Sizes.large)),
+    iconSize(unsafeCSS(Sizes.mega)),
   ];
 
   public render(): TemplateResult {
