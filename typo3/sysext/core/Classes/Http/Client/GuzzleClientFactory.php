@@ -37,8 +37,8 @@ class GuzzleClientFactory
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']) && is_array($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'])) {
             $stack = HandlerStack::create();
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'] ?? [] as $handler) {
-                $stack->push($handler);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'] ?? [] as $name => $handler) {
+                $stack->push($handler, (string)$name);
             }
             $httpOptions['handler'] = $stack;
         }
