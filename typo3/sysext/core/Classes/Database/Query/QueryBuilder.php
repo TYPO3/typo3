@@ -1100,7 +1100,7 @@ class QueryBuilder
      */
     public function escapeLikeWildcards(string $value): string
     {
-        return addcslashes($value, '_%');
+        return $this->connection->escapeLikeWildcards($value);
     }
 
     /**

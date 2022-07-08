@@ -184,6 +184,18 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     }
 
     /**
+     * Quotes like wildcards for given string value.
+     *
+     * @param string $value The value to be quoted.
+     *
+     * @return string The quoted value.
+     */
+    public function escapeLikeWildcards(string $value): string
+    {
+        return addcslashes($value, '_%');
+    }
+
+    /**
      * Inserts a table row with specified data.
      *
      * All SQL identifiers are expected to be unquoted and will be quoted when building the query.
