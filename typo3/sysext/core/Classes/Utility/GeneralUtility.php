@@ -731,7 +731,7 @@ class GeneralUtility
      * @param bool $removeEmptyValues If set, all empty values (='') will NOT be set in output
      * @return array<int, int> Exploded values, all converted to integers
      */
-    public static function intExplode($delimiter, $string, $removeEmptyValues = false)
+    public static function intExplode(string $delimiter, string $string, bool $removeEmptyValues = false): array
     {
         $result = explode($delimiter, $string);
         foreach ($result as $key => &$value) {
@@ -763,7 +763,7 @@ class GeneralUtility
      *
      * @return list<string> Exploded values
      */
-    public static function revExplode($delimiter, $string, $limit = 0)
+    public static function revExplode(string $delimiter, string $string, int $limit = 0): array
     {
         // 2 is the (currently, as of 2014-02) most-used value for `$limit` in the core, therefore we check it first
         if ($limit === 2) {
@@ -798,9 +798,9 @@ class GeneralUtility
      * @return list<string> Exploded values
      * @phpstan-return ($removeEmptyValues is true ? list<non-empty-string> : list<string>) Exploded values
      */
-    public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0): array
+    public static function trimExplode(string $delim, string $string, bool $removeEmptyValues = false, int $limit = 0): array
     {
-        $result = explode($delim, (string)$string);
+        $result = explode($delim, $string);
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
             $result = array_values(array_filter($result, static fn (string $item): bool => trim($item) !== ''));
@@ -836,7 +836,7 @@ class GeneralUtility
      * @return string Imploded result, fx. &param[key][key2]=value2&param[key][key3]=value3
      * @see explodeUrl2Array()
      */
-    public static function implodeArrayForUrl($name, array $theArray, $str = '', $skipBlank = false, $rawurlencodeParamName = false)
+    public static function implodeArrayForUrl(string $name, array $theArray, string $str = '', bool $skipBlank = false, bool $rawurlencodeParamName = false): string
     {
         foreach ($theArray as $Akey => $AVal) {
             $thisKeyName = $name ? $name . '[' . $Akey . ']' : $Akey;
@@ -869,7 +869,7 @@ class GeneralUtility
      * @return array<array-key, string> Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
      * @see implodeArrayForUrl()
      */
-    public static function explodeUrl2Array($string)
+    public static function explodeUrl2Array(string $string): array
     {
         $output = [];
         $p = explode('&', $string);
