@@ -65,7 +65,7 @@ class SplitProcessor implements DataProcessorInterface
             return $processedData;
         }
 
-        $originalValue = $cObj->data[$fieldName];
+        $originalValue = (string)($cObj->data[$fieldName] ?? '');
 
         // Set the target variable
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, $fieldName);
