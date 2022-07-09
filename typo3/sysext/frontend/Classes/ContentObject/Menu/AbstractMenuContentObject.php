@@ -223,7 +223,7 @@ abstract class AbstractMenuContentObject
             $this->conf['includeNotInMenu'] = $this->parent_cObj->stdWrapValue('includeNotInMenu', $this->conf, false);
             // exclude doktypes that should not be shown in menu (e.g. backend user section)
             if ($this->conf['excludeDoktypes'] ?? false) {
-                $this->excludedDoktypes = GeneralUtility::intExplode(',', $this->conf['excludeDoktypes']);
+                $this->excludedDoktypes = GeneralUtility::intExplode(',', (string)($this->conf['excludeDoktypes']));
             }
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(

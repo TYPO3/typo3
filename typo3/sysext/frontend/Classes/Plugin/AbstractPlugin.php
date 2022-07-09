@@ -1027,12 +1027,13 @@ class AbstractPlugin
                             $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)
                         )
                     );
-                if (strcmp($mm_cat['catUidList'], '')) {
+                $catUidList = (string)($mm_cat['catUidList'] ?? '');
+                if ($catUidList !== '') {
                     $queryBuilder->andWhere(
                         $queryBuilder->expr()->in(
                             $mm_cat['table'] . '.uid',
                             $queryBuilder->createNamedParameter(
-                                GeneralUtility::intExplode(',', $mm_cat['catUidList'], true),
+                                GeneralUtility::intExplode(',', $catUidList, true),
                                 Connection::PARAM_INT_ARRAY
                             )
                         )
@@ -1194,7 +1195,7 @@ class AbstractPlugin
         }
 
         if (!empty($limit)) {
-            $limitValues = GeneralUtility::intExplode(',', $limit, true);
+            $limitValues = GeneralUtility::intExplode(',', (string)$limit, true);
             if (count($limitValues) === 1) {
                 $queryBuilder->setMaxResults($limitValues[0]);
             } else {
