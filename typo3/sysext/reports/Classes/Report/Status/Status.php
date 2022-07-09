@@ -25,18 +25,12 @@ use TYPO3\CMS\Reports\Registry\StatusRegistry;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
-use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * The status report
  */
 class Status implements RequestAwareReportInterface
 {
-    /**
-     * @var StatusProviderInterface[][]
-     */
-    protected array $statusProviders = [];
-
     /**
      * Constructor for class tx_reports_report_Status
      */
@@ -90,15 +84,13 @@ class Status implements RequestAwareReportInterface
     public function getSystemStatus(ServerRequestInterface $request = null): array
     {
         $status = [];
-        foreach ($this->statusRegistry->getProviders() as $statusProviderList) {
-            $statusProviderId = $statusProviderList->getLabel();
-            if (!isset($status[$statusProviderId])) {
-                $status[$statusProviderId] = [];
-            }
-            if ($statusProviderList instanceof RequestAwareStatusProviderInterface) {
-                $statuses = $statusProviderList->getStatus($request);
+        foreach ($this->statusRegistry->getProviders() as $statusProvider) {
+            $statusProviderId = $statusProvider->getLabel();
+            $status[$statusProviderId] ??= [];
+            if ($statusProvider instanceof RequestAwareStatusProviderInterface) {
+                $statuses = $statusProvider->getStatus($request);
             } else {
-                $statuses = $statusProviderList->getStatus();
+                $statuses = $statusProvider->getStatus();
             }
             $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
         }
@@ -113,13 +105,11 @@ class Status implements RequestAwareReportInterface
     public function getDetailedSystemStatus(): array
     {
         $status = [];
-        foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
-            $status[$statusProviderId] = [];
-            foreach ($statusProviderList as $statusProvider) {
-                if ($statusProvider instanceof ExtendedStatusProviderInterface) {
-                    $statuses = $statusProvider->getDetailedStatus();
-                    $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
-                }
+        foreach ($this->statusRegistry->getProviders() as $statusProvider) {
+            $statusProviderId = $statusProvider->getLabel();
+            if ($statusProvider instanceof ExtendedStatusProviderInterface) {
+                $statuses = $statusProvider->getDetailedStatus();
+                $status[$statusProviderId] = array_merge($status[$statusProviderId] ?? [], $statuses);
             }
         }
         return $status;
