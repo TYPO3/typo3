@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97454-1657327622:
+
 =============================================
 Breaking: #97454 - Removed Link Browser hooks
 =============================================
@@ -9,9 +11,17 @@ See :issue:`97454`
 Description
 ===========
 
-The hooks array :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']` has been
-removed in favor of new PSR-14 Events :php:`\TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent`
+The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']`
+with its two functions :php:`modifyLinkHandlers()` and
+:php:`modifyAllowedItems()` has been removed in favor of two new PSR-14 Events
+:php:`\TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent`
 and :php:`\TYPO3\CMS\Recordlist\Event\ModifyAllowedItemsEvent`.
+
+.. seealso::
+    *   :ref:`feature-97454-1657327622`
+    *   :ref:`t3coreapi:modifyLinkHandlers`
+    *   :ref:`t3coreapi:ModifyLinkHandlersEvent`
+    *   :ref:`t3coreapi:ModifyAllowedItemsEvent`
 
 Impact
 ======
