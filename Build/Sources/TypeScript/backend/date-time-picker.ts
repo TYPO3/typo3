@@ -173,10 +173,13 @@ class DateTimePicker {
   private getDateOptions(inputElement: HTMLInputElement): { [key: string]: any } {
     const format = this.format;
     const type = inputElement.dataset.dateType;
+    const now = new Date();
     const options = {
       allowInput: true,
       dateFormat: '',
       defaultDate: inputElement.value,
+      defaultHour: now.getHours(),
+      defaultMinute: now.getMinutes(),
       enableSeconds: false,
       enableTime: false,
       formatDate: (date: Date, format: string) => {
