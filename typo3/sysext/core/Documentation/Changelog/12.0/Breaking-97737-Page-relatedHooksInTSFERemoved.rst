@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97737-1654595331
+.. _breaking-97737-1654595331:
 
 =====================================================
 Breaking: #97737 - Page-related hooks in TSFE removed

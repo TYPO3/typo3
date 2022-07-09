@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-97653-1652873318
+.. _feature-97653-1652873318:
 
 ======================================================
 Feature: #97653 - TypoScript Option "showWebsiteTitle"

@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97701-1655154047
+.. _breaking-97701-1655154047:
 
 ===============================================================
 Breaking: #97701 - TSconfig option showNewContentWizard removed

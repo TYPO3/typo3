@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97530-1651500260
+.. _breaking-97530-1651500260:
 
 ===================================================================================
 Breaking: #97530 - Indexed Search option searchSkipExtendToSubpagesChecking removed

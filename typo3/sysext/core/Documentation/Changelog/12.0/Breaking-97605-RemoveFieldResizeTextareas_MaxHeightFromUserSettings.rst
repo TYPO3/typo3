@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97605-1652214290
+.. _breaking-97605-1652214290:
 
 ============================================================================
 Breaking: #97605 - Remove field resizeTextareas_MaxHeight from user settings

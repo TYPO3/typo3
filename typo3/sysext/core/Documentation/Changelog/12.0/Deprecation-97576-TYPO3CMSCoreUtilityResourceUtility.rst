@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _deprecation-97576-1651949640
+.. _deprecation-97576-1651949640:
 
 ============================================================
 Deprecation: #97576 - TYPO3\CMS\Core\Utility\ResourceUtility

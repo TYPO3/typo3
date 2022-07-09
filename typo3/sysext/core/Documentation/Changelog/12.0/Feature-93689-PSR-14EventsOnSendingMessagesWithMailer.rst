@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-93689-1654629861
+.. _feature-93689-1654629861:
 
 ===============================================================
 Feature: #93689 - PSR-14 Events on sending messages with Mailer

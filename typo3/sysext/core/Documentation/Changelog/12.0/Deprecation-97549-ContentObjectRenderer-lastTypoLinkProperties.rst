@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _deprecation-97549-1651696509
+.. _deprecation-97549-1651696509:
 
 =====================================================================
 Deprecation: #97549 - ContentObjectRenderer->lastTypoLink* properties

@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97550-1651697278
+.. _breaking-97550-1651697278:
 
 ========================================================================
 Breaking: #97550 - TypoScript option config.disableCharsetHeader removed

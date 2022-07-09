@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-97595-1652121042
+.. _feature-97595-1652121042:
 
 =========================================================
 Feature: #97595 - Provide default queue for notifications

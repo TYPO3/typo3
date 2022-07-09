@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97752-1654761506
+.. _breaking-97752-1654761506:
 
 =================================================
 Breaking: #97752 - MailerAdapterInterface removed
