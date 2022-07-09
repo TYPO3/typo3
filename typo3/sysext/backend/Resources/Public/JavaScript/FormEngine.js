@@ -66,7 +66,7 @@ define(['jquery',
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-reload', (data, evt) => {
-    if (!data.confirm) {
+    if (!data.confirmation) {
       FormEngine.saveDocument();
       return;
     }
