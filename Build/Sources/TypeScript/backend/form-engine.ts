@@ -66,8 +66,8 @@ export default (function() {
     }
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
-  onFieldChangeHandlers.set('typo3-backend-form-reload', (data: {confirm: boolean}, evt: Event) => {
-    if (!data.confirm) {
+  onFieldChangeHandlers.set('typo3-backend-form-reload', (data: {confirmation: boolean}, evt: Event) => {
+    if (!data.confirmation) {
       FormEngine.saveDocument();
       return;
     }
