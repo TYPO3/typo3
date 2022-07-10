@@ -9,7 +9,7 @@
 
 namespace PHPSTORM_META {
     // Contexts
-    // @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
+    // @see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
     expectedArguments(
         \TYPO3\CMS\Core\Context\Context::getAspect(),
         0,

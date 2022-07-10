@@ -135,7 +135,7 @@ class SingleFieldContainer extends AbstractContainer
 
         // Render a custom HTML element which will ask the user to save/update the form due to changing the element.
         // This is used for eg. "type" fields and others configured with "onChange"
-        // (https://docs.typo3.org/m/typo3/reference-tca/master/en-us/Columns/Properties/OnChange.html)
+        // (https://docs.typo3.org/m/typo3/reference-tca/main/en-us/Columns/Properties/OnChange.html)
         $requestFormEngineUpdate =
             (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
             || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');

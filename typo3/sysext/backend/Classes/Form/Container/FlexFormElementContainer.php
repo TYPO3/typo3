@@ -78,7 +78,7 @@ class FlexFormElementContainer extends AbstractContainer
                         'label' => $languageService->sL(trim($flexFormFieldArray['label'] ?? '')),
                         'config' => $flexFormFieldArray['config'] ?? [],
                         'children' => $flexFormFieldArray['children'] ?? [],
-                        // https://docs.typo3.org/m/typo3/reference-tca/master/en-us/Columns/Properties/OnChange.html
+                        // https://docs.typo3.org/m/typo3/reference-tca/main/en-us/Columns/Properties/OnChange.html
                         'onChange' => $flexFormFieldArray['onChange'] ?? '',
                     ],
                     'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
