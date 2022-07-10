@@ -84,7 +84,7 @@ class ServerResponseCheck implements CheckInterface
         }
         $detailsLink = sprintf(
             '<p><a href="%s" rel="noreferrer" target="_blank">%s</a></p>',
-            'https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.5.x/Feature-91354-IntegrateServerResponseSecurityChecks.html',
+            'https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/9.5.x/Feature-91354-IntegrateServerResponseSecurityChecks.html',
             'Please see documentation for further details...'
         );
         if ($messageQueue->getAllMessages(FlashMessage::ERROR) !== []) {
