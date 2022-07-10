@@ -150,7 +150,7 @@ class DocumentationFile
         $entry['file_hash'] = md5($entry['content']);
         if ($entry['version'] !== '') {
             $entry['url']['documentation'] = sprintf(
-                'https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/%s/%s.html',
+                'https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/%s/%s.html',
                 $entry['version'],
                 $entry['filename']
             );
