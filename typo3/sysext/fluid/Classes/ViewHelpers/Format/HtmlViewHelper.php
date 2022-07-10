@@ -66,7 +66,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
  *
- * .. _parseFunc: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Parsefunc.html
+ * .. _parseFunc: https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Parsefunc.html
  */
 class HtmlViewHelper extends AbstractViewHelper
 {

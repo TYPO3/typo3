@@ -77,7 +77,7 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * The name of the child's table
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Select.html#foreign-table
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Select/Properties/ForeignTable.html
      * @var string|null
      */
     private $childTableName;
@@ -86,7 +86,7 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * The name of the field the results from the child's table are sorted by
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Inline.html#foreign-sortby
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignSortby.html
      * @var string|null
      */
     private $childSortByFieldName;
@@ -95,7 +95,7 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * The name of the relation table
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Inline.html#mm
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/Mm.html
      * @var string|null
      */
     private $relationTableName;
@@ -112,8 +112,8 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * An array of field => value pairs to both insert and match against when writing/reading MM relations
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Inline.html#foreign-match-fields
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Inline.html#mm-match-fields
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignMatchFields.html
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/Mm.html
      * @var array|null
      */
     private $relationTableMatchFields;
@@ -122,7 +122,7 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * Array of field=>value pairs to insert when writing new MM relations
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Group.html#mm-insert-fields
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Group/Properties/Mm.html#confval-MM_insert_fields(type=%3Egroup)
      * @var array|null
      */
     private $relationTableInsertFields;
@@ -134,7 +134,7 @@ class ColumnMap
      * todo: MM_table_where should have any impact on Extbase at all.
      * The where clause to narrow down the selected relation table records
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Select.html#mm-table-where
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Group/Properties/Mm.html#confval-MM_insert_fields(type=%3Egroup)
      * @var string|null
      */
     private $relationTableWhereStatement;
@@ -143,7 +143,7 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * The name of the field holding the parents key
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Inline.html#foreign-field
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignField.html
      * @var string|null
      */
     private $parentKeyFieldName;
@@ -152,7 +152,7 @@ class ColumnMap
      * todo: Check if this property should support null. If not, set default value.
      * The name of the field holding the name of the table of the parent's records
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Inline.html#foreign-table-field
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignTableField.html
      * @var string|null
      */
     private $parentTableFieldName;
@@ -171,7 +171,7 @@ class ColumnMap
      * (instead of using unix-time stamps). Allowed values
      * are 'date', 'datetime' and 'time'
      *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Input.html#dbtype
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Datetime/Properties/DbType.html
      * @var string|null
      */
     private $dateTimeStorageFormat;

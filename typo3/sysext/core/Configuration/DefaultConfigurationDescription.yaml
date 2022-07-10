@@ -655,7 +655,7 @@ HTTP:
             description: |
               Default single proxy server as &quot;proxy.example.org&quot;.<br />
               Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
-              The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
+              The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
         ssl_key:
             type: mixed
             description: 'Mixed: Local certificate and an optional passphrase, see http://docs.guzzlephp.org/en/latest/request-options.html#ssl-key'

@@ -1,6 +1,6 @@
 module.tx_extensionmanager {
 	features {
-		 # if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see https://docs.typo3.org/m/typo3/book-extbasefluid/master/en-us/b-ExtbaseReference/Index.html#features)
+		 # if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see https://docs.typo3.org/m/typo3/book-extbasefluid/main/en-us/b-ExtbaseReference/Index.html#features)
 		skipDefaultArguments = 0
 	}
 }
