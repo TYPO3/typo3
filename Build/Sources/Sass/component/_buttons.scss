@@ -32,7 +32,8 @@
 //
 
 .btn-block {
-    display: block;
+    @extend .d-block;
+
     width: 100%;
 
     // Vertically space out multiple block buttons

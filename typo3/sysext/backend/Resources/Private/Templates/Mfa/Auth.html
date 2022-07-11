@@ -24,8 +24,8 @@
                                 <form action="{formUrl}" method="post" enctype="multipart/form-data" name="verify" id="mfaController">
                                     <input type="hidden" name="identifier" value="{provider.identifier}" />
                                     {providerContent -> f:format.raw()}
-                                    <div class="form-group mb-2" id="t3-login-submit-section">
-                                        <button class="btn btn-block btn-login" type="submit" name="submit" autocomplete="off">
+                                    <div class="form-group d-grid mb-2" id="t3-login-submit-section">
+                                        <button class="btn d-block btn-login" type="submit" name="submit" autocomplete="off">
                                             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.submit"/>
                                         </button>
                                     </div>

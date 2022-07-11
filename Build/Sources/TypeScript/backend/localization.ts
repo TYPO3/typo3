@@ -70,7 +70,7 @@ class Localization {
             actions.push(
               '<div class="row">'
               + '<div class="col-sm-3">'
-              + '<label class="btn btn-block btn-default t3js-localization-option" data-helptext=".t3js-helptext-translate">'
+              + '<label class="btn btn-default d-block t3js-localization-option" data-helptext=".t3js-helptext-translate">'
               + localizeIconMarkup
               + '<input type="radio" name="mode" id="mode_translate" value="localize" style="display: none">'
               + '<br>' + TYPO3.lang['localize.wizard.button.translate'] + '</label>'
@@ -87,7 +87,7 @@ class Localization {
             actions.push(
               '<div class="row">'
               + '<div class="col-sm-3">'
-              + '<label class="btn btn-block btn-default t3js-localization-option" data-helptext=".t3js-helptext-copy">'
+              + '<label class="btn btn-default d-block t3js-localization-option" data-helptext=".t3js-helptext-copy">'
               + copyIconMarkup
               + '<input type="radio" name="mode" id="mode_copy" value="copyFromLanguage" style="display: none">'
               + '<br>' + TYPO3.lang['localize.wizard.button.copy'] + '</label>'
@@ -176,7 +176,7 @@ class Localization {
                       style: 'display: none;',
                       class: 'btn-check'
                     });
-                    const $label: JQuery = $('<label />', {class: 'btn btn-default btn-block t3js-language-option option', 'for': id})
+                    const $label: JQuery = $('<label />', {class: 'btn btn-default d-block t3js-language-option option', 'for': id})
                       .text(' ' + languageObject.title)
                       .prepend(languageObject.flagIcon);
 

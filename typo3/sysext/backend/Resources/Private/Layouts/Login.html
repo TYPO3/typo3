@@ -52,9 +52,9 @@
 
                                         <f:render partial="Login/InterfaceSelector" arguments="{_all}" />
 
-                                        <div class="form-group mb-2" id="t3-login-submit-section">
+                                        <div class="form-group d-grid mb-2" id="t3-login-submit-section">
                                             <button
-                                                class="btn btn-block btn-login t3js-login-submit"
+                                                class="btn btn-login d-block t3js-login-submit"
                                                 id="t3-login-submit"
                                                 type="submit"
                                                 name="commandLI"
@@ -126,13 +126,15 @@
                                                 </f:else>
                                             </f:if>
                                             <input type="hidden" name="p_field" value="" />
-                                            <input
-                                                class="btn btn-block btn-lg"
-                                                type="submit"
-                                                name="commandLO"
-                                                value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.submit')}"
-                                                id="t3-login-submit"
-                                            />
+                                            <div class="d-grid">
+                                                <input
+                                                    class="btn d-block btn-lg"
+                                                    type="submit"
+                                                    name="commandLO"
+                                                    value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.submit')}"
+                                                    id="t3-login-submit"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
