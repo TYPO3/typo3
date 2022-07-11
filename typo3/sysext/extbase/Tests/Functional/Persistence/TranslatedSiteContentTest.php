@@ -160,14 +160,14 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             [
                 'fallbackType' => 'free',
                 'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
+                    297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
                         'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -305,13 +305,13 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 'fallbackType' => 'free',
                 'fallbackChain' => ['DK', 'EN'],
                 'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
+                    297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
                         'header' => '[DK] Without default language',

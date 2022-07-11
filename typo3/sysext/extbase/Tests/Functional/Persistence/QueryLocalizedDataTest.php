@@ -401,7 +401,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
-        self::assertEquals(['Post 2 - DK', 11, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -727,7 +727,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                 'expected' => [
                     [
                         'title' => 'Post 5 - DK',
-                        AbstractDomainObject::PROPERTY_UID => 13,
+                        AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
                         'blog.title' => 'Blog 1 DK',
@@ -759,7 +759,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                     ],
                     [
                         'title' => 'Post 2 - DK',
-                        AbstractDomainObject::PROPERTY_UID => 11,
+                        AbstractDomainObject::PROPERTY_UID => 2,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 11,
                         'content' => 'C - content',
                         'blog.title' => 'Blog 1 DK',
@@ -789,7 +789,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                     ],
                     [
                         'title' => 'Post 7 - DK',
-                        AbstractDomainObject::PROPERTY_UID => 14,
+                        AbstractDomainObject::PROPERTY_UID => 7,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 14,
                         'content' => 'S - content',
                         'blog.title' => 'Blog 1 DK',
@@ -805,7 +805,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                     ],
                     [
                         'title' => 'Post 4 - DK',
-                        AbstractDomainObject::PROPERTY_UID => 12,
+                        AbstractDomainObject::PROPERTY_UID => 4,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 12,
                         'content' => 'U - content',
                         'blog.title' => 'Blog 1 DK',
@@ -970,7 +970,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                 'expected' => [
                     [
                         'title' => 'Post 5 - DK',
-                        AbstractDomainObject::PROPERTY_UID => 13,
+                        AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
                         'blog.title' => 'Blog 1 DK',
@@ -1040,19 +1040,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
     public function postsWithoutRespectingSysLanguageDataProvider(): array
     {
-        $lang0Expected = [
-             [
-                 'title' => 'Blog 1',
-                 AbstractDomainObject::PROPERTY_UID => 1,
-                 AbstractDomainObject::PROPERTY_LOCALIZED_UID => 1,
-             ],
-             [
-                 'title' => 'Blog 1',
-                 AbstractDomainObject::PROPERTY_UID => 1,
-                 AbstractDomainObject::PROPERTY_LOCALIZED_UID => 1,
-             ],
-         ];
-        $mixed = [
+        $allLanguages = [
              [
                  'title' => 'Blog 1',
                  AbstractDomainObject::PROPERTY_UID => 1,
@@ -1060,7 +1048,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
              ],
              [
                  'title' => 'Blog 1 DK',
-                 AbstractDomainObject::PROPERTY_UID => 2,
+                 AbstractDomainObject::PROPERTY_UID => 1,
                  AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
              ],
          ];
@@ -1068,22 +1056,12 @@ class QueryLocalizedDataTest extends FunctionalTestCase
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected,
-             ],
-             [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected,
+                 'expected' => $allLanguages,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed,
-             ],
-             [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed,
+                 'expected' => $allLanguages,
              ],
              [
                  'language' => 1,
@@ -1120,18 +1098,18 @@ class QueryLocalizedDataTest extends FunctionalTestCase
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed,
+                 'expected' => $allLanguages,
              ],
          ];
     }
 
     /**
      * This test demonstrates how query behaves when setRespectSysLanguage is set to false.
-     * The test now documents the WRONG behaviour described in https://forge.typo3.org/issues/45873
-     * and is connected with https://forge.typo3.org/issues/59992
+     * The test now documents the WRONG behaviour described in https://forge.typo3.org/issues/45873.
      *
      * The expected state is that when setRespectSysLanguage is false, then both: default language record,
-     * and translated language record should be returned. Now we're getting same record twice.
+     * and translated language record should be returned. Regardless of the language setting or the overlay mode.
+     * Now we're getting same record twice in some cases.
      *
      * @test
      * @dataProvider postsWithoutRespectingSysLanguageDataProvider

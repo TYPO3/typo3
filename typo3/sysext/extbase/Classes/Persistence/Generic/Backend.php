@@ -626,6 +626,8 @@ class Backend implements BackendInterface, SingletonInterface
             }
         }
         $uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
+        $localizedUid = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+        $identifier = $uid . ($localizedUid ? '_' . $localizedUid : '');
         $object->_setProperty(AbstractDomainObject::PROPERTY_UID, (int)$uid);
         $object->setPid((int)$row['pid']);
         if ((int)$uid >= 1) {
@@ -635,7 +637,7 @@ class Backend implements BackendInterface, SingletonInterface
         if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
             $this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
         }
-        $this->session->registerObject($object, $uid);
+        $this->session->registerObject($object, $identifier);
         if ((int)$uid >= 1) {
             $this->eventDispatcher->dispatch(new EntityFinalizedAfterPersistenceEvent($object));
         }

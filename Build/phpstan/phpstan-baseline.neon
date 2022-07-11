@@ -1946,11 +1946,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
 
 		-
-			message: "#^Parameter \\#2 \\$identifier of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:registerObject\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_memorizeCleanState\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php

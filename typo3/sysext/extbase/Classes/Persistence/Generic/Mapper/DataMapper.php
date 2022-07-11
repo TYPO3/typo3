@@ -134,11 +134,14 @@ class DataMapper
      */
     protected function mapSingleRow($className, array $row)
     {
-        if ($this->persistenceSession->hasIdentifier($row['uid'], $className)) {
-            $object = $this->persistenceSession->getObjectByIdentifier($row['uid'], $className);
+        // @todo: this also needs to contain the query's languageAspect with its configuration
+        // which should be changed along with https://review.typo3.org/c/Packages/TYPO3.CMS/+/75093
+        $identifier = $row['uid'] . (isset($row['_LOCALIZED_UID']) ? '_' . $row['_LOCALIZED_UID'] : '');
+        if ($this->persistenceSession->hasIdentifier($identifier, $className)) {
+            $object = $this->persistenceSession->getObjectByIdentifier($identifier, $className);
         } else {
             $object = $this->createEmptyObject($className);
-            $this->persistenceSession->registerObject($object, $row['uid']);
+            $this->persistenceSession->registerObject($object, $identifier);
             $this->thawProperties($object, $row);
             $event = new AfterObjectThawedEvent($object, $row);
             $this->eventDispatcher->dispatch($event);
