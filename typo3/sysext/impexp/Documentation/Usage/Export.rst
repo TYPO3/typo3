@@ -6,6 +6,21 @@
 Export
 ======
 
+The export functionality is only available for admin users and Backend
+users for which the Page TSconfig option
+:ref:`options.impexp.enableExportForNonAdminUser <t3tsconfig:useroptions-impexp-enableExportForNonAdminUser>`
+has been enabled.
+
+.. attention::
+
+    The export functionality has the following security drawbacks:
+
+    *  Export for editors is not limited on field level
+    *  The "Save to filename" functionality saves to a shared folder, which
+       other editors with different access rights may have access to.
+
+    Thus, permissions should be handed out restrictively.
+
 .. rst-class:: bignums
 
    1. Go to the export module
