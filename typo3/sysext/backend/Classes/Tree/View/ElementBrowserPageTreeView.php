@@ -159,7 +159,12 @@ class ElementBrowserPageTreeView extends BrowseTreeView
      */
     public function ext_isLinkable($doktype, $uid)
     {
-        return $uid && $doktype < PageRepository::DOKTYPE_SPACER;
+        $notLinkableDokTypes = [
+            PageRepository::DOKTYPE_SPACER,
+            PageRepository::DOKTYPE_SYSFOLDER,
+            PageRepository::DOKTYPE_RECYCLER,
+        ];
+        return $uid && !in_array($doktype, $notLinkableDokTypes, true);
     }
 
     /**
