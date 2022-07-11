@@ -78,16 +78,13 @@ renderingOptions.honeypot.enable
 
    .. code-block:: yaml
 
-      TYPO3:
-        CMS:
-          Form:
-            prototypes:
-              standard:
-                formElementsDefinition:
-                  Form:
-                    renderingOptions:
-                      honeypot:
-                        enable: false
+      prototypes:
+        standard:
+          formElementsDefinition:
+            Form:
+              renderingOptions:
+                honeypot:
+                  enable: false
 
    See forge issue `#83212 <https://forge.typo3.org/issues/83212>`_ for more
    information.
