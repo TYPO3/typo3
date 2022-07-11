@@ -56,8 +56,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
                 $overlay = $tsfe->sys_page->getRecordOverlay(
                     $databaseTable,
                     $record,
-                    $languageAspect->getContentId(),
-                    $languageAspect->getLegacyOverlayType()
+                    $languageAspect
                 );
 
                 if (empty($overlay['_LOCALIZED_UID'])) {
