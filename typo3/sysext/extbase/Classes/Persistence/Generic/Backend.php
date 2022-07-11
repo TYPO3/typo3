@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -211,7 +212,16 @@ class Backend implements BackendInterface, SingletonInterface
         $query = $this->persistenceManager->createQueryForType($className);
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setLanguageOverlayMode(true);
+        // This allows to fetch IDs for languages for default language AND language IDs
+        // This is especially important when using the PropertyMapper of the Extbase MVC part to get
+        // an object of the translated version of the incoming ID of a record.
+        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
+        $languageAspect = new LanguageAspect(
+            $languageAspect->getId(),
+            $languageAspect->getContentId(),
+            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_ON_WITH_FLOATING : $languageAspect->getOverlayType()
+        );
+        $query->getQuerySettings()->setLanguageAspect($languageAspect);
         return $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
     }
 

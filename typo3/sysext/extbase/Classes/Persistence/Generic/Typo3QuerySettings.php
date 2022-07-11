@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
@@ -35,59 +34,37 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @var bool
      */
-    protected $respectStoragePage = true;
+    protected bool $respectStoragePage = true;
 
     /**
      * the pid(s) of the storage page(s) that should be respected for the query.
-     *
-     * @var array
      */
-    protected $storagePageIds = [];
+    protected array $storagePageIds = [];
 
     /**
      * A flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
      * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
      * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
-     *
-     * @var bool
      */
-    protected $ignoreEnableFields = false;
+    protected bool $ignoreEnableFields = false;
 
     /**
      * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
      * to be ignored while building the query statement
-     *
-     * @var array
      */
-    protected $enableFieldsToBeIgnored = [];
+    protected array $enableFieldsToBeIgnored = [];
 
     /**
      * Flag whether deleted records should be included in the result set.
-     *
-     * @var bool
      */
-    protected $includeDeleted = false;
+    protected bool $includeDeleted = false;
 
     /**
      * Flag if the sys_language_uid should be respected (default is TRUE).
-     *
-     * @var bool
      */
-    protected $respectSysLanguage = true;
+    protected bool $respectSysLanguage = true;
 
-    /**
-     * Representing sys_language_overlay only valid for current context
-     *
-     * @var bool
-     */
-    protected $languageOverlayMode = true;
-
-    /**
-     * Representing sys_language_uid only valid for current context
-     *
-     * @var int
-     */
-    protected $languageUid = 0;
+    protected LanguageAspect $languageAspect;
 
     public function __construct(
         Context $context,
@@ -102,20 +79,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
             && $this->configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
             $this->setIgnoreEnableFields(true);
         }
-        /** @var LanguageAspect $languageAspect */
-        $languageAspect = $this->context->getAspect('language');
-        $this->setLanguageUid($languageAspect->getContentId());
-        $this->setLanguageOverlayMode(false);
-
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
-            $overlayMode = $languageAspect->getLegacyOverlayType() === 'hideNonTranslated' ? 'hideNonTranslated' : (bool)$languageAspect->getLegacyOverlayType();
-            $this->setLanguageOverlayMode($overlayMode);
-        } elseif ((int)GeneralUtility::_GP('L')) {
-            // Set language from 'L' parameter
-            $this->setLanguageUid((int)GeneralUtility::_GP('L'));
-        }
+        $this->languageAspect = $this->context->getAspect('language');
     }
 
     /**
@@ -183,37 +147,80 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
      * @return QuerySettingsInterface instance of $this to allow method chaining
+     * @see setLanguageAspect()
+     * @deprecated will be removed in TYPO3 13.0. Use ->setLanguageAspect()
      */
     public function setLanguageOverlayMode($languageOverlayMode = false)
     {
-        $this->languageOverlayMode = $languageOverlayMode;
+        switch ($languageOverlayMode) {
+            case 'hideNonTranslated':
+                $overlayType = LanguageAspect::OVERLAYS_ON;
+                break;
+            case '1':
+            case true:
+                $overlayType = LanguageAspect::OVERLAYS_MIXED;
+                break;
+            default:
+                $overlayType = LanguageAspect::OVERLAYS_OFF;
+                break;
+        }
+        $this->languageAspect = new LanguageAspect($this->languageAspect->getId(), $this->languageAspect->getContentId(), $overlayType);
         return $this;
     }
 
     /**
      * @return mixed TRUE, FALSE or "hideNonTranslated"
+     * @see getLanguageAspect()
+     * @deprecated will be removed in TYPO3 13.0. Use ->getLanguageAspect()
      */
     public function getLanguageOverlayMode()
     {
-        return $this->languageOverlayMode;
+        switch ($this->getLanguageAspect()->getOverlayType()) {
+            case LanguageAspect::OVERLAYS_ON_WITH_FLOATING:
+            case LanguageAspect::OVERLAYS_ON:
+                return 'hideNonTranslated';
+            case LanguageAspect::OVERLAYS_MIXED:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
      * @param int $languageUid
      * @return QuerySettingsInterface instance of $this to allow method chaining
+     * @see setLanguageAspect()
+     * @deprecated will be removed in TYPO3 13.0. Use ->setLanguageAspect()
      */
     public function setLanguageUid($languageUid)
     {
-        $this->languageUid = $languageUid;
+        $this->languageAspect = new LanguageAspect($languageUid, $languageUid, $this->languageAspect->getOverlayType());
         return $this;
     }
 
     /**
      * @return int
+     * @see getLanguageAspect()
+     * @deprecated will be removed in TYPO3 13.0. Use ->getLanguageAspect()
      */
     public function getLanguageUid()
     {
-        return $this->languageUid;
+        return $this->languageAspect->getContentId();
+    }
+
+    public function getLanguageAspect(): LanguageAspect
+    {
+        return $this->languageAspect;
+    }
+
+    /**
+     * @param LanguageAspect $languageAspect
+     * @return $this to allow method chaining
+     */
+    public function setLanguageAspect(LanguageAspect $languageAspect)
+    {
+        $this->languageAspect = $languageAspect;
+        return $this;
     }
 
     /**

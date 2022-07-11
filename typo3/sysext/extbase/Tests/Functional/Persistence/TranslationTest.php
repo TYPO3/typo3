@@ -34,10 +34,7 @@ class TranslationTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * @var PostRepository
-     */
-    protected $postRepository;
+    protected PostRepository $postRepository;
 
     /**
      * Sets up this test suite.
@@ -84,12 +81,12 @@ class TranslationTest extends FunctionalTestCase
         // in v9 overlay and language mode has different default values, so we need to set them here explicitly
         // to match v8 behaviour
         $context = GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF, ['off']));
+        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
 
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
-        $pageRepositoryFixture = new PageRepository();
+        $pageRepositoryFixture = new PageRepository($context);
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $frontendControllerMock->sys_page = $pageRepositoryFixture;
         $GLOBALS['TSFE'] = $frontendControllerMock;
@@ -107,33 +104,9 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(0);
-
-        self::assertFalse($querySettings->getLanguageOverlayMode());
-
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
         $postCount = $query->execute()->count();
         self::assertSame(4, $postCount);
-    }
-
-    /**
-     * This test shows the difference between old and new rendering
-     * languageMode is now ignored, overlay is `false`, so this test is the same
-     * as countReturnsCorrectNumberOfPostsInEnglishLanguage
-     *
-     * @test
-     */
-    public function countReturnsCorrectNumberOfPostsInEnglishLanguageForStrictMode(): void
-    {
-        $query = $this->postRepository->createQuery();
-
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds([1]);
-        $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
-
-        $postCount = $query->execute()->count();
-        self::assertSame(2, $postCount);
     }
 
     /**
@@ -148,9 +121,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $postCount = $query->execute()->count();
         self::assertSame(2, $postCount);
@@ -166,8 +137,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
 
         $postCount = $query->execute()->count();
 
@@ -184,8 +154,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -206,8 +175,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(false);
-        $querySettings->setLanguageOverlayMode(true);
-        $querySettings->setLanguageUid(2);
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
 
         $query->matching($query->in('uid', [4]));
         /** @var Post[]|array $posts */
@@ -229,8 +197,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -254,8 +221,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        $querySettings->setLanguageOverlayMode('hideNonTranslated');
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -291,8 +257,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        $querySettings->setLanguageOverlayMode('hideNonTranslated');
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
 
         $query->matching($query->in('uid', $input));
         /** @var Post[]|array $posts */
@@ -317,8 +282,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        $querySettings->setLanguageOverlayMode('hideNonTranslated');
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
 
         $constraints = [];
         foreach ($input as $uid) {
@@ -353,8 +317,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -379,8 +342,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings([
             'blog.title' => QueryInterface::ORDER_ASCENDING,
@@ -410,7 +372,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
-        $querySettings->setLanguageUid(0);
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
         //we need it to have stable results on pgsql
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
@@ -435,9 +397,8 @@ class TranslationTest extends FunctionalTestCase
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
-        $querySettings->setLanguageUid(2);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
-        //we need it to have stable results on pgsql
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
+        // We need it to have stable results on pgsql
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
         /** @var Post[] $posts */
@@ -467,8 +428,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
-        $querySettings->setLanguageUid(2);
-        $querySettings->setLanguageOverlayMode(true);
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         //we need it to have stable results on pgsql
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
@@ -496,8 +456,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('title', 'GR:Post1'));
@@ -519,8 +478,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('blog.title', 'Blog1'));
@@ -540,8 +498,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(0);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('tags.name', 'Tag1'));
@@ -560,8 +517,7 @@ class TranslationTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-        self::assertFalse($querySettings->getLanguageOverlayMode());
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('tags.name', 'Tag1'));

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
@@ -133,9 +134,9 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLanguageUidAllowsChaining(): void
+    public function setLanguageAspectHasFluentInterface(): void
     {
-        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setLanguageUid(42));
+        self::assertSame($this->subject, $this->subject->setLanguageAspect(new LanguageAspect(1)));
     }
 
     /**

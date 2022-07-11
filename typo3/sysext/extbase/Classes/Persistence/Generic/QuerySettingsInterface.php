@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use TYPO3\CMS\Core\Context\LanguageAspect;
+
 /**
  * A query settings interface. This interface is NOT part of the TYPO3.Flow API.
  */
@@ -65,28 +67,6 @@ interface QuerySettingsInterface
      * @return bool if TRUE record language is checked.
      */
     public function getRespectSysLanguage();
-
-    /**
-     * @param bool|string $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     */
-    public function setLanguageOverlayMode($languageOverlayMode);
-
-    /**
-     * @return bool|string TRUE, FALSE or "hideNonTranslated"
-     */
-    public function getLanguageOverlayMode();
-
-    /**
-     * @param int $languageUid
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     */
-    public function setLanguageUid($languageUid);
-
-    /**
-     * @return int
-     */
-    public function getLanguageUid();
 
     /**
      * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
@@ -144,4 +124,15 @@ interface QuerySettingsInterface
      * @return bool
      */
     public function getIncludeDeleted();
+
+    /**
+     * Returns the language aspect
+     */
+    public function getLanguageAspect(): LanguageAspect;
+
+    /**
+     * Overrides the main language aspect, defined in the main Context API
+     * @return $this to allow method chaining
+     */
+    public function setLanguageAspect(LanguageAspect $languageAspect);
 }

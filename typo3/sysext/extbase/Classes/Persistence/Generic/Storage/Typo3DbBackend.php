@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -420,12 +421,12 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        // A custom query is needed for the language, so a custom context is cloned
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', $query->getQuerySettings()->getLanguageAspect());
         if ($workspaceUid === null) {
             $workspaceUid = (int)$context->getPropertyFromAspect('workspace', 'id');
         } else {
-            // A custom query is needed, so a custom context is cloned
-            $context = clone $context;
             $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $workspaceUid));
         }
 
@@ -508,6 +509,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     protected function overlayLanguageAndWorkspaceForSingleRecord(string $tableName, array $row, PageRepository $pageRepository, QueryInterface $query)
     {
         $querySettings = $query->getQuerySettings();
+        $languageAspect = $querySettings->getLanguageAspect();
+        $languageUid = $languageAspect->getContentId();
         // If current row is a translation select its parent
         $languageOfCurrentRecord = 0;
         if (($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null)
@@ -515,8 +518,15 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         ) {
             $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
         }
-        if ($querySettings->getLanguageOverlayMode()
-            && $languageOfCurrentRecord > 0
+        // Note #1: In case of ->findByUid([uid-of-translated-record]) the translated record should be fetched at all times
+        // Example: you've fetched a translation directly via findByUid(11) which is a translated record, but the
+        // request was to do overlays. In this case, the default record is loaded again, and then reapplied again.
+        // Note #2: We cannot use $languageAspect->doOverlays() as it also checks for ID > 0
+        $fetchLocalizedRecord = $languageAspect->getOverlayType() !== LanguageAspect::OVERLAYS_OFF;
+        // We have a translated record from the DB, but we do overlays, so let's take the default language record
+        // and do overlays again later-on
+        if ($languageOfCurrentRecord > 0
+            && $fetchLocalizedRecord
             && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
             && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
         ) {
@@ -524,15 +534,15 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 $tableName,
                 (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]
             );
+            $languageUid = $languageOfCurrentRecord;
         }
+
         // Handle workspace overlays
         $pageRepository->versionOL($tableName, $row, true, $querySettings->getIgnoreEnableFields());
-        if (is_array($row) && $querySettings->getLanguageOverlayMode()) {
+        if (is_array($row) && $fetchLocalizedRecord) {
             if ($tableName === 'pages') {
-                $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
+                $row = $pageRepository->getLanguageOverlay($tableName, $row);
             } else {
-                // todo: remove type cast once getLanguageUid strictly returns an int
-                $languageUid = (int)$querySettings->getLanguageUid();
                 if (!$querySettings->getRespectSysLanguage()
                     && $languageOfCurrentRecord > 0
                     && (!$query instanceof Query || !$query->getParentQuery())
@@ -551,7 +561,9 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
                     $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;
                 }
-                $row = $pageRepository->getRecordOverlay($tableName, $row, $languageUid, (string)$querySettings->getLanguageOverlayMode());
+                // Currently this needs to return the default record ("1"), however this is a hack and should actually use
+                // the overlay functionality as given in the LanguageAspect.
+                $row = $pageRepository->getRecordOverlay($tableName, $row, $languageUid, '1');
             }
         } elseif (is_array($row)) {
             // If an already localized record is fetched, the "uid" of the default language is used

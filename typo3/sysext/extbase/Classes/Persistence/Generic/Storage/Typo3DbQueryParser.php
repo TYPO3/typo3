@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -767,19 +768,20 @@ class Typo3DbQueryParser
         // They will be removed by \TYPO3\CMS\Core\Domain\Repository\PageRepository::getRecordOverlay if not matching overlay mode
         $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
 
+        $languageAspect = $querySettings->getLanguageAspect();
+
         $transOrigPointerField = $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] ?? '';
-        if (!$transOrigPointerField || !$querySettings->getLanguageUid()) {
+        if (!$transOrigPointerField || !$languageAspect->getContentId()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
-                [(int)$querySettings->getLanguageUid(), -1]
+                [(int)$languageAspect->getContentId(), -1]
             );
         }
 
-        $mode = $querySettings->getLanguageOverlayMode();
-        if (!$mode) {
+        if (!$languageAspect->doOverlays()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
-                [(int)$querySettings->getLanguageUid(), -1]
+                [(int)$languageAspect->getContentId(), -1]
             );
         }
 
@@ -800,15 +802,14 @@ class Typo3DbQueryParser
         $andConditions[] = $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, -1);
         // translated records where a default language exists
         $andConditions[] = $this->queryBuilder->expr()->and(
-            $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid()),
+            $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, $languageAspect->getContentId()),
             $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $transOrigPointerField,
                 $defaultLanguageRecordsSubSelect->getSQL()
             )
         );
-        if ($mode !== 'hideNonTranslated') {
-            // $mode = TRUE
-            // returns records from current language which have default language
+        if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_MIXED) {
+            // returns records from current language which have a default language
             // together with not translated default language records
             $translatedOnlyTableAlias = $tableAlias . '_to';
             $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
@@ -818,7 +819,7 @@ class Typo3DbQueryParser
                 ->where(
                     $queryBuilderForSubselect->expr()->and(
                         $queryBuilderForSubselect->expr()->gt($translatedOnlyTableAlias . '.' . $transOrigPointerField, 0),
-                        $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid())
+                        $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, $languageAspect->getContentId())
                     )
                 );
             // records in default language, which do not have a translation

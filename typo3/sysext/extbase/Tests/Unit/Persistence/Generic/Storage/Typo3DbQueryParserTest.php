@@ -22,6 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -342,7 +343,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $querySettings->setLanguageUid('1');
+        $querySettings->setLanguageAspect(new LanguageAspect(1));
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -386,7 +387,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $querySettings->setLanguageUid(0);
+        $querySettings->setLanguageAspect(new LanguageAspect(0));
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -408,7 +409,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $querySettings->setLanguageUid(2);
+        $querySettings->setLanguageAspect(new LanguageAspect(2));
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -433,8 +434,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         );
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setIncludeDeleted(true);
-        $querySettings->setLanguageOverlayMode(true);
-        $querySettings->setLanguageUid(2);
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
@@ -461,10 +461,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $querySettings->setLanguageUid(2);
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setIncludeDeleted(true);
-        $querySettings->setLanguageOverlayMode(true);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -488,10 +487,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $querySettings->setLanguageUid(2);
+        $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setIncludeDeleted(true);
-        $querySettings->setLanguageOverlayMode(true);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();

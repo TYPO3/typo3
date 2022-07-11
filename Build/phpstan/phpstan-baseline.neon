@@ -2336,11 +2336,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/SessionTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$languageUid of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Typo3QuerySettings\\:\\:setLanguageUid\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Storage/Typo3DbQueryParserTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:findOneByFoo\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php

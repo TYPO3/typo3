@@ -21,9 +21,6 @@ use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -32,7 +29,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class QueryLocalizedDataTest extends FunctionalTestCase
@@ -57,7 +53,6 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/translatedBlogExampleData.csv');
-        $this->setUpBasicFrontendEnvironment();
 
         $configuration = [
             'persistence' => [
@@ -70,23 +65,6 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->get(PostRepository::class);
         $this->persistenceManager = $this->get(PersistenceManager::class);
-    }
-
-    /**
-     * Minimal frontend environment to satisfy Extbase Typo3DbBackend
-     */
-    protected function setUpBasicFrontendEnvironment(): void
-    {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-
-        $context = GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON, []));
-
-        $pageRepositoryFixture = new PageRepository();
-        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $frontendControllerMock->sys_page = $pageRepositoryFixture;
-        $GLOBALS['TSFE'] = $frontendControllerMock;
     }
 
     /**
@@ -270,8 +248,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         // we're in default lang and fetching by uid of the record in default language
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(0);
-        $querySettings->setLanguageOverlayMode(true);
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
@@ -293,8 +270,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(0);
-        $querySettings->setLanguageOverlayMode(true);
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
@@ -306,8 +282,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageOverlayMode(true);
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
@@ -318,8 +293,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageOverlayMode(true);
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
@@ -349,8 +323,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(0);
-        $querySettings->setLanguageOverlayMode(false);
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
@@ -371,8 +344,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(0);
-        $querySettings->setLanguageOverlayMode(false);
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
@@ -384,8 +356,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageOverlayMode(false);
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
@@ -396,8 +367,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageOverlayMode(false);
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
@@ -518,17 +488,17 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         return [
             [
                 'language' => 0,
-                'overlay' => true,
+                'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
-                'overlay' => false,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => $lang0Expected,
             ],
             [
                 'language' => 1,
-                'overlay' => true,
+                'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => [
                     [
                         'title' => 'Post 5 - DK',
@@ -635,9 +605,9 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            [
+            'only fetch records with l10n_parent and try overlays' => [
                 'language' => 1,
-                'overlay' => 'hideNonTranslated',
+                'overlay' => LanguageAspect::OVERLAYS_ON,
                 // here we have only 4 items instead of 5 as post "Post DK only" uid:15 has no language 0 parent,
                 // so with overlay enabled it's not shown
                 'expected' => [
@@ -723,7 +693,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             ],
             [
                 'language' => 1,
-                'overlay' => false,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => [
                     [
                         'title' => 'Post 5 - DK',
@@ -831,17 +801,13 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider queryFirst5PostsDataProvider
-     *
-     * @param int $languageUid
-     * @param bool $overlay
-     * @param array $expected
      */
-    public function queryFirst5Posts($languageUid, $overlay, $expected): void
+    public function queryFirst5Posts(int $languageUid, string $overlay, array $expected): void
     {
+        $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid($languageUid);
-        $querySettings->setLanguageOverlayMode($overlay);
+        $querySettings->setLanguageAspect($languageAspect);
 
         $query->setOrderings([
             'content' => QueryInterface::ORDER_ASCENDING,
@@ -894,22 +860,22 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         return [
             [
                 'language' => 0,
-                'overlay' => true,
+                'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
-                'overlay' => 'hideNonTranslated',
+                'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
-                'overlay' => false,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => $lang0Expected,
             ],
             [
                 'language' => 1,
-                'overlay' => true,
+                'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => [
                     [
                         'title' => 'Post 6',
@@ -945,7 +911,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             ],
             [
                 'language' => 1,
-                'overlay' => 'hideNonTranslated',
+                'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => [
                     [
                         'title' => 'Post 5 - DK',
@@ -966,7 +932,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             ],
             [
                 'language' => 1,
-                'overlay' => false,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => [
                     [
                         'title' => 'Post 5 - DK',
@@ -1012,17 +978,13 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider queryPostsByPropertyDataProvider
-     *
-     * @param int $languageUid
-     * @param bool $overlay
-     * @param array $expected
      */
-    public function queryPostsByProperty($languageUid, $overlay, $expected): void
+    public function queryPostsByProperty(int $languageUid, string $overlay, array $expected): void
     {
+        $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid($languageUid);
-        $querySettings->setLanguageOverlayMode($overlay);
+        $querySettings->setLanguageAspect($languageAspect);
 
         $query->matching(
             $query->logicalOr(
@@ -1051,19 +1013,19 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                  AbstractDomainObject::PROPERTY_UID => 1,
                  AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
              ],
-         ];
+        ];
         return [
-             [
+            'default with overlays' => [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
                  'expected' => $allLanguages,
              ],
-             [
+             'default without overlays, show all languages' => [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
                  'expected' => $allLanguages,
              ],
-             [
+             'DA with overlays, shows translated records twice (which is a bug)' => [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
                  'expected' => [
@@ -1079,23 +1041,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                      ],
                  ],
              ],
-             [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => [
-                     [
-                         'title' => 'Blog 1 DK',
-                         AbstractDomainObject::PROPERTY_UID => 1,
-                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                     ],
-                     [
-                         'title' => 'Blog 1 DK',
-                         AbstractDomainObject::PROPERTY_UID => 1,
-                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                     ],
-                 ],
-             ],
-             [
+            'DA without overlays, queries DA language directly' => [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
                  'expected' => $allLanguages,
@@ -1113,19 +1059,18 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider postsWithoutRespectingSysLanguageDataProvider
-     * @param int $languageUid
-     * @param string|bool $overlay
-     * @param array $expected
      */
-    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $expected): void
+    public function postsWithoutRespectingSysLanguage(int $languageUid, string $overlay, array $expected): void
     {
+        $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);
         $context = GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
+        $context->setAspect('language', $languageAspect);
 
         $blogRepository = $this->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectSysLanguage(false);
+        $querySettings->setLanguageAspect($languageAspect);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
         $posts = $query->execute()->toArray();

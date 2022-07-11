@@ -22,6 +22,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -162,6 +163,7 @@ class Typo3DbBackendTest extends UnitTestCase
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
+        $mockQuerySettings->setLanguageAspect(new LanguageAspect());
 
         $workspaceUid = 2;
 

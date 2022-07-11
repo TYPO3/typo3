@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -401,19 +402,26 @@ class DataMapper
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setRespectSysLanguage(false);
 
-        // we always want to overlay relations as most of the time they are stored in db using default lang uids
-        $query->getQuerySettings()->setLanguageOverlayMode(true);
+        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
+        $languageUid = $languageAspect->getContentId();
         if ($this->query) {
-            $query->getQuerySettings()->setLanguageUid($this->query->getQuerySettings()->getLanguageUid());
-
+            $languageAspect = $this->query->getQuerySettings()->getLanguageAspect();
+            $languageUid = $languageAspect->getContentId();
             if ($dataMap->getLanguageIdColumnName() !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
                 //pass language of parent record to child objects, so they can be overlaid correctly in case
                 //e.g. findByUid is used.
                 //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
                 $languageUid = (int)$parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
-                $query->getQuerySettings()->setLanguageUid($languageUid);
             }
         }
+
+        // we always want to overlay relations as most of the time they are stored in db using default language uids
+        $languageAspect = new LanguageAspect(
+            $languageUid,
+            $languageUid,
+            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_MIXED : $languageAspect->getOverlayType()
+        );
+        $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
         if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
             if ($columnMap->getChildSortByFieldName() !== null) {
