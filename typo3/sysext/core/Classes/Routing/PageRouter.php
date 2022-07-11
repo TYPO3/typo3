@@ -198,7 +198,10 @@ class PageRouter implements RouterInterface
             $result = $matcher->match($prefixedUrlPath);
             /** @var Route $matchedRoute */
             $matchedRoute = $fullCollection->get($result['_route']);
-            return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
+            // Only use route if page language variant matches current language, otherwise handle it as route not found.
+            if ($this->isRouteReallyValidForLanguage($matchedRoute, $language)) {
+                return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
+            }
         } catch (ResourceNotFoundException $e) {
             // Second try, look for /my-page even though the request was called via /my-page/ and the slash
             // was not part of the slug, but let's then check again
@@ -207,7 +210,11 @@ class PageRouter implements RouterInterface
                     $result = $matcher->match(rtrim($prefixedUrlPath, '/'));
                     /** @var Route $matchedRoute */
                     $matchedRoute = $fullCollection->get($result['_route']);
-                    return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
+                    // Only use route if page language variant matches current language, otherwise
+                    // handle it as route not found.
+                    if ($this->isRouteReallyValidForLanguage($matchedRoute, $language)) {
+                        return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
+                    }
                 } catch (ResourceNotFoundException $e) {
                     // Do nothing
                 }
@@ -622,5 +629,40 @@ class PageRouter implements RouterInterface
             $this->site,
             $this->enhancerFactory
         );
+    }
+
+    /**
+     * Request may have been made with default page slug, also we are dealing with a site language variant. To avoid
+     * duplicate content, we need to revalidate that the eventually matched language route is really the available
+     * page language variant for the current lange. We do this at this late point to minimize the needed database
+     * queries instead of checking it for all build page candidates.
+     *
+     * This is safe, as we can simply drop the route and having a correct page not found action delivered.
+     */
+    protected function isRouteReallyValidForLanguage(Route $route, SiteLanguage $siteLanguage): bool
+    {
+        $page = $route->getOption('_page');
+        $languageIdField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? '';
+        if ($languageIdField === '') {
+            return true;
+        }
+        $languageId = (int)($page[$languageIdField] ?? 0);
+        if ($siteLanguage->getLanguageId() === 0 || $siteLanguage->getLanguageId() === $languageId) {
+            // default language site request or if page record is same language then siteLanguage, page record
+            // is valid to use as page resolving candidate and need no further overlay checks.
+            return true;
+        }
+        $pageIdInDefaultLanguage = (int)($languageId > 0 ? $page['l10n_parent'] : $page['uid']);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
+        $localizedPage = $pageRepository->getPageOverlay($pageIdInDefaultLanguage, $siteLanguage->getLanguageId());
+        if (!$localizedPage) {
+            // no page language overlay found, which means that either language page is not published and no logged
+            // in backend user OR there is no language overlay for that page at all. Thus using page record to build
+            // as page resolving candidate is valid.
+            return true;
+        }
+        // we found a valid page overlay, which means that current record is not the valid page for the current
+        // siteLanguage. To avoid resolving page with multiple slugs for a siteLanguage path, we flag this invalid.
+        return false;
     }
 }

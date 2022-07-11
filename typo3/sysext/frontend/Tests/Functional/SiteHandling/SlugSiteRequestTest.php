@@ -1253,4 +1253,240 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedPageId, $responseStructure->getScopePath('page/uid'));
         self::assertSame($expectedPageTitle, $responseStructure->getScopePath('page/title'));
     }
+
+    public function defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider(): \Generator
+    {
+        yield 'Default slug with default base resolves' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield 'FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/fr-fr/bienvenue/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield 'Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/fr-fr/welcome/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield 'Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/fr-fr/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+    }
+
+    /**
+     * @link https://forge.typo3.org/issues/96010
+     * @test
+     * @dataProvider defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider
+     */
+    public function defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExists(string $uri, array $recordUpdates, array $fallbackIdentifiers, string $fallbackType, int $expectedStatusCode, ?string $expectedPageTitle): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.local/fr-fr/', ['EN']),
+            ]
+        );
+        if ($recordUpdates !== []) {
+            foreach ($recordUpdates as $table => $records) {
+                foreach ($records as $record) {
+                    $this->getConnectionPool()->getConnectionForTable($table)
+                        ->update(
+                            $table,
+                            $record['data'] ?? [],
+                            $record['identifiers'] ?? [],
+                            $record['types'] ?? []
+                        );
+                }
+            }
+        }
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            $expectedStatusCode,
+            $response->getStatusCode()
+        );
+        if ($expectedPageTitle !== null) {
+            self::assertSame(
+                $expectedPageTitle,
+                $responseStructure->getScopePath('page/title')
+            );
+        }
+    }
+
+    public function defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider(): \Generator
+    {
+        yield 'Default slug with default base resolves' => [
+            'uri' => 'https://website.local/en-en/welcome/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield 'FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/bienvenue/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield 'Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield 'Default slug with default base do not resolve strict without fallback' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield 'Default slug with default base do not resolve fallback' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield 'Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+    }
+
+    /**
+     * @link https://forge.typo3.org/issues/88715
+     * @test
+     * @dataProvider defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider
+     */
+    public function defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExists(string $uri, array $recordUpdates, array $fallbackIdentifiers, string $fallbackType, int $expectedStatusCode, ?string $expectedPageTitle): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en'),
+                $this->buildLanguageConfiguration('FR', 'https://website.local/', ['EN']),
+            ]
+        );
+        if ($recordUpdates !== []) {
+            foreach ($recordUpdates as $table => $records) {
+                foreach ($records as $record) {
+                    $this->getConnectionPool()->getConnectionForTable($table)
+                        ->update(
+                            $table,
+                            $record['data'] ?? [],
+                            $record['identifiers'] ?? [],
+                            $record['types'] ?? []
+                        );
+                }
+            }
+        }
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            $expectedStatusCode,
+            $response->getStatusCode()
+        );
+        if ($expectedPageTitle !== null) {
+            self::assertSame(
+                $expectedPageTitle,
+                $responseStructure->getScopePath('page/title')
+            );
+        }
+    }
 }

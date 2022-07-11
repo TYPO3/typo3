@@ -50,7 +50,7 @@ class PageRouterTest extends UnitTestCase
     public function properSiteConfigurationFindsRoute(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
-        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
+        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom', 'sys_language_uid' => 0];
         $site = new Site('lotus-flower', 13, [
             'base' => '/lotus-flower/',
             'languages' => [
@@ -82,7 +82,7 @@ class PageRouterTest extends UnitTestCase
     public function properSiteConfigurationWithoutTrailingSlashFindsRoute(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
-        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
+        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom', 'sys_language_uid' => 0];
         $site = new Site('lotus-flower', 13, [
             'base' => '/lotus-flower/',
             'languages' => [
