@@ -6,6 +6,11 @@
 Import
 ======
 
+The import functionality is only available for admin users and Backend
+users for which the Page TSconfig option
+:ref:`options.impexp.enableImportForNonAdminUser <t3tsconfig:useroptions-impexp-enableImportForNonAdminUser>`
+has been enabled.
+
 .. note::
 
    Make sure that any required extensions are installed and the database scheme
