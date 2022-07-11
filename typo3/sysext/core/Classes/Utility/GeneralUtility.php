@@ -49,10 +49,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class GeneralUtility
 {
-    /**
-     * @var ContainerInterface|null
-     */
-    protected static $container;
+    protected static ?ContainerInterface $container = null;
 
     /**
      * Singleton instances returned by makeInstance, using the class names as
@@ -60,26 +57,26 @@ class GeneralUtility
      *
      * @var array<string, SingletonInterface>
      */
-    protected static $singletonInstances = [];
+    protected static array $singletonInstances = [];
 
     /**
      * Instances returned by makeInstance, using the class names as array keys
      *
      * @var array<string, array<object>>
      */
-    protected static $nonSingletonInstances = [];
+    protected static array $nonSingletonInstances = [];
 
     /**
      * Cache for makeInstance with given class name and final class names to reduce number of self::getClassName() calls
      *
      * @var array<string, class-string> Given class name => final class name
      */
-    protected static $finalClassNameCache = [];
+    protected static array $finalClassNameCache = [];
 
     /**
      * @var array<string, string|bool|array<string, string|bool|null>|null>
      */
-    protected static $indpEnvCache = [];
+    protected static array $indpEnvCache = [];
 
     final private function __construct()
     {
