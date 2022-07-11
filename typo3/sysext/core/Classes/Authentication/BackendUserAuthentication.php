@@ -2390,4 +2390,14 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         return $this->isAdmin()
             || ($this->getTSConfig()['options.']['impexp.']['enableExportForNonAdminUser'] ?? false);
     }
+
+    /**
+     * Returns whether debug information shall be displayed to the user
+     *
+     * @internal
+     */
+    public function shallDisplayDebugInformation(): bool
+    {
+        return ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && $this->isAdmin();
+    }
 }

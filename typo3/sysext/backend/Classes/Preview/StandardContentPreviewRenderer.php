@@ -331,7 +331,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         'exception' => $e,
                     ]);
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+                    if ($this->getBackendUser()->shallDisplayDebugInformation()) {
                         $view = GeneralUtility::makeInstance(StandaloneView::class);
                         $view->assign('error', [
                             'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),

@@ -294,8 +294,7 @@ class QueryGenerator
         $this->settings = $settings;
         $this->menuItems = $menuItems;
         $this->moduleName = $moduleName;
-        $this->showFieldAndTableNames = ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false)
-            && $this->getBackendUserAuthentication()->isAdmin();
+        $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
     }
 
     /**

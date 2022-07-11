@@ -82,7 +82,7 @@ class UserFileInlineLabelService
             $labelText = (string)LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $field);
             $title = '<dt class="col text-truncate">' . htmlspecialchars($labelText) . '</dt><dd class="col">' . $value . '</dd>';
             // In debug mode, add the table name to the record title
-            if (($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && $this->getBackendUserAuthentication()->isAdmin()) {
+            if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
                 $title .= '<div class="col"><code class="m-0">[' . htmlspecialchars($params['table']) . ']</code></div>';
             }
         }

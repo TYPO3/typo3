@@ -395,7 +395,7 @@ class PaletteAndSingleContainer extends AbstractContainer
 
         $label = BackendUtility::wrapInHelp($this->data['tableName'], $fieldName, htmlspecialchars($element['fieldLabel']));
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
             $label .= '<code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
 

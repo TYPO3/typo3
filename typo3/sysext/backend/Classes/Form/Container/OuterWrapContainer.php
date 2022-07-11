@@ -144,7 +144,7 @@ class OuterWrapContainer extends AbstractContainer
             'fieldWizardHtml' => $fieldWizardHtml,
             'childHtml' => $childHtml,
             'icon' => $icon,
-            'tableName' => ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && $backendUser->isAdmin() ? $table : '',
+            'tableName' => $backendUser->shallDisplayDebugInformation() ? $table : '',
             'tableTitle' => $tableTitle,
             'newOrUid' => $newOrUid,
             'isNewRecord' => $this->data['command'] === 'new',

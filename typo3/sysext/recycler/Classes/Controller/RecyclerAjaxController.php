@@ -122,7 +122,7 @@ class RecyclerAjaxController
 
                 $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/Ajax/RecordsTable.html');
                 $view->assign('showTableHeader', empty($this->conf['table']));
-                $view->assign('showTableName', $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin());
+                $view->assign('showTableName', $this->getBackendUser()->shallDisplayDebugInformation());
                 $view->assign('allowDelete', $allowDelete);
                 $view->assign('groupedRecords', $this->transform($deletedRowsArray));
                 $content = [
