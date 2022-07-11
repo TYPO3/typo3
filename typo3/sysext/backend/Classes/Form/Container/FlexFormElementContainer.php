@@ -45,7 +45,7 @@ class FlexFormElementContainer extends AbstractContainer
 
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
-        $showFieldName = $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUserAuthentication()->isAdmin();
+        $showFieldName = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
 
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (

@@ -73,6 +73,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserAuthentication->shallDisplayDebugInformation()->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
 
         // Expect translation call to the label reference and empty description
@@ -132,6 +133,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserAuthentication->shallDisplayDebugInformation()->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
 
         // Expect translation call to the label and description references
@@ -193,6 +195,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserAuthentication->shallDisplayDebugInformation()->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
 
         // Expect translation call to the label and description references

@@ -445,7 +445,7 @@ abstract class AbstractFormElement extends AbstractNode
      */
     protected function appendValueToLabelInDebugMode($label, $value): string
     {
-        if ($value !== '' && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+        if ($value !== '' && $this->getBackendUser()->shallDisplayDebugInformation()) {
             return $label . ' [' . $value . ']';
         }
 
