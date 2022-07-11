@@ -2238,10 +2238,10 @@ class GeneralUtility
     }
 
     /**
-     * This method is only for testing and should never be used outside tests-
+     * This method is only for testing and should never be used outside tests.
      *
-     * @param string $envName
-     * @param mixed $value
+     * @param non-empty-string $envName
+     * @param string|bool|array<string, string|bool|null>|null $value
      * @internal
      */
     public static function setIndpEnv($envName, $value)
