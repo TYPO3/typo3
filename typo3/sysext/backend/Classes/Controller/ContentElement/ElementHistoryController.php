@@ -250,7 +250,7 @@ class ElementHistoryController
                         'newRecord' => $diff['oldData'][$key],
                         'oldRecord' => $diff['newData'][$key],
                     ];
-                    $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], (int)$elParts[1]);
+                    $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], (int)$elParts[1], true);
                 }
                 $elParts = explode(':', $key);
                 $singleLine['revertRecordUrl'] = $this->buildUrl(['rollbackFields' => $key]);
@@ -337,10 +337,11 @@ class ElementHistoryController
      *
      * @param array $entry sys_history entry record.
      * @param string $table The table name
-     * @param int $rollbackUid If set to UID of record, display rollback links
+     * @param int $rollbackUid The UID of the record
+     * @param bool $showRollbackLink Whether a rollback link should be shown for each changed field
      * @return array array of records
      */
-    protected function renderDiff($entry, $table, $rollbackUid = 0): array
+    protected function renderDiff($entry, $table, $rollbackUid = 0, bool $showRollbackLink = false): array
     {
         $lines = [];
         if (is_array($entry['newRecord'])) {
@@ -363,7 +364,7 @@ class ElementHistoryController
                         strip_tags((string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid))
                     );
                     $rollbackUrl = '';
-                    if ($rollbackUid) {
+                    if ($rollbackUid && $showRollbackLink) {
                         $rollbackUrl = $this->buildUrl(['rollbackFields' => $table . ':' . $rollbackUid . ':' . $fN]);
                     }
                     $lines[] = [

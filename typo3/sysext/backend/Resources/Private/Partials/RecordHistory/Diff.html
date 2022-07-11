@@ -6,10 +6,10 @@
     <f:for each="{differences}" as="differencesItem" key="key">
         <div class="diff-item">
             <div class="diff-item-title">
-                <f:if condition="{rollbackUrl}">
-                    <a href="{rollbackUrl}" class="btn btn-default me-3">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}</a>
+                <f:if condition="{differencesItem.rollbackUrl}">
+                    <a href="{differencesItem.rollbackUrl}" class="btn btn-default me-3">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}</a>
                 </f:if>
-                {differencesItem.link} {differencesItem.title}
+                {differencesItem.title}
             </div>
             <div class="diff-item-result"><f:spaceless>
                 <f:format.raw>{differencesItem.result}</f:format.raw>
