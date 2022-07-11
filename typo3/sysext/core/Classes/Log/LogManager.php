@@ -196,7 +196,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
         // Search in the $TYPO3_CONF_VARS['LOG'] array
         // for these keys, for example "writerConfiguration"
         $configurationKey = $configurationType . 'Configuration';
-        $configuration = $GLOBALS['TYPO3_CONF_VARS']['LOG'];
+        $configuration = $GLOBALS['TYPO3_CONF_VARS']['LOG'] ?? [];
         $result = $configuration[$configurationKey] ?? [];
         // Walk from general to special (t3lib, t3lib.db, t3lib.db.foo)
         // and search for the most specific configuration
