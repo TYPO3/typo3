@@ -1471,7 +1471,7 @@ class BackendUtility
             $titleLength = (int)static::getBackendUserAuthentication()->uc['titleLen'];
         }
         $titleOrig = htmlspecialchars($title);
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $titleLength));
+        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, (int)$titleLength));
         // If title was cropped, offer a tooltip:
         if ($titleOrig != $title) {
             $title = '<span title="' . $titleOrig . '">' . $title . '</span>';
