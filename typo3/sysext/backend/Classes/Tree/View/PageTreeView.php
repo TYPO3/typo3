@@ -74,7 +74,7 @@ class PageTreeView extends AbstractTreeView
     public function getTitleStr($row, $titleLen = 30)
     {
         $lang = $this->getLanguageService();
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
+        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$titleLen));
         if (isset($row['nav_title']) && trim($row['nav_title']) !== '') {
             $title = '<span title="'
                         . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title'))

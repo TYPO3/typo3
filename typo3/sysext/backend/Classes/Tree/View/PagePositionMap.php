@@ -179,7 +179,7 @@ class PagePositionMap
             $toolTip = BackendUtility::getRecordToolTip($dat['row'], 'pages');
             $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)->render() . '</span>';
 
-            $lines[] = '<span class="text-nowrap">' . $icon . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $this->getBackendUser()->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
+            $lines[] = '<span class="text-nowrap">' . $icon . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
         }
         // If the current page was the last in the tree:
         $prev_dat = end($pageTree->tree);

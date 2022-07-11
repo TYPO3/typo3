@@ -653,7 +653,7 @@ class EditDocumentController
                     $realUidInPayload = ($tceSubstId = array_search($uid, $tce->substNEWwithIDs, true)) !== false ? $tceSubstId : $uid;
                     $row = $this->data[$table][$uid] ?? $this->data[$table][$realUidInPayload] ?? null;
                     if ($row !== null) {
-                        $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), $this->getBackendUser()->uc['titleLen']);
+                        $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), (int)$this->getBackendUser()->uc['titleLen']);
                         $messages[] = sprintf($this->getLanguageService()->getLL('notification.record_saved.message'), $recordTitle);
                     }
                 }

@@ -502,7 +502,7 @@ class TimeTracker implements SingletonInterface
      */
     protected function fixCLen(string $c, string $v): string
     {
-        $len = $v === 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength'];
+        $len = (int)($v === 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength']);
         if (strlen($c) > $len) {
             $c = '<span style="color:green;">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($c, $len)) . '</span>';
         } else {

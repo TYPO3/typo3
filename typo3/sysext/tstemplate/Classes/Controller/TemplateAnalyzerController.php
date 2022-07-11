@@ -257,7 +257,7 @@ class TemplateAnalyzerController extends AbstractTemplateModuleController
                 $A_E = '';
             }
             $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . ' ' . $A_B
-                . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
+                . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$GLOBALS['BE_USER']->uc['titleLen']))
                 . $A_E . '&nbsp;&nbsp;';
 
             $rootLineNumber = -1;

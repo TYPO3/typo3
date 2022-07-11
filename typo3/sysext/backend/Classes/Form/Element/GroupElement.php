@@ -125,7 +125,7 @@ class GroupElement extends AbstractFormElement
             $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
         }
 
-        $maxTitleLength = $backendUser->uc['titleLen'];
+        $maxTitleLength = (int)$backendUser->uc['titleLen'];
 
         $listOfSelectedValues = [];
         $selectorOptionsHtml = [];

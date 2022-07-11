@@ -143,7 +143,7 @@ class MetaInformation
 
         // crop the title to title limit (or 50, if not defined)
         $beUser = $this->getBackendUser();
-        $cropLength = empty($beUser->uc['titleLen']) ? 50 : $beUser->uc['titleLen'];
+        $cropLength = empty($beUser->uc['titleLen']) ? 50 : (int)$beUser->uc['titleLen'];
         return htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $cropLength));
     }
 

@@ -317,7 +317,7 @@ class Clipboard
                         )->render() . '</span>',
                         'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(
                             $fileObject->getName(),
-                            $this->getBackendUser()->uc['titleLen']
+                            (int)$this->getBackendUser()->uc['titleLen']
                         )), $fileObject->getParentFolder()->getCombinedIdentifier(), $currentTable === '_FILE'),
                         'thumb' => $thumb,
                         'infoDataDispatch' => [
@@ -341,7 +341,7 @@ class Clipboard
                         'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
                             $table,
                             $record
-                        ), $this->getBackendUser()->uc['titleLen'])), $record, $isRequestedTable),
+                        ), (int)$this->getBackendUser()->uc['titleLen'])), $record, $isRequestedTable),
                         'infoDataDispatch' => [
                             'action' => 'TYPO3.InfoWindow.showItem',
                             'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$uid], false),
@@ -424,7 +424,7 @@ class Clipboard
         }
 
         foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $record) {
-            $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), $this->getBackendUser()->uc['titleLen']));
+            $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), (int)$this->getBackendUser()->uc['titleLen']));
             if (!$isRequestedTable) {
                 // In case the current table is not the requested table, e.g. "_FILE", wrap title in "muted" style
                 $title = '<span class="text-muted">' . $title . '</span>';

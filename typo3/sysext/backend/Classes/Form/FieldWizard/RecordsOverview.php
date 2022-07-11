@@ -44,7 +44,7 @@ class RecordsOverview extends AbstractNode
 
         $parameterArray = $this->data['parameterArray'];
         $selectedItems = $parameterArray['itemFormElValue'];
-        $maxTitleLength = $backendUser->uc['titleLen'];
+        $maxTitleLength = (int)$backendUser->uc['titleLen'];
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $recordsOverviewHtml = [];

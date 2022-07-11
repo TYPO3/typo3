@@ -486,7 +486,7 @@ class SearchController extends ActionController
             }
         }
         $title = $resultData['item_title'] . ($resultData['titleaddition'] ?? '');
-        $title = GeneralUtility::fixed_lgd_cs($title, $this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
+        $title = GeneralUtility::fixed_lgd_cs($title, (int)$this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
         // If external media, link to the media-file instead.
         if ($row['item_type']) {
             if ($row['show_resume']) {
@@ -754,7 +754,7 @@ class SearchController extends ActionController
                 }
             }
             if (!trim($markedSW)) {
-                $outputStr = GeneralUtility::fixed_lgd_cs($row['item_description'], $length, $this->settings['results.']['summaryCropSignifier']);
+                $outputStr = GeneralUtility::fixed_lgd_cs($row['item_description'], (int)$length, $this->settings['results.']['summaryCropSignifier']);
                 $outputStr = htmlspecialchars($outputStr);
             }
             $output = $outputStr ?: $markedSW;

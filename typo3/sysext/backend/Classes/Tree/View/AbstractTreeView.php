@@ -352,7 +352,7 @@ abstract class AbstractTreeView
      */
     public function getTitleStr($row, $titleLen = 30)
     {
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
+        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$titleLen));
         return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : $title;
     }
 

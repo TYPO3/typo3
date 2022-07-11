@@ -192,7 +192,7 @@ class FileList
     public function __construct(?ServerRequestInterface $request = null)
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
-        $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen'] ?? 1);
+        $this->fixedL = max($this->fixedL, (int)($this->getBackendUser()->uc['titleLen'] ?? 1));
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);

@@ -126,7 +126,7 @@ class TranslationStatusController extends InfoModuleController
         $lang = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
         // Title length:
-        $titleLen = $backendUser->uc['titleLen'];
+        $titleLen = (int)$backendUser->uc['titleLen'];
         // Put together the TREE:
         $output = '';
         $langRecUids = [];

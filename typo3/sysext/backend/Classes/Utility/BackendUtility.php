@@ -553,9 +553,9 @@ class BackendUtility
             if ($record['uid'] === 0) {
                 continue;
             }
-            $output = '/' . GeneralUtility::fixed_lgd_cs(strip_tags($record['title']), $titleLimit) . $output;
+            $output = '/' . GeneralUtility::fixed_lgd_cs(strip_tags($record['title']), (int)$titleLimit) . $output;
             if ($fullTitleLimit) {
-                $fullOutput = '/' . GeneralUtility::fixed_lgd_cs(strip_tags($record['title']), $fullTitleLimit) . $fullOutput;
+                $fullOutput = '/' . GeneralUtility::fixed_lgd_cs(strip_tags($record['title']), (int)$fullTitleLimit) . $fullOutput;
             }
         }
         if ($fullTitleLimit) {
@@ -1468,7 +1468,7 @@ class BackendUtility
     {
         // If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
         if (!$titleLength || !MathUtility::canBeInterpretedAsInteger($titleLength) || $titleLength < 0) {
-            $titleLength = static::getBackendUserAuthentication()->uc['titleLen'];
+            $titleLength = (int)static::getBackendUserAuthentication()->uc['titleLen'];
         }
         $titleOrig = htmlspecialchars($title);
         $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $titleLength));
@@ -1742,7 +1742,7 @@ class BackendUtility
             $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
         }
         if ($fixed_lgd_chars && $l) {
-            return GeneralUtility::fixed_lgd_cs((string)$l, $fixed_lgd_chars);
+            return GeneralUtility::fixed_lgd_cs((string)$l, (int)$fixed_lgd_chars);
         }
         return $l;
     }

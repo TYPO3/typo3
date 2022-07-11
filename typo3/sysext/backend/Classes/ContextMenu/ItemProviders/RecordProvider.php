@@ -375,8 +375,8 @@ class RecordProvider extends AbstractProvider
             $confirmMessage = sprintf(
                 $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.'
                     . ($this->clipboard->currentMode() === 'copy' ? 'copy' : 'move') . '_' . $type),
-                GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $this->backendUser->uc['titleLen']),
-                GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), $this->backendUser->uc['titleLen'])
+                GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], (int)$this->backendUser->uc['titleLen']),
+                GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), (int)$this->backendUser->uc['titleLen'])
             );
             $attributes += [
                 'data-title' => htmlspecialchars($title),
@@ -399,7 +399,7 @@ class RecordProvider extends AbstractProvider
         $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
         $attributes = [];
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-            $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), $this->backendUser->uc['titleLen']);
+            $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), (int)$this->backendUser->uc['titleLen']);
 
             $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete.title');
             $confirmMessage = sprintf(

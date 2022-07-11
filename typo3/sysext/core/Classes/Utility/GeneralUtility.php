@@ -192,7 +192,9 @@ class GeneralUtility
     public static function fixed_lgd_cs($string, $chars, $appendString = '...')
     {
         $string = (string)$string;
-        if ((int)$chars === 0 || mb_strlen($string, 'utf-8') <= abs($chars)) {
+        $chars = (int)$chars;
+        $appendString = (string)$appendString;
+        if ($chars === 0 || mb_strlen($string, 'utf-8') <= abs($chars)) {
             return $string;
         }
         if ($chars > 0) {
