@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Service;
 
 /**
  * Class with helper functions for clearing the PHP opcache.
- * It auto detects the opcache system and invalidates/resets it.
+ * It auto-detects the opcache system and invalidates/resets it.
  * https://forge.typo3.org/issues/55252
  * Supported opcaches are: OPcache >= 7.0 (PHP 5.5)
  */
@@ -28,7 +28,7 @@ class OpcodeCacheService
      *
      * @return array Array filled with supported and active opcaches
      */
-    public function getAllActive()
+    public function getAllActive(): array
     {
         $supportedCaches = [
             'OPcache' => [
@@ -46,7 +46,6 @@ class OpcodeCacheService
                 },
             ],
         ];
-
         $activeCaches = [];
         foreach ($supportedCaches as $opcodeCache => $properties) {
             if ($properties['active']) {
@@ -61,7 +60,7 @@ class OpcodeCacheService
      *
      * @param string|null $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.
      */
-    public function clearAllActive($fileAbsPath = null)
+    public function clearAllActive(string $fileAbsPath = null): void
     {
         foreach ($this->getAllActive() as $properties) {
             $callback = $properties['clearCallback'];
@@ -69,12 +68,9 @@ class OpcodeCacheService
         }
     }
 
-    /**
-     * @return bool
-     */
     protected static function isClearable(): bool
     {
         $disabled = explode(',', (string)ini_get('disable_functions'));
-        return !(in_array('opcache_invalidate', $disabled, true) || in_array('opcache_reset', $disabled, true));
+        return function_exists('opcache_invalidate') && !(in_array('opcache_invalidate', $disabled, true) || in_array('opcache_reset', $disabled, true));
     }
 }
