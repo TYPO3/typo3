@@ -331,6 +331,10 @@ select {
             max-width: 2em;
             max-height: 2em;
         }
+
+        .radio:not(.disabled) input[type="radio"] {
+            cursor: pointer;
+        }
     }
 
     > .form-wizards-items-top {

@@ -49,6 +49,13 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         transition: all 0.3s ease-in-out;
     }
 
+    &:not(.disabled) {
+        .form-check-label-switch,
+        .form-check-label-icon {
+            cursor: pointer;
+        }
+    }
+
     input + .help-link {
         margin-left: 0.5rem;
         font-weight: normal;
@@ -80,6 +87,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
     .form-check-input {
         background-color: lighten($checkbox-bg, 10%);
         height: 16px;
+        cursor: pointer;
 
         &:checked {
             border-color: $input-border-color;
@@ -240,6 +248,10 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
             height: revert;
             padding: 6px;
         }
+    }
+
+    &:not(.disabled) .form-check-label-icon {
+        cursor: pointer;
     }
 
     .form-check-label-text {
