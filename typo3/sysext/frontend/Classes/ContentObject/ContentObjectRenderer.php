@@ -6046,7 +6046,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $error = false;
         if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
-            if (str_contains(strtolower(($conf['begin'] ?? '') . $conf['max']), 'total')) {
+            if (str_contains(strtolower(($conf['begin'] ?? '') . ($conf['max'] ?? '')), 'total')) {
                 $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $countQueryBuilder->getRestrictions()->removeAll();
                 $countQueryBuilder->count('*')
