@@ -17,6 +17,9 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-index_config',
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'hidden' => [

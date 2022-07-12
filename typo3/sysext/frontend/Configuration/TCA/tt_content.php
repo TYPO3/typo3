@@ -59,6 +59,9 @@ return [
             'menu_section_pages' => 'content-menu-section',
         ],
         'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'CType' => [

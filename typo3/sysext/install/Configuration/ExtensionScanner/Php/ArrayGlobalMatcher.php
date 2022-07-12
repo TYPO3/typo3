@@ -63,4 +63,11 @@ return [
             'Breaking-97312-RemoveContextSensitiveHelp.rst',
         ],
     ],
+    '$GLOBALS[\'PAGES_TYPES\']' => [
+        'restFiles' => [
+            'Breaking-98487-GLOBALSPAGES_TYPESRemoved.rst',
+            'Deprecation-98487-ExtensionManagementUtilityallowTableOnStandardPages.rst',
+            'Feature-98487-TCAOptionCtrlsecurityignorePageTypeRestriction.rst',
+        ],
+    ],
 ];

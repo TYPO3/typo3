@@ -19,6 +19,9 @@ return [
         'iconfile' => 'EXT:test_irre_mnsymmetric/Resources/Public/Icons/icon_hotel_rel.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'sys_language_uid' => [

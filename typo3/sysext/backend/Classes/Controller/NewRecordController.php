@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -604,10 +605,8 @@ class NewRecordController
             return false;
         }
         // Checking doktype
-        $doktype = (int)$page['doktype'];
-        $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'] ?? '';
-        // If all tables or the table is listed as an allowed type, return TRUE
-        return $rootLevelConstraintMatches && (str_contains($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $table));
+        $isAllowed = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($table, $page['doktype']);
+        return $rootLevelConstraintMatches && $isAllowed;
     }
 
     /**

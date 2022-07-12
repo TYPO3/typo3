@@ -20,6 +20,9 @@ return [
         'iconfile' => 'EXT:test_irre_foreignfield/Resources/Public/Icons/icon_price.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'sys_language_uid' => [

@@ -1369,15 +1369,15 @@ class DataHandler implements LoggerAwareInterface
             }
             if ($status === 'update') {
                 // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
-                $onlyAllowedTables = $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
+                $onlyAllowedTables = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->doesDoktypeOnlyAllowSpecifiedRecordTypes((int)$value);
                 if ($onlyAllowedTables) {
                     // use the real page id (default language)
                     $recordId = $this->getDefaultLanguagePageId((int)$id);
                     $theWrongTables = $this->doesPageHaveUnallowedTables($recordId, (int)$value);
-                    if ($theWrongTables) {
+                    if ($theWrongTables !== []) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordProperties($table, $id);
-                            $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, '"doktype" of page "{title}" could not be changed because the page contains records from disallowed tables; {disallowedTables}', 2, ['title' => $propArr['header'], 'disallowedTables' => $theWrongTables], $propArr['event_pid']);
+                            $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, '"doktype" of page "{title}" could not be changed because the page contains records from disallowed tables; {disallowedTables}', 2, ['title' => $propArr['header'], 'disallowedTables' => implode(', ', $theWrongTables)], $propArr['event_pid']);
                         }
                         return $res;
                     }
@@ -7120,17 +7120,11 @@ class DataHandler implements LoggerAwareInterface
             if ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($checkTable)) {
                 $allowed = true;
             }
-        } else {
-            // Check non-root-level
-            $doktype = $this->pageInfo($page_uid, 'doktype');
-            $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-            $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
-            // If all tables or the table is listed as an allowed type, return TRUE
-            if (str_contains($allowedTableList, '*') || in_array($checkTable, $allowedArray, true)) {
-                $allowed = true;
-            }
+            return $allowed;
         }
-        return $allowed;
+        // Check non-root-level
+        $doktype = $this->pageInfo($page_uid, 'doktype');
+        return GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($checkTable, (int)$doktype);
     }
 
     /**
@@ -7344,27 +7338,26 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int|string $page_uid Page ID
      * @param int $doktype Page doktype
-     * @return bool|array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
+     * @return array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
      * @internal should only be used from within DataHandler
      */
-    public function doesPageHaveUnallowedTables($page_uid, $doktype)
+    public function doesPageHaveUnallowedTables($page_uid, int $doktype): array
     {
         $page_uid = (int)$page_uid;
         if (!$page_uid) {
             // Not a number. Probably a new page
-            return false;
+            return [];
         }
-        $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+        $allowedTables = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->getAllowedTypesForDoktype($doktype);
         // If all tables are allowed, return early
-        if (str_contains($allowedTableList, '*')) {
-            return false;
+        if (in_array('*', $allowedTables, true)) {
+            return [];
         }
-        $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
         $tableList = [];
         $allTableNames = $this->compileAdminTables();
         foreach ($allTableNames as $table) {
             // If the table is not in the allowed list, check if there are records...
-            if (in_array($table, $allowedArray, true)) {
+            if (in_array($table, $allowedTables, true)) {
                 continue;
             }
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -7382,7 +7375,7 @@ class DataHandler implements LoggerAwareInterface
                 $tableList[] = $table;
             }
         }
-        return implode(',', $tableList);
+        return $tableList;
     }
 
     /*****************************

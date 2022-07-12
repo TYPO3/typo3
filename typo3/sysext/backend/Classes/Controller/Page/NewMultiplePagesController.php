@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -178,9 +179,7 @@ class NewMultiplePagesController
         $pagesTsConfig = $tsConfig['TCEFORM.']['pages.'] ?? [];
 
         // Find all available doktypes for the current user
-        $types = $GLOBALS['PAGES_TYPES'];
-        unset($types['default']);
-        $types = array_keys($types);
+        $types = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->getRegisteredDoktypes();
         $types[] = PageRepository::DOKTYPE_DEFAULT;
         $types[] = PageRepository::DOKTYPE_LINK;
         $types[] = PageRepository::DOKTYPE_SHORTCUT;

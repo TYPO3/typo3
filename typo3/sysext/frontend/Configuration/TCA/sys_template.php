@@ -25,6 +25,9 @@ return [
             '1' => 'mimetypes-x-content-template',
         ],
         'searchFields' => 'title,constants,config',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'title' => [

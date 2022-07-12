@@ -95,12 +95,11 @@ services:
         after: 'tbeStyles'
 
   lowlevel.configuration.module.provider.pagestypes:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\PageDoktypeProvider'
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'pagesTypes'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:pagesTypes'
-        globalVariableKey: 'PAGES_TYPES'
         before: 'beUserUc'
         after: 'userSettings'
 

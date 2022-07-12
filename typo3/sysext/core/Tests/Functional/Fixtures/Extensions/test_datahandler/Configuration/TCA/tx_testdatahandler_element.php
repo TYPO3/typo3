@@ -19,6 +19,9 @@ return [
         ],
         'versioningWS' => true,
         'origUid' => 't3_origuid',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'sys_language_uid' => [

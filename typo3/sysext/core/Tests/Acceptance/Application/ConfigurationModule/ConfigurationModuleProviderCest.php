@@ -99,7 +99,7 @@ class ConfigurationModuleProviderCest
             '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
             '$GLOBALS[\'TBE_STYLES\'] (Skinning Styles)',
             '$GLOBALS[\'TYPO3_USER_SETTINGS\'] (User Settings Configuration)',
-            '$GLOBALS[\'PAGES_TYPES\'] (Table permissions by page type)',
+            'Table permissions per page type',
             '$GLOBALS[\'BE_USER\']->uc (User Settings)',
             '$GLOBALS[\'BE_USER\']->getTSConfig() (User TSconfig)',
             'Backend Routes',

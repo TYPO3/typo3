@@ -20,6 +20,9 @@ return [
         'iconfile' => 'EXT:test_irre_foreignfield_non_ws/Resources/Public/Icons/Extension.svg',
         'versioningWS' => false,
         'origUid' => 't3_origuid',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'sys_language_uid' => [

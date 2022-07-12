@@ -1399,4 +1399,13 @@ return [
             'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-98487-GLOBALSPAGES_TYPESRemoved.rst',
+            'Deprecation-98487-ExtensionManagementUtilityallowTableOnStandardPages.rst',
+            'Feature-98487-TCAOptionCtrlsecurityignorePageTypeRestriction.rst',
+        ],
+    ],
 ];

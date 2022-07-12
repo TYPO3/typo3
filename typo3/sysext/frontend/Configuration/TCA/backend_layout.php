@@ -19,6 +19,9 @@ return [
             'default' => 'mimetypes-x-backend_layout',
         ],
         'selicon_field' => 'icon',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'title' => [

@@ -58,7 +58,7 @@
 				<source>Backend Modules</source>
 			</trans-unit>
 			<trans-unit id="pagesTypes" resname="pagesTypes">
-				<source>$GLOBALS['PAGES_TYPES'] (Table permissions by page type)</source>
+				<source>Table permissions per page type</source>
 			</trans-unit>
 			<trans-unit id="cropLines" resname="cropLines">
 				<source>Crop lines</source>

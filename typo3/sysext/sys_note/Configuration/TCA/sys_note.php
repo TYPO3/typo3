@@ -14,6 +14,9 @@ return [
         ],
         'sortby' => 'sorting',
         'searchFields' => 'subject,message',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'category' => [

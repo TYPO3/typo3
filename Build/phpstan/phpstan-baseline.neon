@@ -386,11 +386,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:doesPageHaveUnallowedTables\\(\\) should return array\\|bool but returns string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:getSortNumber\\(\\) should return array\\|bool\\|int\\|null but returns float\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php

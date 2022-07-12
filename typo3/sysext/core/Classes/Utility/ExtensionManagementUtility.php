@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
@@ -676,11 +677,20 @@ class ExtensionManagementUtility
      * FOR USE IN ext_tables.php FILES
      *
      * @param string $table Table name
+     * @deprecated will be removed in TYPO3 v13.0. Use $GLOBALS['TCA'][$table]['ctrl']['security']['ignorePageTypeRestriction'] instead.
      */
     public static function allowTableOnStandardPages(string $table): void
     {
-        $GLOBALS['PAGES_TYPES']['default']['allowedTables'] ??= '';
-        $GLOBALS['PAGES_TYPES']['default']['allowedTables'] .= ',' . $table;
+        if ($table === '') {
+            return;
+        }
+        $registry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
+        $tables = explode(',', $table);
+        foreach ($tables as $singleTable) {
+            if (!$registry->isRecordTypeAllowedForDoktype($singleTable, null)) {
+                $registry->addAllowedRecordTypes(explode(',', $singleTable));
+            }
+        }
     }
 
     /**
@@ -1372,6 +1382,14 @@ tt_content.' . $key . $suffix . ' {
         } else {
             static::buildBaseTcaFromSingleFiles();
         }
+
+        $allowedRecordTypesForDefault = [];
+        foreach ($GLOBALS['TCA'] as $table => $tableConfiguration) {
+            if ($tableConfiguration['ctrl']['security']['ignorePageTypeRestriction'] ?? false) {
+                $allowedRecordTypesForDefault[] = $table;
+            }
+        }
+        GeneralUtility::makeInstance(PageDoktypeRegistry::class)->addAllowedRecordTypes($allowedRecordTypesForDefault);
     }
 
     /**

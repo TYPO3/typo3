@@ -14,8 +14,10 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'translationSource' => 'l10n_source',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
-
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
