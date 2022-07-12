@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatche
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -1724,12 +1723,7 @@ class BackendUtility
                 }
                 break;
             case 'flex':
-                if ($uid) {
-                    $flexFormValueFormatter = GeneralUtility::makeInstance(FlexFormValueFormatter::class);
-                    $l = $flexFormValueFormatter->format($table, $col, $value, $uid, $theColConf);
-                } elseif (is_string($value)) {
-                    $l = strip_tags($value);
-                }
+                $l = strip_tags($value);
                 break;
             case 'language':
                 $l = $value;

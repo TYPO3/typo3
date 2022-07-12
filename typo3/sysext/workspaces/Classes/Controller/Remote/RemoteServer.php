@@ -15,9 +15,6 @@
 
 namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
-use cogpowered\FineDiff\Diff;
-use cogpowered\FineDiff\Granularity\Character;
-use cogpowered\FineDiff\Granularity\Word;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -260,20 +257,10 @@ class RemoteServer
                         $versionRecord['uid']
                     );
 
-                    $granularity = new Word();
-                    if (($configuration['type'] ?? '') === 'flex') {
-                        $granularity = new Character();
-                    }
-                    $diff = new Diff($granularity);
-                    $fieldDifferences = $diff->render(
-                        strip_tags($liveRecord[$fieldName]),
-                        strip_tags($versionRecord[$fieldName])
-                    );
-
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $fieldDifferences,
+                        'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName]),
                     ];
                     $liveReturnArray[] = [
                         'field' => $fieldName,
