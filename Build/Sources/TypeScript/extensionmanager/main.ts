@@ -12,6 +12,7 @@
  */
 
 import $ from 'jquery';
+import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
 import Modal from '@typo3/backend/modal';
 import Tooltip from '@typo3/backend/tooltip';
@@ -47,17 +48,7 @@ class ExtensionManager {
   public Update: ExtensionManagerUpdate;
   public UploadForm: ExtensionManagerUploadForm;
   public Repository: ExtensionManagerRepository;
-
-  private static getUrlVars(): any {
-    let vars: any = [];
-    let hashes: Array<string> = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (let hash of hashes) {
-      const [k, v] = hash.split('=');
-      vars.push(k);
-      vars[k] = v;
-    }
-    return vars;
-  }
+  private readonly searchFilterSessionKey: string = 'tx-extensionmanager-local-filter';
 
   constructor() {
     const me = this;
@@ -111,16 +102,25 @@ class ExtensionManager {
 
       let searchField: HTMLInputElement;
       if ((searchField = document.querySelector(ExtensionManagerIdentifier.searchField)) !== null) {
+        const activeSearchFilter = BrowserSession.get(this.searchFilterSessionKey);
+        if (activeSearchFilter !== null) {
+          searchField.value = activeSearchFilter;
+          this.filterExtensions(activeSearchFilter);
+        }
+
         new RegularEvent('submit', (e: Event): void => {
           e.preventDefault();
         }).bindTo(searchField.closest('form'));
 
-        new DebounceEvent('keyup', (e: KeyboardEvent): void => {
-          this.filterExtensions(e.target as HTMLInputElement);
+        new DebounceEvent('input', (e: KeyboardEvent): void => {
+          const target = e.target as HTMLInputElement;
+          BrowserSession.set(this.searchFilterSessionKey, target.value);
+          this.filterExtensions(target.value);
         }, 100).bindTo(searchField);
         searchField.clearable({
-          onClear: (input: HTMLInputElement): void => {
-            this.filterExtensions(input);
+          onClear: (): void => {
+            BrowserSession.unset(this.searchFilterSessionKey);
+            this.filterExtensions('');
           },
         });
       }
@@ -137,22 +137,21 @@ class ExtensionManager {
     });
   }
 
-  private filterExtensions(input: HTMLInputElement): void {
+  private filterExtensions(searchText: string): void {
     const filterableColumns = document.querySelectorAll('[data-filterable]');
     const columnIndices: number[] = [];
     filterableColumns.forEach((element: HTMLTableRowElement): void => {
       const children = Array.from(element.parentElement.children);
       columnIndices.push(children.indexOf(element));
     });
-    const columnQuerySelectors = columnIndices.map((index: number): string => `td:nth-child(${index + 1})`).join(',');
     const rows = document.querySelectorAll('#typo3-extension-list tbody tr');
     rows.forEach((row: HTMLTableRowElement): void => {
-      const columns = row.querySelectorAll(columnQuerySelectors);
+      const columns = columnIndices.map((index: number) => row.children.item(index));
       const values: string[] = [];
       columns.forEach((column: HTMLTableCellElement): void => {
         values.push(column.textContent.trim().replace(/\s+/g, ' '));
       });
-      row.classList.toggle('hidden', input.value !== '' && !RegExp(input.value, 'i').test(values.join(':')));
+      row.classList.toggle('hidden', searchText !== '' && !RegExp(searchText, 'i').test(values.join(':')));
     });
   }
 
