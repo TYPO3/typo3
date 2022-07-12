@@ -46,7 +46,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     return;
                 }
 
-                // These annotations are OK to have, everything else is denied
+                // These annotations are OK to have on class, class property and class method level, everything else is denied
                 $negativeLookaheadMatches = [
                     // Annotation tags
                     'Annotation', 'Attribute', 'Attributes', 'Required', 'Target',
@@ -76,14 +76,23 @@ class NodeVisitor extends NodeVisitorAbstract
                     // static code analysis
                     'template', 'implements', 'extends'
                 ];
+                // allow annotation only on class level
+                if (get_class($node) === Node\Stmt\Class_::class) {
+                    $negativeLookaheadMatches = array_merge(
+                        $negativeLookaheadMatches,
+                        [
+                            // PHPStan
+                            'phpstan-type', 'phpstan-import-type',
+                        ]
+                    );
+                }
 
                 $matches = [];
                 preg_match_all(
-                    '/\*\s@(?!' . implode('|', $negativeLookaheadMatches) . ')(?<annotations>[a-zA-Z0-9\\\\]+)/',
+                    '/\*(\s+)@(?!' . implode('|', $negativeLookaheadMatches) . ')(?<annotations>[a-zA-Z0-9\-\\\\]+)/',
                     $docComment->getText(),
                     $matches
                 );
-
                 if (!empty($matches['annotations'])) {
                     $this->matches[$node->getLine()] = array_map(function ($value) {
                         return '@' . $value;
