@@ -2188,9 +2188,32 @@ class DataHandler implements LoggerAwareInterface
             // Action commands (sorting order and removals of elements) for flexform sections,
             // see FormEngine for the use of this GP parameter
             $actionCMDs = GeneralUtility::_GP('_ACTION_FLEX_FORMdata');
-            if (is_array($actionCMDs[$table][$id][$field]['data'] ?? null)) {
+            $relevantId = $id;
+            if ($status === 'update'
+                && BackendUtility::isTableWorkspaceEnabled($table)
+                && (int)($row['t3ver_wsid'] ?? 0) > 0
+                && (int)($row['t3ver_oid'] ?? 0) > 0
+                && !is_array($actionCMDs[$table][$id][$field] ?? false)
+                && is_array($actionCMDs[$table][(int)$row['t3ver_oid']][$field] ?? false)
+            ) {
+                // Scenario: A record with multiple container sections exists in live. The record has no workspace overlay, yet.
+                // It is then edited in workspaces and sections are resorted or deleted, which should create the version overlay
+                // plus the resorting or deleting of sections in the version overlay record.
+                // FormEngine creates this '_ACTION_FLEX_FORMdata' data array with the uid of the live record, since FormEngine
+                // does not know the uid of the overlay record, yet.
+                // DataHandler first creates the new overlay record via copyRecord_raw(), which calls this method. At this point,
+                // we leave the new version record untouched, sorting and deletions of flex sections are not applied.
+                // DataHandler then calls this method a second time to apply modifications to the just created overlay record. The
+                // incoming $row is now the version row, and $row['uid'] und incoming $id are the versione'd record uid.
+                // The '_ACTION_FLEX_FORMdata' POST data however is still the uid of the live record!
+                // Actions are then not applied since the uid lookups don't match.
+                // To solve this situation we check for this scenario in the above if conditions and use the live version
+                // uid (t3ver_oid) to access data from the '_ACTION_FLEX_FORMdata' array.
+                $relevantId = (int)$row['t3ver_oid'];
+            }
+            if (is_array($actionCMDs[$table][$relevantId][$field]['data'] ?? false)) {
                 $arrValue = GeneralUtility::xml2array($xmlValue);
-                $this->_ACTION_FLEX_FORMdata($arrValue['data'], $actionCMDs[$table][$id][$field]['data']);
+                $this->_ACTION_FLEX_FORMdata($arrValue['data'], $actionCMDs[$table][$relevantId][$field]['data']);
                 $xmlValue = $this->checkValue_flexArray2Xml($arrValue, true);
             }
             // Create the value XML:
