@@ -1,0 +1,12 @@
+//
+// Dropdown
+//
+.dropdown-menu {
+    .dropdown-item {
+        &.disabled,
+        &:disabled {
+            opacity: 0.5;
+            box-shadow: none;
+        }
+    }
+}
