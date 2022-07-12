@@ -81,6 +81,7 @@ class TcaMigration
         $tca = $this->migrateRenderTypeColorpickerToTypeColor($tca);
         $tca = $this->migrateEvalIntAndDouble2ToTypeNumber($tca);
         $tca = $this->removeAlwaysDescription($tca);
+        $tca = $this->removeCtrlCruserId($tca);
 
         return $tca;
     }
@@ -1128,6 +1129,22 @@ class TcaMigration
                 unset($tableDefinition['interface']);
             }
             $this->messages[] = 'The TCA property [\'interface\'][\'always_description\'] of table \'' . $table
+                . '\'  is not evaluated anymore and has therefore been removed. Please adjust your TCA accordingly.';
+        }
+        return $tca;
+    }
+
+    /**
+     * Remove ['ctrl']['cruser_id'].
+     */
+    protected function removeCtrlCruserId(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['ctrl']['cruser_id'])) {
+                continue;
+            }
+            unset($tableDefinition['ctrl']['cruser_id']);
+            $this->messages[] = 'The TCA property [\'ctrl\'][\'cruser_id\'] of table \'' . $table
                 . '\'  is not evaluated anymore and has therefore been removed. Please adjust your TCA accordingly.';
         }
         return $tca;

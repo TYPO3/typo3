@@ -7,7 +7,6 @@ return [
         'default_sortby' => 'username',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'groupName' => 'frontendaccess',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users',
         'delete' => 'deleted',

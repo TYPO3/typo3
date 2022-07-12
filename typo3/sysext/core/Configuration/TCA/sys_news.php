@@ -6,7 +6,6 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'adminOnly' => true,
         'rootLevel' => 1,
         'groupName' => 'backendaccess',

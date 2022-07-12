@@ -7,7 +7,6 @@ return [
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'groupName' => 'system',
         'type' => 'type',
         'default_sortby' => 'crdate',

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleData;
@@ -1071,8 +1070,6 @@ class DatabaseRecordList
                 }
             } elseif ($fCol === 'pid') {
                 $theData[$fCol] = $row[$fCol];
-            } elseif ($fCol !== '' && $fCol === ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? '')) {
-                $theData[$fCol] = $this->getBackendUserInformation((int)$row[$fCol]);
             } elseif ($fCol === '_SELECTOR_') {
                 if ($table !== 'pages' || !$this->showOnlyTranslatedRecords) {
                     // Add checkbox for all tables except the special page translations table
@@ -2074,26 +2071,6 @@ class DatabaseRecordList
             $this->pagePermsCache[$pageId] = new Permission($this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $pageId)));
         }
         return $this->pagePermsCache[$pageId];
-    }
-
-    /**
-     * Helper method around fetching a "cruser_id" information for a record, with a cache, so the same information
-     * does not have to be processed for the same user over and over again.
-     */
-    protected function getBackendUserInformation(int $backendUserId): string
-    {
-        if (!isset($this->backendUserCache[$backendUserId])) {
-            $beUserRecord = BackendUtility::getRecord('be_users', $backendUserId);
-            if (is_array($beUserRecord)) {
-                $avatar = GeneralUtility::makeInstance(Avatar::class);
-                $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
-                $content = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
-            } else {
-                $content = '<strong>&ndash;</strong>';
-            }
-            $this->backendUserCache[$backendUserId] = $content;
-        }
-        return $this->backendUserCache[$backendUserId];
     }
 
     /**

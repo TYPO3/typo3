@@ -1134,7 +1134,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     protected function removeSensitiveLoginDataForLoggingInfo($data, bool $isUserRecord = false)
     {
         if ($isUserRecord && is_array($data)) {
-            $fieldNames = ['uid', 'pid', 'tstamp', 'crdate', 'cruser_id', 'deleted', 'disabled', 'starttime', 'endtime', 'username', 'admin', 'usergroup', 'db_mountpoints', 'file_mountpoints', 'file_permissions', 'workspace_perms', 'lastlogin', 'workspace_id', 'category_perms'];
+            $fieldNames = ['uid', 'pid', 'tstamp', 'crdate', 'deleted', 'disabled', 'starttime', 'endtime', 'username', 'admin', 'usergroup', 'db_mountpoints', 'file_mountpoints', 'file_permissions', 'workspace_perms', 'lastlogin', 'workspace_id', 'category_perms'];
             $data = array_intersect_key($data, array_combine($fieldNames, $fieldNames));
         }
         if (isset($data['uident'])) {

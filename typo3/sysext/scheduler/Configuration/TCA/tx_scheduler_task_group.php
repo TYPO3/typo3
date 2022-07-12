@@ -6,7 +6,6 @@ return [
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'typeicon_classes' => [

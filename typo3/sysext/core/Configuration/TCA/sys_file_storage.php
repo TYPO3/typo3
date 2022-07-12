@@ -6,7 +6,6 @@ return [
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'default_sortby' => 'name',
         'delete' => 'deleted',
         'descriptionColumn' => 'description',

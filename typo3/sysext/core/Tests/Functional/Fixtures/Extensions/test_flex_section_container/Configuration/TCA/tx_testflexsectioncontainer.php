@@ -6,7 +6,6 @@ return [
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'iconfile' => 'EXT:test_flex_section_container/Resources/Public/Icons/Extension.svg',

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Filelist;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -180,12 +179,6 @@ class FileList
 
     protected ?FileSearchDemand $searchDemand = null;
     protected ?FileExtensionFilter $fileExtensionFilter = null;
-
-    /**
-     * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
-     * @var array
-     */
-    protected array $backendUserCache = [];
 
     protected EventDispatcherInterface $eventDispatcher;
 
@@ -739,10 +732,7 @@ class FileList
                         $theData[$field] = '';
                         if ($fileObject->hasProperty($field)) {
                             $concreteTableName = $this->getConcreteTableName($field);
-                            if ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['cruser_id'] ?? '')) {
-                                // Handle cruser_id by adding the avatar along with the username
-                                $theData[$field] = $this->getBackendUserInformation((int)$fileObject->getProperty($field));
-                            } elseif ($field === 'storage') {
+                            if ($field === 'storage') {
                                 // Fetch storage name of the current file
                                 $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$fileObject->getProperty($field));
                                 if ($storage !== null) {
@@ -1364,26 +1354,6 @@ class FileList
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>
             </div>';
-    }
-
-    /**
-     * Helper method around fetching a "cruser_id" information for a record, with a cache, so the same information
-     * does not have to be processed for the same user over and over again.
-     */
-    protected function getBackendUserInformation(int $backendUserId): string
-    {
-        if (!isset($this->backendUserCache[$backendUserId])) {
-            $beUserRecord = BackendUtility::getRecord('be_users', $backendUserId);
-            if (is_array($beUserRecord)) {
-                $avatar = GeneralUtility::makeInstance(Avatar::class);
-                $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
-                $content = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
-            } else {
-                $content = '<strong>&ndash;</strong>';
-            }
-            $this->backendUserCache[$backendUserId] = $content;
-        }
-        return $this->backendUserCache[$backendUserId];
     }
 
     /**

@@ -13,7 +13,6 @@ return [
         ],
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'type' => 'uid_local:type',
         'hideTable' => true,
         'delete' => 'deleted',

@@ -1066,9 +1066,6 @@ class DataHandler implements LoggerAwareInterface
                     if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
                     }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
-                        $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $this->userid;
-                    }
                 } elseif ($this->checkSimilar) {
                     // Removing fields which are equal to the current value:
                     $fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray);
@@ -3870,9 +3867,6 @@ class DataHandler implements LoggerAwareInterface
         // System fields being set:
         if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
-        }
-        if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
-            $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $this->userid;
         }
         if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];

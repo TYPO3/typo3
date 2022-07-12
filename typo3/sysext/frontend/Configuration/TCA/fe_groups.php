@@ -6,7 +6,6 @@ return [
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'default_sortby' => 'title',
         'groupName' => 'frontendaccess',

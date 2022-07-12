@@ -227,27 +227,6 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsCruserid(): void
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'cruser_id' => 'createdby',
-        ];
-        $result = $this->subject->enrich([$this->defaultTable]);
-        $expectedColumn = new Column(
-            '`createdby`',
-            Type::getType('integer'),
-            [
-                'default' => 0,
-                'notnull' => true,
-                'unsigned' => true,
-            ]
-        );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('createdby'));
-    }
-
-    /**
-     * @test
-     */
     public function enrichAddsDeleted(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

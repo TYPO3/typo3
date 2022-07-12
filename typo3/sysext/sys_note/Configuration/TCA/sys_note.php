@@ -5,7 +5,6 @@ return [
         'label' => 'subject',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'delete' => 'deleted',
         'groupName' => 'content',
@@ -81,6 +80,12 @@ return [
                         'disabled' => false,
                     ],
                 ],
+            ],
+        ],
+        // The owner of the note
+        'cruser' => [
+            'config' => [
+                'type' => 'passthrough',
             ],
         ],
     ],

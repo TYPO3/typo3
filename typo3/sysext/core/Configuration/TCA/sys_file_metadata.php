@@ -6,7 +6,6 @@ return [
         'label' => 'file',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'type' => 'file:type',
         'hideTable' => true,
         'rootLevel' => 1,

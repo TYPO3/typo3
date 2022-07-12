@@ -34,7 +34,7 @@
 				<field index="pid" type="integer">0</field>
 				<field index="tstamp" type="integer">1602145286</field>
 				<field index="crdate" type="integer">1602145286</field>
-				<field index="cruser_id" type="integer">1</field>
+				<field index="cruser" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>

@@ -188,7 +188,6 @@ class SlugService implements LoggerAwareInterface
             'pid' => $pid,
             'updatedon' => $date->get('timestamp'),
             'createdon' => $date->get('timestamp'),
-            'createdby' => $this->context->getPropertyFromAspect('backend.user', 'id'),
             'deleted' => 0,
             'disabled' => 0,
             'starttime' => 0,

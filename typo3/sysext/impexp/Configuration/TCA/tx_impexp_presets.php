@@ -7,7 +7,6 @@ return [
         'default_sortby' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'user_uid',
         'typeicon_classes' => [
             'default' => 'actions-cog',
         ],

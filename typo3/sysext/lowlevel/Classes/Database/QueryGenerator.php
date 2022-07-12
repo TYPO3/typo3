@@ -1042,10 +1042,6 @@ class QueryGenerator
                         $fields['type'] = 'relation';
                         $fields['allowed'] = 'pages';
                         break;
-                    case 'cruser_id':
-                        $fields['type'] = 'relation';
-                        $fields['allowed'] = 'be_users';
-                        break;
                     case 'tstamp':
                     case 'crdate':
                         $fields['type'] = 'time';
@@ -1401,9 +1397,6 @@ class QueryGenerator
             if ($GLOBALS['TCA'][$this->table]['ctrl']['crdate'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['crdate'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'] ?? false) {
-                $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'];
-            }
             if ($GLOBALS['TCA'][$this->table]['ctrl']['sortby'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['sortby'];
             }
@@ -1504,10 +1497,6 @@ class QueryGenerator
                         case 'pid':
                             $this->fields[$fieldName]['type'] = 'relation';
                             $this->fields[$fieldName]['allowed'] = 'pages';
-                            break;
-                        case 'cruser_id':
-                            $this->fields[$fieldName]['type'] = 'relation';
-                            $this->fields[$fieldName]['allowed'] = 'be_users';
                             break;
                         case 'tstamp':
                         case 'crdate':

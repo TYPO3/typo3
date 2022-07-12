@@ -231,9 +231,6 @@ class DataMapFactory implements SingletonInterface
         if (isset($controlSection['crdate'])) {
             $dataMap->setCreationDateColumnName($controlSection['crdate']);
         }
-        if (isset($controlSection['cruser_id'])) {
-            $dataMap->setCreatorColumnName($controlSection['cruser_id']);
-        }
         if (isset($controlSection['delete'])) {
             $dataMap->setDeletedFlagColumnName($controlSection['delete']);
         }

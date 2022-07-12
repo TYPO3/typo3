@@ -130,21 +130,6 @@ class DefaultTcaSchema
                 );
             }
 
-            // cruser_id column
-            if (!empty($tableDefinition['ctrl']['cruser_id'])
-                && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['cruser_id'])
-            ) {
-                $tables[$tablePosition]->addColumn(
-                    $this->quote($tableDefinition['ctrl']['cruser_id']),
-                    'integer',
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
-                );
-            }
-
             // deleted column - soft delete
             if (!empty($tableDefinition['ctrl']['delete'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['delete'])
@@ -685,9 +670,6 @@ class DefaultTcaSchema
         }
         if (!empty($tableDefinition['tstamp'])) {
             $prioritizedFieldNames[] = $tableDefinition['tstamp'];
-        }
-        if (!empty($tableDefinition['cruser_id'])) {
-            $prioritizedFieldNames[] = $tableDefinition['cruser_id'];
         }
         if (!empty($tableDefinition['delete'])) {
             $prioritizedFieldNames[] = $tableDefinition['delete'];

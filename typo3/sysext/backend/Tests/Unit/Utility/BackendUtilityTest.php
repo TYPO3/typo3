@@ -1250,7 +1250,6 @@ class BackendUtilityTest extends UnitTestCase
                 'tstamp' => 'updatedon',
                 // Won't be added due to defined in "columns"
                 'crdate' => 'createdon',
-                'cruser_id' => 'createdby',
                 'sortby' => 'sorting',
                 'versioningWS' => true,
             ],
@@ -1277,7 +1276,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
 
         self::assertEquals(
-            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'createdby', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
+            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
             BackendUtility::getAllowedFieldsForTable('myTable', false)
         );
     }

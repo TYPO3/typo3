@@ -749,7 +749,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -774,7 +773,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -803,7 +801,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">64</field>
@@ -828,7 +825,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -853,7 +849,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -878,7 +873,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">64</field>
@@ -893,7 +887,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -908,7 +901,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -923,7 +915,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -952,7 +943,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">512</field>
@@ -977,7 +967,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">64</field>
@@ -1003,7 +992,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -1029,7 +1017,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1055,7 +1042,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">64</field>
@@ -1071,7 +1057,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -1087,7 +1072,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1103,7 +1087,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -1128,7 +1111,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">192</field>
@@ -1153,7 +1135,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1182,7 +1163,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sys_language_uid" type="integer">0</field>
@@ -1217,7 +1197,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sys_language_uid" type="integer">0</field>
@@ -1252,7 +1231,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">1</field>
@@ -1284,7 +1262,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">2</field>
@@ -1312,7 +1289,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">1</field>
@@ -1344,7 +1320,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">2</field>
@@ -1372,7 +1347,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">3</field>
@@ -1400,7 +1374,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">1</field>
@@ -1418,7 +1391,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">2</field>
@@ -1436,7 +1408,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">3</field>
@@ -1454,7 +1425,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">4</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">4</field>
@@ -1472,7 +1442,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1501,7 +1470,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sys_language_uid" type="integer">0</field>
@@ -1546,7 +1514,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sys_language_uid" type="integer">0</field>
@@ -1591,7 +1558,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">128</field>
@@ -1616,7 +1582,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1641,7 +1606,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">1</field>
@@ -1657,7 +1621,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">2</field>
@@ -1673,7 +1636,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1698,7 +1660,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">512</field>
@@ -1723,7 +1684,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sys_language_uid" type="integer">0</field>
@@ -1760,7 +1720,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sys_language_uid" type="integer">0</field>
@@ -1797,7 +1756,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">256</field>
@@ -1822,7 +1780,6 @@
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
 				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
 				<field index="sorting" type="integer">512</field>

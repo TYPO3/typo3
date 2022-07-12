@@ -12,7 +12,6 @@ return [
         'groupName' => 'system',
         'origUid' => 't3_origuid',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         // Only admin, if any
         'adminOnly' => true,

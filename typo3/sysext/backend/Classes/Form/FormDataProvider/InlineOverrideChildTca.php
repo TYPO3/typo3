@@ -51,7 +51,6 @@ class InlineOverrideChildTca implements FormDataProviderInterface
      */
     protected $configurationKeysForNotSettableFields = [
         'crdate',
-        'cruser_id',
         'delete',
         'origUid',
         'transOrigDiffSourceField',

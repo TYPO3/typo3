@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\History;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
@@ -317,6 +318,45 @@ class RecordHistory
         }
 
         return $record;
+    }
+
+    /**
+     * Fetches the history entry for an ADD/creation action for a specific record.
+     */
+    public function getCreationInformationForRecord(string $table, array $record): ?array
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $result = $queryBuilder
+            ->select('*')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, \PDO::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+        return $result ?: null;
+    }
+
+    /**
+     * Fetches the history entry for an ADD/creation action for a list of records
+     * @internal only to be used in TYPO3 Core
+     */
+    public function getCreationInformationForMultipleRecords(string $table, array $recordIds): array
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        return $queryBuilder
+            ->select('*')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->in('recuid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, \PDO::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     /**

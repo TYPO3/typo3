@@ -6,7 +6,6 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'adminOnly' => true,
         'rootLevel' => 1,
         'delete' => 'deleted',
@@ -34,6 +33,12 @@ return [
                         'invertStateDisplay' => true,
                     ],
                 ],
+            ],
+        ],
+        // The owner of the dashboard
+        'cruser_id' => [
+            'config' => [
+                'type' => 'passthrough',
             ],
         ],
         'starttime' => [

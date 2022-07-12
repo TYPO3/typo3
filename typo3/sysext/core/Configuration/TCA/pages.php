@@ -14,7 +14,6 @@ return [
         'crdate' => 'crdate',
         'hideAtCopy' => true,
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
-        'cruser_id' => 'cruser_id',
         'editlock' => 'editlock',
         'useColumnsForDefaultValues' => 'doktype,fe_group,hidden',
         'languageField' => 'sys_language_uid',

@@ -7,7 +7,6 @@ return [
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'adminOnly' => true,
         'rootLevel' => 1,

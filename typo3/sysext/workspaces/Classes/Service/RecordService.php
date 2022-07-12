@@ -15,8 +15,7 @@
 
 namespace TYPO3\CMS\Workspaces\Service;
 
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
@@ -58,38 +57,17 @@ class RecordService implements SingletonInterface
         return $idsPerTable;
     }
 
-    /**
-     * @return array
-     */
-    public function getCreateUserIds()
+    public function getCreateUserIds(): array
     {
         $createUserIds = [];
+        $recordHistory = GeneralUtility::makeInstance(RecordHistory::class);
+
         foreach ($this->getIdsPerTable() as $tableName => $ids) {
-            if (empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
-                continue;
-            }
-            $createUserIdFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'];
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-
-            $records = $queryBuilder
-                ->select($createUserIdFieldName)
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->in(
-                        'uid',
-                        $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                    )
-                )
-                ->groupBy($createUserIdFieldName)
-                ->executeQuery()
-                ->fetchAllAssociative();
-
-            $records = array_column($records, $createUserIdFieldName);
-
-            if (!empty($records)) {
-                $createUserIds = array_merge($createUserIds, $records);
+            $historyRecords = $recordHistory->getCreationInformationForMultipleRecords($tableName, $ids);
+            foreach ($historyRecords as $historyRecord) {
+                if ($historyRecord['actiontype'] === 'BE') {
+                    $createUserIds[] = (int)$historyRecord['userid'];
+                }
             }
         }
         return array_unique($createUserIds);

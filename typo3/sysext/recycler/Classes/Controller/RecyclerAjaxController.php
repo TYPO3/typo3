@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -160,6 +161,7 @@ class RecyclerAjaxController
         $groupedRecords = [];
         $lang = $this->getLanguageService();
 
+        $recordHistory = GeneralUtility::makeInstance(RecordHistory::class);
         foreach ($deletedRowsArray as $table => $rows) {
             $groupedRecords[$table]['information'] = [
                 'table' => $table,
@@ -167,7 +169,9 @@ class RecyclerAjaxController
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
-                $backendUserName = $this->getBackendUserInformation((int)$row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']]);
+                $ownerInformation = $recordHistory->getCreationInformationForRecord($table, $row);
+                $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['actiontype'] === 'BE' ? $ownerInformation['userid'] : 0);
+                $backendUserName = $this->getBackendUserInformation($ownerUid);
                 $userIdWhoDeleted = $this->getUserWhoDeleted($table, (int)$row['uid']);
 
                 $groupedRecords[$table]['records'][] = [
@@ -178,7 +182,7 @@ class RecyclerAjaxController
                     'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
                     'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
                     'owner' => $backendUserName,
-                    'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
+                    'owner_uid' => $ownerUid,
                     'title' => BackendUtility::getRecordTitle($table, $row),
                     'path' => $this->getRecordPath((int)$row['pid']),
                     'delete_user_uid' => $userIdWhoDeleted,
@@ -237,6 +241,7 @@ class RecyclerAjaxController
 
     /**
      * Get the user uid of the user who deleted the record
+     * @todo: move this to RecordHistory class
      */
     protected function getUserWhoDeleted(string $table, int $uid): int
     {

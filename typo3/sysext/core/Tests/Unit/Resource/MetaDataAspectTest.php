@@ -178,7 +178,6 @@ class MetaDataAspectTest extends UnitTestCase
             'pid' => 0,
             'crdate' => 1534530781,
             'tstamp' => 1534530781,
-            'cruser_id' => 0,
             'l10n_diffsource' => '',
             'title' => 'Hooray',
             'uid' => '5',

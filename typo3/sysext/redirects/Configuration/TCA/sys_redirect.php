@@ -7,7 +7,6 @@ return [
         'label_alt' => 'source_path',
         'label_alt_force' => true,
         'crdate' => 'createdon',
-        'cruser_id' => 'createdby',
         'tstamp' => 'updatedon',
         'versioningWS' => false,
         'groupName' => 'system',

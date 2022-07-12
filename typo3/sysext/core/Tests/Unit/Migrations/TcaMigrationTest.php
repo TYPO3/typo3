@@ -3087,4 +3087,26 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function ctrlCruserIdIsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'cruser_id' => 'cruser_id',
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

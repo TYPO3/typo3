@@ -3355,9 +3355,6 @@ class BackendUtility
             if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
                 $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
             }
-            if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
-                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
-            }
             if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
                 $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
             }

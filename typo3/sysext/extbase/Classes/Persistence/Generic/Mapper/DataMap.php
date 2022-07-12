@@ -89,11 +89,6 @@ class DataMap
     /**
      * @var string
      */
-    protected $creatorColumnName;
-
-    /**
-     * @var string
-     */
     protected $deletedFlagColumnName;
 
     /**
@@ -377,26 +372,6 @@ class DataMap
     public function getCreationDateColumnName()
     {
         return $this->creationDateColumnName;
-    }
-
-    /**
-     * Sets the name of a column holding the uid of the back-end user who created this record
-     *
-     * @param string $creatorColumnName The field name
-     */
-    public function setCreatorColumnName($creatorColumnName)
-    {
-        $this->creatorColumnName = $creatorColumnName;
-    }
-
-    /**
-     * Returns the name of a column holding the uid of the back-end user who created this record
-     *
-     * @return string The field name
-     */
-    public function getCreatorColumnName()
-    {
-        return $this->creatorColumnName;
     }
 
     /**

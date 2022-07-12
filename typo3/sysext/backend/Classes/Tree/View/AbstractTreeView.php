@@ -120,7 +120,7 @@ abstract class AbstractTreeView
      * @see addField()
      * @var string
      */
-    public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
+    public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate';
 
     /**
      * If 1, HTML code is also accumulated in ->tree array during rendering of the tree

@@ -1054,7 +1054,6 @@ class InstallerController
                     [
                         'pid' => 0,
                         'crdate' => time(),
-                        'cruser_id' => 1,
                         'tstamp' => time(),
                         'title' => 'Home',
                         'slug' => '/',
@@ -1075,7 +1074,6 @@ class InstallerController
                     [
                         'pid' => $pageUid,
                         'crdate' => time(),
-                        'cruser_id' => 1,
                         'tstamp' => time(),
                         'title' => 'Main TypoScript Rendering',
                         'root' => 1,

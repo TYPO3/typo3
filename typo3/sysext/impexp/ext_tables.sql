@@ -5,6 +5,7 @@ CREATE TABLE tx_impexp_presets (
   title varchar(255) DEFAULT '' NOT NULL,
   public tinyint(3) DEFAULT '0' NOT NULL,
   item_uid int(11) DEFAULT '0' NOT NULL,
+  user_uid int(11) unsigned DEFAULT '0' NOT NULL,
   preset_data blob,
   KEY lookup (item_uid)
 );

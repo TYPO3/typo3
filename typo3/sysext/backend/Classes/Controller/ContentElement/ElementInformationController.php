@@ -24,6 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -375,30 +376,29 @@ class ElementInformationController
                 'value' => BackendUtility::getProcessedValueExtra($this->table, 'uid', $this->row['uid']),
                 'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid')), ':'),
             ];
-            foreach (['crdate' => 'creationDate', 'tstamp' => 'timestamp', 'cruser_id' => 'creationUserId'] as $field => $label) {
+            foreach (['crdate' => 'creationDate', 'tstamp' => 'timestamp'] as $field => $label) {
                 if (isset($GLOBALS['TCA'][$this->table]['ctrl'][$field])) {
-                    if ($field === 'crdate' || $field === 'tstamp') {
-                        $keyLabelPair[$field] = [
-                            'value' => BackendUtility::datetime($this->row[$GLOBALS['TCA'][$this->table]['ctrl'][$field]]),
-                            'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label)), ':'),
-                            'isDatetime' => true,
-                        ];
-                    }
-                    if ($field === 'cruser_id') {
-                        $rowValue = BackendUtility::getProcessedValueExtra($this->table, $GLOBALS['TCA'][$this->table]['ctrl'][$field], $this->row[$GLOBALS['TCA'][$this->table]['ctrl'][$field]]);
-                        if ($rowValue) {
-                            $creatorRecord = BackendUtility::getRecord('be_users', (int)$rowValue);
-                            if ($creatorRecord) {
-                                $avatar = GeneralUtility::makeInstance(Avatar::class);
-                                $creatorRecord['icon'] = $avatar->render($creatorRecord);
-                                $rowValue = $creatorRecord;
-                                $keyLabelPair['creatorRecord'] = [
-                                    'value' => $rowValue,
-                                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label)), ':'),
-                                ];
-                            }
-                        }
-                    }
+                    $keyLabelPair[$field] = [
+                        'value' => BackendUtility::datetime($this->row[$GLOBALS['TCA'][$this->table]['ctrl'][$field]]),
+                        'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label)), ':'),
+                        'isDatetime' => true,
+                    ];
+                }
+            }
+            // Show the user who created the record
+            $recordHistory = GeneralUtility::makeInstance(RecordHistory::class);
+            $ownerInformation = $recordHistory->getCreationInformationForRecord($this->type, $this->row);
+            $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['actiontype'] === 'BE' ? $ownerInformation['userid'] : 0);
+            if ($ownerUid) {
+                $creatorRecord = BackendUtility::getRecord('be_users', $ownerUid);
+                if ($creatorRecord) {
+                    $avatar = GeneralUtility::makeInstance(Avatar::class);
+                    $creatorRecord['icon'] = $avatar->render($creatorRecord);
+                    $rowValue = $creatorRecord;
+                    $keyLabelPair['creatorRecord'] = [
+                        'value' => $rowValue,
+                        'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationUserId')), ':'),
+                    ];
                 }
             }
         }
