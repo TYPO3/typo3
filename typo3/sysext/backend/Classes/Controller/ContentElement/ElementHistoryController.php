@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
-use cogpowered\FineDiff\Diff;
-use cogpowered\FineDiff\Granularity\Character;
-use cogpowered\FineDiff\Granularity\Word;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\History\RecordHistory;
@@ -323,7 +320,7 @@ class ElementHistoryController
                     $singleLine['fieldNames'] = implode(',', $tmpFieldList);
                 } else {
                     // Display diff
-                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename'], $entry['recuid']);
+                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename']);
                 }
             }
             // put line together
@@ -351,17 +348,11 @@ class ElementHistoryController
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
             foreach ($fieldsToDisplay as $fN) {
-                $tcaType = $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '';
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && $tcaType !== 'passthrough') {
+                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && ($GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '') !== 'passthrough') {
                     // Create diff-result:
-                    $granularity = new Word();
-                    if ($tcaType === 'flex') {
-                        $granularity = new Character();
-                    }
-                    $diff = new Diff($granularity);
-                    $diffres = $diff->render(
-                        strip_tags((string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid)),
-                        strip_tags((string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid))
+                    $diffres = $diffUtility->makeDiffDisplay(
+                        (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true),
+                        (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true)
                     );
                     $rollbackUrl = '';
                     if ($rollbackUid && $showRollbackLink) {

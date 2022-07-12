@@ -19,7 +19,6 @@
 		"sort-packages": true
 	},
 	"require": {
-		"lolli42/finediff": "^1.0.1",
 		"typo3/cms-core": "12.0.*@dev"
 	},
 	"conflict": {
