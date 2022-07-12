@@ -104,38 +104,111 @@ Providing custom JS
 There are two ways to add JavaScript for an widget:
 
 RequireJS AMD module
-   Implement :php:class:`RequireJsModuleInterface`::
+    Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
-      class RssWidget implements WidgetInterface, RequireJsModuleInterface
-      {
-          public function getRequireJsModules(): array
-          {
-              return [
-                  'TYPO3/CMS/MyExtension/ModuleName',
-                  'TYPO3/CMS/MyExtension/Module2Name',
-              ];
-          }
-      }
+    .. code-block:: php
+
+        class ExampleChartWidget implements JavaScriptInterface
+        {
+            // ...
+            public function getJavaScriptModuleInstructions(): array
+            {
+                return [
+                    JavaScriptModuleInstruction::forRequireJS(
+                        'TYPO3/CMS/MyExtension/ModuleName'
+                    )->invoke('initialize'),
+                    JavaScriptModuleInstruction::forRequireJS(
+                        'TYPO3/CMS/MyExtension/ModuleName2'
+                    )->invoke('initialize'),
+                ];
+            }
+        }
 
    .. seealso::
 
       :ref:`t3coreapi:requirejs` for more info about RequireJS in TYPO3 Backend.
 
 Plain JS files
-   Implement :php:class:`AdditionalJavaScriptInterface`::
+    Implement :php:class:`AdditionalJavaScriptInterface`:
 
-      class RssWidget implements WidgetInterface, AdditionalJavaScriptInterface
-      {
-          public function getJsFiles(): array
-          {
-              return [
-                  'EXT:my_extension/Resources/Public/JavaScript/file.js',
-                  'EXT:my_extension/Resources/Public/JavaScript/file2.js',
-              ];
-          }
-      }
+    .. code-block:: php
 
-Both ways can also be combined.
+       class RssWidget implements WidgetInterface, AdditionalJavaScriptInterface
+       {
+           public function getJsFiles(): array
+           {
+               return [
+                   'EXT:my_extension/Resources/Public/JavaScript/file.js',
+                   'EXT:my_extension/Resources/Public/JavaScript/file2.js',
+               ];
+           }
+       }
+
+RequireJS
+    Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
+
+    .. code-block:: php
+
+        class ExampleChartWidget implements JavaScriptInterface
+        {
+            // ...
+            public function getJavaScriptModuleInstructions(): array
+            {
+                return [
+                    JavaScriptModuleInstruction::forRequireJS(
+                        'TYPO3/CMS/Dashboard/ChartInitializer'
+                    )->invoke('initialize'),
+                ];
+            }
+        }
+
+All ways can be combined.
+
+Migration from RequireJsModuleInterface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionchanged:: 12.0
+    The :php:`RequireJsModuleInterface` has been deprecated, use
+    :php:`JavaScriptInterface` instead.
+
+Affected widgets have to implement :php:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`
+instead of deprecated :php:`\TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface`.
+Instead of using inline JavaScript for initializing RequireJS modules,
+:php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` have to be declared.
+
+.. code-block:: php
+
+    class ExampleChartWidget implements RequireJsModuleInterface
+    {
+        // ...
+        public function getJavaScriptModuleInstructions(): array
+        {
+            return [
+                'TYPO3/CMS/Dashboard/ChartInitializer' =>
+                    'function(ChartInitializer) { ChartInitializer.initialize(); }',
+            ];
+        }
+    }
+
+Deprecated example widget above would look like the following when using
+`JavaScriptInterface` and `JavaScriptModuleInstruction`:
+
+.. code-block:: php
+
+    class ExampleChartWidget implements JavaScriptInterface
+    {
+        // ...
+        public function getJavaScriptModuleInstructions(): array
+        {
+            return [
+                JavaScriptModuleInstruction::forRequireJS(
+                    'TYPO3/CMS/Dashboard/ChartInitializer'
+                )->invoke('initialize'),
+            ];
+        }
+    }
+
+
 
 Providing custom CSS
 --------------------
