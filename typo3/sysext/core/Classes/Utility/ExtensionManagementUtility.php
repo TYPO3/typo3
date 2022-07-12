@@ -917,9 +917,8 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds a "Function menu module" ('third level module') to an existing function menu for some other backend module
-     * The arguments values are generally determined by which function menu this is supposed to interact with
-     * See Inside TYPO3 for information on how to use this function.
+     * Adds a "Function menu module" ('third level module') to an existing function menu of some other backend module.
+     *
      * FOR USE IN ext_tables.php FILES
      *
      * @param string $modname Module name

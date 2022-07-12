@@ -2282,7 +2282,6 @@ class BackendUtility
 
     /**
      * Returns a selector box "function menu" for a module
-     * See Inside TYPO3 for details about how to use / make Function menus
      *
      * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
@@ -2650,7 +2649,6 @@ class BackendUtility
      * Returns an array which is most backend modules becomes MOD_SETTINGS containing values from function menus etc. determining the function of the module.
      * This is kind of session variable management framework for the backend users.
      * If a key from MOD_MENU is set in the CHANGED_SETTINGS array (eg. a value is passed to the script from the outside), this value is put into the settings-array
-     * Ultimately, see Inside TYPO3 for how to use this function in relation to your modules.
      *
      * @param array $MOD_MENU MOD_MENU is an array that defines the options in menus.
      * @param array $CHANGED_SETTINGS CHANGED_SETTINGS represents the array used when passing values to the script from the menus.

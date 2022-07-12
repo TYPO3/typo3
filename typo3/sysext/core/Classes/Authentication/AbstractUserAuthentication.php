@@ -50,8 +50,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class is used to authenticate a login user.
  * The class is used by both the frontend and backend.
  * In both cases this class is a parent class to BackendUserAuthentication and FrontendUserAuthentication
- *
- * See Inside TYPO3 for more information about the API of the class and internal variables.
  */
 abstract class AbstractUserAuthentication implements LoggerAwareInterface
 {
