@@ -155,14 +155,14 @@ class SqlSrv extends AbstractPlatform
      * Examples:
      *
      * valid:
-     *      _foo
-     *      @foo
-     *      #foo
-     *      _floo1äea
-     *      @foo111111111kemcie_l#@
+     * >    _foo
+     * >    @foo
+     * >    #foo
+     * >    _floo1äea
+     * >    @foo111111111kemcie_l#@
      *
      * not valid:
-     *      @@thisShouldNotBeValid
+     * >    @@thisShouldNotBeValid
      *
      *
      * @param string $databaseName
