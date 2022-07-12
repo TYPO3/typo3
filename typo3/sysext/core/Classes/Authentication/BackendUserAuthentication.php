@@ -593,7 +593,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Returns TRUE if the $value is found in the list in a $this->groupData[] index pointed to by $type (array key).
      * Can thus be users to check for modules, exclude-fields, select/modify permissions for tables etc.
      * If user is admin TRUE is also returned
-     * Please see the document Inside TYPO3 for examples.
      *
      * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules", "available_widgets", "mfa_providers"
      * @param string $value String to search for in the groupData-list
