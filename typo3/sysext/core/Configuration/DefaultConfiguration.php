@@ -261,7 +261,7 @@ return [
         'errorHandlerErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),
         'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
         'belogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),
-        'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend. See 'Inside TYPO3' for more information.
+        'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend.
         'generateApacheHtaccess' => 1,
         'ipAnonymization' => 1,
         'Objects' => [],
@@ -1458,7 +1458,7 @@ return [
         ],
     ],
     'USER' => [],
-    'SC_OPTIONS' => [ // Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
+    'SC_OPTIONS' => [ // Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
         'GLOBAL' => [
             'softRefParser' => [
                 'substitute' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
