@@ -15,14 +15,14 @@ env:
   mysql:
     extensions:
       enabled:
-        - TYPO3\TestingFramework\Core\Acceptance\Extension\InstallMysqlCoreEnvironment
+        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\InstallMysqlCoreEnvironment
 
   postgresql:
     extensions:
       enabled:
-        - TYPO3\TestingFramework\Core\Acceptance\Extension\InstallPostgresqlCoreEnvironment
+        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\InstallPostgresqlCoreEnvironment
 
   sqlite:
     extensions:
       enabled:
-        - TYPO3\TestingFramework\Core\Acceptance\Extension\InstallSqliteCoreEnvironment
+        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\InstallSqliteCoreEnvironment

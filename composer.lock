@@ -8365,12 +8365,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "731ab4c7be7a7ec8211c41ffd63c7dca18fb3669"
+                "reference": "7b78d1a2e4a77eb44f6cc18357b8acea00b381d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/731ab4c7be7a7ec8211c41ffd63c7dca18fb3669",
-                "reference": "731ab4c7be7a7ec8211c41ffd63c7dca18fb3669",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/7b78d1a2e4a77eb44f6cc18357b8acea00b381d8",
+                "reference": "7b78d1a2e4a77eb44f6cc18357b8acea00b381d8",
                 "shasum": ""
             },
             "require": {
@@ -8393,10 +8393,10 @@
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.6.7",
+                "phpstan/phpstan": "^1.8.0",
                 "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "12.*.*@dev",
-                "typo3/coding-standards": "^0.5.0"
+                "typo3/coding-standards": "^0.5.3"
             },
             "default-branch": true,
             "type": "library",
@@ -8434,7 +8434,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-05-23T08:55:02+00:00"
+            "time": "2022-07-12T16:34:44+00:00"
         }
     ],
     "aliases": [],
