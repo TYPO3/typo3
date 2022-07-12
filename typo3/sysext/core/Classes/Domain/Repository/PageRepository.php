@@ -377,8 +377,7 @@ class PageRepository implements LoggerAwareInterface
                 return $this->getRecordOverlay(
                     $table,
                     $row,
-                    $languageAspect->getContentId(),
-                    $languageAspect->getOverlayType() === $languageAspect::OVERLAYS_MIXED ? '1' : 'hideNonTranslated'
+                    $languageAspect
                 );
             }
         } catch (AspectNotFoundException $e) {
@@ -595,13 +594,24 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
-     * @param int $sys_language_content Pointer to the sys_language uid for content on the site.
+     * @param LanguageAspect|int|null $sys_language_content Pointer to the sys_language uid for content on the site.
      * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is NULL)
      * @throws \UnexpectedValueException
      * @return mixed Returns the input record, possibly overlaid with a translation.  But if $OLmode is "hideNonTranslated" then it will return NULL if no translation is found.
      */
-    public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '')
+    public function getRecordOverlay($table, $row, $sys_language_content = null, $OLmode = '')
     {
+        if ($sys_language_content === null) {
+            $sys_language_content = $this->context->getAspect('language');
+        }
+        if ($sys_language_content instanceof LanguageAspect) {
+            // Early return when no overlays are needed
+            if ($sys_language_content->getOverlayType() === $sys_language_content::OVERLAYS_OFF) {
+                return $row;
+            }
+            $OLmode = $sys_language_content->getOverlayType() === $sys_language_content::OVERLAYS_MIXED ? '1' : 'hideNonTranslated';
+            $sys_language_content = $sys_language_content->getContentId();
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {

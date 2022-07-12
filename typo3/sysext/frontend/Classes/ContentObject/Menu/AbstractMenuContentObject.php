@@ -1797,11 +1797,11 @@ abstract class AbstractMenuContentObject
         while ($row = $statement->fetchAssociative()) {
             $this->sys_page->versionOL('tt_content', $row);
             if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
+                $languageAspect = new LanguageAspect($basePageRow['_PAGES_OVERLAY_LANGUAGE'], $basePageRow['_PAGES_OVERLAY_LANGUAGE'], $this->getCurrentLanguageAspect()->getOverlayType());
                 $row = $this->sys_page->getRecordOverlay(
                     'tt_content',
                     $row,
-                    $basePageRow['_PAGES_OVERLAY_LANGUAGE'],
-                    $this->getCurrentLanguageAspect()->getOverlayType() === LanguageAspect::OVERLAYS_MIXED ? '1' : 'hideNonTranslated'
+                    $languageAspect
                 );
             }
             if ($this->mconf['sectionIndex.']['type'] !== 'all') {
