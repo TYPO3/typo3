@@ -1,0 +1,90 @@
+"be_users"
+,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","cruser_id","workspace_perms","deleted","TSconfig","lastlogin","workspace_id","db_mountpoints","usergroup","realName"
+# password of both users is "password"
+,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,0,1,0,,1371033743,0,0,0,"Klaus Admin"
+,2,0,1452944912,"editor","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1452944912,1,1,0,,1452944915,0,1,1,""
+"be_sessions"
+,"ses_id","ses_iplock","ses_userid","ses_tstamp","ses_data"
+# ses_id: hash_hmac('sha256', '886526ce72b86870739cc41991144ec1', sha1('iAmInvalid' . 'core-session-backend'))
+,"9869d429fc72742a476d5073d006d45dfb732962d9c024423efafef537e1c5bd","[DISABLED]",1,1777777777,"",
+,"f4c02f70058e79a8e7b523a266d4291007deacba6b2ca2536dd72d2fbb23696a","[DISABLED]",2,1777777777,"",
+"be_groups"
+,"uid","pid","tstamp","title","tables_modify","crdate","cruser_id","subgroup"
+,1,0,1452959228,"editor-group","pages",1452959228,1,
+,2,0,1452959228,"some test group","pages",1452959228,1,1
+"sys_workspace"
+,"uid","pid","title","deleted"
+,1,0,"Test Workspace",0
+"sys_category"
+,"uid","pid","parent","deleted","title"
+,1,0,0,0,"level-1-1"
+,2,0,1,0,"level-1-1-1"
+,3,0,2,0,"level-1-1-1-1"
+,4,0,2,0,"level-1-1-1-2"
+,5,0,2,0,"level-1-1-1-3"
+,6,0,3,0,"level-1-1-1-1-1"
+,7,0,3,0,"level-1-1-1-1-2"
+,8,0,0,0,"level-1-2"
+,9,0,8,0,"level-1-2-1"
+,10,0,8,0,"level-1-2-2"
+,11,0,7,0,"level-1-2-3"
+,12,0,8,0,"level-1-2-4"
+,13,0,8,0,"level-1-2-5"
+,14,0,8,0,"level-1-2-6"
+,15,0,0,0,"level-1-3"
+"tx_extensionmanager_domain_model_extension"
+,"uid","pid","extension_key","repository","version","alldownloadcounter","downloadcounter","title","description","state","review_state","category","last_updated","serialized_dependencies","author_name","author_email","ownerusername","md5hash","update_comment","authorcompany","integer_version","current_version","lastreviewedversion"
+,1,0,"superext",1,"1.0.0",1,0,"Super extension","Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",2,0,2,1474625908,"a:1:{s:7:&quot;depends&quot;;a:1:{s:5:&quot;typo3&quot;;s:12:&quot;7.6.0-8.9.99&quot;;}}","John Doe","john@doe.com","jdoe","fa061138fc220bdfe5c631ba019f9f84"," Update comment",,1000000,1,0
+,2,0,"neededext",1,"2.0.0",2,0,"Needed Extension","Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",2,0,5,1474977787,"a:1:{s:7:&quot;depends&quot;;a:3:{s:5:&quot;typo3&quot;;s:13:&quot;6.2.0-8.4.999&quot;;s:3:&quot;php&quot;;s:13:&quot;5.4.0-7.0.999&quot;;s:9:&quot;scheduler&quot;;s:13:&quot;6.2.0-8.4.999&quot;;}}","Dmitry Dulepov","dmitry.dulepov@gmail.com","dmitry","b28075aa867d17cc97c7acfe187a71d1","no comment",,2000000,1,0
+"pages"
+,"uid","pid","title","doktype","deleted","is_siteroot","perms_everybody"
+,1,0,"Root",1,0,1,15
+,2,1,"Dummy 1-2",1,0,0,15
+,3,1,"Dummy 1-3",1,0,0,15
+,4,1,"Dummy 1-4",1,0,0,15
+,5,4,"Dummy 1-4-5",1,0,0,15
+,6,4,"Dummy 6",1,0,0,15
+,7,1,"Dummy 1-7",1,0,0,0
+,8,1,"Dummy 1-8",1,0,0,0
+,9,1,"Dummy 1-9",1,0,0,0
+,10,1,"Dummy 1-10",1,0,0,0
+,11,10,"Dummy 1-10-11",1,0,0,0
+,12,10,"Dummy 1-10-12",1,0,0,0
+,13,10,"Dummy 1-10-13",1,0,0,0
+,14,1,"Dummy 1-14",1,0,0,0
+,15,1,"Dummy 1-15",1,0,0,0
+,16,1,"Dummy 1-16",1,0,0,0
+,17,1,"Dummy 1-17",1,0,0,0
+,18,1,"Dummy 1-18",1,0,0,0
+,19,1,"Dummy 1-19",1,0,0,0
+,20,1,"Dummy 1-20",1,0,0,0
+,21,1,"Dummy 1-21",1,0,0,0
+,22,1,"Dummy 1-22",1,0,0,0
+,23,1,"Dummy 1-23",1,0,0,0
+,24,1,"Dummy 1-24",1,0,0,0
+,25,1,"Dummy 1-25",1,0,0,0
+,26,1,"Dummy 1-26",1,0,0,0
+,27,1,"Dummy 1-27",1,0,0,0
+,28,1,"Dummy 1-28",1,0,0,0
+,29,1,"Dummy 1-29",1,0,0,0
+,30,1,"Dummy 1-30",1,0,0,0
+,31,1,"Dummy 1-31",1,0,0,0
+,32,1,"Dummy 1-32",1,0,0,0
+,33,1,"Dummy 1-33",1,0,0,0
+,34,1,"Dummy 1-34",1,0,0,0
+,35,1,"Dummy 1-35",1,0,0,0
+,36,1,"Dummy 1-36",1,0,0,0
+,37,1,"Dummy 1-37",1,0,0,0
+,38,1,"Dummy 1-38",1,0,0,0
+,39,1,"Dummy 1-39",1,0,0,0
+,40,1,"Dummy 1-40",1,0,0,0
+,41,1,"Dummy 1-41",1,0,0,0
+,42,1,"Dummy 1-42",1,0,0,0
+,43,1,"Dummy 1-43",1,0,0,0
+,44,1,"Dummy 1-44",1,0,0,0
+,45,1,"Dummy 1-45",1,0,0,0
+,46,1,"Dummy 1-46",1,0,0,0
+,47,1,"Dummy 1-47",1,0,0,0
+,48,1,"Dummy 1-48",1,0,0,0
+,49,1,"Dummy 1-49",1,0,0,0
+,50,1,"Dummy 1-50",1,0,0,0
