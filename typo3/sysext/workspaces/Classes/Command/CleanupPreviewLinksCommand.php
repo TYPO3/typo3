@@ -75,6 +75,6 @@ class CleanupPreviewLinksCommand extends Command
         } else {
             $io->note('No expired preview links found. All done.');
         }
-        return 0;
+        return Command::SUCCESS;
     }
 }

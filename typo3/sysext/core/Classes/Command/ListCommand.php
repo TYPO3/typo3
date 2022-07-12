@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Command;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\ListCommand as SymfonyListCommand;
 use Symfony\Component\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,6 +65,6 @@ class ListCommand extends SymfonyListCommand
             'namespace' => $input->getArgument('namespace'),
         ]);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

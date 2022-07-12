@@ -185,7 +185,7 @@ If you want to get more detailed information, use the --verbose option.')
         } else {
             $io->success('Nothing to do, no missing relations found. Everything is in place.');
         }
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

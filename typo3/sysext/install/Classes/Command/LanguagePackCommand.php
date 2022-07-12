@@ -96,7 +96,7 @@ class LanguagePackCommand extends Command
         $isos = (array)$input->getArgument('locales');
         $skipExtensions = (array)$input->getOption('skip-extension');
         $failOnWarnings = (bool)$input->getOption('fail-on-warnings');
-        $status = 0;
+        $status = Command::SUCCESS;
 
         // Condition for the scheduler command, e.g. "de fr pt"
         if (count($isos) === 1 && str_contains($isos[0], ' ')) {
@@ -144,7 +144,7 @@ class LanguagePackCommand extends Command
 
                 // Fail only if --fail-on-warnings is set and a language pack was not found.
                 if ($failOnWarnings && $result === 'failed') {
-                    $status = 1;
+                    $status = Command::FAILURE;
                 }
 
                 $progressBar->advance();

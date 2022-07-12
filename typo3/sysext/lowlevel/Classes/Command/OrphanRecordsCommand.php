@@ -143,7 +143,7 @@ Manual repair suggestions:
         } else {
             $io->success('No orphan records found.');
         }
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

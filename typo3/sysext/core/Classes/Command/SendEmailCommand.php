@@ -75,11 +75,11 @@ class SendEmailCommand extends Command
             }
             $sent = $transport->flushQueue($mailer->getRealTransport());
             $io->comment($sent . ' emails sent');
-            return 0;
+            return Command::SUCCESS;
         }
         $io->error('The Mailer Transport is not set to "spool".');
 
-        return 1;
+        return Command::FAILURE;
     }
 
     /**

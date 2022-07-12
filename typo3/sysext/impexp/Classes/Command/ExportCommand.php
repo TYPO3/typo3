@@ -199,14 +199,14 @@ class ExportCommand extends Command
             $this->export->process();
             $saveFile = $this->export->saveToFile();
             $io->success('Exporting to ' . $saveFile->getPublicUrl() . ' succeeded.');
-            return 0;
+            return Command::SUCCESS;
         } catch (\Exception $e) {
             $saveFolder = $this->export->getOrCreateDefaultImportExportFolder();
             $io->error('Exporting to ' . $saveFolder->getPublicUrl() . ' failed.');
             if ($io->isVerbose()) {
                 $io->writeln($e->getMessage());
             }
-            return 1;
+            return Command::FAILURE;
         }
     }
 }

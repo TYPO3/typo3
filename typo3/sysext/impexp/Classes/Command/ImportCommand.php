@@ -126,7 +126,7 @@ class ImportCommand extends Command
             $this->import->checkImportPrerequisites();
             $this->import->importData();
             $io->success('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pid') . ' succeeded.');
-            return 0;
+            return Command::SUCCESS;
         } catch (\Exception $e) {
             // Since impexp triggers core and DataHandler with potential hooks, and exception could come from "everywhere".
             $io->error('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pid') . ' failed.');
@@ -134,7 +134,7 @@ class ImportCommand extends Command
                 $io->writeln($e->getMessage());
                 $io->writeln($this->import->getErrorLog());
             }
-            return 1;
+            return Command::FAILURE;
         }
     }
 

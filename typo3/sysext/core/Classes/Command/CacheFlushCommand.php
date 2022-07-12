@@ -67,7 +67,7 @@ class CacheFlushCommand extends Command
         $this->flushLegacyDatabaseCacheTables($group);
         $this->flushDependencyInjectionCaches($group);
         if ($group === 'di') {
-            return 0;
+            return Command::SUCCESS;
         }
 
         $container = $this->bootService->getContainer(true);
@@ -83,10 +83,10 @@ class CacheFlushCommand extends Command
         $eventDispatcher->dispatch($event);
 
         if (count($event->getErrors()) > 0) {
-            return 1;
+            return Command::FAILURE;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function flushDependencyInjectionCaches(string $group): void

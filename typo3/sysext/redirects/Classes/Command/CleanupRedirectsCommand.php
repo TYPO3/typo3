@@ -89,6 +89,6 @@ class CleanupRedirectsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->redirectRepository->removeByDemand(Demand::fromCommandInput($input));
-        return 0;
+        return Command::SUCCESS;
     }
 }

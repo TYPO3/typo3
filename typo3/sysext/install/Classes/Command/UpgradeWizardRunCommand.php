@@ -112,7 +112,7 @@ class UpgradeWizardRunCommand extends Command
         $this->input = $input;
         $this->bootstrap();
 
-        $result = 0;
+        $result = Command::SUCCESS;
         if ($input->getArgument('wizardName')) {
             $wizardToExecute = $input->getArgument('wizardName');
             $wizardToExecute = is_string($wizardToExecute) ? $wizardToExecute : '';
@@ -124,12 +124,12 @@ class UpgradeWizardRunCommand extends Command
                     if ($prerequisitesFulfilled === true) {
                         $result = $this->runSingleWizard($upgradeWizard);
                     } else {
-                        $result = 1;
+                        $result = Command::FAILURE;
                     }
                 }
             } else {
                 $this->output->error('No such wizard: ' . $wizardToExecute);
-                $result = 1;
+                $result = Command::FAILURE;
             }
         } else {
             $result = $this->runAllWizards();
@@ -246,7 +246,7 @@ class UpgradeWizardRunCommand extends Command
             if (!$helper->ask($this->input, $this->output, $question)) {
                 if ($confirmation->isRequired()) {
                     $this->output->error('You have to acknowledge this wizard to continue');
-                    return 1;
+                    return Command::FAILURE;
                 }
                 if ($instance instanceof RepeatableInterface) {
                     $this->output->note('No changes applied.');
@@ -254,7 +254,7 @@ class UpgradeWizardRunCommand extends Command
                     $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
                     $this->output->note('No changes applied, marking wizard as done.');
                 }
-                return 0;
+                return Command::SUCCESS;
             }
         }
         if ($instance->executeUpdate()) {
@@ -262,10 +262,10 @@ class UpgradeWizardRunCommand extends Command
             if (!$instance instanceof RepeatableInterface) {
                 $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
             }
-            return 0;
+            return Command::SUCCESS;
         }
         $this->output->error('<error>Something went wrong while running ' . $instance->getTitle() . '</error>');
-        return 1;
+        return Command::FAILURE;
     }
 
     /**
@@ -275,7 +275,7 @@ class UpgradeWizardRunCommand extends Command
      */
     public function runAllWizards(): int
     {
-        $returnCode = 0;
+        $returnCode = Command::SUCCESS;
         $wizardInstances = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $class) {
             $wizardInstances[] = $this->getWizard($class, $identifier);
@@ -284,14 +284,14 @@ class UpgradeWizardRunCommand extends Command
         if (count($wizardInstances) > 0) {
             $prerequisitesResult = $this->handlePrerequisites($wizardInstances);
             if ($prerequisitesResult === false) {
-                $returnCode = 1;
+                $returnCode = Command::FAILURE;
                 $this->output->error('Error handling prerequisites, aborting.');
             } else {
                 $this->output->title('Found ' . count($wizardInstances) . ' wizard(s) to run.');
                 foreach ($wizardInstances as $wizardInstance) {
                     $result = $this->runSingleWizard($wizardInstance);
                     if ($result > 0) {
-                        $returnCode = 1;
+                        $returnCode = Command::FAILURE;
                     }
                 }
             }

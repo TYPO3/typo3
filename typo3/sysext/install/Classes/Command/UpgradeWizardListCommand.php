@@ -104,7 +104,6 @@ class UpgradeWizardListCommand extends Command
         $this->input = $input;
         $this->bootstrap();
 
-        $result = 0;
         $wizards = [];
         $all = $input->getOption('all');
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $wizardToExecute) {
@@ -130,7 +129,7 @@ class UpgradeWizardListCommand extends Command
                 $this->output->table(['Identifier', 'Title', 'Description'], $wizards);
             }
         }
-        return $result;
+        return Command::SUCCESS;
     }
 
     /**

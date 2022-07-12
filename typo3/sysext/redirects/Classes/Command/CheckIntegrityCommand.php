@@ -75,6 +75,6 @@ class CheckIntegrityCommand extends Command
             ));
         }
         $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY, $list);
-        return 0;
+        return Command::SUCCESS;
     }
 }

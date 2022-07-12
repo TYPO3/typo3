@@ -80,19 +80,19 @@ class ResetPasswordCommand extends Command
         $email = is_string($email) ? $email : '';
         if (!GeneralUtility::validEmail($email)) {
             $io->error('The given email "' . $email . '" is not a valid email address.');
-            return 1;
+            return Command::FAILURE;
         }
         $backendUrl = $input->getArgument('backendurl');
         $backendUrl = is_string($backendUrl) ? $backendUrl : '';
         if (!GeneralUtility::isValidUrl($backendUrl)) {
             $io->error('The given backend URL "' . $backendUrl . '" is not a valid URL.');
-            return 1;
+            return Command::FAILURE;
         }
         $request = $this->createFakeWebRequest($backendUrl);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->passwordReset->initiateReset($request, $this->context, $email);
         $io->success('Password reset for email address "' . $email . '" initiated.');
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

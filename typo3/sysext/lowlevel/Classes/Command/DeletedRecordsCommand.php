@@ -126,7 +126,7 @@ class DeletedRecordsCommand extends Command
         $this->deleteRecords($deletedRecords, $dryRun, $io);
 
         $io->success('All done!');
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

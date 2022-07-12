@@ -116,7 +116,7 @@ class ListSysLogCommand extends Command
             $content[] = $result;
         }
         $io->table($tableHeaders, $content);
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

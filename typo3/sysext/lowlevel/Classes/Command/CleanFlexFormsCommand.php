@@ -122,7 +122,7 @@ class CleanFlexFormsCommand extends Command
         } else {
             $io->success('Nothing to do - You\'re all set!');
         }
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

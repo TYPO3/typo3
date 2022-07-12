@@ -100,10 +100,10 @@ class SetupExtensionsCommand extends Command
         }
         if (empty($extensionKeysToSetUp)) {
             $io->error('Given extensions "' . implode(', ', $extensionKeys) . '" not found in the system.');
-            return 1;
+            return Command::FAILURE;
         }
         $io->success('Extension(s) "' . implode(', ', $extensionKeysToSetUp) . '" successfully set up.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

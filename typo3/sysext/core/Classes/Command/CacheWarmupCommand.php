@@ -75,7 +75,7 @@ class CacheWarmupCommand extends Command
         if ($group === 'di' || $group === 'system' || $group === 'all') {
             $this->containerBuilder->warmupCache($this->packageManager, $this->dependencyInjectionCache);
             if ($group === 'di') {
-                return 0;
+                return Command::SUCCESS;
             }
         }
 
@@ -105,9 +105,9 @@ class CacheWarmupCommand extends Command
         $eventDispatcher->dispatch($event);
 
         if (count($event->getErrors()) > 0) {
-            return 1;
+            return Command::FAILURE;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

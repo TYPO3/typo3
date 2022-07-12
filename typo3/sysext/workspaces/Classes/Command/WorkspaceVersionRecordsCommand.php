@@ -234,7 +234,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 break;
         }
         $io->success('All done!');
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

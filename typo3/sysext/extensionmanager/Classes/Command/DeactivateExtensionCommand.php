@@ -75,6 +75,6 @@ class DeactivateExtensionCommand extends Command
         $this->installUtility->uninstall($extensionKey);
 
         $io->success('Deactivated extension "' . $extensionKey . '" successfully.');
-        return 0;
+        return Command::SUCCESS;
     }
 }

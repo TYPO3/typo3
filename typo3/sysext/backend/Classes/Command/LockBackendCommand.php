@@ -67,7 +67,7 @@ class LockBackendCommand extends Command
         }
         GeneralUtility::writeFile($lockFile, $lockFileContent);
         $io->success($output);
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

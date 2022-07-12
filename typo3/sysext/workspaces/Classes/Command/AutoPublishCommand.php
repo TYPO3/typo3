@@ -98,7 +98,7 @@ class AutoPublishCommand extends Command
         } else {
             $io->note('Nothing to do.');
         }
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

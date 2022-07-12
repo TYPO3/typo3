@@ -123,7 +123,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
         $this->forceExecution = (bool)$input->getOption('force');
         $this->stopTasks = $this->shouldStopTasks((bool)$input->getOption('stop'));
         $this->loopTasks();
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

@@ -94,6 +94,6 @@ class ActivateExtensionCommand extends Command
         $this->installUtility->install($extensionKey);
 
         $io->success('Activated extension ' . $extensionKey . ' successfully.');
-        return 0;
+        return Command::SUCCESS;
     }
 }
