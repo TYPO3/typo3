@@ -730,10 +730,10 @@
     "@typescript-eslint/types" "5.30.5"
     eslint-visitor-keys "^3.3.0"
 
-"@typo3/icons@^3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-3.1.2.tgz#e537ba7d6603ff0718dcfb0541599b3a0061fef9"
-  integrity sha512-MfY4w30f950jRuO3ZG73LRaoYzX5F3s/WHpA4uaw4m+TO3RTkMfgOuSYBxoB30xTr5N0Rx1pCYNrrGJRGY43DA==
+"@typo3/icons@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-3.2.0.tgz#d9dcd1233cc188a12ce479fbc3d7d22e9a545dd6"
+  integrity sha512-zvuGLpDQ6HI3rCyqMw4GVYMYSfFQ7ys1ggqGxATVy8fasEUoxXV+D/pyeqmJuOph8APMTTie7h4sxbL8uynMOw==
 
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
