@@ -1,0 +1,52 @@
+"pages"
+,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title"
+,1,0,256,0,0,0,0,0,0,"FunctionalTest"
+,88,1,256,0,0,0,0,0,0,"DataHandlerTest"
+,89,88,256,0,0,0,0,0,0,"Relations"
+,90,88,512,0,0,0,0,0,0,"Target"
+"sys_workspace"
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage"
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","parenttable","notification_defaults","allow_notificaton_settings"
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,"sys_workspace",0,0
+"tx_testflexsectioncontainer"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","flex_1"
+,1,89,256,0,0,0,0,0,0,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+   <data>
+       <sheet index=""sSection"">
+           <language index=""lDEF"">
+               <field index=""section_1"">
+                   <el index=""el"">
+                       <field index=""62cd3f446f5bc303148445"">
+                           <value index=""container_1"">
+                               <el>
+                                   <field index=""input_1"">
+                                       <value index=""vDEF"">section element 1</value>
+                                   </field>
+                               </el>
+                           </value>
+                           <value index=""_TOGGLE"">0</value>
+                       </field>
+                       <field index=""62cd3f480ef5e265844192"">
+                           <value index=""container_1"">
+                               <el>
+                                   <field index=""input_1"">
+                                       <value index=""vDEF"">section element 2</value>
+                                   </field>
+                               </el>
+                           </value>
+                           <value index=""_TOGGLE"">0</value>
+                       </field>
+                   </el>
+               </field>
+           </language>
+       </sheet>
+   </data>
+</T3FlexForms>"
+"sys_refindex"
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"
+,"25426f92d44dd2ccf416108462b446e3","sys_workspace",1,"custom_stages",,,,0,0,"sys_workspace_stage",1,""
+,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,""
