@@ -24,10 +24,12 @@ use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -211,6 +213,10 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             'items' => $expectedItems,
         ];
 
+        $eventDispatcher = new MockEventDispatcher();
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
+
         (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
@@ -389,6 +395,10 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $eventDispatcher = new MockEventDispatcher();
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
 
         (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);

@@ -17,7 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\FlexForm;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
+use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
+use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
+use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
@@ -34,6 +39,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Contains functions for manipulating flex form data
+ *
+ * The data structure identifier (array) has several commonly used
+ * elements (keys), but is generally undefined. Users of this system
+ * should be extra careful of what array keys are defined or not.
+ *
+ * Recommended keys include:
+ *  - type
+ *  - tableName
+ *  - fieldName
+ *  - dataStructureKey
  */
 class FlexFormTools
 {
@@ -78,6 +93,12 @@ class FlexFormTools
      */
     public $cleanFlexFormXML = [];
 
+    public function __construct(
+        private ?EventDispatcherInterface $eventDispatcher = null,
+    ) {
+        $this->eventDispatcher ??= GeneralUtility::makeInstance(EventDispatcherInterface::class);
+    }
+
     /**
      * The method locates a specific data structure from given TCA and row combination
      * and returns an identifier string that can be handed around, and can be resolved
@@ -95,7 +116,7 @@ class FlexFormTools
      * This method is "paired" with method getFlexFormDataStructureByIdentifier() that
      * will resolve the returned syntax again and returns the data structure itself.
      *
-     * Both methods can be extended via hooks to return and accept additional
+     * Both methods can be extended via events to return and accept additional
      * identifier strings if needed, and to transmit further information within the identifier strings.
      *
      * Note that the TCA for data structure definitions MUST NOT be overridden by
@@ -108,7 +129,7 @@ class FlexFormTools
      * @param string $tableName The table name of the TCA field
      * @param string $fieldName The field name
      * @param array $row The data row
-     * @return string Identifier string
+     * @return string Identifier JSON string
      * @throws \RuntimeException If TCA is misconfigured
      * @throws InvalidParentRowException in getDataStructureIdentifierFromRecord
      * @throws InvalidParentRowLoopException in getDataStructureIdentifierFromRecord
@@ -118,105 +139,55 @@ class FlexFormTools
      */
     public function getDataStructureIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): string
     {
-        $dataStructureIdentifier = null;
-        // Hook to inject an own logic to point to a data structure elsewhere.
-        // A hook has to implement method getDataStructureIdentifierPreProcess() to be called here.
-        // All hooks are called in a row, each MUST return an array, and the FIRST one that
-        // returns a non-empty array is used as final identifier.
-        // It is important to restrict hooks as much as possible to give other hooks a chance to kick in.
-        // The returned identifier is later given to parseFlexFormDataStructureByIdentifier() and a hook in there MUST
-        // be used to handle this identifier again.
-        // Warning: If adding source record details like the uid or pid here, this may turn out to be fragile.
-        // Be sure to test scenarios like workspaces and data handler copy/move well, additionally, this may
-        // break in between different core versions.
-        // It is probably a good idea to return at least something like [ 'type' => 'myExtension', ... ], see
-        // the core internal 'tca' and 'record' return values below
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])) {
-            $hookClasses = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'];
-            foreach ($hookClasses as $hookClass) {
-                $hookInstance = GeneralUtility::makeInstance($hookClass);
-                if (method_exists($hookClass, 'getDataStructureIdentifierPreProcess')) {
-                    $dataStructureIdentifier = $hookInstance->getDataStructureIdentifierPreProcess(
-                        $fieldTca,
-                        $tableName,
-                        $fieldName,
-                        $row
-                    );
-                    if (!is_array($dataStructureIdentifier)) {
-                        throw new \RuntimeException(
-                            'Hook class ' . $hookClass . ' method getDataStructureIdentifierPreProcess must return an array',
-                            1478096535
-                        );
-                    }
-                    if (!empty($dataStructureIdentifier)) {
-                        // Early break at first hook that returned something!
-                        break;
-                    }
-                }
-            }
+        $dataStructureIdentifier = $this->eventDispatcher
+            ->dispatch(new BeforeFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row))
+            ->getIdentifier() ?? $this->getDefaultIdentifier($fieldTca, $tableName, $fieldName, $row);
+
+        $dataStructureIdentifier = $this->eventDispatcher
+            ->dispatch(new AfterFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row, $dataStructureIdentifier))
+            ->getIdentifier();
+
+        return json_encode($dataStructureIdentifier, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Returns the default data structure identifier.
+     *
+     * @param array $fieldTca Full TCA of the field in question that has type=flex set
+     * @param string $tableName The table name of the TCA field
+     * @param string $fieldName The field name
+     * @param array $row The data row
+     */
+    protected function getDefaultIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): array
+    {
+        $tcaDataStructureArray = $fieldTca['config']['ds'] ?? null;
+        $tcaDataStructurePointerField = $fieldTca['config']['ds_pointerField'] ?? null;
+        if (!is_array($tcaDataStructureArray) && $tcaDataStructurePointerField) {
+            // "ds" is not an array, but "ds_pointerField" is set -> data structure is found in different table
+            $dataStructureIdentifier = $this->getDataStructureIdentifierFromRecord(
+                $fieldTca,
+                $tableName,
+                $fieldName,
+                $row
+            );
+        } elseif (is_array($tcaDataStructureArray)) {
+            $dataStructureIdentifier = $this->getDataStructureIdentifierFromTcaArray(
+                $fieldTca,
+                $tableName,
+                $fieldName,
+                $row
+            );
+        } else {
+            throw new \RuntimeException(
+                'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
+                . ' The field is configured as type="flex" and no "ds_pointerField" is defined and "ds" is not an array.'
+                . ' Either configure a default data structure in [\'ds\'][\'default\'] or add a "ds_pointerField" lookup mechanism'
+                . ' that specifies the data structure',
+                1463826960
+            );
         }
 
-        // If hooks didn't return something, kick in core logic
-        if (empty($dataStructureIdentifier)) {
-            $tcaDataStructureArray = $fieldTca['config']['ds'] ?? null;
-            $tcaDataStructurePointerField = $fieldTca['config']['ds_pointerField'] ?? null;
-            if (!is_array($tcaDataStructureArray) && $tcaDataStructurePointerField) {
-                // "ds" is not an array, but "ds_pointerField" is set -> data structure is found in different table
-                $dataStructureIdentifier = $this->getDataStructureIdentifierFromRecord(
-                    $fieldTca,
-                    $tableName,
-                    $fieldName,
-                    $row
-                );
-            } elseif (is_array($tcaDataStructureArray)) {
-                $dataStructureIdentifier = $this->getDataStructureIdentifierFromTcaArray(
-                    $fieldTca,
-                    $tableName,
-                    $fieldName,
-                    $row
-                );
-            } else {
-                throw new \RuntimeException(
-                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
-                    . ' The field is configured as type="flex" and no "ds_pointerField" is defined and "ds" is not an array.'
-                    . ' Either configure a default data structure in [\'ds\'][\'default\'] or add a "ds_pointerField" lookup mechanism'
-                    . ' that specifies the data structure',
-                    1463826960
-                );
-            }
-        }
-
-        // Second hook to manipulate identifier again. This can be used to add additional data to
-        // identifiers. Be careful here, especially if stuff from the source record like uid or pid
-        // is added! This may easily lead to issues with data handler details like copy or move records,
-        // localization and version overlays. Test this very well!
-        // Multiple hooks may add information to the same identifier here - take care to namespace array keys.
-        // Information added here can be later used in parseDataStructureByIdentifier post process hook again.
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])) {
-            $hookClasses = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'];
-            foreach ($hookClasses as $hookClass) {
-                $hookInstance = GeneralUtility::makeInstance($hookClass);
-                if (method_exists($hookClass, 'getDataStructureIdentifierPostProcess')) {
-                    $dataStructureIdentifier = $hookInstance->getDataStructureIdentifierPostProcess(
-                        $fieldTca,
-                        $tableName,
-                        $fieldName,
-                        $row,
-                        $dataStructureIdentifier
-                    );
-                    if (!is_array($dataStructureIdentifier) || empty($dataStructureIdentifier)) {
-                        throw new \RuntimeException(
-                            'Hook class ' . $hookClass . ' method getDataStructureIdentifierPostProcess must return a non empty array',
-                            1478350835
-                        );
-                    }
-                }
-            }
-        }
-
-        return json_encode($dataStructureIdentifier);
+        return $dataStructureIdentifier;
     }
 
     /**
@@ -571,7 +542,7 @@ class FlexFormTools
      *
      * Read the unit tests for nasty details.
      *
-     * @param string $identifier String to find the data structure location
+     * @param string $identifier JSON string to find the data structure location
      * @return array Parsed and normalized data structure
      * @throws InvalidIdentifierException
      */
@@ -587,9 +558,9 @@ class FlexFormTools
             );
         }
 
-        $identifier = json_decode($identifier, true);
+        $parsedIdentifier = json_decode($identifier, true);
 
-        if (!is_array($identifier) || empty($identifier)) {
+        if (!is_array($parsedIdentifier) || $parsedIdentifier === []) {
             // If there is some identifier and it can't be decoded, programming error -> not catchable
             throw new \RuntimeException(
                 'Identifier could not be decoded to an array.',
@@ -597,104 +568,39 @@ class FlexFormTools
             );
         }
 
-        $dataStructure = '';
+        $dataStructure = $this->eventDispatcher
+            ->dispatch(new BeforeFlexFormDataStructureParsedEvent($parsedIdentifier))
+            ->getDataStructure() ?? $this->getDefaultStructureForIdentifier($parsedIdentifier);
 
-        // Hook to fetch data structure by given identifier.
-        // Method parseFlexFormDataStructureByIdentifier() must be implemented and returns either an
-        // empty string "not my business", or a string with the resolved data structure string, or FILE: reference,
-        // or a fully parsed data structure as array.
-        // Result of the FIRST hook that gives a non-empty string is used, namespace your identifiers in
-        // a way that there is little chance they overlap (eg. prefix with extension name).
-        // If implemented, this hook should be paired with a hook in getDataStructureIdentifier() above.
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'] ?? [] as $hookClass) {
-            $hookInstance = GeneralUtility::makeInstance($hookClass);
-            if (method_exists($hookClass, 'parseDataStructureByIdentifierPreProcess')) {
-                $dataStructure = $hookInstance->parseDataStructureByIdentifierPreProcess($identifier);
-                if (!is_string($dataStructure) && !is_array($dataStructure)) {
-                    // Programming error -> not catchable
-                    throw new \RuntimeException(
-                        'Hook class ' . $hookClass . ' method parseDataStructureByIdentifierPreProcess must either'
-                        . ' return an empty string or a data structure string or a parsed data structure array.',
-                        1478168512
-                    );
-                }
-                if (!empty($dataStructure)) {
-                    // Early break if a hook resolved to something!
-                    break;
-                }
-            }
+        $dataStructure = $this->convertDataStructureToArray($dataStructure);
+        $dataStructure = $this->ensureDefaultSheet($dataStructure);
+        $dataStructure = $this->resolveFileDirectives($dataStructure);
+
+        return $this->eventDispatcher
+            ->dispatch(new AfterFlexFormDataStructureParsedEvent($dataStructure, $parsedIdentifier))
+            ->getDataStructure();
+    }
+
+    protected function convertDataStructureToArray(string|array $dataStructure): array
+    {
+        if (is_array($dataStructure)) {
+            return $dataStructure;
         }
 
-        // If hooks didn't resolve, try own methods
-        if (empty($dataStructure)) {
-            if ($identifier['type'] === 'record') {
-                // Handle "record" type, see getDataStructureIdentifierFromRecord()
-                if (empty($identifier['tableName']) || empty($identifier['uid']) || empty($identifier['fieldName'])) {
-                    throw new \RuntimeException(
-                        'Incomplete "record" based identifier: ' . json_encode($identifier),
-                        1478113873
-                    );
-                }
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($identifier['tableName']);
-                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $dataStructure = $queryBuilder
-                    ->select($identifier['fieldName'])
-                    ->from($identifier['tableName'])
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($identifier['uid'], \PDO::PARAM_INT)
-                        )
-                    )
-                    ->executeQuery()
-                    ->fetchOne();
-            } elseif ($identifier['type'] === 'tca') {
-                // Handle "tca" type, see getDataStructureIdentifierFromTcaArray
-                if (empty($identifier['tableName']) || empty($identifier['fieldName']) || empty($identifier['dataStructureKey'])) {
-                    throw new \RuntimeException(
-                        'Incomplete "tca" based identifier: ' . json_encode($identifier),
-                        1478113471
-                    );
-                }
-                $table = $identifier['tableName'];
-                $field = $identifier['fieldName'];
-                $dataStructureKey = $identifier['dataStructureKey'];
-                if (!isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey])
-                    || !is_string($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey])
-                ) {
-                    // This may happen for elements pointing to an unloaded extension -> catchable
-                    throw new InvalidIdentifierException(
-                        'Specified identifier ' . json_encode($identifier) . ' does not resolve to a valid'
-                        . ' TCA array value',
-                        1478105491
-                    );
-                }
-                $dataStructure = $GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey];
-            } else {
-                throw new InvalidIdentifierException(
-                    'Identifier ' . json_encode($identifier) . ' could not be resolved',
-                    1478104554
+        // Resolve FILE: prefix pointing to a DS in a file
+        if (str_starts_with(trim($dataStructure), 'FILE:')) {
+            $file = GeneralUtility::getFileAbsFileName(substr(trim($dataStructure), 5));
+            if (empty($file) || !is_file($file)) {
+                throw new \RuntimeException(
+                    'Data structure file ' . $file . ' could not be resolved to an existing file',
+                    1478105826
                 );
             }
+            $dataStructure = (string)file_get_contents($file);
         }
 
-        // Hooks may have parsed the data structure already to an array. If that is not the case, parse it now.
-        if (is_string($dataStructure)) {
-            // Resolve FILE: prefix pointing to a DS in a file
-            if (str_starts_with(trim($dataStructure), 'FILE:')) {
-                $file = GeneralUtility::getFileAbsFileName(substr(trim($dataStructure), 5));
-                if (empty($file) || !@is_file($file)) {
-                    throw new \RuntimeException(
-                        'Data structure file ' . $file . ' could not be resolved to an existing file',
-                        1478105826
-                    );
-                }
-                $dataStructure = (string)file_get_contents($file);
-            }
-
-            // Parse main structure
-            $dataStructure = GeneralUtility::xml2array($dataStructure);
-        }
+        // Parse main structure
+        $dataStructure = GeneralUtility::xml2array($dataStructure);
 
         // Throw if it still is not an array, probably because GeneralUtility::xml2array() failed.
         // This also may happen if artificial identifiers were constructed which don't resolve. The
@@ -706,7 +612,71 @@ class FlexFormTools
             );
         }
 
-        // Create default sheet if there is none, yet.
+        return $dataStructure;
+    }
+
+    protected function getDefaultStructureForIdentifier(array $identifier): string
+    {
+        if (($identifier['type'] ?? '') === 'record') {
+            // Handle "record" type, see getDataStructureIdentifierFromRecord()
+            if (empty($identifier['tableName']) || empty($identifier['uid']) || empty($identifier['fieldName'])) {
+                throw new \RuntimeException(
+                    'Incomplete "record" based identifier: ' . json_encode($identifier),
+                    1478113873
+                );
+            }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($identifier['tableName']);
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $dataStructure = $queryBuilder
+                ->select($identifier['fieldName'])
+                ->from($identifier['tableName'])
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($identifier['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->executeQuery()
+                ->fetchOne();
+        } elseif (($identifier['type'] ?? '') === 'tca') {
+            // Handle "tca" type, see getDataStructureIdentifierFromTcaArray
+            if (empty($identifier['tableName']) || empty($identifier['fieldName']) || empty($identifier['dataStructureKey'])) {
+                throw new \RuntimeException(
+                    'Incomplete "tca" based identifier: ' . json_encode($identifier),
+                    1478113471
+                );
+            }
+            $table = $identifier['tableName'];
+            $field = $identifier['fieldName'];
+            $dataStructureKey = $identifier['dataStructureKey'];
+            if (!isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey])
+                || !is_string($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey])
+            ) {
+                // This may happen for elements pointing to an unloaded extension -> catchable
+                throw new InvalidIdentifierException(
+                    'Specified identifier ' . json_encode($identifier) . ' does not resolve to a valid'
+                    . ' TCA array value',
+                    1478105491
+                );
+            }
+            $dataStructure = $GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey];
+        } else {
+            throw new InvalidIdentifierException(
+                'Identifier ' . json_encode($identifier) . ' could not be resolved',
+                1478104554
+            );
+        }
+        return $dataStructure;
+    }
+
+    /**
+     * Ensures a data structure has a default sheet, and no duplicate data
+     *
+     * @param array $dataStructure
+     * @return array
+     */
+    protected function ensureDefaultSheet(array $dataStructure): array
+    {
         if (isset($dataStructure['ROOT']) && isset($dataStructure['sheets'])) {
             throw new \RuntimeException(
                 'Parsed data structure has both ROOT and sheets on top level. That is invalid.',
@@ -717,8 +687,17 @@ class FlexFormTools
             $dataStructure['sheets']['sDEF']['ROOT'] = $dataStructure['ROOT'];
             unset($dataStructure['ROOT']);
         }
+        return $dataStructure;
+    }
 
-        // Resolve FILE:EXT and EXT: for single sheets
+    /**
+     * Resolve FILE:EXT and EXT: for single sheets
+     *
+     * @param array $dataStructure
+     * @return array
+     */
+    protected function resolveFileDirectives(array $dataStructure): array
+    {
         if (isset($dataStructure['sheets']) && is_array($dataStructure['sheets'])) {
             foreach ($dataStructure['sheets'] as $sheetName => $sheetStructure) {
                 if (!is_array($sheetStructure)) {
@@ -738,24 +717,6 @@ class FlexFormTools
                 }
             }
         }
-
-        // Hook to manipulate data structure further. This can be used to add or remove fields
-        // from given structure. Multiple hooks can be registered, all are called. They
-        // receive the parsed structure and the identifier array.
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'] ?? [] as $hookClass) {
-            $hookInstance = GeneralUtility::makeInstance($hookClass);
-            if (method_exists($hookClass, 'parseDataStructureByIdentifierPostProcess')) {
-                $dataStructure = $hookInstance->parseDataStructureByIdentifierPostProcess($dataStructure, $identifier);
-                if (!is_array($dataStructure)) {
-                    // Programming error -> not catchable
-                    throw new \RuntimeException(
-                        'Hook class ' . $hookClass . ' method parseDataStructureByIdentifierPreProcess must return and array.',
-                        1478350806
-                    );
-                }
-            }
-        }
-
         return $dataStructure;
     }
 

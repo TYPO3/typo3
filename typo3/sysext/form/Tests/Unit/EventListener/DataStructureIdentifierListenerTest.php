@@ -15,21 +15,23 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Hooks;
+namespace TYPO3\CMS\Form\Tests\Unit\EventListener;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
+use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook;
+use TYPO3\CMS\Form\EventListener\DataStructureIdentifierListener;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DataStructureIdentifierHookTest extends UnitTestCase
+class DataStructureIdentifierListenerTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
 
@@ -54,41 +56,48 @@ class DataStructureIdentifierHookTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessReturnsIdentifierForNotMatchingScenario(): void
+    public function modifyIdentifiersReturnsIdentifierForNotMatchingScenario(): void
     {
         $givenIdentifier = ['aKey' => 'aValue'];
-        $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
+
+        $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'aTable',
             'aField',
             [],
-            $givenIdentifier
+            $givenIdentifier,
         );
-        self::assertEquals($givenIdentifier, $result);
+
+        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
+
+        self::assertSame($givenIdentifier, $event->getIdentifier());
     }
 
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessAddDefaultValuesForNewRecord(): void
+    public function modifyIdentifiersAddDefaultValuesForNewRecord(): void
     {
-        $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
+        $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'tt_content',
             'pi_flexform',
             ['CType' => 'form_formframework'],
-            []
+            [],
         );
+
+        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
+
         self::assertEquals(
             ['ext-form-persistenceIdentifier' => '', 'ext-form-overrideFinishers' => ''],
-            $result
+            $event->getIdentifier(),
         );
     }
 
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessAddsGivenPersistenceIdentifier(): void
+    public function modifyIdentifiersAddsGivenPersistenceIdentifier(): void
     {
         $row = [
             'CType' => 'form_formframework',
@@ -114,20 +123,24 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             'ext-form-persistenceIdentifier' => '1:user_upload/karl.yml',
             'ext-form-overrideFinishers' => '',
         ];
-        $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
+
+        $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'tt_content',
             'pi_flexform',
             $row,
-            $incomingIdentifier
+            $incomingIdentifier,
         );
-        self::assertEquals($expected, $result);
+
+        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
+
+        self::assertEquals($expected, $event->getIdentifier());
     }
 
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessAddsOverrideFinisherValue(): void
+    public function modifyIdentifiersAddsOverrideFinisherValue(): void
     {
         $row = [
             'CType' => 'form_formframework',
@@ -149,38 +162,46 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             'ext-form-persistenceIdentifier' => '',
             'ext-form-overrideFinishers' => 'enabled',
         ];
-        $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
+
+        $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'tt_content',
             'pi_flexform',
             $row,
-            []
+            [],
         );
-        self::assertEquals($expected, $result);
+
+        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
+
+        self::assertEquals($expected, $event->getIdentifier());
     }
 
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierPostProcessReturnsDataStructureUnchanged(): void
+    public function modifyDataStructureReturnsDataStructureUnchanged(): void
     {
         $dataStructure = ['foo' => 'bar'];
         $expected = $dataStructure;
-        $result = (new DataStructureIdentifierHook())->parseDataStructureByIdentifierPostProcess(
+
+        $event = new AfterFlexFormDataStructureParsedEvent(
             $dataStructure,
-            []
+            [],
         );
-        self::assertEquals($expected, $result);
+
+        (new DataStructureIdentifierListener())->modifyDataStructure($event);
+
+        self::assertEquals($expected, $event->getDataStructure());
     }
 
     /**
      * @test
-     * @dataProvider parseDataStructureByIdentifierPostProcessDataProvider
+     * @dataProvider modifyDataStructureDataProvider
      *
      * @param array $formDefinition
      * @param array $expectedItem
      */
-    public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems(array $formDefinition, array $expectedItem): void
+    public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
     {
         $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManagerInterface::class);
         GeneralUtility::addInstance(FormPersistenceManagerInterface::class, $formPersistenceManagerProphecy->reveal());
@@ -234,18 +255,20 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             ],
         ];
 
-        $result = (new DataStructureIdentifierHook())->parseDataStructureByIdentifierPostProcess(
+        $event = new AfterFlexFormDataStructureParsedEvent(
             $incomingDataStructure,
-            ['ext-form-persistenceIdentifier' => '']
+            ['ext-form-persistenceIdentifier' => ''],
         );
 
-        self::assertEquals($expected, $result);
+        (new DataStructureIdentifierListener())->modifyDataStructure($event);
+
+        self::assertEquals($expected, $event->getDataStructure());
     }
 
     /**
      * @return array
      */
-    public function parseDataStructureByIdentifierPostProcessDataProvider(): array
+    public function modifyDataStructureDataProvider(): array
     {
         return [
             'simple' => [

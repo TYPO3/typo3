@@ -73,6 +73,15 @@ services:
       - name: event.listener
         identifier: 'form-framework/form-definition-files'
 
+  TYPO3\CMS\Form\EventListener\DataStructureIdentifierListener:
+    tags:
+      - name: event.listener
+        identifier: 'form-framework/modify-data-structure-identifier'
+        method: 'modifyDataStructureIdentifier'
+      - name: event.listener
+        identifier: 'form-framework/modify-data-structure'
+        method: 'modifyDataStructure'
+
   lowlevel.configuration.module.provider.formyamlconfiguration:
     class: 'TYPO3\CMS\Form\ConfigurationModuleProvider\FormYamlProvider'
     tags:

@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
@@ -72,7 +74,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools();
+        $flexFormTools = new FlexFormTools(new MockEventDispatcher());
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
@@ -177,6 +179,10 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
+        $eventDispatcher = new MockEventDispatcher();
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
+
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
@@ -201,7 +207,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools();
+        $flexFormTools = new FlexFormTools(new MockEventDispatcher());
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
@@ -329,6 +335,10 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
+        $eventDispatcher = new MockEventDispatcher();
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
+
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
@@ -353,7 +363,11 @@ class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools();
+        $eventDispatcher = new MockEventDispatcher();
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
+
+        $flexFormTools = new FlexFormTools(new MockEventDispatcher());
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([

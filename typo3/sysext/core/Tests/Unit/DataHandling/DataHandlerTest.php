@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
-use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -643,10 +644,25 @@ class DataHandlerTest extends UnitTestCase
         $hookMock->expects(self::once())->method('checkFlexFormValue_beforeMerge');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
         GeneralUtility::addInstance($hookClass, $hookMock);
-        $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
-        $flexFormToolsProphecy->getDataStructureIdentifier(Argument::cetera())->willReturn('anIdentifier');
-        $flexFormToolsProphecy->parseDataStructureByIdentifier('anIdentifier')->willReturn([]);
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
+
+        $eventDispatcher = new MockEventDispatcher();
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        $flexFormTools = new class($eventDispatcher) extends FlexFormTools {
+            public function getDataStructureIdentifier(...$args): string
+            {
+                return 'anIdentifier';
+            }
+
+            public function parseDataStructureByIdentifier(string $identifier): array
+            {
+                return [];
+            }
+        };
+        // FlexFormTools gets called through GeneralUtility::makeInstance() twice, so we need
+        // to register it twice.
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormTools);
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormTools);
+
         $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, '');
     }
 

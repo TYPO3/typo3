@@ -2831,16 +2831,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/EventListener/ProcessFileListActionsEventListener.php
 
 		-
-			message: "#^Offset 'sheets' on array\\{sheets\\: array\\{\\}\\} in empty\\(\\) always exists and is always falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Hooks/DataStructureIdentifierHook.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Hooks/DataStructureIdentifierHook.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\Renderable\\\\RenderableInterface\\:\\:getRootForm\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Hooks/FormElementHooks.php

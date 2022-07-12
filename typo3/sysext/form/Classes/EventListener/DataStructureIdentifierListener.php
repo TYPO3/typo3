@@ -15,8 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Hooks;
+namespace TYPO3\CMS\Form\EventListener;
 
+use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
+use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -34,20 +36,17 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
- * Hooks into flex form handling of backend for tt_content form elements:
+ * Event listener extending the flex form handling for tt_content form elements (CType: form_formframework):
  *
  * * Adds existing forms to flex form drop down list
- * * Adds finisher settings if "override finishers" is active
+ * * Adds finisher settings if Option "Override finisher settings" is active
  *
  * Scope: backend
  * @internal
  */
-class DataStructureIdentifierHook
+class DataStructureIdentifierListener
 {
-    /**
-     * Localisation prefix
-     */
-    const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
+    private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
 
     public function __construct()
     {
@@ -58,144 +57,139 @@ class DataStructureIdentifierHook
      * The data structure depends on a current form selection (persistenceIdentifier)
      * and if the field "overrideFinishers" is active. Add both to the identifier to
      * hand these information over to parseDataStructureByIdentifierPostProcess() hook.
-     *
-     * @param array $fieldTca Incoming field TCA
-     * @param string $tableName Handled table
-     * @param string $fieldName Handled field
-     * @param array $row Current data row
-     * @param array $identifier Already calculated identifier
-     * @return array Modified identifier
      */
-    public function getDataStructureIdentifierPostProcess(
-        array $fieldTca,
-        string $tableName,
-        string $fieldName,
-        array $row,
-        array $identifier
-    ): array {
-        if ($tableName === 'tt_content' && $fieldName === 'pi_flexform' && $row['CType'] === 'form_formframework') {
-            $currentFlexData = [];
-            if (!empty($row['pi_flexform']) && !\is_array($row['pi_flexform'])) {
-                $currentFlexData = GeneralUtility::xml2array($row['pi_flexform']);
-            }
-
-            // Add selected form value
-            $identifier['ext-form-persistenceIdentifier'] = '';
-            if (!empty($currentFlexData['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'])) {
-                $identifier['ext-form-persistenceIdentifier'] = $currentFlexData['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'];
-            }
-
-            // Add bool - finisher override active or not
-            $identifier['ext-form-overrideFinishers'] = '';
-            if (
-                isset($currentFlexData['data']['sDEF']['lDEF']['settings.overrideFinishers']['vDEF'])
-                && (int)$currentFlexData['data']['sDEF']['lDEF']['settings.overrideFinishers']['vDEF'] === 1
-            ) {
-                $identifier['ext-form-overrideFinishers'] = 'enabled';
-            }
+    public function modifyDataStructureIdentifier(AfterFlexFormDataStructureIdentifierInitializedEvent $event): void
+    {
+        $row = $event->getRow();
+        if (($row['CType'] ?? '') !== 'form_formframework'
+            || $event->getTableName() !== 'tt_content'
+            || $event->getFieldName() !== 'pi_flexform'
+        ) {
+            return;
         }
-        return $identifier;
+
+        $identifier = $event->getIdentifier();
+
+        $currentFlexData = [];
+        if (!empty($row['pi_flexform']) && !\is_array($row['pi_flexform'])) {
+            $currentFlexData = GeneralUtility::xml2array($row['pi_flexform']);
+        }
+
+        // Add selected form value
+        $identifier['ext-form-persistenceIdentifier'] = '';
+        if (!empty($currentFlexData['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'])) {
+            $identifier['ext-form-persistenceIdentifier'] = $currentFlexData['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'];
+        }
+
+        // Add bool - finisher override active or not
+        $identifier['ext-form-overrideFinishers'] = '';
+        if (
+            isset($currentFlexData['data']['sDEF']['lDEF']['settings.overrideFinishers']['vDEF'])
+            && (int)$currentFlexData['data']['sDEF']['lDEF']['settings.overrideFinishers']['vDEF'] === 1
+        ) {
+            $identifier['ext-form-overrideFinishers'] = 'enabled';
+        }
+
+        $event->setIdentifier($identifier);
     }
 
     /**
-     * Returns a modified flexform data array.
-     *
-     * This adds the list of existing form definitions to the form selection drop down
+     * Adds the list of existing form definitions to the form selection drop down
      * and adds sheets to override finisher settings if requested.
-     *
-     * @param array $dataStructure
-     * @param array $identifier
-     * @return array
      */
-    public function parseDataStructureByIdentifierPostProcess(array $dataStructure, array $identifier): array
+    public function modifyDataStructure(AfterFlexFormDataStructureParsedEvent $event): void
     {
-        if (isset($identifier['ext-form-persistenceIdentifier'])) {
-            try {
-                // Add list of existing forms to drop down if we find our key in the identifier
-                $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
-                $formIsAccessible = false;
-                foreach ($formPersistenceManager->listForms() as $form) {
-                    $invalidFormDefinition = $form['invalid'] ?? false;
-
-                    if ($form['persistenceIdentifier'] === $identifier['ext-form-persistenceIdentifier']) {
-                        $formIsAccessible = true;
-                    }
-
-                    if ($invalidFormDefinition) {
-                        $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
-                            $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                            $form['persistenceIdentifier'],
-                            'overlay-missing',
-                        ];
-                    } else {
-                        $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
-                            $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                            $form['persistenceIdentifier'],
-                            'content-form',
-                        ];
-                    }
-                }
-
-                if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {
-                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
-                        sprintf(
-                            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
-                            $identifier['ext-form-persistenceIdentifier']
-                        ),
-                        $identifier['ext-form-persistenceIdentifier'],
-                    ];
-                }
-
-                // If a specific form is selected and if finisher override is active, add finisher sheets
-                if (!empty($identifier['ext-form-persistenceIdentifier']) && $formIsAccessible) {
-                    $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
-                    $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
-
-                    $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
-                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
-                        'TCEforms' => [
-                            'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',
-                            'onChange' => 'reload',
-                            'config' => [
-                                'type' => 'check',
-                            ],
-                        ],
-                    ];
-
-                    $newSheets = [];
-
-                    if (isset($formDefinition['finishers']) && !empty($formDefinition['finishers'])) {
-                        $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
-                    }
-
-                    if (empty($newSheets)) {
-                        ArrayUtility::mergeRecursiveWithOverrule(
-                            $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'],
-                            [
-                                'TCEforms' => [
-                                    'description' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers.empty',
-                                    'config' => [
-                                        'readOnly' => true,
-                                    ],
-                                ],
-                            ]
-                        );
-                    }
-
-                    if ($identifier['ext-form-overrideFinishers'] === 'enabled') {
-                        ArrayUtility::mergeRecursiveWithOverrule(
-                            $dataStructure,
-                            $newSheets
-                        );
-                    }
-                }
-            } catch (NoSuchFileException|ParseErrorException $e) {
-                $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
-                $this->addInvalidFrameworkConfigurationFlashMessage($e);
-            }
+        $identifier = $event->getIdentifier();
+        if (!isset($identifier['ext-form-persistenceIdentifier'])) {
+            return;
         }
 
-        return $dataStructure;
+        $dataStructure = $event->getDataStructure();
+        try {
+            // Add list of existing forms to drop down if we find our key in the identifier
+            $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
+            $formIsAccessible = false;
+            foreach ($formPersistenceManager->listForms() as $form) {
+                $invalidFormDefinition = $form['invalid'] ?? false;
+
+                if ($form['persistenceIdentifier'] === $identifier['ext-form-persistenceIdentifier']) {
+                    $formIsAccessible = true;
+                }
+
+                if ($invalidFormDefinition) {
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                        $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                        $form['persistenceIdentifier'],
+                        'overlay-missing',
+                    ];
+                } else {
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                        $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                        $form['persistenceIdentifier'],
+                        'content-form',
+                    ];
+                }
+            }
+
+            if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {
+                $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                    sprintf(
+                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                        $identifier['ext-form-persistenceIdentifier']
+                    ),
+                    $identifier['ext-form-persistenceIdentifier'],
+                ];
+            }
+
+            // If a specific form is selected and if finisher override is active, add finisher sheets
+            if (!empty($identifier['ext-form-persistenceIdentifier']) && $formIsAccessible) {
+                $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
+                $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
+
+                $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
+                $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
+                    'TCEforms' => [
+                        'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',
+                        'onChange' => 'reload',
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ];
+
+                $newSheets = [];
+
+                if (isset($formDefinition['finishers']) && !empty($formDefinition['finishers'])) {
+                    $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
+                }
+
+                if (empty($newSheets)) {
+                    ArrayUtility::mergeRecursiveWithOverrule(
+                        $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'],
+                        [
+                            'TCEforms' => [
+                                'description' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers.empty',
+                                'config' => [
+                                    'readOnly' => true,
+                                ],
+                            ],
+                        ]
+                    );
+                }
+
+                if ($identifier['ext-form-overrideFinishers'] === 'enabled') {
+                    ArrayUtility::mergeRecursiveWithOverrule(
+                        $dataStructure,
+                        $newSheets
+                    );
+                }
+            }
+        } catch (NoSuchFileException|ParseErrorException $e) {
+            $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
+            $this->addInvalidFrameworkConfigurationFlashMessage($e);
+        }
+
+        $event->setDataStructure($dataStructure);
     }
 
     /**
@@ -207,7 +201,7 @@ class DataStructureIdentifierHook
      */
     protected function getAdditionalFinisherSheets(string $persistenceIdentifier, array $formDefinition): array
     {
-        if (!isset($formDefinition['finishers']) || empty($formDefinition['finishers'])) {
+        if (empty($formDefinition['finishers'])) {
             return [];
         }
 
@@ -215,7 +209,7 @@ class DataStructureIdentifierHook
         $prototypeConfiguration = GeneralUtility::makeInstance(ConfigurationService::class)
             ->getPrototypeConfiguration($prototypeName);
 
-        if (!isset($prototypeConfiguration['finishersDefinition']) || empty($prototypeConfiguration['finishersDefinition'])) {
+        if (empty($prototypeConfiguration['finishersDefinition'])) {
             return [];
         }
 
@@ -266,9 +260,6 @@ class DataStructureIdentifierHook
 
             $sheet[$sheetIdentifier]['ROOT']['el'] = $converterDto->getResult();
             ArrayUtility::mergeRecursiveWithOverrule($sheets['sheets'], $sheet);
-        }
-        if (empty($sheets['sheets'])) {
-            return [];
         }
 
         return $sheets;
@@ -327,7 +318,7 @@ class DataStructureIdentifierHook
     /**
      * @param \Exception $e
      */
-    protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e)
+    protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e): void
     {
         $messageText = sprintf(
             $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),

@@ -851,4 +851,10 @@ return [
             'Breaking-98179-RemoveBackendInterfaceSelectorAndConfigurableRedirect.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools\'][\'flexParsing\']' => [
+        'restFiles' => [
+            'Breaking-97449-RemovedHookForModifyingFlexFormParsing.rst',
+            'Feature-97449-PSR-14EventsForModifyingFlexFormParsing.rst',
+        ],
+    ],
 ];
