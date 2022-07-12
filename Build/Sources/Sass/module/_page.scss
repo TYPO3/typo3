@@ -1,4 +1,18 @@
 //
+// Fix scroll behavior with local anchor in page module.
+//
+html {
+    scroll-behavior: smooth;
+}
+
+:target:before {
+    content: "";
+    display: block;
+    height: 80px;
+    margin: -80px 0 0;
+}
+
+//
 // Variables
 //
 :root {
