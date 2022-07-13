@@ -275,7 +275,6 @@
         'div': B,
         'DIV': kw('DIV'),
         'doctype': kw('doctype'),
-        'doctypeSwitch': kw('doctypeSwitch'),
         'DOCUMENT_BODY': kw('DOCUMENT_BODY'),
         'doktype': kw('doktype'),
         'doNotLinkIt': kw('doNotLinkIt'),

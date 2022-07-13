@@ -358,11 +358,6 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
         }
-        // Swap XML and doctype order around (for MSIE / Opera standards compliance)
-        if ($controller->config['config']['doctypeSwitch'] ?? false) {
-            $docTypeParts = array_reverse($docTypeParts);
-        }
-        // Adding doctype parts:
         if (!empty($docTypeParts)) {
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
