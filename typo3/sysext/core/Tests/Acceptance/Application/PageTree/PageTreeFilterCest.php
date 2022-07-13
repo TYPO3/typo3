@@ -95,9 +95,11 @@ class PageTreeFilterCest
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
 
-        $I->waitForElement('//*[text()=\'inline mn\']');
+        $this->waitForPageTreeLoad($I);
+        $I->waitForText('inline mn', 5);
+        $I->waitForElementClickable('//*[text()=\'inline mn\']');
         $I->clickWithRightButton('//*[text()=\'inline mn\']');
-        $I->waitForElement('#contentMenu0');
+        $I->waitForElement('[data-callback-action="deleteRecord"]');
         $I->click('[data-callback-action="deleteRecord"]', '#contentMenu0');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
@@ -108,8 +110,8 @@ class PageTreeFilterCest
 
         $I->canSee('elements group', $this->inPageTree);
         $I->waitForElementNotVisible('//*[text()=\'inline mn\']');
-        $I->cantSee('inline mngroup', $this->inPageTree);
-        $I->cantSee('inline expandsingle', $this->inPageTree);
+        $I->waitForElementNotVisible('//*[text()=\'inline mngroup\']');
+        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
     }
 
     protected function clearPageTreeFilters(ApplicationTester $I): void
