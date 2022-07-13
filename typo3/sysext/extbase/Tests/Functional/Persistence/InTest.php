@@ -44,7 +44,7 @@ class InTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');

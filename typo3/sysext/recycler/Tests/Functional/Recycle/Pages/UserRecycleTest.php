@@ -25,9 +25,6 @@ use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
  */
 class UserRecycleTest extends AbstractRecycleTestCase
 {
-    /**
-     * Set up the test
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,13 +40,11 @@ class UserRecycleTest extends AbstractRecycleTestCase
     public function retrieveDeletedPagesNoRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 0);
-        $assertData = $this->loadDataSet(__DIR__ . '/DataSet/Assertion/deletedPage-3.xml');
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(2, $deletedPages['pages']);
-        self::assertGreaterThan(0, (int)($assertData['pages'][0]['uid'] ?? 0));
         self::assertGreaterThan(0, (int)($deletedPages['pages'][0]['uid'] ?? 0));
-        self::assertSame((int)$assertData['pages'][0]['uid'], (int)$deletedPages['pages'][0]['uid']);
+        self::assertSame(3, (int)$deletedPages['pages'][0]['uid']);
     }
 
     /**
@@ -58,13 +53,11 @@ class UserRecycleTest extends AbstractRecycleTestCase
     public function retrieveDeletedPagesOneLevelRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 1);
-        $assertData = $this->loadDataSet(__DIR__ . '/DataSet/Assertion/deletedPage-3_4_5.xml');
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(3, $deletedPages['pages']);
-        self::assertGreaterThan(0, (int)($assertData['pages'][0]['uid'] ?? 0));
         self::assertGreaterThan(0, (int)($deletedPages['pages'][0]['uid'] ?? 0));
-        self::assertSame((int)$assertData['pages'][0]['uid'], (int)$deletedPages['pages'][0]['uid']);
+        self::assertSame(3, (int)$deletedPages['pages'][0]['uid']);
     }
 
     /**

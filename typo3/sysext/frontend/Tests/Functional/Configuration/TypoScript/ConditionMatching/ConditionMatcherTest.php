@@ -55,7 +55,7 @@ class ConditionMatcherTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/pages.csv');
         $this->setupFrontendController(3);
     }
 

@@ -57,7 +57,7 @@ class TranslationTest extends FunctionalTestCase
          * Post10 [hidden]
          *   -> GR: Post10 [hidden]
          */
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/translated-posts.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');

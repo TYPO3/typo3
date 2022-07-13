@@ -57,7 +57,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/sys_file_storage.csv');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);

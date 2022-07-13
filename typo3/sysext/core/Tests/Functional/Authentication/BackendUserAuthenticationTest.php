@@ -109,7 +109,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
      */
     public function getDefaultUploadFolderFallsBackToDefaultStorage(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $path = 'user_upload/some-folder-that-does-not-exist';
         $fullPathToStorageBase = Environment::getPublicPath() . '/fileadmin/' . $path;
         GeneralUtility::rmdir($fullPathToStorageBase);

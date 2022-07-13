@@ -49,7 +49,7 @@ class WorkspaceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
         $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
         $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/categories.csv');

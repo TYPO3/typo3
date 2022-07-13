@@ -23,8 +23,8 @@ class BackendUtilityTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/tt_content.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
     }

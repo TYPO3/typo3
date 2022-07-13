@@ -124,7 +124,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     {
         parent::setUp();
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
 

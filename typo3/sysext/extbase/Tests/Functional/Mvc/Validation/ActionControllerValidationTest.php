@@ -69,7 +69,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
@@ -120,7 +120,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
@@ -186,7 +186,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 

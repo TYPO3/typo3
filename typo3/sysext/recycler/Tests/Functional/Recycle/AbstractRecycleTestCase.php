@@ -66,49 +66,4 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
         $deletedRecords->loadData($contentUid, 'tt_content', 0);
         return $deletedRecords->getDeletedRows();
     }
-
-    /**
-     * Loads a data set represented as XML and returns it as array.
-     *
-     * @param string $path Absolute path to the XML file containing the data set to load
-     * @return array The records loaded from the data set
-     * @throws \Exception
-     */
-    protected function loadDataSet($path): array
-    {
-        if (!is_file($path)) {
-            throw new \Exception(
-                'Fixture file ' . $path . ' not found',
-                1476109709
-            );
-        }
-
-        $data = [];
-        $fileContent = file_get_contents($path);
-        $xml = simplexml_load_string($fileContent);
-
-        /** @var \SimpleXMLElement $table */
-        foreach ($xml->children() as $table) {
-            $record = [];
-
-            /** @var \SimpleXMLElement $column*/
-            foreach ($table->children() as $column) {
-                $columnName = $column->getName();
-
-                if (isset($column['ref'])) {
-                    $columnValue = explode('#', (string)$column['ref']);
-                } elseif (isset($column['is-NULL']) && ((string)$column['is-NULL'] === 'yes')) {
-                    $columnValue = null;
-                } else {
-                    $columnValue = (string)$table->$columnName;
-                }
-
-                $record[$columnName] = $columnValue;
-            }
-
-            $tableName = $table->getName();
-            $data[$tableName][] = $record;
-        }
-        return $data;
-    }
 }

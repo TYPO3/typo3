@@ -40,7 +40,7 @@ class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
      */
     public function checkPageLinkTest(string $linkType, array $linkData, bool $isMarkedAsBroken): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
 
         $event = new BrokenLinkAnalysisEvent(
             $linkType,

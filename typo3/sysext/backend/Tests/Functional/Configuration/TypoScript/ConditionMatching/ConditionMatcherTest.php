@@ -43,7 +43,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/pages.csv');
 
         $backendUser = new BackendUserAuthentication();
         $backendUser->user['uid'] = 13;

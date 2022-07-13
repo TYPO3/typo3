@@ -35,7 +35,7 @@ class GifBuilderTest extends FunctionalTestCase
 {
     private function setupFullTestEnvironment(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
 
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))

@@ -51,7 +51,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function getNestedProcessingFolderTest(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $subject->setEvaluatePermissions(false);
@@ -87,7 +87,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($targetDirectory, $fileMountFolder, $isFileMountReadOnly, $checkWriteAccess, $expectedResult): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $fileName = 'bar.txt';
         $this->setUpBackendUserFromFixture(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
@@ -163,7 +163,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function getProcessingRootFolderTest(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
 
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
@@ -178,7 +178,7 @@ class ResourceStorageTest extends FunctionalTestCase
     public function getRoleReturnsDefaultForRegularFolders(): void
     {
         $folderIdentifier = StringUtility::getUniqueId();
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
 
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
@@ -194,7 +194,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function replaceFileFailsIfLocalFileDoesNotExist(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
@@ -213,7 +213,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
@@ -227,7 +227,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function deleteFileMovesFileToRecyclerFolderIfAvailable(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
@@ -248,7 +248,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
@@ -397,7 +397,7 @@ class ResourceStorageTest extends FunctionalTestCase
     public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers): void
     {
         try {
-            $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
             $this->importCSVDataSet(__DIR__ . '/Fixtures/FileSearch.csv');
             $this->setUpBackendUserFromFixture(1);
             $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
@@ -441,7 +441,7 @@ class ResourceStorageTest extends FunctionalTestCase
     public function copyFolderThrowsErrorWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
@@ -460,7 +460,7 @@ class ResourceStorageTest extends FunctionalTestCase
     public function copyFolderGeneratesNewFolderNameWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
@@ -480,7 +480,7 @@ class ResourceStorageTest extends FunctionalTestCase
     public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
@@ -502,7 +502,7 @@ class ResourceStorageTest extends FunctionalTestCase
     public function copyFileGeneratesNewFileNameWhenFileAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->setUpBackendUserFromFixture(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');

@@ -53,7 +53,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tx_testirrecsv_hotel.csv');
 
         $this->setUpBackendUserFromFixture(1);
