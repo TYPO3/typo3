@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
@@ -35,7 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RedirectServiceTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [];
@@ -47,7 +48,8 @@ class RedirectServiceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
     }
 
     protected function tearDown(): void

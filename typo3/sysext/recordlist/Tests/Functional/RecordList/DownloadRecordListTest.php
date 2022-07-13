@@ -31,7 +31,8 @@ class DownloadRecordListTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
     }
 

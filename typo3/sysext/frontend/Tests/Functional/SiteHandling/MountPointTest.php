@@ -101,64 +101,21 @@ class MountPointTest extends AbstractTestCase
             ]
         );
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/Fixtures/MountPointScenario.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
+            $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Global']);
+            $this->setUpFrontendRootPage(2000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Canada']);
+            $this->setUpFrontendRootPage(3000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME US']);
+            $this->setUpFrontendRootPage(10000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Archive']);
         });
     }
 
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $scenarioFile = __DIR__ . '/Fixtures/MountPointScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
-
-        $this->setUpFrontendRootPage(
-            1000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME Global',
-            ]
-        );
-        $this->setUpFrontendRootPage(
-            2000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME Canada',
-            ]
-        );
-        $this->setUpFrontendRootPage(
-            3000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME US',
-            ]
-        );
-        $this->setUpFrontendRootPage(
-            10000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME Archive',
-            ]
-        );
-    }
-
-    /**
-     * @return array
-     */
     public function hierarchicalMenuIsGeneratedDataProvider(): array
     {
         $siteMapOfMainPage = [
@@ -390,9 +347,6 @@ class MountPointTest extends AbstractTestCase
     }
 
     /**
-     * @param string $accessedUrl
-     * @param array $expectation
-     *
      * @test
      * @dataProvider hierarchicalMenuIsGeneratedDataProvider
      */
@@ -448,10 +402,6 @@ class MountPointTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $rootPageId
-     * @param int $expectedPageId
-     * @param string|null $expectedMountPointParameter
      * @test
      * @dataProvider requestsResolvePageIdAndMountPointParameterDataProvider
      */
@@ -499,8 +449,6 @@ class MountPointTest extends AbstractTestCase
      * @todo: revisit the "mount_pid_ol=1" redirect, there is some truth to it, but still would
      * remove the context, which does not make sense. Should be revisited. See test above as well.
      *
-     * @param string $uri
-     * @param string $expected
      * @dataProvider mountPointPagesShowContentAsConfiguredDataProvider
      * @test
      */

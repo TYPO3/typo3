@@ -50,7 +50,8 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
         $this->subject = new MfaConfigurationController(

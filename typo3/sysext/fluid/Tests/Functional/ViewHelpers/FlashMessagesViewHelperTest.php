@@ -53,7 +53,8 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsRenderedFlashMessage(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', AbstractMessage::OK, true);
         (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
         $context = $this->get(RenderingContextFactory::class)->create();

@@ -65,7 +65,8 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
      */
     public function backendUsersFormContainsExpectedFields(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
@@ -91,7 +92,8 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
      */
     public function backendUsersFormContainsExpectedFieldsForAdmins(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);

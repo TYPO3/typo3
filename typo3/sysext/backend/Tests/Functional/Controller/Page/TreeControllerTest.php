@@ -29,9 +29,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case for TYPO3\CMS\Backend\Controller\Page\TreeController
- */
 class TreeControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
@@ -55,13 +52,13 @@ class TreeControllerTest extends FunctionalTestCase
      */
     private $context;
 
-    protected string $backendUserFixture = 'EXT:core/Tests/Functional/Fixtures/be_users.xml';
-
     protected function setUp(): void
     {
         parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         //admin user for importing dataset
-        $this->backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->backendUser = $this->setUpBackendUser(1);
+
         $this->setUpDatabase();
 
         //regular editor, non admin

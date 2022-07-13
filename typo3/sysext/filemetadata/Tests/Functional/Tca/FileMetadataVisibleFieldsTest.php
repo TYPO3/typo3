@@ -147,7 +147,8 @@ class FileMetadataVisibleFieldsTest extends FunctionalTestCase
      */
     public function fileMetadataFormContainsExpectedFields(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TCA']['sys_file_metadata']['ctrl']['type'] = 'fileype';
 

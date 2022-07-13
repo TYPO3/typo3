@@ -110,7 +110,8 @@ class TranslateViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsStringInNonExtbaseContext(string $template, string $expected): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
@@ -169,7 +170,8 @@ class TranslateViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsStringInExtbaseContext(string $template, string $expected): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('backend');
         $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);

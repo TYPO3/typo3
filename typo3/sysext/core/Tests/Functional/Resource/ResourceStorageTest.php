@@ -52,7 +52,8 @@ class ResourceStorageTest extends FunctionalTestCase
     public function getNestedProcessingFolderTest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $subject->setEvaluatePermissions(false);
 
@@ -89,7 +90,8 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $fileName = 'bar.txt';
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory);
         if ($fileMountFolder !== $targetDirectory) {
@@ -164,7 +166,8 @@ class ResourceStorageTest extends FunctionalTestCase
     public function getProcessingRootFolderTest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
 
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $processingFolder = $subject->getProcessingFolder();
@@ -179,7 +182,8 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $folderIdentifier = StringUtility::getUniqueId();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
 
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $folder = new Folder($subject, '/foo/' . $folderIdentifier . '/', $folderIdentifier);
@@ -195,7 +199,8 @@ class ResourceStorageTest extends FunctionalTestCase
     public function replaceFileFailsIfLocalFileDoesNotExist(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
@@ -214,7 +219,8 @@ class ResourceStorageTest extends FunctionalTestCase
     public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -228,7 +234,8 @@ class ResourceStorageTest extends FunctionalTestCase
     public function deleteFileMovesFileToRecyclerFolderIfAvailable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
@@ -249,7 +256,8 @@ class ResourceStorageTest extends FunctionalTestCase
     public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
@@ -399,7 +407,8 @@ class ResourceStorageTest extends FunctionalTestCase
         try {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
             $this->importCSVDataSet(__DIR__ . '/Fixtures/FileSearch.csv');
-            $this->setUpBackendUserFromFixture(1);
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $this->setUpBackendUser(1);
             $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
             $subject->setFileAndFolderNameFilters($filters);
 
@@ -442,7 +451,8 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
@@ -461,7 +471,8 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
@@ -481,7 +492,8 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
@@ -503,7 +515,8 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');

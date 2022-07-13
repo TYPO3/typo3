@@ -35,15 +35,13 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     protected function setUpDatabaseWithYamlPayload(string $pathToYamlFile): void
     {
         $this->withDatabaseSnapshot(function () use ($pathToYamlFile) {
-            $backendUser = $this->setUpBackendUserFromFixture(1);
+            $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
             Bootstrap::initializeLanguageObject();
-
             $factory = DataHandlerFactory::fromYamlFile($pathToYamlFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
-            static::failIfArrayIsNotEmpty(
-                $writer->getErrors()
-            );
+            static::failIfArrayIsNotEmpty($writer->getErrors());
         });
     }
 

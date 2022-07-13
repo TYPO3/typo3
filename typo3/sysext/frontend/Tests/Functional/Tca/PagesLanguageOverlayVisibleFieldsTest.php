@@ -27,8 +27,6 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
 {
     /**
      * These form fields are visible in the default page types.
-     *
-     * @var array
      */
     protected static array $defaultPagesLanguageOverlayFields = [
         'title',
@@ -47,8 +45,6 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
 
     /**
      * Configuration of hidden / additional form fields per page type.
-     *
-     * @var array
      */
     protected static array $pageFormFields = [
         PageRepository::DOKTYPE_BE_USER_SECTION => [],
@@ -131,9 +127,6 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @return array
-     */
     public function pagesLanguageOverlayFormContainsExpectedFieldsDataProvider(): array
     {
         $pageTypes = [];
@@ -157,16 +150,11 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider pagesLanguageOverlayFormContainsExpectedFieldsDataProvider
-     * @param int $doktype
-     * @param array $expectedFields
-     * @param array $hiddenFields
      */
-    public function pagesLanguageOverlayFormContainsExpectedFields(
-        int $doktype,
-        array $expectedFields,
-        array $hiddenFields
-    ): void {
-        $this->setUpBackendUserFromFixture(1);
+    public function pagesLanguageOverlayFormContainsExpectedFields(int $doktype, array $expectedFields, array $hiddenFields): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);

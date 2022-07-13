@@ -30,18 +30,12 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PagesTsConfigGuardTest extends FunctionalTestCase
 {
-    /**
-     * The fixture which is used when initializing a backend user
-     *
-     * @var string
-     */
-    protected string $backendUserFixture = 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml';
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
         $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_groups.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_users.csv');
         $this->addSiteConfiguration(1);
         // define page create permissions for backend user group 9 on page 1
         GeneralUtility::makeInstance(ConnectionPool::class)
@@ -58,7 +52,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
      */
     public function pagesTsConfigIsConsideredForAdminUser(): void
     {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
+        $backendUser = $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
         $identifier = StringUtility::getUniqueId('NEW');
 
@@ -82,7 +76,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
      */
     public function pagesTsConfigIsIgnoredForNonAdminUser(): void
     {
-        $backendUser = $this->setUpBackendUserFromFixture(9);
+        $backendUser = $this->setUpBackendUser(9);
         Bootstrap::initializeLanguageObject();
         $identifier = StringUtility::getUniqueId('NEW');
 

@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class FlashMessageQueueTest extends FunctionalTestCase
 {
     /**
@@ -31,7 +28,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function getAllMessagesContainsEnqueuedMessage(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
@@ -43,7 +41,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function messagesCanBeFilteredBySeverity(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $messages = [
             0 => new FlashMessage('This is a test message', '1', FlashMessage::NOTICE),
@@ -66,7 +65,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function getAllMessagesAndFlushContainsEnqueuedMessage(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
@@ -78,7 +78,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function getAllMessagesAndFlushClearsSessionStack(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
@@ -91,7 +92,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function getMessagesAndFlushCanFilterBySeverity(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $messages = [
             0 => new FlashMessage('This is a test message', '1', FlashMessage::NOTICE),
@@ -117,7 +119,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function getAllMessagesReturnsSessionFlashMessageAndTransientFlashMessage(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessage1 = new FlashMessage('Transient', 'Title', FlashMessage::OK, false);
         $flashMessage2 = new FlashMessage('Session', 'Title', FlashMessage::OK, true);
@@ -132,7 +135,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function clearClearsTheQueue(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
@@ -145,7 +149,8 @@ class FlashMessageQueueTest extends FunctionalTestCase
      */
     public function toArrayOnlyRespectsTransientFlashMessages(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessage1 = new FlashMessage('Transient', 'Title', FlashMessage::OK, false);
         $flashMessage2 = new FlashMessage('Session', 'Title', FlashMessage::OK, true);

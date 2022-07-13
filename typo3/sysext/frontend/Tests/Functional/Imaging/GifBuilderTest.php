@@ -36,14 +36,12 @@ class GifBuilderTest extends FunctionalTestCase
     private function setupFullTestEnvironment(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->setUpBackendUserFromFixture(1);
-
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin');
     }
 

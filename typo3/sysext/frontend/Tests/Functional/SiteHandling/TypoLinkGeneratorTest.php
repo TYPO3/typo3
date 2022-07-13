@@ -57,51 +57,29 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         );
 
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/Fixtures/TypoLinkScenario.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+            $connection->update(
+                'pages',
+                ['TSconfig' => implode(chr(10), [
+                    'TCEMAIN.linkHandler.content {',
+                    '   configuration.table = tt_content',
+                    '}',
+                ])],
+                ['uid' => 1000]
+            );
+            $this->setUpFileStorage();
+            $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Root']);
         });
     }
 
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $scenarioFile = __DIR__ . '/Fixtures/TypoLinkScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
-
-        // @todo Provide functionality of assigning TSconfig to Testing Framework
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('pages');
-        $connection->update(
-            'pages',
-            ['TSconfig' => implode(chr(10), [
-                'TCEMAIN.linkHandler.content {',
-                '   configuration.table = tt_content',
-                '}',
-            ])],
-            ['uid' => 1000]
-        );
-
-        $this->setUpFileStorage();
-        $this->setUpFrontendRootPage(
-            1000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME Root',
-            ]
-        );
-    }
-
-    /**
-     * @todo Provide functionality of creating and indexing fileadmin/ in Testing Framework
-     */
     private function setUpFileStorage(): void
     {
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
@@ -116,9 +94,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         (new Indexer($storage))->processChangesInStorages();
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedDataProvider(): array
     {
         $instructions = [
@@ -239,9 +214,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $parameter
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedDataProvider
      */
@@ -361,9 +333,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsEncodedDataProvider(): array
     {
         $instructions = [
@@ -496,9 +465,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $parameter
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsEncodedDataProvider
      */
@@ -509,9 +475,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $parameter
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsEncodedDataProvider
      */
@@ -533,9 +496,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkToPageIsProcessedDataProvider(): array
     {
         return [
@@ -593,10 +553,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $parameter
-     * @param string $expectation
-     * @param bool $parseFuncEnabled
-     *
      * @test
      * @dataProvider linkToPageIsProcessedDataProvider
      */
@@ -682,10 +638,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @param string $parameter
-     * @param AbstractInstruction ...$instructions
-     */
     private function invokeTypoLink(string $parameter, AbstractInstruction ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;
@@ -716,11 +668,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         return $this->executeFrontendSubRequest($request);
     }
 
-    /**
-     * @param array $typoLink
-     * @param string|null $linkText
-     * @return ArrayValueInstruction
-     */
     private function createTypoLinkInstruction(array $typoLink, ?string $linkText = null): ArrayValueInstruction
     {
         return (new ArrayValueInstruction(LinkHandlingController::class))
@@ -732,10 +679,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ]);
     }
 
-    /**
-     * @param array $typoLink
-     * @return TypoScriptInstruction
-     */
     private function createRecordLinksInstruction(array $typoLink): TypoScriptInstruction
     {
         return (new TypoScriptInstruction(TemplateService::class))
@@ -750,10 +693,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ]);
     }
 
-    /**
-     * @param array $parseFunc
-     * @return TypoScriptInstruction
-     */
     private function createParseFuncInstruction(array $parseFunc): TypoScriptInstruction
     {
         return (new TypoScriptInstruction(TemplateService::class))

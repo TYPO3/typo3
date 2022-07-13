@@ -40,7 +40,8 @@ class TaskGroupVisibleFieldsTest extends FunctionalTestCase
      */
     public function taskGroupFormContainsExpectedFields(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);

@@ -34,9 +34,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
- */
 class ContentObjectRendererTest extends FunctionalTestCase
 {
     use ProphecyTrait;
@@ -64,7 +61,8 @@ class ContentObjectRendererTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),

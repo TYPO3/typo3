@@ -38,7 +38,8 @@ class DataHandlerHookTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->backendUser = $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
         $this->actionService = new ActionService();
         $this->setWorkspaceId(0);

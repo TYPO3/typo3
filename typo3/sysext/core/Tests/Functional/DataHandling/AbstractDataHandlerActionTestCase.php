@@ -104,7 +104,8 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->backendUser = $this->setUpBackendUserFromFixture(self::VALUE_BackendUserId);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_admin.csv');
+        $this->backendUser = $this->setUpBackendUser(self::VALUE_BackendUserId);
         // Note late static binding - Workspace related tests override the constant
         $this->setWorkspaceId(static::VALUE_WorkspaceId);
 

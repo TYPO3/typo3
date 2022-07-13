@@ -238,7 +238,8 @@ class PagesVisibleFieldsTest extends FunctionalTestCase
      */
     public function pagesFormContainsExpectedFields(int $doktype, array $expectedFields, array $hiddenFields): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);

@@ -20,17 +20,16 @@ namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
 
-/**
- * Functional test for the Recycler
- */
 class AdminRecycleTest extends AbstractRecycleTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/be_users.csv');
         // Set up "admin" user
-        $this->setUpBackendUserFromFixture(1);
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
     }
 

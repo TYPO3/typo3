@@ -34,7 +34,8 @@ class MfaProviderRegistryTest extends FunctionalTestCase
         $this->subject = $this->get(MfaProviderRegistry::class);
 
         // Add two providers, which both are not active and unlocked
-        $this->user = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->user = $this->setUpBackendUser(1);
         $this->user->user['mfa'] = json_encode([
             'recovery-codes' => [
                 'active' => false,

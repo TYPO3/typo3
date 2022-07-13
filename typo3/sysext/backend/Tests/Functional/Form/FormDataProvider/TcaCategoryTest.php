@@ -28,7 +28,8 @@ class TcaCategoryTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/CategoryRelations.csv');
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
     }
 

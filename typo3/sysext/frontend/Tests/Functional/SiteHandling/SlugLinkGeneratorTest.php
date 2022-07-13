@@ -79,53 +79,26 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             $this->buildSiteConfiguration(8000, 'https://usual.acme.com/')
         );
 
-        $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
-        });
-
-        // @todo: This is ugly: backend user and lang object are needed for DH db snapshot operations
-        //        already, but also need to be setup properly for subsequent tests, so its done here
-        //        a second time for the first test. This should be changed somehow.
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
-    }
-
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $scenarioFile = __DIR__ . '/Fixtures/SlugScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
-
-        $this->setUpFrontendRootPage(
-            1000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME Root',
-            ]
-        );
-        $this->setUpFrontendRootPage(
-            2000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
-            ],
-            [
-                'title' => 'ACME Blog',
-            ]
+        $this->withDatabaseSnapshot(
+            function () {
+                $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+                $backendUser = $this->setUpBackendUser(1);
+                Bootstrap::initializeLanguageObject();
+                $scenarioFile = __DIR__ . '/Fixtures/SlugScenario.yaml';
+                $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+                $writer = DataHandlerWriter::withBackendUser($backendUser);
+                $writer->invokeFactory($factory);
+                static::failIfArrayIsNotEmpty($writer->getErrors());
+                $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Root']);
+                $this->setUpFrontendRootPage(2000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Blog']);
+            },
+            function () {
+                $this->setUpBackendUser(1);
+                Bootstrap::initializeLanguageObject();
+            }
         );
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedDataProvider(): array
     {
         $instructions = [
@@ -161,11 +134,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedDataProvider
      */
@@ -184,9 +152,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedFromMountPointDataProvider(): array
     {
         $instructions = [
@@ -231,12 +196,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param array $pageMount
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedFromMountPointDataProvider
      */
@@ -256,9 +215,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedForLanguageDataProvider(): array
     {
         $instructions = [
@@ -307,12 +263,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param int $targetLanguageId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedForLanguageDataProvider
      */
@@ -332,9 +282,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedWithQueryParametersDataProvider(): array
     {
         $instructions = [
@@ -370,11 +317,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedWithQueryParametersDataProvider
      */
@@ -394,9 +336,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedForRestrictedPageDataProvider(): array
     {
         $instructions = [
@@ -436,12 +375,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param int $frontendUserId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageDataProvider
      */
@@ -461,9 +394,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider(): array
     {
         $instructions = [
@@ -504,13 +434,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param int $loginPageId
-     * @param int $frontendUserId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider
      */
@@ -537,9 +460,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider(): array
     {
         $instructions = [
@@ -564,12 +484,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param int $languageId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider
      */
@@ -594,9 +508,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function linkIsGeneratedForPageVersionDataProvider(): array
     {
         $instructions = [
@@ -625,13 +536,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param bool $resolveVersion
-     * @param int $backendUserId
-     * @param string $expectation
-     *
      * @test
      * @dataProvider linkIsGeneratedForPageVersionDataProvider
      */
@@ -670,9 +574,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function hierarchicalMenuIsGeneratedDataProvider(): array
     {
         return [
@@ -823,10 +724,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param array $expectation
-     *
      * @test
      * @dataProvider hierarchicalMenuIsGeneratedDataProvider
      */
@@ -1428,9 +1325,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    /**
-     * @return array
-     */
     public function languageMenuIsGeneratedDataProvider(): array
     {
         return [
@@ -1481,10 +1375,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param array $expectation
-     *
      * @test
      * @dataProvider languageMenuIsGeneratedDataProvider
      */

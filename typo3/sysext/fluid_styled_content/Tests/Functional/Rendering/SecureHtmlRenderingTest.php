@@ -66,7 +66,8 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 
     protected function setUpDatabase(): void
     {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
         $scenarioFile = __DIR__ . '/Fixtures/SecureHtmlScenario.yaml';

@@ -95,7 +95,8 @@ class SlugServiceTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->correlationId = CorrelationId::forScope(StringUtility::getUniqueId('test'));
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
     }
 

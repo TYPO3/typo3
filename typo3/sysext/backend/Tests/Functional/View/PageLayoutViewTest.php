@@ -49,7 +49,8 @@ class PageLayoutViewTest extends FunctionalTestCase
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
 
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
         $site = new Site('test', 1, [

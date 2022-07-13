@@ -22,9 +22,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-/**
- * Eid request test
- */
 class EidRequestTest extends AbstractTestCase
 {
     protected array $testExtensionsToLoad = [
@@ -35,27 +32,19 @@ class EidRequestTest extends AbstractTestCase
     {
         parent::setUp();
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/Fixtures/PlainScenario.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty(
+                $writer->getErrors()
+            );
         });
     }
 
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $scenarioFile = __DIR__ . '/Fixtures/PlainScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
-    }
-
-    /**
-     * @return array[]
-     */
     public function ensureEidRequestsWorkDataProvider(): array
     {
         return [

@@ -43,7 +43,8 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     {
         parent::setUp();
 
-        $backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
         $backendUser->workspace = 0;
         Bootstrap::initializeLanguageObject();
 

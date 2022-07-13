@@ -91,8 +91,9 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderEncodesEmailInFrontend(string $template, array $typoScript, string $expected): void
     {
-        $this->setUpBackendUserFromFixture(1);
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),

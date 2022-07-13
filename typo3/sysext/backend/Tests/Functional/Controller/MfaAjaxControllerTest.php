@@ -30,12 +30,11 @@ class MfaAjaxControllerTest extends FunctionalTestCase
     protected MfaAjaxController $subject;
     protected ServerRequest $request;
 
-    protected string $backendUserFixture = 'EXT:core/Tests/Functional/Authentication/Fixtures/be_users.xml';
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_mfa.csv');
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
         $this->subject = new MfaAjaxController($this->get(MfaProviderRegistry::class));

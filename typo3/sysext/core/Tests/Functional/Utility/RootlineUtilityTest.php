@@ -59,26 +59,19 @@ class RootlineUtilityTest extends FunctionalTestCase
             ]
         );
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $factory = DataHandlerFactory::fromYamlFile(__DIR__ . '/Fixtures/RootlineScenario.yaml');
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
         });
     }
 
     public static function tearDownAfterClass(): void
     {
         RootlineUtility::purgeCaches();
-    }
-
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $factory = DataHandlerFactory::fromYamlFile(__DIR__ . '/Fixtures/RootlineScenario.yaml');
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
     }
 
     /**

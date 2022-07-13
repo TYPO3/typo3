@@ -21,24 +21,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Functional test for the Export
- */
 abstract class AbstractRecycleTestCase extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['recycler'];
-
-    protected string $backendUserFixture = 'typo3/sysext/recycler/Tests/Functional/Fixtures/Database/be_users.xml';
-
-    /**
-     * Set up for set up the backend user, initialize the language object
-     * and creating the Export instance
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/be_groups.csv');
-    }
 
     /**
      * Retrieves deleted pages using the recycler domain model "deletedRecords" class.
@@ -51,19 +36,6 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
     {
         $deletedRecords = GeneralUtility::makeInstance(DeletedRecords::class);
         $deletedRecords->loadData($pageUid, 'pages', $depth);
-        return $deletedRecords->getDeletedRows();
-    }
-
-    /**
-     * Retrieves a deleted content element using the recycler domain model "deletedRecords" class.
-     *
-     * @param int $contentUid
-     * @return array Retrieved deleted records
-     */
-    protected function getDeletedContent($contentUid): array
-    {
-        $deletedRecords = GeneralUtility::makeInstance(DeletedRecords::class);
-        $deletedRecords->loadData($contentUid, 'tt_content', 0);
         return $deletedRecords->getDeletedRows();
     }
 }

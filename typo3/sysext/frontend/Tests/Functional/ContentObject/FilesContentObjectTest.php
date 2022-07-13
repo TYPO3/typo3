@@ -38,9 +38,9 @@ class FilesContentObjectTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/FilesContentObjectDataSet.csv');
-
+        $this->setUpBackendUser(1);
         $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE'] = $typoScriptFrontendController;

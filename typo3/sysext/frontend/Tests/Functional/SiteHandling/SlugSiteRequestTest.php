@@ -58,38 +58,27 @@ class SlugSiteRequestTest extends AbstractTestCase
     {
         parent::setUp();
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/Fixtures/SlugScenario.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
+            $this->setUpFrontendRootPage(
+                1000,
+                [
+                    'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                    'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+                ],
+                [
+                    'title' => 'ACME Root',
+                ]
+            );
         });
     }
 
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $scenarioFile = __DIR__ . '/Fixtures/SlugScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
-
-        $this->setUpFrontendRootPage(
-            1000,
-            [
-                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
-            ],
-            [
-                'title' => 'ACME Root',
-            ]
-        );
-    }
-
-    /**
-     * @return array
-     */
     public function requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider(): array
     {
         $domainPaths = [
@@ -105,8 +94,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider
      */
@@ -128,9 +115,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    /**
-     * @return array
-     */
     public function shortcutsAreRedirectedDataProvider(): array
     {
         $domainPaths = [
@@ -146,8 +130,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider shortcutsAreRedirectedDataProvider
      */
@@ -172,8 +154,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider shortcutsAreRedirectedDataProvider
      */
@@ -209,9 +189,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function shortcutsAreRedirectedDataProviderWithChineseCharacterInBase(): array
     {
         $domainPaths = [
@@ -227,8 +204,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider shortcutsAreRedirectedDataProviderWithChineseCharacterInBase
      */
@@ -255,8 +230,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider shortcutsAreRedirectedDataProviderWithChineseCharacterInBase
      */
@@ -392,9 +365,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function pageIsRenderedWithPathsDataProvider(): array
     {
         $domainPaths = [
@@ -422,9 +392,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param string $expectedPageTitle
-     *
      * @test
      * @dataProvider pageIsRenderedWithPathsDataProvider
      */
@@ -510,9 +477,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function pageIsRenderedWithDomainsDataProvider(): array
     {
         $domainPaths = [
@@ -541,9 +505,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param string $expectedPageTitle
-     *
      * @test
      * @dataProvider pageIsRenderedWithDomainsDataProvider
      */
@@ -598,9 +559,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
     }
 
-    /**
-     * @return array
-     */
     public function restrictedPageIsRenderedDataProvider(): array
     {
         $instructions = [
@@ -627,10 +585,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     * @param string $expectedPageTitle
-     *
      * @test
      * @dataProvider restrictedPageIsRenderedDataProvider
      */
@@ -659,9 +613,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function restrictedPageWithParentSysFolderIsRenderedDataProvider(): array
     {
         $instructions = [
@@ -673,10 +624,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     * @param string $expectedPageTitle
-     *
      * @test
      * @dataProvider restrictedPageWithParentSysFolderIsRenderedDataProvider
      */
@@ -705,9 +652,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
@@ -730,9 +674,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -762,9 +703,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -800,9 +738,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -835,9 +770,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -869,9 +801,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
@@ -889,9 +818,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -921,9 +847,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -959,9 +882,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -994,9 +914,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     * @param int $frontendUserId
-     *
      * @test
      * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
@@ -1028,9 +945,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
     {
         $instructions = [
@@ -1073,9 +987,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
     {
         $domainPaths = [
@@ -1101,8 +1012,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
@@ -1118,8 +1027,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
@@ -1148,8 +1055,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
@@ -1175,8 +1080,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
@@ -1205,9 +1108,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function pageIsRenderedWithValidCacheHashDataProvider(): array
     {
         $domainPaths = [
@@ -1237,8 +1137,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @param string $uri
-     *
      * @test
      * @dataProvider pageIsRenderedWithValidCacheHashDataProvider
      */

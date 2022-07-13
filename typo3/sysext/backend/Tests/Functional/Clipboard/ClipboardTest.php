@@ -45,7 +45,8 @@ class ClipboardTest extends FunctionalTestCase
         parent::setUp();
 
         $this->subject = GeneralUtility::makeInstance(Clipboard::class);
-        $this->backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->backendUser = $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
         $this->withDatabaseSnapshot(function () {

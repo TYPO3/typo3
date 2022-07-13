@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -802,14 +801,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         if ($groupFixtureFile) {
             $this->importCSVDataSet($groupFixtureFile);
         }
-        $this->backendUserFixture = $fixtureFile;
-        $this->setUpBackendUserFromFixture($uid);
+        $this->importCSVDataSet($fixtureFile);
+        $this->setUpBackendUser($uid);
         Bootstrap::initializeLanguageObject();
-    }
-
-    protected function setUpBackendUserFromFixture(int $userUid): BackendUserAuthentication
-    {
-        $this->importCSVDataSet($this->backendUserFixture);
-        return $this->setUpBackendUser($userUid);
     }
 }

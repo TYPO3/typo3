@@ -57,48 +57,21 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
         );
 
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/../Fixtures/SlugScenario.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
+            $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'], ['title' => 'ACME Root']);
+            $this->setUpFrontendRootPage(3000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'], ['title' => 'ACME Archive']);
         });
-    }
-
-    protected function setUpDatabase(): void
-    {
-        $backendUser = $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
-
-        $scenarioFile = __DIR__ . '/../Fixtures/SlugScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
-
-        $this->setUpFrontendRootPage(
-            1000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript',
-            ],
-            [
-                'title' => 'ACME Root',
-            ]
-        );
-
-        $this->setUpFrontendRootPage(
-            3000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript',
-            ],
-            [
-                'title' => 'ACME Archive',
-            ]
-        );
     }
 
     /**
      * This test is re-used in various child classes
-     *
-     * @param TestSet $testSet
      */
     protected function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
@@ -141,9 +114,6 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
         self::assertEquals($expectation, $pageArguments);
     }
 
-    /**
-     * @param TestSet $testSet
-     */
     protected function assertPageArgumentsEquals(TestSet $testSet): void
     {
         $builder = Builder::create();

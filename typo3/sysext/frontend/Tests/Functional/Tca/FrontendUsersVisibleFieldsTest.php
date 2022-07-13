@@ -55,19 +55,17 @@ class FrontendUsersVisibleFieldsTest extends FunctionalTestCase
      */
     public function frontendUsersFormContainsExpectedFields(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
         $formResult = $formEngineTestService->createNewRecordForm('fe_users');
-
         foreach (static::$frontendUsersFields as $expectedField) {
             self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );
         }
-
         self::assertNotFalse(
             strpos($formResult['html'], 'Last login'),
             'The field Last login is not in the HTML'

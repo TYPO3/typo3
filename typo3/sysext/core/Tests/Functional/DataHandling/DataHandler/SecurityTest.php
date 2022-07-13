@@ -47,7 +47,8 @@ class SecurityTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/DataSet/pages.csv');
-        $this->backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->backendUser = $this->setUpBackendUser(1);
         $this->backendUser->workspace = 0;
         GeneralUtility::makeInstance(Context::class)
             ->setAspect('workspace', new WorkspaceAspect(0));

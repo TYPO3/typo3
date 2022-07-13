@@ -1426,11 +1426,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
 
 		-
-			message: "#^PHPDoc type string of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\DataHandling\\\\Regular\\\\Hooks\\\\PagesTsConfigGuardTest\\:\\:\\$backendUserFixture is not covariant with PHPDoc type non\\-empty\\-string of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/DataHandling/Regular/Hooks/PagesTsConfigGuardTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, TYPO3\\\\TestIrreForeignfield\\\\Domain\\\\Model\\\\Content given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php

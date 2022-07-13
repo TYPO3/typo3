@@ -60,7 +60,8 @@ class CheckboxValidationTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/DataSet/CheckboxRecordsEval.csv');
-        $this->backendUserAuthentication = $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->backendUserAuthentication = $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
     }
 
