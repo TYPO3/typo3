@@ -66,7 +66,7 @@ class SynchronizeFolderRelationsTest extends FunctionalTestCase
 
         // Check flash message content
         $flashMessage = array_shift($flashMessages);
-        self::assertStringContainsString('5 Filemount records', $flashMessage->getMessage());
+        self::assertStringContainsString('6 Filemount records', $flashMessage->getMessage());
     }
 
     /**

@@ -9,6 +9,7 @@ use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\FeLoginModeExtractionUpdate;
 use TYPO3\CMS\Install\Updates\ShortcutRecordsMigration;
 use TYPO3\CMS\Install\Updates\SvgFilesSanitization;
+use TYPO3\CMS\Install\Updates\SysFileMountIdentifierMigration;
 use TYPO3\CMS\Install\Updates\SysLogChannel;
 use TYPO3\CMS\Install\Updates\SysLogSerializationUpdate;
 
@@ -28,3 +29,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogChanne
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feLoginModeExtension'] = FeLoginModeExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogSerialization'] = SysLogSerializationUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendGroupsExplicitAllowDenyMigration'] = BackendGroupsExplicitAllowDenyMigration::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysFileMountIdentifierMigration'] = SysFileMountIdentifierMigration::class;

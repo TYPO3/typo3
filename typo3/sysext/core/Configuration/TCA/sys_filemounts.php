@@ -19,7 +19,6 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_filemounts',
         ],
-        'useColumnsForDefaultValues' => 'path,base',
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'title,path',
     ],
@@ -56,32 +55,13 @@ return [
                 'max' => 2000,
             ],
         ],
-        'base' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.baseStorage',
-            'onChange' => 'reload',
+        'identifier' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.identifier',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_file_storage',
-                'allowNonIdValues' => true,
-                'items' => [
-                    ['', 0],
-                ],
-                'maxitems' => 1,
+                'type' => 'folder',
                 'required' => true,
-                'range' => [
-                    'lower' => 1,
-                ],
-            ],
-        ],
-        'path' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.folder',
-            'displayCond' => 'FIELD:base:>:0',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [],
-                'itemsProcFunc' => \TYPO3\CMS\Core\Resource\Service\UserFileMountService::class . '->renderTceformsSelectDropdown',
+                'maxitems' => 1,
+                'size' => 1,
             ],
         ],
         'read_only' => [
@@ -95,7 +75,7 @@ return [
     'types' => [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                title,base, path,read_only,
+                title, identifier, read_only,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 hidden,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,

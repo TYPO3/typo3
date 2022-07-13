@@ -1280,8 +1280,10 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             // Regular users only have storages that are defined in their filemounts
             // Permissions and file mounts for the storage are added in StoragePermissionAspect
             foreach ($this->getFileMountRecords() as $row) {
-                if (!array_key_exists((int)$row['base'], $this->fileStorages)) {
-                    $storageObject = $storageRepository->findByUid($row['base']);
+                [$base] = GeneralUtility::trimExplode(':', $row['identifier'], true);
+                $base = (int)$base;
+                if (!array_key_exists($base, $this->fileStorages)) {
+                    $storageObject = $storageRepository->findByUid($base);
                     if ($storageObject) {
                         $this->fileStorages[$storageObject->getUid()] = $storageObject;
                     }
@@ -1375,7 +1377,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $fileMountRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
             if ($fileMountRecords !== false) {
                 foreach ($fileMountRecords as $fileMount) {
-                    $fileMountRecordCache[$fileMount['base'] . $fileMount['path']] = $fileMount;
+                    $fileMountRecordCache[$fileMount['identifier']] = $fileMount;
                 }
             }
         }

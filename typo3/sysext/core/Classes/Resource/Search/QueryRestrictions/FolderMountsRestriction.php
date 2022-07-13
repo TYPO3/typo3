@@ -88,7 +88,7 @@ class FolderMountsRestriction extends AbstractRestrictionContainer
         $this->folderMounts = [];
         $fileMounts = $this->backendUser->getFileMountRecords();
         foreach ($fileMounts as $fileMount) {
-            $this->folderMounts[] = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($fileMount['base'] . ':' . $fileMount['path']);
+            $this->folderMounts[] = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($fileMount['identifier']);
         }
 
         return $this->folderMounts;

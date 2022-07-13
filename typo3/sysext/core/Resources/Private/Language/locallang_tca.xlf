@@ -282,23 +282,14 @@
 			<trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other">
 				<source>Other</source>
 			</trans-unit>
+			<trans-unit id="sys_filemounts.identifier" resname="sys_filemounts.identifier">
+				<source>Entry point</source>
+			</trans-unit>
 			<trans-unit id="sys_filemounts.title" resname="sys_filemounts.title">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.path" resname="sys_filemounts.path">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="sys_filemounts.base" resname="sys_filemounts.base">
-				<source>Base</source>
-			</trans-unit>
 			<trans-unit id="sys_filemounts.read_only" resname="sys_filemounts.read_only">
 				<source>Read-only</source>
-			</trans-unit>
-			<trans-unit id="sys_filemounts.base_absolute" resname="sys_filemounts.base_absolute">
-				<source>absolute (root) / </source>
-			</trans-unit>
-			<trans-unit id="sys_filemounts.base_relative" resname="sys_filemounts.base_relative">
-				<source>relative ../fileadmin/</source>
 			</trans-unit>
 			<trans-unit id="sys_history" resname="sys_history">
 				<source>System History</source>

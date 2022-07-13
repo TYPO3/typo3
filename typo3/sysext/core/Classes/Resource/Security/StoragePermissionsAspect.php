@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The aspect injects user permissions and mount points into the storage
@@ -61,9 +62,10 @@ final class StoragePermissionsAspect
     private function addFileMountsToStorage(ResourceStorage $storage)
     {
         foreach ($GLOBALS['BE_USER']->getFileMountRecords() as $fileMountRow) {
-            if ((int)$fileMountRow['base'] === (int)$storage->getUid()) {
+            [$base, $path] = GeneralUtility::trimExplode(':', $fileMountRow['identifier'], false, 2);
+            if ((int)$base === (int)$storage->getUid()) {
                 try {
-                    $storage->addFileMount($fileMountRow['path'], $fileMountRow);
+                    $storage->addFileMount($path, $fileMountRow);
                 } catch (FolderDoesNotExistException $e) {
                     // That file mount does not seem to be valid, fail silently
                 }

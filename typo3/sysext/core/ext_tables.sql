@@ -150,8 +150,7 @@ CREATE TABLE sys_news (
 #
 CREATE TABLE sys_filemounts (
 	title varchar(255) DEFAULT '' NOT NULL,
-	path varchar(255) DEFAULT '' NOT NULL,
-	base int(11) unsigned DEFAULT '0' NOT NULL,
+	identifier varchar(255) DEFAULT '' NOT NULL,
 	read_only tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
 
