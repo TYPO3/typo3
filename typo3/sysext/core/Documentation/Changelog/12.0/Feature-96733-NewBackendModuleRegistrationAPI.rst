@@ -180,6 +180,12 @@ Module configuration options
 |                                                          | about the usage of this option, see the corresponding            |
 |                                                          | :doc:`changelog <Feature-96895-IntroduceModuleDataObject>`.      |
 +----------------------------------------------------------+------------------------------------------------------------------+
+| aliases (:php:`array`)                                   | List of identifiers that are aliases to this module. Those are   |
+|                                                          | added as route aliases, which allows to use them for building    |
+|                                                          | ölinks, e.g. with the :php:`UriBuilder`. Additionaly, the        |
+|                                                          | aliases can also be used for references in other modules, e.g.   |
+|                                                          | to specify a modules' :php:`parent`.                             |
++----------------------------------------------------------+------------------------------------------------------------------+
 
 Module-dependent configuration options
 --------------------------------------
@@ -404,6 +410,10 @@ relation handling (main modules and sub modules).
 | getDefaultRouteOptions()  | :php:`array`             | Returns options, to be added to the main      |
 |                           |                          | module route. Usually `module`, `moduleName`  |
 |                           |                          | and `access`.                                 |
++---------------------------+--------------------------+-----------------------------------------------+
+| getAliases()              | :php:`array`             | List of identifiers (e.g. to an old name of   |
+|                           |                          | the module), which is also used to link and   |
+|                           |                          | reference in access checks.                   |
 +---------------------------+--------------------------+-----------------------------------------------+
 
 Impact

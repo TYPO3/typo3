@@ -161,6 +161,11 @@ class MenuModule implements ModuleInterface
         return $this->module->getDefaultModuleData();
     }
 
+    public function getAliases(): array
+    {
+        return $this->module->getAliases();
+    }
+
     public function isCollapsed(): bool
     {
         return $this->isCollapsed;

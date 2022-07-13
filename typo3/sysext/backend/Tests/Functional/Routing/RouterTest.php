@@ -33,6 +33,21 @@ class RouterTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function routerReturnsRouteForAlias(): void
+    {
+        $subject = GeneralUtility::makeInstance(Router::class);
+        $subject->addRoute(
+            'new_route_identifier',
+            new Route('/new/route/path', []),
+            ['old_route_identifier']
+        );
+        self::assertTrue($subject->hasRoute('new_route_identifier'));
+        self::assertTrue($subject->hasRoute('old_route_identifier'));
+    }
+
+    /**
+     * @test
+     */
     public function matchRequestFindsProperRoute(): void
     {
         $subject = GeneralUtility::makeInstance(Router::class);

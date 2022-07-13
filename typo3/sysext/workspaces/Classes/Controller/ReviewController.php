@@ -180,7 +180,7 @@ class ReviewController
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('web_WorkspacesWorkspaces')
+            ->setRouteIdentifier('workspaces_admin')
             ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId))
             ->setArguments(['id' => (int)$pageId]);
         $buttonBar->addButton($shortcutButton);
@@ -219,7 +219,7 @@ class ReviewController
                         $activeWorkspace => 'edit',
                     ],
                 ],
-                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', ['id' => $pageUid]),
+                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', ['id' => $pageUid]),
             ]);
             $editSettingsButton = $buttonBar->makeLinkButton()
                 ->setHref($editWorkspaceRecordUrl)
@@ -242,7 +242,7 @@ class ReviewController
         if ($workspaceId !== null) {
             $parameters['workspace'] = $workspaceId;
         }
-        return (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
+        return (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', $parameters);
     }
 
     /**

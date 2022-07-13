@@ -43,6 +43,7 @@ abstract class BaseModule
     protected string $component = '@typo3/backend/module/iframe';
     protected string $navigationComponent = '';
     protected array $defaultModuleData = [];
+    protected array $aliases = [];
     protected bool $inheritNavigationComponent = true;
 
     final protected function __construct(string $identifier)
@@ -170,6 +171,11 @@ abstract class BaseModule
         return $this->appearance;
     }
 
+    public function getAliases(): array
+    {
+        return $this->aliases;
+    }
+
     abstract public function getDefaultRouteOptions(): array;
 
     public function getDefaultModuleData(): array
@@ -230,6 +236,9 @@ abstract class BaseModule
         }
         if (is_array($configuration['moduleData'] ?? false)) {
             $obj->defaultModuleData = $configuration['moduleData'];
+        }
+        if (is_array($configuration['aliases'] ?? false)) {
+            $obj->aliases = $configuration['aliases'];
         }
 
         if (isset($configuration['inheritNavigationComponentFromMainModule'])) {

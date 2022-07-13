@@ -31,12 +31,19 @@ final class ModuleRegistry
     private array $modules = [];
 
     /**
+     * This contains all available "aliases" as key, and the real module identifier as value
+     * @var array<string, string>
+     */
+    private array $moduleAliases = [];
+
+    /**
      * @param ModuleInterface[] $modules
      */
     public function __construct(array $modules)
     {
         array_walk($modules, [$this, 'addModule']);
         $this->modules = $this->applyHierarchy($this->modules);
+        $this->populateAliasMapping();
     }
 
     private function addModule(ModuleInterface $module): void
@@ -53,7 +60,7 @@ final class ModuleRegistry
 
     public function hasModule(string $identifier): bool
     {
-        return isset($this->modules[$identifier]);
+        return isset($this->modules[$identifier]) || isset($this->moduleAliases[$identifier]);
     }
 
     public function getModule(string $identifier): ModuleInterface
@@ -65,6 +72,10 @@ final class ModuleRegistry
             );
         }
 
+        // Resolve the alias to the real module
+        if (isset($this->moduleAliases[$identifier])) {
+            $identifier = $this->moduleAliases[$identifier];
+        }
         return $this->modules[$identifier];
     }
 
@@ -85,7 +96,8 @@ final class ModuleRegistry
             if ($module->hasParentModule() || $module->isStandalone()) {
                 $router->addRoute(
                     $module->getIdentifier(),
-                    new Route($module->getPath(), $module->getDefaultRouteOptions())
+                    new Route($module->getPath(), $module->getDefaultRouteOptions()),
+                    $module->getAliases()
                 );
             }
         }
@@ -265,5 +277,20 @@ final class ModuleRegistry
             }
         }
         return $flatModules;
+    }
+
+    protected function populateAliasMapping(): void
+    {
+        foreach ($this->modules as $moduleIdentifier => $module) {
+            foreach ($module->getAliases() as $aliasIdentifier) {
+                // Note: The last module defining the same alias wins in general
+                $this->moduleAliases[$aliasIdentifier] = $moduleIdentifier;
+            }
+        }
+    }
+
+    public function getModuleAliases(): array
+    {
+        return $this->moduleAliases;
     }
 }

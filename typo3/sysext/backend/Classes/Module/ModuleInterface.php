@@ -153,4 +153,9 @@ interface ModuleInterface
      * Get allowed and available module data properties and their default values.
      */
     public function getDefaultModuleData(): array;
+
+    /**
+     * Return a list of identifiers that are aliases to this module
+     */
+    public function getAliases(): array;
 }

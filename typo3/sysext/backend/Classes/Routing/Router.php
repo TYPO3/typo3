@@ -49,15 +49,19 @@ class Router implements SingletonInterface
     /**
      * Adds a new route with a given identifier
      */
-    public function addRoute(string $routeIdentifier, Route $route)
+    public function addRoute(string $routeIdentifier, Route $route, array $aliases = []): void
     {
         $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
         $symfonyRoute->setMethods($route->getMethods());
         $this->routeCollection->add($routeIdentifier, $symfonyRoute);
+        foreach ($aliases as $aliasName) {
+            $this->routeCollection->addAlias($aliasName, $routeIdentifier);
+        }
     }
 
     /**
-     * Fetch all registered routes, only use in UriBuilder
+     * Fetch all registered routes, only use in UriBuilder. Does not care about aliases,
+     * so be careful with using this method.
      *
      * @return Route[]
      */

@@ -17,7 +17,7 @@
             <f:else if="{isAdmin} && {customWorkspaceExists} != 1">
                 <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.title')}">
                     <p><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.message"/></p>
-                    <be:link.newRecord class="btn btn-primary" table="sys_workspace" pid="0" returnUrl="{f:be.uri(route: 'web_WorkspacesWorkspaces')}">
+                    <be:link.newRecord class="btn btn-primary" table="sys_workspace" pid="0" returnUrl="{f:be.uri(route: 'workspaces_admin')}">
                         <f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.buttonCreate"/>
                     </be:link.newRecord>
                 </f:be.infobox>

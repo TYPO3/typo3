@@ -38,6 +38,7 @@ class BackendModuleProvider extends AbstractProvider
                 'description' => $module->getDescription(),
                 'shortDescription' => $module->getShortDescription(),
                 'access' => $module->getAccess(),
+                'aliases' => $module->getAliases(),
                 'position' => $module->getPosition(),
                 'workspaces' => $module->getWorkspaceAccess(),
                 'isStandalone' => $module->isStandalone() ? 'true' : 'false',

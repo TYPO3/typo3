@@ -203,14 +203,12 @@ class WorkspacesMenu {
         url += (!url.includes('?') ? '?' : '&') + 'id=' + data.pageId;
         Viewport.ContentContainer.setUrl(url);
 
-        // when in web module reload, otherwise send the user to the web module
+      } else if (currentModule === 'workspaces_admin') {
+        // Reload the workspace module and override the workspace id
+        ModuleMenu.App.showModule(currentModule, 'workspace=' + workspaceId);
       } else if (currentModule.startsWith('web_')) {
-        if (currentModule === 'web_WorkspacesWorkspaces') {
-          // Reload the workspace module and override the workspace id
-          ModuleMenu.App.showModule(currentModule, 'workspace=' + workspaceId);
-        } else {
-          ModuleMenu.App.reloadFrames();
-        }
+        // when in web module reload, otherwise send the user to the page module
+        ModuleMenu.App.reloadFrames();
       } else if (data.pageModule) {
         ModuleMenu.App.showModule(data.pageModule);
       }

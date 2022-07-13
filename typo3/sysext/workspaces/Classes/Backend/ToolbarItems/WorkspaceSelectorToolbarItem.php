@@ -93,7 +93,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
             }
         }
         // Add the "Go to workspace module" link if there is at least one icon on top and if the access rights are there
-        if ($topItem !== null && $backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
+        if ($topItem !== null && $backendUser->check('modules', 'workspaces_admin')) {
             $view->assign('showLinkToModule', true);
         }
         $view->assign('topItem', $topItem);

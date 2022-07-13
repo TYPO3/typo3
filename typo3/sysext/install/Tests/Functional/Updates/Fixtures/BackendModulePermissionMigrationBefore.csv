@@ -1,0 +1,16 @@
+"be_groups",,
+,"uid","groupMods"
+,1,"web_list,web_layout"
+,2,""
+,3,"web_list,web_WorkspacesWorkspaces,web,workspaces,web_layout"
+,4,",,web_WorkspacesWorkspaces,web_layout,web_WorkspacesWorkspaces,"
+,5,"web_WorkspacesWorkspaces"
+,6,"workspaces_admin"
+"be_users",,
+,"uid","userMods"
+,1,"web_list,web_layout"
+,2,""
+,3,"web_list,web_WorkspacesWorkspaces,web,workspaces,web_layout"
+,4,",,web_WorkspacesWorkspaces,web_layout,web_WorkspacesWorkspaces,"
+,5,"web_WorkspacesWorkspaces"
+,6,"workspaces_admin"

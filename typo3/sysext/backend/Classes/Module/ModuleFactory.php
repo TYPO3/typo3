@@ -68,4 +68,35 @@ class ModuleFactory
         }
         return $configuration;
     }
+
+    /**
+     * In order to keep modules that reference to an alias (e.g. switch of main module form "web" to "content"),
+     * the modules need to be re-located to reference the "new" identifier and not the now available alias. This
+     * concerns "parent" and the "position" options, which reference other module identifiers.
+     */
+    public function adaptAliasMappingFromModuleConfiguration(array $moduleConfigurations): array
+    {
+        // collect ALL aliases
+        $availableAliases = [];
+        foreach ($moduleConfigurations as $moduleIdentifier => $moduleConfiguration) {
+            foreach ($moduleConfiguration['aliases'] ?? [] as $aliasIdentifier) {
+                $availableAliases[$aliasIdentifier] = $moduleIdentifier;
+            }
+        }
+        // rewrite references
+        $adaptedModuleConfiguration = [];
+        foreach ($moduleConfigurations as $moduleIdentifier => $moduleConfiguration) {
+            if (isset($moduleConfiguration['parent'], $availableAliases[$moduleConfiguration['parent']])) {
+                $moduleConfiguration['parent'] = $availableAliases[$moduleConfiguration['parent']];
+            }
+            if (isset($moduleConfiguration['position']['before'], $availableAliases[$moduleConfiguration['position']['before']])) {
+                $moduleConfiguration['position']['before'] = $availableAliases[$moduleConfiguration['position']['before']];
+            }
+            if (isset($moduleConfiguration['position']['after'], $availableAliases[$moduleConfiguration['position']['after']])) {
+                $moduleConfiguration['position']['after'] = $availableAliases[$moduleConfiguration['position']['after']];
+            }
+            $adaptedModuleConfiguration[$moduleIdentifier] = $moduleConfiguration;
+        }
+        return $adaptedModuleConfiguration;
+    }
 }

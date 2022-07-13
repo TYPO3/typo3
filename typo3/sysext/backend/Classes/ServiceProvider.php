@@ -138,16 +138,18 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getModuleRegistry(ContainerInterface $container): ModuleRegistry
     {
+        $moduleFactory = $container->get(ModuleFactory::class);
         $cache = $container->get('cache.core');
         $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendModules')->toString();
         $modulesFromPackages = $cache->require($cacheIdentifier);
         if ($modulesFromPackages === false) {
             $modulesFromPackages = $container->get('backend.modules')->getArrayCopy();
+            $modulesFromPackages = $moduleFactory->adaptAliasMappingFromModuleConfiguration($modulesFromPackages);
             $cache->set($cacheIdentifier, 'return ' . var_export($modulesFromPackages, true) . ';');
         }
 
         foreach ($modulesFromPackages as $identifier => $configuration) {
-            $modulesFromPackages[$identifier] = $container->get(ModuleFactory::class)->createModule($identifier, $configuration);
+            $modulesFromPackages[$identifier] = $moduleFactory->createModule($identifier, $configuration);
         }
 
         return self::new($container, ModuleRegistry::class, [$modulesFromPackages]);
@@ -179,13 +181,13 @@ class ServiceProvider extends AbstractServiceProvider
         foreach ($routesFromPackages as $name => $options) {
             $path = $options['path'];
             $methods = $options['methods'] ?? [];
-            unset($options['path']);
-            unset($options['methods']);
+            $aliases = $options['aliases'] ?? [];
+            unset($options['path'], $options['methods'], $options['aliases']);
             $route = new Route($path, $options);
             if (count($methods) > 0) {
                 $route->setMethods($methods);
             }
-            $router->addRoute($name, $route);
+            $router->addRoute($name, $route, $aliases);
         }
 
         // Add routes from all modules

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
+use TYPO3\CMS\Install\Updates\BackendModulePermissionMigration;
 use TYPO3\CMS\Install\Updates\BackendUserLanguageMigration;
 use TYPO3\CMS\Install\Updates\CollectionsExtractionUpdate;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
@@ -30,3 +31,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feLoginModeE
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogSerialization'] = SysLogSerializationUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendGroupsExplicitAllowDenyMigration'] = BackendGroupsExplicitAllowDenyMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysFileMountIdentifierMigration'] = SysFileMountIdentifierMigration::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendModulePermission'] = BackendModulePermissionMigration::class;

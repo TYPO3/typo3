@@ -73,17 +73,34 @@ class ModuleRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function accessReegisteredModulesWork(): void
+    public function accessRegisteredModulesWork(): void
     {
-        $aModule = $this->createModule('a_module');
-        $bModule = $this->createModule('b_module');
+        $aModule = $this->createModule('a_module', ['aliases' => ['a_old_module']]);
+        $bModule = $this->createModule('b_module', ['parent' => 'a_module']);
 
         $registry = new ModuleRegistry([$aModule, $bModule]);
 
         self::assertTrue($registry->hasModule('a_module'));
         self::assertFalse($registry->hasModule('c_module'));
         self::assertEquals($aModule, $registry->getModule('a_module'));
+        self::assertEquals($aModule, $registry->getModule('a_old_module'));
+        self::assertEquals('a_module', $registry->getModule('b_module')->getParentIdentifier());
         self::assertEquals(['a_module' => $aModule, 'b_module' => $bModule], $registry->getModules());
+        self::assertEquals(['a_old_module' => 'a_module'], $registry->getModuleAliases());
+    }
+
+    /**
+     * @test
+     */
+    public function moduleAliasOverwriteStrategy(): void
+    {
+        $aModule = $this->createModule('a_module', ['aliases' => ['duplicate_alias']]);
+        $bModule = $this->createModule('b_module', ['aliases' => ['duplicate_alias']]);
+
+        $registry = new ModuleRegistry([$aModule, $bModule]);
+
+        self::assertEquals($bModule, $registry->getModule('duplicate_alias'));
+        self::assertEquals(['duplicate_alias' => 'b_module'], $registry->getModuleAliases());
     }
 
     /**
