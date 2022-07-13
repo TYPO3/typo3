@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Fixtures\Crypto\PasswordHashing;
+namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\PasswordHashing;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
