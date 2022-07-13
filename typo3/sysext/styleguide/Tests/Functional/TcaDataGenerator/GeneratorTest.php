@@ -40,7 +40,8 @@ class GeneratorTest extends FunctionalTestCase
      */
     public function generatorCreatesBasicRecord(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
         // Verify there is no tx_styleguide_elements_basic yet
