@@ -41,10 +41,8 @@ class BackendStyleguideEnvironment extends BackendEnvironment
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide',
         ],
-        'xmlDatabaseFixtures' => [
-            'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_users.xml',
-            'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_sessions.xml',
-            'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_groups.xml',
+        'csvDatabaseFixtures' => [
+            __DIR__ . '/../../Fixtures/BackendStyleguideEnvironment.csv',
         ],
     ];
 }
