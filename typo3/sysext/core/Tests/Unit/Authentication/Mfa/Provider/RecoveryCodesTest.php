@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider;
 
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
-use TYPO3\CMS\Core\Tests\Fixtures\Crypto\PasswordHashing\NoopPasswordHash;
+use TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\PasswordHashing\NoopPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
