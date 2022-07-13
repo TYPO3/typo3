@@ -171,6 +171,50 @@ class Utility {
       return prev;
     }, {});
   }
+
+  /**
+   * Checks if the origin, pathnames and query string are equal (ignoring different fragments),
+   * and therefore point to the same server side resource.
+   *
+   * @param {string|null} url1
+   * @param {string|null} url2
+   *
+   * @returns {boolean}
+   */
+  public static urlsPointToSameServerSideResource(url1: null|string, url2: null|string): boolean {
+    if (!url1 || !url2) {
+      return false;
+    }
+
+    const currentWindowUrlOrigin = window.location.origin;
+
+    try {
+      const uriObject1 = new URL(url1, Utility.isValidUrl(url1) ? undefined : currentWindowUrlOrigin);
+      const uriObject2 = new URL(url2, Utility.isValidUrl(url2) ? undefined : currentWindowUrlOrigin);
+      const resource1 = uriObject1.origin + uriObject1.pathname + uriObject1.search;
+      const resource2 = uriObject2.origin + uriObject2.pathname + uriObject2.search;
+
+      return resource1 === resource2;
+    } catch (exception) {
+      return false;
+    }
+  }
+
+
+  /**
+   * Checks, if the given URL is valid.
+   *
+   * @param {null|string} url
+   * @private
+   */
+  private static isValidUrl(url: null|string): boolean {
+    try {
+      new URL(url)
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
 
 export default Utility;

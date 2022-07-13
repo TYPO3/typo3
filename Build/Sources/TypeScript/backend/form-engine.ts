@@ -34,6 +34,7 @@ import * as BackendExceptionModule from '@typo3/backend/backend-exception';
 import InteractionRequestMap from '@typo3/backend/event/interaction-request-map';
 import InteractionRequest from '@typo3/backend/event/interaction-request';
 import TriggerRequest from '@typo3/backend/event/trigger-request';
+import Utility from '@typo3/backend/utility';
 
 interface OnFieldChangeItem {
   name: string;
@@ -901,7 +902,7 @@ export default (function() {
   FormEngine.previewAction = function(event: Event, callback: Function): void {
     callback = callback || FormEngine.previewActionCallback;
 
-    const previewUrl = (event.target as HTMLAnchorElement).href;
+    const previewUrl = (event.currentTarget as HTMLAnchorElement).href;
     const isNew = (event.target as HTMLAnchorElement).dataset.hasOwnProperty('isNew');
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedokview').attr('value', '1');
     if (FormEngine.hasChange()) {
@@ -926,7 +927,8 @@ export default (function() {
       case 'discard':
         const previewWin = window.open(previewUrl, 'newTYPO3frontendWindow');
         previewWin.focus();
-        if (previewWin.location.href === previewUrl) {
+
+        if (Utility.urlsPointToSameServerSideResource(previewWin.location.href, previewUrl)) {
           previewWin.location.reload();
         }
         break;
