@@ -1,0 +1,16 @@
+//
+// The global link styling is currently unreliable and makes links
+// invisible to the user by default. This mixin resets links without
+// classes to a reasonable default.
+//
+@mixin link-reset() {
+    a:not([class]) {
+        color: $primary;
+        text-decoration: underline;
+
+        &:hover {
+            color: shift-color($primary, 20%);
+            text-decoration: underline;
+        }
+    }
+}

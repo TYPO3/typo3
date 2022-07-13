@@ -58,6 +58,7 @@
 
 // extend bootstrap 5 utilities
 @import "utilities/utilities";
+@import "utilities/resets";
 
 // Utilities
 @import "../../node_modules/bootstrap/scss/utilities/api";
@@ -92,6 +93,7 @@ $sourcesanspro-font-path: "../Fonts/SourceSansPro";
 @import "component/avatar";
 @import "component/callout";
 @import "component/icon";
+@import "component/statusreport";
 @import "component/diff";
 @import "component/module";
 @import "component/panel";

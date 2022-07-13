@@ -1,0 +1,164 @@
+//
+// Statusreport
+// ============
+//
+// Minimal Usage
+// -------------
+// <div class="statusreport-wrapper">
+//     <div class="statusreport" data-severity="success">
+//         <div class="statusreport-indicator">
+//             <div class="statusreport-indicator-icon">
+//                 <core:icon identifier="actions-check" size="default" />
+//             </div>
+//         </div>
+//         <div class="statusreport-title">
+//             ...
+//         </div>
+//         <div class="statusreport-body">
+//             ...
+//         </div>
+//     </div>
+// </div>
+//
+//
+// List Usage
+// ----------
+//
+// <div class="statusreport-wrapper">
+//     <div class="statusreport" data-severity="success">
+//         ....
+//     </div>
+//     <div class="statusreport" data-severity="error">
+//         ....
+//     </div>
+// </div>
+//
+
+:root {
+    --statusreport-border-color: #{$gray-300};
+
+    --statusreport-border-radius: 4px;
+
+    --statusreport-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
+
+    --statusreport-spacing: 0.5rem;
+
+    --statusreport-bg: #{$white};
+
+    --statusreport-color: #{$body-color};
+
+    --statusreport-icon-size: 16px;
+
+    --statusreport-icon-bg: #{$light};
+
+    --statusreport-icon-color: #{color-contrast($light)};
+
+    @each $state, $value in $theme-colors {
+        --statusreport-icon-#{$state}-bg: #{$value};
+
+        --statusreport-icon-#{$state}-color: #{color-contrast($value)};
+    }
+}
+
+.statusreport {
+    display: grid;
+    grid-template: 'statusreport-indicator statusreport-title statusreport-body' / calc(var(--statusreport-icon-size) * 1.5) 200px auto;
+    color: var(--statusreport-color);
+    padding: calc(var(--statusreport-spacing) * 1.5);
+    gap: var(--statusreport-spacing);
+    background-color: var(--statusreport-bg);
+    width: 100%;
+    border: 1px solid var(--statusreport-border-color);
+
+    &-indicator {
+        display: flex;
+        justify-content: center;
+        grid-area: statusreport-indicator;
+    }
+
+    &-title {
+        grid-area: statusreport-title;
+    }
+
+    &-body {
+        grid-area: statusreport-body;
+    }
+
+    @include link-reset();
+
+    .statusreport-indicator-icon {
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--statusreport-icon-color);
+        font-size: var(--statusreport-icon-size);
+        height: var(--statusreport-icon-size);
+        width: var(--statusreport-icon-size);
+
+        &:before {
+            position: absolute;
+            content: ' ';
+            top: 50%;
+            left: 50%;
+            height: calc(var(--statusreport-icon-size) * 1.5);
+            width: calc(var(--statusreport-icon-size) * 1.5);
+            background-color: var(--statusreport-icon-bg);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+    }
+}
+
+.statusreport-wrapper {
+    border-radius: var(--statusreport-border-radius);
+    box-shadow: var(--statusreport-box-shadow);
+
+    .statusreport {
+        &:first-child {
+            border-top-left-radius: var(--statusreport-border-radius);
+            border-top-right-radius: var(--statusreport-border-radius);
+        }
+
+        &:last-child {
+            border-bottom-left-radius: var(--statusreport-border-radius);
+            border-bottom-right-radius: var(--statusreport-border-radius);
+        }
+
+        + .statusreport {
+            margin-top: -1px;
+        }
+    }
+}
+
+@each $state, $value in $theme-colors {
+    .statusreport[data-severity=#{$state}] {
+        --statusreport-icon-bg: var(--statusreport-icon-#{$state}-bg);
+
+        --statusreport-icon-color: var(--statusreport-icon-#{$state}-color);
+    }
+}
+
+// Container queries are currently not supported by clean-css and stylelint,
+// to avoid invalid removals we are ignoring the following lines for now.
+//
+// Container queries are expected to be stable by the end of 2022:
+// Edge, Chrome, Firefox, Safari
+
+/* stylelint-disable */
+
+/* clean-css ignore:start */
+
+.statusreport-wrapper {
+    container-type: inline-size;
+}
+
+@container (max-width: 500px) {
+    .statusreport {
+        grid-template: 'statusreport-indicator statusreport-title' 'statusreport-indicator statusreport-body' / calc(var(--statusreport-icon-size) * 1.5) auto;
+    }
+}
+
+/* clean-css ignore:end */
+
+/* stylelint-enable */

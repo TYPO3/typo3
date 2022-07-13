@@ -159,6 +159,13 @@ class Status implements RequestAwareReportInterface
         $view = $this->backendViewFactory->create($request);
         return $view->assignMultiple([
             'statusCollection' => $statusCollection,
+            'severityIconMapping' => [
+                ReportStatus::NOTICE => 'actions-info',
+                ReportStatus::INFO => 'actions-info',
+                ReportStatus::OK => 'actions-check',
+                ReportStatus::WARNING => 'actions-exclamation',
+                ReportStatus::ERROR => 'actions-exclamation',
+            ],
             'severityClassMapping' => [
                 ReportStatus::NOTICE => 'notice',
                 ReportStatus::INFO => 'info',
