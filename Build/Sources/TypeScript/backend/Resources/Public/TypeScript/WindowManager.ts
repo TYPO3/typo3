@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import Utility from 'TYPO3/CMS/Backend/Utility';
+
 /**
  * Module: TYPO3/CMS/Backend/WindowManager
  */
@@ -34,10 +36,14 @@ class WindowManager {
     } else if (switchFocus === undefined) {
       switchFocus = true;
     }
-    const existingWindow = this.windows[windowName];
-    const existingUri = existingWindow instanceof Window && !existingWindow.closed ? existingWindow.location.href : null;
+    const existingWindow = this.windows[windowName] ?? window.open('', windowName, windowFeatures);
+    // Note: `existingWindow instanceof Window` wouldn't work here as `existingWindow` is from a another browser context/window.
+    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof#instanceof_and_multiple_contexts_e.g._frames_or_windows
+    const isInstanceOfWindow = existingWindow.constructor.name === 'Window';
+    const existingUri = isInstanceOfWindow && !existingWindow.closed ? existingWindow.location.href : null;
 
-    if (existingUri === uri) {
+    if (Utility.urlsPointToSameServerSideResource(uri, existingUri)) {
+      existingWindow.location.replace(uri);
       existingWindow.location.reload();
       return existingWindow;
     }

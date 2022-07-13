@@ -31,8 +31,9 @@ define(['jquery',
   'TYPO3/CMS/Backend/Utility/MessageUtility',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/BackendException',
-  'TYPO3/CMS/Backend/Event/InteractionRequestMap'
-], function($, FormEngineValidation, DocumentSaveActions, Icons, Modal, MessageUtility, Severity, BackendExceptionModule, InteractionRequestMap) {
+  'TYPO3/CMS/Backend/Event/InteractionRequestMap',
+  'TYPO3/CMS/Backend/Utility'
+], function($, FormEngineValidation, DocumentSaveActions, Icons, Modal, MessageUtility, Severity, BackendExceptionModule, InteractionRequestMap, Utility) {
 
   /**
    * @param {InteractionRequest} interactionRequest
@@ -819,7 +820,7 @@ define(['jquery',
   FormEngine.previewAction = function(event, callback) {
     callback = callback || FormEngine.previewActionCallback;
 
-    var previewUrl = event.target.href;
+    var previewUrl = event.currentTarget.href;
     var isNew = event.target.dataset.hasOwnProperty('isNew');
     var $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedokview').attr('value', '1');
     if (FormEngine.hasChange()) {
@@ -844,7 +845,8 @@ define(['jquery',
       case 'discard':
         var previewWin = window.open(previewUrl, 'newTYPO3frontendWindow');
         previewWin.focus();
-        if (previewWin.location.href === previewUrl) {
+
+        if (Utility.urlsPointToSameServerSideResource(previewWin.location.href, previewUrl)) {
           previewWin.location.reload();
         }
         break;

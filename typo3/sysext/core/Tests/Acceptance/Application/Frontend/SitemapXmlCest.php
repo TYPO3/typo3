@@ -48,12 +48,33 @@ class SitemapXmlCest
         });
 
         // Get current url
+        $url = $this->getCurrentURL($I);
+
+        // Add Sitemap parameter to URL
+        $I->amOnUrl($url . '?type=1533906435');
+    }
+
+    /**
+     * @param ApplicationTester $I
+     * @param int $attempt
+     * @return string
+     */
+    private function getCurrentURL(ApplicationTester $I, int $attempt = 1): string
+    {
         $url = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
             return $webdriver->getCurrentURL();
         });
 
-        // Add Sitemap parameter to URL
-        $I->amOnUrl($url . '?type=1533906435');
+        if ($attempt > 4) {
+            return $url ?? '';
+        }
+
+        if (!$url || str_contains($url, 'about:blank')) {
+            $I->wait(0.5);
+            $url = $this->getCurrentURL($I, $attempt + 1);
+        }
+
+        return $url;
     }
 
     /**
