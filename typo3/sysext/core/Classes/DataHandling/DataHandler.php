@@ -3681,7 +3681,7 @@ class DataHandler implements LoggerAwareInterface
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
         }
         // Finally, insert record:
-        $this->insertDB($table, $id, $fieldArray, true);
+        $this->insertDB($table, $id, $fieldArray, BackendUtility::isTableWorkspaceEnabled($table));
         // Resets dontProcessTransformations to the previous state.
         $this->dontProcessTransformations = $backupDontProcessTransformations;
         // Return new id:
