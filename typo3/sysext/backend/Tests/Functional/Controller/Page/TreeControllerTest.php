@@ -59,7 +59,14 @@ class TreeControllerTest extends FunctionalTestCase
         //admin user for importing dataset
         $this->backendUser = $this->setUpBackendUser(1);
 
-        $this->setUpDatabase();
+        $this->withDatabaseSnapshot(function () {
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/Fixtures/PagesWithBEPermissions.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($this->backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
+        });
 
         //regular editor, non admin
         $this->backendUser = $this->setUpBackendUser(9);
@@ -71,18 +78,6 @@ class TreeControllerTest extends FunctionalTestCase
     {
         unset($this->subject, $this->backendUser, $this->context);
         parent::tearDown();
-    }
-
-    protected function setUpDatabase(): void
-    {
-        Bootstrap::initializeLanguageObject();
-        $scenarioFile = __DIR__ . '/Fixtures/PagesWithBEPermissions.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($this->backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
     }
 
     /**
