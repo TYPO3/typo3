@@ -57,10 +57,10 @@ trait PageRendererBackendSetupTrait
         $pageRenderer->setLanguage($languageService->lang);
         $pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $pageRenderer->setFavIcon($this->getBackendFavicon($extensionConfiguration, $request));
-        $pageRenderer->enableConcatenateCss();
-        $pageRenderer->enableConcatenateJavascript();
-        $pageRenderer->enableCompressCss();
-        $pageRenderer->enableCompressJavascript();
+        $pageRenderer->disableConcatenateCss();
+        $pageRenderer->disableConcatenateJavascript();
+        $pageRenderer->disableCompressCss();
+        $pageRenderer->disableCompressJavascript();
         $languageCode = $pageRenderer->getLanguage() === 'default' ? 'en' : $pageRenderer->getLanguage();
         $pageRenderer->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
