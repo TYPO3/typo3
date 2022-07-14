@@ -2437,7 +2437,10 @@ class GeneralUtility
     public static function createVersionNumberedFilename($file)
     {
         $lookupFile = explode('?', $file);
-        $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $lookupFile[0]);
+        $path = $lookupFile[0];
+        if (!PathUtility::isAbsolutePath($path)) {
+            $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+        }
 
         $doNothing = false;
         if (TYPO3_MODE === 'FE') {
@@ -2474,7 +2477,7 @@ class GeneralUtility
                 array_push($name, filemtime($path), $extension);
                 $fullName = implode('.', $name);
                 // Append potential query string
-                $fullName .= $lookupFile[1] ? '?' . $lookupFile[1] : '';
+                $fullName .= !empty($lookupFile[1]) ? '?' . $lookupFile[1] : '';
             }
         }
         return $fullName;
