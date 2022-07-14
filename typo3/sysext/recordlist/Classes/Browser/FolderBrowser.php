@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Recordlist\Browser;
 
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
@@ -88,98 +87,28 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $selectedFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($this->expandFolder);
         }
 
-        $folders = '';
         if ($selectedFolder) {
-            $folders = $this->renderFolders($selectedFolder);
-        }
-        if ($selectedFolder) {
-            $folders .= GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->createFolder($selectedFolder);
+            $folderIcon = $this->iconFactory->getIconForResource($selectedFolder, Icon::SIZE_SMALL)->render();
+            $this->view->assign('selectedFolderIcon', $folderIcon);
+            $this->view->assign('selectedFolderTitle', GeneralUtility::fixed_lgd_cs($selectedFolder->getIdentifier(), (int)$this->getBackendUser()->uc['titleLen']));
+            $this->view->assign('createFolderForm', GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->createFolder($selectedFolder));
         }
 
         $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
         $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:folderSelector'));
-        $view = $this->view;
-        $view->assignMultiple([
+        $this->view->assignMultiple([
             'treeEnabled' => true,
-            'treeType' => 'folder',
             'activeFolder' => $selectedFolder,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
-            'content' => $folders,
+            'folders' => $selectedFolder ? $selectedFolder->getSubfolders() : [],
             'contentOnly' => $contentOnly,
         ]);
-        $content = $view->render('ElementBrowser');
+        $content = $this->view->render('ElementBrowser/Folder');
         if ($contentOnly) {
             return $content;
         }
         $this->pageRenderer->setBodyContent('<body ' . $this->getBodyTagParameters() . '>' . $content);
         return $this->pageRenderer->render();
-    }
-
-    /**
-     * @param Folder $parentFolder
-     * @return string HTML code
-     */
-    protected function renderFolders(Folder $parentFolder)
-    {
-        if (!$parentFolder->checkActionPermission('read')) {
-            return '';
-        }
-        $content = '';
-        $lang = $this->getLanguageService();
-        $folders = $parentFolder->getSubfolders();
-        $folderIdentifier = $parentFolder->getCombinedIdentifier();
-
-        // Create headline (showing number of folders):
-        $content .= '<h3>' . sprintf(htmlspecialchars($lang->getLL('folders')) . ' (%s):', count($folders)) . '</h3>';
-
-        $titleLength = (int)$this->getBackendUser()->uc['titleLen'];
-        // Create the header of current folder:
-        $folderIcon = '<a href="#" data-folder-id="' . htmlspecialchars($folderIdentifier) . '" data-close="1">';
-        $folderIcon .= $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL);
-        $folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($parentFolder->getName(), $titleLength));
-        $folderIcon .= '</a>';
-        $content .= $folderIcon . '<br />';
-
-        $lines = [];
-        // Traverse the folder list:
-        foreach ($folders as $subFolder) {
-            $subFolderIdentifier = $subFolder->getCombinedIdentifier();
-            // Create folder icon:
-            $icon = '<span style="width: 16px; height: 16px; display: inline-block;"></span>';
-            $icon .= '<span title="' . htmlspecialchars($subFolder->getName()) . '">' . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL) . '</span>';
-            // Create links for adding the folder:
-            $aTag = '<a href="#" data-folder-id="' . htmlspecialchars($subFolderIdentifier) . '" data-close="0">';
-            $aTag_alt = '<a href="#" data-folder-id="' . htmlspecialchars($subFolderIdentifier) . '" data-close="1">';
-            if (str_contains($subFolderIdentifier, ',') || str_contains($subFolderIdentifier, '|')) {
-                // In case an invalid character is in the filepath, display error message:
-                $errorMessage = sprintf(htmlspecialchars($lang->getLL('invalidChar')), ', |');
-                $aTag = '<a href="#" class="t3js-folderIdError" data-message="' . $errorMessage . '">';
-            }
-            $aTag_e = '</a>';
-            // Combine icon and folderpath:
-            $foldernameAndIcon = $aTag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($subFolder->getName(), $titleLength)) . $aTag_e;
-            $lines[] = '
-				<tr>
-					<td class="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
-					<td>' . $aTag . '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</span>' . $aTag_e . '</td>
-					<td>&nbsp;</td>
-				</tr>';
-            $lines[] = '
-					<tr>
-						<td colspan="3"><span style="width: 1px; height: 3px; display: inline-block;"></span></td>
-					</tr>';
-        }
-        // Wrap all the rows in table tags:
-        $content .= '
-
-	<!--
-		Folder listing
-	-->
-			<table border="0" cellpadding="0" cellspacing="1" id="typo3-folderList">
-				' . implode('', $lines) . '
-			</table>';
-
-        return $content;
     }
 
     /**

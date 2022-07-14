@@ -1,0 +1,66 @@
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="{f:if(condition: treeEnabled, then: 'ElementBrowserWithNavigation', else: 'ElementBrowser')}" />
+
+<f:section name="Navigation">
+    <f:if condition="{tree}">
+        <f:then>
+            <div class="element-browser-body">
+                {tree -> f:format.raw()}
+            </div>
+        </f:then>
+        <f:else>
+            <typo3-backend-component-filestorage-browser
+                class="scaffold-content-navigation-component"
+                active-folder="{f:if(condition: activeFolder, then: activeFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
+            >
+            </typo3-backend-component-filestorage-browser>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Content">
+    <h4 class="text-truncate p-0 mb-4">{selectedFolderIcon -> f:format.raw()} {activeFolder.storage.name}: {activeFolder.identifier}</h4>
+    <f:flashMessages queueIdentifier="core.template.flashMessages"/>
+    <f:if condition="{activeFolder}">
+        <table class="table table-sm table-responsive table-striped table-hover">
+            <tbody>
+                <f:for each="{folders}" as="subfolder">
+                    <tr>
+                        <td class="col-title nowrap">
+                            <a
+                                href="#"
+                                data-folder-id="{subfolder.combinedIdentifier}"
+                                data-close="1"
+                                class="t3js-fileLink"
+                                title="{subfolder.name}"
+                            >
+                                <core:icon identifier="apps-filetree-folder-default" size="small" /> {subfolder.name}
+                            </a>
+                        </td>
+                        <td class="col-control">
+                            <div class="btn-group">
+                                <a
+                                    href="#"
+                                    data-folder-id="{subfolder.combinedIdentifier}"
+                                    data-close="0"
+                                    class="t3js-fileLink btn btn-default"
+                                    title="{subfolder.name}"
+                                >
+                                    <core:icon identifier="actions-add" size="small" />
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </f:if>
+    <f:format.raw>{createFolderForm}</f:format.raw>
+</f:section>
+
+</html>

@@ -12,19 +12,12 @@
                 {tree -> f:format.raw()}
             </div>
         </f:then>
-        <f:else if="{treeType} == 'page'">
+        <f:else>
             <typo3-backend-component-page-browser
                 class="scaffold-content-navigation-component"
                 tree-actions="{treeActions -> f:format.json()}"
                 active-page="{activePage}">
             </typo3-backend-component-page-browser>
-        </f:else>
-        <f:else if="{treeType} == 'folder'">
-            <typo3-backend-component-filestorage-browser
-                class="scaffold-content-navigation-component"
-                active-folder="{f:if(condition: activeFolder, then: activeFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
-            >
-            </typo3-backend-component-filestorage-browser>
         </f:else>
     </f:if>
 </f:section>

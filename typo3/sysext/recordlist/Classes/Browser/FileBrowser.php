@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Recordlist\Browser;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -26,6 +28,7 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -197,14 +200,15 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:fileSelector'));
         $view = $this->view;
         $view->assignMultiple([
+            'selectedFolder' => $this->selectedFolder,
+            'selectedFolderIcon' => $this->iconFactory->getIconForResource($this->selectedFolder, Icon::SIZE_SMALL),
             'treeEnabled' => true,
-            'treeType' => 'folder',
             'activeFolder' => $this->selectedFolder,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'content' => $files . $uploadForm . $createFolder,
             'contentOnly' => $contentOnly,
         ]);
-        $content = $this->view->render('ElementBrowser');
+        $content = $this->view->render('ElementBrowser/Files');
         if ($contentOnly) {
             return $content;
         }
@@ -228,10 +232,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $lang = $this->getLanguageService();
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
-        // Create the header of current folder:
-        $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
-        $header = '<h4 class="text-truncate p-0 mb-1">' . $folderIcon . ' ' . htmlspecialchars($folder->getStorage()->getName() . ': ' . $folder->getReadablePath()) . '</h4>';
-
         if ($this->searchWord !== '') {
             $searchDemand = FileSearchDemand::createForSearchTerm($this->searchWord)->withRecursive();
             $files = $folder->searchFiles($searchDemand);
@@ -240,7 +240,16 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $files = $this->getFilesInFolder($folder, $extensionList);
         }
         if (empty($files)) {
-            return $header . '<div class="shadow-sm bg-info bg-gradient p-3 mb-4 mt-4">' . sprintf(htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:no_files')), $folder->getStorage()->getName() . ':' . $folder->getReadablePath()) . '</div>';
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                sprintf($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:no_files'), $folder->getStorage()->getName() . ':' . $folder->getReadablePath()),
+                '',
+                ContextualFeedbackSeverity::INFO
+            );
+            $flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
+
+            return '';
         }
         $lines = [];
 
@@ -367,7 +376,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup[] = '       </tbody>';
         $markup[] = '   </table>';
         $markup[] = ' </div>';
-        return $header . implode('', $markup);
+        return implode('', $markup);
     }
 
     /**

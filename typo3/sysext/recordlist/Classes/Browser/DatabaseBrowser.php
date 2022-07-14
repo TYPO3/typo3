@@ -113,14 +113,13 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $view = $this->view;
         $view->assignMultiple([
             'treeEnabled' => $withTree,
-            'treeType' => 'page',
             'treeActions' => $allowedTables === 'pages' ? ['select'] : [],
             'activePage' => $this->expandPage,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'content' => $renderedRecordList,
             'contentOnly' => $contentOnly,
         ]);
-        $content = $this->view->render('ElementBrowser');
+        $content = $this->view->render('ElementBrowser/Page');
         if ($contentOnly) {
             return $content;
         }
