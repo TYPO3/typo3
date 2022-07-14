@@ -1121,9 +1121,9 @@ class ReferenceIndex implements LoggerAwareInterface
         $recordsCheckedString = $recCount . ' records from ' . count($tableNames) . ' tables were checked/updated.';
         if ($progressListener) {
             if ($errorCount) {
-                $progressListener->log($recordsCheckedString . 'Updates: ' . $errorCount, LogLevel::WARNING);
+                $progressListener->log($recordsCheckedString . ' Updates: ' . $errorCount, LogLevel::WARNING);
             } else {
-                $progressListener->log($recordsCheckedString . 'Index Integrity was perfect!', LogLevel::INFO);
+                $progressListener->log($recordsCheckedString . ' Index Integrity was perfect!', LogLevel::INFO);
             }
         }
         if (!$testOnly) {
