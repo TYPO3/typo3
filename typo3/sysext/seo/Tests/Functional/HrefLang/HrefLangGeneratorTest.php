@@ -59,7 +59,15 @@ class HrefLangGeneratorTest extends FunctionalTestCase
             ]
         );
 
-        $this->setUpDatabaseWithYamlPayload(__DIR__ . '/../Fixtures/HrefLangScenario.yml');
+        $this->withDatabaseSnapshot(function () {
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $factory = DataHandlerFactory::fromYamlFile(__DIR__ . '/../Fixtures/HrefLangScenario.yml');
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
+        });
     }
 
     /**
@@ -210,26 +218,6 @@ class HrefLangGeneratorTest extends FunctionalTestCase
                 ],
             ],
         ];
-    }
-
-    /**
-     * @param string $pathToYamlFile
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function setUpDatabaseWithYamlPayload(string $pathToYamlFile): void
-    {
-        $this->withDatabaseSnapshot(function () use ($pathToYamlFile) {
-            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-            $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
-
-            $factory = DataHandlerFactory::fromYamlFile($pathToYamlFile);
-            $writer = DataHandlerWriter::withBackendUser($backendUser);
-            $writer->invokeFactory($factory);
-            static::failIfArrayIsNotEmpty(
-                $writer->getErrors()
-            );
-        });
     }
 
     /**

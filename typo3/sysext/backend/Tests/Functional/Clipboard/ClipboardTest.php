@@ -43,32 +43,29 @@ class ClipboardTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->subject = GeneralUtility::makeInstance(Clipboard::class);
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
-
-        $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
-        });
+        $this->withDatabaseSnapshot(
+            function () {
+                $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+                $this->backendUser = $this->setUpBackendUser(1);
+                Bootstrap::initializeLanguageObject();
+                $scenarioFile = __DIR__ . '/../Fixtures/CommonScenario.yaml';
+                $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+                $writer = DataHandlerWriter::withBackendUser($this->backendUser);
+                $writer->invokeFactory($factory);
+                static::failIfArrayIsNotEmpty($writer->getErrors());
+            },
+            function () {
+                $this->backendUser = $this->setUpBackendUser(1);
+                Bootstrap::initializeLanguageObject();
+            }
+        );
     }
 
     protected function tearDown(): void
     {
         unset($this->subject, $this->backendUser);
         parent::tearDown();
-    }
-
-    protected function setUpDatabase(): void
-    {
-        $scenarioFile = __DIR__ . '/../Fixtures/CommonScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($this->backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
     }
 
     /**

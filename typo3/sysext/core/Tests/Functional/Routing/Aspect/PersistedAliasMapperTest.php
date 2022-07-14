@@ -74,8 +74,18 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $scenarioFile = __DIR__ . '/Fixtures/AspectScenario.yaml';
+            $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            if (!empty($writer->getErrors())) {
+                self::fail(var_export($writer->getErrors(), true));
+            }
         });
 
         // declare tt_content.header as `slug` field having `uniqueInSite` set
@@ -133,20 +143,6 @@ class PersistedAliasMapperTest extends FunctionalTestCase
         $this->subject = new PersistedAliasMapper(self::ASPECT_CONFIGURATION);
         $this->subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
         $this->subject->setSite($this->sites['acme']);
-    }
-
-    protected function setUpDatabase(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
-        $scenarioFile = __DIR__ . '/Fixtures/AspectScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        if (!empty($writer->getErrors())) {
-            self::fail(var_export($writer->getErrors(), true));
-        }
     }
 
     protected function tearDown(): void

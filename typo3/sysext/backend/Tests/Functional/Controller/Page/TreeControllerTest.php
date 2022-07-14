@@ -55,11 +55,11 @@ class TreeControllerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
-        //admin user for importing dataset
-        $this->backendUser = $this->setUpBackendUser(1);
 
         $this->withDatabaseSnapshot(function () {
+            $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+            // Admin user for importing dataset
+            $this->backendUser = $this->setUpBackendUser(1);
             Bootstrap::initializeLanguageObject();
             $scenarioFile = __DIR__ . '/Fixtures/PagesWithBEPermissions.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
@@ -68,7 +68,7 @@ class TreeControllerTest extends FunctionalTestCase
             static::failIfArrayIsNotEmpty($writer->getErrors());
         });
 
-        //regular editor, non admin
+        // Regular editor, non admin
         $this->backendUser = $this->setUpBackendUser(9);
         $this->context = GeneralUtility::makeInstance(Context::class);
         $this->subject = $this->getAccessibleMock(TreeController::class, ['dummy']);

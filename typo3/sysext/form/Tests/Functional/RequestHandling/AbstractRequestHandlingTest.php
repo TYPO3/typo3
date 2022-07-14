@@ -94,7 +94,13 @@ abstract class AbstractRequestHandlingTest extends FunctionalTestCase
         );
 
         $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $factory = DataHandlerFactory::fromYamlFile($this->databaseScenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            static::failIfArrayIsNotEmpty($writer->getErrors());
         });
     }
 
@@ -102,20 +108,6 @@ abstract class AbstractRequestHandlingTest extends FunctionalTestCase
     {
         $this->purgeMailSpool();
         parent::tearDown();
-    }
-
-    private function setUpDatabase(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
-
-        $factory = DataHandlerFactory::fromYamlFile($this->databaseScenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
     }
 
     protected function getMailSpoolMessages(): array

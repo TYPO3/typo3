@@ -44,29 +44,27 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
-        $this->backendUser = $this->setUpBackendUser(1);
-        $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
-        });
+        $this->withDatabaseSnapshot(
+            function () {
+                $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+                $this->backendUser = $this->setUpBackendUser(1);
+                Bootstrap::initializeLanguageObject();
+                $scenarioFile = __DIR__ . '/../Fixtures/DefaultViewScenario.yaml';
+                $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+                $writer = DataHandlerWriter::withBackendUser($this->backendUser);
+                $writer->invokeFactory($factory);
+                static::failIfArrayIsNotEmpty($writer->getErrors());
+            },
+            function () {
+                $this->backendUser = $this->setUpBackendUser(1);
+            }
+        );
     }
 
     protected function tearDown(): void
     {
         unset($this->backendUser);
         parent::tearDown();
-    }
-
-    protected function setUpDatabase(): void
-    {
-        Bootstrap::initializeLanguageObject();
-        $scenarioFile = __DIR__ . '/../Fixtures/DefaultViewScenario.yaml';
-        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-        $writer = DataHandlerWriter::withBackendUser($this->backendUser);
-        $writer->invokeFactory($factory);
-        static::failIfArrayIsNotEmpty(
-            $writer->getErrors()
-        );
     }
 
     protected function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext|MockObject
