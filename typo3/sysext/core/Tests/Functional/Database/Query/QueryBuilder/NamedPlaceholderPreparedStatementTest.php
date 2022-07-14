@@ -29,13 +29,6 @@ class NamedPlaceholderPreparedStatementTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
-        });
-    }
-
-    protected function setUpDatabase(): void
-    {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/queryBuilder_preparedStatement.csv');
     }
 

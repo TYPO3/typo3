@@ -33,13 +33,6 @@ class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withDatabaseSnapshot(function () {
-            $this->setUpDatabase();
-        });
-    }
-
-    protected function setUpDatabase(): void
-    {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/queryBuilder_preparedStatement.csv');
     }
 
@@ -216,7 +209,6 @@ class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         $statement->bindValue(1, 10, ParameterType::INTEGER);
         $result1 = $statement->executeQuery();
         self::assertSame(11, (int)($result1->fetchAssociative()['uid'] ?? 0));
-        unset($result1);
         unset($statement);
 
         // retrieve statement from runtime cache
@@ -227,6 +219,13 @@ class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         $statement2->bindValue(1, 20, ParameterType::INTEGER);
         $result2 = $statement2->executeQuery();
         self::assertSame(21, (int)($result2->fetchAssociative()['uid'] ?? 0));
+        unset($statement2);
+
+        // We need to free used resultsets here to avoid a test-setup related issue with sqlite resulting in
+        // a locked db, using old database data because of os in-memory usage of overridden sqlite db file.
+        $result1->free();
+        $result2->free();
+        unset($result1, $result2);
     }
 
     public function invalidParameterTypesForPreparedStatements(): array
