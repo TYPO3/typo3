@@ -24,7 +24,7 @@ The new parser is more forgiving in many places, but some seldom used syntax
 details have been removed, too. This documentation explains details that may
 be breaking for existing instances.
 
-Also see :doc:`the feature documentation <Feature-97816-TypoScriptSyntaxImprovements.rst>`
+Also see :ref:`the feature documentation <feature-97816-1656350667>`
 for an overview of syntax improvements.
 
 Impact
@@ -104,7 +104,7 @@ some details:
 
 * TSconfig *does* support constant substitution: Site constants can be used
   in TSconfig. This has been introduced with TYPO3 v10, see
-  :doc:`<../10.4/Feature-91080-SiteSettingsAsTsConstantsAndInTsConfig.rst>` for details.
+  :ref:`feature-91080-1657827157` for details.
 
 
 UTF-8 BOM in TypoScript files

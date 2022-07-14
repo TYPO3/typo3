@@ -40,7 +40,7 @@ Migration
 The hooks are removed without deprecation in order to allow extensions
 to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
 when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../12.0/Feature-97454-PSR-14EventsForLinkBrowserLifecycle>`
+Use the :ref:`PSR-14 Event <feature-97454-1657327622>`
 as an improved replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

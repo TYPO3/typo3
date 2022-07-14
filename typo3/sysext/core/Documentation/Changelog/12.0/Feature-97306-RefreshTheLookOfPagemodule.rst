@@ -12,15 +12,13 @@ Description
 The readability of the page module interface has been simplified and optimized.
 It is based on the UX Team's concept of improving user experience for editors.
 
-Further links to the Page Module concept and official communication.
+Further links to the Page Module concept and official communication:
 
-First step page module simplification_ with screenshots
+*  First step page module `simplification`_ with screenshots
+*  Promotion of page module `pilot`_
 
-.. _https://typo3.org/article/structured-content-initiative-what-happened-between-july-and-november
-
-Promotion of page module pilot_
-
-.. _https://typo3.org/article/structured-content-initiative-feedback-wanted
+.. _simplification: https://typo3.org/article/structured-content-initiative-what-happened-between-july-and-november
+.. _pilot: https://typo3.org/article/structured-content-initiative-feedback-wanted
 
 
 Impact

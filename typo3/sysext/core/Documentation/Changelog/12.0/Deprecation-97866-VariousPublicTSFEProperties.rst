@@ -32,7 +32,7 @@ notice.
 Affected installations
 ======================
 
-TYPO3 installations with TypoScript options such as :ts:`.data = TSFE:fileTarget` or
+TYPO3 installations with TypoScript options such as :typoscript:`.data = TSFE:fileTarget` or
 TYPO3 installations with third-party extensions accessing the properties via PHP.
 
 
@@ -42,7 +42,7 @@ Migration
 Migrate the access to these properties to use the config property:
 
 In TypoScript you can access the TypoScript properties directly via
-:ts:`.data = TSFE:config|config|fileTarget` and in PHP code via
+:typoscript:`.data = TSFE:config|config|fileTarget` and in PHP code via
 :php:`$GLOBALS['TSFE']->config['config']['fileTarget']`.
 
 .. index:: Frontend, TypoScript, PartiallyScanned, ext:frontend

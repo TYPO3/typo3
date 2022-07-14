@@ -23,7 +23,7 @@ more robust and allows better tooling in the Backend.
 The new parser is more forgiving in many places, this documentation lists
 the new capabilities.
 
-Also see :doc:`the breaking documentation <Breaking-97816-TypoScriptSyntaxImprovements.rst>`
+Also see :ref:`breaking-97816-1656350406`
 for an overview of breaking syntax changes.
 
 
@@ -129,7 +129,7 @@ included if a user is logged in *and* the application is in development context.
   [END]
 
 Irrelevant order of <INCLUDE_TYPOSCRIPT: tokens
-----------------------------------------------
+-----------------------------------------------
 
 The :typoscript:`<INCLUDE_TYPOSCRIPT:` keywords has the three properties
 :typoscript:`source`, :typoscript:`condition` and :typoscript:`extensions`. They had to
@@ -141,7 +141,7 @@ Further clarifications
 * The "reference" :typoscript:`=<` operator is not a direct language construct. The parser
   understands the syntax, but does not resolve it. Allowed :typoscript:`=<` operator are very
   limited: In general, it can *only* be used for Frontend Content Objects, typically like this:
-  :typoscirpt:`tt_content.bullets =< lib.contentElement`. Another usage is referencing :typoscript:`lib.parseFunc`.
+  :typoscript:`tt_content.bullets =< lib.contentElement`. Another usage is referencing :typoscript:`lib.parseFunc`.
   Using the :typoscript:`=<` operator in these cases can have a performance advantage since it
   avoids an expensive copy operation that is done lazily if really needed. There are two methods
   that resolve this operator, namely :php:`ContentObjectRenderer->cObjGetSingle()` and

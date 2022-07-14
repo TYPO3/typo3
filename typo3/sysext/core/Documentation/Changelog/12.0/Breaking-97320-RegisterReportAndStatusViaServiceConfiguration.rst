@@ -111,7 +111,7 @@ Additionally, make sure to implement all methods of :php:`TYPO3\CMS\Reports\Repo
         }
     }
 
-Refer to the :doc:`Icon API <Feature-94692-RegisteringIconsViaServiceContainer>`
+Refer to the :ref:`Icon API <feature-94692-1657826754>`
 on how to register the icon.
 
 Status
