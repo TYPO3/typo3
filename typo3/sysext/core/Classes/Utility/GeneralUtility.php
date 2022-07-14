@@ -2283,7 +2283,10 @@ class GeneralUtility
     public static function createVersionNumberedFilename($file)
     {
         $lookupFile = explode('?', $file);
-        $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $lookupFile[0]);
+        $path = $lookupFile[0];
+        if (!PathUtility::isAbsolutePath($path)) {
+            $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+        }
 
         $doNothing = false;
 

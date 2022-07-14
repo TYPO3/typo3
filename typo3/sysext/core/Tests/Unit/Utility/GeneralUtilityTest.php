@@ -4080,4 +4080,23 @@ class GeneralUtilityTest extends UnitTestCase
         $result = GeneralUtility::locationHeaderUrl($path);
         self::assertSame($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePath(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = true;
+
+        $uniqueFilename = StringUtility::getUniqueId() . 'backend';
+        $testFileDirectory = Environment::getVarPath() . '/tests/';
+        $testFilepath = $testFileDirectory . $uniqueFilename . '.css';
+        $this->testFilesToDelete[] = $testFilepath;
+        GeneralUtility::mkdir_deep($testFileDirectory);
+        touch($testFilepath);
+
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($testFilepath);
+
+        self::assertMatchesRegularExpression('/^.*\/tests\/' . $uniqueFilename . '\.[0-9]+\.css/', $versionedFilename);
+    }
 }
