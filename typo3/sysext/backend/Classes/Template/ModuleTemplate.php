@@ -341,10 +341,10 @@ class ModuleTemplate
         $this->pageRenderer->setLanguage($this->getLanguageService()->lang);
         $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $this->pageRenderer->setFavIcon($this->getBackendFavicon());
-        $this->pageRenderer->enableConcatenateCss();
-        $this->pageRenderer->enableConcatenateJavascript();
-        $this->pageRenderer->enableCompressCss();
-        $this->pageRenderer->enableCompressJavascript();
+        $this->pageRenderer->disableConcatenateCss();
+        $this->pageRenderer->disableConcatenateJavascript();
+        $this->pageRenderer->disableCompressCss();
+        $this->pageRenderer->disableCompressJavascript();
         $languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
         $this->pageRenderer->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
