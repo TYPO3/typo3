@@ -808,4 +808,16 @@ return [
             'Feature-97454-PSR14EventsForLinkBrowserLifecycle.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Workspaces\Service\WorkspaceService\'][\'hasPageRecordVersions\']' => [
+        'restFiles' => [
+            'Breaking-97945-RemovedWorkspaceServiceHooks.rst',
+            'Feature-97945-PSR14AfterPageTreeItemsPreparedEvent.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Workspaces\Service\WorkspaceService\'][\'fetchPagesWithVersionsInTable\']' => [
+        'restFiles' => [
+            'Breaking-97945-RemovedWorkspaceServiceHooks.rst',
+            'Feature-97945-PSR14AfterPageTreeItemsPreparedEvent.rst',
+        ],
+    ],
 ];

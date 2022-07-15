@@ -40,6 +40,11 @@ services:
         identifier: 'typo3-workspaces/link-modifier'
         method: 'createPageUriForWorkspaceVersion'
 
+  TYPO3\CMS\Workspaces\EventListener\PageTreeItemsHighlighter:
+    tags:
+      - name: event.listener
+        identifier: 'typo3-workspaces/page-tree-items-highlighter'
+
   TYPO3\CMS\Workspaces\Command\WorkspaceVersionRecordsCommand:
     tags:
       - name: 'console.command'

@@ -926,15 +926,6 @@ class WorkspaceService implements SingletonInterface
             }
         }
 
-        $parameters = [
-            'workspaceId' => $workspaceId,
-            'pageId' => $pageId,
-            'versionsOnPageCache' => &$this->versionsOnPageCache,
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Workspaces\Service\WorkspaceService::class]['hasPageRecordVersions'] ?? [] as $hookFunction) {
-            GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
-        }
-
         return $this->versionsOnPageCache[$workspaceId][$pageId];
     }
 
@@ -1039,15 +1030,6 @@ class WorkspaceService implements SingletonInterface
             }
 
             $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;
-
-            $parameters = [
-                'workspaceId' => $workspaceId,
-                'tableName' => $tableName,
-                'pagesWithVersionsInTable' => &$this->pagesWithVersionsInTable,
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Workspaces\Service\WorkspaceService::class]['fetchPagesWithVersionsInTable'] ?? [] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
-            }
         }
 
         return $this->pagesWithVersionsInTable[$workspaceId][$tableName];

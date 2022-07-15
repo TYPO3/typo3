@@ -17,11 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -706,6 +711,38 @@ class TreeControllerTest extends FunctionalTestCase
             ],
         ];
         self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function pageTreeItemsModificationEventIsTriggered(): void
+    {
+        Bootstrap::initializeLanguageObject();
+
+        $afterPageTreeItemsPreparedEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-page-tree-items-prepared-listener',
+            static function (AfterPageTreeItemsPreparedEvent $event) use (&$afterPageTreeItemsPreparedEvent) {
+                $afterPageTreeItemsPreparedEvent = $event;
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterPageTreeItemsPreparedEvent::class, 'after-page-tree-items-prepared-listener');
+
+        $request = new ServerRequest(new Uri('https://example.com'));
+
+        (new TreeController())->fetchDataAction($request);
+
+        self::assertInstanceOf(AfterPageTreeItemsPreparedEvent::class, $afterPageTreeItemsPreparedEvent);
+        self::assertEquals($request, $afterPageTreeItemsPreparedEvent->getRequest());
+        self::assertCount(12, $afterPageTreeItemsPreparedEvent->getItems());
+        self::assertEquals('1000', $afterPageTreeItemsPreparedEvent->getItems()[1]['identifier']);
+        self::assertEquals('ACME Inc', $afterPageTreeItemsPreparedEvent->getItems()[1]['name']);
     }
 
     /**

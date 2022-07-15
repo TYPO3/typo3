@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\Page;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
+use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -34,11 +36,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Controller providing data to the page tree
@@ -277,7 +276,7 @@ class TreeController
             }
         }
 
-        return new JsonResponse($items);
+        return new JsonResponse($this->getPostProcessedPageItems($request, $items));
     }
 
     /**
@@ -305,7 +304,7 @@ class TreeController
             }
         }
 
-        return new JsonResponse($items);
+        return new JsonResponse($this->getPostProcessedPageItems($request, $items));
     }
 
     /**
@@ -399,6 +398,9 @@ class TreeController
             'stateIdentifier' => $identifier,
             // identifier is not only used for pages, therefore it's a string
             'identifier' => (string)$pageId,
+            // _page is only for use in events so they do not need to fetch those
+            // records again. The property will be removed from the final payload.
+            '_page' => $page,
             'depth' => $depth,
             // fine in JSON - if used in HTML directly, e.g. quotes can be used for XSS
             'tip' => strip_tags(htmlspecialchars_decode($tooltip)),
@@ -442,10 +444,6 @@ class TreeController
         }
         if ($stopPageTree) {
             $item['stopPageTree'] = $stopPageTree;
-        }
-        $class = $this->resolvePageCssClassNames($page);
-        if (!empty($class)) {
-            $item['class'] = $class;
         }
         if ($depth === 0) {
             $item['isMountPoint'] = true;
@@ -651,39 +649,6 @@ class TreeController
     }
 
     /**
-     * Fetches possible css class names to be used when a record was modified in a workspace
-     *
-     * @param array $page Page record (workspace overlaid)
-     * @return string CSS class names to be applied
-     */
-    protected function resolvePageCssClassNames(array $page): string
-    {
-        $classes = [];
-
-        if ($page['uid'] === 0) {
-            return '';
-        }
-        $workspaceId = (int)$this->getBackendUser()->workspace;
-        if ($workspaceId > 0 && ExtensionManagementUtility::isLoaded('workspaces')) {
-            if ((int)$page['t3ver_wsid'] === $workspaceId
-                && ((int)$page['t3ver_oid'] > 0 || (int)$page['t3ver_state'] === VersionState::NEW_PLACEHOLDER)
-            ) {
-                $classes[] = 'ver-element';
-                $classes[] = 'ver-versions';
-            } elseif (
-                $this->getWorkspaceService()->hasPageRecordVersions(
-                    $workspaceId,
-                    $page['t3ver_oid'] ?: $page['uid']
-                )
-            ) {
-                $classes[] = 'ver-versions';
-            }
-        }
-
-        return implode(' ', $classes);
-    }
-
-    /**
      * Check if drag-move in the svg tree is allowed for the user
      *
      * @return bool
@@ -713,12 +678,18 @@ class TreeController
         return [$mountPoints];
     }
 
-    /**
-     * @return WorkspaceService
-     */
-    protected function getWorkspaceService(): WorkspaceService
+    protected function getPostProcessedPageItems(ServerRequestInterface $request, array $items): array
     {
-        return GeneralUtility::makeInstance(WorkspaceService::class);
+        return array_map(
+            static function ($item) {
+                // Unset _page, which holds the page record and was only provided for the event listeners
+                unset($item['_page']);
+                return $item;
+            },
+            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new AfterPageTreeItemsPreparedEvent($request, $items)
+            )->getItems()
+        );
     }
 
     protected function getBackendUser(): BackendUserAuthentication
