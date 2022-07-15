@@ -77,12 +77,16 @@ abstract class AbstractContentObject
 
     protected function getPageRepository(): PageRepository
     {
-        if (!$this->hasTypoScriptFrontendController()
-            || !$this->getTypoScriptFrontendController()->sys_page instanceof PageRepository
-        ) {
+        if (!$this->hasTypoScriptFrontendController()) {
             return GeneralUtility::makeInstance(PageRepository::class);
         }
-
+        /** do not lose the used {@link \TYPO3\CMS\Core\Context\Context} of TSFE, if it is currently not fully initialized */
+        if (!$this->getTypoScriptFrontendController()->sys_page instanceof PageRepository) {
+            return GeneralUtility::makeInstance(
+                PageRepository::class,
+                $this->getTypoScriptFrontendController()->getContext()
+            );
+        }
         return $this->getTypoScriptFrontendController()->sys_page;
     }
 
