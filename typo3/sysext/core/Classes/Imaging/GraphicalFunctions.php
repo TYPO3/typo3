@@ -2319,8 +2319,8 @@ class GraphicalFunctions
         $out = [];
         $max = str_contains($w . $h, 'm') ? 1 : 0;
         if (str_contains($w . $h, 'c')) {
-            $out['cropH'] = (int)substr((string)strstr($w, 'c'), 1);
-            $out['cropV'] = (int)substr((string)strstr($h, 'c'), 1);
+            $out['cropH'] = (int)substr((string)strstr((string)$w, 'c'), 1);
+            $out['cropV'] = (int)substr((string)strstr((string)$h, 'c'), 1);
             $crs = true;
         } else {
             $crs = false;
