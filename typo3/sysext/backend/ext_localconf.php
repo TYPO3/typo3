@@ -28,7 +28,7 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433111] = UserToolbarItem:
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1433416747] = [
     'provider' => UsernamePasswordLoginProvider::class,
     'sorting' => 50,
-    'icon-class' => 'fa-key',
+    'iconIdentifier' => 'actions-key',
     'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.link',
 ];
 

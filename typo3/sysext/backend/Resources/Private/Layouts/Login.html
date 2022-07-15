@@ -1,4 +1,4 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="typo3-login">
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
@@ -48,6 +48,9 @@
                                         </div>
                                     </form>
                                 </div>
+                                <f:if condition="{enablePasswordReset}">
+                                    <f:render section="ResetPassword" arguments="{_all}" optional="true" />
+                                </f:if>
                                 <f:if condition="{loginProviders->f:count()} > 1">
                                     <nav aria-label="{f:translate(key: 'login.navigation.loginProvider')}">
                                         <f:comment>role is for VoiceOver</f:comment>
@@ -55,15 +58,24 @@
                                             <f:for each="{loginProviders}" as="provider" key="providerKey">
                                                 <f:if condition="{provider.label}">
                                                     <f:if condition="{loginProviderIdentifier} != {providerKey}">
-                                                        <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}"><a href="?loginProvider={providerKey}"><i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" /></span></a></li>
+                                                        <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}">
+                                                            <a href="?loginProvider={providerKey}">
+                                                                <f:if condition="{provider.iconIdentifier}">
+                                                                    <f:then>
+                                                                        <core:icon identifier="{provider.iconIdentifier}" size="small" />
+                                                                    </f:then>
+                                                                    <f:else>
+                                                                        <i class="fa fa-fw {provider.icon-class}"></i>
+                                                                    </f:else>
+                                                                </f:if>
+                                                                <span><f:translate key="{provider.label}" default="{provider.label}" /></span>
+                                                            </a>
+                                                        </li>
                                                     </f:if>
                                                 </f:if>
                                             </f:for>
                                         </ul>
                                     </nav>
-                                </f:if>
-                                <f:if condition="{enablePasswordReset}">
-                                    <f:render section="ResetPassword" arguments="{_all}" optional="true" />
                                 </f:if>
                             </f:then>
                             <f:else if="{enablePasswordReset}">
