@@ -14,7 +14,7 @@ defined('TYPO3') or die();
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1433416747] = [
     'provider' => UsernamePasswordLoginProvider::class,
     'sorting' => 50,
-    'icon-class' => 'fa-key',
+    'iconIdentifier' => 'actions-key',
     'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.link',
 ];
 

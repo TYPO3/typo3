@@ -71,7 +71,7 @@ class LoginProviderResolver
             if (empty($configuration['label'])) {
                 throw new \RuntimeException('Missing label definition for login provider "' . $identifier . '".', 1433416044);
             }
-            if (empty($configuration['icon-class'])) {
+            if (empty($configuration['icon-class']) && empty($configuration['iconIdentifier'])) {
                 throw new \RuntimeException('Missing icon definition for login provider "' . $identifier . '".', 1433416045);
             }
             if (!isset($configuration['sorting'])) {
