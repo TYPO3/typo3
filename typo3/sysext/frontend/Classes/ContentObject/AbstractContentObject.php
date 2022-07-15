@@ -16,8 +16,11 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains an abstract class for all tslib content class implementations.
@@ -67,6 +70,46 @@ abstract class AbstractContentObject
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
+    }
+
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
+    }
+
+    protected function hasTypoScriptFrontendController(): bool
+    {
+        return $this->cObj->getTypoScriptFrontendController() instanceof TypoScriptFrontendController;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        if (!$this->hasTypoScriptFrontendController()) {
+            throw new ContentRenderingException('TypoScriptFrontendController is not available.', 1655723512);
+        }
+
+        return $this->cObj->getTypoScriptFrontendController();
+    }
+
+    /**
+     * @return PageRepository
+     */
+    protected function getPageRepository()
+    {
+        if (!$this->hasTypoScriptFrontendController()) {
+            return GeneralUtility::makeInstance(PageRepository::class);
+        }
+        /** do not lose the used {@link \TYPO3\CMS\Core\Context\Context} of TSFE, if it is currently not fully initialized */
+        if (!$this->getTypoScriptFrontendController()->sys_page instanceof PageRepository) {
+            return GeneralUtility::makeInstance(
+                PageRepository::class,
+                $this->getTypoScriptFrontendController()->getContext()
+            );
+        }
+        return $this->getTypoScriptFrontendController()->sys_page;
     }
 
     /**
