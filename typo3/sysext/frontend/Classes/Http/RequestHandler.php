@@ -202,7 +202,7 @@ class RequestHandler implements RequestHandlerInterface
             // Store the serialized AssetCollector state in configuration
             $controller->config['INTincScript_ext']['assetCollectorState'] = serialize(GeneralUtility::makeInstance(AssetCollector::class)->getState());
             // Render complete page, keep placeholders for JavaScript and CSS
-            return $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey']);
+            return $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey'] ?? '');
         }
         // Render complete page
         return $pageRenderer->render();
