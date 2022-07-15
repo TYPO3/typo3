@@ -81,8 +81,8 @@ class ImageDimension
                 $imageDimension->height,
                 $processedFile->getExtension(),
             ],
-            (string)($config['width'] ?? ''),
-            (string)($config['height'] ?? ''),
+            $config['width'] ?? null,
+            $config['height'] ?? null,
             $config
         );
         $imageWidth = $geometryWidth = (int)$result[0];
