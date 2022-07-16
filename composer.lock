@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1650feccfed5b52e5c656b26b0853d24",
+    "content-hash": "f2068bb5b674bbad6c3e53613ad844f6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4456,22 +4456,22 @@
         },
         {
             "name": "bnf/phpstan-psr-container",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bnf/phpstan-psr-container.git",
-                "reference": "15f001a5a4462e5125af13124d700f024f5355d5"
+                "reference": "38242e71616aa677a0fdd08af8edc4a730a24f67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bnf/phpstan-psr-container/zipball/15f001a5a4462e5125af13124d700f024f5355d5",
-                "reference": "15f001a5a4462e5125af13124d700f024f5355d5",
+                "url": "https://api.github.com/repos/bnf/phpstan-psr-container/zipball/38242e71616aa677a0fdd08af8edc4a730a24f67",
+                "reference": "38242e71616aa677a0fdd08af8edc4a730a24f67",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0|^8.0",
                 "phpstan/phpstan": "^1.0",
-                "psr/container": "^1.0"
+                "psr/container": "^1.0|^2.0"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -4488,7 +4488,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4507,9 +4507,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bnf/phpstan-psr-container/issues",
-                "source": "https://github.com/bnf/phpstan-psr-container/tree/1.0.0"
+                "source": "https://github.com/bnf/phpstan-psr-container/tree/1.0.1"
             },
-            "time": "2021-11-25T07:37:18+00:00"
+            "time": "2022-04-26T04:03:19+00:00"
         },
         {
             "name": "codeception/codeception",
