@@ -1251,11 +1251,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with mixed will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
-
-		-
 			message: "#^If condition is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/CommandUtility.php
