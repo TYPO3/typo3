@@ -61,14 +61,12 @@ class ExtensionUtility
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName] = [
                 'className' => $controllerClassName,
                 'alias' => $controllerAlias,
-                'actions' => GeneralUtility::trimExplode(',', $actionsList),
+                'actions' => GeneralUtility::trimExplode(',', (string)$actionsList),
             ];
 
-            if (isset($nonCacheableControllerActions[$controllerClassName]) && !empty($nonCacheableControllerActions[$controllerClassName])) {
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions'] = GeneralUtility::trimExplode(
-                    ',',
-                    $nonCacheableControllerActions[$controllerClassName]
-                );
+            if (!empty($nonCacheableControllerActions[$controllerClassName])) {
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions']
+                    = GeneralUtility::trimExplode(',', (string)$nonCacheableControllerActions[$controllerClassName]);
             }
         }
 

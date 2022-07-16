@@ -121,7 +121,7 @@ final class CObjectViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $data = $renderChildrenClosure();
-        $typoscriptObjectPath = $arguments['typoscriptObjectPath'];
+        $typoscriptObjectPath = (string)$arguments['typoscriptObjectPath'];
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
         $contentObjectRenderer = self::getContentObjectRenderer($renderingContext->getRequest());

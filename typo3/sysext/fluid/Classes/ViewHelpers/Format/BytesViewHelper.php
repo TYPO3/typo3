@@ -91,7 +91,7 @@ final class BytesViewHelper extends AbstractViewHelper
         } else {
             $units = LocalizationUtility::translate('viewhelper.format.bytes.units', 'fluid');
         }
-        $units = GeneralUtility::trimExplode(',', $units, true);
+        $units = GeneralUtility::trimExplode(',', (string)$units, true);
 
         $value = $renderChildrenClosure();
 

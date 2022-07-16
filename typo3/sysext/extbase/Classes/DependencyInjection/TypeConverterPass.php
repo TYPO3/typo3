@@ -63,7 +63,7 @@ final class TypeConverterPass implements CompilerPassInterface
                     );
                 }
 
-                $sources = GeneralUtility::trimExplode(',', $attributes['sources'], true);
+                $sources = GeneralUtility::trimExplode(',', (string)$attributes['sources'], true);
 
                 if ($sources === []) {
                     throw new InvalidTypeConverterConfigurationException(

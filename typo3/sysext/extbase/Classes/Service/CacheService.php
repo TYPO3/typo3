@@ -173,7 +173,7 @@ class CacheService implements SingletonInterface
 
         $pageTS = BackendUtility::getPagesTSconfig($storagePage);
         if (isset($pageTS['TCEMAIN.']['clearCacheCmd'])) {
-            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower($pageTS['TCEMAIN.']['clearCacheCmd']), true);
+            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower((string)$pageTS['TCEMAIN.']['clearCacheCmd']), true);
             $clearCacheCommands = array_unique($clearCacheCommands);
             foreach ($clearCacheCommands as $clearCacheCommand) {
                 if (MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
