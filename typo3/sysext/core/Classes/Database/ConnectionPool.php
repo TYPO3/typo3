@@ -146,6 +146,18 @@ class ConnectionPool
             );
         }
 
+        // Transform TYPO3 `tableoptions` to valid `doctrine/dbal` connection param option `defaultTableOptions`
+        // @todo TYPO3 database configuration should be changed to directly write defaultTableOptions instead,
+        //       with proper upgrade migration. Along with that, default table options for MySQL in
+        //       testing-framework and core should be adjusted.
+        if (isset($connectionParams['tableoptions'])) {
+            $connectionParams['defaultTableOptions'] = array_replace(
+                $connectionParams['defaultTableOptions'] ?? [],
+                $connectionParams['tableoptions']
+            );
+            unset($connectionParams['tableoptions']);
+        }
+
         static::$connections[$connectionName] = $this->getDatabaseConnection($connectionParams);
 
         return static::$connections[$connectionName];
