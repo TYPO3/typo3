@@ -78,6 +78,8 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 /**
  * Install step controller, dispatcher class of step actions.
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
+ *
+ * @phpstan-import-type Params from DriverManager
  */
 class InstallerController
 {
@@ -1232,6 +1234,7 @@ For each website you need a TypoScript template on the main page of your website
      */
     protected function getDatabaseConfigurationFromEnvironment(): array
     {
+        /** @var Params $envCredentials */
         $envCredentials = [];
         foreach (['driver', 'host', 'user', 'password', 'port', 'dbname', 'unix_socket'] as $value) {
             $envVar = 'TYPO3_INSTALL_DB_' . strtoupper($value);
@@ -1240,6 +1243,7 @@ For each website you need a TypoScript template on the main page of your website
             }
         }
         if (!empty($envCredentials)) {
+            /** @var Params $connectionParams */
             $connectionParams = $envCredentials;
             $connectionParams['wrapperClass'] = Connection::class;
             $connectionParams['charset'] = 'utf-8';
