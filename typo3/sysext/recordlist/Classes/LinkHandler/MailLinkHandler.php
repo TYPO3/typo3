@@ -18,7 +18,8 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Link handler for email links
+ * Link to an email address.
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface

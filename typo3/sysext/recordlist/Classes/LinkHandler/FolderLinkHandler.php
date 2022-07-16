@@ -24,7 +24,8 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Link handler for folder links
+ * Link to a FAL folder record.
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class FolderLinkHandler extends FileLinkHandler

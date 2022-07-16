@@ -18,7 +18,8 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Link handler for external URLs
+ * Link to an arbitrary external URL.
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface

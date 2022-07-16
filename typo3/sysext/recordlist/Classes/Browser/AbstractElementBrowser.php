@@ -29,8 +29,8 @@ use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Base class for element browsers
+ * This class should only be used internally. Extensions must implement the ElementBrowserInterface.
  *
- * NOTE: This class should only be used internally. Extensions must implement the ElementBrowserInterface.
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 abstract class AbstractElementBrowser

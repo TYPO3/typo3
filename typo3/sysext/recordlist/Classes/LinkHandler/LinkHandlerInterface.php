@@ -19,7 +19,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
- * Interface for link handlers displayed in the LinkBrowser
+ * Interface for link handlers displayed in the LinkBrowser.
+ *
+ * Link handlers are used when the global "link" modal is rendered: When linking
+ * an RTE text snipped to something, and for fields like "header_link" in table "tt_content".
+ *
+ * A link handler is a tab in the link modal.
+ *
+ * Link handlers are configured with PageTsConfig TCEMAIN.linkHandler - each tab is a sub-key in this area.
+ * The core configures a couple of default link handlers like linking to a page, a mail, telephone and similar.
+ *
+ * Link handlers create a TYPO3 specific URI prefixed with 't3://' managed by ext:core LinkHandling classes.
+ * The frontend translates this to appropriate HTML using the ext:frontend Typolink classes.
  */
 interface LinkHandlerInterface
 {
@@ -39,7 +50,7 @@ interface LinkHandlerInterface
      *
      * @param AbstractLinkBrowserController $linkBrowser
      * @param string $identifier
-     * @param array $configuration Page TSconfig
+     * @param array $configuration Page TSconfig of this link handler: TCEMAIN.linkHandler.<identifier>.configuration
      */
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration);
 

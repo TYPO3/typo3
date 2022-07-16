@@ -22,7 +22,7 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
- * Browser for folders. This is used with type=group and internal_type=folder to select folders.
+ * Browser for folders. This is used with type=folder to select folders.
  *
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */

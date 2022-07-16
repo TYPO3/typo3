@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
- * Base class for link handlers
+ * Base class for core link handlers.
  *
  * @internal This class should only be used internally. Extensions must implement the LinkHandlerInterface.
  */
@@ -61,20 +61,10 @@ abstract class AbstractLinkHandler
      */
     protected $pageRenderer;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
     }
 
-    /**
-     * Initialize the handler
-     *
-     * @param AbstractLinkBrowserController $linkBrowser
-     * @param string $identifier
-     * @param array $configuration Page TSconfig
-     */
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {
         $this->linkBrowser = $linkBrowser;

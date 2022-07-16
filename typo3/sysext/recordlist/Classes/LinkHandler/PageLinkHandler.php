@@ -29,7 +29,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
- * Link handler for page (and content) links
+ * Link to a page record.
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface

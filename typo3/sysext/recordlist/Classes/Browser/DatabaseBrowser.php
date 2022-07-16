@@ -28,7 +28,7 @@ use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
  * Showing a page tree and allows you to browse for records. This is the modal rendered
- * for type=group internal_type=db to add relations to a group field.
+ * for type=group to add db relations to a group field.
  *
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */

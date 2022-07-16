@@ -29,7 +29,8 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
- * Link handler for files
+ * Link to a FAL file record.
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface

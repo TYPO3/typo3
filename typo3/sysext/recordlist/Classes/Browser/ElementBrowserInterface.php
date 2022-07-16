@@ -17,6 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
+/**
+ * Element browsers are modals rendered when records are attached to FormEngine elements.
+ * Core usages:
+ * * Managing TCA inline FAL file relations of some record
+ * * Managing FAL folder relations a TCA type=folder
+ * * Managing various target relations of a TCA type=group
+ */
 interface ElementBrowserInterface
 {
     /**

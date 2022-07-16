@@ -18,66 +18,87 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Recordlist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Browser\RecordBrowser;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
+use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
- * Link handler for arbitrary database records
+ * This link handler allows linking to arbitrary database records.
+ * They can be configured in addition to default core link handlers and are rendered
+ * as additional tab in the link browser.
+ *
+ * A typical use case is linking a single new record.
+ *
+ * Additional PageTsConfig TCEMAIN.linkHandler setup is necessary to use this.
+ *
+ * A typical configuration looks like the below snippet. It configures a tab that allows linking to
+ * ext:news news records ("table" is mandatory), labels them as "Book reports" (LLL: is possible),
+ * forces a specific page-uid (optional), and hides page-tree selection (optional).
+ *
+ * TCEMAIN.linkHandler.bookreports {
+ *   handler = TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler
+ *   label = Book Reports
+ *   configuration {
+ *     table = tx_news_domain_model_news
+ *     storagePid = 42
+ *     hidePageTree = 1
+ *   }
+ * }
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
-class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface
+final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface
 {
     /**
-     * Configuration key in TSconfig TCEMAIN.linkHandler.record
-     *
-     * @var string
+     * Configuration key in TSconfig TCEMAIN.linkHandler.<identifier>
      */
-    protected $identifier;
+    protected string $identifier;
 
     /**
-     * Specific TSconfig for the current instance (corresponds to TCEMAIN.linkHandler.record.identifier.configuration)
-     *
-     * @var array
+     * Specific TSconfig for the current instance (corresponds to TCEMAIN.linkHandler.record.<identifier>.configuration)
      */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * Parts of the current link
-     *
-     * @var array
      */
-    protected $linkParts = [];
+    protected array $linkParts = [];
 
-    /**
-     * @var int
-     */
-    protected $expandPage = 0;
+    protected int $expandPage = 0;
 
-    /**
-     * Initializes the handler.
-     *
-     * @param AbstractLinkBrowserController $linkBrowser
-     * @param string $identifier
-     * @param array $configuration Page TSconfig
-     */
+    public function __construct(
+        private readonly ElementBrowserRecordList $elementBrowserRecordList,
+        private readonly RecordSearchBoxComponent $recordSearchBoxComponent,
+        private readonly LinkService $linkService,
+    ) {
+        parent::__construct();
+    }
+
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {
         parent::initialize($linkBrowser, $identifier, $configuration);
         $this->identifier = $identifier;
+        if (empty($configuration['table'])) {
+            throw new \LogicException(
+                'PageTsConfig TCEMAIN.linkHandler.' . $identifier . '.configuration.table is mandatory and must be set to a table name.',
+                1657960610
+            );
+        }
         $this->configuration = $configuration;
     }
 
     /**
      * Checks if this is the right handler for the given link.
-     *
      * Also stores information locally about currently linked record.
      *
      * @param array $linkParts Link parts as returned from TypoLinkCodecService
-     * @return bool
      */
     public function canHandleLink(array $linkParts): bool
     {
@@ -105,8 +126,6 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
 
     /**
      * Formats information for the current record for HTML output.
-     *
-     * @return string
      */
     public function formatCurrentUrl(): string
     {
@@ -139,21 +158,15 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
             $this->expandPage = (int)$this->linkParts['pid'];
         }
 
-        $databaseBrowser = GeneralUtility::makeInstance(RecordBrowser::class);
-        $recordList = $databaseBrowser->displayRecordsForPage(
-            $this->expandPage,
-            $this->configuration['table'],
-            $this->getUrlParameters([])
-        );
-
         $pageTreeMountPoints = (string)($this->configuration['pageTreeMountPoints'] ?? '');
         $this->view->assignMultiple([
             'treeEnabled' => (bool)($this->configuration['hidePageTree'] ?? false) === false,
             'pageTreeMountPoints' => GeneralUtility::intExplode(',', $pageTreeMountPoints, true),
-            'recordList' => $recordList,
+            'recordList' => $this->renderTableRecords($request),
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'treeActions' => ['link'],
         ]);
+
         return $this->view->render('LinkBrowser/Record');
     }
 
@@ -168,9 +181,8 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
             'data-identifier' => 't3://record?identifier=' . $this->identifier . '&uid=',
         ];
         if (!empty($this->linkParts)) {
-            $attributes['data-current-link'] = GeneralUtility::makeInstance(LinkService::class)->asString($this->linkParts['url']);
+            $attributes['data-current-link'] = $this->linkService->asString($this->linkParts['url']);
         }
-
         return $attributes;
     }
 
@@ -207,11 +219,66 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
 
     /**
      * Returns the URL of the current script
-     *
-     * @return string
      */
     public function getScriptUrl(): string
     {
         return $this->linkBrowser->getScriptUrl();
+    }
+
+    /**
+     * Render elements of configured table
+     */
+    protected function renderTableRecords(ServerRequestInterface $request): string
+    {
+        $html = [];
+        $backendUser = $this->getBackendUser();
+        $selectedPage = $this->expandPage;
+        if ($selectedPage < 0 || !$backendUser->isInWebMount($selectedPage)) {
+            return '';
+        }
+        $table = $this->configuration['table'];
+        $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+        $pageInfo = BackendUtility::readPageAccess($selectedPage, $permsClause);
+        $selectedTable = (string)($request->getParsedBody()['table'] ?? $request->getQueryParams()['table'] ?? '');
+        $searchWord = (string)($request->getParsedBody()['search_field'] ?? $request->getQueryParams()['search_field'] ?? '');
+        $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
+
+        // If table is 'pages', add a pre-entry to make selected page selectable directly.
+        $titleLen = (int)$backendUser->uc['titleLen'];
+        $mainPageRecord = BackendUtility::getRecordWSOL('pages', $selectedPage);
+        if (is_array($mainPageRecord)) {
+            $pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRecord['title'], $titleLen));
+            $html[] = '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, Icon::SIZE_SMALL)->render() . '&nbsp;';
+            if ($table === 'pages') {
+                $html[] = '<span data-uid="' . htmlspecialchars((string)$mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '">';
+                $html[] =    '<a href="#" data-close="0">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
+                $html[] =    '<a href="#" data-close="1">' . $pText . '</a>';
+                $html[] = '</span>';
+            } else {
+                $html[] = $pText;
+            }
+            $html[] = '</p>';
+        }
+
+        $dbList = $this->elementBrowserRecordList;
+        $dbList->setRequest($request);
+        $dbList->setOverrideUrlParameters(array_merge($this->getUrlParameters([]), ['mode' => 'db', 'expandPage' => $selectedPage]));
+        $dbList->setIsEditable(false);
+        $dbList->calcPerms = new Permission($backendUser->calcPerms($pageInfo));
+        $dbList->noControlPanels = true;
+        $dbList->clickMenuEnabled = false;
+        $dbList->displayRecordDownload = false;
+        $dbList->tableList = $table;
+        $dbList->start($selectedPage, $selectedTable, MathUtility::forceIntegerInRange($pointer, 0, 100000), $searchWord);
+        $dbList->setDispFields();
+
+        $searchBox = $this->recordSearchBoxComponent
+            ->setSearchWord($searchWord)
+            ->render($request, $dbList->listURL('', '-1', 'pointer,search_field'));
+
+        $html[] = '<div class="pt-2">' . $searchBox . '</div>';
+        $html[] = $dbList->generateList();
+
+        return implode("\n", $html);
     }
 }

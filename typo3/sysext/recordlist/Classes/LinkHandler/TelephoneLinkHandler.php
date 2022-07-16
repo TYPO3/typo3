@@ -20,7 +20,8 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Link handler for telephone links
+ * Link to a telephone number.
+ *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class TelephoneLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
