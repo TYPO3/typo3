@@ -320,8 +320,8 @@ class ConnectionMigrator
 
         $schemaConfig = new SchemaConfig();
         $schemaConfig->setName($this->connection->getDatabase());
-        if (isset($this->connection->getParams()['tableoptions'])) {
-            $schemaConfig->setDefaultTableOptions($this->connection->getParams()['tableoptions']);
+        if (isset($this->connection->getParams()['defaultTableOptions'])) {
+            $schemaConfig->setDefaultTableOptions($this->connection->getParams()['defaultTableOptions']);
         }
 
         return new Schema($tablesForConnection, [], $schemaConfig);
@@ -1111,7 +1111,7 @@ class ConnectionMigrator
      */
     protected function transformTablesForDatabasePlatform(array $tables, Connection $connection): array
     {
-        $defaultTableOptions = $connection->getParams()['tableoptions'] ?? [];
+        $defaultTableOptions = $connection->getParams()['defaultTableOptions'] ?? [];
         foreach ($tables as &$table) {
             $indexes = [];
             foreach ($table->getIndexes() as $key => $index) {
