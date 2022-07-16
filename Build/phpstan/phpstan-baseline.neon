@@ -1616,11 +1616,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with mixed will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
-
-		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
@@ -4747,11 +4742,6 @@ parameters:
 
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Info\\\\Controller\\\\TranslationStatusController\\:\\:getLangStatus\\(\\) should return array but returns mixed\\.$#"
 			count: 1
 			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
 
