@@ -74,7 +74,7 @@ lint scss ts html:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
-phpstan php 8.1:
+phpstan php 8.1 locked:
   stage: integrity
   needs: []
   only:
@@ -85,4 +85,17 @@ phpstan php 8.1:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s phpstan -p 8.1
+
+phpstan php 8.1 max:
+  stage: integrity
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-phpstan-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s phpstan -p 8.1
