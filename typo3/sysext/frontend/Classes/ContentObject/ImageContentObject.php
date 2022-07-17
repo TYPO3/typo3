@@ -270,7 +270,10 @@ class ImageContentObject extends AbstractContentObject
 
     /**
      * Wraps the input string by the $wrap value and implements the "linkWrap" data type as well.
-     * The "linkWrap" data type means that this function will find any integer encapsulated in {} (curly braces) in the first wrap part and substitute it with the corresponding page uid from the rootline where the found integer is pointing to the key in the rootline. See link below.
+     *
+     * The "linkWrap" data type means that this function will find any integer encapsulated
+     * in {} (curly braces) in the first wrap part and substitute it with the corresponding page
+     * uid from the rootline where the found integer is pointing to the key in the rootline.
      *
      * @param string $content Input string
      * @param string $wrap A string where the first two parts separated by "|" (vertical line) will be wrapped around the input string
@@ -279,7 +282,7 @@ class ImageContentObject extends AbstractContentObject
     {
         $wrapArr = explode('|', $wrap);
         if (preg_match('/\\{([0-9]*)\\}/', $wrapArr[0], $reg)) {
-            $uid = $this->getTypoScriptFrontendController()->tmpl->rootLine[$reg[1]]['uid'] ?? null;
+            $uid = $this->getTypoScriptFrontendController()->config['rootLine'][$reg[1]]['uid'] ?? null;
             if ($uid) {
                 $wrapArr[0] = str_replace($reg[0], $uid, $wrapArr[0]);
             }

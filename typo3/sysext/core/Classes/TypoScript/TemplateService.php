@@ -156,21 +156,54 @@ class TemplateService
     protected $rootId;
 
     /**
-     * The rootline from current page to the root page.
-     * This is exactly the same as $absoluteRootLine, just in reversed order, so
-     * first entry with key 0 is site-root page, last node is requested page with
-     * the highest key.
-     * This is set up by runThroughTemplates().
+     * This is the "local" rootline of a deep page that stops at the first parent
+     * sys_template record that has "root" flag set, in natural parent-child order.
      *
-     * @var array
+     * In frontend context, this is also set as TSFE TypoScriptFrontendController->config['rootLine'].
+     *
+     * Both language and version overlays are applied to these page records:
+     * All "data" fields are set to language / version overlay values, *except* uid and
+     * pid, which are the default-language and live-version ids.
+     *
+     * When page uid 5 is called in this example:
+     * [0] Project name
+     * |- [2] An organizational page, probably with is_siteroot=1 and a site config
+     *    |- [3] Site root with a sys_template having "root" flag set
+     *       |- [5] Here you are
+     *
+     * This $rootLine is:
+     * [0] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
+     * [1] => [uid = 5, pid = 3, title = Here you are, ...]
+     *
+     * @var array<int, array<string, mixed>>
      */
     public $rootLine;
 
     /**
-     * Rootline all the way to the root. Set by runThroughTemplates.
-     * This is basically the direct output of RootlineUtility: First node
-     * has the highest key and is the deepest page (typically the uid of the requested page),
-     * the last node is the root node of the site and has key 0.
+     * Rootline of page records all the way to the root.
+     *
+     * In frontend context, this is also set as TSFE TypoScriptFrontendController->rootLine.
+     *
+     * Both language and version overlays are applied to these page records:
+     * All "data" fields are set to language / version overlay values, *except* uid and
+     * pid, which are the default-language and live-version ids.
+     *
+     * First array row with the highest key is the deepest page (the requested page),
+     * then parent pages with descending keys until (but not including) the
+     * project root pseudo page 0.
+     *
+     * When page uid 5 is called in this example:
+     * [0] Project name
+     * |- [2] An organizational page, probably with is_siteroot=1 and a site config
+     *    |- [3] Site root with a sys_template having "root" flag set
+     *       |- [5] Here you are
+     *
+     * This $absoluteRootLine is:
+     * [3] => [uid = 5, pid = 3, title = Here you are, ...]
+     * [2] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
+     * [1] => [uid = 2, pid = 0, title = An organizational page, probably with is_siteroot=1 and a site config, ...]
+     *
+     * @var array<int, array<string, mixed>>
      */
     protected array $absoluteRootLine = [];
 

@@ -42,7 +42,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId;
-        $this->rootline = $rootLine ?? $GLOBALS['TSFE']->tmpl->rootLine ?? [];
+        $this->rootline = $rootLine ?? $GLOBALS['TSFE']->config['rootLine'] ?? [];
         $this->initializeExpressionLanguageResolver();
     }
 

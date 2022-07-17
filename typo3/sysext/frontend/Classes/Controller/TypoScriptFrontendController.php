@@ -133,7 +133,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $no_cache = false;
 
     /**
-     * The rootLine (all the way to tree root, not only the current site!)
+     * Rootline of page records all the way to the root.
+     *
+     * Both language and version overlays are applied to these page records:
+     * All "data" fields are set to language / version overlay values, *except* uid and
+     * pid, which are the default-language and live-version ids.
+     *
+     * First array row with the highest key is the deepest page (the requested page),
+     * then parent pages with descending keys until (but not including) the
+     * project root pseudo page 0.
+     *
+     * When page uid 5 is called in this example:
+     * [0] Project name
+     * |- [2] An organizational page, probably with is_siteroot=1 and a site config
+     *    |- [3] Site root with a sys_template having "root" flag set
+     *       |- [5] Here you are
+     *
+     * This $absoluteRootLine is:
+     * [3] => [uid = 5, pid = 3, title = Here you are, ...]
+     * [2] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
+     * [1] => [uid = 2, pid = 0, title = An organizational page, probably with is_siteroot=1 and a site config, ...]
+     *
+     * @var array<int, array<string, mixed>>
      */
     public array $rootLine = [];
 
@@ -170,7 +191,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $sys_page = '';
 
     /**
-     * Is set to > 0 if the page cound not be resolved. This will then result in early returns when resolving the page.
+     * Is set to > 0 if the page could not be resolved. This will then result in early returns when resolving the page.
      */
     protected int $pageNotFound = 0;
 
@@ -193,9 +214,36 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $fe_user;
 
     /**
-     * "CONFIG" object from TypoScript. Array generated based on the TypoScript
-     * configuration of the current page. Saved with the cached pages.
-     * @var array
+     * A central data array consisting of various keys, initialized and
+     * processed at various places in the class.
+     *
+     * This array is cached along with the rendered page content and contains
+     * for instance a list of INT identifiers used to calculate 'dynamic' page
+     * parts when a page is retrieved from cache.
+     *
+     * Some sub keys:
+     *
+     * 'config': This is the TypoScript ['config.'] sub-array, with some
+     *           settings being sanitized and merged.
+     *
+     * 'rootLine': This is the "local" rootline of a deep page that stops at the first parent
+     *             sys_template record that has "root" flag set, in natural parent-child order.
+     *
+     *             Both language and version overlays are applied to these page records:
+     *             All "data" fields are set to language / version overlay values, *except* uid and
+     *             pid, which are the default-language and live-version ids.
+     *
+     *             When page uid 5 is called in this example:
+     *             [0] Project name
+     *             |- [2] An organizational page, probably with is_siteroot=1 and a site config
+     *                |- [3] Site root with a sys_template having "root" flag set
+     *                   |- [5] Here you are
+     *
+     *             This rootLine is:
+     *             [0] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
+     *             [1] => [uid = 5, pid = 3, title = Here you are, ...]
+     *
+     * @var array<string, mixed>
      */
     public $config = [];
 

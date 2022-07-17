@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -577,8 +576,7 @@ class ConditionMatcherTest extends FunctionalTestCase
             new FrontendUserAuthentication()
         );
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        $GLOBALS['TSFE']->tmpl->rootLine = [
+        $GLOBALS['TSFE']->config['rootLine'] = [
             0 => ['uid' => 1, 'pid' => 0],
             1 => ['uid' => 2, 'pid' => 1],
             2 => ['uid' => 3, 'pid' => 2],

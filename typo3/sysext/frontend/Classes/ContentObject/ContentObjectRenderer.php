@@ -4115,14 +4115,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->getGlobal($key);
                         break;
                     case 'level':
-                        $retVal = count($tsfe->tmpl->rootLine) - 1;
+                        $retVal = count($tsfe->config['rootLine'] ?? []) - 1;
                         break;
                     case 'leveltitle':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
                         $slide = (string)($keyParts[1] ?? '');
 
-                        $numericKey = $this->getKey($pointer, $tsfe->tmpl->rootLine);
+                        $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, 'title', strtolower($slide) === 'slide');
                         break;
                     case 'levelmedia':
@@ -4130,11 +4130,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $pointer = (int)($keyParts[0] ?? 0);
                         $slide = (string)($keyParts[1] ?? '');
 
-                        $numericKey = $this->getKey($pointer, $tsfe->tmpl->rootLine);
+                        $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, 'media', strtolower($slide) === 'slide');
                         break;
                     case 'leveluid':
-                        $numericKey = $this->getKey((int)$key, $tsfe->tmpl->rootLine);
+                        $numericKey = $this->getKey((int)$key, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, 'uid');
                         break;
                     case 'levelfield':
@@ -4143,7 +4143,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $field = (string)($keyParts[1] ?? '');
                         $slide = (string)($keyParts[2] ?? '');
 
-                        $numericKey = $this->getKey($pointer, $tsfe->tmpl->rootLine);
+                        $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, $field, strtolower($slide) === 'slide');
                         break;
                     case 'fullrootline':
@@ -4152,7 +4152,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $field = (string)($keyParts[1] ?? '');
                         $slide = (string)($keyParts[2] ?? '');
 
-                        $fullKey = (int)($pointer - count($tsfe->tmpl->rootLine) + count($tsfe->rootLine));
+                        $fullKey = (int)($pointer - count($tsfe->config['rootLine'] ?? []) + count($tsfe->rootLine));
                         if ($fullKey >= 0) {
                             $retVal = $this->rootLineValue($fullKey, $field, stristr($slide, 'slide') !== false, $tsfe->rootLine);
                         }
@@ -4201,7 +4201,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'debug':
                         switch ($key) {
                             case 'rootLine':
-                                $retVal = DebugUtility::viewArray($tsfe->tmpl->rootLine);
+                                $retVal = DebugUtility::viewArray($tsfe->config['rootLine'] ?? []);
                                 break;
                             case 'fullRootLine':
                                 $retVal = DebugUtility::viewArray($tsfe->rootLine);
@@ -4358,7 +4358,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Returns a value from the current rootline (site) from $GLOBALS['TSFE']->tmpl->rootLine;
+     * Returns a value from the current rootline (site) from $GLOBALS['TSFE']->config['rootLine'];
      *
      * @param int $key Which level in the root line
      * @param string $field The field in the rootline record to return (a field from the pages table)
@@ -4370,7 +4370,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function rootLineValue($key, $field, $slideBack = false, $altRootLine = '')
     {
-        $rootLine = is_array($altRootLine) ? $altRootLine : $this->getTypoScriptFrontendController()->tmpl->rootLine;
+        $rootLine = is_array($altRootLine) ? $altRootLine : ($this->getTypoScriptFrontendController()->config['rootLine'] ?? []);
         if (!$slideBack) {
             return $rootLine[$key][$field] ?? '';
         }

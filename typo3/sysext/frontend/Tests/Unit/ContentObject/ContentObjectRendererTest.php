@@ -1347,8 +1347,7 @@ class ContentObjectRendererTest extends UnitTestCase
             1 => ['uid' => 2, 'title' => 'title2'],
             2 => ['uid' => 3, 'title' => 'title3'],
         ];
-
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline;
         self::assertEquals(2, $this->subject->getData('level'));
     }
 
@@ -1364,8 +1363,7 @@ class ContentObjectRendererTest extends UnitTestCase
             1 => ['uid' => 2, 'title' => 'title2'],
             2 => ['uid' => 3, 'title' => ''],
         ];
-
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline;
         self::assertEquals('', $this->subject->getData('leveltitle:-1'));
         // since "title3" is not set, it will slide to "title2"
         self::assertEquals('title2', $this->subject->getData('leveltitle:-1,slide'));
@@ -1383,8 +1381,7 @@ class ContentObjectRendererTest extends UnitTestCase
             1 => ['uid' => 2, 'title' => 'title2', 'media' => 'media2'],
             2 => ['uid' => 3, 'title' => 'title3', 'media' => ''],
         ];
-
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline;
         self::assertEquals('', $this->subject->getData('levelmedia:-1'));
         // since "title3" is not set, it will slide to "title2"
         self::assertEquals('media2', $this->subject->getData('levelmedia:-1,slide'));
@@ -1402,8 +1399,7 @@ class ContentObjectRendererTest extends UnitTestCase
             1 => ['uid' => 2, 'title' => 'title2'],
             2 => ['uid' => 3, 'title' => 'title3'],
         ];
-
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline;
         self::assertEquals(3, $this->subject->getData('leveluid:-1'));
         // every element will have a uid - so adding slide doesn't really make sense, just for completeness
         self::assertEquals(3, $this->subject->getData('leveluid:-1,slide'));
@@ -1421,8 +1417,7 @@ class ContentObjectRendererTest extends UnitTestCase
             1 => ['uid' => 2, 'title' => 'title2', 'testfield' => 'field2'],
             2 => ['uid' => 3, 'title' => 'title3', 'testfield' => ''],
         ];
-
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline;
         self::assertEquals('', $this->subject->getData('levelfield:-1,testfield'));
         self::assertEquals('field2', $this->subject->getData('levelfield:-1,testfield,slide'));
     }
@@ -1443,7 +1438,7 @@ class ContentObjectRendererTest extends UnitTestCase
             2 => ['uid' => 3, 'title' => 'title3', 'testfield' => 'field3'],
         ];
 
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline1;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline1;
         $GLOBALS['TSFE']->rootLine = $rootline2;
         self::assertEquals('field2', $this->subject->getData('fullrootline:-1,testfield'));
     }
@@ -1643,7 +1638,7 @@ class ContentObjectRendererTest extends UnitTestCase
             2 => ['uid' => 3, 'title' => ''],
         ];
         $expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
-        $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
+        $GLOBALS['TSFE']->config['rootLine'] = $rootline;
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:rootLine');

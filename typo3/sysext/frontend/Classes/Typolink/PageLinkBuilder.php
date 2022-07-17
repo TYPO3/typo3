@@ -536,12 +536,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         } catch (RootLineException $e) {
             $tCR_rootline = [];
         }
-        $inverseTmplRootline = array_reverse($tsfe->tmpl->rootLine);
+        $inverseLocalRootLine = array_reverse($tsfe->config['rootLine'] ?? []);
         $rl_mpArray = [];
         $startMPaccu = false;
         // Traverse root line of link uid and inside of that the REAL root line of current position.
         foreach ($tCR_rootline as $tCR_data) {
-            foreach ($inverseTmplRootline as $rlKey => $invTmplRLRec) {
+            foreach ($inverseLocalRootLine as $rlKey => $invTmplRLRec) {
                 // Force accumulating when in overlay mode: Links to this page have to stay within the current branch
                 if (($invTmplRLRec['_MOUNT_OL'] ?? false) && (int)$tCR_data['uid'] === (int)$invTmplRLRec['uid']) {
                     $startMPaccu = true;
@@ -553,7 +553,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 // If two PIDs matches and this is NOT the site root, start accumulation of MP data (on the next level):
                 // (The check for site root is done so links to branches outside the site but sharing the site roots PID
                 // is NOT detected as within the branch!)
-                if ((int)$tCR_data['pid'] === (int)$invTmplRLRec['pid'] && count($inverseTmplRootline) !== $rlKey + 1) {
+                if ((int)$tCR_data['pid'] === (int)$invTmplRLRec['pid'] && count($inverseLocalRootLine) !== $rlKey + 1) {
                     $startMPaccu = true;
                 }
             }

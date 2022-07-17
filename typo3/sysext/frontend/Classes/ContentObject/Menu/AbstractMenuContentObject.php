@@ -228,7 +228,7 @@ abstract class AbstractMenuContentObject
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(
                 $this->parent_cObj->stdWrapValue('entryLevel', $this->conf ?? []),
-                $this->tmpl->rootLine
+                $tsfe->config['rootLine'] ?? []
             );
             // Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
             // Called as the next level in a menu. It is assumed that $this->MP_array is set from parent menu.
@@ -236,11 +236,11 @@ abstract class AbstractMenuContentObject
                 $this->id = (int)$id;
             } else {
                 // This is a BRAND NEW menu, first level. So we take ID from rootline and also find MP_array (mount points)
-                $this->id = (int)($this->tmpl->rootLine[$this->entryLevel]['uid'] ?? 0);
+                $this->id = (int)($tsfe->config['rootLine'][$this->entryLevel]['uid'] ?? 0);
 
                 // Traverse rootline to build MP_array of pages BEFORE the entryLevel
                 // (MP var for ->id is picked up in the next part of the code...)
-                foreach ($this->tmpl->rootLine as $entryLevel => $levelRec) {
+                foreach (($tsfe->config['rootLine'] ?? []) as $entryLevel => $levelRec) {
                     // For overlaid mount points, set the variable right now:
                     if (($levelRec['_MP_PARAM'] ?? false) && ($levelRec['_MOUNT_OL'] ?? false)) {
                         $this->MP_array[] = $levelRec['_MP_PARAM'];
@@ -273,7 +273,7 @@ abstract class AbstractMenuContentObject
             if ($this->rL_uidRegister === null) {
                 $this->rL_uidRegister = [];
                 $rl_MParray = [];
-                foreach ($this->tmpl->rootLine as $v_rl) {
+                foreach (($tsfe->config['rootLine'] ?? []) as $v_rl) {
                     // For overlaid mount points, set the variable right now:
                     if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                         $rl_MParray[] = $v_rl['_MP_PARAM'];
@@ -305,21 +305,21 @@ abstract class AbstractMenuContentObject
             // Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
             $startLevel = $directoryLevel ?: $this->entryLevel;
             $currentLevel = $startLevel + $this->menuNumber;
-            if (is_array($this->tmpl->rootLine[$currentLevel] ?? null)) {
+            if (is_array($tsfe->config['rootLine'][$currentLevel] ?? null)) {
                 $nextMParray = $this->MP_array;
-                if (empty($nextMParray) && !($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] ?? false) && $currentLevel > 0) {
+                if (empty($nextMParray) && !($tsfe->config['rootLine'][$currentLevel]['_MOUNT_OL'] ?? false) && $currentLevel > 0) {
                     // Make sure to slide-down any mount point information (_MP_PARAM) to children records in the rootline
                     // otherwise automatic expansion will not work
-                    $parentRecord = $this->tmpl->rootLine[$currentLevel - 1];
+                    $parentRecord = $tsfe->config['rootLine'][$currentLevel - 1] ?? [];
                     if (isset($parentRecord['_MP_PARAM'])) {
                         $nextMParray[] = $parentRecord['_MP_PARAM'];
                     }
                 }
                 // In overlay mode, add next level MPvars as well:
-                if ($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] ?? false) {
-                    $nextMParray[] = $this->tmpl->rootLine[$currentLevel]['_MP_PARAM'];
+                if ($tsfe->config['rootLine'][$currentLevel]['_MOUNT_OL'] ?? false) {
+                    $nextMParray[] = $tsfe->config['rootLine'][$currentLevel]['_MP_PARAM'] ?? [];
                 }
-                $this->nextActive = $this->tmpl->rootLine[$currentLevel]['uid'] .
+                $this->nextActive = ($tsfe->config['rootLine'][$currentLevel]['uid']  ?? 0) .
                     (
                         !empty($nextMParray)
                         ? ':' . implode(',', $nextMParray)
@@ -406,7 +406,7 @@ abstract class AbstractMenuContentObject
         $this->hash = md5(
             json_encode($this->menuArr) .
             json_encode($this->mconf) .
-            json_encode($this->tmpl->rootLine) .
+            json_encode($frontendController->config['rootLine'] ?? []) .
             json_encode($this->MP_array)
         );
         // Get the cache timeout:
@@ -833,9 +833,9 @@ abstract class AbstractMenuContentObject
         // Start point
         $eLevel = $this->parent_cObj->getKey(
             $this->parent_cObj->stdWrapValue('entryLevel', $this->conf['special.'] ?? []),
-            $this->tmpl->rootLine
+            $tsfe->config['rootLine'] ?? []
         );
-        $startUid = (int)($this->tmpl->rootLine[$eLevel]['uid'] ?? 0);
+        $startUid = (int)($tsfe->config['rootLine'][$eLevel]['uid'] ?? 0);
         // Which field is for keywords
         $kfield = 'keywords';
         if ($this->conf['special.']['keywordsField'] ?? false) {
@@ -922,6 +922,7 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForRootlineMenu()
     {
+        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         $range = (string)$this->parent_cObj->stdWrapValue('range', $this->conf['special.'] ?? []);
         $begin_end = explode('|', $range);
@@ -929,13 +930,13 @@ abstract class AbstractMenuContentObject
         if (!MathUtility::canBeInterpretedAsInteger($begin_end[1] ?? '')) {
             $begin_end[1] = -1;
         }
-        $beginKey = $this->parent_cObj->getKey($begin_end[0], $this->tmpl->rootLine);
-        $endKey = $this->parent_cObj->getKey($begin_end[1], $this->tmpl->rootLine);
+        $beginKey = $this->parent_cObj->getKey($begin_end[0], $tsfe->config['rootLine'] ?? []);
+        $endKey = $this->parent_cObj->getKey($begin_end[1], $tsfe->config['rootLine'] ?? []);
         if ($endKey < $beginKey) {
             $endKey = $beginKey;
         }
         $rl_MParray = [];
-        foreach ($this->tmpl->rootLine as $k_rl => $v_rl) {
+        foreach (($tsfe->config['rootLine'] ?? []) as $k_rl => $v_rl) {
             // For overlaid mount points, set the variable right now:
             if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                 $rl_MParray[] = $v_rl['_MP_PARAM'];
@@ -976,13 +977,14 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForBrowseMenu($specialValue, $sortingField, $additionalWhere)
     {
+        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
             $specialValue = $this->getTypoScriptFrontendController()->page['uid'];
         }
         // Will not work out of rootline
-        if ($specialValue != $this->tmpl->rootLine[0]['uid']) {
+        if ($specialValue != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
             $recArr = [];
             // The page record of the 'value'.
             $value_rec = $this->sys_page->getPage($specialValue);
@@ -992,7 +994,7 @@ abstract class AbstractMenuContentObject
                 $recArr['up'] = $this->sys_page->getPage($value_rec['pid']);
             }
             // If the 'up' item was NOT level 0 in rootline...
-            if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != $this->tmpl->rootLine[0]['uid']) {
+            if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
                 // The page record of "index".
                 $recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
             }

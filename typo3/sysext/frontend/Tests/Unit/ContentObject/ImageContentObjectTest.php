@@ -551,8 +551,7 @@ class ImageContentObjectTest extends UnitTestCase
      */
     public function linkWrap(string $expected, string $content, $wrap): void
     {
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $GLOBALS['TSFE']->tmpl->rootLine = [3 => ['uid' => 55]];
+        $GLOBALS['TSFE']->config = ['rootLine' => [3 => ['uid' => 55]]];
         $actual = $this->subject->_call('linkWrap', $content, $wrap);
         self::assertEquals($expected, $actual);
     }
