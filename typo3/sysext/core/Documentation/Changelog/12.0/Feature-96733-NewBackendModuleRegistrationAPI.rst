@@ -182,7 +182,7 @@ Module configuration options
 +----------------------------------------------------------+------------------------------------------------------------------+
 | aliases (:php:`array`)                                   | List of identifiers that are aliases to this module. Those are   |
 |                                                          | added as route aliases, which allows to use them for building    |
-|                                                          | ölinks, e.g. with the :php:`UriBuilder`. Additionaly, the        |
+|                                                          | links, e.g. with the :php:`UriBuilder`. Additionally, the        |
 |                                                          | aliases can also be used for references in other modules, e.g.   |
 |                                                          | to specify a modules' :php:`parent`.                             |
 +----------------------------------------------------------+------------------------------------------------------------------+
