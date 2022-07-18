@@ -40,7 +40,7 @@ services:
   # Each job starts two containers: This dind container that starts a docker
   # daemon, plus a casual container that executes runTests.sh for single jobs
   # to start containers within the dind container.
-  - name: docker:20.10.14-dind
+  - name: docker:20.10-dind
     alias: docker
 
 # This is *never* overridden in single jobs. All jobs start a 'dind' service
