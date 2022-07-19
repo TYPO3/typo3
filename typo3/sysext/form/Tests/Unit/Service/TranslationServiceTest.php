@@ -663,9 +663,6 @@ class TranslationServiceTest extends UnitTestCase
                 'translatePropertyValueIfEmpty' => true,
             ],
         ];
-        $formElementProperties = [
-            'placeholder' => 'placeholder',
-        ];
 
         $expected = 'form-element-identifier nextButtonLabel EN';
 
@@ -677,7 +674,6 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('type', 'Page');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
         $mockFormElement->_set('identifier', $formElementIdentifier);
-        $mockFormElement->_set('properties', $formElementProperties);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
         $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);

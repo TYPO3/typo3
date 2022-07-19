@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -101,8 +100,6 @@ class InstallUtilityTest extends UnitTestCase
         $bootServiceProphecy->getContainer(false)->willReturn($containerProphecy->reveal());
         $bootServiceProphecy->makeCurrent(Argument::cetera())->willReturn([]);
         $this->installMock->injectBootService($bootServiceProphecy->reveal());
-        $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
-        $this->installMock->_set('dependencyUtility', $dependencyUtility);
         $this->installMock
             ->method('getExtensionArray')
             ->with($this->extensionKey)
@@ -284,8 +281,6 @@ class InstallUtilityTest extends UnitTestCase
             '',
             false
         );
-        $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
-        $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->_set('registry', $registryMock);
         $installMock->expects(self::never())->method('getImportExportUtility');
         $installMock->_call('importT3DFile', $extKey, $this->fakedExtensions[$extKey]['packagePath']);
