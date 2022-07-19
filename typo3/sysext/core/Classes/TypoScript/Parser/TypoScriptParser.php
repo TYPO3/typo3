@@ -760,7 +760,6 @@ class TypoScriptParser
                         $condition = '[' . $condition . ']';
                     }
 
-                    $conditionMatcher = null;
                     if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                         && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
                     ) {
