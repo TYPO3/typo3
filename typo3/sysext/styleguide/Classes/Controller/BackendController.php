@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -198,11 +199,11 @@ class BackendController extends ActionController
         // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
         // at some appropriate positions.
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.demo');
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info - Title for Info message', AbstractMessage::INFO, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice - Title for Notice message', AbstractMessage::NOTICE, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error - Title for Error message', AbstractMessage::ERROR, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok - Title for OK message', AbstractMessage::OK, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning - Title for Warning message', AbstractMessage::WARNING, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info - Title for Info message', ContextualFeedbackSeverity::INFO, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice - Title for Notice message', ContextualFeedbackSeverity::NOTICE, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error - Title for Error message', ContextualFeedbackSeverity::ERROR, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok - Title for OK message', ContextualFeedbackSeverity::OK, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning - Title for Warning message', ContextualFeedbackSeverity::WARNING, true));
         return $this->moduleTemplate->renderResponse('Backend/FlashMessages');
     }
 
