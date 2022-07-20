@@ -851,11 +851,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Localization/LanguageService.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Mail/FluidEmail.php
