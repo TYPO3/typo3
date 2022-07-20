@@ -72,7 +72,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $page = $this->resolvePage($linkDetails, $conf, $disableGroupAccessCheck);
 
         if (empty($page)) {
-            throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
+            throw new UnableToLinkException('Page id "' . $linkDetails['pageuid'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
         }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] ?? [] as $classData) {
