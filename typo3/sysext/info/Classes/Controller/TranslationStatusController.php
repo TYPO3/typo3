@@ -248,9 +248,16 @@ class TranslationStatusController extends InfoModuleController
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
                         ) . '" align="center">' . ($this->getContentElementCount((int)$data['row']['uid'], $languageId) ?: '-') . '</td>';
                     } else {
-                        $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
-                        $info .= '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" value="1" />';
-                        $info .= '<span class="t3-icon fa"></span></label></div>';
+                        $idName = sprintf('new-overlay-%d-%d', $languageId, $data['row']['uid']);
+                        $info = '<div class="form-check form-check-type-icon-toggle">'
+                            . '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" id="' . htmlspecialchars($idName) . '" class="form-check-input" value="1" />'
+                            . '<label class="form-check-label" for="' . $idName . '">'
+                            . '<span class="form-check-label-icon">'
+                            . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
+                            . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
+                            . '</span>'
+                            . '</label>'
+                            . '</div>';
                         $tCells[] = '<td class="' . $status . ' col-border-left">&nbsp;</td>';
                         $tCells[] = '<td class="' . $status . '">&nbsp;</td>';
                         $tCells[] = '<td class="' . $status . '">' . $info . '</td>';

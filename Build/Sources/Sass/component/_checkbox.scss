@@ -214,6 +214,15 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 .form-check-type-icon-toggle {
     padding-left: 0;
 
+    .input-group & {
+        /* special handling for constant editor */
+        .form-label,
+        label,
+        &.form-check {
+            margin-bottom: 0;
+        }
+    }
+
     .form-check-label-icon {
         border-radius: 2px;
         height: 24px;
@@ -224,6 +233,13 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         background-color: $checkbox-bg;
         color: #333;
         border: 1px solid rgba(0, 0, 0, 0.3);
+
+        .input-group & {
+            /* special handling for constant editor */
+            width: revert;
+            height: revert;
+            padding: 6px;
+        }
     }
 
     .form-check-label-text {

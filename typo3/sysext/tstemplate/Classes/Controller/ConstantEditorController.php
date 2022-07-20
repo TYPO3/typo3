@@ -267,19 +267,29 @@ class ConstantEditorController extends AbstractTemplateModuleController
                             $sel = $fV ? 'checked' : '';
                             $p_field =
                                 '<input type="hidden" name="' . $fN . '" value="0" />'
-                                . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
-                                . '<span class="t3-icon fa"></span>'
-                                . '</label>';
+                                . '<div class="form-check form-check-type-icon-toggle">'
+                                . '<input type="checkbox" name="' . $fN . '" id="' . $idName . '" class="form-check-input" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
+                                . '<label class="form-check-label" for="' . $idName . '">'
+                                . '<span class="form-check-label-icon">'
+                                . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
+                                . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '</span>'
+                                . '</span>'
+                                . '</label>'
+                                . '</div>';
                             break;
                         case 'comment':
                             $sel = $fV ? '' : 'checked';
                             $p_field =
-                                '<input type="hidden" name="' . $fN . '" value="" />'
-                                . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="1" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
-                                . '<span class="t3-icon fa"></span>'
-                                . '</label>';
+                                '<input type="hidden" name="' . $fN . '" value="0" />'
+                                . '<div class="form-check form-check-type-icon-toggle">'
+                                . '<input type="checkbox" name="' . $fN . '" id="' . $idName . '" class="form-check-input" value="1" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
+                                . '<label class="form-check-label" for="' . $idName . '">'
+                                . '<span class="form-check-label-icon">'
+                                . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
+                                . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '</span>'
+                                . '</span>'
+                                . '</label>'
+                                . '</div>';
                             break;
                         case 'file':
                             // extensionlist
