@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Core\FormRequestHandler;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
@@ -75,7 +76,9 @@ class RenderViewHelper extends AbstractViewHelper
     {
         $request = $renderingContext->getRequest();
         $extensionName = $request instanceof Request ? $request->getControllerExtensionName() : 'Form';
-        return GeneralUtility::makeInstance(ContentObjectRenderer::class)->cObjGetSingle('USER', [
+        $contentObjectRenderer = self::getContentObjectRenderer();
+
+        return $contentObjectRenderer->cObjGetSingle('USER', [
             'userFunc' => FormRequestHandler::class . '->process',
             'persistenceIdentifier' => $arguments['persistenceIdentifier'],
             'factoryClass' => $arguments['factoryClass'],
@@ -84,5 +87,17 @@ class RenderViewHelper extends AbstractViewHelper
             'extensionName' => $extensionName,
             'pluginName' => $request->getPluginName(),
         ]);
+    }
+
+    private static function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $contentObjectRenderer = $configurationManager->getContentObject();
+
+        if ($contentObjectRenderer === null) {
+            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        }
+
+        return $contentObjectRenderer;
     }
 }
