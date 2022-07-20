@@ -158,7 +158,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         }
         $values = $this->filterNamesKeys($matches);
         $result = $this->findByRouteFieldValues($values);
-        if ($result[$this->languageParentFieldName] ?? null > 0) {
+        if (($result[$this->languageParentFieldName] ?? null) > 0) {
             return (string)$result[$this->languageParentFieldName];
         }
         if (isset($result['uid'])) {

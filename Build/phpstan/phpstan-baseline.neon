@@ -1131,16 +1131,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Routing/Aspect/MappableProcessor.php
 
 		-
-			message: "#^Comparison operation \"\\>\" between null and 0 is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/Aspect/PersistedAliasMapper.php
-
-		-
-			message: "#^Comparison operation \"\\>\" between null and 0 is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/Aspect/PersistedPatternMapper.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Enhancer\\\\AbstractEnhancer\\:\\:\\$aspects \\(array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\AspectInterface\\>\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/PluginEnhancer.php
