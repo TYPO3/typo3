@@ -298,7 +298,7 @@ class LanguageService
                 unset($labels[$this->lang]);
             }
         }
-        return is_array($labels) ? $labels : [];
+        return $labels;
     }
 
     /**

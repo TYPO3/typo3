@@ -1151,11 +1151,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Localization/LanguageService.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\) but returns TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Localization/LanguageService.php
