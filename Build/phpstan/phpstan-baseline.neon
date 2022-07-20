@@ -818,11 +818,6 @@ parameters:
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/FileLinkHandler.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/FolderLinkHandler.php
 
 		-

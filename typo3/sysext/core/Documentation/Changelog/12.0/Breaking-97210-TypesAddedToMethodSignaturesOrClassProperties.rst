@@ -13,6 +13,7 @@ The following PHP classes have had parameter and return types added to some or
 all of their method signatures. The types are consistent with existing
 docblock-documented type expectations and existing behavior.
 
+- :php:`\TYPO3\CMS\Core\LinkHandling\FileLinkHandler`
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ClassNamingUtility`
 - :php:`\TYPO3\CMS\Core\Utility\CsvUtility`

@@ -29,18 +29,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileLinkHandler implements LinkHandlingInterface
 {
-
     /**
      * The Base URN
-     * @var string
      */
-    protected $baseUrn = 't3://file';
+    protected string $baseUrn = 't3://file';
 
     /**
      * The resource factory object to resolve file objects
-     * @var ResourceFactory
      */
-    protected $resourceFactory;
+    protected ResourceFactory $resourceFactory;
 
     /**
      * Returns the link to a file as a string
@@ -111,9 +108,6 @@ class FileLinkHandler implements LinkHandlingInterface
      */
     protected function getResourceFactory(): ResourceFactory
     {
-        if (!$this->resourceFactory) {
-            $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        }
-        return $this->resourceFactory;
+        return $this->resourceFactory ??= GeneralUtility::makeInstance(ResourceFactory::class);
     }
 }
