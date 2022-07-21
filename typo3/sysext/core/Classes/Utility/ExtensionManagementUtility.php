@@ -1250,23 +1250,18 @@ tt_content.' . $key . $suffix . ' {
 
 ' . $content;
         if ($afterStaticUid) {
-            // If 'content (default)' is targeted (static uid 43),
-            // the content is added after typoscript of type contentRendering, eg. fluid_styled_content, see EXT:frontend/TemplateService for more information on how the code is parsed
+            // If 'defaultContentRendering' is targeted (formerly static uid 43),
+            // the content is added after TypoScript of type contentRendering, e.g. fluid_styled_content, see
+            // EXT:core/Classes/TypoScript/TemplateService.php for more information on how the code is parsed.
             if ($afterStaticUid === 'defaultContentRendering' || $afterStaticUid == 43) {
-                if (!isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'])) {
-                    $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] = '';
-                }
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] ??= '';
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
             } else {
-                if (!isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid])) {
-                    $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] = '';
-                }
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] ??= '';
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
             }
         } else {
-            if (!isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type])) {
-                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] = '';
-            }
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] ??= '';
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] .= $content;
         }
     }
