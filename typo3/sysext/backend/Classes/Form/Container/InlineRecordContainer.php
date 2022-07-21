@@ -362,7 +362,7 @@ class InlineRecordContainer extends AbstractContainer
         // Renders a thumbnail for the header
         if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && !empty($inlineConfig['appearance']['headerThumbnail']['field'])) {
             $fieldValue = $rec[$inlineConfig['appearance']['headerThumbnail']['field']];
-            $fileUid = $fieldValue[0]['uid'];
+            $fileUid = $fieldValue[0]['uid'] ?? null;
 
             if (!empty($fileUid)) {
                 try {

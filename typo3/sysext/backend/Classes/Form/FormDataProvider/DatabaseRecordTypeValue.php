@@ -106,7 +106,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                     // Fetch field of this foreign row from db
                     if (MathUtility::canBeInterpretedAsInteger($foreignUid)) {
                         $foreignRow = $this->getDatabaseRow($foreignTable, (int)$foreignUid, $foreignTableTypeField);
-                        if ($foreignRow[$foreignTableTypeField]) {
+                        if (!empty($foreignRow[$foreignTableTypeField])) {
                             // @todo: It might be necessary to fetch the value from default language record as well here,
                             // @todo: this was buggy in the "old" implementation and never worked. It was therefor left out here for now.
                             // @todo: To implement that, see if the foreign row is a localized overlay, fetch default and merge exclude
