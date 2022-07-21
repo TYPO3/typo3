@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * This processor analyzes the provided data-map before actually being process
@@ -871,25 +872,46 @@ class DataMapProcessor
             return [];
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->backendUser->workspace));
-        $statement = $queryBuilder
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll()
+            // NOT using WorkspaceRestriction here since it's wrong in this case. See ws OR restriction below.
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $expressions = [
+            $queryBuilder->expr()->eq('t3ver_wsid', 0),
+        ];
+        if ($this->backendUser->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            // If this is a workspace record (t3ver_wsid = be-user-workspace), then fetch this one
+            // if it is NOT a deleted placeholder (t3ver_state=2), but ok with casual overlay (t3ver_state=0),
+            // new ws-record (t3ver_state=1), or moved record (t3ver_state=4).
+            // It *might* be possible to simplify this since it may be the case that ws-deleted records are
+            // impossible to be incoming here at all? But this query is a safe thing, so we go with it for now.
+            $expressions[] = $queryBuilder->expr()->and(
+                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->backendUser->workspace, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->in(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(
+                        [VersionState::DEFAULT_STATE, VersionState::NEW_PLACEHOLDER, VersionState::MOVE_POINTER],
+                        Connection::PARAM_INT_ARRAY
+                    )
+                ),
+            );
+        }
+        $queryBuilder
             ->select(...array_values($fieldNames))
             ->from($tableName)
             ->where(
                 $queryBuilder->expr()->in(
                     'uid',
                     $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                )
-            )
-            ->executeQuery();
+                ),
+                $queryBuilder->expr()->or(...$expressions)
+            );
+
+        $result = $queryBuilder->executeQuery();
 
         $translationValues = [];
-        while ($record = $statement->fetchAssociative()) {
+        while ($record = $result->fetchAssociative()) {
             $translationValues[$record['uid']] = $record;
         }
         return $translationValues;
