@@ -45,7 +45,13 @@ class UserFileInlineLabelService
         }
 
         // In case of a group field uid_local is a resolved array
-        $fileRecord = $params['row']['uid_local'][0]['row'];
+        $fileRecord = $params['row']['uid_local'][0]['row'] ?? null;
+
+        if ($fileRecord === null) {
+            // no file record so nothing more to do
+            $params['title'] = $params['row']['uid'];
+            return;
+        }
 
         // Configuration
         $title = '';
