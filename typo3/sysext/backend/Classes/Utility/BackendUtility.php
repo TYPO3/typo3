@@ -641,7 +641,7 @@ class BackendUtility
                     // Get field value from database if field is not in the $row array
                     if (!isset($row[$pointerField])) {
                         $localRow = self::getRecord($table, $row['uid'], $pointerField);
-                        $foreignUid = $localRow[$pointerField];
+                        $foreignUid = $localRow[$pointerField] ?? 0;
                     } else {
                         $foreignUid = $row[$pointerField];
                     }
