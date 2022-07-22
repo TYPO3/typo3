@@ -30,7 +30,7 @@ jobs:
         run: Build/Scripts/runTests.sh -n -p ${{ matrix.php }} -s cgl
 
       - name: phpstan
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan -e "--error-format=github"
 
       - name: Unit Tests
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s unit

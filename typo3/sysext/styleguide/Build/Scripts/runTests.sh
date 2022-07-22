@@ -104,7 +104,7 @@ Options:
         Specifies the PHP minor version to be used
             - 8.1 (default): use PHP 8.1
 
-    -e "<phpunit or codeception options>"
+    -e "<phpunit, codeception or additional phpstan scan options>"
         Only with -s acceptance|functional|unit
         Additional options to send to phpunit (unit & functional tests) or codeception (acceptance
         tests). For phpunit, options starting with "--" must be added after options starting with "-".
