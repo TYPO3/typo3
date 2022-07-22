@@ -124,12 +124,12 @@ class QueryObjectModelFactory implements SingletonInterface
      * Filters node-tuples based on the outcome of a binary operation.
      *
      * @param PropertyValueInterface $operand1 the first operand; non-null
-     * @param string $operator the operator; one of QueryObjectModelConstants.JCR_OPERATOR_*
+     * @param QueryInterface::OPERATOR_* $operator the operator
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface $operand2 the second operand; non-null
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface the constraint; non-null
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
      */
-    public function comparison(PropertyValueInterface $operand1, $operator, $operand2)
+    public function comparison(PropertyValueInterface $operand1, int $operator, $operand2)
     {
         return GeneralUtility::makeInstance(Comparison::class, $operand1, $operator, $operand2);
     }
