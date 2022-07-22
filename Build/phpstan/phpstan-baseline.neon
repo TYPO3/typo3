@@ -106,11 +106,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/LiveSearch.php
 
 		-
-			message: "#^Parameter \\#1 \\$value of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:escapeLikeWildcards\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/LiveSearch.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Search\\\\LiveSearch\\\\QueryParser\\:\\:getId\\(\\) should return int but returns string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/QueryParser.php
