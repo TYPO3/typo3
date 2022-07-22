@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -37,131 +39,98 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     const MODE_CHILDREN = 1;
     const MODE_PARENT = 2;
 
-    /**
-     * @var string
-     */
-    protected $tableName = '';
+    protected string $tableName = '';
 
     /**
      * @var string
      */
     protected $treeId = '';
 
-    /**
-     * @var string
-     */
-    protected $labelField = '';
+    protected string $labelField = '';
+
+    protected string $tableWhere = '';
 
     /**
-     * @var string
+     * @var self::MODE_*
      */
-    protected $tableWhere = '';
+    protected int $lookupMode = self::MODE_CHILDREN;
 
-    /**
-     * @var int
-     */
-    protected $lookupMode = self::MODE_CHILDREN;
-
-    /**
-     * @var string
-     */
-    protected $lookupField = '';
+    protected string $lookupField = '';
 
     /**
      * @var int[]
      */
     protected array $startingPoints = [0];
 
-    /**
-     * @var array
-     */
-    protected $idCache = [];
+    protected array $idCache = [];
 
     /**
      * Stores TCA-Configuration of the LookUpField in tableName
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $columnConfiguration;
+    protected array $columnConfiguration;
 
     /**
      * node sort values (the orderings from foreign_Table_where evaluation)
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $nodeSortValues = [];
+    protected array $nodeSortValues = [];
 
     /**
-     * @var array TCEforms compiled TSConfig array
+     * TCEforms compiled TSConfig array
      */
-    protected $generatedTSConfig = [];
+    protected array $generatedTSConfig = [];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(protected EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * Sets the label field
-     *
-     * @param string $labelField
      */
-    public function setLabelField($labelField)
+    public function setLabelField(string $labelField): void
     {
         $this->labelField = $labelField;
     }
 
     /**
      * Gets the label field
-     *
-     * @return string
      */
-    public function getLabelField()
+    public function getLabelField(): string
     {
         return $this->labelField;
     }
 
     /**
      * Sets the table name
-     *
-     * @param string $tableName
      */
-    public function setTableName($tableName)
+    public function setTableName(string $tableName): void
     {
         $this->tableName = $tableName;
     }
 
     /**
      * Gets the table name
-     *
-     * @return string
      */
-    public function getTableName()
+    public function getTableName(): string
     {
         return $this->tableName;
     }
 
     /**
      * Sets the lookup field
-     *
-     * @param string $lookupField
      */
-    public function setLookupField($lookupField)
+    public function setLookupField(string $lookupField): void
     {
         $this->lookupField = $lookupField;
     }
 
     /**
      * Gets the lookup field
-     *
-     * @return string
      */
-    public function getLookupField()
+    public function getLookupField(): string
     {
         return $this->lookupField;
     }
@@ -169,9 +138,9 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Sets the lookup mode
      *
-     * @param int $lookupMode
+     * @param self::MODE_* $lookupMode
      */
-    public function setLookupMode($lookupMode)
+    public function setLookupMode(int $lookupMode): void
     {
         $this->lookupMode = $lookupMode;
     }
@@ -179,28 +148,24 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Gets the lookup mode
      *
-     * @return int
+     * @return self::MODE_*
      */
-    public function getLookupMode()
+    public function getLookupMode(): int
     {
         return $this->lookupMode;
     }
 
     /**
      * Gets the nodes
-     *
-     * @param TreeNode $node
      */
-    public function getNodes(TreeNode $node)
+    public function getNodes(TreeNode $node): void
     {
     }
 
     /**
      * Gets the root node
-     *
-     * @return DatabaseTreeNode
      */
-    public function getRoot()
+    public function getRoot(): DatabaseTreeNode
     {
         return $this->buildRepresentationForNode($this->treeData);
     }
@@ -227,40 +192,31 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Sets the tableWhere clause
-     *
-     * @param string $tableWhere
      */
-    public function setTableWhere($tableWhere)
+    public function setTableWhere(string $tableWhere): void
     {
         $this->tableWhere = $tableWhere;
     }
 
     /**
      * Gets the tableWhere clause
-     *
-     * @return string
      */
-    public function getTableWhere()
+    public function getTableWhere(): string
     {
         return $this->tableWhere;
     }
 
     /**
      * Builds a complete node including children
-     *
-     * @param TreeNode $basicNode
-     * @param DatabaseTreeNode|null $parent
-     * @param int $level
-     * @return DatabaseTreeNode Node object
      */
-    protected function buildRepresentationForNode(TreeNode $basicNode, DatabaseTreeNode $parent = null, $level = 0)
+    protected function buildRepresentationForNode(TreeNode $basicNode, ?DatabaseTreeNode $parent = null, $level = 0): DatabaseTreeNode
     {
         $node = GeneralUtility::makeInstance(DatabaseTreeNode::class);
         $row = [];
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
             $node->setExpanded(true);
-            $node->setLabel($this->getLanguageService()->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
+            $node->setLabel($this->getLanguageService()?->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
         } else {
             $row = BackendUtility::getRecordWSOL($this->tableName, (int)$basicNode->getId(), '*', '', false) ?? [];
             $node->setLabel(BackendUtility::getRecordTitle($this->tableName, $row) ?: $basicNode->getId());
@@ -290,7 +246,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Init the tree data
      */
-    public function initializeTreeData()
+    public function initializeTreeData(): void
     {
         parent::initializeTreeData();
         $this->nodeSortValues = array_flip($this->itemWhiteList);
@@ -308,7 +264,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Loads the tree data (all possible children)
      */
-    protected function loadTreeData()
+    protected function loadTreeData(): void
     {
         if ($this->getStartingPoints()) {
             $startingPoints = $this->getStartingPoints();
@@ -319,7 +275,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         if (count($startingPoints) === 1) {
             // Only one starting point is available, grab it and set it as root node
             $startingPoint = current($startingPoints);
-            $this->treeData->setId($startingPoint);
+            $this->treeData->setId((string)$startingPoint);
             $this->treeData->setParentNode(null);
 
             if ($this->levelMaximum >= 1) {
@@ -336,7 +292,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $treeNodeCollection = GeneralUtility::makeInstance(TreeNodeCollection::class);
             foreach ($startingPoints as $startingPoint) {
                 $treeData = GeneralUtility::makeInstance(TreeNode::class);
-                $treeData->setId($startingPoint);
+                $treeData->setId((string)$startingPoint);
 
                 if ($this->levelMaximum >= 1) {
                     $childNodes = $this->getChildrenOf($treeData, 1);
@@ -346,19 +302,15 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                 }
                 $treeNodeCollection->append($treeData);
             }
-            $this->treeData->setId(0);
+            $this->treeData->setId('0');
             $this->treeData->setChildNodes($treeNodeCollection);
         }
     }
 
     /**
      * Gets node children
-     *
-     * @param TreeNode $node
-     * @param int $level
-     * @return TreeNodeCollection|null
      */
-    protected function getChildrenOf(TreeNode $node, $level): ?TreeNodeCollection
+    protected function getChildrenOf(TreeNode $node, int $level): ?TreeNodeCollection
     {
         $nodeData = null;
         if ($node->getId() !== 0) {
@@ -404,20 +356,17 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Gets related records depending on TCA configuration
-     *
-     * @param array $row
-     * @return array
      */
-    protected function getRelatedRecords(array $row)
+    protected function getRelatedRecords(array $row): array
     {
-        if ($this->getLookupMode() == self::MODE_PARENT) {
+        if ($this->getLookupMode() === self::MODE_PARENT) {
             $children = $this->getChildrenUidsFromParentRelation($row);
         } else {
             $children = $this->getChildrenUidsFromChildrenRelation($row);
         }
         $allowedArray = [];
         foreach ($children as $child) {
-            if (!in_array($child, $this->idCache) && in_array($child, $this->itemWhiteList)) {
+            if (!in_array($child, $this->idCache, true) && in_array($child, $this->itemWhiteList, true)) {
                 $allowedArray[] = $child;
             }
         }
@@ -427,11 +376,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Gets related records depending on TCA configuration
-     *
-     * @param array $row
-     * @return array
      */
-    protected function getChildrenUidsFromParentRelation(array $row)
+    protected function getChildrenUidsFromParentRelation(array $row): array
     {
         $uid = $row['uid'];
         if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline'], true)) {
@@ -455,11 +401,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Gets related children records depending on TCA configuration
-     *
-     * @param array $row
-     * @return array
      */
-    protected function getChildrenUidsFromChildrenRelation(array $row)
+    protected function getChildrenUidsFromChildrenRelation(array $row): array
     {
         $relatedUids = [];
         $uid = $row['uid'];
@@ -515,9 +458,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * @param int $queryId the uid to search for
      * @return int[] all uids found
      */
-    protected function listFieldQuery($fieldName, $queryId)
+    protected function listFieldQuery(string $fieldName, int $queryId): array
     {
-        $queryId = (int)$queryId;
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->getTableName());
         $queryBuilder->getRestrictions()->removeAll();

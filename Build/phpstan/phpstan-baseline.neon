@@ -1166,11 +1166,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:getSortValue\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeNode.php
