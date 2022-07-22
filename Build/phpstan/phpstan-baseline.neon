@@ -156,11 +156,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/LiveSearch.php
 
 		-
-			message: "#^Parameter \\#1 \\$value of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:escapeLikeWildcards\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/LiveSearch.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/QueryParser.php

@@ -336,7 +336,7 @@ class LiveSearch
                     $constraints[] = $queryBuilder->expr()->like(
                         $fieldName,
                         $queryBuilder->createNamedParameter(
-                            '%' . $queryBuilder->escapeLikeWildcards((int)$this->queryString) . '%',
+                            '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%',
                             \PDO::PARAM_STR
                         )
                     );
