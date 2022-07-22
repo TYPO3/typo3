@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -27,29 +29,11 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
  */
 class ImageProcessingService
 {
-    /**
-     * @var ProcessedFileRepository
-     */
-    private $processedFileRepository;
-
-    /**
-     * @var Context
-     */
-    private $context;
-
-    /**
-     * @var ResourceMutex
-     */
-    private $locker;
-
     public function __construct(
-        ProcessedFileRepository $processedFileRepository,
-        Context $context,
-        ResourceMutex $locker
+        private readonly ProcessedFileRepository $processedFileRepository,
+        private readonly Context $context,
+        private readonly ResourceMutex $locker,
     ) {
-        $this->processedFileRepository = $processedFileRepository;
-        $this->context = $context;
-        $this->locker = $locker;
     }
 
     public function process(int $processedFileId): ProcessedFile
@@ -58,7 +42,7 @@ class ImageProcessingService
         $processedFile = $this->processedFileRepository->findByUid($processedFileId);
         try {
             $this->validateProcessedFile($processedFile);
-            $this->locker->acquireLock(self::class, $processedFileId);
+            $this->locker->acquireLock(self::class, (string)$processedFileId);
 
             // Fetch the processed file again, as it might have been processed by another process while waiting for the lock
             /** @var ProcessedFile $processedFile */

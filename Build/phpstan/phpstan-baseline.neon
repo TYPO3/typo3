@@ -1101,11 +1101,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Service/FileProcessingService.php
 
 		-
-			message: "#^Parameter \\#2 \\$key of method TYPO3\\\\CMS\\\\Core\\\\Locking\\\\ResourceMutex\\:\\:acquireLock\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Service/ImageProcessingService.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php
