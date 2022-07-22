@@ -41,11 +41,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/File/FileController.php
-
-		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/SiteConfigurationController.php
@@ -4686,11 +4681,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/AdministrationRepository.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/IndexSearchRepository.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
@@ -4926,13 +4916,8 @@ parameters:
 			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/QueryRestrictions/EditableRestriction.php
-
-		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 4
+			count: 3
 			path: ../../typo3/sysext/linkvalidator/Classes/QueryRestrictions/EditableRestriction.php
 
 		-
