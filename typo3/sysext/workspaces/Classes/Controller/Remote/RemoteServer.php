@@ -246,7 +246,7 @@ class RemoteServer
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $this->differenceHandler->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName]),
+                        'content' => $this->differenceHandler->makeDiffDisplay((string)$liveRecord[$fieldName], $versionRecord[$fieldName]),
                     ];
                     $liveReturnArray[] = [
                         'field' => $fieldName,
