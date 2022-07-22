@@ -200,10 +200,16 @@ class PreviewUriBuilder
                     throw new UnableToLinkToPageException('The page ' . $event->getPageId() . ' had no proper connection to a site, no link could be built.', 1651499353);
                 }
                 try {
+                    $previewRouteParameters = $event->getAdditionalQueryParameters();
+                    // Reassemble encapsulated language id into route parameters to get proper localized page preview
+                    // uri for non-default languages.
+                    if ($event->getLanguageId() > 0) {
+                        $previewRouteParameters['_language'] = $site->getLanguageById($event->getLanguageId());
+                    }
                     $event->setPreviewUri(
                         $site->getRouter($event->getContext())->generateUri(
                             $event->getPageId(),
-                            $event->getAdditionalQueryParameters(),
+                            $previewRouteParameters,
                             $event->getSection(),
                             RouterInterface::ABSOLUTE_URL
                         )

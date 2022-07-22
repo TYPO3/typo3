@@ -46,9 +46,12 @@ class BackendUtilityHook
         $queryString = $uri->getQuery();
         if ($event->getAdditionalQueryParameters() !== []) {
             $queryString .= http_build_query($event->getAdditionalQueryParameters(), '', '&', PHP_QUERY_RFC3986);
-            if ($event->getLanguageId() > 0) {
-                $queryString .= '&_language=' . $event->getLanguageId();
-            }
+        }
+        // Reassemble encapsulated language id as query parameter, to open workspace preview in correct non-default language
+        if ($event->getLanguageId() > 0) {
+            $queryString .= '&_language=' . $event->getLanguageId();
+        }
+        if ($queryString) {
             $uri = $uri->withQuery($queryString);
         }
         $event->setPreviewUri($uri);
