@@ -936,11 +936,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Collection/FolderBasedFileCollection.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileCollectionRepository\\:\\:createDomainObject\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Collection\\\\AbstractFileCollection but returns TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/FileCollectionRepository.php
@@ -2529,11 +2524,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Extensionmanager\\\\Tests\\\\Unit\\\\Fixtures\\\\LatestCompatibleExtensionObjectStorageFixture\\:\\:\\$position is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Fixtures/LatestCompatibleExtensionObjectStorageFixture.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Report/ExtensionStatusTest.php
 
 		-
 			message: "#^PHPDoc tag @throws with type TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\Exception is not subtype of Throwable$#"

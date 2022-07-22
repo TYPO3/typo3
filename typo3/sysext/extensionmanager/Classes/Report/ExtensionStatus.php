@@ -76,7 +76,7 @@ class ExtensionStatus implements StatusProviderInterface
     /**
      * Determines extension manager status
      *
-     * @return Status[] List of statuses
+     * @return array<string, Status|array> List of statuses
      */
     public function getStatus(): array
     {
