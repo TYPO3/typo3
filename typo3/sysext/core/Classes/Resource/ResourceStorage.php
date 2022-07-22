@@ -2088,7 +2088,7 @@ class ResourceStorage implements ResourceStorageInterface
             } elseif ($conflictMode->equals(DuplicationBehavior::CANCEL)) {
                 throw $exception;
             } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE)) {
-                $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $targetFileName;
+                $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $sanitizedTargetFileName;
                 $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
                 $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
             }
