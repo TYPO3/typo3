@@ -40,20 +40,14 @@ class FileSearchQuery
 
     private const FILES_META_TABLE = 'sys_file_metadata';
 
-    /**
-     * @var QueryBuilder
-     */
-    private $queryBuilder;
+    private QueryBuilder $queryBuilder;
 
     /**
      * @var QueryRestrictionInterface[]
      */
-    private $additionalRestrictions = [];
+    private array $additionalRestrictions = [];
 
-    /**
-     * @var Result
-     */
-    private $result;
+    private ?Result $result = null;
 
     public function __construct(QueryBuilder $queryBuilder = null)
     {
@@ -209,7 +203,7 @@ class FileSearchQuery
 
     private function ensureQueryNotExecuted(): void
     {
-        if ($this->result) {
+        if ($this->result !== null) {
             throw new \RuntimeException('Cannot modify file query once it was executed. Create a new query instead.', 1555944032);
         }
     }

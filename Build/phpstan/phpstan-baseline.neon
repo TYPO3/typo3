@@ -1076,11 +1076,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Search/FileSearchQuery.php
-
-		-
 			message: "#^Argument of an invalid type TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Service/ExtractorService.php
