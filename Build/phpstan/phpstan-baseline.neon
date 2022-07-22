@@ -31,11 +31,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/File/FileController.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\AbstractNode\\:\\:initializeResultArray\\(\\) should return array\\{string\\: array\\<int, string\\>, requireJsModules\\: array\\<int, TYPO3\\\\CMS\\\\Core\\\\Page\\\\JavaScriptModuleInstruction\\>\\} but returns array\\{additionalJavaScriptPost\\: array\\{\\}, additionalHiddenFields\\: array\\{\\}, additionalInlineLanguageLabelFiles\\: array\\{\\}, stylesheetFiles\\: array\\{\\}, requireJsModules\\: array\\{\\}, inlineData\\: array\\{\\}, html\\: ''\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/AbstractNode.php
@@ -3636,11 +3631,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/AdministrationRepository.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/IndexSearchRepository.php
-
-		-
 			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
@@ -3859,11 +3849,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$recordUid of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:removeBrokenLinksForRecord\\(\\) expects int, string given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/QueryRestrictions/EditableRestriction.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:setDepth\\(\\)\\.$#"

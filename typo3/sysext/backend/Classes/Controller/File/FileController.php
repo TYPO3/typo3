@@ -284,13 +284,9 @@ class FileController
 
     protected function flattenFileResultDataValue(File $result): array
     {
-        $thumbUrl = '';
-        if ($result->isImage()) {
-            $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
-            if ($processedFile) {
-                $thumbUrl = $processedFile->getPublicUrl() ?? '';
-            }
-        }
+        $thumbUrl = $result->isImage()
+            ? ($result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl() ?? '')
+            : '';
         $path = '';
         if (is_callable([$result->getParentFolder(), 'getReadablePath'])) {
             $path = $result->getParentFolder()->getReadablePath();

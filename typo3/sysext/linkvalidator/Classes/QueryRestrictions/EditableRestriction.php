@@ -221,9 +221,7 @@ class EditableRestriction implements QueryRestrictionInterface
                 'tx_linkvalidator_link.table_name',
                 $this->queryBuilder->quote($table)
             );
-            if ($additionalWhere) {
-                $constraints[] = $expressionBuilder->or(...$additionalWhere);
-            }
+            $constraints[] = $expressionBuilder->or(...$additionalWhere);
         }
 
         if ($this->allowedLanguages) {
