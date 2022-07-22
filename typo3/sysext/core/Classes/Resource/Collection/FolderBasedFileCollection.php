@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Resource\Collection;
 
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -115,7 +114,6 @@ class FolderBasedFileCollection extends AbstractFileCollection
         $this->recursive = (bool)$array['recursive'];
         if (!empty($array['folder']) && !empty($array['storage'])) {
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            /** @var ResourceStorage $storage */
             $storage = $storageRepository->findByUid($array['storage']);
             if ($storage) {
                 $this->folder = $storage->getFolder($array['folder']);

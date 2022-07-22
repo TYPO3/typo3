@@ -1256,11 +1256,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Collection/FolderBasedFileCollection.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileCollectionRepository\\:\\:createDomainObject\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Collection\\\\AbstractFileCollection but returns TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/FileCollectionRepository.php
@@ -3404,11 +3399,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Extensionmanager\\\\Tests\\\\Unit\\\\Fixtures\\\\LatestCompatibleExtensionObjectStorageFixture\\:\\:\\$position is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Fixtures/LatestCompatibleExtensionObjectStorageFixture.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Report/ExtensionStatusTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$dependencies of method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Extension\\:\\:setDependencies\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Dependency\\>&SplObjectStorage, SplObjectStorage\\<object, mixed\\> given\\.$#"
