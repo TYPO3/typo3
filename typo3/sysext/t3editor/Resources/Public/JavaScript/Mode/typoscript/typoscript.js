@@ -774,7 +774,6 @@
         'splitChar': kw('splitChar'),
         'splitRendering': kw('splitRendering'),
         'src': kw('src'),
-        'stdheader': kw('stdheader'),
         'stdWrap': A,
         'stdWrap2': kw('stdWrap2'),
         'strftime': kw('strftime'),

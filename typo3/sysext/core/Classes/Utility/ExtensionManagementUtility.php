@@ -1082,7 +1082,6 @@ class ExtensionManagementUtility
      * $type determines the type of frontend plugin:
      * + list_type (default) - the good old "Insert plugin" entry
      * + CType - a new content element type
-     * + header_layout - an additional header type (added to the selection of layout1-5)
      * + includeLib - just includes the library for manual use somewhere in TypoScript.
      * (Remember that your $type definition should correspond to the column/items array in $GLOBALS['TCA'][tt_content] where you added the selector item for the element! See addPlugin() function)
      * FOR USE IN ext_localconf.php FILES
@@ -1117,9 +1116,6 @@ tt_content.' . $key . $suffix . ' {
     20 =< plugin.' . $cN . $suffix . '
 }
 ');
-                break;
-            case 'header_layout':
-                $addLine = 'lib.stdheader.10.' . $key . $suffix . ' = < plugin.' . $cN . $suffix;
                 break;
             case 'includeLib':
                 $addLine = 'page.1000 = < plugin.' . $cN . $suffix;

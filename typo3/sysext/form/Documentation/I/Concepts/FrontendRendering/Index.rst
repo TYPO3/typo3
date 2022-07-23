@@ -777,7 +777,6 @@ Render through FLUIDTEMPLATE (without controller)
 
    tt_content.custom_content_element = COA_INT
    tt_content.custom_content_element {
-       10 = < lib.stdheader
        20 = FLUIDTEMPLATE
        20 {
            file = EXT:my_site_package/Resources/Private/Templates/CustomContentElement.html
