@@ -24,10 +24,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class UserService
 {
-    /**
-     * @var FrontendUserAuthentication
-     */
-    protected $feUser;
+    protected FrontendUserAuthentication $feUser;
 
     public function __construct()
     {

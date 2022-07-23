@@ -26,11 +26,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 abstract class AbstractConfirmedEvent
 {
-    /**
-     * @var LoginController
-     */
-    private $controller;
-
+    private LoginController $controller;
     private ViewInterface $view;
 
     public function __construct(LoginController $controller, ViewInterface $view)

@@ -26,10 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RedirectConfiguration
 {
-    /**
-     * @var array
-     */
-    protected $modes;
+    protected array $modes;
 
     public function __construct(
         array|string|null $mode,

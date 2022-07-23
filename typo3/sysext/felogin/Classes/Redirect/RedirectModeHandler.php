@@ -32,10 +32,7 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
  */
 class RedirectModeHandler
 {
-    /**
-     * @var RedirectUrlValidator
-     */
-    protected $redirectUrlValidator;
+    protected RedirectUrlValidator $redirectUrlValidator;
 
     public function __construct(
         protected UriBuilder $uriBuilder,

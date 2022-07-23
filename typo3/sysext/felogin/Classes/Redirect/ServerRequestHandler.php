@@ -27,15 +27,8 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
  */
 class ServerRequestHandler
 {
-    /**
-     * @var RedirectUrlValidator
-     */
-    protected $redirectUrlValidator;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
+    protected RedirectUrlValidator $redirectUrlValidator;
+    protected ServerRequestInterface $request;
 
     public function __construct()
     {

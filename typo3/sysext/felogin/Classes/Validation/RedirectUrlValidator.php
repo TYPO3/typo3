@@ -32,10 +32,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
+    protected SiteFinder $siteFinder;
 
     /**
      * @param SiteFinder|null $siteFinder

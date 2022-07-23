@@ -28,10 +28,7 @@ use TYPO3\CMS\FrontendLogin\Service\UserService;
  */
 class FrontendUserRepository
 {
-    /**
-     * @var Connection
-     */
-    protected $connection;
+    protected Connection $connection;
 
     public function __construct(protected UserService $userService, protected Context $context)
     {

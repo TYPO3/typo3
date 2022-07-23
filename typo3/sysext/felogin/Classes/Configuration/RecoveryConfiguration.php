@@ -33,35 +33,12 @@ class RecoveryConfiguration implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var string
-     */
-    protected $forgotHash;
-
-    /**
-     * @var Address|null
-     */
-    protected $replyTo;
-
-    /**
-     * @var Address
-     */
-    protected $sender;
-
-    /**
-     * @var array
-     */
-    protected $settings;
-
-    /**
-     * @var string
-     */
-    protected $mailTemplateName;
-
-    /**
-     * @var int
-     */
-    protected $timestamp;
+    protected string $forgotHash;
+    protected ?Address $replyTo = null;
+    protected Address $sender;
+    protected array $settings;
+    protected string $mailTemplateName = '';
+    protected ?int $timestamp = null;
 
     public function __construct(
         protected Context $context,
@@ -190,7 +167,7 @@ class RecoveryConfiguration implements LoggerAwareInterface
                 );
             }
         }
-        $this->mailTemplateName = $this->settings['email']['templateName'];
+        $this->mailTemplateName = (string)$this->settings['email']['templateName'];
         if (empty($this->mailTemplateName)) {
             throw new IncompleteConfigurationException(
                 'Key "plugin.tx_felogin_login.settings.email.templateName" cannot be empty!',

@@ -38,45 +38,15 @@ use TYPO3\CMS\FrontendLogin\Service\UserService;
  */
 class LoginController extends AbstractLoginFormController
 {
-    /**
-     * @var string
-     */
     public const MESSAGEKEY_DEFAULT = 'welcome';
-
-    /**
-     * @var string
-     */
     public const MESSAGEKEY_ERROR = 'error';
-
-    /**
-     * @var string
-     */
     public const MESSAGEKEY_LOGOUT = 'logout';
 
-    /**
-     * @var string
-     */
-    protected $loginType = '';
-
-    /**
-     * @var string
-     */
-    protected $redirectUrl = '';
-
-    /**
-     * @var RedirectConfiguration
-     */
-    protected $configuration;
-
-    /**
-     * @var UserAspect
-     */
-    protected $userAspect;
-
-    /**
-     * @var bool
-     */
-    protected $showCookieWarning = false;
+    protected string $loginType = '';
+    protected string $redirectUrl = '';
+    protected RedirectConfiguration $configuration;
+    protected UserAspect $userAspect;
+    protected bool $showCookieWarning = false;
 
     public function __construct(
         protected RedirectHandler $redirectHandler,

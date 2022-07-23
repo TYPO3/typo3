@@ -38,10 +38,7 @@ use TYPO3\CMS\FrontendLogin\Event\SendRecoveryEmailEvent;
  */
 class RecoveryService implements RecoveryServiceInterface
 {
-    /**
-     * @var array
-     */
-    protected $settings;
+    protected array $settings;
 
     public function __construct(
         protected Mailer $mailer,

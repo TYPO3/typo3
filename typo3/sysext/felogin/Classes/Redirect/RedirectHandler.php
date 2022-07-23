@@ -28,10 +28,7 @@ use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
  */
 class RedirectHandler
 {
-    /**
-     * @var bool
-     */
-    protected $userIsLoggedIn = false;
+    protected bool $userIsLoggedIn = false;
 
     public function __construct(
         protected ServerRequestHandler $requestHandler,
