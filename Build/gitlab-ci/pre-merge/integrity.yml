@@ -77,10 +77,6 @@ phpstan php 8.1 pre-merge:
     refs:
       - schedules
       - main
-  cache:
-    key: main-composer-phpstan-81
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s phpstan -p 8.1

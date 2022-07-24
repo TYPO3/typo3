@@ -178,7 +178,7 @@ acceptance install sqlite php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   artifacts:
@@ -197,7 +197,7 @@ acceptance install sqlite php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   artifacts:

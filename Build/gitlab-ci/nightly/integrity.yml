@@ -79,10 +79,6 @@ phpstan php 8.1 locked:
   needs: []
   only:
     - schedules
-  cache:
-    key: main-composer-phpstan-81
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s phpstan -p 8.1
@@ -93,7 +89,7 @@ phpstan php 8.1 max:
   only:
     - schedules
   cache:
-    key: main-composer-phpstan-max
+    key: main-composer-max
     paths:
       - .cache
   script:
