@@ -30,9 +30,10 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent;
-use TYPO3\CMS\FrontendLogin\Service\RecoveryServiceInterface;
+use TYPO3\CMS\FrontendLogin\Service\RecoveryService;
 use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
 
 /**
@@ -41,13 +42,15 @@ use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
 class PasswordRecoveryController extends AbstractLoginFormController
 {
     public function __construct(
-        protected RecoveryServiceInterface $recoveryService,
-        protected FrontendUserRepository $userRepository
+        protected RecoveryService $recoveryService,
+        protected FrontendUserRepository $userRepository,
+        protected RecoveryConfiguration $recoveryConfiguration
     ) {
     }
 
     /**
-     * Shows the recovery form. If $userIdentifier is set an email will be sent, if the corresponding user exists
+     * Shows the recovery form. If $userIdentifier is set an email will be sent, if the corresponding user exists and
+     * has a valid email address set.
      */
     public function recoveryAction(string $userIdentifier = null): ResponseInterface
     {
@@ -55,16 +58,18 @@ class PasswordRecoveryController extends AbstractLoginFormController
             return $this->htmlResponse();
         }
 
-        $email = $this->userRepository->findEmailByUsernameOrEmailOnPages(
+        $userData = $this->userRepository->findUserByUsernameOrEmailOnPages(
             $userIdentifier,
             $this->getStorageFolders()
         );
 
-        if ($email) {
-            $this->recoveryService->sendRecoveryEmail($email);
+        if ($userData && GeneralUtility::validEmail($userData['email'])) {
+            $hash = $this->recoveryConfiguration->getForgotHash();
+            $this->userRepository->updateForgotHashForUserByUid($userData['uid'], GeneralUtility::hmac($hash));
+            $this->recoveryService->sendRecoveryEmail($userData, $hash);
         }
 
-        if ($this->exposeNoneExistentUser($email)) {
+        if ($this->exposeNoneExistentUser($userData)) {
             $this->addFlashMessage(
                 $this->getTranslation('forgot_reset_message_error'),
                 '',
@@ -300,11 +305,11 @@ class PasswordRecoveryController extends AbstractLoginFormController
     /**
      * Returns whether the `exposeNonexistentUserInForgotPasswordDialog` setting is active or not
      */
-    protected function exposeNoneExistentUser(?string $email): bool
+    protected function exposeNoneExistentUser(?array $user): bool
     {
         $acceptedValues = ['1', 1, 'true'];
 
-        return !$email && in_array(
+        return !$user && in_array(
             $this->settings['exposeNonexistentUserInForgotPasswordDialog'] ?? null,
             $acceptedValues,
             true

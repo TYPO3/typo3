@@ -1,4 +1,4 @@
-"fe_users",,,,,,
-,"uid","name","username","email","felogin_forgotHash","felogin_redirectPid"
-,1,"Foo Bar","foobar","foo@bar.baz","cf8edd6fa435b4a9fcbb953f81bd84f2",10
-,2,"","user-with-username-without-email",,,
+"fe_users",,,,,,,
+,"uid","pid","name","username","email","felogin_forgotHash","felogin_redirectPid"
+,1,10,"Foo Bar","foobar","foo@bar.baz","cf8edd6fa435b4a9fcbb953f81bd84f2",10
+,2,20,"","user-with-username-without-email",,,

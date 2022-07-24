@@ -64,16 +64,16 @@ class RecoveryServiceTest extends UnitTestCase
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function sendRecoveryEmailShouldGenerateMailFromConfiguration(
-        string $emailAddress,
+        int $uid,
         array $recoveryConfiguration,
-        array $userInformation,
+        array $userData,
         Address $receiver,
         array $settings
     ): void {
         $this->mockRecoveryConfigurationAndUserRepository(
-            $emailAddress,
+            $uid,
             $recoveryConfiguration,
-            $userInformation
+            $userData
         );
 
         $expectedViewVariables = [
@@ -120,13 +120,13 @@ class RecoveryServiceTest extends UnitTestCase
             )->getMock();
         $subject->method('getEmailSubject')->willReturn('translation');
 
-        $subject->sendRecoveryEmail($emailAddress);
+        $subject->sendRecoveryEmail($userData, $recoveryConfiguration['forgotHash']);
     }
 
     public function configurationDataProvider(): Generator
     {
         yield 'minimal configuration' => [
-            'email'                 => 'max@mustermann.de',
+            'uid'                 => 1,
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 1234567899,
                 'forgotHash'        => '0123456789|some hash',
@@ -135,6 +135,8 @@ class RecoveryServiceTest extends UnitTestCase
                 'replyTo'           => null,
             ],
             'userInformation'       => [
+                'uid'         => 1,
+                'email'       => 'max@mustermann.de',
                 'first_name'  => '',
                 'middle_name' => '',
                 'last_name'   => '',
@@ -144,7 +146,7 @@ class RecoveryServiceTest extends UnitTestCase
             'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'minimal configuration add replyTo Address' => [
-            'email'                 => 'max@mustermann.de',
+            'uid'                 => 1,
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 1234567899,
                 'forgotHash'        => '0123456789|some hash',
@@ -153,6 +155,8 @@ class RecoveryServiceTest extends UnitTestCase
                 'replyTo'           => new Address('reply_to@typo3.typo3', 'reply to TYPO3 Installation'),
             ],
             'userInformation'       => [
+                'uid'         => 1,
+                'email'       => 'max@mustermann.de',
                 'first_name'  => '',
                 'middle_name' => '',
                 'last_name'   => '',
@@ -162,7 +166,7 @@ class RecoveryServiceTest extends UnitTestCase
             'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'html mail provided' => [
-            'email'                 => 'max@mustermann.de',
+            'uid'                 => 1,
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 123456789,
                 'forgotHash'        => '0123456789|some hash',
@@ -171,6 +175,8 @@ class RecoveryServiceTest extends UnitTestCase
                 'replyTo'           => null,
             ],
             'userInformation'       => [
+                'uid'         => 1,
+                'email'       => 'max@mustermann.de',
                 'first_name'  => '',
                 'middle_name' => '',
                 'last_name'   => '',
@@ -180,7 +186,7 @@ class RecoveryServiceTest extends UnitTestCase
             'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'complex display name instead of username' => [
-            'email'                 => 'max@mustermann.de',
+            'uid'                 => 1,
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 123456789,
                 'forgotHash'        => '0123456789|some hash',
@@ -189,6 +195,8 @@ class RecoveryServiceTest extends UnitTestCase
                 'replyTo'           => null,
             ],
             'userInformation'       => [
+                'uid'         => 1,
+                'email'       => 'max@mustermann.de',
                 'first_name'  => 'Max',
                 'middle_name' => 'Maximus',
                 'last_name'   => 'Mustermann',
@@ -198,7 +206,7 @@ class RecoveryServiceTest extends UnitTestCase
             'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'custom dateFormat and no middle name' => [
-            'email'                 => 'max@mustermann.de',
+            'uid'                 => 1,
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 987654321,
                 'forgotHash'        => '0123456789|some hash',
@@ -207,6 +215,8 @@ class RecoveryServiceTest extends UnitTestCase
                 'replyTo'           => null,
             ],
             'userInformation'       => [
+                'uid'         => 1,
+                'email'       => 'max@mustermann.de',
                 'first_name'  => 'Max',
                 'middle_name' => '',
                 'last_name'   => 'Mustermann',
@@ -218,7 +228,7 @@ class RecoveryServiceTest extends UnitTestCase
     }
 
     protected function mockRecoveryConfigurationAndUserRepository(
-        string $emailAddress,
+        int $uid,
         array $recoveryConfiguration,
         array $userInformation
     ): void {
@@ -231,12 +241,7 @@ class RecoveryServiceTest extends UnitTestCase
         $this->templatePathsProphecy->setTemplateRootPaths(['/some/path/to/a/template/folder/']);
         $this->recoveryConfiguration->getMailTemplatePaths()->willReturn($this->templatePathsProphecy->reveal());
 
-        $this->userRepository->updateForgotHashForUserByEmail(
-            $emailAddress,
-            GeneralUtility::hmac($recoveryConfiguration['forgotHash'])
-        )->shouldBeCalledOnce();
-
-        $this->userRepository->fetchUserInformationByEmail($emailAddress)->willReturn($userInformation);
+        $this->userRepository->findUserByUsernameOrEmailOnPages($uid, [])->willReturn($userInformation);
     }
 
     /**

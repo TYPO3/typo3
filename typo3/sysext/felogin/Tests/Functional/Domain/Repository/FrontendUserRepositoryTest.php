@@ -60,15 +60,18 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findEmailByUsernameOrEmailOnPages(): void
+    public function findUserByUsernameOrEmailOnPages(): void
     {
-        self::assertNull($this->repository->findEmailByUsernameOrEmailOnPages(''));
-        self::assertNull($this->repository->findEmailByUsernameOrEmailOnPages('non-existent-email-or-username'));
-        self::assertNull($this->repository->findEmailByUsernameOrEmailOnPages('user-with-username-without-email'));
-        self::assertNull($this->repository->findEmailByUsernameOrEmailOnPages('foobar', [99]));
+        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages(''));
+        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages('non-existent-email-or-username'));
+        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages('user-with-username-without-email'));
+        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages('foobar', [99]));
 
-        self::assertSame('foo@bar.baz', $this->repository->findEmailByUsernameOrEmailOnPages('foobar'));
-        self::assertSame('foo@bar.baz', $this->repository->findEmailByUsernameOrEmailOnPages('foo@bar.baz'));
+        $userByUsername = $this->repository->findUserByUsernameOrEmailOnPages('foobar');
+        self::assertSame(1, $userByUsername['uid'] ?? 0);
+
+        $userByEmail = $this->repository->findUserByUsernameOrEmailOnPages('foo@bar.baz');
+        self::assertSame(1, $userByEmail['uid'] ?? 0);
     }
 
     /**
@@ -78,48 +81,6 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     {
         self::assertFalse($this->repository->existsUserWithHash('non-existent-hash'));
         self::assertTrue($this->repository->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
-    }
-
-    /**
-     * @test
-     * @dataProvider fetchUserInformationByEmailDataProvider
-     */
-    public function fetchUserInformationByEmail(string $emailAddress, array $expected): void
-    {
-        // strval() is used since not all of the DBMS return an integer for the "uid" field
-        self::assertSame($expected, array_map('strval', $this->repository->fetchUserInformationByEmail($emailAddress)));
-    }
-
-    public function fetchUserInformationByEmailDataProvider(): array
-    {
-        return [
-            'foo@bar.baz' => [
-                'foo@bar.baz',
-                [
-                    'uid' => '1',
-                    'username' => 'foobar',
-                    'email' => 'foo@bar.baz',
-                    'first_name' => '',
-                    'middle_name' => '',
-                    'last_name' => '',
-                ],
-            ],
-            '' => [
-                '',
-                [
-                    'uid' => '2',
-                    'username' => 'user-with-username-without-email',
-                    'email' => '',
-                    'first_name' => '',
-                    'middle_name' => '',
-                    'last_name' => '',
-                ],
-            ],
-            'non existing user' => [
-                'non-existing@user.com',
-                [],
-            ],
-        ];
     }
 
     /**
@@ -144,12 +105,12 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function updateForgotHashForUserByEmail(): void
+    public function updateForgotHashForUserByUid(): void
     {
-        $email = 'foo@bar.baz';
+        $uid = 1;
         $newPasswordHash = 'new-hash';
 
-        $this->repository->updateForgotHashForUserByEmail($email, $newPasswordHash);
+        $this->repository->updateForgotHashForUserByUid($uid, $newPasswordHash);
 
         $queryBuilder = $this->getConnectionPool()
             ->getConnectionForTable('fe_users')
@@ -159,8 +120,8 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
             ->select('felogin_forgotHash')
             ->from('fe_users')
             ->where($queryBuilder->expr()->eq(
-                'email',
-                $queryBuilder->createNamedParameter($email)
+                'uid',
+                $queryBuilder->createNamedParameter($uid)
             ))
         ;
 

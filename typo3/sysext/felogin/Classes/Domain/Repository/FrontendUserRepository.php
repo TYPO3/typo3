@@ -84,17 +84,17 @@ class FrontendUserRepository
     }
 
     /**
-     * Sets forgot hash for passed email address.
+     * Sets forgot hash for passed user uid.
      */
-    public function updateForgotHashForUserByEmail(string $emailAddress, string $hash): void
+    public function updateForgotHashForUserByUid(int $uid, string $hash): void
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $query = $queryBuilder
             ->update($this->getTable())
             ->where(
                 $queryBuilder->expr()->eq(
-                    'email',
-                    $queryBuilder->createNamedParameter($emailAddress)
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, $this->connection::PARAM_INT)
                 )
             )
             ->set('felogin_forgotHash', $hash)
@@ -103,31 +103,14 @@ class FrontendUserRepository
     }
 
     /**
-     * Fetches array containing uid, username, email, first_name, middle_name & last_name by email
-     * or empty array if user was not found.
+     * Fetches array containing uid, username, email, first_name, middle_name & last_name by email or username.
+     * Returns null, if user was not found or if user has no email address set.
+     *
+     * @param string $usernameOrEmail
+     * @param array $pages
+     * @return array|null
      */
-    public function fetchUserInformationByEmail(string $emailAddress): array
-    {
-        $queryBuilder = $this->connection->createQueryBuilder();
-
-        $query = $queryBuilder
-            ->select('uid', 'username', 'email', 'first_name', 'middle_name', 'last_name')
-            ->from($this->getTable())
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'email',
-                    $queryBuilder->createNamedParameter($emailAddress)
-                )
-            )
-        ;
-        $result = $query->executeQuery()->fetchAssociative();
-        if (!is_array($result)) {
-            $result = [];
-        }
-        return $result;
-    }
-
-    public function findEmailByUsernameOrEmailOnPages(string $usernameOrEmail, array $pages = []): ?string
+    public function findUserByUsernameOrEmailOnPages(string $usernameOrEmail, array $pages = []): ?array
     {
         if ($usernameOrEmail === '') {
             return null;
@@ -135,23 +118,22 @@ class FrontendUserRepository
 
         $queryBuilder = $this->connection->createQueryBuilder();
         $query = $queryBuilder
-            ->select('email')
+            ->select('uid', 'username', 'email', 'first_name', 'middle_name', 'last_name')
             ->from($this->getTable())
             ->where(
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($usernameOrEmail)),
-                    $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($usernameOrEmail))
-                )
-            )
-        ;
+                    $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($usernameOrEmail)),
+                ),
+                $queryBuilder->expr()->neq('email', $this->connection->quote('')),
+            );
 
         if (!empty($pages)) {
             // respect storage pid
             $query->andWhere($queryBuilder->expr()->in('pid', $pages));
         }
 
-        $column = $query->executeQuery()->fetchOne();
-        return $column === false || $column === '' ? null : (string)$column;
+        return $query->executeQuery()->fetchAssociative() ?: null;
     }
 
     public function findOneByForgotPasswordHash(string $hash): ?array

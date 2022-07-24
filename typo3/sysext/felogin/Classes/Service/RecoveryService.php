@@ -29,13 +29,12 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
-use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\SendRecoveryEmailEvent;
 
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class RecoveryService implements RecoveryServiceInterface
+class RecoveryService
 {
     protected array $settings;
 
@@ -44,30 +43,26 @@ class RecoveryService implements RecoveryServiceInterface
         protected EventDispatcherInterface $eventDispatcher,
         ConfigurationManager $configurationManager,
         protected RecoveryConfiguration $recoveryConfiguration,
-        protected UriBuilder $uriBuilder,
-        protected FrontendUserRepository $userRepository
+        protected UriBuilder $uriBuilder
     ) {
         $this->settings = $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
     }
 
     /**
-     * Sends an email with an absolute link including a forgot hash to the passed email address
+     * Sends an email with an absolute link including the given forgot hash to the passed user
      * with instructions to recover the account.
+     *
+     * @param array $userData
+     * @param string $hash
      *
      * @throws TransportExceptionInterface
      */
-    public function sendRecoveryEmail(string $emailAddress): void
+    public function sendRecoveryEmail(array $userData, string $hash): void
     {
-        $hash = $this->recoveryConfiguration->getForgotHash();
-        // @todo: This repository method call should be moved to PasswordRecoveryController, since its
-        // @todo: unexpected that it happens here. Would also drop the dependency to FrontendUserRepository
-        // @todo: in this sendRecoveryEmail() method and the class.
-        $this->userRepository->updateForgotHashForUserByEmail($emailAddress, GeneralUtility::hmac($hash));
-        $userInformation = $this->userRepository->fetchUserInformationByEmail($emailAddress);
-        $receiver = new Address($emailAddress, $this->getReceiverName($userInformation));
+        $receiver = new Address($userData['email'], $this->getReceiverName($userData));
         $email = $this->prepareMail($receiver, $hash);
 
-        $event = new SendRecoveryEmailEvent($email, $userInformation);
+        $event = new SendRecoveryEmailEvent($email, $userData);
         $this->eventDispatcher->dispatch($event);
         $this->mailer->send($event->getEmail());
     }
