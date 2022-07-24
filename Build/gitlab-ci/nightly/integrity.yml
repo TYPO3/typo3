@@ -95,23 +95,6 @@ phpstan php 7.4:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-phpstan-74
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s phpstan -p 7.4
-
-phpstan php 8.1:
-  stage: integrity
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-phpstan-81
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s phpstan -p 8.1

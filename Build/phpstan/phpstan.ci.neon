@@ -2,6 +2,10 @@ includes:
   - phpstan.neon
 
 parameters:
+  # CI needs to calculate phpstan a-new each time anyways. No point in caching this.
+  # We write this to /tmp within container which is not cached by CI.
+  tmpDir: /tmp
+
   parallel:
     # Don't be overly greedy on machines with more CPU's to be a good neighbor especially on CI
     maximumNumberOfProcesses: 5
