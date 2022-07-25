@@ -468,8 +468,17 @@
 			<trans-unit id="sys_template.root" resname="sys_template.root">
 				<source>Rootlevel</source>
 			</trans-unit>
+			<trans-unit id="sys_template.rootDescription" resname="sys_template.rootDescription">
+				<source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
+				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages.
+				The flag especially affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
+			</trans-unit>
 			<trans-unit id="sys_template.clear" resname="sys_template.clear">
 				<source>Clear</source>
+			</trans-unit>
+			<trans-unit id="sys_template.clearDescription" resname="sys_template.clearDescription">
+				<source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript
+				record that is most often located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
 			</trans-unit>
 			<trans-unit id="sys_template.constants" resname="sys_template.constants">
 				<source>Constants</source>
@@ -480,11 +489,25 @@
 			<trans-unit id="sys_template.include_static_file" resname="sys_template.include_static_file">
 				<source>Include static (from extensions)</source>
 			</trans-unit>
+			<trans-unit id="sys_template.include_static_fileDescription" resname="sys_template.include_static_fileDescription">
+				<source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here. To keep TypoScript
+				structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
+				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
+			</trans-unit>
 			<trans-unit id="sys_template.basedOn" resname="sys_template.basedOn">
 				<source>Include Basis Template</source>
 			</trans-unit>
+			<trans-unit id="sys_template.basedOnDescription" resname="sys_template.basedOnDescription">
+				<source>Include additional record located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple
+				places in a page tree. This isn't used very often nowadays and it's often easier to understand and maintain to extract TypoScript to
+				files and to load the full set in a single main TypoScript record.</source>
+			</trans-unit>
 			<trans-unit id="sys_template.includeStaticAfterBasedOn" resname="sys_template.includeStaticAfterBasedOn">
 				<source>Include Static Templates After Basis Templates</source>
+			</trans-unit>
+			<trans-unit id="sys_template.includeStaticAfterBasedOnDescription" resname="sys_template.includeStaticAfterBasedOnDescription">
+				<source>When using both "Include static (from extensions)" and "Include Basis Template" fields in a TypoScript record, this
+				flag allows swapping their load order.</source>
 			</trans-unit>
 			<trans-unit id="sys_template.config" resname="sys_template.config">
 				<source>Setup</source>
@@ -497,6 +520,11 @@
 			</trans-unit>
 			<trans-unit id="sys_template.static_file_mode" resname="sys_template.static_file_mode">
 				<source>Static Template Files from TYPO3 Extensions</source>
+			</trans-unit>
+			<trans-unit id="sys_template.static_file_modeDescription" resname="sys_template.static_file_modeDescription">
+				<source>This seldom used feature affects if and when TypoScript files from extensions (ext_typoscript_setup.typoscript
+				and ext_typoscript_constants.typoscript) are loaded. There are very few cases where setting this to a different value than
+				the default value "0" is useful.</source>
 			</trans-unit>
 			<trans-unit id="sys_template.static_file_mode.0" resname="sys_template.static_file_mode.0">
 				<source>Default (include before if root flag is set)</source>
