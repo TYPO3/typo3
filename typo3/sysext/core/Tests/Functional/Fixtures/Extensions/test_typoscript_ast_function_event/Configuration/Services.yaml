@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TestTyposcriptAstFunctionEvent\EventListener\TyposcriptTestFunction:
+    tags:
+      - name: event.listener
+        identifier: 'typo3tests-test-typoscript-ast-function-event/typoscript-test-function'

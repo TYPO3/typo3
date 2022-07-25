@@ -820,4 +820,10 @@ return [
             'Feature-97945-PSR14AfterPageTreeItemsPreparedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_tsparser.php\'][\'preParseFunc\']' => [
+        'restFiles' => [
+            'Breaking-98016-RemovedTypoScriptFunctionHook.rst',
+            'Feature-98016-PSR-14EvaluateModifierFunctionEvent.rst',
+        ],
+    ],
 ];

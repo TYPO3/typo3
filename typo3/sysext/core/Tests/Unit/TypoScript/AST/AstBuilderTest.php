@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST;
 
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
@@ -1329,8 +1330,9 @@ class AstBuilderTest extends UnitTestCase
      */
     public function build(string $source, RootNode $expectedAst): void
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode());
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1340,8 +1342,9 @@ class AstBuilderTest extends UnitTestCase
      */
     public function buildCompatArray(string $source, RootNode $_, array $expectedArray): void
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode());
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1490,8 +1493,9 @@ class AstBuilderTest extends UnitTestCase
      */
     public function buildReference(string $source, RootNode $expectedAst): void
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode());
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1501,8 +1505,9 @@ class AstBuilderTest extends UnitTestCase
      */
     public function buildReferenceArray(string $source, RootNode $_, array $expectedArray): void
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode());
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1633,8 +1638,9 @@ class AstBuilderTest extends UnitTestCase
      */
     public function buildConstant(string $source, array $constants, RootNode $expectedAst): void
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode(), $constants);
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1644,8 +1650,9 @@ class AstBuilderTest extends UnitTestCase
      */
     public function buildConstantCompatArray(string $source, array $constants, RootNode $_, array $expectedArray): void
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode(), $constants);
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1672,8 +1679,9 @@ class AstBuilderTest extends UnitTestCase
             'bar' => 'bar1',
         ];
 
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize('bar = bar1');
-        $resultAst = (new AstBuilder())->build($tokens, $inputAst, []);
+        $resultAst = (new AstBuilder($noopEventDispatcher))->build($tokens, $inputAst, []);
         self::assertEquals($expectedAst, $resultAst);
         self::assertEquals($expectedArray, $resultAst->toArray());
     }
@@ -1699,8 +1707,9 @@ class AstBuilderTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1650893781);
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        (new AstBuilder())->build($tokens, new RootNode());
+        (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
     }
 
     public function functionGetEnvDataProvider(): \Generator
@@ -1784,8 +1793,9 @@ class AstBuilderTest extends UnitTestCase
         if ($envVarName) {
             putenv($envVarName . '=' . $envVarValue);
         }
+        $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder())->build($tokens, new RootNode());
+        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
         if ($envVarName) {
             putenv($envVarName);
@@ -1794,6 +1804,8 @@ class AstBuilderTest extends UnitTestCase
 
     public function flattenDataProvider(): \Generator
     {
+        $noopEventDispatcher = new NoopEventDispatcher();
+
         yield 'empty' => [
             new RootNode(),
             [],
@@ -1807,7 +1819,7 @@ class AstBuilderTest extends UnitTestCase
             'second' => 'secondValue',
         ];
         yield 'one level' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
 
@@ -1817,7 +1829,7 @@ class AstBuilderTest extends UnitTestCase
             'first' => '',
         ];
         yield 'empty string as value is kept' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
 
@@ -1827,7 +1839,7 @@ class AstBuilderTest extends UnitTestCase
             'first' => '0',
         ];
         yield 'zero as value is kept' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
 
@@ -1839,7 +1851,7 @@ class AstBuilderTest extends UnitTestCase
             'second.secondSub' => 'secondSubValue',
         ];
         yield 'two levels' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
 
@@ -1855,7 +1867,7 @@ class AstBuilderTest extends UnitTestCase
             'second.secondSub' => 'secondSubValue',
         ];
         yield 'two levels with values on first level' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
 
@@ -1871,7 +1883,7 @@ class AstBuilderTest extends UnitTestCase
             'second.secondSub.secondSubSub' => 'secondSubSubValue',
         ];
         yield 'three levels, partially with values' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
 
@@ -1881,7 +1893,7 @@ class AstBuilderTest extends UnitTestCase
             'first.firstSub\.firstSubSub' => 'firstSubSubValue',
         ];
         yield 'two levels with quoted dote' => [
-            (new AstBuilder())->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
+            (new AstBuilder($noopEventDispatcher))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode()),
             $expected,
         ];
     }

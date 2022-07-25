@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\AST;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPath;
 use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPathStack;
+use TYPO3\CMS\Core\TypoScript\AST\Event\EvaluateModifierFunctionEvent;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNodeInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\NodeInterface;
@@ -53,6 +55,11 @@ final class AstBuilder
      * @var array<string, string>
      */
     private array $flatConstants = [];
+
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+    }
 
     /**
      * @param array<string, string> $flatConstants
@@ -237,42 +244,43 @@ final class AstBuilder
      * Evaluate operator functions, example TypoScript:
      * "page.10.value := appendString(foo)"
      */
-    private function evaluateValueModifier(Token $functionNameToken, ?Token $functionValueToken, ?string $currentValue): ?string
+    private function evaluateValueModifier(Token $functionNameToken, ?Token $functionArgumentToken, ?string $originalValue): ?string
     {
-        $functionValue = '';
-        if ($functionValueToken) {
-            $functionValue = $functionValueToken->getValue();
+        $functionName = $functionNameToken->getValue();
+        $functionArgument = null;
+        if ($functionArgumentToken) {
+            $functionArgument = $functionArgumentToken->getValue();
         }
-        switch ($functionNameToken->getValue()) {
+        switch ($functionName) {
             case 'prependString':
-                return $functionValue . $currentValue;
+                return $functionArgument . $originalValue;
             case 'appendString':
-                return $currentValue . $functionValue;
+                return $originalValue . $functionArgument;
             case 'removeString':
-                return str_replace($functionValue, '', $currentValue);
+                return str_replace((string)$functionArgument, '', $originalValue);
             case 'replaceString':
-                $functionValueArray = explode('|', $functionValue, 2);
+                $functionValueArray = explode('|', (string)$functionArgument, 2);
                 $fromStr = $functionValueArray[0] ?? '';
                 $toStr = $functionValueArray[1] ?? '';
-                return str_replace($fromStr, $toStr, $currentValue);
+                return str_replace($fromStr, $toStr, $originalValue);
             case 'addToList':
-                return ($currentValue !== null ? $currentValue . ',' : '') . $functionValue;
+                return ($originalValue !== null ? $originalValue . ',' : '') . $functionArgument;
             case 'removeFromList':
-                $existingElements = GeneralUtility::trimExplode(',', $currentValue);
-                $removeElements = GeneralUtility::trimExplode(',', $functionValue);
+                $existingElements = GeneralUtility::trimExplode(',', $originalValue);
+                $removeElements = GeneralUtility::trimExplode(',', (string)$functionArgument);
                 if (!empty($removeElements)) {
                     return implode(',', array_diff($existingElements, $removeElements));
                 }
-                return $currentValue;
+                return $originalValue;
             case 'uniqueList':
-                $elements = GeneralUtility::trimExplode(',', $currentValue);
+                $elements = GeneralUtility::trimExplode(',', $originalValue);
                 return implode(',', array_unique($elements));
             case 'reverseList':
-                $elements = GeneralUtility::trimExplode(',', $currentValue);
+                $elements = GeneralUtility::trimExplode(',', $originalValue);
                 return implode(',', array_reverse($elements));
             case 'sortList':
-                $elements = GeneralUtility::trimExplode(',', $currentValue);
-                $arguments = GeneralUtility::trimExplode(',', $functionValue);
+                $elements = GeneralUtility::trimExplode(',', $originalValue);
+                $arguments = GeneralUtility::trimExplode(',', (string)$functionArgument);
                 $arguments = array_map('strtolower', $arguments);
                 $sortFlags = SORT_REGULAR;
                 if (in_array('numeric', $arguments)) {
@@ -284,7 +292,7 @@ final class AstBuilder
                     foreach ($elements as $element) {
                         if (!is_numeric($element)) {
                             throw new \InvalidArgumentException(
-                                'The list "' . $currentValue . '" should be sorted numerically but contains a non-numeric value',
+                                'The list "' . $originalValue . '" should be sorted numerically but contains a non-numeric value',
                                 1650893781
                             );
                         }
@@ -296,26 +304,13 @@ final class AstBuilder
                 }
                 return implode(',', $elements);
             case 'getEnv':
-                $environmentValue = getenv(trim($functionValue));
+                $environmentValue = getenv(trim((string)$functionArgument));
                 if ($environmentValue !== false) {
                     return $environmentValue;
                 }
-                return $currentValue;
+                return $originalValue;
             default:
-                return $currentValue;
-                // @todo: Implement (and test) hook again or switch to event along the way
-                /*
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$modifierName])) {
-                    $hookMethod = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$modifierName];
-                    $params = ['currentValue' => $currentValue, 'functionArgument' => $modifierArgument];
-                    $fakeThis = null;
-                    $newValue = GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
-                } else {
-                    self::getLogger()->warning('Missing function definition for {modifier_name} on TypoScript', [
-                        'modifier_name' => $modifierName,
-                    ]);
-                }
-                */
+                return $this->eventDispatcher->dispatch(new EvaluateModifierFunctionEvent($functionName, $functionArgument, $originalValue))->getValue() ?? $originalValue;
         }
     }
 }
