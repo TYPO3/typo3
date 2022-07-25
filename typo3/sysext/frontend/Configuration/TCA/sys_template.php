@@ -74,6 +74,7 @@ return [
         ],
         'root' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.root',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.rootDescription',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -82,13 +83,13 @@ return [
         ],
         'clear' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.clear',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.clearDescription',
             'config' => [
                 'type' => 'check',
                 'items' => [
                     ['Constants'],
                     ['Setup'],
                 ],
-                'cols' => 2,
             ],
         ],
         'constants' => [
@@ -105,6 +106,7 @@ return [
         ],
         'include_static_file' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.include_static_file',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.include_static_fileDescription',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -116,6 +118,7 @@ return [
         ],
         'basedOn' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOnDescription',
             'config' => [
                 'type' => 'group',
                 'allowed' => 'sys_template',
@@ -141,6 +144,7 @@ return [
         ],
         'includeStaticAfterBasedOn' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.includeStaticAfterBasedOn',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.includeStaticAfterBasedOnDescription',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
@@ -170,6 +174,7 @@ return [
         ],
         'static_file_mode' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_modeDescription',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -188,9 +193,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                 title, constants, config,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.options,
-                clear, root,
-            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.include,
-                includeStaticAfterBasedOn, include_static_file, basedOn, static_file_mode,
+                clear, root, include_static_file, basedOn, includeStaticAfterBasedOn, static_file_mode,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 hidden,--palette--;;timeRestriction,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
