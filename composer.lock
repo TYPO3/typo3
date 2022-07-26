@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18bc68b290dc54c4103134910011fde0",
+    "content-hash": "091097c98cc3deda4c04b32b48e48d17",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6684,16 +6684,16 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.10",
+            "version": "v1.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "250c0825537d501e327df879fb3d4cd751933b85"
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/250c0825537d501e327df879fb3d4cd751933b85",
-                "reference": "250c0825537d501e327df879fb3d4cd751933b85",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
                 "shasum": ""
             },
             "require": {
@@ -6731,7 +6731,7 @@
                 "source": "https://github.com/bovigo/vfsStream/tree/master",
                 "wiki": "https://github.com/bovigo/vfsStream/wiki"
             },
-            "time": "2021-09-25T08:05:01+00:00"
+            "time": "2022-02-23T02:02:42+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -9132,22 +9132,22 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.16.5",
+            "version": "6.16.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "3aa25fa072f93ab001f97e346e2b8c788c6c6530"
+                "reference": "5b5cd686fdbbdb891930e74c8b70c4c06a785976"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/3aa25fa072f93ab001f97e346e2b8c788c6c6530",
-                "reference": "3aa25fa072f93ab001f97e346e2b8c788c6c6530",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/5b5cd686fdbbdb891930e74c8b70c4c06a785976",
+                "reference": "5b5cd686fdbbdb891930e74c8b70c4c06a785976",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
-                "mikey179/vfsstream": "~1.6.10",
+                "mikey179/vfsstream": "~1.6.11",
                 "php": ">= 7.2",
                 "phpunit/phpunit": "^8.4 || ^9.0",
                 "psr/container": "^1.0",
@@ -9164,10 +9164,10 @@
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.7.0",
+                "phpstan/phpstan": "^1.8.0",
                 "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev",
-                "typo3/coding-standards": "^0.5.0"
+                "typo3/coding-standards": "^0.5.3"
             },
             "type": "library",
             "autoload": {
@@ -9202,9 +9202,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.5"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.6"
             },
-            "time": "2022-05-23T16:08:14+00:00"
+            "time": "2022-07-26T17:30:58+00:00"
         }
     ],
     "aliases": [],
