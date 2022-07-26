@@ -51,10 +51,6 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      */
     public function addValidator(ValidatorInterface $validator): void
     {
-        if ($validator instanceof ObjectValidatorInterface) {
-            // @todo: provide bugfix as soon as it is fixed in TYPO3.Flow (https://forge.typo3.org/issues/48093)
-            $validator->setValidatedInstancesContainer = $this->validatedInstancesContainer;
-        }
         $this->validators->attach($validator);
     }
 

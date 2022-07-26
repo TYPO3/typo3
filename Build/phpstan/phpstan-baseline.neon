@@ -2076,11 +2076,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ObjectValidatorInterface\\:\\:\\$setValidatedInstancesContainer\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/AbstractCompositeValidator.php
-
-		-
 			message: "#^Call to function is_array\\(\\) with object will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
