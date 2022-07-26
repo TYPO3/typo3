@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6e3555cc9e7074453d4776d5cb6190e",
+    "content-hash": "67dc02f10581f57dd92bc8042e61886a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5904,16 +5904,16 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.10",
+            "version": "v1.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "250c0825537d501e327df879fb3d4cd751933b85"
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/250c0825537d501e327df879fb3d4cd751933b85",
-                "reference": "250c0825537d501e327df879fb3d4cd751933b85",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
                 "shasum": ""
             },
             "require": {
@@ -5951,7 +5951,7 @@
                 "source": "https://github.com/bovigo/vfsStream/tree/master",
                 "wiki": "https://github.com/bovigo/vfsStream/wiki"
             },
-            "time": "2021-09-25T08:05:01+00:00"
+            "time": "2022-02-23T02:02:42+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -8359,18 +8359,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "6c8637c64973f3f43bcaf99bc72cad030ea40169"
+                "reference": "6946c6dbc6bd5762d059b8b39f9dec95792a0937"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6c8637c64973f3f43bcaf99bc72cad030ea40169",
-                "reference": "6c8637c64973f3f43bcaf99bc72cad030ea40169",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6946c6dbc6bd5762d059b8b39f9dec95792a0937",
+                "reference": "6946c6dbc6bd5762d059b8b39f9dec95792a0937",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
-                "mikey179/vfsstream": "~1.6.10",
                 "php": "^8.1",
                 "phpunit/phpunit": "^9.5.10",
                 "psr/container": "^1.1.0 || ^2.0.0",
@@ -8428,7 +8427,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-07-14T09:02:01+00:00"
+            "time": "2022-07-26T17:30:12+00:00"
         }
     ],
     "aliases": [],
