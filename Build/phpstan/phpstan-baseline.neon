@@ -2086,11 +2086,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$targetType of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMapper\\:\\:convert\\(\\) expects string, null given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/PropertyMapperTest.php
-
-		-
 			message: "#^Constructor of an anonymous class has an unused parameter \\$name\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php

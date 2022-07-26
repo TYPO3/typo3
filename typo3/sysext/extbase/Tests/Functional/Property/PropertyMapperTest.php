@@ -91,19 +91,6 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsAnExceptionIfTargetTypeIsNotAString(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": The target type was no string, but of type "NULL"');
-
-        $propertyMapper = $this->get(PropertyMapper::class);
-        $propertyMapper->convert(9999, null);
-    }
-
-    /**
-     * @test
-     */
     public function convertInternallyConvertsANullSourceToAnEmptyString(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);

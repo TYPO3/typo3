@@ -28,21 +28,16 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  */
 class PropertyMapper implements SingletonInterface
 {
-    protected TypeConverterRegistry $typeConverterRegistry;
-    protected PropertyMappingConfigurationBuilder $configurationBuilder;
-
     /**
      * A list of property mapping messages (errors, warnings) which have occurred on last mapping.
      */
     protected Result $messages;
 
     public function __construct(
-        TypeConverterRegistry $typeConverterRegistry,
-        PropertyMappingConfigurationBuilder $configurationBuilder
+        protected TypeConverterRegistry $typeConverterRegistry,
+        protected PropertyMappingConfigurationBuilder $configurationBuilder
     ) {
         $this->resetMessages();
-        $this->typeConverterRegistry = $typeConverterRegistry;
-        $this->configurationBuilder = $configurationBuilder;
     }
 
     /**
@@ -54,11 +49,9 @@ class PropertyMapper implements SingletonInterface
      * @throws Exception
      * @return mixed an instance of $targetType
      */
-    public function convert($source, $targetType, PropertyMappingConfigurationInterface $configuration = null)
+    public function convert($source, string $targetType, ?PropertyMappingConfigurationInterface $configuration = null)
     {
-        if ($configuration === null) {
-            $configuration = $this->configurationBuilder->build();
-        }
+        $configuration ??= $this->configurationBuilder->build();
         $currentPropertyPath = [];
         try {
             $result = $this->doMapping($source, $targetType, $configuration, $currentPropertyPath);
@@ -109,7 +102,7 @@ class PropertyMapper implements SingletonInterface
      *
      * @internal since TYPO3 v12.0
      */
-    protected function doMapping($source, $targetType, PropertyMappingConfigurationInterface $configuration, &$currentPropertyPath)
+    protected function doMapping($source, string $targetType, PropertyMappingConfigurationInterface $configuration, array &$currentPropertyPath)
     {
         if (is_object($source)) {
             $targetType = $this->parseCompositeType($targetType);
@@ -118,9 +111,7 @@ class PropertyMapper implements SingletonInterface
             }
         }
 
-        if ($source === null) {
-            $source = '';
-        }
+        $source ??= '';
 
         $typeConverter = $this->findTypeConverter($source, $targetType, $configuration);
         $targetType = $typeConverter->getTargetTypeForSource($source, $targetType, $configuration);
@@ -174,17 +165,13 @@ class PropertyMapper implements SingletonInterface
      *
      * @internal since TYPO3 v12.0
      */
-    protected function findTypeConverter($source, $targetType, PropertyMappingConfigurationInterface $configuration): TypeConverterInterface
+    protected function findTypeConverter($source, string $targetType, PropertyMappingConfigurationInterface $configuration): TypeConverterInterface
     {
         if ($configuration->getTypeConverter() !== null) {
             return $configuration->getTypeConverter();
         }
 
         $sourceType = $this->determineSourceType($source);
-
-        if (!is_string($targetType)) {
-            throw new Exception\InvalidTargetException('The target type was no string, but of type "' . gettype($targetType) . '"', 1297941727);
-        }
 
         $targetType = $this->parseCompositeType($targetType);
         $targetType = TypeHandlingUtility::normalizeType($targetType);
@@ -224,12 +211,9 @@ class PropertyMapper implements SingletonInterface
      * Parse a composite type like \Foo\Collection<\Bar\Entity> into
      * \Foo\Collection
      *
-     * @param string $compositeType
-     * @return string
-     *
      * @internal since TYPO3 v12.0
      */
-    protected function parseCompositeType($compositeType)
+    protected function parseCompositeType(string $compositeType): string
     {
         if (str_contains($compositeType, '<')) {
             $compositeType = substr($compositeType, 0, (int)strpos($compositeType, '<'));
