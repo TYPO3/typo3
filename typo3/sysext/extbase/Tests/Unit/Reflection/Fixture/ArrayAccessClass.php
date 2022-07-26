@@ -22,60 +22,34 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class ArrayAccessClass implements \ArrayAccess
 {
-    protected array $array = [];
-
-    /**
-     * @param array $array
-     */
-    public function __construct(array $array)
+    public function __construct(protected array $array)
     {
-        $this->array = $array;
     }
 
-    /**
-     * @param mixed $offset
-     * @return bool
-     * @todo Set $offset to mixed type as breaking change in v12.
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return array_key_exists($offset, $this->array);
     }
 
-    /**
-     * @param mixed $offset
-     * @return mixed
-     * @todo Set $offset to mixed type as breaking change in v12.
-     * @todo Set to return type mixed as breaking change in v12.
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->array[$offset];
     }
 
     /**
-     * @param mixed $offset
-     * @param mixed $value
-     * @todo Set $offset and $value to mixed type as breaking change in v12.
+     * @param int|string $offset
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->array[$offset] = $value;
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->array[$offset]);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getVirtual()
+    public function getVirtual(): mixed
     {
         return $this->array['virtual'] ?? 'default-value';
     }
