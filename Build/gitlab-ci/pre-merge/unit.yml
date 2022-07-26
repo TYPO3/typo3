@@ -39,3 +39,22 @@ unit php 8.1 random pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unitRandom -p 8.1
+
+unit php 8.2 deprecated pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
+unit php 8.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s unit -p 8.2
