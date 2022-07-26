@@ -61,7 +61,7 @@ class BackendUserLanguageMigration implements UpgradeWizardInterface
 
         foreach ($this->getRecordsToUpdate() as $record) {
             $currentDatabaseFieldValue = (string)($record['lang'] ?? '');
-            $uc = unserialize($user['uc'] ?? '', ['allowed_classes' => false]);
+            $uc = unserialize($record['uc'] ?? '', ['allowed_classes' => false]);
             // Check if the user has a preference set, otherwise use the default from the database field
             // however, "default" is now explicitly set.
             $selectedLanguage = $uc['lang'] ?? $currentDatabaseFieldValue;
