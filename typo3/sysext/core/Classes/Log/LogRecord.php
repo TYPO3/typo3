@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Log;
 
 /**
  * Log record
+ *
+ * @todo: Consider declaring this DTO final
  */
 class LogRecord implements \ArrayAccess
 {
@@ -290,10 +292,8 @@ class LogRecord implements \ArrayAccess
      * Checks whether an offset exists, required by ArrayAccess interface
      *
      * @param mixed $offset
-     * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $offsetExists = false;
         if (in_array($offset, $this->gettableProperties, true) && isset($this->{$offset})) {
@@ -307,6 +307,7 @@ class LogRecord implements \ArrayAccess
      *
      * @param mixed $offset
      * @return mixed
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -323,8 +324,7 @@ class LogRecord implements \ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (in_array($offset, $this->settableProperties, true)) {
             $this->{$offset} = $offset;
@@ -336,8 +336,7 @@ class LogRecord implements \ArrayAccess
      *
      * @param mixed $offset
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (in_array($offset, $this->settableProperties, true)) {
             unset($this->{$offset});

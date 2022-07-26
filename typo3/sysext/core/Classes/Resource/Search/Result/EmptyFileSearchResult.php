@@ -22,18 +22,13 @@ namespace TYPO3\CMS\Core\Resource\Search\Result;
  */
 class EmptyFileSearchResult implements FileSearchResultInterface
 {
-    /**
-     * @return int
-     * @see Countable::count()
-     */
     public function count(): int
     {
         return 0;
     }
 
     /**
-     * @see Iterator::current()
-     * @todo change return type to mixed in TYPO3 v12 (breaking).
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function current(): void
@@ -42,8 +37,7 @@ class EmptyFileSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @see Iterator::key()
-     * @todo change return type to mixed in TYPO3 v12 (breaking).
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function key(): void
@@ -51,26 +45,16 @@ class EmptyFileSearchResult implements FileSearchResultInterface
         // Noop
     }
 
-    /**
-     * @see Iterator::next()
-     */
     public function next(): void
     {
         // Noop
     }
 
-    /**
-     * @see Iterator::rewind()
-     */
     public function rewind(): void
     {
         // Noop
     }
 
-    /**
-     * @return bool
-     * @see Iterator::valid()
-     */
     public function valid(): bool
     {
         return false;

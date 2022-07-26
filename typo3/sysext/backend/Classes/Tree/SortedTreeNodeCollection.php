@@ -26,7 +26,7 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Checks if a specific node is inside the collection
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @param TreeNode $node
      * @return bool
      */
     public function contains(TreeNode $node)
@@ -37,7 +37,7 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Returns the offset key of given node
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @param TreeNode $node
      * @return int
      */
     protected function offsetOf(TreeNode $node)
@@ -48,7 +48,7 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Binary search that returns the offset of a given node
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @param TreeNode $node
      * @param int $start
      * @param int $end
      * @return int
@@ -89,11 +89,9 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Adds a node to the internal list in a sorted approach
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
+     * @param TreeNode $node
      */
-    #[\ReturnTypeWillChange]
-    public function append($node)
+    public function append($node): void
     {
         parent::append($node);
         $this->asort();

@@ -13,8 +13,18 @@ The following PHP classes have had parameter and return types added to some or
 all of their method signatures. The types are consistent with existing
 docblock-documented type expectations and existing behavior.
 
+- :php:`\TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection`
+- :php:`\TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection`
+- :php:`\TYPO3\CMS\Backend\Tree\TreeNodeCollection`
+- :php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection`
 - :php:`\TYPO3\CMS\Core\LinkHandling\FileLinkHandler`
+- :php:`\TYPO3\CMS\Core\Log\LogRecord`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue`
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider`
+- :php:`\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection`
+- :php:`\TYPO3\CMS\Core\Resource\MetaDataAspect`
+- :php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult`
+- :php:`\TYPO3\CMS\Core\Routing\SiteRouteResult`
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ClassNamingUtility`
 - :php:`\TYPO3\CMS\Core\Utility\CsvUtility`
@@ -29,6 +39,11 @@ docblock-documented type expectations and existing behavior.
 - :php:`\TYPO3\CMS\Core\Utility\RootlineUtility`
 - :php:`\TYPO3\CMS\Core\Utility\StringUtility`
 - :php:`\TYPO3\CMS\Core\Utility\VersionNumberUtility`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\Arguments`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy`
+- :php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryResult`
 
 The following PHP classes have added public class property types:
 

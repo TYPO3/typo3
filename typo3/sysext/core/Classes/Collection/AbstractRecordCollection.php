@@ -95,12 +95,10 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
      * Return the current element
      *
-     * @link https://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
-     * @todo: Set return type to mixed when PHP >= 8.0 is required and drop #[\ReturnTypeWillChange]
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -109,25 +107,18 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
      * Move forward to next element
-     *
-     * @link https://php.net/manual/en/iterator.next.php
-     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
-    #[\ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         $this->storage->next();
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
      * Return the key of the current element
      *
-     * @link https://php.net/manual/en/iterator.key.php
      * @return int|string 0 on failure.
-     * @todo: Set return type to mixed when PHP >= 8.0 is required and drop #[\ReturnTypeWillChange]
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function key()
@@ -137,28 +128,21 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
      * Checks if current position is valid
      *
-     * @link https://php.net/manual/en/iterator.valid.php
-     * @return bool The return value will be casted to boolean and then evaluated.
-     * @todo: Set return type to bool in v12 as breaking patch and drop #[\ReturnTypeWillChange]
+     * @return bool The return value will be cast to boolean and then evaluated.
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return $this->storage->valid();
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
      * Rewind the Iterator to the first element
      *
-     * @link https://php.net/manual/en/iterator.rewind.php
      * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
-    #[\ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         $this->storage->rewind();
     }
@@ -182,15 +166,11 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
      * Count elements of an object
      *
-     * @link https://php.net/manual/en/countable.count.php
      * @return int The custom count as an integer.
-     * @todo: Set return type to in in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return $this->storage->count();
     }

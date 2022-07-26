@@ -136,11 +136,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Tree/Renderer/UnorderedListTreeRenderer.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNodeCollection\\:\\:asort\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/TreeNodeCollection.php
-
-		-
 			message: "#^Variable \\$columnsConfiguration in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Tree/View/AbstractContentPagePositionMap.php

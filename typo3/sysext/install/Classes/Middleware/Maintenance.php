@@ -196,13 +196,15 @@ class Maintenance implements MiddlewareInterface
                 ]);
             } else {
                 if ($password === null || empty($password)) {
-                    $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+                    $messageQueue = new FlashMessageQueue('install');
+                    $messageQueue->enqueue(
                         new FlashMessage('Please enter the install tool password', '', ContextualFeedbackSeverity::ERROR)
                     );
                 } else {
                     $hashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
                     $hashedPassword = $hashInstance->getHashedPassword($password);
-                    $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+                    $messageQueue = new FlashMessageQueue('install');
+                    $messageQueue->enqueue(
                         new FlashMessage(
                             'Given password does not match the install tool login password. Calculated hash: ' . $hashedPassword,
                             '',

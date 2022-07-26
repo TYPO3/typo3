@@ -182,6 +182,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @return TEntity|null The object at the current iterator position.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -235,9 +236,8 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param TEntity $value The object to look for, or its key in the storage.
-     * @return mixed
-     *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($value)

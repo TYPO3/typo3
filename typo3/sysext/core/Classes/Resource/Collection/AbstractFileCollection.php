@@ -78,6 +78,7 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
      * Return the key of the current element
      *
      * @return string
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function key()

@@ -193,7 +193,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
      * Returns the current value of the storage array
      *
      * @return mixed
-     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -205,7 +205,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Returns the current key storage array
-     * @todo Set return type to int as breaking change in v12 and remove #[\ReturnTypeWillChange].
+     * @todo: Set return type to mixed in v13
      * @return int
      */
     #[\ReturnTypeWillChange]
@@ -218,10 +218,8 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Returns the next position of the storage array
-     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
-    #[\ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         // todo: make sure next() can be performed on $realInstance
         $realInstance = $this->_loadRealInstance();
@@ -230,10 +228,8 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Resets the array pointer of the storage
-     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
-    #[\ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         // todo: make sure reset() can be performed on $realInstance
         $realInstance = $this->_loadRealInstance();
@@ -242,12 +238,8 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Checks if the array pointer of the storage points to a valid position
-     *
-     * @return bool
-     * @todo Set return type to bool as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return $this->current() !== false;
     }

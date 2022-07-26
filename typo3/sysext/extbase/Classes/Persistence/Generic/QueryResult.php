@@ -103,10 +103,8 @@ class QueryResult implements QueryResultInterface
      * Returns the number of objects in the result
      *
      * @return int The number of matching objects
-     * @todo Set to return type int as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         if ($this->numberOfResults === null) {
             if (is_array($this->queryResult)) {
@@ -134,13 +132,8 @@ class QueryResult implements QueryResultInterface
      * but it isn't very useful as the offset has to be an integer
      *
      * @param mixed $offset
-     * @return bool
-     * @see ArrayAccess::offsetExists()
-     * @todo Set $offset to mixed type as breaking change in v12.
-     * @todo Set to return type bool as breaking change in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $this->initialize();
         return isset($this->queryResult[$offset]);
@@ -149,9 +142,7 @@ class QueryResult implements QueryResultInterface
     /**
      * @param mixed $offset
      * @return mixed
-     * @see ArrayAccess::offsetGet()
-     * @todo Set $offset to mixed type as breaking change in v12.
-     * @todo Set return type to ?mixed as breaking patch in v12.
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -165,12 +156,8 @@ class QueryResult implements QueryResultInterface
      *
      * @param mixed $offset
      * @param mixed $value
-     * @see ArrayAccess::offsetSet()
-     * @todo Set $offset and $value to mixed type as breaking change in v12.
-     * @todo Set return type to void as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->initialize();
         $this->numberOfResults = null;
@@ -181,12 +168,8 @@ class QueryResult implements QueryResultInterface
      * This method has no effect on the persisted objects but only on the result set
      *
      * @param mixed $offset
-     * @see ArrayAccess::offsetUnset()
-     * @todo Set $offset to mixed type as breaking change in v12.
-     * @todo Set return type to void as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->initialize();
         $this->numberOfResults = null;
@@ -196,7 +179,7 @@ class QueryResult implements QueryResultInterface
     /**
      * @return mixed
      * @see Iterator::current()
-     * @todo Set return type to mixed as breaking patch in v12.
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -208,7 +191,7 @@ class QueryResult implements QueryResultInterface
     /**
      * @return mixed
      * @see Iterator::key()
-     * @todo Set return type to mixed as breaking patch in v12.
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function key()
@@ -219,10 +202,8 @@ class QueryResult implements QueryResultInterface
 
     /**
      * @see Iterator::next()
-     * @todo Set return type to void as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         $this->initialize();
         next($this->queryResult);
@@ -230,10 +211,8 @@ class QueryResult implements QueryResultInterface
 
     /**
      * @see Iterator::rewind()
-     * @todo Set return type to void as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         $this->initialize();
         reset($this->queryResult);
@@ -242,10 +221,8 @@ class QueryResult implements QueryResultInterface
     /**
      * @return bool
      * @see Iterator::valid()
-     * @todo Set return type to bool as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         $this->initialize();
         return current($this->queryResult) !== false;

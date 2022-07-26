@@ -111,7 +111,8 @@ class MaintenanceController extends AbstractController
     {
         $this->clearCacheService->clearAll();
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
-        $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+        $messageQueue = new FlashMessageQueue('install');
+        $messageQueue->enqueue(
             new FlashMessage('Successfully cleared all caches and all available opcode caches.', 'Caches cleared')
         );
         return new JsonResponse([
@@ -488,7 +489,8 @@ class MaintenanceController extends AbstractController
             );
         }
         (new ClearTableService())->clearSelectedTable($table);
-        $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+        $messageQueue = new FlashMessageQueue('install');
+        $messageQueue->enqueue(
             new FlashMessage('The table ' . $table . ' has been cleared.', 'Table cleared')
         );
         return new JsonResponse([

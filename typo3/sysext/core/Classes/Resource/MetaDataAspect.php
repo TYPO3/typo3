@@ -98,7 +98,7 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
     /**
      * @param mixed $offset
      * @return mixed
-     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -144,7 +144,7 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      * Gets the current value of iteration
      *
      * @return mixed
-     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function current()

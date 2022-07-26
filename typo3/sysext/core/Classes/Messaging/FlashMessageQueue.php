@@ -60,11 +60,8 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      *
      * @param FlashMessage $message Instance of \TYPO3\CMS\Core\Messaging\FlashMessage, representing a message
      * @throws \TYPO3\CMS\Core\Exception
-     * @return FlashMessageQueue Self to allow chaining
-     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
-    #[\ReturnTypeWillChange]
-    public function enqueue($message): FlashMessageQueue
+    public function enqueue($message): void
     {
         if (!($message instanceof FlashMessage)) {
             throw new Exception(
@@ -77,7 +74,6 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
         } else {
             parent::enqueue($message);
         }
-        return $this;
     }
 
     /**
@@ -91,7 +87,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * This method is empty, as it will not move any flash message (e.g. from the session)
      *
-     * @todo: Set return type to mixed when PHP >= 8.0 is required and drop #[\ReturnTypeWillChange]
+     * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
     public function dequeue()

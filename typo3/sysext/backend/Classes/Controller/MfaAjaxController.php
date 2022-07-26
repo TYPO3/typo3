@@ -157,14 +157,16 @@ class MfaAjaxController
      */
     protected function getResponseData(bool $success, string $message, ?AbstractUserAuthentication $user = null): array
     {
+        $flashMessageQueue = new FlashMessageQueue('backend');
+        $flashMessageQueue->enqueue(
+            new FlashMessage(
+                $message,
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.' . ($success ? 'success' : 'error'))
+            )
+        );
         $payload = [
             'success' => $success,
-            'status' => (new FlashMessageQueue('backend'))->enqueue(
-                new FlashMessage(
-                    $message,
-                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.' . ($success ? 'success' : 'error'))
-                )
-            ),
+            'status' => $flashMessageQueue,
         ];
 
         if ($user !== null) {

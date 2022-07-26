@@ -29,11 +29,8 @@ class ModuleDataStorageCollection extends \SplObjectStorage
 
     /**
      * @param object $object
-     * @return string
-     * @todo Set return type to string as breaking patch in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function getHash($object)
+    public function getHash($object): string
     {
         if ($object instanceof ModuleInterface) {
             return $object->getIdentifier();
