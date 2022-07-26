@@ -110,10 +110,15 @@ final class FormRequestHandler
         $extensionName = $configuration['extensionName'];
         $pluginName = $configuration['pluginName'];
 
+        $rawFormDefinition = $this->buildRawFormDefinition($rawFormDefinition, $persistenceIdentifier);
+        if (empty($prototypeName)) {
+            $prototypeName = $rawFormDefinition['prototypeName'] ?? 'standard';
+        }
+
         /** @var \TYPO3\CMS\Extbase\Mvc\Request $extbaseRequest */
         $extbaseRequest = $this->buildExtbaseRequest($extensionName, $pluginName, $request);
         $formDefinition = $this->buildFormDefinition(
-            $this->buildRawFormDefinition($rawFormDefinition, $persistenceIdentifier),
+            $rawFormDefinition,
             $prototypeName,
             $factoryClass
         );
@@ -178,9 +183,9 @@ final class FormRequestHandler
      * } $configuration
      * @return array{
      *     'factoryClass': string,
-     *     'persistenceIdentifier': string,
+     *     'persistenceIdentifier': ?string,
      *     'rawFormDefinition': array,
-     *     'prototypeName': string,
+     *     'prototypeName': ?string,
      *     'extensionName': string,
      *     'pluginName': string
      * }
@@ -196,10 +201,6 @@ final class FormRequestHandler
         $prototypeName = empty($configuration['prototypeName']) ? null : $configuration['prototypeName'];
         $extensionName = empty($configuration['extensionName']) ? 'Form' : $configuration['extensionName'];
         $pluginName = empty($configuration['pluginName']) ? 'Formframework' : $configuration['pluginName'];
-
-        if (empty($prototypeName)) {
-            $prototypeName = $rawFormDefinition['prototypeName'] ?? 'standard';
-        }
 
         return [
             'factoryClass' => $factoryClass,
@@ -240,6 +241,7 @@ final class FormRequestHandler
             );
             $rawFormDefinition['persistenceIdentifier'] = $persistenceIdentifier;
         }
+
         return $rawFormDefinition;
     }
 
