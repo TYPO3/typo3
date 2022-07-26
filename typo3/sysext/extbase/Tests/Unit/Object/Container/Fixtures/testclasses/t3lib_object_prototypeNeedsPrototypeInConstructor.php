@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 class t3lib_object_prototypeNeedsPrototypeInConstructor
 {
+    public $dependency;
+
     /**
      * @param \t3lib_object_prototype $dependency
      */

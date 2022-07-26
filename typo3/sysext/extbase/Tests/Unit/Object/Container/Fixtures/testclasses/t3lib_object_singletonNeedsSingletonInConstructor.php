@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 class t3lib_object_singletonNeedsSingletonInConstructor implements SingletonInterface
 {
+    public $dependency;
+
     /**
      * @param \t3lib_object_singleton $dependency
      */

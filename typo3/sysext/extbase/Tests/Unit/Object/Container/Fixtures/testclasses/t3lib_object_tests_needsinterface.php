@@ -20,6 +20,8 @@ declare(strict_types=1);
  */
 class t3lib_object_tests_needsinterface
 {
+    public $dependency;
+
     /**
      * @param \t3lib_object_tests_someinterface $i
      */

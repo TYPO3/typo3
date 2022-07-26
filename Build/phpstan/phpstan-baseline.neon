@@ -2976,31 +2976,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/ContainerTest.php
 
 		-
-			message: "#^Access to an undefined property t3lib_object_tests_needsinterface\\:\\:\\$dependency\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/ContainerTest.php
-
-		-
-			message: "#^Access to an undefined property t3lib_object_prototypeNeedsPrototypeInConstructor\\:\\:\\$dependency\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_prototypeNeedsPrototypeInConstructor.php
-
-		-
-			message: "#^Access to an undefined property t3lib_object_prototypeNeedsSingletonInConstructor\\:\\:\\$dependency\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_prototypeNeedsSingletonInConstructor.php
-
-		-
-			message: "#^Access to an undefined property t3lib_object_singletonNeedsPrototypeInConstructor\\:\\:\\$dependency\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_singletonNeedsPrototypeInConstructor.php
-
-		-
-			message: "#^Access to an undefined property t3lib_object_singletonNeedsSingletonInConstructor\\:\\:\\$dependency\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_singletonNeedsSingletonInConstructor.php
-
-		-
 			message: "#^Constructor of class t3lib_object_tests_cyclic1 has an unused parameter \\$c\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_tests_cyclic1.php
@@ -3009,11 +2984,6 @@ parameters:
 			message: "#^Constructor of class t3lib_object_tests_cyclic2 has an unused parameter \\$c\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_tests_cyclic2.php
-
-		-
-			message: "#^Access to an undefined property t3lib_object_tests_needsinterface\\:\\:\\$dependency\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_tests_needsinterface.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with DateTime&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface will always evaluate to false\\.$#"
