@@ -18,18 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Factory;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ArrayFormFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -50,29 +49,14 @@ class ArrayFormFactoryTest extends UnitTestCase
     public function addNestedRenderableSkipChildElementRenderingIfCompositeElementIsUnknown(): void
     {
         $unknownElement = new UnknownFormElement('test-2', 'test');
-
         $section = $this->prophesize(Section::class);
-        $section->willBeConstructedWith(['test-1', 'Section']);
         $section->createElement(Argument::cetera())->willReturn($unknownElement);
-
-        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, ['dummy']);
-
         $configuration = [
             'identifier' => 'test-3',
             'type' => 'Foo',
-            'renderables' => [
-                0 => [
-                    'identifier' => 'test-4',
-                ],
-            ],
         ];
-
-        $typeErrorExists = false;
-        try {
-            $arrayFormFactory->_call('addNestedRenderable', $configuration, $section->reveal());
-        } catch (\TypeError $error) {
-            $typeErrorExists = true;
-        }
-        self::assertFalse($typeErrorExists);
+        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, ['dummy']);
+        $result = $arrayFormFactory->_call('addNestedRenderable', $configuration, $section->reveal());
+        self::assertSame($unknownElement, $result);
     }
 }
