@@ -73,7 +73,7 @@ unit php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unit -p 8.2
@@ -82,7 +82,7 @@ unit php 8.2 deprecated pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2

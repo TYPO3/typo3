@@ -16,7 +16,7 @@ acceptance install mariadb php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:

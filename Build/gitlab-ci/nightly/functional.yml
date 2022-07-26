@@ -12,7 +12,7 @@ functional deprecated mariadb 10.3 php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   script:
