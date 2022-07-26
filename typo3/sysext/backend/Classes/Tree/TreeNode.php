@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Tree Node
  */
-class TreeNode implements ComparableNodeInterface, \Serializable
+class TreeNode implements ComparableNodeInterface
 {
     /**
      * Node Identifier
@@ -219,34 +219,11 @@ class TreeNode implements ComparableNodeInterface, \Serializable
     }
 
     /**
-     * Returns the serialized instance
-     *
-     * @return string
-     * @todo: Drop method and \Serializable class interface in v12.
-     */
-    public function serialize()
-    {
-        return serialize($this->__serialize());
-    }
-
-    /**
      * Returns class state to be serialized.
      */
     public function __serialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Create class state from serialized array.
-     *
-     * @param string $serializedString
-     * @throws Exception if the deserialized object type is not identical to the current one
-     * @todo: Drop method and \Serializable class interface in v12.
-     */
-    public function unserialize($serializedString)
-    {
-        $this->__unserialize(unserialize($serializedString));
     }
 
     /**

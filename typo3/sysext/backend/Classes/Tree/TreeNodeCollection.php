@@ -66,18 +66,6 @@ class TreeNodeCollection extends \ArrayObject
     }
 
     /**
-     * Returns the serialized instance
-     *
-     * @return string
-     * @todo: Drop method and \Serializable class interface in v12.
-     */
-    #[\ReturnTypeWillChange]
-    public function serialize()
-    {
-        return serialize($this->__serialize());
-    }
-
-    /**
      * Returns class state to be serialized.
      *
      * @todo: Change signature to __serialize(): array in v12
@@ -86,19 +74,6 @@ class TreeNodeCollection extends \ArrayObject
     public function __serialize()
     {
         return $this->toArray();
-    }
-
-    /**
-     * Create class state from serialized array.
-     *
-     * @param string $serializedString
-     * @throws Exception if the deserialized object type is not identical to the current one
-     * @todo: Drop method and \Serializable class interface in v12.
-     */
-    #[\ReturnTypeWillChange]
-    public function unserialize($serializedString)
-    {
-        $this->__unserialize(unserialize($serializedString));
     }
 
     /**
