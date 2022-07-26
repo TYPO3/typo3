@@ -61,9 +61,6 @@ class General extends AbstractTableHandler implements TableHandlerInterface
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['crdate'])) {
             $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['crdate']] = $context->getAspect('date')->get('timestamp');
         }
-        if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
-            $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['cruser_id']] = $context->getAspect('backend.user')->get('id');
-        }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
         $fieldValues['uid'] = $connection->lastInsertId($tableName);

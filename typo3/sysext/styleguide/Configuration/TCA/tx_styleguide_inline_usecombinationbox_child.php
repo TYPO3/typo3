@@ -6,7 +6,6 @@ return [
         'label' => 'input_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'delete' => 'deleted',
         'enablecolumns' => [

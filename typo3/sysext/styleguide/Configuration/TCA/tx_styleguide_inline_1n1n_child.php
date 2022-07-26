@@ -6,7 +6,6 @@ return [
         'label' => 'inline_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',

@@ -1,14 +1,14 @@
 "be_users"
-,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","cruser_id","workspace_perms","deleted","TSconfig","lastlogin","workspace_id","db_mountpoints","usergroup","realName"
+,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","TSconfig","lastlogin","workspace_id","db_mountpoints","usergroup","realName"
 # password of both users is "password"
-,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,0,1,0,,1371033743,0,0,0,"Klaus Admin"
-,2,0,1452944912,"editor","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1452944912,1,1,0,,1452944915,0,1,1,""
+,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,,1371033743,0,0,0,"Klaus Admin"
+,2,0,1452944912,"editor","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1452944912,1,0,,1452944915,0,1,1,""
 "be_sessions"
 ,"ses_id","ses_iplock","ses_userid","ses_tstamp","ses_data"
 # ses_id: hash_hmac('sha256', '886526ce72b86870739cc41991144ec1', sha1('iAmInvalid' . 'core-session-backend'))
 ,"9869d429fc72742a476d5073d006d45dfb732962d9c024423efafef537e1c5bd","[DISABLED]",1,1777777777,"",
 ,"f4c02f70058e79a8e7b523a266d4291007deacba6b2ca2536dd72d2fbb23696a","[DISABLED]",2,1777777777,"",
 "be_groups"
-,"uid","pid","tstamp","title","tables_modify","crdate","cruser_id","subgroup"
-,1,0,1452959228,"editor-group","pages",1452959228,1,
-,2,0,1452959228,"some test group","pages",1452959228,1,1
+,"uid","pid","tstamp","title","tables_modify","crdate","subgroup"
+,1,0,1452959228,"editor-group","pages",1452959228,
+,2,0,1452959228,"some test group","pages",1452959228,1

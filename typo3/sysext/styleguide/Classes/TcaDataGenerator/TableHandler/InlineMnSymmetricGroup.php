@@ -56,7 +56,6 @@ class InlineMnSymmetricGroup extends AbstractTableHandler implements TableHandle
                 'pid' => $pidOfMainTable,
                 'tstamp' => $context->getAspect('date')->get('timestamp'),
                 'crdate' => $context->getAspect('date')->get('timestamp'),
-                'cruser_id' => $context->getAspect('backend.user')->get('id'),
             ];
             $connection = $connectionPool->getConnectionForTable($tableName);
             $connection->insert($tableName, $fieldValues);
@@ -89,7 +88,6 @@ class InlineMnSymmetricGroup extends AbstractTableHandler implements TableHandle
                 'pid' => $pidOfMainTable,
                 'tstamp' => $context->getAspect('date')->get('timestamp'),
                 'crdate' => $context->getAspect('date')->get('timestamp'),
-                'cruser_id' => $context->getAspect('backend.user')->get('id'),
                 'hotelid' => $uidOfFirstRecord,
                 'branchid' => $uid,
             ];

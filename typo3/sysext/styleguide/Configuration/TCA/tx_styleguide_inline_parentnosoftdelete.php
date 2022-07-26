@@ -6,7 +6,6 @@ return [
         'label' => 'inline_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'versioningWS' => true,
         'languageField' => 'sys_language_uid',

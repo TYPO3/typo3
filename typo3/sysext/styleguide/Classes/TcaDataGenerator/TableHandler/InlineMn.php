@@ -54,7 +54,6 @@ class InlineMn extends AbstractTableHandler implements TableHandlerInterface
                 'pid' => $pidOfMainTable,
                 'tstamp' => $context->getAspect('date')->get('timestamp'),
                 'crdate' => $context->getAspect('date')->get('timestamp'),
-                'cruser_id' => $context->getAspect('backend.user')->get('id'),
             ];
             $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_mn_child');
             $connection->insert('tx_styleguide_inline_mn_child', $fieldValues);
@@ -77,7 +76,6 @@ class InlineMn extends AbstractTableHandler implements TableHandlerInterface
             'pid' => $pidOfMainTable,
             'tstamp' => $context->getAspect('date')->get('timestamp'),
             'crdate' => $context->getAspect('date')->get('timestamp'),
-            'cruser_id' => $context->getAspect('backend.user')->get('id'),
             'inline_1' => $numberOfChildRelationsToCreate,
         ];
         $connection = $connectionPool->getConnectionForTable($tableName);
@@ -100,7 +98,6 @@ class InlineMn extends AbstractTableHandler implements TableHandlerInterface
                 'pid' => $pidOfMainTable,
                 'tstamp' => $context->getAspect('date')->get('timestamp'),
                 'crdate' => $context->getAspect('date')->get('timestamp'),
-                'cruser_id' => $context->getAspect('backend.user')->get('id'),
                 'parentid' => $parentid,
                 'childid' => $uid,
             ];
