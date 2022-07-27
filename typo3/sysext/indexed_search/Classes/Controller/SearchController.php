@@ -356,7 +356,7 @@ class SearchController extends ActionController
             // Browsing box
             if ($resultData['count']) {
                 // could we get this in the view?
-                if ($this->searchData['group'] === 'sections' && $freeIndexUid <= 0) {
+                if (($this->searchData['group'] ?? '') === 'sections' && $freeIndexUid <= 0) {
                     $resultSectionsCount = count($this->resultSections);
                     $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch') ?? '', $resultSectionsCount);
                 }
@@ -409,7 +409,7 @@ class SearchController extends ActionController
         }
         $resultRows = $newResultRows;
         $this->resultSections = [];
-        if ($freeIndexUid <= 0 && $this->searchData['group'] === 'sections') {
+        if ($freeIndexUid <= 0 && ($this->searchData['group'] ?? '') === 'sections') {
             $rl2flag = strpos($this->searchData['sections'], 'rl') === 0;
             $sections = [];
             foreach ($resultRows as $row) {
