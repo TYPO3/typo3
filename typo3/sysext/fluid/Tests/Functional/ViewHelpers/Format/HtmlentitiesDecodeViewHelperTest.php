@@ -85,7 +85,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
      */
     public function renderRespectsEncodingArgument(): void
     {
-        $source = utf8_decode('Some special characters: &amp; &quot; \' &lt; &gt; *');
+        $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
         $expectedResult = 'Some special characters: & " \' < > *';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode encoding="ISO-8859-1">' . $source . '</f:format.htmlentitiesDecode>');
