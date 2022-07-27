@@ -382,12 +382,9 @@ class ConditionMatcherTest extends FunctionalTestCase
     public function genericGetVariablesSucceedsWithNamespaceTSFE(): void
     {
         $GLOBALS['TSFE']->id = 1234567;
-        $GLOBALS['TSFE']->testSimpleObject = new \stdClass();
-        $GLOBALS['TSFE']->testSimpleObject->testSimpleVariable = 'testValue';
 
         $subject = $this->getConditionMatcher();
         self::assertTrue($subject->match('[getTSFE().id == 1234567]'));
-        self::assertTrue($subject->match('[getTSFE().testSimpleObject.testSimpleVariable == "testValue"]'));
     }
 
     /**
