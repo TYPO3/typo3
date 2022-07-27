@@ -203,7 +203,7 @@ class PageSlugCandidateProvider
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
 
         $statement = $queryBuilder
-            ->select('uid', 'l10n_parent', 'pid', 'slug', 'mount_pid', 'mount_pid_ol', 't3ver_state', 'doktype', 't3ver_wsid', 't3ver_oid')
+            ->select('uid', 'sys_language_uid', 'l10n_parent', 'l18n_cfg', 'pid', 'slug', 'mount_pid', 'mount_pid_ol', 't3ver_state', 'doktype', 't3ver_wsid', 't3ver_oid')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
