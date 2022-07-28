@@ -47,6 +47,10 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
      * The rootline for the current page.
      *
      * @var array
+     * @todo: In FE, this is the "stops at sys_template root" TSFE->config['rootLine'] one,
+     *        from the uppermost page down to leaf page.
+     *        In BE, this is the full rootline from the uppermost page down to leaf page.
+     *        Refactor this mess, also see $fullRootline in FE ConditionMatcher.
      */
     protected $rootline;
 
@@ -132,6 +136,8 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
      * Gets the rootline.
      *
      * @return array The rootline to be used for matching
+     * @internal
+     * @todo: Set to protected. These classes should be data-sinks, not data-sources.
      */
     public function getRootline()
     {

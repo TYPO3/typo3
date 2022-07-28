@@ -511,6 +511,70 @@ class ConditionMatcherTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     * @todo: It would be good to have another FE related test that actively sets up a page tree and uses a
+     *        condition like "[tree.pagelayout == "pagets__simple"]" to make sure the full FE processing chain
+     *        including TS parsing kicks in properly.
+     */
+    public function pageLayoutIsResolvedCorrectlyFromBackendLayoutNextLevel(): void
+    {
+        $fullRootLine = [
+            [
+                'uid' => 4, // Deepest / current page
+                'backend_layout_next_level' => '', // Current page
+            ],
+            [
+                'uid' => 3,
+                'backend_layout_next_level' => 'pagets__article',
+            ],
+            [
+                'uid' => 2, // Could be TypoScript template with 'root' flag set
+                'backend_layout_next_level' => 'pagets__default',
+            ],
+            [
+                'uid' => 1, // Uppermost page
+                'backend_layout_next_level' => '',
+            ],
+        ];
+        $conditionMatcher = new ConditionMatcher(null, null, null, $fullRootLine);
+        self::assertTrue($conditionMatcher->match('[tree.pagelayout == "pagets__article"]'));
+    }
+
+    /**
+     * @test
+     * @todo: It would be good to have another FE related test that actively sets up a page tree and uses a
+     *        condition like "[tree.pagelayout == "pagets__simple"]" to make sure the full FE processing chain
+     *        including TS parsing kicks in properly.
+     */
+    public function pageLayoutIsResolvedCorrectlyFromBackendLayout(): void
+    {
+        $GLOBALS['TSFE']->page = [
+            'backend_layout' => 'pagets__special_layout',
+        ];
+        $fullRootLine = [
+            [
+                'uid' => 4, // Deepest / current page
+                'backend_layout' => 'pagets__special_layout',
+                'backend_layout_next_level' => '',
+            ],
+            [
+                'uid' => 3,
+                'backend_layout_next_level' => 'pagets__article',
+            ],
+            [
+                'uid' => 2, // Could be TypoScript template with 'root' flag set
+                'backend_layout_next_level' => 'pagets__default',
+            ],
+            [
+                'uid' => 1, // Uppermost page
+                'backend_layout_next_level' => '',
+            ],
+        ];
+        $conditionMatcher = new ConditionMatcher(null, null, null, $fullRootLine);
+        self::assertTrue($conditionMatcher->match('[tree.pagelayout == "pagets__special_layout"]'));
+    }
+
+    /**
      * @return ConditionMatcher
      */
     protected function getConditionMatcher(): ConditionMatcher

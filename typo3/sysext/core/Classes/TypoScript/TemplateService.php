@@ -398,7 +398,7 @@ class TemplateService
     public function matching($cc)
     {
         if (is_array($cc['all'])) {
-            $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
+            $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class, null, null, null, $this->absoluteRootLine);
             $matchObj->setRootline((array)($cc['rootLine'] ?? []));
             $sectionsMatch = [];
             foreach ($cc['all'] as $key => $pre) {
@@ -945,7 +945,7 @@ class TemplateService
         // ****************************
         // Initialize parser and match-condition classes:
         $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
+        $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class, null, null, $this->rootLine, $this->absoluteRootLine);
         $matchObj->setSimulateMatchConditions($this->matchAlternative);
         $matchObj->setSimulateMatchResult((bool)$this->matchAll);
         // Traverse constants text fields and parse them
