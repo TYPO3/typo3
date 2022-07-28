@@ -34,15 +34,25 @@ class ConditionMatcher extends AbstractConditionMatcher
     protected $context;
 
     /**
-     * @param Context $context optional context to fetch data from
+     * This is the "full" rootline, identical to TSFE->rootLine:
+     * Deepest nested page first, then up until (but not including) pseudo-page 0.
+     *
+     * @var array<int, array<string, mixed>>
+     */
+    protected array $fullRootLine;
+
+    /**
+     * @param Context|null $context optional context to fetch data from
      * @param int|null $pageId
      * @param array|null $rootLine
+     * @param array<int, array<string, mixed>>|null $fullRootLine
      */
-    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null)
+    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null, array $fullRootLine = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId;
         $this->rootline = $rootLine ?? $GLOBALS['TSFE']->tmpl->rootLine ?? [];
+        $this->fullRootLine = $fullRootLine ?? $GLOBALS['TSFE']->rootLine ?? [];
         $this->initializeExpressionLanguageResolver();
     }
 
@@ -55,7 +65,11 @@ class ConditionMatcher extends AbstractConditionMatcher
         $tree->rootLine = $this->rootline;
         $tree->rootLineIds = array_column($this->rootline, 'uid');
         $tree->rootLineParentIds = array_slice(array_column($this->rootline, 'pid'), 1);
-        $tree->pagelayout = GeneralUtility::makeInstance(PageLayoutResolver::class)->getLayoutForPage($page, $this->rootline);
+        // We're feeding the "full" RootLine here, not the "local" one that stops at sys_template record having 'root' set.
+        // This is to be in-line with backend here: A 'backend_layout_next_level' on a page above sys_template 'root' page should
+        // still be considered. Additionally, $this->fullRootLine is "deepest page first, then up" for getLayoutForPage() to find
+        // the 'nearest' parent.
+        $tree->pagelayout = GeneralUtility::makeInstance(PageLayoutResolver::class)->getLayoutForPage($page, $this->fullRootLine);
 
         $frontendUserAspect = $this->context->getAspect('frontend.user');
         $frontend = new \stdClass();

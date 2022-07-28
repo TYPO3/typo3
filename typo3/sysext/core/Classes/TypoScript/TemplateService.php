@@ -370,7 +370,7 @@ class TemplateService
     public function matching($cc)
     {
         if (is_array($cc['all'])) {
-            $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
+            $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class, null, null, null, $this->absoluteRootLine);
             $matchObj->setRootline((array)($cc['rootLine'] ?? []));
             $sectionsMatch = [];
             foreach ($cc['all'] as $key => $pre) {

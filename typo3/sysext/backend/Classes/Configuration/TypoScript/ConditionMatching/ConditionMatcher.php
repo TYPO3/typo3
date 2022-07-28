@@ -56,7 +56,8 @@ class ConditionMatcher extends AbstractConditionMatcher
         $tree->rootLine = $this->rootline;
         $tree->rootLineIds = array_column($this->rootline, 'uid');
         $tree->rootLineParentIds = array_slice(array_column($this->rootline, 'pid'), 2);
-        $tree->pagelayout = GeneralUtility::makeInstance(PageLayoutResolver::class)->getLayoutForPage($page, $this->rootline);
+        // Reverse rootline here to look for first match "up" in rootline starting with deepest nested page.
+        $tree->pagelayout = GeneralUtility::makeInstance(PageLayoutResolver::class)->getLayoutForPage($page, array_reverse($this->rootline));
 
         $backendUserAspect = $this->context->getAspect('backend.user');
         $backend = new \stdClass();
