@@ -207,8 +207,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         }
 
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
-            $isPermanent = $request->getParsedBody()[$this->formfield_permanent] ?? '';
-            if (strlen((string)$isPermanent) != 1) {
+            $isPermanent = $request->getParsedBody()[$this->formfield_permanent] ?? null;
+            if ($isPermanent === null) {
                 $isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
             } elseif (!$isPermanent) {
                 // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie,
