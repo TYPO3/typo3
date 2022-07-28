@@ -138,7 +138,9 @@ class YouTubeRenderer implements FileRendererInterface
         $videoId = $this->getVideoIdFromFile($file);
 
         $urlParams = ['autohide=1'];
-        $urlParams[] = 'controls=' . $options['controls'];
+        if (!empty($options['controls'])) {
+            $urlParams[] = 'controls=' . $options['controls'];
+        }
         if (!empty($options['autoplay'])) {
             $urlParams[] = 'autoplay=1';
             // If autoplay is enabled, enforce mute=1, see https://developer.chrome.com/blog/autoplay/
