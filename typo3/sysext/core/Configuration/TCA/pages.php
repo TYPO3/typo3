@@ -187,7 +187,6 @@ return [
             ],
         ],
         'TSconfig' => [
-            'exclude' => true,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig',
             'displayCond' => 'HIDE_FOR_NON_ADMINS',
@@ -209,7 +208,6 @@ return [
             ],
         ],
         'editlock' => [
-            'exclude' => true,
             'displayCond' => 'HIDE_FOR_NON_ADMINS',
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
@@ -824,7 +822,6 @@ return [
             ],
         ],
         'tsconfig_includes' => [
-            'exclude' => true,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
             'displayCond' => 'HIDE_FOR_NON_ADMINS',
