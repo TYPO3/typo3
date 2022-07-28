@@ -35,7 +35,7 @@ class InstallPostgresqlCoreEnvironment extends Extension
     /**
      * @var array Default configuration values
      */
-    protected $config = [
+    protected array $config = [
         'typo3InstallPostgresqlDatabaseHost' => '127.0.0.1',
         'typo3InstallPostgresqlDatabasePort' => 5432,
         'typo3InstallPostgresqlDatabasePassword' => '',
@@ -46,7 +46,7 @@ class InstallPostgresqlCoreEnvironment extends Extension
     /**
      * Override configuration from ENV if needed
      */
-    public function _initialize()
+    public function _initialize(): void
     {
         $env = getenv('typo3InstallPostgresqlDatabaseHost');
         $this->config['typo3InstallPostgresqlDatabaseHost'] = is_string($env)

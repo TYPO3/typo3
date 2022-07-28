@@ -35,7 +35,7 @@ class InstallMysqlCoreEnvironment extends Extension
     /**
      * @var array Default configuration values
      */
-    protected $config = [
+    protected array $config = [
         'typo3InstallMysqlDatabaseHost' => '127.0.0.1',
         'typo3InstallMysqlDatabasePassword' => '',
         'typo3InstallMysqlDatabaseUsername' => 'root',
@@ -45,7 +45,7 @@ class InstallMysqlCoreEnvironment extends Extension
     /**
      * Override configuration from ENV if needed
      */
-    public function _initialize()
+    public function _initialize(): void
     {
         $env = getenv('typo3InstallMysqlDatabaseHost');
         $this->config['typo3InstallMysqlDatabaseHost'] = is_string($env)

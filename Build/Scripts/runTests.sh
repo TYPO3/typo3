@@ -99,7 +99,7 @@ cleanTestFiles() {
     # > test related
     echo -n "Clean test related files ... " ; rm -rf \
         ../../../Build/phpunit/FunctionalTests-Job-*.xml \
-        ../../../typo3/sysext/core/Tests/Acceptance/AcceptanceTests-Job-* \
+        ../../../typo3/sysext/core/Tests/AcceptanceTests-Job-* \
         ../../../typo3/sysext/core/Tests/Acceptance/Support/_generated \
         ../../../typo3temp/var/tests/ ; \
         echo "done"

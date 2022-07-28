@@ -64,7 +64,7 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
         $output = new ConsoleOutput();
 
         // delete any existing split job files first
-        $targetDirectory = __DIR__ . '/../../typo3/sysext/core/Tests/Acceptance/';
+        $targetDirectory = __DIR__ . '/../../typo3/sysext/core/Tests/';
         $targetFileNamePrefix = 'AcceptanceTests-Job-';
         $filesInTargetDir = Finder::create()->files()->in($targetDirectory)->name($targetFileNamePrefix . '*');
         foreach ($filesInTargetDir as $file) {
@@ -232,7 +232,7 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
                 );
                 foreach ($matches['annotations'] as $possibleDataProvider) {
                     // See if this test has a data provider attached
-                    if (strpos($possibleDataProvider, 'dataProvider') === 0) {
+                    if (str_starts_with($possibleDataProvider, 'dataProvider')) {
                         $test['dataProvider'] = trim(ltrim($possibleDataProvider, 'dataProvider'));
                     }
                 }
