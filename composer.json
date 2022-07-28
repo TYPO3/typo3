@@ -288,7 +288,8 @@
 			"typo3/sysext/core/Tests/Functional/Fixtures/",
 			"typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
-			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/"
+			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
+			"typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests/Classes/"
 		],
 		"files": [
 			"typo3/sysext/extbase/Tests/Fixture/TxClassWithGettersAndSetters.php"

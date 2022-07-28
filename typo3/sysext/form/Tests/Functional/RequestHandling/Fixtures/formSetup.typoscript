@@ -1,0 +1,7 @@
+plugin.tx_form {
+    settings {
+        yamlConfigurations {
+            100 = EXT:form/Tests/Functional/RequestHandling/Fixtures/FormSetup.yaml
+        }
+    }
+}
