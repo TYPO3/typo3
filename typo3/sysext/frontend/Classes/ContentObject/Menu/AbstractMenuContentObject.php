@@ -1670,15 +1670,15 @@ abstract class AbstractMenuContentObject
                     $languageAspect
                 );
             }
-            if ($this->mconf['sectionIndex.']['type'] !== 'all') {
-                $doIncludeInSectionIndex = $row['sectionIndex'] >= 1;
-                $doHeaderCheck = $this->mconf['sectionIndex.']['type'] === 'header';
-                $isValidHeader = ((int)$row['header_layout'] !== 100 || !empty($this->mconf['sectionIndex.']['includeHiddenHeaders'])) && trim($row['header']) !== '';
-                if (!$doIncludeInSectionIndex || $doHeaderCheck && !$isValidHeader) {
-                    continue;
-                }
-            }
             if (is_array($row)) {
+                if ($this->mconf['sectionIndex.']['type'] !== 'all') {
+                    $doIncludeInSectionIndex = $row['sectionIndex'] >= 1;
+                    $doHeaderCheck = $this->mconf['sectionIndex.']['type'] === 'header';
+                    $isValidHeader = ((int)$row['header_layout'] !== 100 || !empty($this->mconf['sectionIndex.']['includeHiddenHeaders'])) && trim($row['header']) !== '';
+                    if (!$doIncludeInSectionIndex || ($doHeaderCheck && !$isValidHeader)) {
+                        continue;
+                    }
+                }
                 $uid = $row['uid'] ?? null;
                 $result[$uid] = $basePageRow;
                 $result[$uid]['title'] = $row['header'];
