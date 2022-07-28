@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67dc02f10581f57dd92bc8042e61886a",
+    "content-hash": "6688d72e425e4b53a103a046c1f751b2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4284,26 +4284,30 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "a60a9219ab556104c70abb3efad45caa2c188aa5"
+                "reference": "50ee1ee19ee00947c92bcb554bbea4fb5463b468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/a60a9219ab556104c70abb3efad45caa2c188aa5",
-                "reference": "a60a9219ab556104c70abb3efad45caa2c188aa5",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/50ee1ee19ee00947c92bcb554bbea4fb5463b468",
+                "reference": "50ee1ee19ee00947c92bcb554bbea4fb5463b468",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "mikey179/vfsstream": "^1.6",
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^8.1",
-                "squizlabs/php_codesniffer": "^2.7"
+                "ext-mbstring": "*",
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "phpstan/phpstan": "^1.7",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpunit/phpunit": "^8.5.26 || ^9.5"
+            },
+            "suggest": {
+                "ext-json": "PHP JSON is needed when using JSONVariableProvider: A relatively rare use case"
             },
             "bin": [
                 "bin/fluid"
@@ -4319,11 +4323,13 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
+            "homepage": "https://github.com/TYPO3/Fluid",
             "support": {
+                "docs": "https://docs.typo3.org/other/typo3fluid/fluid/main/en-us/",
                 "issues": "https://github.com/TYPO3/Fluid/issues",
-                "source": "https://github.com/TYPO3/Fluid/tree/2.7.1"
+                "source": "https://github.com/TYPO3/Fluid"
             },
-            "time": "2021-11-12T10:06:45+00:00"
+            "time": "2022-07-28T11:24:11+00:00"
         },
         {
             "name": "webmozart/assert",
