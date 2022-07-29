@@ -11,8 +11,7 @@
         </h2>
         <f:if condition="{loginNewsItems -> f:count()} > 1">
             <f:then>
-                <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews"
-                    data-bs-interval="0" data-bs-ride="carousel">
+                <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews" data-bs-ride="false">
                     <button class="left typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="prev">
                         <core:icon identifier="actions-chevron-left" size="small" />
                         <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.previous"/></span>

@@ -517,7 +517,7 @@ class MultiStepWizard {
       return this.setup.$carousel;
     }
 
-    let slides = '<div class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">'
+    let slides = '<div class="carousel slide" data-bs-ride="false">'
       + '<div class="carousel-inner" role="listbox">';
 
     for (let i = 0; i < this.setup.slides.length; ++i) {
