@@ -14,9 +14,9 @@
                         id="tceforms-datetimefield-task_start_row"
                     >
                     <input name="tx_scheduler[start]" value="{currentData.start}" type="hidden">
-                    <label class="mb-0 btn btn-default" for="tceforms-datetimefield-task_start_row">
+                    <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#tceforms-datetimefield-task_start_row">
                         <core:icon identifier="actions-edit-pick-date" />
-                    </label>
+                    </button>
                 </div>
             </div>
         </div>
@@ -37,9 +37,9 @@
                     <f:if condition="{currentData.end}">
                         <input name="tx_scheduler[end]" value="{currentData.end}" type="hidden">
                     </f:if>
-                    <label class="mb-0 btn btn-default" for="tceforms-datetimefield-task_end_row">
+                    <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#tceforms-datetimefield-task_end_row">
                         <core:icon identifier="actions-edit-pick-date" />
-                    </label>
+                    </button>
                 </div>
             </div>
         </div>
