@@ -234,7 +234,10 @@ class PageTreeRepository
             )
             ->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
-            );
+            )
+            // ensure deterministic sorting
+            ->orderBy('sorting', 'ASC')
+            ->addOrderBy('uid', 'ASC');
 
         if (count($pageIds) > 0) {
             $queryBuilder->andWhere(
@@ -288,6 +291,9 @@ class PageTreeRepository
                     ->where(
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
                     )
+                    // ensure deterministic sorting
+                    ->orderBy('sorting', 'ASC')
+                    ->addOrderBy('uid', 'ASC')
                     ->execute()
                     ->fetchAll();
 
