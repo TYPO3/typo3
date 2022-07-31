@@ -69,7 +69,6 @@ class ServiceProvider extends AbstractServiceProvider
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Http\RequestFactory::class => [ static::class, 'getRequestFactory' ],
             Imaging\IconFactory::class => [ static::class, 'getIconFactory' ],
-            Imaging\IconProvider\FontawesomeIconProvider::class => [ static::class, 'getFontawesomeIconProvider' ],
             Imaging\IconRegistry::class => [ static::class, 'getIconRegistry' ],
             Localization\LanguageServiceFactory::class => [ static::class, 'getLanguageServiceFactory' ],
             Localization\LanguageStore::class => [ static::class, 'getLanguageStore' ],
@@ -314,14 +313,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getIcons(ContainerInterface $container): ArrayObject
     {
         return new ArrayObject();
-    }
-
-    public static function getFontawesomeIconProvider(ContainerInterface $container): Imaging\IconProvider\FontawesomeIconProvider
-    {
-        return self::new($container, Imaging\IconProvider\FontawesomeIconProvider::class, [
-            $container->get('cache.assets'),
-            $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('FontawesomeSvgIcons')->toString(),
-        ]);
     }
 
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry

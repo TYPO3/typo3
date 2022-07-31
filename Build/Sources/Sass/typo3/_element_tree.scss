@@ -193,8 +193,7 @@ $tree-control-icon-size: 12px;
 // Tree Variations
 //
 .panel-tab {
-    .list-tree li:last-child:before,
-    .list-tree-control > .fa:before {
+    .list-tree li:last-child:before {
         background-color: $nav-tabs-active-link-bg;
     }
 }

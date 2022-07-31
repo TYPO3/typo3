@@ -79,14 +79,7 @@
                                                     <f:if condition="{loginProviderIdentifier} != {providerKey}">
                                                         <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}">
                                                             <a href="?loginProvider={providerKey}">
-                                                                <f:if condition="{provider.iconIdentifier}">
-                                                                    <f:then>
-                                                                        <core:icon identifier="{provider.iconIdentifier}" size="small" />
-                                                                    </f:then>
-                                                                    <f:else>
-                                                                        <i class="fa fa-fw {provider.icon-class}"></i>
-                                                                    </f:else>
-                                                                </f:if>
+                                                                <core:icon identifier="{provider.iconIdentifier}" size="small" />
                                                                 <span><f:translate key="{provider.label}" default="{provider.label}" /></span>
                                                             </a>
                                                         </li>

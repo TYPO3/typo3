@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -154,9 +154,9 @@ class IconFactoryTest extends FunctionalTestCase
         $iconRegistry = GeneralUtility::getContainer()->get(IconRegistry::class);
         $iconRegistry->registerIcon(
             $this->registeredSpinningIconIdentifier,
-            FontawesomeIconProvider::class,
+            SvgIconProvider::class,
             [
-                'name' => 'times',
+                'source' => __DIR__ . '/Fixtures/file.svg',
                 'spinning' => true,
             ]
         );

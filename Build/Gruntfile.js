@@ -311,12 +311,6 @@ module.exports = function (grunt) {
             cwd: '<%= paths.node_modules %>source-sans-pro',
             src: ['WOFF/OTF/**', 'WOFF2/TTF/**'],
             dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/SourceSansPro'
-          },
-          {
-            expand: true,
-            cwd: '<%= paths.node_modules %>font-awesome/fonts',
-            src: ['**/*', '!FontAwesome.otf'],
-            dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome'
           }
         ]
       },

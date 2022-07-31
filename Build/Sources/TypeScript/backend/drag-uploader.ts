@@ -22,6 +22,7 @@ import Modal from './modal';
 import Notification from './notification';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
 import Md5 from '@typo3/backend/hashing/md5';
+import '@typo3/backend/element/icon-element';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -582,7 +583,7 @@ class FileQueueItem {
     }
 
     // set dummy file icon
-    this.$iconCol.html('<span class="t3-icon t3-icon-mimetypes t3-icon-other-other">&nbsp;</span>');
+    this.$iconCol.html('<typo3-backend-icon identifier="mimetypes-other-other" />');
 
     // check file size
     if (this.dragUploader.maxFileSize > 0 && this.file.size > this.dragUploader.maxFileSize) {
