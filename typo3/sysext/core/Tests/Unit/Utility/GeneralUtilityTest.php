@@ -42,9 +42,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class GeneralUtilityTest extends UnitTestCase
 {
     public const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
@@ -2935,6 +2932,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $directoryName = StringUtility::getUniqueId('test_') . '.com';
         $directoryPath = Environment::getVarPath() . '/tests/';
+        @mkdir($directoryPath, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         $directory = $directoryPath . $directoryName;
         mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         $fileInfo = GeneralUtility::split_fileref($directory);
