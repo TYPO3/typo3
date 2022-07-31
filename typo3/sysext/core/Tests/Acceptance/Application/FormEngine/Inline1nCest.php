@@ -44,7 +44,7 @@ class Inline1nCest
         $I->switchToContentFrame();
 
         $I->waitForText('inline 1n', 20);
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-bs-original-title="Edit record"]';
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
     }

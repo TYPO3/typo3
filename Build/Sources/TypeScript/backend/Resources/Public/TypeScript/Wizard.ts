@@ -270,7 +270,7 @@ class Wizard {
       return this.setup.$carousel;
     }
 
-    let slides = '<div class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">'
+    let slides = '<div class="carousel slide" data-bs-ride="false">'
       + '<div class="carousel-inner" role="listbox">';
 
     for (let currentSlide of Object.values(this.setup.slides)) {

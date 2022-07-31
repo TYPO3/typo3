@@ -43,7 +43,7 @@ class NullPlaceholderCest
     {
         $I->amGoingTo('Check if deactivating null checkboxes marks as "changed"');
 
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_fal a[data-bs-original-title="Edit record"]';
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_fal a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
 
         $I->waitForElementNotVisible('#t3js-ui-block');

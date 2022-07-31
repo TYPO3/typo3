@@ -86,7 +86,7 @@
                                         <f:if condition="{form.invalid}">
                                             <f:else>
                                                 <li>
-                                                    <a href="#" class="dropdown-item" data-bs-original-title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}">
+                                                    <a href="#" class="dropdown-item" aria-label="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}">
                                                         <core:icon identifier="actions-duplicate" />
                                                         <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form" />
                                                     </a>
@@ -95,7 +95,7 @@
                                         </f:if>
                                         <f:if condition="{form.referenceCount}">
                                             <li>
-                                                <a href="#" class="dropdown-item" data-bs-original-title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.show_references')}" data-identifier="showReferences" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}">
+                                                <a href="#" class="dropdown-item" aria-label="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.show_references')}" data-identifier="showReferences" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}">
                                                     <core:icon identifier="actions-eye-link" />
                                                     <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.show_references" />
                                                 </a>
@@ -103,7 +103,7 @@
                                         </f:if>
                                         <f:if condition="{form.removable} && ({form.invalid} == '0') && ({form.referenceCount} == '0')">
                                             <li>
-                                                <a href="#" class="dropdown-item" data-bs-original-title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form')}" data-identifier="removeForm" data-form-persistence-identifier="{form.persistenceIdentifier}">
+                                                <a href="#" class="dropdown-item" aria-label="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form')}" data-identifier="removeForm" data-form-persistence-identifier="{form.persistenceIdentifier}">
                                                     <core:icon identifier="actions-edit-delete" />
                                                     <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form" />
                                                 </a>

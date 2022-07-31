@@ -43,7 +43,7 @@ class ElementsGroupCest
         $I->executeJS('window.name="TYPO3Main";');
 
         $I->waitForText('elements group', 20);
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_group a[data-bs-original-title="Edit record"]';
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_group a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
     }

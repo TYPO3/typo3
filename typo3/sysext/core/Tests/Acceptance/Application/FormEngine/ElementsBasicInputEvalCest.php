@@ -42,7 +42,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
 
         // Open record and wait until form is ready
         $I->waitForText('elements basic', 20);
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[data-bs-original-title="Edit record"]';
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Form', 3, 'h1');

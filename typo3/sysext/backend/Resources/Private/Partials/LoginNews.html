@@ -4,8 +4,7 @@
         <h2 id="loginNewsHeader" class="sr-only"><f:translate key="login.news.header" /></h2>
         <f:if condition="{loginNewsItems -> f:count()} > 1">
             <f:then>
-                <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews"
-                    data-bs-interval="0" data-bs-ride="carousel">
+                <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews" data-bs-ride="false">
                     <button class="left typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="prev">
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="sr-only"><f:translate key="login.news.previous"/></span>

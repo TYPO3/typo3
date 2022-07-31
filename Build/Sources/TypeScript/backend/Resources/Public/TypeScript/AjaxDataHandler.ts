@@ -15,6 +15,7 @@ import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from './Enum/Severity';
+import {Tooltip as BootstrapTooltip} from 'bootstrap';
 import MessageInterface from './AjaxDataHandler/MessageInterface';
 import ResponseInterface from './AjaxDataHandler/ResponseInterface';
 import $ from 'jquery';
@@ -22,7 +23,6 @@ import BroadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Icons = require('./Icons');
 import Modal = require('./Modal');
 import Notification = require('./Notification');
-import Viewport = require('./Viewport');
 
 enum Identifiers {
   hide = '.t3js-record-hide',
@@ -182,12 +182,9 @@ class AjaxDataHandler {
     // Update tooltip title
     $anchorElement.one('hidden.bs.tooltip', (): void => {
       const nextTitle = $anchorElement.data('toggleTitle');
-      // Bootstrap Tooltip internally uses only .attr('data-bs-original-title')
-      $anchorElement
-        .data('toggleTitle', $anchorElement.attr('data-bs-original-title'))
-        .attr('data-bs-original-title', nextTitle);
+      BootstrapTooltip.getInstance($anchorElement.get(0)).setContent(nextTitle);
     });
-    $anchorElement.tooltip('hide');
+    $anchorElement.tooltip('hide');0
 
     const $iconElement = $anchorElement.find(Identifiers.icon);
     Icons.getIcon(iconName, Icons.sizes.small).then((icon: string): void => {
