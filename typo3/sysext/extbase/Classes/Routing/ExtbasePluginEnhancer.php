@@ -200,10 +200,10 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         }
         $controller = $route->getDefault('_controller');
         [$controllerName, $actionName] = explode('::', $controller);
-        if ($controllerName !== $parameters[$this->namespace]['controller']) {
+        if (!isset($parameters[$this->namespace]['controller']) || $controllerName !== $parameters[$this->namespace]['controller']) {
             return false;
         }
-        if ($actionName !== $parameters[$this->namespace]['action']) {
+        if (!isset($parameters[$this->namespace]['action']) || $actionName !== $parameters[$this->namespace]['action']) {
             return false;
         }
         return true;
