@@ -100,9 +100,10 @@ Options:
             - postgres: use postgres
             - sqlite: use sqlite (not for -s acceptance)
 
-    -p <8.1>
+    -p <8.1|8.2>
         Specifies the PHP minor version to be used
             - 8.1 (default): use PHP 8.1
+            - 8.2: use PHP 8.2
 
     -e "<phpunit, codeception or additional phpstan scan options>"
         Only with -s acceptance|functional|unit
@@ -202,9 +203,6 @@ while getopts ":s:a:d:p:e:xy:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(8.1)$ ]]; then
-                INVALID_OPTIONS+=("p ${OPTARG}")
-            fi
             ;;
         e)
             EXTRA_TEST_OPTIONS=${OPTARG}

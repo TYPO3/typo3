@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        php: [ '8.1' ]
+        php: [ '8.1', '8.2' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,6 +27,7 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
 
       - name: CGL
+        if: ${{ matrix.php <= '8.1' }}
         run: Build/Scripts/runTests.sh -n -p ${{ matrix.php }} -s cgl
 
       - name: phpstan
