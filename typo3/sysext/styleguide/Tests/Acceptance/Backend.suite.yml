@@ -1,4 +1,4 @@
-class_name: BackendTester
+actor: BackendTester
 modules:
   enabled:
     - WebDriver:

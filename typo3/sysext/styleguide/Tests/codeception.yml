@@ -2,7 +2,7 @@ namespace: TYPO3\CMS\Styleguide\Tests\Acceptance\Support
 paths:
   tests: Acceptance
   data: .
-  log: ../.Build/Web/typo3temp/var/tests/AcceptanceReports
+  output: ../.Build/Web/typo3temp/var/tests/AcceptanceReports
   support: Acceptance/Support
 settings:
   colors: true
