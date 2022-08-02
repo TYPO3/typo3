@@ -20,7 +20,7 @@ import $ from"jquery";import Viewport from"@typo3/backend/viewport.js";import Ic
             </div>
           </div>
         `),onSearchStart:()=>{const e=$(Identifiers.toolbarItem);e.hasClass("loading")||(e.addClass("loading"),Icons.getIcon("spinner-circle-light",Icons.sizes.small,"",Icons.states.default,Icons.markupIdentifiers.inline).then(t=>{e.find(".icon-apps-toolbar-menu-search").replaceWith(t)}))},onSearchComplete:()=>{const e=$(Identifiers.toolbarItem);e.hasClass("loading")&&(e.removeClass("loading"),Icons.getIcon("apps-toolbar-menu-search",Icons.sizes.small,"",Icons.states.default,Icons.markupIdentifiers.inline).then(t=>{e.find(".icon-spinner-circle-light").replaceWith(t)}))},onSelect:t=>{e.focus(),$(Identifiers.searchFieldSelector).autocomplete("hide"),"search_all"===t.value?TYPO3.ModuleMenu.App.showModule("web_list","id=0&search_levels=-1&search_field="+encodeURIComponent(e.val())):TYPO3.Backend.ContentContainer.setUrl(t.data.editLink),document.body.classList.contains("scaffold-search-expanded")&&document.body.classList.remove("scaffold-search-expanded"),document.getElementById("typo3-contentIframe").onload=function(){$(Identifiers.searchFieldSelector).autocomplete("hide")}}})}registerEvents(){$(Identifiers.formSelector).on("submit",e=>{e.preventDefault()})}linkItem(e){return"search_all"===e.value?html`
-        <a class="dropdown-list-link btn btn-primary pull-right t3js-live-search-show-all" data-pageid="0">${e.data.title}</a>
+        <a class="dropdown-list-link btn btn-primary float-end t3js-live-search-show-all" data-pageid="0">${e.data.title}</a>
       `:e.data.editLink?html`
         <a class="dropdown-list-link"
            data-pageid="${e.data.pageId}" href="#">

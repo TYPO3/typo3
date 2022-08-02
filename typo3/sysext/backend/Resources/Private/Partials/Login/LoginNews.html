@@ -6,7 +6,7 @@
 
 <f:if condition="{loginNewsItems}">
     <section class="typo3-login-news" aria-labelledby="loginNewsHeader">
-        <h2 id="loginNewsHeader" class="sr-only">
+        <h2 id="loginNewsHeader" class="visually-hidden">
             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.header" />
         </h2>
         <f:if condition="{loginNewsItems -> f:count()} > 1">
@@ -14,11 +14,11 @@
                 <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews" data-bs-ride="false">
                     <button class="left typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="prev">
                         <core:icon identifier="actions-chevron-left" size="small" />
-                        <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.previous"/></span>
+                        <span class="visually-hidden"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.previous"/></span>
                     </button>
                     <button type="button" class="right typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="next">
                         <core:icon identifier="actions-chevron-right" size="small" />
-                        <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.next"/></span>
+                        <span class="visually-hidden"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.next"/></span>
                     </button>
                     <div class="carousel-inner" aria-live="polite">
                         <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
@@ -45,7 +45,7 @@
     {item.content -> f:transform.html() -> f:sanitize.html()}
     <f:if condition="{item.date}">
         <p class="text-muted">
-            <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.date"/></span>{item.date}
+            <span class="visually-hidden"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.date"/></span>{item.date}
         </p>
     </f:if>
 </f:section>

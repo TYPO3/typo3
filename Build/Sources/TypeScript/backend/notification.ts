@@ -208,7 +208,7 @@ class NotificationMessage extends LitElement {
         role="alert">
         <button type="button" class="close" @click="${async (e: Event) => this.close()}">
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
-          <span class="sr-only">Close</span>
+          <span class="visually-hidden">Close</span>
         </button>
         <div class="media">
           <div class="media-left">

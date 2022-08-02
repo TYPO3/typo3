@@ -473,7 +473,7 @@ class SetupModuleController
                                 ' width="' . (int)$avatarImage->getWidth() . '" ' .
                                 'height="' . (int)$avatarImage->getHeight() . '" />' .
                                 '</span></span>';
-                            $html .= '<span class="pull-left" style="padding-right: 10px" id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
+                            $html .= '<span class="float-start" style="padding-right: 10px" id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
                         }
                     }
                     $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .

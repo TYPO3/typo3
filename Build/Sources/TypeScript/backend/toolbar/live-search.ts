@@ -198,7 +198,7 @@ class LiveSearch {
   private linkItem(suggestion: Suggestion): TemplateResult {
     if(suggestion.value === 'search_all') {
       return html`
-        <a class="dropdown-list-link btn btn-primary pull-right t3js-live-search-show-all" data-pageid="0">${suggestion.data.title}</a>
+        <a class="dropdown-list-link btn btn-primary float-end t3js-live-search-show-all" data-pageid="0">${suggestion.data.title}</a>
       `
     }
 

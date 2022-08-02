@@ -35,7 +35,7 @@
                         </f:if>
                     </button>
                     <button type="button"
-                        class="btn btn-default btn-sm pull-right t3js-toggle-table"
+                        class="btn btn-default btn-sm float-end t3js-toggle-table"
                         data-bs-toggle="collapse"
                         data-bs-target="#scheduler-task-group-{taskGroupId}"
                         aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}"
@@ -350,7 +350,7 @@
                         <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass.taskCount')}">{errorClasses -> f:count()}</span>)
                     </button>
                     <button type="button"
-                        class="btn btn-default btn-sm pull-right t3js-toggle-table"
+                        class="btn btn-default btn-sm float-end t3js-toggle-table"
                         data-bs-toggle="collapse"
                         data-bs-target="#scheduler-task-group-missing"
                         aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"

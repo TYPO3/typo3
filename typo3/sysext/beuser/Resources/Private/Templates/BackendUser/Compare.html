@@ -18,10 +18,10 @@
                             </a>
                             {compareData.user.username}
 
-                            <f:link.action action="removeFromCompareList" arguments="{uid: compareData.user.uid, redirectToCompare:1}" class="btn btn-default pull-right">
+                            <f:link.action action="removeFromCompareList" arguments="{uid: compareData.user.uid, redirectToCompare:1}" class="btn btn-default float-end">
                                 <core:icon identifier="actions-remove" size="small"/>
                             </f:link.action>
-                            <be:link.editRecord class="btn btn-default pull-right" table="be_users" uid="{compareData.user.uid}" title="edit">
+                            <be:link.editRecord class="btn btn-default float-end" table="be_users" uid="{compareData.user.uid}" title="edit">
                                 <core:icon identifier="actions-open" />
                             </be:link.editRecord>
                         </th>
