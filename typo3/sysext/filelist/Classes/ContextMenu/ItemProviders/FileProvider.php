@@ -174,7 +174,7 @@ class FileProvider extends AbstractProvider
                 $canRender = $this->canShowInfo();
                 break;
 
-            //just for folders
+                //just for folders
             case 'upload':
             case 'new':
                 $canRender = $this->canCreateNew();
@@ -186,7 +186,7 @@ class FileProvider extends AbstractProvider
                 $canRender = $this->canBePastedInto();
                 break;
 
-            //for both files and folders
+                //for both files and folders
             case 'rename':
                 $canRender = $this->canBeRenamed();
                 break;

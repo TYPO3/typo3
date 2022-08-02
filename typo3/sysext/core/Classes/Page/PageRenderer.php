@@ -351,26 +351,26 @@ class PageRenderer implements SingletonInterface
     {
         foreach ($state as $var => $value) {
             switch ($var) {
-            case 'assetsCache':
-            case 'locales':
-            case 'packageManager':
-            case 'assetRenderer':
-            case 'templateService':
-            case 'resourceCompressor':
-            case 'relativeCssPathFixer':
-            case 'localizationFactory':
-            case 'responseFactory':
-            case 'streamFactory':
-                break;
-            case 'metaTagRegistry':
-                $this->metaTagRegistry->updateState($value);
-                break;
-            case 'javaScriptRenderer':
-                $this->javaScriptRenderer->updateState($value);
-                break;
-            default:
-                $this->{$var} = $value;
-                break;
+                case 'assetsCache':
+                case 'locales':
+                case 'packageManager':
+                case 'assetRenderer':
+                case 'templateService':
+                case 'resourceCompressor':
+                case 'relativeCssPathFixer':
+                case 'localizationFactory':
+                case 'responseFactory':
+                case 'streamFactory':
+                    break;
+                case 'metaTagRegistry':
+                    $this->metaTagRegistry->updateState($value);
+                    break;
+                case 'javaScriptRenderer':
+                    $this->javaScriptRenderer->updateState($value);
+                    break;
+                default:
+                    $this->{$var} = $value;
+                    break;
             }
         }
     }
@@ -384,26 +384,26 @@ class PageRenderer implements SingletonInterface
         $state = [];
         foreach (get_object_vars($this) as $var => $value) {
             switch ($var) {
-            case 'assetsCache':
-            case 'locales':
-            case 'packageManager':
-            case 'assetRenderer':
-            case 'templateService':
-            case 'resourceCompressor':
-            case 'relativeCssPathFixer':
-            case 'localizationFactory':
-            case 'responseFactory':
-            case 'streamFactory':
-                break;
-            case 'metaTagRegistry':
-                $state[$var] = $this->metaTagRegistry->getState();
-                break;
-            case 'javaScriptRenderer':
-                $state[$var] = $this->javaScriptRenderer->getState();
-                break;
-            default:
-                $state[$var] = $value;
-                break;
+                case 'assetsCache':
+                case 'locales':
+                case 'packageManager':
+                case 'assetRenderer':
+                case 'templateService':
+                case 'resourceCompressor':
+                case 'relativeCssPathFixer':
+                case 'localizationFactory':
+                case 'responseFactory':
+                case 'streamFactory':
+                    break;
+                case 'metaTagRegistry':
+                    $state[$var] = $this->metaTagRegistry->getState();
+                    break;
+                case 'javaScriptRenderer':
+                    $state[$var] = $this->javaScriptRenderer->getState();
+                    break;
+                default:
+                    $state[$var] = $value;
+                    break;
             }
         }
         return $state;

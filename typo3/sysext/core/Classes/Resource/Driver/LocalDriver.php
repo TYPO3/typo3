@@ -388,12 +388,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
 
             try {
                 if (
-                !$this->applyFilterMethodsToDirectoryItem(
-                    $filterMethods,
-                    $iteratorItem['name'],
-                    $iteratorItem['identifier'],
-                    $this->getParentFolderIdentifierOfIdentifier($iteratorItem['identifier'])
-                )
+                    !$this->applyFilterMethodsToDirectoryItem(
+                        $filterMethods,
+                        $iteratorItem['name'],
+                        $iteratorItem['identifier'],
+                        $this->getParentFolderIdentifierOfIdentifier($iteratorItem['identifier'])
+                    )
                 ) {
                     continue;
                 }

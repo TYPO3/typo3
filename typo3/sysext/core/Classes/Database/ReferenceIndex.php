@@ -879,7 +879,7 @@ class ReferenceIndex implements LoggerAwareInterface
             || $configuration['type'] === 'email'
             || $configuration['type'] === 'flex'
             || isset($configuration['softref'])
-            ;
+        ;
     }
 
     /**

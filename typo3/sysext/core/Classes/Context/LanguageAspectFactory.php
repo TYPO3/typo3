@@ -44,18 +44,18 @@ class LanguageAspectFactory
                 $overlayType = LanguageAspect::OVERLAYS_OFF;
                 break;
 
-            // Fall back to other language, if the page does not exist in the requested language
-            // Do overlays, and keep the ones that are not translated
+                // Fall back to other language, if the page does not exist in the requested language
+                // Do overlays, and keep the ones that are not translated
             case 'fallback':
                 $overlayType = LanguageAspect::OVERLAYS_MIXED;
                 break;
 
-            // Same as "fallback" but remove the records that are not translated
+                // Same as "fallback" but remove the records that are not translated
             case 'strict':
                 $overlayType = LanguageAspect::OVERLAYS_ON_WITH_FLOATING;
                 break;
 
-            // Ignore, fallback to default language
+                // Ignore, fallback to default language
             default:
                 $fallbackOrder = [0];
                 $overlayType = LanguageAspect::OVERLAYS_OFF;

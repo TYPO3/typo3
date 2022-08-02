@@ -1690,7 +1690,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->or(
-                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
                         $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq(
                                 'uid',
@@ -1728,7 +1728,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->or(
-                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
                         $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq(
                                 'uid',

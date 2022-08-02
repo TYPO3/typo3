@@ -630,8 +630,8 @@ class PageLayoutView implements LoggerAwareInterface
                         $languageMode = $this->getLanguageService()->getLL('languageModeFree');
                         break;
                     default:
-                        // we'll let opcode optimize this intentionally empty case
-                }
+                    // we'll let opcode optimize this intentionally empty case
+                    }
             }
             $columnAttributes = [
                 'valign' => 'top',

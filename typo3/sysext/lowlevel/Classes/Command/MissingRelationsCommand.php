@@ -291,7 +291,7 @@ If you want to get more detailed information, use the --verbose option.')
                     } else {
                         $offlineVersionRecords[$idx][$rec['hash']] = $infoString;
                     }
-                    // reference to a deleted record
+                // reference to a deleted record
                 } elseif (isset($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']) && $existingRecords[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']]) {
                     if ($isSoftReference) {
                         $deletedRecordsInSoftReferenceRelations[] = $infoString;

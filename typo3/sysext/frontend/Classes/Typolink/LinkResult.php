@@ -99,10 +99,10 @@ class LinkResult implements LinkResultInterface, \JsonSerializable
             switch ($attributeName) {
                 case 'href':
                     $newObject->url = $attributeValue;
-                break;
+                    break;
                 case 'target':
                     $newObject->target = $attributeValue;
-                break;
+                    break;
             }
             if ($attributeValue !== null) {
                 $newObject->additionalAttributes[$attributeName] = $attributeValue;

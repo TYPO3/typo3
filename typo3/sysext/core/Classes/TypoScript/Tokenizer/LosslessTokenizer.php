@@ -220,7 +220,7 @@ final class LosslessTokenizer implements TokenizerInterface
             if (strlen($this->currentLineString)) {
                 $this->tokenStream->append(new Token(TokenType::T_VALUE, $this->currentLineString, $this->currentLineNumber, $this->currentColumnInLine));
             }
-                ($this->currentLinebreakCallback)();
+            ($this->currentLinebreakCallback)();
             if (!array_key_exists($this->currentLineNumber + 1, $this->lines)) {
                 return;
             }

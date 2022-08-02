@@ -15,4 +15,4 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-    throw new \RuntimeException('Unit test', 1359900487);
+throw new \RuntimeException('Unit test', 1359900487);

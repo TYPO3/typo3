@@ -162,7 +162,7 @@ class EditableRestriction implements QueryRestrictionInterface
         if ($this->allowedFields) {
             $constraints = [
                 $expressionBuilder->or(
-                // broken link is in page and page is editable
+                    // broken link is in page and page is editable
                     $expressionBuilder->and(
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.table_name',

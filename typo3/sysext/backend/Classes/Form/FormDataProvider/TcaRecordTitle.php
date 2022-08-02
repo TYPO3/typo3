@@ -194,7 +194,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 // @todo: Check if and how a label could be generated from flex field data
             default:
 
-        }
+            }
 
         return $recordTitle;
     }

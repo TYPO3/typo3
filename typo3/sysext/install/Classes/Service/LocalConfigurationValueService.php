@@ -123,7 +123,7 @@ class LocalConfigurationValueService
                             ? implode(',', $value)
                             : (string)$value;
                         break;
-                    // Check if the setting is a PHP error code, will trigger a view helper in fluid
+                        // Check if the setting is a PHP error code, will trigger a view helper in fluid
                     case 'errors':
                         $itemData['type'] = 'input';
                         $itemData['value'] = $value;

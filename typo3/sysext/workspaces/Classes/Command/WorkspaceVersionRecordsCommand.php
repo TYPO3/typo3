@@ -215,15 +215,15 @@ class WorkspaceVersionRecordsCommand extends Command
                 $this->deleteRecords($this->foundRecords['versions_in_live'], $dryRun, $io);
                 break;
 
-            // All records that has been published and can therefore be removed permanently
-            // Subset of "versions" that is a count of 1 or more (has been published)
+                // All records that has been published and can therefore be removed permanently
+                // Subset of "versions" that is a count of 1 or more (has been published)
             case 'published_versions':
                 $io->section('Deleting published records in live workspace now. ' . ($dryRun ? ' (Not deleting now, just a dry run)' : ''));
                 $this->deleteRecords($this->foundRecords['published_versions'], $dryRun, $io);
                 break;
 
-            // Versions that has lost their connection to a workspace in TYPO3.
-            // Subset of "versions" that doesn't belong to an existing workspace [Warning: Fix by move to live workspace]
+                // Versions that has lost their connection to a workspace in TYPO3.
+                // Subset of "versions" that doesn't belong to an existing workspace [Warning: Fix by move to live workspace]
             case 'invalid_workspace':
                 $io->section('Moving versions in invalid workspaces to live workspace now. ' . ($dryRun ? ' (Not deleting now, just a dry run)' : ''));
                 $this->resetRecordsWithoutValidWorkspace($this->foundRecords['invalid_workspace'], $dryRun, $io);

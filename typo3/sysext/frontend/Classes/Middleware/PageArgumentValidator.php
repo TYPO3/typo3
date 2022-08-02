@@ -118,7 +118,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
                         ['code' => PageAccessFailureReasons::CACHEHASH_COMPARISON_FAILED]
                     );
                 }
-                // No cHash given but was required
+            // No cHash given but was required
             } elseif (!$this->evaluateQueryParametersWithoutCacheHash($queryParams, $pageNotFoundOnValidationError)) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,

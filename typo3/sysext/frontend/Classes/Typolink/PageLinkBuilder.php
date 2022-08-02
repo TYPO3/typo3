@@ -486,7 +486,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
             && !($tsfe->config['config']['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
-            ) {
+        ) {
             $uri = (new Uri())->withFragment($fragment);
         } else {
             try {

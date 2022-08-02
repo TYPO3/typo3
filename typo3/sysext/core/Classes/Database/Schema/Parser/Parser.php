@@ -282,8 +282,8 @@ class Parser
                     --$numUnmatched;
                     break;
                 default:
-                    // Do nothing
-            }
+                // Do nothing
+                }
 
             $token = $this->lexer->peek();
         }

@@ -160,7 +160,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                     $this->logManager->getLogger(MboxTransport::class)
                 );
                 break;
-            // Used for testing purposes
+                // Used for testing purposes
             case 'null':
             case NullTransport::class:
                 $transport = new NullTransport(
@@ -168,7 +168,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                     $this->logManager->getLogger(NullTransport::class)
                 );
                 break;
-            // Used by Symfony's Transport Factory
+                // Used by Symfony's Transport Factory
             case !empty($mailSettings['dsn']):
             case 'dsn':
                 if (empty($mailSettings['dsn'])) {

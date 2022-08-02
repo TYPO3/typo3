@@ -2711,7 +2711,7 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->or(
-                    // records without l10n_parent must be taken into account (in any language)
+                        // records without l10n_parent must be taken into account (in any language)
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                             $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT)
