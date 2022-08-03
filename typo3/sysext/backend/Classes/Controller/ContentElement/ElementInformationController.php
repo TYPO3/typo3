@@ -235,6 +235,11 @@ class ElementInformationController
                 continue;
             }
 
+            // Field does not exist (e.g. having type=none) -> skip
+            if (!array_key_exists($name, $this->row)) {
+                continue;
+            }
+
             $isExcluded = !(!($GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
             if ($isExcluded) {
                 continue;
