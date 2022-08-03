@@ -83,4 +83,10 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\DebugUtility::debug' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-98069-DebugConsoleRemoved.rst',
+        ],
+    ],
 ];

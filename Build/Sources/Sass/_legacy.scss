@@ -212,7 +212,6 @@ label {
 
 // badge fallback
 // todo use ".badge .rounded-pill .bg-{themeColor}" instead of only .badge
-// todo only used in debug console?
 [class="badge"] {
     background-color: $gray-600;
     border-radius: $rounded-pill;

@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -36,39 +34,14 @@ class DebugUtility
      *
      * Directly echos out debug information as HTML (or plain in CLI context)
      */
-    public static function debug(mixed $var = '', string $header = 'Debug', string $group = 'Debug'): void
+    public static function debug(mixed $var = '', string $header = 'Debug'): void
     {
         // buffer the output of debug if no buffering started before
         if (ob_get_level() === 0) {
             ob_start();
         }
 
-        if (!Environment::isCli()
-            && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
-            $debug = self::renderDump($var);
-            $debugPlain = PHP_EOL . self::renderDump($var, '', true, false);
-            $script = '
-				(function debug() {
-					var message = ' . GeneralUtility::quoteJSvalue($debug) . ',
-						messagePlain = ' . GeneralUtility::quoteJSvalue($debugPlain) . ',
-						header = ' . GeneralUtility::quoteJSvalue($header) . ',
-						group = ' . GeneralUtility::quoteJSvalue($group) . ';
-					if (top.TYPO3 && top.TYPO3.DebugConsole) {
-						top.TYPO3.DebugConsole.add(message, header, group);
-					} else {
-						var consoleMessage = [group, header, messagePlain].join(" | ");
-						if (typeof console === "object" && typeof console.log === "function") {
-							console.log(consoleMessage);
-						}
-					};
-				})();
-			';
-            echo GeneralUtility::wrapJS($script);
-        } else {
-            echo self::renderDump($var, $header);
-        }
+        echo self::renderDump($var, $header);
     }
 
     /**
