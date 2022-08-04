@@ -63,7 +63,7 @@ class BackendController extends ActionController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->moduleTemplate->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
-            'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion', 'pagination', ]);
+            'infobox', 'flashMessages', 'icons', 'modal', 'accordion', 'pagination', ]);
         $this->moduleTemplate->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
@@ -160,11 +160,6 @@ class BackendController extends ActionController
             'status' => AbstractMessage::OK,
         ];
         return new JsonResponse($json);
-    }
-
-    protected function debugAction(): ResponseInterface
-    {
-        return $this->moduleTemplate->renderResponse('Backend/Debug');
     }
 
     protected function iconsAction(): ResponseInterface

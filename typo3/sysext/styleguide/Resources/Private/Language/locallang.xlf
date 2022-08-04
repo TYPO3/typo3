@@ -51,9 +51,6 @@
 			<trans-unit id="flashMessages" xml:space="preserve">
 				<source>Flash Messages and Notifications</source>
 			</trans-unit>
-			<trans-unit id="debug" xml:space="preserve">
-				<source>Debug</source>
-			</trans-unit>
 			<trans-unit id="tcaCreateButton" xml:space="preserve">
 				<source>Create styleguide page tree with data</source>
 			</trans-unit>

@@ -13,7 +13,7 @@ return [
         'labels' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang_styleguide.xlf',
         'extensionName' => 'Styleguide',
         'controllerActions' => [
-            BackendController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, icons, tab, modal, accordion, pagination, frontendCreate, frontendDelete',
+            BackendController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, icons, tab, modal, accordion, pagination, frontendCreate, frontendDelete',
         ],
     ],
 ];
