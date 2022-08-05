@@ -8,16 +8,16 @@
             </f:be.link>
         </f:for>
         <a href="{addDashboardUri}" class="js-dashboard-modal dashboard-button dashboard-button-tab-add" title="{f:translate(key: 'dashboard.add', extensionName: 'dashboard')}" data-modal-identifier="add" data-modal-title="{f:translate(key: 'dashboard.add', extensionName: 'dashboard')}" data-button-close-text="{f:translate(key: 'dashboard.add.button.close', extensionName: 'dashboard')}" data-button-ok-text="{f:translate(key: 'dashboard.add.button.ok', extensionName: 'dashboard')}">
-            <core:icon identifier="actions-add" alternativeMarkupIdentifier="inline" /><span class="sr-only"><f:translate key="dashboard.add" extensionName="dashboard"/></span>
+            <core:icon identifier="actions-add" alternativeMarkupIdentifier="inline" /><span class="visually-hidden"><f:translate key="dashboard.add" extensionName="dashboard"/></span>
         </a>
     </div>
 
     <div class="dashboard-configuration btn-toolbar" role="toolbar">
         <a href="{configureDashboardUri}" class="js-dashboard-modal btn btn-default btn-sm" data-modal-identifier="configure" title="{f:translate(key: 'dashboard.configure', extensionName: 'dashboard')}" data-modal-title="{f:translate(key: 'dashboard.configure', extensionName: 'dashboard')}" data-button-close-text="{f:translate(key: 'dashboard.configure.button.close', extensionName: 'dashboard')}" data-button-ok-text="{f:translate(key: 'dashboard.configure.button.ok', extensionName: 'dashboard')}">
-            <core:icon identifier="actions-cog" alternativeMarkupIdentifier="inline" /><span class="sr-only"><f:translate key="dashboard.configure" extensionName="dashboard"/></span>
+            <core:icon identifier="actions-cog" alternativeMarkupIdentifier="inline" /><span class="visually-hidden"><f:translate key="dashboard.configure" extensionName="dashboard"/></span>
         </a>
         <a href="{deleteDashboardUri}" class="js-dashboard-delete btn btn-default btn-sm" title="{f:translate(key: 'dashboard.delete', extensionName: 'dashboard')}" data-modal-title="{f:translate(key: 'dashboard.delete', extensionName: 'dashboard')}" data-modal-question="{f:translate(key: 'dashboard.delete.sure', extensionName: 'dashboard')}" data-modal-ok="{f:translate(key: 'dashboard.delete.ok', extensionName: 'dashboard')}" data-modal-cancel="{f:translate(key: 'dashboard.delete.cancel', extensionName: 'dashboard')}" >
-            <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline" /><span class="sr-only"><f:translate key="dashboard.delete" extensionName="dashboard"/></span>
+            <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline" /><span class="visually-hidden"><f:translate key="dashboard.delete" extensionName="dashboard"/></span>
         </a>
     </div>
 
@@ -74,7 +74,7 @@
 
 <div class="dashboard-add-item">
     <button class="js-dashboard-addWidget btn dashboard-button dashboard-button-add hide" title="{f:translate(key: 'widget.add', extensionName: 'dashboard')}" data-modal-title="{f:translate(key: 'widget.add', extensionName: 'dashboard')}" data-button-close-text="{f:translate(key: 'widget.add.button.close', extensionName: 'dashboard')}" data-button-ok-text="{f:translate(key: 'widget.add.button.ok', extensionName: 'dashboard')}">
-        <core:icon identifier="actions-add" alternativeMarkupIdentifier="inline" /><span class="sr-only"><f:translate key="widget.add" extensionName="dashboard"/></span>
+        <core:icon identifier="actions-add" alternativeMarkupIdentifier="inline" /><span class="visually-hidden"><f:translate key="widget.add" extensionName="dashboard"/></span>
     </button>
 </div>
 

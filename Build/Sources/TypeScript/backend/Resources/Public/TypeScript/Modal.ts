@@ -99,7 +99,7 @@ class Modal {
                         <span aria-hidden="true">
                             <span class="t3js-modal-icon-placeholder" data-icon="actions-close"></span>
                         </span>
-                        <span class="sr-only"></span>
+                        <span class="visually-hidden"></span>
                     </button>
                 </div>
                 <div class="t3js-modal-body modal-body"></div>

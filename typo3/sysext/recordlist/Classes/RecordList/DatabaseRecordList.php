@@ -679,7 +679,7 @@ class DatabaseRecordList
                 $title = sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle);
                 $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
                 $tableActions .= '<button type="button"'
-                    . ' class="btn btn-default btn-sm pull-right t3js-toggle-recordlist"'
+                    . ' class="btn btn-default btn-sm float-end t3js-toggle-recordlist"'
                     . ' title="' . $title . '"'
                     . ' aria-label="' . $title . '"'
                     . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
@@ -949,7 +949,7 @@ class DatabaseRecordList
         );
 
         return '
-            <div class="pull-right">
+            <div class="float-end">
                 <typo3-recordlist-record-download-button
                     url="' . htmlspecialchars($downloadSettingsUrl) . '"
                     title="' . htmlspecialchars($downloadSettingsTitle) . '"
@@ -2094,7 +2094,7 @@ class DatabaseRecordList
         );
 
         return '
-            <div class="pull-right me-2 p-0">
+            <div class="float-end me-2 p-0">
                 <typo3-backend-column-selector-button
                     url="' . htmlspecialchars($columnSelectorUrl) . '"
                     target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
@@ -3230,7 +3230,7 @@ class DatabaseRecordList
                 . ' title="' . htmlspecialchars($showReferences) . ' (' . $numberOfReferences . ')' . '">'
                 . '<span style="display:inline-block;min-width:16px">'
                 . $numberOfReferences
-                . '<span class="sr-only">' . $showReferences . '</span>'
+                . '<span class="visually-hidden">' . $showReferences . '</span>'
                 . '</span>'
                 . '</button>';
         }

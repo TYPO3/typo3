@@ -207,7 +207,7 @@ class NotificationMessage extends LitElement {
         role="alert">
         <button type="button" class="close" @click="${async (e: Event) => this.close()}">
           <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
-          <span class="sr-only">Close</span>
+          <span class="visually-hidden">Close</span>
         </button>
         <div class="media">
           <div class="media-left">

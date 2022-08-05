@@ -132,7 +132,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         // No item is locked
         self::assertDoesNotMatchRegularExpression('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Item can be deactivated
-        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm pull-right t3js-deactivate-provider-button"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm float-end t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
@@ -165,7 +165,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         // Item is locked
         self::assertMatchesRegularExpression('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Items can be deactivated
-        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm pull-right t3js-deactivate-provider-button"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm float-end t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added

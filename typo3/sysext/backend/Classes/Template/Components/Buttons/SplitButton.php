@@ -160,7 +160,7 @@ class SplitButton extends AbstractButton
                 ' . htmlspecialchars($items['primary']->getTitle()) . '
             </button>
             <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="sr-only">Toggle Dropdown</span>
+                <span class="visually-hidden">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu">';
 

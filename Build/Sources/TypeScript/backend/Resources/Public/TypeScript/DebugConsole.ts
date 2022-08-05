@@ -121,12 +121,12 @@ class DebugConsole {
     this.$consoleDom =
       $('<div />', {id: 'typo3-debug-console'}).append(
         $('<div />', {'class': 't3js-topbar topbar'}).append(
-          $('<p />', {'class': 'pull-left'}).text(' TYPO3 Debug Console').prepend(
+          $('<p />', {'class': 'float-start'}).text(' TYPO3 Debug Console').prepend(
             $('<span />', {'class': 'fa fa-terminal topbar-icon'}),
           ).append(
             $('<span />', {'class': 'badge'}),
           ),
-          $('<div />', {'class': 't3js-buttons btn-group pull-right'}),
+          $('<div />', {'class': 't3js-buttons btn-group float-end'}),
         ),
         $('<div />').append(
           $('<div />', {role: 'tabpanel'}).append(

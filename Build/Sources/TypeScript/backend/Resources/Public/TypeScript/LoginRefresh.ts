@@ -207,7 +207,7 @@ class LoginRefresh {
           'aria-valuemin': '0',
           'aria-valuemax': '100',
         }).append(
-          $('<span />', {class: 'sr-only'}),
+          $('<span />', {class: 'visually-hidden'}),
         ),
       ),
     );
@@ -323,7 +323,7 @@ class LoginRefresh {
     const max = 100;
     let current = 0;
     const $progressBar = $activeModal.find('.progress-bar');
-    const $srText = $progressBar.children('.sr-only');
+    const $srText = $progressBar.children('.visually-hidden');
 
     const progress = setInterval(() => {
       const isOverdue = (current >= max);

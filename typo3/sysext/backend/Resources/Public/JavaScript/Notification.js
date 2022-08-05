@@ -17,7 +17,7 @@ var __decorate=this&&this.__decorate||function(t,e,i,s){var a,o=arguments.length
         role="alert">
         <button type="button" class="close" @click="${async t=>this.close()}">
           <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
-          <span class="sr-only">Close</span>
+          <span class="visually-hidden">Close</span>
         </button>
         <div class="media">
           <div class="media-left">

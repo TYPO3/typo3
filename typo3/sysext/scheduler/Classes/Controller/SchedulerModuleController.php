@@ -1053,7 +1053,7 @@ class SchedulerModuleController
             if (empty($label['text'])) {
                 continue;
             }
-            $htmlLabels[] = '<span class="label label-' . htmlspecialchars($label['class']) . ' pull-right" title="' . htmlspecialchars($label['description']) . '">' . htmlspecialchars($label['text']) . '</span>';
+            $htmlLabels[] = '<span class="label label-' . htmlspecialchars($label['class']) . ' float-end" title="' . htmlspecialchars($label['description']) . '">' . htmlspecialchars($label['text']) . '</span>';
         }
 
         return implode('&nbsp;', $htmlLabels);

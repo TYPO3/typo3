@@ -47,14 +47,14 @@
 <f:if condition="{switchUserMode}">
     <f:then>
         <typo3-backend-switch-user mode="exit">
-            <button type="button" class="btn btn-danger pull-left">
+            <button type="button" class="btn btn-danger float-start">
                 <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
                 {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser')}
             </button>
         </typo3-backend-switch-user>
     </f:then>
     <f:else>
-        <a href="{logoutUrl}" class="btn btn-danger pull-left" target="_top">
+        <a href="{logoutUrl}" class="btn btn-danger float-start" target="_top">
             <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
             {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout')}
         </a>

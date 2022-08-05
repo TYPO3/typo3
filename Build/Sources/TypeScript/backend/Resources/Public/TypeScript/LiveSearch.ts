@@ -158,7 +158,7 @@ class LiveSearch {
       },
       beforeRender: (container: JQuery): void => {
         container.append('<hr><div>' +
-          '<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
+          '<a href="#" class="btn btn-primary float-end t3js-live-search-show-all">' +
           TYPO3.lang.liveSearch_showAllResults +
           '</a>' +
           '</div>');

@@ -137,7 +137,7 @@ class MultiStepWizard {
       [{
         text: top.TYPO3.lang['wizard.button.cancel'],
         active: true,
-        btnClass: 'btn-default pull-left',
+        btnClass: 'btn-default float-start',
         name: 'cancel',
         trigger: (): void => {
           this.getComponent().trigger('wizard-dismiss');

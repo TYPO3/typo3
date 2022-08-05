@@ -202,7 +202,7 @@ class ImageManipulation {
         additionalCssClasses: ['modal-image-manipulation'],
         buttons: [
           {
-            btnClass: 'btn-default pull-left',
+            btnClass: 'btn-default float-start',
             dataAttributes: {
               method: 'preview',
             },

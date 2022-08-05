@@ -8,15 +8,15 @@
         <h3 class="panel-title">
             <f:if condition="{read}">
                 <f:then>
-                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-unmarkRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as not read">
+                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-unmarkRead float-end" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as not read">
                         <i class="fa fa-lg fa-ban"></i>
-                        <span class="sr-only">restore this document</span>
+                        <span class="visually-hidden">restore this document</span>
                     </button>
                 </f:then>
                 <f:else>
-                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-markRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
+                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-markRead float-end" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
                         <i class="fa fa-lg fa-check"></i>
-                        <span class="sr-only">ignore this document</span>
+                        <span class="visually-hidden">ignore this document</span>
                     </button>
                 </f:else>
             </f:if>

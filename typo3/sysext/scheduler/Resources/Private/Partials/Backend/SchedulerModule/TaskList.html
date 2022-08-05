@@ -19,7 +19,7 @@
                                 </f:else>
                             </f:if>
                         </button>
-                        <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{taskGroup.taskGroupId}" aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}">
+                        <button type="button" class="btn btn-default btn-sm float-end t3js-toggle-table" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{taskGroup.taskGroupId}" aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}">
                             <span class="collapseIcon">
                                 <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                             </span>
@@ -163,7 +163,7 @@
                     <button type="button" title="{f:translate(key: 'label.noClass')}" class="btn btn-link fw-bold pt-1 p-0" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing" aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}">
                         <f:translate key="label.noClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'label.noClass.taskCount')}">{missingClasses -> f:count()}</span>)
                     </button>
-                    <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing" aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}">
+                    <button type="button" class="btn btn-default btn-sm float-end t3js-toggle-table" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing" aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}">
                         <span class="collapseIcon">
                             <core:icon identifier="{f:if(condition: missingClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                         </span>
