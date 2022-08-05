@@ -301,16 +301,6 @@ if ! type "docker-compose" > /dev/null; then
     exit 1
 fi
 
-# docker-compose v2 is enabled by docker for mac as experimental feature without
-# asking the user. v2 is currently broken. Detect the version and error out.
-DOCKER_COMPOSE_VERSION=$(docker-compose version --short)
-DOCKER_COMPOSE_MAJOR=$(echo "$DOCKER_COMPOSE_VERSION" | cut -d'.' -f1 | tr -d 'v')
-if [ "$DOCKER_COMPOSE_MAJOR" -gt "1" ]; then
-    echo "docker-compose $DOCKER_COMPOSE_VERSION is currently broken and not supported by runTests.sh."
-    echo "If you are running Docker Desktop for MacOS/Windows disable 'Use Docker Compose V2' (Preferences > General)"
-    exit 1
-fi
-
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
 THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
