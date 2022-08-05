@@ -805,7 +805,7 @@ class EditDocumentController
      *
      * @return string
      */
-    protected function generatePreviewCode(): string
+    protected function generatePreviewCode(): ?string
     {
         $array_keys = array_keys($this->editconf);
         $this->previewData['table'] = reset($array_keys) ?: null;
