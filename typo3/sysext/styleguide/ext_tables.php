@@ -27,21 +27,6 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
     [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_bitmap_icon.png' ]
 );
-// Register example FontAwesome for icon submodule
-$iconRegistry->registerIcon(
-    'provider-fontawesome',
-    \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-    [ 'name' => 'desktop' ]
-);
-// Register example FontAwesome for icon submodule
-$iconRegistry->registerIcon(
-    'provider-fontawesome-spinner',
-    \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-    [
-        'name' => 'spinner',
-        'spinning' => true,
-    ]
-);
 
 // Register some custom permission options shown in BE group access lists
 $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions']['tx_styleguide_custom'] = [

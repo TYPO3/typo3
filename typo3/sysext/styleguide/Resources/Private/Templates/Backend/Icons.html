@@ -86,24 +86,6 @@
                             <td><core:icon identifier="provider-bitmap" size="default" overlay="overlay-readonly" /></td>
                             <td><core:icon identifier="provider-bitmap" size="large" overlay="overlay-readonly" /></td>
                         </tr>
-                        <tr>
-                            <th>provider-fontawesome</th>
-                            <td><core:icon identifier="provider-fontawesome" size="small" /></td>
-                            <td><core:icon identifier="provider-fontawesome" size="default" /></td>
-                            <td><core:icon identifier="provider-fontawesome" size="large" /></td>
-                        </tr>
-                        <tr>
-                            <th>provider-fontawesome-spinner</th>
-                            <td><core:icon identifier="provider-fontawesome-spinner" size="small" /></td>
-                            <td><core:icon identifier="provider-fontawesome-spinner" size="default" /></td>
-                            <td><core:icon identifier="provider-fontawesome-spinner" size="large" /></td>
-                        </tr>
-                        <tr>
-                            <th>provider-fontawesome with overlay</th>
-                            <td><core:icon identifier="provider-fontawesome" size="small" overlay="overlay-readonly" /></td>
-                            <td><core:icon identifier="provider-fontawesome" size="default" overlay="overlay-readonly" /></td>
-                            <td><core:icon identifier="provider-fontawesome" size="large" overlay="overlay-readonly" /></td>
-                        </tr>
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane form-section" id="all">
@@ -209,22 +191,6 @@
                         <core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [button]
                     </button>
 
-                    <h3>Provider FontAwesome</h3>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="provider-fontawesome" size="small" />
-                    </a>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="provider-fontawesome" size="small" /> provider-fontawesome [a]
-                    </a>
-                    <button class="btn btn-default">
-                        <core:icon identifier="provider-fontawesome" size="small" />
-                    </button>
-                    <button class="btn btn-default">
-                        <core:icon identifier="provider-fontawesome" size="small" /> provider-fontawesome [button]
-                    </button>
-
-                    <hr>
-
                     <h2>IRRE</h2>
                     <div class="panel panel-default panel-condensed panel-collapsed">
                         <div class="panel-heading">
@@ -298,30 +264,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default panel-condensed panel-collapsed">
-                        <div class="panel-heading">
-                            <div class="form-irre-header">
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <span class="caret"></span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <core:icon identifier="provider-fontawesome" size="small" />
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-body">
-                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-4_label">
-                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-fontawesome</span>
-                                    </span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <span class="btn btn-default">
-                                            <core:icon identifier="provider-fontawesome" size="small" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <hr>
 
@@ -342,15 +284,6 @@
                             'provider-bitmap',
                             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
                             ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png']
-                        );
-                    </sg:code>
-
-                    <h3>Register FontAwesome</h3>
-                    <sg:code language="php" codeonly="true">
-                        $iconRegistry->registerIcon(
-                            'provider-fontawesome',
-                            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-                            ['name' => 'desktop']
                         );
                     </sg:code>
                 </div>
