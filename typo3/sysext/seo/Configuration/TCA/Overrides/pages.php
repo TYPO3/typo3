@@ -20,7 +20,7 @@ $openGraphCropConfiguration = [
                 'allowedAspectRatios' => [
                     '1.91:1' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.191_1',
-                        'value' => 1.91 / 1,
+                        'value' => 1200 / 630,
                     ],
                     'NaN' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',

@@ -148,17 +148,21 @@ class MetaTagGenerator
                 'maxWidth' => 2000,
             ];
 
-            $processedImage = $file->getOriginalFile()->process(
-                ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-                $processingConfiguration
-            );
+            if ($file->getProperty('width') > $processingConfiguration['maxWidth'] || ($cropArea->getHeight() !== 1.0 && $cropArea->getWidth() !== 1.0)) {
+                $image = $file->getOriginalFile()->process(
+                    ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+                    $processingConfiguration
+                );
+            } else {
+                $image = $file->getOriginalFile();
+            }
 
-            $imageUri = $this->imageService->getImageUri($processedImage, true);
+            $imageUri = $this->imageService->getImageUri($image, true);
 
             $socialImages[] = [
                 'url' => $imageUri,
-                'width' => floor($processedImage->getProperty('width')),
-                'height' => floor($processedImage->getProperty('height')),
+                'width' => floor($image->getProperty('width')),
+                'height' => floor($image->getProperty('height')),
                 'alternative' => $arguments['alternative'],
             ];
         }
