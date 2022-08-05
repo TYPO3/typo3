@@ -1,4 +1,5 @@
 <html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
@@ -45,6 +46,7 @@
     <div class="form-group t3js-login-password-section" id="t3-login-password-section">
         <div class="form-control-wrap">
             <div class="form-control-holder">
+                <div class="input-group">
                 <input
                     type="password"
                     id="t3-password"
@@ -57,6 +59,12 @@
                     required="required"
                     spellcheck="false"
                 />
+                <button type="button"
+                    class="t3js-login-toggle-password btn btn-outline-secondary hidden"
+                    aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.togglePassword')}"
+                >
+                    <core:icon identifier="actions-eye" size="small" />
+                </button>
                 <div role="status" class="form-notice-capslock hidden t3js-login-alert-capslock">
                     <img
                         aria-hidden="true"
@@ -67,6 +75,7 @@
                         title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
                     />
                     <span class="visually-hidden"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus" /></span>
+                </div>
                 </div>
             </div>
         </div>

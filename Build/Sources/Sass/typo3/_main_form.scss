@@ -72,6 +72,11 @@ label {
     position: relative;
 }
 
+// disable MS Edge default password reveal button
+::-ms-reveal {
+    display: none;
+}
+
 .row {
     > .form-group {
         > .form-control-wrap {

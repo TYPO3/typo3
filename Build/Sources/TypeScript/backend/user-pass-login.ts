@@ -27,6 +27,7 @@ class UserPassLogin {
       passwordField: '.t3js-login-password-field',
       usernameField: '.t3js-login-username-field',
       copyrightLink: 't3js-login-copyright-link',
+      togglePassword: '.t3js-login-toggle-password',
     };
 
     // register submit handler
@@ -34,10 +35,13 @@ class UserPassLogin {
 
     const $usernameField = $(this.options.usernameField);
     const $passwordField = $(this.options.passwordField);
+    const $togglePassword = $(this.options.togglePassword);
     const copyrightLink = document.getElementsByClassName(this.options.copyrightLink)[0];
 
     $usernameField.on('keypress', this.showCapsLockWarning);
     $passwordField.on('keypress', this.showCapsLockWarning);
+    $passwordField.on('input change', this.togglePasswordRevealer);
+    $togglePassword.on('click', (): void => { this.togglePasswordVisibility(); });
     copyrightLink.addEventListener('keydown', this.toggleCopyright);
 
     // if the login screen is shown in the login_frameset window for re-login,
@@ -117,6 +121,29 @@ class UserPassLogin {
       (<HTMLLinkElement>(event.target)).click();
     }
   };
+
+  private togglePasswordRevealer = (): void => {
+    const passwordField = document.querySelector(this.options.passwordField) as HTMLInputElement;
+    const togglePassword = document.querySelector(this.options.togglePassword);
+    togglePassword.classList.toggle('hidden', passwordField.value === '');
+
+    if (passwordField.value === '') {
+      this.togglePasswordVisibility(true);
+    }
+  }
+
+  private togglePasswordVisibility(forcePassword?: boolean): void {
+    const passwordField = document.querySelector(this.options.passwordField) as HTMLInputElement;
+    const togglePassword = document.querySelector(this.options.togglePassword);
+    if (forcePassword) {
+      passwordField.type = 'password';
+      togglePassword.classList.remove('active');
+    } else {
+      const isPasswordType = passwordField.type === 'password';
+      passwordField.type = isPasswordType ? 'text' : 'password';
+      togglePassword.classList.toggle('active', isPasswordType);
+    }
+  }
 }
 
 export default new UserPassLogin();

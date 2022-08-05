@@ -73,6 +73,9 @@ Have a nice day.</source>
 			<trans-unit id="login.password" resname="login.password">
 				<source>Password</source>
 			</trans-unit>
+			<trans-unit id="login.togglePassword" resname="login.togglePassword">
+				<source>Toggle password visibility</source>
+			</trans-unit>
 			<trans-unit id="login.password_forget" resname="login.password_forget">
 				<source>Forgot your password?</source>
 			</trans-unit>
