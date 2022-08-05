@@ -23,5 +23,6 @@ return [
             'unifiedPageTranslationHandling' => true,
             'yamlImportsFollowDeclarationOrder' => true,
         ],
+        'UTF8filesystem' => true,
     ],
 ];
