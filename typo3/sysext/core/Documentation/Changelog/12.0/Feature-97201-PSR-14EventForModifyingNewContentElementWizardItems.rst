@@ -29,7 +29,7 @@ Following methods are available:
 +-------------------------+-----------------------+----------------------------------------------------+
 | setWizardItems()        | :php:`$wizardItems`   | Updates / overwrites the available wizard items    |
 +-------------------------+-----------------------+----------------------------------------------------+
-| hasWizardItem           | :php:`$identifier`    | Whether a wizard item with the :php:`$identifier`  |
+| hasWizardItem()         | :php:`$identifier`    | Whether a wizard item with the :php:`$identifier`  |
 |                         |                       | exists.                                            |
 +-------------------------+-----------------------+----------------------------------------------------+
 | getWizardItem()         | :php:`$identifier`    | Returns the wizard item with the                   |
