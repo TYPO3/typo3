@@ -304,7 +304,7 @@ class PageRenderer implements SingletonInterface
      * @var array{0: string, 1: string}
      */
     protected $inlineJavascriptWrap = [
-        '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
+        '<script>' . LF . '/*<![CDATA[*/' . LF,
         '/*]]>*/' . LF . '</script>' . LF,
     ];
 
@@ -1075,7 +1075,7 @@ class PageRenderer implements SingletonInterface
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
@@ -1113,7 +1113,7 @@ class PageRenderer implements SingletonInterface
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsFooterLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         $name .= '_jsFooterLibrary';
         if (!isset($this->jsLibs[strtolower($name)])) {
@@ -1151,7 +1151,7 @@ class PageRenderer implements SingletonInterface
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
@@ -1188,7 +1188,7 @@ class PageRenderer implements SingletonInterface
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsFooterFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
