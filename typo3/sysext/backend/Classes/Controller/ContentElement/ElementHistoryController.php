@@ -365,7 +365,7 @@ class ElementHistoryController
     protected function renderDiff($entry, $table, $rollbackUid = 0, bool $showRollbackLink = false): array
     {
         $lines = [];
-        if (is_array($entry['newRecord'])) {
+        if (is_array($entry['newRecord'] ?? null)) {
             /* @var DiffUtility $diffUtility */
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
             $diffUtility->stripTags = false;
