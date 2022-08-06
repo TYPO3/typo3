@@ -50,7 +50,7 @@ class YouTubeHelper extends AbstractOEmbedHelper
         $temporaryFileName = $this->getTempFolderPath() . 'youtube_' . md5($videoId) . '.jpg';
 
         if (!file_exists($temporaryFileName)) {
-            $tryNames = ['maxresdefault.jpg', 'mqdefault.jpg', '0.jpg'];
+            $tryNames = ['maxresdefault.jpg', 'sddefault.jpg', 'hqdefault.jpg', 'mqdefault.jpg', '0.jpg'];
             foreach ($tryNames as $tryName) {
                 $previewImage = GeneralUtility::getUrl(
                     sprintf('https://img.youtube.com/vi/%s/%s', $videoId, $tryName)
