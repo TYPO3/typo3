@@ -1216,7 +1216,6 @@ return [
     ],
     'BE' => [
         // Backend Configuration.
-        'fluidPageModule' => true,
         'languageDebug' => false,
         'fileadminDir' => 'fileadmin/',
         'lockRootPath' => '',
