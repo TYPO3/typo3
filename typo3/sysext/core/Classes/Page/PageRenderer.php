@@ -2451,48 +2451,56 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Concatenate JavaScript files according to the configuration.
+     * Concatenate JavaScript files according to the configuration. Only possible in TYPO3 Frontend.
      */
     protected function doConcatenateJavaScript()
     {
-        if ($this->concatenateJavascript) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['jsConcatenateHandler'])) {
-                // use external concatenation routine
-                $params = [
-                    'jsLibs' => &$this->jsLibs,
-                    'jsFiles' => &$this->jsFiles,
-                    'jsFooterFiles' => &$this->jsFooterFiles,
-                    'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData,
-                ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['jsConcatenateHandler'], $params, $this);
-            } else {
-                $this->jsLibs = $this->resourceCompressor->concatenateJsFiles($this->jsLibs);
-                $this->jsFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFiles);
-                $this->jsFooterFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFooterFiles);
-            }
+        if ($this->getApplicationType() !== 'FE') {
+            return;
+        }
+        if (!$this->concatenateJavascript) {
+            return;
+        }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'])) {
+            // use external concatenation routine
+            $params = [
+                'jsLibs' => &$this->jsLibs,
+                'jsFiles' => &$this->jsFiles,
+                'jsFooterFiles' => &$this->jsFooterFiles,
+                'headerData' => &$this->headerData,
+                'footerData' => &$this->footerData,
+            ];
+            GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'], $params, $this);
+        } else {
+            $this->jsLibs = $this->resourceCompressor->concatenateJsFiles($this->jsLibs);
+            $this->jsFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFiles);
+            $this->jsFooterFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFooterFiles);
         }
     }
 
     /**
-     * Concatenate CSS files according to configuration.
+     * Concatenate CSS files according to configuration. Only possible in TYPO3 Frontend.
      */
     protected function doConcatenateCss()
     {
-        if ($this->concatenateCss) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['cssConcatenateHandler'])) {
-                // use external concatenation routine
-                $params = [
-                    'cssFiles' => &$this->cssFiles,
-                    'cssLibs' => &$this->cssLibs,
-                    'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData,
-                ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['cssConcatenateHandler'], $params, $this);
-            } else {
-                $this->cssLibs = $this->resourceCompressor->concatenateCssFiles($this->cssLibs);
-                $this->cssFiles = $this->resourceCompressor->concatenateCssFiles($this->cssFiles);
-            }
+        if ($this->getApplicationType() !== 'FE') {
+            return;
+        }
+        if (!$this->concatenateCss) {
+            return;
+        }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'])) {
+            // use external concatenation routine
+            $params = [
+                'cssFiles' => &$this->cssFiles,
+                'cssLibs' => &$this->cssLibs,
+                'headerData' => &$this->headerData,
+                'footerData' => &$this->footerData,
+            ];
+            GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'], $params, $this);
+        } else {
+            $this->cssLibs = $this->resourceCompressor->concatenateCssFiles($this->cssLibs);
+            $this->cssFiles = $this->resourceCompressor->concatenateCssFiles($this->cssFiles);
         }
     }
 
@@ -2506,57 +2514,65 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Compresses CSS according to configuration.
+     * Compresses CSS according to configuration. Only possible in TYPO3 Frontend.
      */
     protected function doCompressCss()
     {
-        if ($this->compressCss) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['cssCompressHandler'])) {
-                // Use external compression routine
-                $params = [
-                    'cssInline' => &$this->cssInline,
-                    'cssFiles' => &$this->cssFiles,
-                    'cssLibs' => &$this->cssLibs,
-                    'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData,
-                ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['cssCompressHandler'], $params, $this);
-            } else {
-                $this->cssLibs = $this->resourceCompressor->compressCssFiles($this->cssLibs);
-                $this->cssFiles = $this->resourceCompressor->compressCssFiles($this->cssFiles);
-            }
+        if ($this->getApplicationType() !== 'FE') {
+            return;
+        }
+        if (!$this->compressCss) {
+            return;
+        }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cssCompressHandler'])) {
+            // Use external compression routine
+            $params = [
+                'cssInline' => &$this->cssInline,
+                'cssFiles' => &$this->cssFiles,
+                'cssLibs' => &$this->cssLibs,
+                'headerData' => &$this->headerData,
+                'footerData' => &$this->footerData,
+            ];
+            GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['FE']['cssCompressHandler'], $params, $this);
+        } else {
+            $this->cssLibs = $this->resourceCompressor->compressCssFiles($this->cssLibs);
+            $this->cssFiles = $this->resourceCompressor->compressCssFiles($this->cssFiles);
         }
     }
 
     /**
-     * Compresses JavaScript according to configuration.
+     * Compresses JavaScript according to configuration. Only possible in TYPO3 Frontend.
      */
     protected function doCompressJavaScript()
     {
-        if ($this->compressJavascript) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['jsCompressHandler'])) {
-                // Use external compression routine
-                $params = [
-                    'jsInline' => &$this->jsInline,
-                    'jsFooterInline' => &$this->jsFooterInline,
-                    'jsLibs' => &$this->jsLibs,
-                    'jsFiles' => &$this->jsFiles,
-                    'jsFooterFiles' => &$this->jsFooterFiles,
-                    'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData,
-                ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['jsCompressHandler'], $params, $this);
-            } else {
-                // Traverse the arrays, compress files
-                foreach ($this->jsInline ?? [] as $name => $properties) {
-                    if ($properties['compress'] ?? false) {
-                        $this->jsInline[$name]['code'] = $this->resourceCompressor->compressJavaScriptSource($properties['code'] ?? '');
-                    }
+        if ($this->getApplicationType() !== 'FE') {
+            return;
+        }
+        if (!$this->compressJavascript) {
+            return;
+        }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['jsCompressHandler'])) {
+            // Use external compression routine
+            $params = [
+                'jsInline' => &$this->jsInline,
+                'jsFooterInline' => &$this->jsFooterInline,
+                'jsLibs' => &$this->jsLibs,
+                'jsFiles' => &$this->jsFiles,
+                'jsFooterFiles' => &$this->jsFooterFiles,
+                'headerData' => &$this->headerData,
+                'footerData' => &$this->footerData,
+            ];
+            GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['FE']['jsCompressHandler'], $params, $this);
+        } else {
+            // Traverse the arrays, compress files
+            foreach ($this->jsInline ?? [] as $name => $properties) {
+                if ($properties['compress'] ?? false) {
+                    $this->jsInline[$name]['code'] = $this->resourceCompressor->compressJavaScriptSource($properties['code'] ?? '');
                 }
-                $this->jsLibs = $this->resourceCompressor->compressJsFiles($this->jsLibs);
-                $this->jsFiles = $this->resourceCompressor->compressJsFiles($this->jsFiles);
-                $this->jsFooterFiles = $this->resourceCompressor->compressJsFiles($this->jsFooterFiles);
             }
+            $this->jsLibs = $this->resourceCompressor->compressJsFiles($this->jsLibs);
+            $this->jsFiles = $this->resourceCompressor->compressJsFiles($this->jsFiles);
+            $this->jsFooterFiles = $this->resourceCompressor->compressJsFiles($this->jsFooterFiles);
         }
     }
 
@@ -2571,10 +2587,12 @@ class PageRenderer implements SingletonInterface
     protected function processJsFile($filename)
     {
         $filename = $this->getStreamlinedFileName($filename, false);
-        if ($this->compressJavascript) {
-            $filename = $this->resourceCompressor->compressJsFile($filename);
-        } elseif ($this->getApplicationType() === 'FE') {
-            $filename = GeneralUtility::createVersionNumberedFilename($filename);
+        if ($this->getApplicationType() === 'FE') {
+            if ($this->compressJavascript) {
+                $filename = $this->resourceCompressor->compressJsFile($filename);
+            } else {
+                $filename = GeneralUtility::createVersionNumberedFilename($filename);
+            }
         }
         return $this->getAbsoluteWebPath($filename);
     }

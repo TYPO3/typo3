@@ -35,7 +35,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->fixtureDir = 'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/';
+        $this->fixtureDir = 'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/';
         $this->fixtureDirFromTest = GeneralUtility::fixWindowsFilePath(__DIR__ . '/ResourceCompressorTest/Fixtures/');
     }
 
@@ -114,12 +114,12 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $testFile = Environment::getPublicPath() . '/typo3temp/var/transient/css_input_with_import.css';
         $this->testFilesToDelete[] = $testFile;
-        copy(Environment::getBackendPath() . '/' . $this->fixtureDir . 'css_input_with_import.css', $testFile);
+        copy(Environment::getPublicPath() . '/' . $this->fixtureDir . 'css_input_with_import.css', $testFile);
         $files = [
             'sampleFile1' => [
                 'excludeFromConcatenation' => false,

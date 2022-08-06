@@ -826,4 +826,24 @@ return [
             'Feature-98016-PSR-14EvaluateModifierFunctionEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'jsConcatenateHandler\']' => [
+        'restFiles' => [
+            'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'jsCompressHandler\']' => [
+        'restFiles' => [
+            'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'cssConcatenateHandler\']' => [
+        'restFiles' => [
+            'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'cssCompressHandler\']' => [
+        'restFiles' => [
+            'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
+        ],
+    ],
 ];

@@ -5330,4 +5330,11 @@ return [
             'Breaking-97451-RemoveBackendControllerPageHooks.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ResourceCompressor->setRootPath' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
+        ],
+    ],
 ];

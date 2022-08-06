@@ -576,36 +576,6 @@ class ResourceCompressorTest extends BaseTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getFilenamesFromMainDirInBackendContextDataProvider
-     * @param string $filename
-     * @param string $expected
-     */
-    public function getFilenamesFromMainDirInBackendContext(string $filename, string $expected): void
-    {
-        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
-        // like '.../bin/phpunit' in testing context, but we want .../typo3/index.php as entry
-        // script point here to fake the backend call.
-        $bePath = Environment::getBackendPath();
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            $bePath . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
-        $subject->_call('initialize');
-        $subject->setRootPath($bePath . '/');
-        $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
-        self::assertSame($expected, $relativeToRootPath);
-    }
-
-    /**
      * @return array
      */
     public function getFilenamesFromMainDirInBackendContextInSubfolderDataProvider(): array
@@ -623,38 +593,6 @@ class ResourceCompressorTest extends BaseTestCase
                 'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider getFilenamesFromMainDirInBackendContextInSubfolderDataProvider
-     * @param string $filename
-     * @param string $expected
-     */
-    public function getFilenamesFromMainDirInBackendContextWithSubFolder(string $filename, string $expected): void
-    {
-        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
-        // like '.../bin/phpunit' in testing context, but we want .../typo3/index.php as entry
-        // script point here to fake the backend call.
-        $bePath = Environment::getBackendPath();
-        $subfolderFake = basename(Environment::getPublicPath());
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/' . $subfolderFake . '/typo3/index.php';
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            $bePath . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
-        $subject->_call('initialize');
-        $subject->setRootPath($bePath . '/');
-        $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
-        self::assertSame($expected, $relativeToRootPath);
     }
 
     /**
@@ -705,7 +643,7 @@ class ResourceCompressorTest extends BaseTestCase
         );
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
         $subject->_call('initialize');
-        $subject->setRootPath($fePath . '/');
+        $subject->_set('rootPath', $fePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);
     }
