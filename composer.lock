@@ -8392,12 +8392,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "a1e5d5d5f84aba99a4a6ffc10e01bb9f094446d7"
+                "reference": "08927b809a3d7a9af7505392c608e823a8383862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/a1e5d5d5f84aba99a4a6ffc10e01bb9f094446d7",
-                "reference": "a1e5d5d5f84aba99a4a6ffc10e01bb9f094446d7",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/08927b809a3d7a9af7505392c608e823a8383862",
+                "reference": "08927b809a3d7a9af7505392c608e823a8383862",
                 "shasum": ""
             },
             "require-dev": {
@@ -8457,7 +8457,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2022-08-05T20:50:46+00:00"
+            "time": "2022-08-08T09:50:52+00:00"
         },
         {
             "name": "typo3/testing-framework",
@@ -8560,5 +8560,5 @@
     "platform-overrides": {
         "php": "8.1.1"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
