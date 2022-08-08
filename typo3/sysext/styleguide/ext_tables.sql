@@ -406,7 +406,7 @@ CREATE TABLE tx_styleguide_inline_11 (
 );
 
 CREATE TABLE tx_styleguide_inline_11_child (
-    input_1 text DEFAULT '' NOT NULL
+    input_1 text
 );
 
 CREATE TABLE tx_styleguide_inline_1n_inline_1_child (
