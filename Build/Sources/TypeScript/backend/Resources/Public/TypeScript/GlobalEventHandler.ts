@@ -34,6 +34,7 @@ type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
  *     + `$form=~s/$value/` URL taken from `form[action]`,
  *        substituting literal `${value}` and `$[value]` taken from `data-value-selector`
  * + `data-global-event="click"`
+ *   * `data-action-focus="..."` focus form field
  *   + @todo
  *
  * @example
@@ -63,12 +64,13 @@ class GlobalEventHandler {
 
   private handleChangeEvent(evt: Event, resolvedTarget: HTMLElement): void {
     evt.preventDefault();
-    this.handleFormChildSubmitAction(evt, resolvedTarget)
+    this.handleFormChildAction(evt, resolvedTarget)
       || this.handleFormChildNavigateAction(evt, resolvedTarget);
   }
 
   private handleClickEvent(evt: Event, resolvedTarget: HTMLElement): void {
     evt.preventDefault();
+    this.handleFormChildAction(evt, resolvedTarget);
   }
 
   private handleSubmitEvent(evt: Event, resolvedTarget: HTMLFormElement): void {
@@ -76,22 +78,43 @@ class GlobalEventHandler {
     this.handleFormNavigateAction(evt, resolvedTarget);
   }
 
-  private handleFormChildSubmitAction(evt: Event, resolvedTarget: HTMLElement): boolean {
+  private handleFormChildAction(evt: Event, resolvedTarget: HTMLElement): boolean {
     const actionSubmit: string = resolvedTarget.dataset.actionSubmit;
-    if (!actionSubmit) {
+    const actionFocus: string = resolvedTarget.dataset.actionFocus;
+    if (!actionSubmit && !actionFocus) {
       return false;
     }
-    // @example [data-action-submit]="$form"
-    if (actionSubmit === '$form' && this.isHTMLFormChildElement(resolvedTarget)) {
-      (resolvedTarget as HTMLFormChildElement).form.submit();
-      return true;
+
+    const parentForm = resolvedTarget.closest('form');
+
+    if (actionSubmit) {
+      // @example [data-action-submit]="$form"
+      if (actionSubmit === '$form' && this.isHTMLFormChildElement(resolvedTarget)) {
+        (resolvedTarget as HTMLFormChildElement).form.submit();
+        return true;
+      }
+      const formCandidate = document.querySelector(actionSubmit);
+      if (formCandidate instanceof HTMLFormElement) {
+        formCandidate.submit();
+        return true;
+      }
+      return false;
     }
-    const formCandidate = document.querySelector(actionSubmit);
-    if (formCandidate instanceof HTMLFormElement) {
-      formCandidate.submit();
-      return true;
+
+    if (actionFocus && parentForm) {
+      if (!(parentForm instanceof HTMLFormElement)) {
+        return false;
+      }
+
+      const formFieldElement: HTMLElement|null = parentForm.querySelector(actionFocus);
+      if (formFieldElement === null) {
+        return false;
+      }
+
+      formFieldElement.focus();
     }
-    return false;
+
+    return true;
   }
 
   private handleFormChildNavigateAction(evt: Event, resolvedTarget: HTMLElement): boolean {

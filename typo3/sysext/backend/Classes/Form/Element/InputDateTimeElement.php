@@ -199,11 +199,9 @@ class InputDateTimeElement extends AbstractFormElement
         $expansionHtml[] =          '<div class="input-group">';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
-        $expansionHtml[] =              '<span class="input-group-btn">';
-        $expansionHtml[] =                  '<label class="btn btn-default" for="' . $attributes['id'] . '">';
-        $expansionHtml[] =                      $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render();
-        $expansionHtml[] =                  '</label>';
-        $expansionHtml[] =              '</span>';
+        $expansionHtml[] =              '<button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $attributes['id'] . '">';
+        $expansionHtml[] =                  $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render();
+        $expansionHtml[] =              '</button>';
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         if (!empty($fieldControlHtml)) {

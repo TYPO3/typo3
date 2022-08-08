@@ -2808,11 +2808,9 @@ class QueryGenerator
         $html[] = '  <div class="input-group" id="' . $id . '-wrapper">';
         $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
         $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
-        $html[] = '	   <span class="input-group-btn">';
-        $html[] = '	     <label class="btn btn-default" for="' . $id . '">';
-        $html[] = '		   <span class="fa fa-calendar"></span>';
-        $html[] = '		 </label>';
-        $html[] = '    </span>';
+        $html[] = '	   <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $id . '">';
+        $html[] = '       <span class="fa fa-calendar"></span>';
+        $html[] = '    </button>';
         $html[] = '  </div>';
         $html[] = '</div>';
         return implode(LF, $html);
