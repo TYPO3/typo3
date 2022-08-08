@@ -88,7 +88,7 @@
 		"symfony/routing": "^5.4",
 		"symfony/var-dumper": "^5.4",
 		"symfony/yaml": "^5.4",
-		"typo3/class-alias-loader": "^1.0",
+		"typo3/class-alias-loader": "^1.1.4",
 		"typo3/cms-cli": "^3.1",
 		"typo3/cms-composer-installers": "^2.0 || ^3.0 || ^4.0",
 		"typo3/html-sanitizer": "^2.0.15",
