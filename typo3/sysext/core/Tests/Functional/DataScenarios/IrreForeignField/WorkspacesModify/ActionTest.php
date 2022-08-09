@@ -295,33 +295,6 @@ class ActionTest extends AbstractActionWorkspacesTestCase
 
     /**
      * @test
-     * Publish, PublishAll and Discard currently not implemented - they make little sense
-     */
-    public function changeHotelSortingWithOfferNotWorkspaceAware(): void
-    {
-        parent::changeHotelSortingWithOfferNotWorkspaceAware();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeHotelSortingWithOfferNotWorkspaceAware.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Hotel . ':' . self::VALUE_HotelIdFirst)->setRecordField(self::FIELD_HotelOffer)
-            ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #1.1'));
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Hotel . ':' . self::VALUE_HotelIdFirst)->setRecordField(self::FIELD_HotelOffer)
-            ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #1.2'));
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Hotel . ':' . self::VALUE_HotelIdSecond)->setRecordField(self::FIELD_HotelOffer)
-            ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #2.1'));
-    }
-
-    /**
-     * @test
      */
     public function createParentContentWithHotelAndOfferChildren(): void
     {

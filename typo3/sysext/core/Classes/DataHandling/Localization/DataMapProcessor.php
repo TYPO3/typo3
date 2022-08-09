@@ -877,9 +877,10 @@ class DataMapProcessor
             // NOT using WorkspaceRestriction here since it's wrong in this case. See ws OR restriction below.
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $expressions = [
-            $queryBuilder->expr()->eq('t3ver_wsid', 0),
-        ];
+        $expressions = [];
+        if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            $expressions[] = $queryBuilder->expr()->eq('t3ver_wsid', 0);
+        }
         if ($this->backendUser->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($tableName)) {
             // If this is a workspace record (t3ver_wsid = be-user-workspace), then fetch this one
             // if it is NOT a deleted placeholder (t3ver_state=2), but ok with casual overlay (t3ver_state=0),

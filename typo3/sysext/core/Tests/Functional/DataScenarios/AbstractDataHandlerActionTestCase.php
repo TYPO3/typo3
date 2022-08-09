@@ -211,8 +211,8 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             ->fetchOne();
 
         $entryMessages = array_map(
-            static function (array $entry) {
-                return self::formatLogDetails($entry['details'] ?? '', $entry['log_data'] ?? '');
+            function (array $entry) {
+                return $this->formatLogDetails($entry['details'] ?? '', $entry['log_data'] ?? '');
             },
             $statement->fetchAllAssociative()
         );
