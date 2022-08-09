@@ -2205,16 +2205,22 @@ class DatabaseIntegrityController
 
     protected function mkTableSelect(string $name, string $cur): string
     {
+        $tables = [];
+        foreach ($GLOBALS['TCA'] as $tableName => $value) {
+            $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? '');
+            if (!$tableTitle || $this->showFieldAndTableNames) {
+                $tableTitle .= ' [' . $tableName . ']';
+            }
+            $tables[$tableName] = trim($tableTitle);
+        }
+        asort($tables);
+
         $out = [];
         $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '">';
         $out[] = '<option value=""></option>';
-        foreach ($GLOBALS['TCA'] as $tN => $value) {
-            if ($this->getBackendUserAuthentication()->check('tables_select', $tN)) {
-                $label = $this->getLanguageService()->sL($GLOBALS['TCA'][$tN]['ctrl']['title']);
-                if ($this->showFieldAndTableNames) {
-                    $label .= ' [' . $tN . ']';
-                }
-                $out[] = '<option value="' . htmlspecialchars($tN) . '"' . ($tN === $cur ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
+        foreach ($tables as $tableName => $label) {
+            if ($this->getBackendUserAuthentication()->check('tables_select', $tableName)) {
+                $out[] = '<option value="' . htmlspecialchars($tableName) . '"' . ($tableName === $cur ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
         }
         $out[] = '</select>';
@@ -2235,10 +2241,10 @@ class DatabaseIntegrityController
             $this->MOD_SETTINGS = $settings;
             $fieldArr = GeneralUtility::trimExplode(',', $this->fieldList, true);
             foreach ($fieldArr as $fieldName) {
-                $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName] ?? [];
-                $this->fields[$fieldName] = $fC['config'] ?? [];
-                $this->fields[$fieldName]['exclude'] = $fC['exclude'] ?? '';
-                if (($this->fields[$fieldName]['type'] ?? '') === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])
+                $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$fieldName] ?? [];
+                $this->fields[$fieldName] = $fieldConfig['config'] ?? [];
+                $this->fields[$fieldName]['exclude'] = $fieldConfig['exclude'] ?? '';
+                if (((($this->fields[$fieldName]['type'] ?? '') === 'user') && (!isset($this->fields[$fieldName]['type']['userFunc'])))
                     || ($this->fields[$fieldName]['type'] ?? '') === 'none'
                 ) {
                     // Do not list type=none "virtual" fields or query them from db,
@@ -2246,8 +2252,8 @@ class DatabaseIntegrityController
                     unset($this->fields[$fieldName]);
                     continue;
                 }
-                if (is_array($fC) && ($fC['label'] ?? false)) {
-                    $this->fields[$fieldName]['label'] = rtrim(trim($this->getLanguageService()->sL($fC['label'])), ':');
+                if (is_array($fieldConfig) && ($fieldConfig['label'] ?? false)) {
+                    $this->fields[$fieldName]['label'] = rtrim(trim($this->getLanguageService()->sL($fieldConfig['label'])), ':');
                     switch ($this->fields[$fieldName]['type']) {
                         case 'input':
                             if (preg_match('/int|year/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
@@ -2324,6 +2330,8 @@ class DatabaseIntegrityController
                             $this->fields[$fieldName]['type'] = 'number';
                     }
                 }
+
+                uasort($this->fields, static fn($fieldA, $fieldB) => strcmp($fieldA['label'], $fieldB['label']));
             }
         }
         /*	// EXAMPLE:
