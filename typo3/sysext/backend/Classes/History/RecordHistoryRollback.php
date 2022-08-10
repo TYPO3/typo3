@@ -83,7 +83,7 @@ class RecordHistoryRollback
             $tce->process_cmdmap();
             unset($tce);
         }
-        if (!$diff['insertsDeletes']) {
+        if ($diff['oldData'] ?? false) {
             // PROCESS CHANGES
             // create an array for process_datamap
             $diffModified = [];
