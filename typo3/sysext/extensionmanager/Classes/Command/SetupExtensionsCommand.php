@@ -66,7 +66,17 @@ class SetupExtensionsCommand extends Command
     {
         $this
             ->setDescription('Set up extensions')
-            ->setHelp('The given extension keys must be recognized by TYPO3, or will be ignored otherwise')
+            ->setHelp(
+                <<<'EOD'
+Setup all extensions or the given extension by extension key. This must
+be performed after new extensions are required via Composer.
+
+The command performs all necessary setup operations, such as database
+schema changes, static data import, distribution files import etc.
+
+The given extension keys must be recognized by TYPO3 or will be ignored.
+EOD
+            )
             ->addOption(
                 'extension',
                 '-e',
