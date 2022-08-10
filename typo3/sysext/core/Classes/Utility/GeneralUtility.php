@@ -2436,14 +2436,22 @@ class GeneralUtility
      */
     public static function createVersionNumberedFilename($file)
     {
+        $isFrontend = TYPO3_MODE === 'FE';
         $lookupFile = explode('?', $file);
         $path = $lookupFile[0];
-        if (!PathUtility::isAbsolutePath($path)) {
+
+        // @todo: in v12 this should be resolved by using Environment::getPublicPath() once
+        if ($isFrontend) {
+            // Frontend should still allow /static/myfile.css - see #98106
+            // This should happen regardless of the incoming path is absolute or not
+            $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+        } elseif (!PathUtility::isAbsolutePath($path)) {
+            // Backend and non-absolute path
             $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
         }
 
         $doNothing = false;
-        if (TYPO3_MODE === 'FE') {
+        if ($isFrontend) {
             $mode = strtolower($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename']);
             if ($mode === 'embed') {
                 $mode = true;
