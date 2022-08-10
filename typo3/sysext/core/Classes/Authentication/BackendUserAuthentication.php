@@ -1137,7 +1137,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['file_permissions'] = $this->user['file_permissions'] ?? '';
 
             // Get the groups and accumulate their permission settings
-            $mountOptions = new BackendGroupMountOption($this->user['options']);
+            $mountOptions = new BackendGroupMountOption((int)($this->user['options'] ?? 0));
             $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
             $resolvedGroups = $groupResolver->resolveGroupsForUser($this->user, $this->usergroup_table);
             foreach ($resolvedGroups as $groupInfo) {
@@ -1497,7 +1497,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
 
             // Mount group home-dirs
-            $mountOptions = new BackendGroupMountOption((int)$this->user['options']);
+            $mountOptions = new BackendGroupMountOption((int)($this->user['options'] ?? 0));
             if ($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] !== '' && $mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
                 // If groupHomePath is set, we attempt to mount it
                 [$groupHomeStorageUid, $groupHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
