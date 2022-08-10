@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
@@ -128,11 +129,11 @@ class PreviewController
             $parameters = $queryParameters;
             if (!WorkspaceService::isNewPage($pageUid)) {
                 $parameters['ADMCMD_prev'] = 'LIVE';
-                $liveUrl = (string)$site->getRouter()->generateUri($pageUid, $parameters);
+                $liveUrl = $this->generateUrl($site, $pageUid, $parameters);
             }
             $parameters = $queryParameters;
             $parameters['ADMCMD_prev'] = 'IGNORE';
-            $wsUrl = (string)$site->getRouter()->generateUri($pageUid, $parameters);
+            $wsUrl = $this->generateUrl($site, $pageUid, $parameters);
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794913, $e);
         }
@@ -166,5 +167,10 @@ class PreviewController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function generateUrl(Site $site, int $pageUid, array $parameters): string
+    {
+        return (string)$site->getRouter()->generateUri($pageUid, $parameters);
     }
 }
