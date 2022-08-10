@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 ====================================================
-Breaking: #92118 - TCA ctrl thumbail setting dropped
+Breaking: #92118 - TCA ctrl thumbnail setting dropped
 ====================================================
 
 See :issue:`92118`
