@@ -24,6 +24,8 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -39,6 +41,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\SingletonClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -4123,5 +4126,43 @@ class GeneralUtilityTest extends UnitTestCase
         $versionedFilename = GeneralUtility::createVersionNumberedFilename($testFilepath);
 
         self::assertMatchesRegularExpression('/^.*\/tests\/' . $uniqueFilename . '\.[0-9]+\.css/', $versionedFilename);
+    }
+
+    /**
+     * @test
+     */
+    public function createVersionNumberedFilenameKeepsInvalidAbsolutePathInFrontendAndAddsQueryString(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $request = new ServerRequest('https://www.example.com', 'GET');
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $uniqueFilename = StringUtility::getUniqueId('main_');
+        $testFileDirectory = Environment::getPublicPath() . '/static/';
+        $testFilepath = $testFileDirectory . $uniqueFilename . '.css';
+        GeneralUtility::mkdir_deep($testFileDirectory);
+        touch($testFilepath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = 'querystring';
+        $incomingFileName = '/' . PathUtility::stripPathSitePrefix($testFilepath);
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($incomingFileName);
+        self::assertStringContainsString('.css?', $versionedFilename);
+        self::assertStringStartsWith('/static/main_', $versionedFilename);
+
+        $incomingFileName = PathUtility::stripPathSitePrefix($testFilepath);
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($incomingFileName);
+        self::assertStringContainsString('.css?', $versionedFilename);
+        self::assertStringStartsWith('static/main_', $versionedFilename);
+
+        GeneralUtility::rmdir($testFileDirectory, true);
     }
 }
