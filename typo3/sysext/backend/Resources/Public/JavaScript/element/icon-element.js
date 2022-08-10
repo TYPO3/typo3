@@ -25,7 +25,7 @@ var __decorate=function(e,i,t,o){var n,r=arguments.length,s=r<3?i:null===o?o=Obj
     line-height: calc(var(--icon-size) / 1.6);
     font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
   }
-`;let IconElement=class extends LitElement{constructor(){super(...arguments),this.size=Sizes.default,this.state=States.default,this.overlay=null,this.markup=MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return html`${unsafeHTML(this.raw)}`;if(!this.identifier)return html``;const e=Icons.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>html`
+`;let IconElement=class extends LitElement{constructor(){super(...arguments),this.size=null,this.state=States.default,this.overlay=null,this.markup=MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return html`${unsafeHTML(this.raw)}`;if(!this.identifier)return html``;const e=Icons.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>html`
           ${unsafeHTML(e)}
         `);return html`${until(e,html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};IconElement.styles=[css`
       :host {
@@ -102,4 +102,4 @@ var __decorate=function(e,i,t,o){var n,r=arguments.length,s=r<3?i:null===o?o=Obj
       .icon-state-disabled .icon-markup {
         opacity: var(--icon-opacity-disabled)
       }
-    `,iconSize(unsafeCSS(Sizes.small)),iconSize(unsafeCSS(Sizes.default)),iconSize(unsafeCSS(Sizes.large)),iconSize(unsafeCSS(Sizes.mega))],__decorate([property({type:String})],IconElement.prototype,"identifier",void 0),__decorate([property({type:String})],IconElement.prototype,"size",void 0),__decorate([property({type:String})],IconElement.prototype,"state",void 0),__decorate([property({type:String})],IconElement.prototype,"overlay",void 0),__decorate([property({type:String})],IconElement.prototype,"markup",void 0),__decorate([property({type:String})],IconElement.prototype,"raw",void 0),IconElement=__decorate([customElement("typo3-backend-icon")],IconElement);export{IconElement};
+    `,iconSize(unsafeCSS(Sizes.small)),iconSize(unsafeCSS(Sizes.default)),iconSize(unsafeCSS(Sizes.large)),iconSize(unsafeCSS(Sizes.mega))],__decorate([property({type:String})],IconElement.prototype,"identifier",void 0),__decorate([property({type:String,reflect:!0})],IconElement.prototype,"size",void 0),__decorate([property({type:String})],IconElement.prototype,"state",void 0),__decorate([property({type:String})],IconElement.prototype,"overlay",void 0),__decorate([property({type:String})],IconElement.prototype,"markup",void 0),__decorate([property({type:String})],IconElement.prototype,"raw",void 0),IconElement=__decorate([customElement("typo3-backend-icon")],IconElement);export{IconElement};

@@ -45,7 +45,7 @@ const iconSize = (identifier: CSSResult) => css`
 @customElement('typo3-backend-icon')
 export class IconElement extends LitElement {
   @property({type: String}) identifier: string;
-  @property({type: String}) size: Sizes = Sizes.default;
+  @property({type: String, reflect: true}) size: Sizes = null;
   @property({type: String}) state: States = States.default;
   @property({type: String}) overlay: string = null;
   @property({type: String}) markup: MarkupIdentifiers = MarkupIdentifiers.inline;
