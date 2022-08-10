@@ -1,8 +1,8 @@
 .. include:: /Includes.rst.txt
 
-====================================================
-Breaking: #92118 - TCA ctrl thumbail setting dropped
-====================================================
+=====================================================
+Breaking: #92118 - TCA ctrl thumbnail setting dropped
+=====================================================
 
 See :issue:`92118`
 
@@ -21,9 +21,9 @@ Setting the control field for a custom table has no effect anymore.
 Affected Installations
 ======================
 
-The setting has been used in the list module for tables with image fields to render a preview
+The setting has been used in the :guilabel:`List` module for tables with image fields to render a preview
 of attached images. It has been used for :php:`tt_content` in core versions until TYPO3 v7.
-There are probably not many extensions using the setting. The list module will
+There are probably not many extensions using the setting. The :guilabel:`List` module will
 no longer show preview images for rendered rows.
 
 
