@@ -2282,17 +2282,24 @@ class GeneralUtility
      */
     public static function createVersionNumberedFilename($file)
     {
+        $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
         $lookupFile = explode('?', $file);
         $path = $lookupFile[0];
-        if (!PathUtility::isAbsolutePath($path)) {
+
+        // @todo: in v12 this should be resolved by using Environment::getPublicPath() once
+        if ($isFrontend) {
+            // Frontend should still allow /static/myfile.css - see #98106
+            // This should happen regardless of the incoming path is absolute or not
+            $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+        } elseif (!PathUtility::isAbsolutePath($path)) {
+            // Backend and non-absolute path
             $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
         }
 
         $doNothing = false;
 
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
+        if ($isFrontend) {
             $mode = strtolower($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename']);
             if ($mode === 'embed') {
                 $mode = true;
