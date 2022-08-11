@@ -11,6 +11,8 @@ plugin.tx_felogin_login {
 
     # Template
     dateFormat = {$styles.content.loginform.dateFormat}
+    showForgotPassword = {$styles.content.loginform.showForgotPassword}
+    # showForgotPasswordLink is deprecated and will be removed with 12. Use showForgotPassword instead.
     showForgotPasswordLink = {$styles.content.loginform.showForgotPasswordLink}
     showPermaLogin = {$styles.content.loginform.showPermaLogin}
     showLogoutFormAfterLogin = {$styles.content.loginform.showLogoutFormAfterLogin}
