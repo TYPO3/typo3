@@ -168,8 +168,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $record['list_type']);
                         $out .= '<div class="alert alert-danger">' . htmlspecialchars($message) . '</div>';
                     }
-                } elseif (!empty($record['select_key'])) {
-                    $out .= htmlspecialchars($languageService->sL(BackendUtility::getItemLabel('tt_content', 'select_key'))) . ' ' . htmlspecialchars($record['select_key']);
                 } else {
                     $out .= '<div class="alert alert-warning">' . $languageService->getLL('noPluginSelected') . '</div>';
                 }
