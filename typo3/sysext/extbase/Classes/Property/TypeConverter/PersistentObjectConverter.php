@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoPropertyTypesException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
@@ -128,8 +130,19 @@ class PersistentObjectConverter extends ObjectConverter
         if (!$schema->hasProperty($propertyName)) {
             throw new InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $targetType . '".', 1297978366);
         }
-        $property = $schema->getProperty($propertyName);
-        return $property->getType() . ($property->getElementType() !== null ? '<' . $property->getElementType() . '>' : '');
+        $primaryType = $schema->getProperty($propertyName)->getPrimaryType();
+        if (!$primaryType instanceof Type) {
+            throw NoPropertyTypesException::create($targetType, $propertyName);
+        }
+
+        $type = $primaryType->getClassName() ?? $primaryType->getBuiltinType();
+        if ($primaryType->isCollection() && $primaryType->getCollectionValueTypes() !== []) {
+            $primaryCollectionValueType = $primaryType->getCollectionValueTypes()[0];
+            $collectionValueType = $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType();
+            $type .= '<' . $collectionValueType . '>';
+        }
+
+        return $type;
     }
 
     /**

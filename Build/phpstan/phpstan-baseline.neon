@@ -1776,11 +1776,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
 
 		-
-			message: "#^Instanceof between ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Category\\|null and TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Category.php
-
-		-
 			message: "#^PHPDoc type int\\|null of property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\TtContent\\:\\:\\$pid is not covariant with PHPDoc type int of overridden property TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractDomainObject\\:\\:\\$pid\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/TtContent.php

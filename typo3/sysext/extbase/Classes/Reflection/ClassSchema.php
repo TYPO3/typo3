@@ -211,7 +211,6 @@ class ClassSchema
                 'c' => null, // cascade
                 'd' => $defaultPropertyValue, // defaultValue
                 'e' => null, // elementType
-                'n' => false, // nullable
                 't' => null, // type
                 'v' => [], // validators
             ];
@@ -268,30 +267,14 @@ class ClassSchema
 
             /** @var Type[] $types */
             $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]);
-            $typesCount = count($types);
 
-            if ($typesCount !== 1) {
-                continue;
-            }
-
-            if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
+            if ($types !== [] && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
                 /** @var Cascade $annotation */
                 $this->properties[$propertyName]['c'] = $annotation->value;
             }
 
-            /** @var Type $type */
-            $type = current($types);
-
-            $this->properties[$propertyName]['n'] = $type->isNullable();
-
-            if ($type->isCollection()) {
-                $this->properties[$propertyName]['t'] = ltrim($type->getClassName() ?? $type->getBuiltinType(), '\\');
-
-                if (($collectionValueType = ($type->getCollectionValueTypes()[0] ?? null)) instanceof Type) {
-                    $this->properties[$propertyName]['e'] = ltrim($collectionValueType->getClassName() ?? $type->getBuiltinType(), '\\');
-                }
-            } else {
-                $this->properties[$propertyName]['t'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
+            foreach ($types as $type) {
+                $this->properties[$propertyName]['t'][] = $type;
             }
         }
 

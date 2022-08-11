@@ -66,6 +66,9 @@ class TtContent extends AbstractEntity
         $this->header = $header;
     }
 
+    /**
+     * @return ObjectStorage<FileReference>
+     */
     public function getImage(): ObjectStorage
     {
         return $this->image;

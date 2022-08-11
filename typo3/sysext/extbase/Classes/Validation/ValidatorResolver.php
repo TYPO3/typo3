@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Validation;
 
+use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -111,14 +112,15 @@ class ValidatorResolver implements SingletonInterface
             /** @var GenericObjectValidator $objectValidator */
             $objectValidator = $this->createValidator(GenericObjectValidator::class);
             foreach ($classSchema->getProperties() as $property) {
-                if ($property->getType() === null) {
+                $primaryType = $property->getPrimaryType();
+                if (!$primaryType instanceof Type) {
                     // todo: The type is only necessary here for further analyzing whether it's a simple type or
                     // todo: a collection. If this is evaluated in the ClassSchema, this whole code part is not needed
                     // todo: any longer and can be removed.
-                    throw new \InvalidArgumentException(sprintf('There is no @var annotation for property "%s" in class "%s".', $property->getName(), $targetClassName), 1363778104);
+                    throw new \InvalidArgumentException(sprintf('There is no @var annotation or type declaration for property "%s" in class "%s".', $property->getName(), $targetClassName), 1363778104);
                 }
 
-                $propertyTargetClassName = $property->getType();
+                $propertyTargetClassName = $primaryType->getClassName() ?? $primaryType->getBuiltinType();
                 // note: the outer simpleType check reduces lookups to the class loader
 
                 // todo: whether the property holds a simple type or not and whether it holds a collection is known in

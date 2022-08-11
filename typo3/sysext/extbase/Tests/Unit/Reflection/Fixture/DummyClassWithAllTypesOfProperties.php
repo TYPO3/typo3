@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -91,4 +93,14 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
      * @var ObjectStorage<DummyClassWithAllTypesOfProperties>
      */
     public $propertyWithObjectStorageAnnotationWithoutFQCN;
+
+    /**
+     * @var DummyClassWithAllTypesOfProperties|LazyLoadingProxy
+     */
+    public $propertyWithLazyLoadingProxy;
+
+    /**
+     * @var ObjectStorage<DummyClassWithAllTypesOfProperties>|LazyObjectStorage<DummyClassWithAllTypesOfProperties>
+     */
+    public $propertyWithLazyObjectStorageAnnotationWithoutFQCN;
 }

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
+use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoPropertyTypesException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
@@ -156,8 +158,23 @@ class DataMapFactory implements SingletonInterface
             $columnMap = $this->createColumnMap($columnName, $propertyName);
             try {
                 $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-                [$type, $elementType] = [$property->getType(), $property->getElementType()];
-            } catch (NoSuchPropertyException $e) {
+                $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
+
+                if ($nonProxyPropertyTypes === []) {
+                    throw NoPropertyTypesException::create($className, $propertyName);
+                }
+
+                $primaryType = $nonProxyPropertyTypes[0];
+                $type = $primaryType->getClassName() ?? $primaryType->getBuiltinType();
+
+                $collectionValueType = null;
+                if ($primaryType->isCollection() && $primaryType->getCollectionValueTypes() !== []) {
+                    $primaryCollectionValueType = $primaryType->getCollectionValueTypes()[0];
+                    $collectionValueType = $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType();
+                }
+
+                [$type, $elementType] = [$type, $collectionValueType];
+            } catch (NoSuchPropertyException|NoPropertyTypesException $e) {
                 [$type, $elementType] = [null, null];
             }
             $columnMap = $this->setType($columnMap, $columnDefinition['config']);

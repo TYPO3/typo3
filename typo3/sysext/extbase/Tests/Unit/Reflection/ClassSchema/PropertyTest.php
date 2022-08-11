@@ -136,8 +136,18 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithObjectStorageAnnotation');
 
-        self::assertSame(ObjectStorage::class, $property->getType());
-        self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
+        $propertyTypes = $property->getTypes();
+
+        self::assertCount(1, $propertyTypes);
+
+        $propertyType = reset($propertyTypes);
+
+        self::assertSame(ObjectStorage::class, $propertyType->getClassName());
+
+        self::assertCount(0, $propertyType->getCollectionKeyTypes());
+        self::assertCount(1, $propertyType->getCollectionValueTypes());
+
+        self::assertSame(DummyClassWithAllTypesOfProperties::class, $propertyType->getCollectionValueTypes()[0]->getClassName());
     }
 
     /**
@@ -148,8 +158,10 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
 
-        self::assertSame(ObjectStorage::class, $property->getType());
-        self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
+        self::assertCount(1, $property->getTypes());
+
+        self::assertSame(ObjectStorage::class, $property->getTypes()[0]->getClassName());
+        self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getTypes()[0]->getCollectionValueTypes()[0]->getClassName());
     }
 
     /**
@@ -306,7 +318,8 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('stringTypedProperty');
 
-        self::assertSame('string', $property->getType());
+        self::assertCount(1, $property->getTypes());
+        self::assertSame('string', $property->getTypes()[0]->getBuiltinType());
     }
 
     /**
@@ -317,6 +330,57 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('nullableStringTypedProperty');
 
-        self::assertSame('string', $property->getType());
+        self::assertCount(1, $property->getTypes());
+        self::assertSame('string', $property->getTypes()[0]->getBuiltinType());
+    }
+
+    /**
+     * @test
+     */
+    public function isObjectStorageTypeDetectsObjectStorage(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
+
+        self::assertTrue($property->isObjectStorageType());
+    }
+
+    /**
+     * @test
+     */
+    public function isObjectStorageTypeDetectsLazyObjectStorage(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithLazyObjectStorageAnnotationWithoutFQCN');
+
+        self::assertTrue($property->isObjectStorageType());
+    }
+
+    /**
+     * @test
+     */
+    public function filterLazyLoadingProxyAndLazyObjectStorageFiltersLazyLoadingProxy(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithLazyLoadingProxy');
+
+        $types = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
+
+        self::assertCount(1, $types);
+        self::assertSame(DummyClassWithAllTypesOfProperties::class, $types[0]->getClassName());
+    }
+
+    /**
+     * @test
+     */
+    public function filterLazyLoadingProxyAndLazyObjectStorageFiltersLazyObjectStorage(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithLazyObjectStorageAnnotationWithoutFQCN');
+
+        $types = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
+
+        self::assertCount(1, $types);
+        self::assertSame(ObjectStorage::class, $types[0]->getClassName());
     }
 }

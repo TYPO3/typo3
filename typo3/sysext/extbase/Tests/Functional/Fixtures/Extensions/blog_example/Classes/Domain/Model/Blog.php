@@ -68,10 +68,9 @@ class Blog extends AbstractEntity
     /**
      * The blog's administrator
      *
-     * @var Administrator
      * @Extbase\ORM\Lazy
      */
-    protected $administrator;
+    protected Administrator|LazyLoadingProxy|null $administrator = null;
 
     public function __construct()
     {
@@ -168,10 +167,7 @@ class Blog extends AbstractEntity
         $this->administrator = $administrator;
     }
 
-    /**
-     * @return Administrator|LazyLoadingProxy|null
-     */
-    public function getAdministrator()
+    public function getAdministrator(): Administrator|LazyLoadingProxy|null
     {
         return $this->administrator;
     }

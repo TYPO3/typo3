@@ -61,13 +61,13 @@ class Post extends AbstractEntity
      * @Extbase\ORM\Lazy
      * @Extbase\ORM\Cascade("remove")
      */
-    protected $comments;
+    protected ObjectStorage $comments;
 
     /**
      * @var ObjectStorage<Post>
      * @Extbase\ORM\Lazy
      */
-    protected $relatedPosts;
+    protected ObjectStorage $relatedPosts;
 
     /**
      * 1:1 relation stored as CSV value in this class
@@ -84,7 +84,7 @@ class Post extends AbstractEntity
      * @var ObjectStorage<Comment>
      * @Extbase\ORM\Lazy
      */
-    protected $additionalComments;
+    protected ObjectStorage $additionalComments;
 
     public function __construct()
     {
@@ -243,7 +243,7 @@ class Post extends AbstractEntity
     /**
      * Setter for the comments to this post
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $comments An Object Storage of related Comment instances
+     * @param ObjectStorage<Comment> $comments An Object Storage of related Comment instances
      */
     public function setComments(ObjectStorage $comments): void
     {
@@ -278,7 +278,7 @@ class Post extends AbstractEntity
     /**
      * Returns the comments to this post
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage holding instances of Comment
+     * @return ObjectStorage<Comment> holding instances of Comment
      */
     public function getComments(): ObjectStorage
     {
@@ -288,7 +288,7 @@ class Post extends AbstractEntity
     /**
      * Setter for the related posts
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $relatedPosts An Object Storage containing related Posts instances
+     * @param ObjectStorage<Post> $relatedPosts An Object Storage containing related Posts instances
      */
     public function setRelatedPosts(ObjectStorage $relatedPosts): void
     {
@@ -315,7 +315,7 @@ class Post extends AbstractEntity
     /**
      * Returns the related posts
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage holding instances of Post
+     * @return ObjectStorage<Post> holding instances of Post
      */
     public function getRelatedPosts(): ObjectStorage
     {

@@ -84,6 +84,8 @@ class ClassSchemaTest extends UnitTestCase
                 'propertyWithCascadeAttribute',
                 'propertyWithObjectStorageAnnotation',
                 'propertyWithObjectStorageAnnotationWithoutFQCN',
+                'propertyWithLazyLoadingProxy',
+                'propertyWithLazyObjectStorageAnnotationWithoutFQCN',
                 AbstractDomainObject::PROPERTY_UID,
                 AbstractDomainObject::PROPERTY_LOCALIZED_UID,
                 AbstractDomainObject::PROPERTY_LANGUAGE_UID,

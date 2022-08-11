@@ -119,6 +119,9 @@ class ObjectConverter extends AbstractTypeConverter
 
         $classSchema = $this->reflectionService->getClassSchema($targetType);
 
+        // @todo: infer property type from property instead of from setter and make setter optional
+        //        {@link https://forge.typo3.org/issues/100136}
+
         $methodName = 'set' . ucfirst($propertyName);
         if ($classSchema->hasMethod($methodName)) {
             $methodParameters = $classSchema->getMethod($methodName)->getParameters();

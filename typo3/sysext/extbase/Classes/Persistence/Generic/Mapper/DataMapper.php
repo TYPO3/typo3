@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -40,6 +41,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoPropertyTypesException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -214,8 +216,8 @@ class DataMapper
                 continue;
             }
 
-            $propertyType = $property->getType();
-            if ($propertyType === null) {
+            $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
+            if ($nonProxyPropertyTypes === []) {
                 throw new UnknownPropertyTypeException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
                     var_export($row[$columnName], true) . ') cannot be mapped onto it. The type of a class property is usually defined via property types or php doc blocks. ' .
@@ -223,6 +225,16 @@ class DataMapper
                     1579965021
                 );
             }
+
+            if (count($nonProxyPropertyTypes) > 1) {
+                throw new UnknownPropertyTypeException(
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified because the property is defined as union or intersection type, therefore the desired value (' .
+                    var_export($row[$columnName], true) . ') cannot be mapped onto it. Make sure to use only a single type.',
+                    1660215701
+                );
+            }
+
+            $propertyType = $nonProxyPropertyTypes[0]->getClassName() ?? $nonProxyPropertyTypes[0]->getBuiltinType();
 
             $propertyValue = null;
             switch ($propertyType) {
@@ -327,7 +339,7 @@ class DataMapper
     {
         $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
         if ($enableLazyLoading && $property->isLazy()) {
-            if ($property->getType() === ObjectStorage::class) {
+            if ($property->isObjectStorageType()) {
                 $result = GeneralUtility::makeInstance(LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
             } elseif (empty($fieldValue)) {
                 $result = null;
@@ -632,8 +644,29 @@ class DataMapper
             if ($this->persistenceSession->hasIdentifier($fieldValue, $property->getType())) {
                 $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $property->getType());
             } else {
-                $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
-                $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
+                $primaryType = $this->reflectionService
+                    ->getClassSchema(get_class($parentObject))
+                    ->getProperty($propertyName)
+                    ->getPrimaryType();
+
+                if (!$primaryType instanceof Type) {
+                    throw NoPropertyTypesException::create($parentObject::class, $propertyName);
+                }
+
+                $className = $primaryType->getClassName();
+                if (!is_string($className)) {
+                    throw new \LogicException(
+                        sprintf('Evaluated type of class property %s::%s is not a class name. Check the type declaration of the property to use a valid class name.', $parentObject::class, $propertyName),
+                        1660217846
+                    );
+                }
+
+                if ($this->persistenceSession->hasIdentifier($fieldValue, $className)) {
+                    $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $className);
+                } else {
+                    $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
+                    $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
+                }
             }
         }
 
@@ -666,14 +699,20 @@ class DataMapper
             $propertyValue = $result;
         } else {
             $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if (in_array($property->getType(), ['array', \ArrayObject::class, \SplObjectStorage::class, ObjectStorage::class], true)) {
+            $primaryType = $property->getPrimaryType();
+
+            if (!$primaryType instanceof Type) {
+                throw NoPropertyTypesException::create($parentObject::class, $propertyName);
+            }
+
+            if ($primaryType->getBuiltinType() === 'array' || in_array($primaryType->getClassName(), [\ArrayObject::class, \SplObjectStorage::class, ObjectStorage::class], true)) {
                 $objects = [];
                 foreach ($result as $value) {
                     $objects[] = $value;
                 }
-                if ($property->getType() === \ArrayObject::class) {
+                if ($primaryType->getClassName() === \ArrayObject::class) {
                     $propertyValue = new \ArrayObject($objects);
-                } elseif ($property->getType() === ObjectStorage::class) {
+                } elseif ($primaryType->getClassName() === ObjectStorage::class) {
                     $propertyValue = new ObjectStorage();
                     foreach ($objects as $object) {
                         $propertyValue->attach($object);
@@ -682,7 +721,7 @@ class DataMapper
                 } else {
                     $propertyValue = $objects;
                 }
-            } elseif (strpbrk((string)$property->getType(), '_\\') !== false) {
+            } elseif (strpbrk((string)$primaryType->getClassName(), '_\\') !== false) {
                 // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
                 if (is_object($result) && $result instanceof QueryResultInterface) {
                     $propertyValue = $result->getFirst();
@@ -766,16 +805,24 @@ class DataMapper
     public function getType($parentClassName, $propertyName)
     {
         try {
-            $property = $this->reflectionService->getClassSchema($parentClassName)->getProperty($propertyName);
+            $primaryType = $this->reflectionService
+                ->getClassSchema($parentClassName)
+                ->getProperty($propertyName)
+                ->getPrimaryType();
 
-            if ($property->getElementType() !== null) {
-                return $property->getElementType();
+            if (!$primaryType instanceof Type) {
+                throw NoPropertyTypesException::create($parentClassName, $propertyName);
             }
 
-            if ($property->getType() !== null) {
-                return $property->getType();
+            if ($primaryType->isCollection() && $primaryType->getCollectionValueTypes() !== []) {
+                $primaryCollectionValueType = $primaryType->getCollectionValueTypes()[0];
+                return $primaryCollectionValueType->getClassName()
+                    ?? $primaryCollectionValueType->getBuiltinType();
             }
-        } catch (NoSuchPropertyException $e) {
+
+            return $primaryType->getClassName()
+                ?? $primaryType->getBuiltinType();
+        } catch (NoSuchPropertyException|NoPropertyTypesException $e) {
         }
 
         throw new UnexpectedTypeException('Could not determine the child object type.', 1251315967);
