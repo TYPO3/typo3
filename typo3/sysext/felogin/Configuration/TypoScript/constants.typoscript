@@ -11,8 +11,10 @@ styles.content.loginform {
   # cat=Frontend Login/01_Storage/101; type=options [0,1,2,3,4,255]; label= Recursive: If set, also subfolder at configured recursive levels of the User Storage Page will be used
   recursive = 0
 
-  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forget password dialogue is visible.
+  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forget password dialogue is visible. DEPRECATED will be removed with 12. Use showForgotPassword instead.
   showForgotPasswordLink = 0
+  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forget password dialogue is visible.
+  showForgotPassword = 0
   # cat=Frontend Login/03_Features/101; type=boolean; label= Display Remember Login Option: If set, the section in the template to display the option to remember the login (with a cookie) is visible.
   showPermaLogin = 0
   # cat=Frontend Login/03_Features/102; type=boolean; label= Disable redirect after successful login, but display logout-form: If set, the logout form will be displayed immediately after successful login.
