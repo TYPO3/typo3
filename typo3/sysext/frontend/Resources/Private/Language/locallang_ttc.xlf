@@ -588,18 +588,6 @@
 			<trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions">
 				<source>Image Dimensions</source>
 			</trans-unit>
-			<trans-unit id="select_key_formlabel" resname="select_key_formlabel">
-				<source>Plugin Mode</source>
-			</trans-unit>
-			<trans-unit id="select_key.ALT.uploads" resname="select_key.ALT.uploads">
-				<source>Read from Path</source>
-			</trans-unit>
-			<trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel">
-				<source>PHP Code</source>
-			</trans-unit>
 			<trans-unit id="imagecaption.ALT.uploads" resname="imagecaption.ALT.uploads">
 				<source>Descriptions</source>
 			</trans-unit>
