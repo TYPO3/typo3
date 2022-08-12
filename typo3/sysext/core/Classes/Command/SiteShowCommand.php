@@ -56,7 +56,7 @@ class SiteShowCommand extends Command
     /**
      * Shows the configuration of a site
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $site = $this->siteFinder->getSiteByIdentifier($input->getArgument('identifier'));

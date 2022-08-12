@@ -59,7 +59,7 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return array_key_exists($name, $this->commandConfigurations);
     }
@@ -67,7 +67,7 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get(string $name): Command
     {
         try {
             return $this->getCommandByIdentifier($name);
@@ -79,7 +79,7 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     /**
      * {@inheritdoc}
      */
-    public function getNames()
+    public function getNames(): array
     {
         return array_keys($this->commandConfigurations);
     }

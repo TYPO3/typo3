@@ -104,8 +104,9 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     * @todo: this should at some point become a protected method
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
 

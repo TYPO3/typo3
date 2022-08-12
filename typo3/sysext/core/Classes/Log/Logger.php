@@ -193,21 +193,19 @@ class Logger implements LoggerInterface
      * Adds a log record.
      *
      * @param int|string $level Log level. Value according to \TYPO3\CMS\Core\Log\LogLevel. Alternatively accepts a string.
-     * @param string $message Log message.
+     * @param string|\Stringable $message Log message.
      * @param array $data Additional data to log
-     * @return mixed
      */
-    public function log($level, $message, array $data = [])
+    public function log($level, string|\Stringable $message, array $data = []): void
     {
         $level = LogLevel::normalizeLevel($level);
         LogLevel::validateLevel($level);
         if ($level > $this->minimumLogLevel) {
-            return $this;
+            return;
         }
         $record = GeneralUtility::makeInstance(LogRecord::class, $this->name, LogLevel::getInternalName($level), $message, $data, $this->requestId);
         $record = $this->callProcessors($record);
         $this->writeLog($record);
-        return $this;
     }
 
     /**

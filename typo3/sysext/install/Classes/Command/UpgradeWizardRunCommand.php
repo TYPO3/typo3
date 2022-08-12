@@ -103,10 +103,10 @@ class UpgradeWizardRunCommand extends Command
      * Update language packs of all active languages for all active extensions
      *
      * @param InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param OutputInterface $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = new SymfonyStyle($input, $output);
         $this->input = $input;

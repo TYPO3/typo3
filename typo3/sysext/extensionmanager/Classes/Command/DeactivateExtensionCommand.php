@@ -67,7 +67,7 @@ class DeactivateExtensionCommand extends Command
     /**
      * Installs an extension
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $extensionKey = $input->getArgument('extensionkey');

@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"psr/http-message": "^1.0",
-		"symfony/expression-language": "^5.4",
+		"symfony/expression-language": "^6.1",
 		"typo3/cms-core": "12.0.*@dev"
 	},
 	"suggest": {

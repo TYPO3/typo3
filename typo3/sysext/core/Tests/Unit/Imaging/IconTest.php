@@ -50,6 +50,7 @@ class IconTest extends UnitTestCase
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->has(Argument::cetera())->willReturn(false);
         $iconFactory = new IconFactory($eventDispatcherProphecy->reveal(), new IconRegistry($cacheFrontendProphecy->reveal(), 'BackendIcons'), $containerProphecy->reveal());
         $this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier, IconState::cast(IconState::STATE_DISABLED));
     }

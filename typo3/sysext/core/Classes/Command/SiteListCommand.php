@@ -43,7 +43,7 @@ class SiteListCommand extends Command
     /**
      * Shows a table with all configured sites
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $sites = $this->siteFinder->getAllSites();

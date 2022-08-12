@@ -88,7 +88,7 @@ class LanguagePackCommand extends Command
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
         $languagePackService = $container->get(LanguagePackService::class);

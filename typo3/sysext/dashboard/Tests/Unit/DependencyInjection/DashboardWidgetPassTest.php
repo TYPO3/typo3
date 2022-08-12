@@ -83,7 +83,7 @@ class DashboardWidgetPassTest extends UnitTestCase
         $this->container->findTaggedServiceIds('dashboard.widget')->willReturn(['NewsWidget' => []]);
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('NewsWidget')->willReturn($definition->reveal());
-        $definition->setPublic(true)->shouldBeCalled();
+        $definition->setPublic(true)->shouldBeCalled()->willReturn($definition->reveal());
 
         $this->subject->process($this->container->reveal());
     }
@@ -97,10 +97,10 @@ class DashboardWidgetPassTest extends UnitTestCase
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
-        $definition->setPublic(true);
+        $definition->setPublic(true)->willReturn($definition->reveal());
         $definition->setArgument('$configuration', Argument::that(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
-        }));
+        }))->willReturn($definition->reveal());
 
         $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([
             'dashboard.widget.t3news' => [
@@ -125,13 +125,13 @@ class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$height') === 'small'
                 && $definition->getArgument('$width') === 'small'
             ;
-        }))->shouldBeCalled();
+        }))->shouldBeCalled()->willReturn($definition->reveal());
         $this->widgetRegistryDefinition->addMethodCall(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($this->widgetRegistryDefinition->reveal());
 
         $this->subject->process($this->container->reveal());
     }
@@ -145,10 +145,10 @@ class DashboardWidgetPassTest extends UnitTestCase
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
-        $definition->setPublic(true);
+        $definition->setPublic(true)->willReturn($definition->reveal());
         $definition->setArgument('$configuration', Argument::that(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
-        }));
+        }))->willReturn($definition->reveal());
 
         $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([
             'dashboard.widget.t3news' => [
@@ -173,7 +173,7 @@ class DashboardWidgetPassTest extends UnitTestCase
             [
                 't3newsWidgetConfiguration',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($definition->reveal());
 
         $this->subject->process($this->container->reveal());
     }
@@ -187,10 +187,10 @@ class DashboardWidgetPassTest extends UnitTestCase
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
-        $definition->setPublic(true);
+        $definition->setPublic(true)->willReturn($definition->reveal());
         $definition->setArgument('$configuration', Argument::that(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
-        }));
+        }))->willReturn($definition->reveal());
 
         $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([
             'dashboard.widget.t3news' => [
@@ -224,7 +224,7 @@ class DashboardWidgetPassTest extends UnitTestCase
             [
                 't3newsWidgetConfiguration',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($definition->reveal());
 
         $this->subject->process($this->container->reveal());
     }

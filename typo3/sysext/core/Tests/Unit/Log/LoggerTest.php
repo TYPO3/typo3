@@ -55,40 +55,6 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerReturnsItselfAfterLogging(): void
-    {
-        $logger = new Logger('test.core.log');
-        $writer = new WriterFixture();
-        $logger->addWriter(LogLevel::DEBUG, $writer);
-        $returnValue = $logger->log(LogLevel::WARNING, 'test message');
-        self::assertInstanceOf(Logger::class, $returnValue);
-    }
-
-    /**
-     * @test
-     */
-    public function loggerReturnsItselfAfterLoggingWithoutWriter(): void
-    {
-        $logger = new Logger('test.core.log');
-        $returnValue = $logger->log(LogLevel::WARNING, 'test message');
-        self::assertInstanceOf(Logger::class, $returnValue);
-    }
-
-    /**
-     * @test
-     */
-    public function loggerReturnsItselfAfterLoggingLessCritical(): void
-    {
-        $logger = new Logger('test.core.log');
-        $writer = new WriterFixture();
-        $logger->addWriter(LogLevel::EMERGENCY, $writer);
-        $returnValue = $logger->log(LogLevel::WARNING, 'test message');
-        self::assertInstanceOf(Logger::class, $returnValue);
-    }
-
-    /**
-     * @test
-     */
     public function loggerCallsProcessor(): void
     {
         $component = 'test.core.log';

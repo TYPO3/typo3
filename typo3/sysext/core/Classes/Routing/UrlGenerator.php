@@ -40,7 +40,7 @@ class UrlGenerator extends SymfonyUrlGenerator
      *
      * {@inheritdoc}
      */
-    protected function doGenerate($variables, $defaults, $requirements, $tokens, $parameters, $name, $referenceType, $hostTokens, array $requiredSchemes = [])
+    protected function doGenerate(array $variables, array $defaults, array $requirements, array $tokens, array $parameters, string $name, int $referenceType, array $hostTokens, array $requiredSchemes = []): string
     {
         /** @var Route $route */
         $route = $this->routes->get($name);

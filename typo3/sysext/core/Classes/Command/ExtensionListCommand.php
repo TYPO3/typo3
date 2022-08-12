@@ -67,7 +67,7 @@ class ExtensionListCommand extends Command
     /**
      * Shows the list of all extensions
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

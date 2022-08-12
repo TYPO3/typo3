@@ -105,7 +105,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
 
         self::assertInstanceOf(\stdClass::class, $serviceA);
         self::assertInstanceOf(\stdClass::class, $serviceD);
-        self::assertEquals(42, $container->get('function'));
+        self::assertIsObject($container->get('function'));
     }
 
     /**

@@ -32,7 +32,7 @@ class EnvVarProcessor implements EnvVarProcessorInterface
      * @return mixed
      * @throws \RuntimeException on error
      */
-    public function getEnv($prefix, $name, \Closure $getEnv)
+    public function getEnv(string $prefix, string $name, \Closure $getEnv): mixed
     {
         $callable = [Environment::class, 'get' . ucfirst($name)];
         if (!is_callable($callable)) {
@@ -47,7 +47,7 @@ class EnvVarProcessor implements EnvVarProcessorInterface
     /**
      * @return string[] The PHP-types managed by getEnv(), keyed by prefixes
      */
-    public static function getProvidedTypes()
+    public static function getProvidedTypes(): array
     {
         return [
             'TYPO3' => 'string|bool',
