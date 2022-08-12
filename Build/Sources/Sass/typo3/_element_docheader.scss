@@ -13,25 +13,13 @@ $docheader-border: rgb(195, 195, 195);
         cursor: pointer;
     }
 
-    .t3-icon {
-        margin-bottom: 3px;
-    }
-
     // left col
     .left {
         float: left;
-
-        .t3-icon {
-            margin-right: 6px;
-        }
     }
     // right col
     .right {
         float: right;
-
-        .t3-icon {
-            margin-left: 6px;
-        }
     }
 
     // Extra margin 6px added to it-icon margin, doubled spacing = 12px

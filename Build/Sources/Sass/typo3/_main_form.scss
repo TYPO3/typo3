@@ -159,10 +159,6 @@ fieldset[disabled] .form-control {
     .input-group-btn {
         label {
             border-color: $danger;
-
-            .t3-icon {
-                color: $danger;
-            }
         }
 
         label:before {
