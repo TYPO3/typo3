@@ -195,12 +195,11 @@ class IconRegistry implements SingletonInterface
      *
      * Example:
      * [
-     *   'deprecated-icon-identifier' => 'new-icon-identifier',
-     *   'another-deprecated-identifier' => null,
+     *   'deprecated-icon-identifier' => ['since' => 'TYPO3 v12', 'until' => 'TYPO3 v13', 'replacement' => 'new-icon-identifier'],
+     *   'another-deprecated-identifier' => ['since' => 'TYPO3 v12', 'until' => 'TYPO3 v13', 'replacement' => null],
      * ]
      *
      * @var array
-     * @deprecated These icons will be removed in TYPO3 v12
      */
     protected $deprecatedIcons = [];
 
@@ -351,6 +350,10 @@ class IconRegistry implements SingletonInterface
             'provider' => $iconProviderClassName,
             'options' => $options,
         ];
+
+        if (isset($options['deprecated'])) {
+            $this->deprecatedIcons[$identifier] = $options['deprecated'];
+        }
     }
 
     /**
@@ -404,14 +407,21 @@ class IconRegistry implements SingletonInterface
             $this->initialize();
         }
         if ($this->isDeprecated($identifier)) {
-            $replacement = $this->deprecatedIcons[$identifier] ?? null;
-            if (!empty($replacement)) {
-                $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0. Please use "%s" instead.';
-                $arguments = [$identifier, $replacement];
-                $identifier = $replacement;
-            } else {
-                $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0.';
-                $arguments = [$identifier];
+            $deprecation = $this->deprecatedIcons[$identifier];
+            $since = $deprecation['since'] ?? null;
+            $until = $deprecation['until'] ?? null;
+            $replacement = $deprecation['replacement'] ?? null;
+
+            $message = 'The icon "%s" is deprecated%s%s.';
+            $arguments = [
+                $identifier,
+                $since !== null ? ' since ' . $since : '',
+                $until !== null ? ' and will be removed in ' . $until : '',
+            ];
+
+            if ($replacement) {
+                $message .= ' Please use "%s" instead.';
+                $arguments[] = $replacement;
             }
             trigger_error(vsprintf($message, $arguments), E_USER_DEPRECATED);
         }
