@@ -244,7 +244,6 @@ if [ $COMMIT_MSG_ERROR_FOUND -eq 1 ]; then
 	echo -e "  You should fix this and then do commit --amend etc.             "
 	echo -e "  [1] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/latest/singlehtml/Index.html#commit-message-rules-for-typo3-cms"
 	echo -e "------------------------------------------------------------------\n"
-	exit 1
 fi
 
 add_ChangeId
