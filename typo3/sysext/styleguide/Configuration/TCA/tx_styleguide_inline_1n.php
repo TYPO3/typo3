@@ -102,6 +102,7 @@ return [
                 'maxitems' => 3,
                 'appearance' => [
                     'collapseAll' => 1,
+                    'levelLinksPosition' => 'both',
                 ],
             ],
         ],
