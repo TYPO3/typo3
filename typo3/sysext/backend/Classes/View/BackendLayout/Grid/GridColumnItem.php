@@ -187,7 +187,7 @@ class GridColumnItem extends AbstractGridObject
 
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
             $icons[] = '<a href="#" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">'
-                . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</a>';
+                . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '</a>';
         }
 
         $_params = ['tt_content', $row['uid'], &$row];

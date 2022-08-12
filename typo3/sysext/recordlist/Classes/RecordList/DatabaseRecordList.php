@@ -1054,7 +1054,7 @@ class DatabaseRecordList
                     $warning = '<span tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right"'
                         . ' title="' . htmlspecialchars($lockInfo['msg']) . '"'
                         . ' aria-label="' . htmlspecialchars($lockInfo['msg']) . '">'
-                        . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render()
                         . '</span>';
                 }
                 if ($this->isRecordDeletePlaceholder($row)) {

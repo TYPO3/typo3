@@ -633,7 +633,7 @@ class InlineRecordContainer extends AbstractContainer
         if ($lockInfo = BackendUtility::isRecordLocked($foreignTable, $rec['uid'])) {
             $cells['locked'] = '
 				<button type="button" class="btn btn-default" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">
-					' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '
+					' . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '
 				</button>';
         }
 
