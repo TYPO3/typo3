@@ -33,6 +33,7 @@ define([
    */
   var createD3 = function() {
     return d3.drag()
+      .filter(() => { return d3.event instanceof MouseEvent; })
       .clickDistance(5);
   };
 
