@@ -178,6 +178,23 @@ services:
         fi
       "
 
+  build_css:
+    image: typo3/core-testing-js:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${ROOT_DIR}:${ROOT_DIR}
+    environment:
+      HOME: "${ROOT_DIR}/.Build/.cache/home"
+    working_dir: ${ROOT_DIR}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        npm install || exit 1
+        node_modules/grunt/bin/grunt
+      "
+
   cgl:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"

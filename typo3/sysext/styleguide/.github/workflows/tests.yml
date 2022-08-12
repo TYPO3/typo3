@@ -68,3 +68,6 @@ jobs:
 
       - name: Acceptance Tests postgres
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d postgres
+
+      - name: Build CSS
+        run: Build/Scripts/runTests.sh -s buildCss

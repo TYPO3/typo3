@@ -13,6 +13,8 @@
 
 module.exports = function(grunt) {
 
+  const sass = require('sass');
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -22,6 +24,9 @@ module.exports = function(grunt) {
 			public: '<%= paths.resources %>Public/Css'
 		},
     sass: {
+      options: {
+        implementation: sass
+      },
       styleguide: {
         files: {
           "<%= paths.public %>/backend.css": "<%= paths.private %>/backend.scss",
@@ -38,8 +43,7 @@ module.exports = function(grunt) {
 	});
 
 	// Register tasks
-	grunt.loadNpmTasks('grunt-contrib-sass');
-	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-sass');
 
 	/**
 	 * grunt default task

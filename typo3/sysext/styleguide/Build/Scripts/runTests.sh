@@ -73,6 +73,7 @@ Options:
     -s <...>
         Specifies which test suite to run
             - acceptance: backend acceptance tests
+            - buildCss: compile CSS from SCSS
             - cgl: cgl test and fix all php files
             - composerUpdate: "composer update", handy if host has no PHP
             - composerValidate: "composer validate"
@@ -286,6 +287,12 @@ case ${TEST_SUITE} in
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
         esac
+        docker-compose down
+        ;;
+    buildCss)
+        setUpDockerComposeDotEnv
+        docker-compose run build_css
+        SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
     cgl)
