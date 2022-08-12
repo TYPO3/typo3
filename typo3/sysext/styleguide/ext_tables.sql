@@ -96,6 +96,10 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_36 text,
     input_39 text,
     input_40 text,
+    input_41 text,
+    input_42 text,
+    input_43 text,
+    input_44 text,
 
     link_1 text,
     link_2 text,

@@ -43,6 +43,7 @@ class FieldGeneratorResolver
         FieldGenerator\ConfigDefault::class,
 
         // Specific type=input generator
+        FieldGenerator\TypeInputMax4Min4::class,
         FieldGenerator\TypeInputMax4::class,
         FieldGenerator\TypeInputEvalAlphanum::class,
         FieldGenerator\TypeEmail::class,
