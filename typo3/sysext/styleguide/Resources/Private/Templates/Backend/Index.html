@@ -23,7 +23,7 @@
             <f:for each="{actions}" as="action">
                 <f:if condition="{action} != 'index'">
                     <li>
-                        <f:link.action class="btn btn-default btn-block btn-lg" action="{action}">
+                        <f:link.action class="btn btn-default btn-round btn-lg" action="{action}">
                             <sg:initials text="{f:translate(key: '{action}')}"/>
                         </f:link.action>
                         <f:link.action action="{action}">

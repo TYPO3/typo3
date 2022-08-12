@@ -180,13 +180,14 @@ ul.fence {
     padding-bottom: 10px; }
     ul.fence li:last-child {
       padding-bottom: 0; }
-    ul.fence li .btn-block {
+    ul.fence li .btn-round {
       border-radius: 100%;
       display: inline-block;
       margin-right: 5px;
       position: relative;
       width: 50px;
-      z-index: 2; }
+      z-index: 2;
+      padding: 12px 12px; }
     ul.fence li:before {
       content: "";
       border-left: 1px solid #333;

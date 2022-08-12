@@ -8,13 +8,14 @@ ul.fence {
 			padding-bottom: 0;
 		}
 
-		.btn-block {
+		.btn-round {
 			border-radius: 100%;
 			display: inline-block;
 			margin-right: 5px;
 			position: relative;
 			width: 50px;
 			z-index: 2;
+			padding: 12px 12px;
 		}
 
 		&:before {
