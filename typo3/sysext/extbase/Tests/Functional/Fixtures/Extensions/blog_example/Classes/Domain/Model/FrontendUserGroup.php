@@ -25,67 +25,36 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class FrontendUserGroup extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * @var string
-     */
-    protected $description = '';
+    protected string $description = '';
 
     /**
      * @var ObjectStorage<FrontendUserGroup>
      */
-    protected $subgroup;
+    protected ObjectStorage $subgroup;
 
-    /**
-     * Constructs a new Frontend User Group
-     *
-     * @param string $title
-     */
-    public function __construct($title = '')
+    public function __construct(string $title = '')
     {
         $this->setTitle($title);
         $this->subgroup = new ObjectStorage();
     }
 
-    /**
-     * Sets the title value
-     *
-     * @param string $title
-     */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Returns the title value
-     *
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the description value
-     *
-     * @param string $description
-     */
-    public function setDescription($description): void
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * Returns the description value
-     *
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -102,21 +71,11 @@ class FrontendUserGroup extends AbstractEntity
         $this->subgroup = $subgroup;
     }
 
-    /**
-     * Adds a subgroup to the frontend user
-     *
-     * @param FrontendUserGroup $subgroup
-     */
     public function addSubgroup(FrontendUserGroup $subgroup): void
     {
         $this->subgroup->attach($subgroup);
     }
 
-    /**
-     * Removes a subgroup from the frontend user group
-     *
-     * @param FrontendUserGroup $subgroup
-     */
     public function removeSubgroup(FrontendUserGroup $subgroup): void
     {
         $this->subgroup->detach($subgroup);

@@ -35,8 +35,7 @@ class PostRepository extends Repository
     /**
      * Finds all posts by the specified blog
      *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
-     * @return QueryResultInterface The posts
+     * @param Blog $blog The blog the post must refer to
      */
     public function findAllByBlog(Blog $blog): QueryResultInterface
     {
@@ -51,11 +50,9 @@ class PostRepository extends Repository
     /**
      * Finds posts by the specified tag and blog
      *
-     * @param string $tag
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
-     * @return QueryResultInterface The posts
+     * @param Blog $blog The blog the post must refer to
      */
-    public function findByTagAndBlog($tag, Blog $blog): QueryResultInterface
+    public function findByTagAndBlog(string $tag, Blog $blog): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query
@@ -70,9 +67,6 @@ class PostRepository extends Repository
 
     /**
      * Finds all remaining posts of the blog
-     *
-     * @param Post $post The reference post
-     * @return QueryResultInterface The posts
      */
     public function findRemaining(Post $post): QueryResultInterface
     {
@@ -94,7 +88,6 @@ class PostRepository extends Repository
      * Finds the previous of the given post
      *
      * @param Post $post The reference post
-     * @return Post
      */
     public function findPrevious(Post $post): Post
     {
@@ -111,7 +104,6 @@ class PostRepository extends Repository
      * Finds the post next to the given post
      *
      * @param Post $post The reference post
-     * @return Post
      */
     public function findNext(Post $post): Post
     {
@@ -127,11 +119,11 @@ class PostRepository extends Repository
     /**
      * Finds most recent posts by the specified blog
      *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
+     * @param Blog $blog The blog the post must refer to
      * @param int $limit The number of posts to return at max
      * @return QueryResultInterface The posts
      */
-    public function findRecentByBlog(Blog $blog, $limit = 5): QueryResultInterface
+    public function findRecentByBlog(Blog $blog, int $limit = 5): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query
@@ -144,11 +136,8 @@ class PostRepository extends Repository
 
     /**
      * Find posts by category
-     *
-     * @param int $categoryUid
-     * @return QueryResultInterface
      */
-    public function findByCategory($categoryUid): QueryResultInterface
+    public function findByCategory(int $categoryUid): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query
@@ -158,7 +147,7 @@ class PostRepository extends Repository
             ->execute();
     }
 
-    public function findAllSortedByCategory(array $uids)
+    public function findAllSortedByCategory(array $uids): QueryResultInterface
     {
         $q = $this->createQuery();
         $q->matching($q->in('uid', $uids));

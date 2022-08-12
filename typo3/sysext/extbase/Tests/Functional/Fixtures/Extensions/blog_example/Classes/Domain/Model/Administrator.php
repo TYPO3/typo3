@@ -26,108 +26,48 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Administrator extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $username = '';
+    protected string $username = '';
 
-    /**
-     * @var string
-     */
-    protected $password = '';
+    protected string $password = '';
 
     /**
      * @var ObjectStorage<FrontendUserGroup>
      */
-    protected $usergroup;
+    protected ObjectStorage $usergroup;
 
-    /**
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
-    /**
-     * @var string
-     */
-    protected $firstName = '';
+    protected string $firstName = '';
 
-    /**
-     * @var string
-     */
-    protected $middleName = '';
+    protected string $middleName = '';
 
-    /**
-     * @var string
-     */
-    protected $lastName = '';
+    protected string $lastName = '';
 
-    /**
-     * @var string
-     */
-    protected $address = '';
+    protected string $address = '';
 
-    /**
-     * @var string
-     */
-    protected $telephone = '';
+    protected string $telephone = '';
 
-    /**
-     * @var string
-     */
-    protected $fax = '';
+    protected string $fax = '';
 
-    /**
-     * @var string
-     */
-    protected $email = '';
+    protected string $email = '';
 
-    /**
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * @var string
-     */
-    protected $zip = '';
+    protected string $zip = '';
 
-    /**
-     * @var string
-     */
-    protected $city = '';
+    protected string $city = '';
 
-    /**
-     * @var string
-     */
-    protected $country = '';
+    protected string $country = '';
 
-    /**
-     * @var string
-     */
-    protected $www = '';
+    protected string $www = '';
 
-    /**
-     * @var string
-     */
-    protected $company = '';
+    protected string $company = '';
 
-    /**
-     * @var ObjectStorage<FileReference>
-     */
-    protected $image;
+    protected ObjectStorage $image;
 
-    /**
-     * @var \DateTime|null
-     */
-    protected $lastlogin;
+    protected ?\DateTime $lastlogin;
 
-    /**
-     * Constructs a new Front-End User
-     *
-     * @param string $username
-     * @param string $password
-     */
-    public function __construct($username = '', $password = '')
+    public function __construct(string $username = '', string $password = '')
     {
         $this->username = $username;
         $this->password = $password;
@@ -144,41 +84,21 @@ class Administrator extends AbstractEntity
         $this->image = $this->image ?? new ObjectStorage();
     }
 
-    /**
-     * Sets the username value
-     *
-     * @param string $username
-     */
-    public function setUsername($username): void
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
-    /**
-     * Returns the username value
-     *
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * Sets the password value
-     *
-     * @param string $password
-     */
-    public function setPassword($password): void
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * Returns the password value
-     *
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -197,8 +117,6 @@ class Administrator extends AbstractEntity
 
     /**
      * Adds a usergroup to the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
      */
     public function addUsergroup(FrontendUserGroup $usergroup): void
     {
@@ -207,8 +125,6 @@ class Administrator extends AbstractEntity
 
     /**
      * Removes a usergroup from the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
      */
     public function removeUsergroup(FrontendUserGroup $usergroup): void
     {
@@ -219,296 +135,154 @@ class Administrator extends AbstractEntity
      * Returns the usergroups. Keep in mind that the property is called "usergroup"
      * although it can hold several usergroups.
      *
-     * @return ObjectStorage<FrontendUserGroup> An object storage containing the usergroup
+     * @return ObjectStorage<FrontendUserGroup>
      */
     public function getUsergroup(): ObjectStorage
     {
         return $this->usergroup;
     }
 
-    /**
-     * Sets the name value
-     *
-     * @param string $name
-     */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * Returns the name value
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Sets the firstName value
-     *
-     * @param string $firstName
-     */
-    public function setFirstName($firstName): void
+    public function setFirstName(string $firstName): void
     {
         $this->firstName = $firstName;
     }
 
-    /**
-     * Returns the firstName value
-     *
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    /**
-     * Sets the middleName value
-     *
-     * @param string $middleName
-     */
-    public function setMiddleName($middleName): void
+    public function setMiddleName(string $middleName): void
     {
         $this->middleName = $middleName;
     }
 
-    /**
-     * Returns the middleName value
-     *
-     * @return string
-     */
     public function getMiddleName(): string
     {
         return $this->middleName;
     }
 
-    /**
-     * Sets the lastName value
-     *
-     * @param string $lastName
-     */
-    public function setLastName($lastName): void
+    public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
     }
 
-    /**
-     * Returns the lastName value
-     *
-     * @return string
-     */
     public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    /**
-     * Sets the address value
-     *
-     * @param string $address
-     */
-    public function setAddress($address): void
+    public function setAddress(string $address): void
     {
         $this->address = $address;
     }
 
-    /**
-     * Returns the address value
-     *
-     * @return string
-     */
     public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * Sets the telephone value
-     *
-     * @param string $telephone
-     */
-    public function setTelephone($telephone): void
+    public function setTelephone(string $telephone): void
     {
         $this->telephone = $telephone;
     }
 
-    /**
-     * Returns the telephone value
-     *
-     * @return string
-     */
     public function getTelephone(): string
     {
         return $this->telephone;
     }
 
-    /**
-     * Sets the fax value
-     *
-     * @param string $fax
-     */
-    public function setFax($fax): void
+    public function setFax(string $fax): void
     {
         $this->fax = $fax;
     }
 
-    /**
-     * Returns the fax value
-     *
-     * @return string
-     */
     public function getFax(): string
     {
         return $this->fax;
     }
 
-    /**
-     * Sets the email value
-     *
-     * @param string $email
-     */
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * Returns the email value
-     *
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * Sets the title value
-     *
-     * @param string $title
-     */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Returns the title value
-     *
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the zip value
-     *
-     * @param string $zip
-     */
-    public function setZip($zip): void
+    public function setZip(string $zip): void
     {
         $this->zip = $zip;
     }
 
-    /**
-     * Returns the zip value
-     *
-     * @return string
-     */
     public function getZip(): string
     {
         return $this->zip;
     }
 
-    /**
-     * Sets the city value
-     *
-     * @param string $city
-     */
-    public function setCity($city): void
+    public function setCity(string $city): void
     {
         $this->city = $city;
     }
 
-    /**
-     * Returns the city value
-     *
-     * @return string
-     */
     public function getCity(): string
     {
         return $this->city;
     }
 
-    /**
-     * Sets the country value
-     *
-     * @param string $country
-     */
-    public function setCountry($country): void
+    public function setCountry(string $country): void
     {
         $this->country = $country;
     }
 
-    /**
-     * Returns the country value
-     *
-     * @return string
-     */
     public function getCountry(): string
     {
         return $this->country;
     }
 
-    /**
-     * Sets the www value
-     *
-     * @param string $www
-     */
-    public function setWww($www): void
+    public function setWww(string $www): void
     {
         $this->www = $www;
     }
 
-    /**
-     * Returns the www value
-     *
-     * @return string
-     */
     public function getWww(): string
     {
         return $this->www;
     }
 
-    /**
-     * Sets the company value
-     *
-     * @param string $company
-     */
-    public function setCompany($company): void
+    public function setCompany(string $company): void
     {
         $this->company = $company;
     }
 
-    /**
-     * Returns the company value
-     *
-     * @return string
-     */
     public function getCompany(): string
     {
         return $this->company;
     }
 
     /**
-     * Sets the image value
-     *
      * @param ObjectStorage<FileReference> $image
      */
     public function setImage(ObjectStorage $image): void
@@ -517,8 +291,6 @@ class Administrator extends AbstractEntity
     }
 
     /**
-     * Gets the image value
-     *
      * @return ObjectStorage<FileReference>
      */
     public function getImage(): ObjectStorage
@@ -526,21 +298,11 @@ class Administrator extends AbstractEntity
         return $this->image;
     }
 
-    /**
-     * Sets the lastlogin value
-     *
-     * @param \DateTime $lastlogin
-     */
     public function setLastlogin(\DateTime $lastlogin): void
     {
         $this->lastlogin = $lastlogin;
     }
 
-    /**
-     * Returns the lastlogin value
-     *
-     * @return \DateTime
-     */
     public function getLastlogin(): ?\DateTime
     {
         return $this->lastlogin;

@@ -21,72 +21,47 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class DateExample extends AbstractEntity
 {
-
     /**
      * A datetime stored in a text field
-     *
-     * @var \DateTime
      */
-    protected $datetimeText;
+    protected ?\DateTime $datetimeText = null;
 
     /**
      * A datetime stored in an integer field
-     *
-     * @var \DateTime
      */
-    protected $datetimeInt;
+    protected ?\DateTime $datetimeInt = null;
 
     /**
      * A datetime stored in a datetime field
-     *
-     * @var \DateTime
      */
-    protected $datetimeDatetime;
+    protected ?\DateTime $datetimeDatetime = null;
 
-    /**
-     * @return \DateTime
-     */
-    public function getDatetimeText(): \DateTime
+    public function getDatetimeText(): ?\DateTime
     {
         return $this->datetimeText;
     }
 
-    /**
-     * @param \DateTime $datetimeText
-     */
-    public function setDatetimeText($datetimeText): void
+    public function setDatetimeText(\DateTime $datetimeText): void
     {
         $this->datetimeText = $datetimeText;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDatetimeInt(): \DateTime
+    public function getDatetimeInt(): ?\DateTime
     {
         return $this->datetimeInt;
     }
 
-    /**
-     * @param \DateTime $datetimeInt
-     */
-    public function setDatetimeInt($datetimeInt): void
+    public function setDatetimeInt(\DateTime $datetimeInt): void
     {
         $this->datetimeInt = $datetimeInt;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDatetimeDatetime(): \DateTime
+    public function getDatetimeDatetime(): ?\DateTime
     {
         return $this->datetimeDatetime;
     }
 
-    /**
-     * @param \DateTime $datetimeDatetime
-     */
-    public function setDatetimeDatetime($datetimeDatetime): void
+    public function setDatetimeDatetime(\DateTime $datetimeDatetime): void
     {
         $this->datetimeDatetime = $datetimeDatetime;
     }

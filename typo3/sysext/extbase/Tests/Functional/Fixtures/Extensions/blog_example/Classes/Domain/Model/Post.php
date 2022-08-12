@@ -26,88 +26,66 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Post extends AbstractEntity
 {
-    /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Blog
-     */
-    protected $blog;
+    protected ?Blog $blog = null;
 
     /**
-     * @var string
      * @Extbase\Validate("StringLength", options={"minimum": 3, "maximum": 50})
      */
-    protected $title = '';
+    protected string $title = '';
+
+    protected \DateTime $date;
+
+    protected ?Person $author = null;
+
+    protected ?Person $secondAuthor = null;
+
+    protected ?Person $reviewer = null;
 
     /**
-     * @var \DateTime
-     */
-    protected $date;
-
-    /**
-     * @var Person
-     */
-    protected $author;
-
-    /**
-     * @var Person
-     */
-    protected $secondAuthor;
-
-    /**
-     * @var Person
-     */
-    protected $reviewer;
-
-    /**
-     * @var string
      * @Extbase\Validate("StringLength", options={"minimum": 3})
      */
-    protected $content = '';
+    protected string $content = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tag>
+     * @var ObjectStorage<Tag>
      */
-    protected $tags;
+    protected ObjectStorage $tags;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Category>
+     * @var ObjectStorage<Category>
      */
-    protected $categories;
+    protected ObjectStorage $categories;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Comment>
+     * @var ObjectStorage<Comment>
      * @Extbase\ORM\Lazy
      * @Extbase\ORM\Cascade("remove")
      */
     protected $comments;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Post>
+     * @var ObjectStorage<Post>
      * @Extbase\ORM\Lazy
      */
     protected $relatedPosts;
 
     /**
      * 1:1 relation stored as CSV value in this class
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Info
      */
-    protected $additionalName;
+    protected ?Info $additionalName = null;
 
     /**
      * 1:1 relation stored as foreign key in Info class
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Info
      */
-    protected $additionalInfo;
+    protected ?Info $additionalInfo = null;
 
     /**
      * 1:n relation stored as CSV value
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Comment>
+     * @var ObjectStorage<Comment>
      * @Extbase\ORM\Lazy
      */
     protected $additionalComments;
 
-    /**
-     * Constructs this post
-     */
     public function __construct()
     {
         $this->tags = new ObjectStorage();
@@ -120,8 +98,6 @@ class Post extends AbstractEntity
 
     /**
      * Sets the blog this post is part of
-     *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog
      */
     public function setBlog(Blog $blog): void
     {
@@ -130,88 +106,50 @@ class Post extends AbstractEntity
 
     /**
      * Returns the blog this post is part of
-     *
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Blog|null The blog this post is part of
      */
     public function getBlog(): ?Blog
     {
         return $this->blog;
     }
 
-    /**
-     * Setter for title
-     *
-     * @param string $title
-     */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Getter for title
-     *
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Setter for date
-     *
-     * @param \DateTime $date
-     */
     public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
 
-    /**
-     * Getter for date
-     *
-     *
-     * @return \DateTime
-     */
     public function getDate(): \DateTime
     {
         return $this->date;
     }
 
     /**
-     * Setter for tags
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags One or more Tag objects
+     * @param ObjectStorage<Tag> $tags
      */
     public function setTags(ObjectStorage $tags): void
     {
         $this->tags = $tags;
     }
 
-    /**
-     * Adds a tag to this post
-     *
-     * @param Tag $tag
-     */
     public function addTag(Tag $tag): void
     {
         $this->tags->attach($tag);
     }
 
-    /**
-     * Removes a tag from this post
-     *
-     * @param Tag $tag
-     */
     public function removeTag(Tag $tag): void
     {
         $this->tags->detach($tag);
     }
 
-    /**
-     * Remove all tags from this post
-     */
     public function removeAllTags(): void
     {
         $this->tags = new ObjectStorage();
@@ -221,76 +159,49 @@ class Post extends AbstractEntity
      * Getter for tags
      * Note: We return a clone of the tags because they must not be modified as they are Value Objects
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage A storage holding objects
+     * @return ObjectStorage<Tag> A storage holding objects
      */
     public function getTags(): ObjectStorage
     {
         return clone $this->tags;
     }
 
-    /**
-     * Add category to a post
-     *
-     * @param Category $category
-     */
     public function addCategory(Category $category): void
     {
         $this->categories->attach($category);
     }
 
     /**
-     * Set categories
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
+     * @param ObjectStorage<Category> $categories
      */
-    public function setCategories($categories): void
+    public function setCategories(ObjectStorage $categories): void
     {
         $this->categories = $categories;
     }
 
     /**
-     * Get categories
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage<Category>
      */
     public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }
 
-    /**
-     * Remove category from post
-     *
-     * @param Category $category
-     */
     public function removeCategory(Category $category): void
     {
         $this->categories->detach($category);
     }
 
-    /**
-     * Sets the author for this post
-     *
-     * @param Person $author
-     */
     public function setAuthor(Person $author): void
     {
         $this->author = $author;
     }
 
-    /**
-     * Getter for author
-     *
-     * @return Person|null
-     */
     public function getAuthor(): ?Person
     {
         return $this->author;
     }
 
-    /**
-     * @return Person
-     */
     public function getSecondAuthor(): ?Person
     {
         return $this->secondAuthor;
@@ -428,17 +339,11 @@ class Post extends AbstractEntity
         return $this->relatedPosts;
     }
 
-    /**
-     * @return ?Info
-     */
     public function getAdditionalName(): ?Info
     {
         return $this->additionalName;
     }
 
-    /**
-     * @param Info $additionalName
-     */
     public function setAdditionalName(Info $additionalName): void
     {
         $this->additionalName = $additionalName;
@@ -452,16 +357,13 @@ class Post extends AbstractEntity
         return $this->additionalInfo;
     }
 
-    /**
-     * @param Info $additionalInfo
-     */
     public function setAdditionalInfo(Info $additionalInfo): void
     {
         $this->additionalInfo = $additionalInfo;
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage<Comment>
      */
     public function getAdditionalComments(): ObjectStorage
     {
@@ -469,33 +371,24 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $additionalComments
+     * @param ObjectStorage<Comment> $additionalComments
      */
     public function setAdditionalComments(ObjectStorage $additionalComments): void
     {
         $this->additionalComments = $additionalComments;
     }
 
-    /**
-     * @param Comment $comment
-     */
     public function addAdditionalComment(Comment $comment): void
     {
         $this->additionalComments->attach($comment);
     }
 
-    /**
-     * Remove all additional Comments
-     */
     public function removeAllAdditionalComments(): void
     {
         $comments = clone $this->additionalComments;
         $this->additionalComments->removeAll($comments);
     }
 
-    /**
-     * @param Comment $comment
-     */
     public function removeAdditionalComment(Comment $comment): void
     {
         $this->additionalComments->detach($comment);
@@ -503,10 +396,8 @@ class Post extends AbstractEntity
 
     /**
      * Returns this post as a formatted string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->title . chr(10) .
             ' written on ' . $this->date->format('Y-m-d') . chr(10) .

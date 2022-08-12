@@ -2036,39 +2036,9 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
-			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\BlogController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/BlogController.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setConfiguration\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$response$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
-
-		-
-			message: "#^PHPDoc tag @return with type array is incompatible with native type Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
-
-		-
-			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\ContentController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
-
-		-
-			message: "#^Property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Administrator\\:\\:\\$image \\(TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage\\<TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FileReference\\>\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
-
-		-
-			message: "#^Property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Administrator\\:\\:\\$usergroup \\(TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage\\<ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\FrontendUserGroup\\>\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
 
 		-
 			message: "#^Instanceof between ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Category\\|null and TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy will always evaluate to false\\.$#"

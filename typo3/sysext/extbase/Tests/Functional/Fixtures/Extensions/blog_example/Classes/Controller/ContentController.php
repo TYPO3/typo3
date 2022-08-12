@@ -17,72 +17,60 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\BlogExample\Controller;
 
+use ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
-/**
- * ContentController
- */
 class ContentController extends ActionController
 {
-    /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository
-     */
-    private $contentRepository;
+    private TtContentRepository $contentRepository;
 
     /**
      * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-     */
-    private $dataMapFactory;
+    private DataMapFactory $dataMapFactory;
 
-    public function __construct(
-        \ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository $contentRepository,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-    ) {
+    public function __construct(TtContentRepository $contentRepository, DataMapFactory $dataMapFactory)
+    {
         $this->contentRepository = $contentRepository;
         $this->dataMapFactory = $dataMapFactory;
     }
 
-    /**
-     * @return array
-     */
     public function listAction(): ResponseInterface
     {
         $content = $this->contentRepository->findAll();
         $value = [];
         $value[$this->getRuntimeIdentifier()] = $this->getStructure($content);
         // this is required so we don't try to json_encode content of the image
-        $this->view->setConfiguration(['value' => [
-            '_descendAll' => [
+        $this->view->setConfiguration([
+            'value' => [
                 '_descendAll' => [
                     '_descendAll' => [
                         '_descendAll' => [
                             '_descendAll' => [
-                                '_exclude' => ['contents'],
+                                '_descendAll' => [
+                                    '_exclude' => ['contents'],
+                                ],
                             ],
                         ],
                     ],
                 ],
             ],
-        ]]);
+        ]);
         $this->view->assign('value', $value);
 
         return $this->jsonResponse();
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface $response
      * @throws \RuntimeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface
@@ -99,9 +87,8 @@ class ContentController extends ActionController
 
     /**
      * @param \Iterator|\TYPO3\CMS\Extbase\DomainObject\AbstractEntity[] $iterator
-     * @return array
      */
-    protected function getStructure($iterator): array
+    protected function getStructure(\Iterator|array $iterator): array
     {
         $structure = [];
 
@@ -140,9 +127,6 @@ class ContentController extends ActionController
         return $structure;
     }
 
-    /**
-     * @return string
-     */
     protected function getRuntimeIdentifier(): string
     {
         $arguments = [];

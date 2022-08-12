@@ -24,24 +24,13 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
  */
 class Tag extends AbstractValueObject
 {
-    /**
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
-    /**
-     * Constructs this tag
-     */
     public function __construct(string $name = '')
     {
         $this->name = $name;
     }
 
-    /**
-     * Returns this tag's name
-     *
-     * @return string This tag's name
-     */
     public function getName(): string
     {
         return $this->name;
@@ -49,10 +38,8 @@ class Tag extends AbstractValueObject
 
     /**
      * Returns this tag as a formatted string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

@@ -18,39 +18,31 @@ declare(strict_types=1);
 namespace ExtbaseTeam\BlogExample\Controller;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
+use ExtbaseTeam\BlogExample\Domain\Model\Post;
+use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
-/**
- * BlogController
- */
 class BlogController extends ActionController
 {
-    /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
-     */
-    private $blogRepository;
+    private BlogRepository $blogRepository;
 
     /**
      * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-     */
-    private $dataMapFactory;
+    private DataMapFactory $dataMapFactory;
 
-    public function __construct(
-        \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-    ) {
+    public function __construct(BlogRepository $blogRepository, DataMapFactory $dataMapFactory)
+    {
         $this->blogRepository = $blogRepository;
         $this->dataMapFactory = $dataMapFactory;
     }
@@ -66,7 +58,7 @@ class BlogController extends ActionController
         return $this->htmlResponse();
     }
 
-    public function detailsAction(Blog $blog=null): ResponseInterface
+    public function detailsAction(Blog $blog = null): ResponseInterface
     {
         return $this->htmlResponse($blog ? $blog->getTitle() : '');
     }
@@ -81,7 +73,7 @@ class BlogController extends ActionController
      * // needs to be imported entirely, else the annotationChecker test script complains
      * @IgnoreValidation("blogPost")
      */
-    public function testForwardAction($blogPost): ForwardResponse
+    public function testForwardAction(Post $blogPost): ForwardResponse
     {
         return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);
     }
@@ -89,16 +81,16 @@ class BlogController extends ActionController
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
      */
-    public function testForwardTargetAction($blogPost): ResponseInterface
+    public function testForwardTargetAction(Post $blogPost): ResponseInterface
     {
         return $this->htmlResponse('testForwardTargetAction');
     }
 
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post|null $blogPost
      */
-    public function testRelatedObjectAction($blog, $blogPost = null): ResponseInterface
+    public function testRelatedObjectAction(Blog $blog, ?Post $blogPost = null): ResponseInterface
     {
         return $this->htmlResponse('testRelatedObject');
     }
@@ -121,8 +113,6 @@ class BlogController extends ActionController
     /**
      * Disable the default error flash message, otherwise we get an error because the flash message
      * session handling is not available during functional tests.
-     *
-     * @return bool
      */
     protected function getErrorFlashMessage(): bool
     {
@@ -131,9 +121,8 @@ class BlogController extends ActionController
 
     /**
      * @param \Iterator|\TYPO3\CMS\Extbase\DomainObject\AbstractEntity[] $iterator
-     * @return array
      */
-    protected function getStructure($iterator): array
+    protected function getStructure(\Iterator|array $iterator): array
     {
         $structure = [];
 
@@ -165,9 +154,6 @@ class BlogController extends ActionController
         return $structure;
     }
 
-    /**
-     * @return string
-     */
     protected function getRuntimeIdentifier(): string
     {
         $arguments = [];

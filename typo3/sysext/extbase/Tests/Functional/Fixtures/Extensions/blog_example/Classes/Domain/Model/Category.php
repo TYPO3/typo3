@@ -27,15 +27,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 class Category extends AbstractEntity
 {
     /**
-     * @var string
      * @Extbase\Validate("NotEmpty")
      */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * @var string
-     */
-    protected $description = '';
+    protected string $description = '';
 
     /**
      * @var Category|null
@@ -43,52 +39,27 @@ class Category extends AbstractEntity
      */
     protected $parent;
 
-    /**
-     * Gets the title.
-     *
-     * @return string the title, might be empty
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the title.
-     *
-     * @param string $title the title to set, may be empty
-     */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Gets the description.
-     *
-     * @return string the description, might be empty
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * Sets the description.
-     *
-     * @param string $description the description to set, may be empty
-     */
-    public function setDescription($description): void
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * Gets the parent category.
-     *
-     * @return Category|null the parent category
-     */
-    public function getParent()
+    public function getParent(): ?Category
     {
         if ($this->parent instanceof LazyLoadingProxy) {
             $this->parent->_loadRealInstance();
@@ -96,11 +67,6 @@ class Category extends AbstractEntity
         return $this->parent;
     }
 
-    /**
-     * Sets the parent category.
-     *
-     * @param Category $parent the parent category
-     */
     public function setParent(Category $parent): void
     {
         $this->parent = $parent;

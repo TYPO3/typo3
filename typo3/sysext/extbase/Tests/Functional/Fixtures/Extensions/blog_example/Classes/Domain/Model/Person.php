@@ -25,35 +25,23 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Person extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $firstname = '';
+    protected string $firstname = '';
+
+    protected string $lastname = '';
+
+    protected string $email = '';
 
     /**
-     * @var string
+     * @var ObjectStorage<Tag>
      */
-    protected $lastname = '';
+    protected ObjectStorage $tags;
 
     /**
-     * @var string
+     * @var ObjectStorage<Tag>
      */
-    protected $email = '';
+    protected ObjectStorage $tagsSpecial;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag>
-     */
-    protected $tags;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag>
-     */
-    protected $tagsSpecial;
-
-    /**
-     * Constructs a new Person
-     */
-    public function __construct($firstname = '', $lastname = '', $email = '')
+    public function __construct(string $firstname = '', string $lastname = '', string $email = '')
     {
         $this->setFirstname($firstname);
         $this->setLastname($lastname);
@@ -63,135 +51,88 @@ class Person extends AbstractEntity
         $this->tagsSpecial = new ObjectStorage();
     }
 
-    /**
-     * Sets this persons's firstname
-     *
-     * @param string $firstname The person's firstname
-     */
-    public function setFirstname($firstname): void
+    public function setFirstname(string $firstname): void
     {
         $this->firstname = $firstname;
     }
 
-    /**
-     * Returns the person's firstname
-     *
-     * @return string The persons's firstname
-     */
     public function getFirstname(): string
     {
         return $this->firstname;
     }
 
-    /**
-     * Sets this persons's lastname
-     *
-     * @param string $lastname The person's lastname
-     */
-    public function setLastname($lastname): void
+    public function setLastname(string $lastname): void
     {
         $this->lastname = $lastname;
     }
 
-    /**
-     * Returns the person's lastname
-     *
-     * @return string The persons's lastname
-     */
     public function getLastname(): string
     {
         return $this->lastname;
     }
 
-    /**
-     * Returns the person's full name
-     *
-     * @return string The persons's lastname
-     */
     public function getFullName(): string
     {
         return $this->firstname . ' ' . $this->lastname;
     }
 
-    /**
-     * Sets this persons's email address
-     *
-     * @param string $email The person's email address
-     */
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * Returns the person's email address
-     *
-     * @return string The persons's email address
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage|\ExtbaseTeam\BlogExample\Domain\Model\Tag[]
+     * @return ObjectStorage<Tag>
      */
-    public function getTags()
+    public function getTags(): ObjectStorage
     {
         return $this->tags;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags
+     * @param ObjectStorage<Tag> $tags
      */
     public function setTags(ObjectStorage $tags): void
     {
         $this->tags = $tags;
     }
 
-    /**
-     * @param Tag $tag
-     */
     public function addTag(Tag $tag): void
     {
         $this->tags->attach($tag);
     }
 
-    /**
-     * @param Tag $tag
-     */
     public function removeTag(Tag $tag): void
     {
         $this->tags->detach($tag);
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage|\ExtbaseTeam\BlogExample\Domain\Model\Tag[]
+     * @return ObjectStorage<Tag>
      */
-    public function getTagsSpecial()
+    public function getTagsSpecial(): ObjectStorage
     {
         return $this->tagsSpecial;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial
+     * @param ObjectStorage<Tag> $tagsSpecial
      */
     public function setTagsSpecial(ObjectStorage $tagsSpecial): void
     {
         $this->tagsSpecial = $tagsSpecial;
     }
 
-    /**
-     * @param Tag $tag
-     */
     public function addTagSpecial(Tag $tag): void
     {
         $this->tagsSpecial->attach($tag);
     }
 
-    /**
-     * @param Tag $tag
-     */
     public function removeTagSpecial(Tag $tag): void
     {
         $this->tagsSpecial->detach($tag);

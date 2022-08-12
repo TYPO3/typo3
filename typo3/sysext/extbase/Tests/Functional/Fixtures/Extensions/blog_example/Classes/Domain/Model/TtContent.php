@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -27,117 +28,78 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class TtContent extends AbstractEntity
 {
     /**
-     * uid
-     *
      * @var int|null
      */
     protected $uid;
 
     /**
-     * pid
-     *
      * @var int|null
      */
     protected $pid;
 
-    /**
-     * @var string
-     */
-    protected $header;
+    protected string $header;
 
     /**
-     * Images
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     * @var ObjectStorage<FileReference>
      * @Extbase\ORM\Lazy
      */
-    protected $image;
+    protected ObjectStorage $image;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Category>
+     * @var ObjectStorage<Category>
      */
-    protected $categories;
+    protected ObjectStorage $categories;
 
-    /**
-     * Constructs this post
-     */
     public function __construct()
     {
         $this->image = new ObjectStorage();
         $this->categories = new ObjectStorage();
     }
 
-    /**
-     * Returns the header
-     *
-     * @return string $header
-     */
     public function getHeader(): string
     {
         return $this->header;
     }
 
-    /**
-     * Sets the header
-     *
-     * @param string $header
-     */
-    public function setHeader($header): void
+    public function setHeader(string $header): void
     {
         $this->header = $header;
     }
 
-    /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-     */
     public function getImage(): ObjectStorage
     {
         return $this->image;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $image
+     * @param ObjectStorage<FileReference> $image
      */
     public function setImage(ObjectStorage $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * Add category to a CE
-     *
-     * @param Category $category
-     */
     public function addCategory(Category $category): void
     {
         $this->categories->attach($category);
     }
 
     /**
-     * Set categories
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
+     * @param ObjectStorage<Category> $categories
      */
-    public function setCategories($categories): void
+    public function setCategories(ObjectStorage $categories): void
     {
         $this->categories = $categories;
     }
 
     /**
-     * Get categories
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage<Category>
      */
     public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }
 
-    /**
-     * Remove category from a CE
-     *
-     * @param Category $category
-     */
     public function removeCategory(Category $category): void
     {
         $this->categories->detach($category);
@@ -145,10 +107,8 @@ class TtContent extends AbstractEntity
 
     /**
      * Returns this as a formatted string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getHeader();
     }

@@ -24,27 +24,13 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Info extends AbstractEntity
 {
+    protected string $name = '';
 
-    /**
-     * @var string
-     */
-    protected $name = '';
-
-    /**
-     * Sets the name
-     *
-     * @param string $name
-     */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * Getter for name
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -52,10 +38,8 @@ class Info extends AbstractEntity
 
     /**
      * Returns this info as a formatted string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }
