@@ -170,7 +170,7 @@ label {
 // bootstrap v5 uses new class syntax -> .table-{themeColor}
 @mixin table-variant($state, $background) {
     // Remove accent background to keep striped table and its hover state
-    &.table-hover {
+    .table-hover {
         --bs-table-accent-bg: unset;
     }
 

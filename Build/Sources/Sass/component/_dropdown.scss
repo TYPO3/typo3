@@ -1,6 +1,8 @@
 //
 // Dropdowns
 //
+@use "sass:math";
+
 .dropdown-menu {
     line-height: 1.45em;
     border: 0;
@@ -21,7 +23,7 @@
 
     hr {
         border-top: 1px solid rgba(0, 0, 0, 0.35);
-        margin: 1.25em ($grid-gutter-width / -2);
+        margin: 1.25em math.div($grid-gutter-width, -2);
     }
 
     > *:last-child {

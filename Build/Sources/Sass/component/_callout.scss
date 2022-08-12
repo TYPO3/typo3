@@ -112,7 +112,7 @@ $callout-notice-border: $state-notice-border;
 //
 .callout-sm {
     margin: 10px 0;
-    padding: $callout-padding / 2;
+    padding: $callout-padding * 0.5;
 
     .callout-title {
         font-size: 1em;

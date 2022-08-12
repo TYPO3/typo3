@@ -155,7 +155,7 @@
             position: absolute;
             bottom: 0.5em;
             right: 1.2em;
-            padding-left: (($line-height-computed - 1) / 2);
+            padding-left: (($line-height-computed - 1) * 0.5);
         }
 
         pre {

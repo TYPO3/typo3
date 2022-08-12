@@ -55,7 +55,7 @@ $elementbrowser-breakpoint: 600px;
 
 .element-browser-body {
     overflow: unset;
-    padding: ($grid-gutter-width / 2);
+    padding: ($grid-gutter-width * 0.5);
 
     > *:first-child {
         margin-top: 0;
@@ -67,7 +67,7 @@ $elementbrowser-breakpoint: 600px;
 }
 
 .element-browser-title {
-    padding: ($grid-gutter-width / 2);
+    padding: ($grid-gutter-width * 0.5);
     color: #fff;
     background-color: #292929;
     position: sticky;
@@ -86,7 +86,7 @@ $elementbrowser-breakpoint: 600px;
     z-index: 3;
 
     .nav-tabs {
-        padding: ($grid-gutter-width / 2);
+        padding: ($grid-gutter-width * 0.5);
         padding-bottom: 0;
     }
 
@@ -96,7 +96,7 @@ $elementbrowser-breakpoint: 600px;
 }
 
 .element-browser-attributes {
-    padding: ($grid-gutter-width / 2);
+    padding: ($grid-gutter-width * 0.5);
     background-color: #fafafa;
     border-bottom: 1px solid #ddd;
 }

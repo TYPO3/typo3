@@ -1,3 +1,5 @@
+@use "sass:math";
+
 //
 // Admin panel
 // ===========
@@ -76,8 +78,8 @@ $adminPanel-progress-green: #629755;
 // Mixins
 //
 @mixin make-col($size, $columns: 12) {
-    flex: 0 0 percentage($size / $columns);
-    max-width: percentage($size / $columns);
+    flex: 0 0 percentage(math.div($size, $columns));
+    max-width: percentage(math.div($size, $columns));
 }
 
 //

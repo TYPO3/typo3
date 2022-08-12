@@ -1,3 +1,5 @@
+@use "sass:math";
+
 //
 // Form Framework
 // ===========
@@ -631,7 +633,7 @@ $tree-line-height: 20px;
         height: $stage-abstract-element-height;
         border: 1px dashed $panel-default-heading-bg;
         text-align: center;
-        padding-top: $stage-abstract-element-height / 2;
+        padding-top: math.div($stage-abstract-element-height, 2);
 
         .btn {
             transform: translateY(-50%);

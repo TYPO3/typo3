@@ -23,9 +23,9 @@
 // Generate contextual modifier classes for colorizing the alert.
 
 @each $state, $value in $theme-colors {
-    $background: scale-color($value, $alert-bg-scale);
+    $background: shift-color($value, $alert-bg-scale);
 
-    $border: scale-color($value, $alert-border-scale);
+    $border: shift-color($value, $alert-border-scale);
 
     $color: $white;
 

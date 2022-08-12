@@ -42,7 +42,7 @@
 $avatar-size: 32px;
 $avatar-border-radius: 50%;
 $avatar-dropdown-size: 28px;
-$avatar-dropdown-correction: (($avatar-dropdown-size - $line-height-computed) / 2);
+$avatar-dropdown-correction: (($avatar-dropdown-size - $line-height-computed) * 0.5);
 
 //
 // Component
@@ -85,6 +85,6 @@ $avatar-dropdown-correction: (($avatar-dropdown-size - $line-height-computed) / 
     position: absolute;
     bottom: 0;
     right: 0;
-    height: $avatar-size / 2;
-    width: $avatar-size / 2;
+    height: $avatar-size * 0.5;
+    width: $avatar-size * 0.5;
 }

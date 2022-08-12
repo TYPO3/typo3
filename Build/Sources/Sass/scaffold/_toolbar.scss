@@ -99,7 +99,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     @media (max-width: $scaffold-breakpoint-max) {
         .dropdown-menu {
             overflow: auto;
-            padding: $grid-gutter-width / 2;
+            padding: $grid-gutter-width * 0.5;
             position: fixed;
             width: 100%;
             top: 50%;
@@ -107,8 +107,8 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
             transform: translate(-50%, -50%);
 
             hr {
-                margin-left: -$grid-gutter-width / 2;
-                margin-right: -$grid-gutter-width / 2;
+                margin-left: -$grid-gutter-width * 0.5;
+                margin-right: -$grid-gutter-width * 0.5;
             }
         }
 
@@ -288,10 +288,10 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     }
 
     .dropdown-list-link {
-        padding: $toolbar-dropdown-padding / 2;
+        padding: $toolbar-dropdown-padding * 0.5;
     }
 
     .dropdown-headline {
-        padding-top: $toolbar-dropdown-padding / 2;
+        padding-top: $toolbar-dropdown-padding * 0.5;
     }
 }

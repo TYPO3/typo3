@@ -7,6 +7,7 @@
 //
 // Variables
 //
+@use "sass:math";
 $module-bg: #fff !default;
 $module-color: inherit !default;
 $module-dark-bg: #333 !default;
@@ -147,7 +148,7 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
             box-shadow: none;
 
             .panel-body {
-                padding: ceil($module-docheader-padding-horizontal / 3) $module-docheader-padding-horizontal;
+                padding: ceil(math.div($module-docheader-padding-horizontal, 3)) $module-docheader-padding-horizontal;
             }
         }
 

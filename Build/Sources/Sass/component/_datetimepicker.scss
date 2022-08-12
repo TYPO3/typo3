@@ -5,8 +5,9 @@
 //
 // Variables
 //
+@use "sass:math";
 $day-grid-size: 32px;
-$padding-day: ($day-grid-size / 16);
+$padding-day: math.div($day-grid-size, 16);
 $margin-day: 2px;
 $row-days-width: ($day-grid-size * 7 + $margin-day * 14 + $padding-day * 2 + 2);
 $picker-width: $row-days-width;

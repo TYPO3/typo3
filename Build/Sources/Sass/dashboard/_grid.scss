@@ -1,15 +1,15 @@
 // Grid
 .dashboard-grid {
     position: relative;
-    margin-right: -($dashboard-column-gutter / 2);
-    margin-left: -($dashboard-column-gutter / 2);
+    margin-right: -($dashboard-column-gutter * 0.5);
+    margin-left: -($dashboard-column-gutter * 0.5);
 }
 
 // Items
 .dashboard-item {
     position: absolute;
     z-index: 1;
-    padding: ($dashboard-column-gutter / 2);
+    padding: ($dashboard-column-gutter * 0.5);
     width: 100%;
     height: auto;
 

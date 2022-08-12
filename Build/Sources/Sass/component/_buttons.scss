@@ -38,7 +38,7 @@
 
     // Vertically space out multiple block buttons
     + .btn-block {
-        margin-top: $spacer / 2;
+        margin-top: $spacer * 0.5;
     }
 }
 

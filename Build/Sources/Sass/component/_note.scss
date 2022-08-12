@@ -53,19 +53,19 @@ $note-template-background: $state-warning-bg;
 
 .note-header {
     background-color: darken($note-default-background, 5%);
-    padding: ($note-padding / 2) $note-padding;
+    padding: ($note-padding * 0.5) $note-padding;
 }
 
 .note-header-bar {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin-left: -($note-padding / 4);
-    margin-right: -($note-padding / 4);
+    margin-left: -($note-padding * 0.25);
+    margin-right: -($note-padding * 0.25);
 
     > * {
-        padding-left: ($note-padding / 4);
-        padding-right: ($note-padding / 4);
+        padding-left: ($note-padding * 0.25);
+        padding-right: ($note-padding * 0.25);
     }
 }
 

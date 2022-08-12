@@ -326,7 +326,7 @@ a.card:hover {
         padding-top: 0;
 
         .card-image-badge {
-            top: $card-padding / 2;
+            top: $card-padding * 0.5;
         }
     }
 
@@ -337,7 +337,7 @@ a.card:hover {
     .card-image-badge {
         position: absolute;
         top: $card-padding;
-        right: $card-padding / 2;
+        right: $card-padding * 0.5;
     }
 
     img {
@@ -356,7 +356,7 @@ a.card:hover {
 
     .card-icon {
         float: left;
-        margin-right: $card-padding / 2;
+        margin-right: $card-padding * 0.5;
     }
 
     .card-header-body {

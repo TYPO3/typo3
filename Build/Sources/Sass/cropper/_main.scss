@@ -1,6 +1,8 @@
 // Cropper
 // =============================================================================
 
+@use "sass:math";
+
 .cropper-container {
     position: relative;
     overflow: hidden;
@@ -59,10 +61,10 @@
     opacity: 0.5;
 
     &.dashed-h {
-        top: percentage(1 / 3);
+        top: percentage(math.div(1, 3));
         left: 0;
 
-        @include size(100%, percentage(1 / 3));
+        @include size(100%, percentage(math.div(1, 3)));
 
         border-top-width: 1px;
         border-bottom-width: 1px;
@@ -70,9 +72,9 @@
 
     &.dashed-v {
         top: 0;
-        left: percentage(1 / 3);
+        left: percentage(math.div(1, 3));
 
-        @include size(percentage(1 / 3), 100%);
+        @include size(percentage(math.div(1, 3)), 100%);
 
         border-right-width: 1px;
         border-left-width: 1px;

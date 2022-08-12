@@ -13,7 +13,7 @@
 
 module.exports = function (grunt) {
 
-  const sass = require('node-sass');
+  const sass = require('sass');
   const esModuleLexer = require('es-module-lexer');
 
   /**

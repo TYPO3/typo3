@@ -34,7 +34,7 @@ $slider-horizontal-track-height: ceil($slider-horizontal-handle-height * 0.6);
     border-radius: $slider-handle-border-radius;
     height: $slider-horizontal-handle-height;
     width: $slider-horizontal-handle-width;
-    margin-top: -($slider-horizontal-handle-height / 2 - $slider-horizontal-track-height / 2);
+    margin-top: -($slider-horizontal-handle-height * 0.5 - $slider-horizontal-track-height * 0.5);
     cursor: grab;
 
     /**
@@ -178,8 +178,8 @@ input[type=range].slider {
 .form-wizards-items {
     > input[type=range].slider {
         &.slider-horizontal {
-            margin-left: $slider-horizontal-height * 0.5 / 2;
-            margin-right: $slider-horizontal-height * 0.5 / 2;
+            margin-left: $slider-horizontal-height * 0.5 * 0.5;
+            margin-right: $slider-horizontal-height * 0.5 * 0.5;
         }
     }
 }

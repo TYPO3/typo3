@@ -1,3 +1,5 @@
+@use "sass:list";
+
 :root {
     --grideditor-grid-spacing: 1rem;
 
@@ -74,8 +76,8 @@
 
     --grideditor-cell-row-end: calc(var(--grideditor-cell-row, 1) + var(--grideditor-cell-rowspan, 1));
 
-    grid-column: var(--grideditor-cell-col-start) / var(--grideditor-cell-col-end);
-    grid-row: var(--grideditor-cell-row-start) / var(--grideditor-cell-row-end);
+    grid-column: list.slash(var(--grideditor-cell-col-start), var(--grideditor-cell-col-end));
+    grid-row: list.slash(var(--grideditor-cell-row-start), var(--grideditor-cell-row-end));
     height: 100%;
     width: 100%;
     display: flex;

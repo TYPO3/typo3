@@ -21,7 +21,7 @@ $tree-control-icon-size: 12px;
 //
 .list-tree,
 .list-tree ul {
-    margin-left: ceil(($tree-indentation / 2));
+    margin-left: ceil(($tree-indentation * 0.5));
     padding: 0;
     list-style: none;
     position: relative;
@@ -32,7 +32,7 @@ $tree-control-icon-size: 12px;
         width: 0;
         position: absolute;
         top: 0;
-        bottom: ceil($tree-line-height / 2);
+        bottom: ceil($tree-line-height * 0.5);
         left: 0;
         margin-bottom: -2px;
         border-left: 1px dotted $tree-border;
@@ -66,7 +66,7 @@ $tree-control-icon-size: 12px;
             border-top: 1px dotted $tree-border;
             margin-top: -2px;
             position: absolute;
-            top: ceil($tree-line-height / 2) + 1;
+            top: ceil($tree-line-height * 0.5) + 1;
             left: 2px;
         }
 
@@ -127,7 +127,7 @@ $tree-control-icon-size: 12px;
     top: 0;
     left: 0;
     display: block;
-    margin-left: -($tree-indentation + ceil($tree-control-size / 2));
+    margin-left: -($tree-indentation + ceil($tree-control-size * 0.5));
     text-align: center;
     line-height: $tree-control-size;
     width: $tree-control-size;
@@ -139,8 +139,8 @@ $tree-control-icon-size: 12px;
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-top: ceil(-($tree-control-icon-size / 2));
-        margin-left: ceil(-($tree-control-icon-size / 2));
+        margin-top: ceil(-($tree-control-icon-size * 0.5));
+        margin-left: ceil(-($tree-control-icon-size * 0.5));
         width: $tree-control-icon-size;
         height: $tree-control-icon-size;
     }
