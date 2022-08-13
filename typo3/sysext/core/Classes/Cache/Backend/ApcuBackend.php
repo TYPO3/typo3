@@ -89,7 +89,6 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         if (!$this->cache instanceof FrontendInterface) {
             throw new Exception('No cache frontend has been set yet via setCache().', 1232986118);
         }
-        $tags[] = '%APCBE%' . $this->cacheIdentifier;
         $expiration = $lifetime ?? $this->defaultLifetime;
         $success = apcu_store($this->identifierPrefix . $entryIdentifier, $data, $expiration);
         if ($success === true) {
@@ -167,7 +166,7 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         if (!$this->cache instanceof FrontendInterface) {
             throw new Exception('Yet no cache frontend has been set via setCache().', 1232986571);
         }
-        $this->flushByTag('%APCBE%' . $this->cacheIdentifier);
+        apcu_delete(new \APCUIterator('/^' . preg_quote($this->identifierPrefix, '/') . '/'));
     }
 
     /**
