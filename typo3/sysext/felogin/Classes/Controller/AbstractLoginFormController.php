@@ -24,8 +24,6 @@ abstract class AbstractLoginFormController extends ActionController
 {
     /**
      * Returns the parsed storagePid list including recursions
-     *
-     * @return array
      */
     protected function getStorageFolders(): array
     {

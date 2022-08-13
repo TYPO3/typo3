@@ -17,17 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Service;
 
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
-
 interface RecoveryServiceInterface
 {
     /**
      * Sends an email with an absolute link including a forgot hash to the passed email address
      * with instructions to recover the account.
-     *
-     * @param string $emailAddress Receiver's email address.
-     *
-     * @throws InvalidConfigurationTypeException
      */
     public function sendRecoveryEmail(string $emailAddress): void;
 }

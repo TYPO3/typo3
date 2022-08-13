@@ -60,8 +60,6 @@ class FrontendUserRepository
     /**
      * Change the password for a user based on forgot password hash.
      *
-     * @param string $forgotPasswordHash The hash of the feUser that should be resolved.
-     * @param string $hashedPassword The new password.
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function updatePasswordAndInvalidateHash(string $forgotPasswordHash, string $hashedPassword): void
@@ -83,9 +81,6 @@ class FrontendUserRepository
 
     /**
      * Returns true if an user exists with hash as `felogin_forgothash`, otherwise false.
-     *
-     * @param string $hash The hash of the feUser that should be check for existence.
-     * @return bool Either true or false based on the existence of the user.
      */
     public function existsUserWithHash(string $hash): bool
     {
@@ -107,9 +102,6 @@ class FrontendUserRepository
 
     /**
      * Sets forgot hash for passed email address.
-     *
-     * @param string $emailAddress
-     * @param string $hash
      */
     public function updateForgotHashForUserByEmail(string $emailAddress, string $hash): void
     {
@@ -130,9 +122,6 @@ class FrontendUserRepository
     /**
      * Fetches array containing uid, username, email, first_name, middle_name & last_name by email
      * or empty array if user was not found.
-     *
-     * @param string $emailAddress
-     * @return array
      */
     public function fetchUserInformationByEmail(string $emailAddress): array
     {
@@ -155,11 +144,6 @@ class FrontendUserRepository
         return $result;
     }
 
-    /**
-     * @param string $usernameOrEmail
-     * @param array $pages
-     * @return string|null
-     */
     public function findEmailByUsernameOrEmailOnPages(string $usernameOrEmail, array $pages = []): ?string
     {
         if ($usernameOrEmail === '') {
@@ -187,10 +171,6 @@ class FrontendUserRepository
         return $column === false || $column === '' ? null : (string)$column;
     }
 
-    /**
-     * @param string $hash
-     * @return array|null
-     */
     public function findOneByForgotPasswordHash(string $hash): ?array
     {
         if ($hash === '') {
@@ -214,10 +194,6 @@ class FrontendUserRepository
         return is_array($row) ? $row : null;
     }
 
-    /**
-     * @param int $uid
-     * @return int|null
-     */
     public function findRedirectIdPageByUserId(int $uid): ?int
     {
         $queryBuilder = $this->connection->createQueryBuilder();

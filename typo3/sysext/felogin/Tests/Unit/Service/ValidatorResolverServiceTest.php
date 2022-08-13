@@ -45,7 +45,6 @@ class ValidatorResolverServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validatorConfigDataProvider
-     * @param array $config
      */
     public function resolveShouldReturnValidators(array $config): void
     {

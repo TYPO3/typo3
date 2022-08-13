@@ -83,8 +83,6 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider fetchUserInformationByEmailDataProvider
-     * @param string $emailAddress
-     * @param array $expected
      */
     public function fetchUserInformationByEmail(string $emailAddress, array $expected): void
     {

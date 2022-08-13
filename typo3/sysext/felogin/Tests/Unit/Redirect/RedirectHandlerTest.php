@@ -80,8 +80,6 @@ class RedirectHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider loginTypeLogoutDataProvider
-     * @param string $expect
-     * @param array $settings
      */
     public function processShouldReturnStringForLoginTypeLogout(string $expect, string $redirectMode): void
     {
@@ -99,10 +97,6 @@ class RedirectHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getLogoutRedirectUrlDataProvider
-     * @param string $expected
-     * @param array $redirectModes
-     * @param array $body
-     * @param bool $userLoggedIn
      */
     public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrl(
         string $expected,
@@ -140,8 +134,8 @@ class RedirectHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrlForLoggedInUserAndRedirectPageLogoutSet(
-    ): void {
+    public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrlForLoggedInUserAndRedirectPageLogoutSet(): void
+    {
         $this->setUserLoggedIn(true);
 
         $this->subject = new RedirectHandler(

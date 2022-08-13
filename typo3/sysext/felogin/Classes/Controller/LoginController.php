@@ -170,9 +170,6 @@ class LoginController extends AbstractLoginFormController
 
     /**
      * User overview for logged in users
-     *
-     * @param bool $showLoginMessage
-     * @return ResponseInterface
      */
     public function overviewAction(bool $showLoginMessage = false): ResponseInterface
     {
@@ -196,8 +193,6 @@ class LoginController extends AbstractLoginFormController
 
     /**
      * Show logout form
-     * @param int $redirectPageLogout
-     * @return ResponseInterface
      */
     public function logoutAction(int $redirectPageLogout = 0): ResponseInterface
     {
@@ -246,8 +241,6 @@ class LoginController extends AbstractLoginFormController
     /**
      * The permanent login checkbox should only be shown if permalogin is not deactivated (-1),
      * not forced to be always active (2) and lifetime is greater than 0
-     *
-     * @return int
      */
     protected function getPermaloginStatus(): int
     {
@@ -265,8 +258,6 @@ class LoginController extends AbstractLoginFormController
 
     /**
      * Redirect to overview on login successful and setting showLogoutFormAfterLogin disabled
-     *
-     * @return bool
      */
     protected function shouldRedirectToOverview(): bool
     {
@@ -277,8 +268,6 @@ class LoginController extends AbstractLoginFormController
 
     /**
      * Return message key based on user login status
-     *
-     * @return string
      */
     protected function getStatusMessageKey(): string
     {
@@ -299,8 +288,6 @@ class LoginController extends AbstractLoginFormController
 
     /**
      * Is redirect disabled by setting or noredirect parameter
-     *
-     * @return bool
      */
     public function isRedirectDisabled(): bool
     {

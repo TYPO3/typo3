@@ -92,8 +92,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
 
     /**
      * Returns the forgot hash.
-     *
-     * @return string
      */
     public function getForgotHash(): string
     {
@@ -103,8 +101,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
     /**
      * Returns an instance of TemplatePaths with paths configured in felogin TypoScript and
      * paths configured in $GLOBALS['TYPO3_CONF_VARS']['MAIL'].
-     *
-     * @return TemplatePaths
      */
     public function getMailTemplatePaths(): TemplatePaths
     {
@@ -126,8 +122,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
 
     /**
      * Returns email template name configured in TypoScript
-     *
-     * @return string
      */
     public function getMailTemplateName(): string
     {
@@ -136,8 +130,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
 
     /**
      * Returns TTL timestamp of the forgot hash
-     *
-     * @return int
      */
     public function getLifeTimeTimestamp(): int
     {
@@ -152,8 +144,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
 
     /**
      * Returns reply-to address if configured otherwise null.
-     *
-     * @return Address|null
      */
     public function getReplyTo(): ?Address
     {
@@ -162,8 +152,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
 
     /**
      * Returns the sender. Normally the current typo3 installation.
-     *
-     * @return Address
      */
     public function getSender(): Address
     {

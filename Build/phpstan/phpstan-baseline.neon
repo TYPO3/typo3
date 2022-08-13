@@ -3396,19 +3396,9 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/EmConfUtilityTest.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\:\\:fromSettings\\(\\) should return static\\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\) but returns TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Classes/Configuration/RedirectConfiguration.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\FrontendLogin\\\\Controller\\\\PasswordRecoveryController\\:\\:changePasswordAction\\(\\) should return Psr\\\\Http\\\\Message\\\\ResponseInterface\\|string\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/felogin/Classes/Controller/PasswordRecoveryController.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$settings$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
