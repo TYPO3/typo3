@@ -297,9 +297,8 @@ final class ApcuBackendTest extends FunctionalTestCase
         $backend->setCache($this->createMock(FrontendInterface::class));
         $backend->set($identifier, 'testData', $tags);
         $backend->set($identifier, 'testData', $tags);
-
-        // Expect exactly 5 entries:
-        // 1 for data, 3 for tag->identifier, 1 for identifier->tags
-        self::assertSame(5, count(apcu_cache_info()['cache_list']));
+        // Expect exactly 4 entries:
+        // 1 data entry, 2 tag-to-identifier indexes, 1 identifier-to-tag index
+        self::assertSame(4, count(apcu_cache_info()['cache_list']));
     }
 }
