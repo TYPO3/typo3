@@ -60,12 +60,6 @@ class RecoveryServiceTest extends UnitTestCase
      * @test
      * @dataProvider configurationDataProvider
      *
-     * @param string $emailAddress
-     * @param array $recoveryConfiguration
-     * @param array $userInformation
-     * @param Address $receiver
-     * @param array $settings
-     *
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
@@ -223,11 +217,6 @@ class RecoveryServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $emailAddress
-     * @param array $recoveryConfiguration
-     * @param array $userInformation
-     */
     protected function mockRecoveryConfigurationAndUserRepository(
         string $emailAddress,
         array $recoveryConfiguration,

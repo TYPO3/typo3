@@ -49,8 +49,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode groupLogin
-     *
-     * @return string
      */
     public function redirectModeGroupLogin(): string
     {
@@ -75,8 +73,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode userLogin
-     *
-     * @return string
      */
     public function redirectModeUserLogin(): string
     {
@@ -93,9 +89,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode login
-     *
-     * @param int $redirectPageLogin
-     * @return string
      */
     public function redirectModeLogin(int $redirectPageLogin): string
     {
@@ -109,9 +102,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode referrer
-     *
-     * @param string $redirectReferrer
-     * @return string
      */
     public function redirectModeReferrer(string $redirectReferrer): string
     {
@@ -126,10 +116,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode refererDomains
-     *
-     * @param string $domains
-     * @param string $redirectReferrer
-     * @return string
      */
     public function redirectModeRefererDomains(string $domains, string $redirectReferrer): string
     {
@@ -171,9 +157,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode loginError after login-error
-     *
-     * @param int $redirectPageLoginError
-     * @return string
      */
     public function redirectModeLoginError(int $redirectPageLoginError = 0): string
     {
@@ -187,9 +170,6 @@ class RedirectModeHandler
 
     /**
      * Handle redirect mode logout
-     *
-     * @param int $redirectPageLogout
-     * @return string
      */
     public function redirectModeLogout(int $redirectPageLogout): string
     {

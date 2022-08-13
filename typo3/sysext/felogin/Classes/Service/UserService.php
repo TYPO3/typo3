@@ -33,8 +33,6 @@ class UserService
 
     /**
      * Get user- and sessiondata from Frontend User
-     *
-     * @return array
      */
     public function getFeUserData(): array
     {
@@ -43,8 +41,6 @@ class UserService
 
     /**
      * Should return true if a cookie warning is needed to be displayed
-     *
-     * @return bool
      */
     public function cookieWarningRequired(): bool
     {

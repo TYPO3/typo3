@@ -47,10 +47,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
     /**
      * Shows the recovery form. If $userIdentifier is set an email will be sent, if the corresponding user exists
-     *
-     * @param string|null $userIdentifier
-     * @return ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function recoveryAction(string $userIdentifier = null): ResponseInterface
     {
@@ -113,9 +109,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
     /**
      * Show the change password form if a valid hash is available.
-     *
-     * @param string $hash
-     * @return ResponseInterface
      */
     public function showChangePasswordAction(string $hash = ''): ResponseInterface
     {
@@ -180,8 +173,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
     /**
      * Change actual password. Hash $newPass and update the user with the corresponding $hash.
      *
-     * @param string $newPass
-     * @param string $hash
      * @throws AspectNotFoundException
      * @throws InvalidPasswordHashException
      */
@@ -211,8 +202,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
     }
 
     /**
-     * @param Result $originalResult
-     *
      * @throws NoSuchArgumentException
      */
     protected function validateNewPassword(Result $originalResult): void
@@ -240,10 +229,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
     /**
      * Wrapper to mock LocalizationUtility::translate
-     *
-     * @param string $key
-     *
-     * @return string
      */
     protected function getTranslation(string $key): string
     {
@@ -297,8 +282,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
     }
 
     /**
-     * @param string|null $email
-     * @return bool
+     * Returns whether the `exposeNonexistentUserInForgotPasswordDialog` setting is active or not
      */
     protected function exposeNoneExistentUser(?string $email): bool
     {

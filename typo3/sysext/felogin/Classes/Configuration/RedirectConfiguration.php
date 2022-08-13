@@ -71,9 +71,6 @@ class RedirectConfiguration
 
     /**
      * Factory when creating a configuration out of Extbase / plugin settings.
-     *
-     * @param array $settings
-     * @return static
      */
     public static function fromSettings(array $settings): self
     {

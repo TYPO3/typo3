@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\SendRecoveryEmailEvent;
@@ -55,10 +54,7 @@ class RecoveryService implements RecoveryServiceInterface
      * Sends an email with an absolute link including a forgot hash to the passed email address
      * with instructions to recover the account.
      *
-     * @param string $emailAddress Receiver's email address.
-     *
      * @throws TransportExceptionInterface
-     * @throws IncompleteConfigurationException
      */
     public function sendRecoveryEmail(string $emailAddress): void
     {
@@ -78,10 +74,6 @@ class RecoveryService implements RecoveryServiceInterface
 
     /**
      * Get display name from values. Fallback to username if none of the "_name" fields is set.
-     *
-     * @param array $userInformation
-     *
-     * @return string
      */
     protected function getReceiverName(array $userInformation): string
     {
@@ -99,12 +91,6 @@ class RecoveryService implements RecoveryServiceInterface
 
     /**
      * Create email object from configuration.
-     *
-     * @param Address $receiver
-     * @param string $hash
-     *
-     * @return Email
-     * @throws IncompleteConfigurationException
      */
     protected function prepareMail(Address $receiver, string $hash): Email
     {

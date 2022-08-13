@@ -34,9 +34,6 @@ class RedirectUrlValidator implements LoggerAwareInterface
 
     protected SiteFinder $siteFinder;
 
-    /**
-     * @param SiteFinder|null $siteFinder
-     */
     public function __construct(?SiteFinder $siteFinder)
     {
         $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
@@ -44,9 +41,6 @@ class RedirectUrlValidator implements LoggerAwareInterface
 
     /**
      * Checks if a given URL is valid / properly sanitized and/or the domain is known to TYPO3.
-     *
-     * @param string $value
-     * @return bool
      */
     public function isValid(string $value): bool
     {
@@ -65,9 +59,6 @@ class RedirectUrlValidator implements LoggerAwareInterface
     /**
      * Determines whether the URL is on the current host and belongs to the
      * current TYPO3 installation. The scheme part is ignored in the comparison.
-     *
-     * @param string $url URL to be checked
-     * @return bool Whether the URL belongs to the current TYPO3 installation
      */
     protected function isInCurrentDomain(string $url): bool
     {
@@ -83,9 +74,6 @@ class RedirectUrlValidator implements LoggerAwareInterface
 
     /**
      * Determines whether the URL matches a domain known to TYPO3.
-     *
-     * @param string $url Absolute URL which needs to be checked
-     * @return bool Whether the URL is considered to be local
      */
     protected function isInLocalDomain(string $url): bool
     {
@@ -106,9 +94,6 @@ class RedirectUrlValidator implements LoggerAwareInterface
 
     /**
      * Determines whether the URL is relative to the current TYPO3 installation.
-     *
-     * @param string $url URL which needs to be checked
-     * @return bool Whether the URL is considered to be relative
      */
     protected function isRelativeUrl(string $url): bool
     {

@@ -2471,16 +2471,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/EmConfUtilityTest.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\:\\:fromSettings\\(\\) should return static\\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\) but returns TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Classes/Configuration/RedirectConfiguration.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$settings$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/Controller/File/EditFileController.php

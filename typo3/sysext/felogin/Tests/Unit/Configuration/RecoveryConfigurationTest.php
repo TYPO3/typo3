@@ -83,7 +83,6 @@ class RecoveryConfigurationTest extends UnitTestCase
 
     /**
      * @throws InvalidConfigurationTypeException
-     * @throws IncompleteConfigurationException
      */
     protected function setupSubject(): void
     {
