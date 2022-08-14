@@ -77,27 +77,27 @@ class BackendUserRepository extends Repository
             }
         }
         // Only display admin users
-        if ($demand->getUserType() == Demand::USERTYPE_ADMINONLY) {
+        if ($demand->getUserType() === Demand::USERTYPE_ADMINONLY) {
             $constraints[] = $query->equals('admin', 1);
         }
         // Only display non-admin users
-        if ($demand->getUserType() == Demand::USERTYPE_USERONLY) {
+        if ($demand->getUserType() === Demand::USERTYPE_USERONLY) {
             $constraints[] = $query->equals('admin', 0);
         }
         // Only display active users
-        if ($demand->getStatus() == Demand::STATUS_ACTIVE) {
+        if ($demand->getStatus() === Demand::STATUS_ACTIVE) {
             $constraints[] = $query->equals('disable', 0);
         }
         // Only display in-active users
-        if ($demand->getStatus() == Demand::STATUS_INACTIVE) {
+        if ($demand->getStatus() === Demand::STATUS_INACTIVE) {
             $constraints[] = $query->equals('disable', 1);
         }
         // Not logged in before
-        if ($demand->getLogins() == Demand::LOGIN_NONE) {
+        if ($demand->getLogins() === Demand::LOGIN_NONE) {
             $constraints[] = $query->equals('lastlogin', 0);
         }
         // At least one login
-        if ($demand->getLogins() == Demand::LOGIN_SOME) {
+        if ($demand->getLogins() === Demand::LOGIN_SOME) {
             $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
         }
         // In backend user group
