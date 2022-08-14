@@ -74,6 +74,7 @@ class Check implements CheckInterface
         'session',
         'SPL',
         'standard',
+        'tokenizer',
         'xml',
         'zip',
         'zlib',
