@@ -55,7 +55,7 @@ class FlexFormNoTabsContainer extends AbstractContainer
         // Determine this single sheet name, most often it ends up with sDEF, except if only one sheet was defined
         $flexFormSheetNames = array_keys($flexFormDataStructureArray['sheets']);
         $sheetName = array_pop($flexFormSheetNames);
-        $flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?: [];
+        $flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?? [];
 
         unset($flexFormDataStructureArray['meta']);
 
