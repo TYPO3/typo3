@@ -2313,7 +2313,12 @@ class GeneralUtility
         } else {
             $mode = $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'];
         }
-        if ($doNothing || !file_exists($path)) {
+        try {
+            $fileExists = file_exists($path);
+        } catch (\Throwable $e) {
+            $fileExists = false;
+        }
+        if ($doNothing || !$fileExists) {
             // File not found, return filename unaltered
             $fullName = $file;
         } else {
