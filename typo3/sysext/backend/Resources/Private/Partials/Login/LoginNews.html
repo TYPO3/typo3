@@ -20,7 +20,7 @@
                         <core:icon identifier="actions-chevron-right" size="small" />
                         <span class="visually-hidden"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.next"/></span>
                     </button>
-                    <div class="carousel-inner" aria-live="polite">
+                    <div class="carousel-inner carousel-inner--overflowing-bottom" aria-live="polite">
                         <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
                             <div role="group" aria-labelledby="loginNewsItem-{item.uid}" class="carousel-item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
                                 <f:render section="Item" arguments="{item: item}"/>
@@ -31,7 +31,7 @@
             </f:then>
             <f:else>
                 <div class="carousel typo3-login-carousel">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner carousel-inner--overflowing-bottom">
                         <f:render section="Item" arguments="{item:'{loginNewsItems.0}'}"/>
                     </div>
                 </div>

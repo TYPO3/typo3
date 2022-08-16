@@ -12,10 +12,10 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import '@typo3/backend/input/clearable';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 interface PreflightResponse {
   capabilities: PreflightResponseCapabilities;
@@ -72,16 +72,16 @@ class BackendLogin {
    */
   private showLoginProcess(): void {
     this.showLoadingIndicator();
-    $(this.options.error).addClass('hidden');
-    $(this.options.errorNoCookies).addClass('hidden');
+    document.querySelector(this.options.error)?.classList.add('hidden');
+    document.querySelector(this.options.errorNoCookies)?.classList.add('hidden');
   }
 
   /**
    * Show the loading spinner in the submit button
    */
   private showLoadingIndicator(): void {
-    const button = $(this.options.submitButton);
-    button.html(button.data('loading-text'));
+    const button = document.querySelector(this.options.submitButton) as HTMLButtonElement;
+    button.innerHTML = button.dataset.loadingText;
   }
 
   /**
@@ -105,7 +105,7 @@ class BackendLogin {
     // cookie expires in one year
     const expires = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 365);
     document.cookie = 'typo3-login-interface='
-      + $(this.options.interfaceField).val()
+      + (document.querySelector(this.options.interfaceField) as HTMLInputElement).value
       + '; expires=' + expires.toUTCString() + ';';
   }
 
@@ -113,12 +113,13 @@ class BackendLogin {
    * Check if an interface was stored in a cookie and preselect it in the select box
    */
   private checkForInterfaceCookie(): void {
-    if ($(this.options.interfaceField).length) {
+    const interfaceField = document.querySelector(this.options.interfaceField) as HTMLInputElement;
+    if (interfaceField !== null) {
       const posStart = document.cookie.indexOf('typo3-login-interface=');
       if (posStart !== -1) {
-        let selectedInterface = document.cookie.substr(posStart + 22);
-        selectedInterface = selectedInterface.substr(0, selectedInterface.indexOf(';'));
-        $(this.options.interfaceField).val(selectedInterface);
+        let selectedInterface = document.cookie.substring(posStart + 22);
+        selectedInterface = selectedInterface.substring(0, selectedInterface.indexOf(';'));
+        interfaceField.value = selectedInterface;
       }
     }
   }
@@ -149,16 +150,16 @@ class BackendLogin {
    * Hides input fields and shows cookie warning
    */
   private showCookieWarning(): void {
-    $(this.options.formFields).addClass('hidden');
-    $(this.options.errorNoCookies).removeClass('hidden');
+    document.querySelector(this.options.formFields)?.classList.add('hidden');
+    document.querySelector(this.options.errorNoCookies)?.classList.remove('hidden');
   }
 
   /**
    * Hides cookie warning and shows input fields
    */
   private hideCookieWarning(): void {
-    $(this.options.formFields).removeClass('hidden');
-    $(this.options.errorNoCookies).addClass('hidden');
+    document.querySelector(this.options.formFields)?.classList.remove('hidden');
+    document.querySelector(this.options.errorNoCookies)?.classList.add('hidden');
   }
 
   private checkLoginRefresh(): void {
@@ -202,24 +203,63 @@ class BackendLogin {
    * Registers listeners for the Login Interface
    */
   private initializeEvents(): void {
-    $(document).ajaxStart(this.showLoadingIndicator.bind(this));
-    $(this.options.loginForm).on('submit', this.handleSubmit.bind(this));
+    new RegularEvent('submit', this.handleSubmit.bind(this)).bindTo(document.querySelector(this.options.loginForm));
 
     // the Interface selector is not always present, so this check is needed
-    if ($(this.options.interfaceField).length > 0) {
-      $(document).on('change blur', this.options.interfaceField, this.interfaceSelectorChanged.bind(this));
+    const interfaceField = document.querySelector(this.options.interfaceField) as HTMLInputElement;
+    if (interfaceField !== null) {
+      new RegularEvent('change blur', this.interfaceSelectorChanged.bind(this)).bindTo(interfaceField);
     }
 
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('.t3js-clearable')).forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable(),
     );
 
-    // carousel news height transition
-    $('.t3js-login-news-carousel').on('slide.bs.carousel', (e: any) => {
-      const nextH = $(e.relatedTarget).height();
-      const $element: JQuery = $(e.target);
-      $element.find('div.active').parent().animate({ height: nextH }, 500);
-    });
+    this.registerNewsCarouselEvents();
+  }
+
+  private registerNewsCarouselEvents(): void {
+    const newsCarouselInner: HTMLElement = document.querySelector('.t3js-login-news-carousel .carousel-inner');
+    if (newsCarouselInner !== null) {
+      const newsCarousel = newsCarouselInner.closest('.t3js-login-news-carousel');
+
+      this.calculateScrollbarWidth(newsCarouselInner);
+
+      new RegularEvent('scroll', (e: Event): void => {
+        const el = e.currentTarget as HTMLElement;
+        this.setOverflowClasses(el);
+      }).bindTo(newsCarouselInner);
+
+      new RegularEvent('slid.bs.carousel', (): void => {
+        newsCarouselInner.scrollTop = 0;
+        this.setOverflowClasses(newsCarouselInner);
+        this.calculateScrollbarWidth(newsCarouselInner);
+      }).bindTo(newsCarousel);
+
+      this.setOverflowClasses(newsCarouselInner);
+    }
+  }
+
+  private calculateScrollbarWidth(newsCarouselInner: HTMLElement): void {
+    const scrollbarWidth = newsCarouselInner.offsetWidth - newsCarouselInner.clientWidth;
+    newsCarouselInner.setAttribute('style', '--scrollbar-width: ' + scrollbarWidth + 'px');
+  }
+
+  private setOverflowClasses(el: HTMLElement): void {
+    enum OverflowClasses {
+      top = 'carousel-inner--overflowing-top',
+      bottom = 'carousel-inner--overflowing-bottom',
+    }
+    const isScrollable = el.scrollHeight > el.clientHeight;
+    if (!isScrollable) {
+      el.classList.remove(OverflowClasses.bottom, OverflowClasses.top);
+      return;
+    }
+
+    const isScrolledToBottom = el.scrollHeight <= el.clientHeight + el.scrollTop;
+    const isScrolledToTop = el.scrollTop === 0;
+    el.classList.toggle(OverflowClasses.bottom, !isScrolledToBottom);
+    el.classList.toggle(OverflowClasses.top, !isScrolledToTop);
   }
 }
 

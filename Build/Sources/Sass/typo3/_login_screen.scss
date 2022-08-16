@@ -212,6 +212,35 @@ $login-container-padding-horizontal: 2.5em;
 
 .typo3-login-carousel {
     padding: $login-container-padding-horizontal; // use horizontal padding also as vertical padding
+
+    .carousel-inner {
+        /** scrollbar width is calculated via JavaScript */
+        --scrollbar-width: 15px;
+
+        scroll-behavior: smooth;
+        height: 12rem;
+        overflow-y: auto;
+
+        // Create two masks: a fading effect for overflowing text and a solid mask to spare the scrollbar from fading
+        mask-image: linear-gradient(to bottom, transparent, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent), linear-gradient(black, black);
+        mask-size: calc(100% - var(--scrollbar-width)) 100%, var(--scrollbar-width) 100%;
+        mask-position: 0 0, 100% 0;
+        mask-repeat: no-repeat, no-repeat;
+
+        &.carousel-inner--overflowing-top {
+            --top-mask-size: 4rem;
+
+            --bottom-mask-size: -100%;
+
+            padding-right: 10px;
+        }
+
+        &.carousel-inner--overflowing-bottom {
+            --bottom-mask-size: 4rem;
+
+            padding-right: 10px;
+        }
+    }
 }
 
 .typo3-login-carousel-control {
