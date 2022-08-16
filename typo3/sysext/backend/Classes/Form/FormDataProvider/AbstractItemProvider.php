@@ -1078,10 +1078,12 @@ abstract class AbstractItemProvider
         $languageService = $this->getLanguageService();
 
         foreach ($itemArray as $key => $item) {
-            if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
-                && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
+            $labelIndex = $item[1] ?? '';
+
+            if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex])
+                && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex])
             ) {
-                $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]]);
+                $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex]);
             } else {
                 $label = $languageService->sL(trim($item[0]));
             }
