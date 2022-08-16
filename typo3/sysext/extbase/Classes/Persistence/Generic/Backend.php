@@ -808,7 +808,7 @@ class Backend implements BackendInterface, SingletonInterface
         $this->eventDispatcher->dispatch(new EntityUpdatedInPersistenceEvent($object));
 
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
+        if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
             $this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
         }
         return true;
