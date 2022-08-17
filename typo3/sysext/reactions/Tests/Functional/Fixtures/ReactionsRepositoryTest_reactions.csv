@@ -1,0 +1,4 @@
+sys_reaction,,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,name,secret,reactiontype,table_name,fields,storage_pid,identifier,impersonate_user
+,1,0,1,0,0,Test Visual,secret1,create-record,pages,{"title":"Test ${foo}"},1,"visual-reaction-uuid",1
+,2,0,1,0,0,Random Test,anysecret,foo-reaction,pages,{"title":"Test ${foo}"},1,"foo-uuid",1
