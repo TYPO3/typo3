@@ -486,9 +486,7 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
 
-        // CSS_inlineStyle from TS
-        $style = trim($controller->pSetup['CSS_inlineStyle'] ?? '');
-        $style .= $controller->cObj->cObjGet($controller->pSetup['cssInline.'] ?? null, 'cssInline.');
+        $style = $controller->cObj->cObjGet($controller->pSetup['cssInline.'] ?? null, 'cssInline.');
         if (trim($style)) {
             $this->addCssToPageRenderer($controller, $style, true, 'additionalTSFEInlineStyle');
         }

@@ -240,7 +240,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->willReturn('');
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
@@ -283,7 +283,7 @@ class RequestHandlerTest extends UnitTestCase
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->willReturn('');
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
@@ -331,7 +331,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->willReturn('');
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
@@ -434,7 +434,7 @@ class RequestHandlerTest extends UnitTestCase
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->wilLReturn('');
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);

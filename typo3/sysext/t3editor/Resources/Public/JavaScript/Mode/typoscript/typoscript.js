@@ -210,7 +210,6 @@
         'createFoldersInEB': kw('createFoldersInEB'),
         'crop': kw('crop'),
         'csConv': kw('csConv'),
-        'CSS_inlineStyle': A,
         'CType': kw('CType'),
         'CUR': B,
         'CURIFSUB': B,

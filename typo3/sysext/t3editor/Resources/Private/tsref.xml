@@ -3816,11 +3816,6 @@ page.30.value = Here goes the footer]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="CSS_inlineStyle" type="string">
-			<description><![CDATA[This value is just passed on as inline css (in-document css encapsulated in <style>-tags)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="bgImg" type="imgResource">
 			<description><![CDATA[Background image on the page. This is automatically added to the body-tag.]]></description>
 			<default><![CDATA[
