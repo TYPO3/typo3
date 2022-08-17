@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -138,6 +139,11 @@ class BootService
             $GLOBALS['TCA'] = $tcaFactory->create();
         }
         $container->get('boot.state')->complete = true;
+        if ($allowCaching) {
+            $container->get(TcaSchemaFactory::class)->load($GLOBALS['TCA']);
+        } else {
+            $container->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        }
         $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
         if ($loadExtTables) {
             if ($allowCaching) {

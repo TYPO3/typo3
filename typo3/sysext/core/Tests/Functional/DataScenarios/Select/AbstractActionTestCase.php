@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Select;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
@@ -51,6 +52,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->writeSiteConfiguration(
             'test',
@@ -189,6 +191,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
     {
         $GLOBALS['TCA']['tt_content']['columns'][self::FIELD_ContentElement]['config']['localizeReferencesAtParentLocalization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }

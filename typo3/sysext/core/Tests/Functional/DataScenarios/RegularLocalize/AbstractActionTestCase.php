@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\RegularLocalize;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,6 +50,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->writeSiteConfiguration(
             'test',
@@ -141,6 +143,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         unset($GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['l10n_mode']);
         $GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
@@ -173,6 +176,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageNotHiddenHideAtCopyFalse(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -181,6 +185,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageHiddenHideAtCopyFalse(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         // @todo Add hidden page to importDefault.csv to make this database change superfluous.
         $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
@@ -201,6 +206,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // This is the default, but set it to be expressive for this test.
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -210,6 +216,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // This is the default, but set it to be expressive for this test.
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         // @todo Add hidden page to importDefault.csv to make this database change superfluous.
         $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
@@ -230,6 +237,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // This is the default, but set it to be expressive for this test.
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
             self::TABLE_Page,
@@ -249,6 +257,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // This is the default, but set it to be expressive for this test.
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         // @todo Add hidden page to importDefault.csv to make this database change superfluous.
         $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
@@ -278,6 +287,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // This is the default, but set it to be expressive for this test.
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
             self::TABLE_Page,
@@ -289,6 +299,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             ]
         );
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
@@ -297,6 +308,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // This is the default, but set it to be expressive for this test.
         $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         // @todo Add hidden page to importDefault.csv to make this database change superfluous.
         $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(

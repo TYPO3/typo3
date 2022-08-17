@@ -71,6 +71,14 @@ readonly class RawRecord implements \ArrayAccess, RecordInterface
         return $this->properties + ['uid' => $this->uid, 'pid' => $this->pid];
     }
 
+    /**
+     * In addition to `isset()`, this considers `null` values as well.
+     */
+    public function isDefined(int|string $offset): bool
+    {
+        return array_key_exists($offset, $this->properties);
+    }
+
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->properties[$offset]);

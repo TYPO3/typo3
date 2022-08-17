@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
@@ -58,6 +59,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->writeSiteConfiguration(
             'test',
@@ -130,6 +133,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeParentContentWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $this->actionService->modifyRecords(
@@ -200,6 +205,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             [self::TABLE_Hotel => $GLOBALS['TCA'][self::TABLE_Hotel]],
             $GLOBALS['TCA']
         );
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -306,6 +312,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageWithLocalizationExclude(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
@@ -313,6 +321,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageTwiceWithLocalizationExclude(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageIdFirst'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
@@ -322,6 +332,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageAndAddHotelChildWithLocalizationExclude(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->actionService->modifyRecords(
@@ -336,6 +348,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
@@ -343,6 +357,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageAndAddHotelChildWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->actionService->modifyRecords(
@@ -359,6 +375,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['languageField']);
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigPointerField']);
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->actionService->modifyRecords(
@@ -373,6 +391,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeAndCopyPageWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
@@ -382,6 +402,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizePageWithSynchronizationAndCustomLocalizedHotel(): void
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         // Using "localized page ID" on purpose because BE editing uses a "page" record and data handler

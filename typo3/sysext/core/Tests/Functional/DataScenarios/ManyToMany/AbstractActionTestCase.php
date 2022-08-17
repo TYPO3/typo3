@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
@@ -55,6 +56,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['sys_category']['columns']['title']['l10n_mode'] = 'prefixLangTitle';
         // Prepend label for copied sys_category records
         $GLOBALS['TCA']['sys_category']['ctrl']['prependAtCopy'] = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->writeSiteConfiguration(
             'test',
@@ -174,6 +177,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
@@ -181,6 +185,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentOfRelationWithLanguageExclude(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
@@ -188,6 +193,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $this->actionService->modifyReferences(
@@ -201,6 +207,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], self::VALUE_LanguageIdSecond);

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 
 use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -50,6 +51,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->writeSiteConfiguration(
             'test',
@@ -120,6 +122,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function copyContentToLanguageWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
@@ -128,6 +131,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function copyContentToLanguageWithLocalizationExclude(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
@@ -179,6 +183,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentWithHideAtCopy(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['hideAtCopy'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['hidden' => 0]);
@@ -202,6 +207,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
         // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
         $GLOBALS['TCA'] = (new TcaMigration())->migrate($GLOBALS['TCA']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         // perform actions to be tested
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];

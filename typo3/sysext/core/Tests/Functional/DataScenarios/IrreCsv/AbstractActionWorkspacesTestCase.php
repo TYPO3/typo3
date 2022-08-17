@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+
 abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 {
     protected const VALUE_WorkspaceId = 1;
@@ -28,6 +30,7 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
     public function changeHotelSortingWithOfferNotWorkspaceAware(): void
     {
         $GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['versioningWS'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->actionService->moveRecord(self::TABLE_Hotel, self::VALUE_HotelIdFirst, -self::VALUE_HotelIdSecond);
     }
 
@@ -80,6 +83,7 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['delete']);
         unset($GLOBALS['TCA'][self::TABLE_Offer]['ctrl']['delete']);
         unset($GLOBALS['TCA'][self::TABLE_Price]['ctrl']['delete']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $newRecordIds = $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdLast]);
     }

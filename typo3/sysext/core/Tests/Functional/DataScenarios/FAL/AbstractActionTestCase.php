@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
@@ -56,6 +57,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/sys_file_storage.csv');
         $this->writeSiteConfiguration(

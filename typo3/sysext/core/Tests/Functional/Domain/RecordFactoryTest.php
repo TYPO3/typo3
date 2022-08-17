@@ -39,7 +39,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     public function typesAreResolvedProperlyForPageRecord(): void
     {
         $dbRow = BackendUtility::getRecord('pages', 1);
-        $subject = new RecordFactory();
+        $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
         self::assertSame($dbRow, $result->getRawRecord()->toArray());
         self::assertArrayNotHasKey('mount_pid', $result->toArray());
@@ -57,7 +57,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     public function typesAreResolvedProperlyForContent(): void
     {
         $dbRow = BackendUtility::getRecord('tt_content', 1);
-        $subject = new RecordFactory();
+        $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('tt_content', $dbRow);
         self::assertSame($dbRow, $result->getRawRecord()->toArray());
         self::assertArrayNotHasKey('pi_flexform', $result->toArray());
@@ -71,7 +71,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     public function recordWithoutTypeIsResolvedProperly(): void
     {
         $dbRow = BackendUtility::getRecord('be_groups', 9);
-        $subject = new RecordFactory();
+        $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('be_groups', $dbRow);
         self::assertNull($result->getRecordType());
         self::assertSame('be_groups', $result->getFullType());
@@ -86,7 +86,7 @@ final class RecordFactoryTest extends FunctionalTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $dbRow = $pageRepository->getPage(3);
-        $subject = new RecordFactory();
+        $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
         self::assertSame(903, $result->getOverlaidUid());
         self::assertSame(903, $result->getComputedProperties()->getLocalizedUid());
@@ -102,12 +102,14 @@ final class RecordFactoryTest extends FunctionalTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $dbRow = $pageRepository->getPage(3);
-        $subject = new RecordFactory();
+        $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
         self::assertSame(0, $result->getVersionInfo()->getWorkspaceId());
         self::assertSame(3, $result->getLanguageInfo()->getTranslationParent());
         self::assertSame(1, $result->getLanguageInfo()->getLanguageId());
         self::assertSame(1, $result->getLanguageId());
+        self::assertArrayHasKey('categories', $result->toArray());
+        self::assertArrayNotHasKey('shortcut', $result->toArray());
         self::assertSame(1, $result->getComputedProperties()->getRequestedOverlayLanguageId());
         self::assertNull($result->getComputedProperties()->getVersionedUid());
     }

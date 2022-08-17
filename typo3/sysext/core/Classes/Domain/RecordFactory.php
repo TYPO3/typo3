@@ -21,6 +21,12 @@ use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Record\LanguageInfo;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
 use TYPO3\CMS\Core\Domain\Record\VersionInfo;
+use TYPO3\CMS\Core\Schema\Capability\FieldCapability;
+use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
+use TYPO3\CMS\Core\Schema\Capability\SystemInternalFieldCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -32,138 +38,59 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  *
  * @internal not part of TYPO3 Core API yet.
  */
-class RecordFactory
+readonly class RecordFactory
 {
+    public function __construct(
+        protected TcaSchemaFactory $schemaFactory
+    ) {}
+
     /**
      * Takes a full database record (the whole row), and creates a Record object out of it, based on the type
      * of the record.
      */
     public function createFromDatabaseRow(string $table, array $record): Record
     {
-        $tcaConfig = $GLOBALS['TCA'][$table] ?? null;
-        if ($tcaConfig === null) {
+        if (!$this->schemaFactory->has($table)) {
             throw new \InvalidArgumentException(
                 'Unable to create Record from non-TCA table "' . $table . '".',
                 1715266929
             );
         }
+        $schema = $this->schemaFactory->get($table);
         $fullType = $table;
-        $typeField = $tcaConfig['ctrl']['type'] ?? null;
-        $allFieldNames = array_keys($tcaConfig['columns']);
         $properties = [];
-        if ($typeField !== null) {
-            if (!isset($record[$typeField])) {
+        $subSchema = null;
+        $typeFieldDefinition = $schema->getSubSchemaDivisorField();
+        if ($typeFieldDefinition !== null) {
+            if (!isset($record[$typeFieldDefinition->getName()])) {
                 throw new \InvalidArgumentException(
-                    'Missing typeField "' . $typeField . '" in record of requested table "' . $table . '".',
+                    'Missing typeField "' . $typeFieldDefinition->getName() . '" in record of requested table "' . $table . '".',
                     1715267513,
                 );
             }
-            $recordType = (string)$record[$typeField];
+            $recordType = (string)$record[$typeFieldDefinition->getName()];
             $fullType .= '.' . $recordType;
+            $subSchema = $schema->getSubSchema($recordType);
         }
         $computedProperties = $this->extractComputedProperties($record);
         $rawRecord = new RawRecord((int)$record['uid'], (int)$record['pid'], $record, $computedProperties, $fullType);
-        $relevantFieldNames = $this->findRelevantFieldsForSubSchema($tcaConfig, $rawRecord->getRecordType());
-        // This removes columns, which are defined for the sub-type, but have no definition.
-        $relevantFieldNames = array_intersect(array_keys($relevantFieldNames), $allFieldNames);
+
+        // Only use the fields that are defined in the schema
         foreach ($record as $fieldName => $fieldValue) {
-            if (!in_array($fieldName, $relevantFieldNames, true)) {
+            if ($subSchema && !$subSchema->hasField($fieldName)) {
                 continue;
             }
-            if ($fieldName === $typeField) {
+            if ($fieldName === $typeFieldDefinition?->getName()) {
                 continue;
             }
             $properties[$fieldName] = $fieldValue;
         }
         [$properties, $systemProperties] = $this->extractSystemInformation(
-            $tcaConfig['ctrl'],
+            $schema,
             $rawRecord,
             $properties,
         );
         return new Record($rawRecord, $properties, $systemProperties);
-    }
-
-    /**
-     * Gets the requested TCA sub-schema defined in TCA "types" section.
-     * Unavailable sub-schemas fall back to the default types "0" and "1".
-     * If even fallbacks are unavailable, this method errors out.
-     */
-    public function getSubSchemaConfig(array $tcaForTable, ?string $subSchemaName): array
-    {
-        if ($subSchemaName === null) {
-            $subSchemaName = '0';
-        }
-        if (isset($tcaForTable['types'][$subSchemaName])) {
-            return $tcaForTable['types'][$subSchemaName];
-        }
-        if (!isset($tcaForTable['types']['0']) && !isset($tcaForTable['types']['1'])) {
-            throw new \UnexpectedValueException(
-                'Neither 0 nor 1 are defined as fallback type for TCA table. Requested sub-schema was "' . $subSchemaName . '".',
-                1715269835
-            );
-        }
-        // Fallback types.
-        return $tcaForTable['types']['0'] ?? $tcaForTable['types']['1'];
-    }
-
-    public function findRelevantFieldsForSubSchema(array $tcaForTable, ?string $subSchemaName): array
-    {
-        $fields = [];
-        $subSchemaConfig = $this->getSubSchemaConfig($tcaForTable, $subSchemaName);
-        $showItemArray = GeneralUtility::trimExplode(',', $subSchemaConfig['showitem']);
-        foreach ($showItemArray as $showItemFieldString) {
-            // The maximum amount of semicolons as delimiters is 3 for palettes.
-            // Appending three semicolons ensures the array spread syntax always fills the variables.
-            // 1. normal column name, keyword "--palette--" or keyword "--div--"
-            // 2. Alternative label
-            // 3. palette name
-            [$fieldName, $fieldLabel, $paletteName] = GeneralUtility::trimExplode(';', $showItemFieldString . ';;;');
-            if ($fieldName === '--div--') {
-                // tabs are not of interest here
-                continue;
-            }
-            if ($fieldName === '--palette--' && !empty($paletteName)) {
-                // showitem references to a palette field. unpack the palette and process
-                // label overrides that may be in there.
-                if (!isset($tcaForTable['palettes'][$paletteName]['showitem'])) {
-                    // No palette with this name found? Skip it.
-                    continue;
-                }
-                $palettesArray = GeneralUtility::trimExplode(
-                    ',',
-                    $tcaForTable['palettes'][$paletteName]['showitem']
-                );
-                foreach ($palettesArray as $aPalettesString) {
-                    // The showitem string in palettes only allows simple columns
-                    // with an alternative label and the special keyword "--linebreak--".
-                    [$fieldName, $fieldLabel] = GeneralUtility::trimExplode(';', $aPalettesString . ';;');
-                    if ($fieldName === '--linebreak--') {
-                        continue;
-                    }
-                    if (isset($tcaForTable['columns'][$fieldName])) {
-                        $fields[$fieldName] = $this->getFinalFieldConfiguration($fieldName, $tcaForTable, $subSchemaConfig, $fieldLabel);
-                    }
-                }
-            } elseif (isset($tcaForTable['columns'][$fieldName])) {
-                $fields[$fieldName] = $this->getFinalFieldConfiguration($fieldName, $tcaForTable, $subSchemaConfig, $fieldLabel);
-            }
-        }
-        return $fields;
-    }
-
-    /**
-     * Handles the label and possible columnsOverrides
-     */
-    public function getFinalFieldConfiguration(string $fieldName, array $schemaConfiguration, array $subSchemaConfiguration, ?string $fieldLabel = null): array
-    {
-        $fieldConfiguration = $schemaConfiguration['columns'][$fieldName] ?? [];
-        if (isset($subSchemaConfiguration['columnsOverrides'][$fieldName])) {
-            $fieldConfiguration = array_replace_recursive($fieldConfiguration, $subSchemaConfiguration['columnsOverrides'][$fieldName]);
-        }
-        if (!empty($fieldLabel)) {
-            $fieldConfiguration['label'] = $fieldLabel;
-        }
-        return $fieldConfiguration;
     }
 
     protected function extractComputedProperties(array &$record): ComputedProperties
@@ -183,34 +110,34 @@ class RecordFactory
         return $computedProperties;
     }
 
-    protected function extractSystemInformation(array $ctrl, RawRecord $rawRecord, array $properties): array
+    protected function extractSystemInformation(TcaSchema $schema, RawRecord $rawRecord, array $properties): array
     {
         // Language information.
         $systemProperties = [];
-        $languageField = $ctrl['languageField'] ?? null;
-        if ($languageField !== null) {
-            $transOrigPointerField = $ctrl['transOrigPointerField'] ?? null;
-            $translationSourceField = $ctrl['translationSource'] ?? null;
+        if ($schema->isLanguageAware()) {
+            /** @var LanguageAwareSchemaCapability $languageCapability */
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+            $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
+            $translationSourceField = $languageCapability->hasTranslationSourceField() ? $languageCapability->getTranslationSourceField()->getName() : null;
             $systemProperties['language'] = new LanguageInfo(
                 (int)$rawRecord[$languageField],
-                $transOrigPointerField ? (int)$rawRecord[$transOrigPointerField] : null,
+                (int)$rawRecord[$transOrigPointerField],
                 $translationSourceField ? (int)$rawRecord[$translationSourceField] : null,
             );
             unset($properties[$languageField]);
-            if ($transOrigPointerField !== null) {
-                unset($properties[$transOrigPointerField]);
-            }
+            unset($properties[$transOrigPointerField]);
             if ($translationSourceField !== null) {
                 unset($properties[$translationSourceField]);
             }
-            if (isset($ctrl['transOrigDiffSourceField'])) {
-                unset($properties[$ctrl['transOrigDiffSourceField']]);
+            if ($languageCapability->hasDiffSourceField()) {
+                unset($properties[$languageCapability->getDiffSourceField()?->getName()]);
             }
             unset($properties['l10n_state']);
         }
 
         // Workspaces.
-        if ($ctrl['versioningWS'] ?? false) {
+        if ($schema->isWorkspaceAware()) {
             $systemProperties['version'] = new VersionInfo(
                 (int)$rawRecord['t3ver_wsid'],
                 (int)$rawRecord['t3ver_oid'],
@@ -225,48 +152,48 @@ class RecordFactory
             );
         }
 
-        // System fields.
-        if (($ctrl['delete'] ?? false) && isset($rawRecord[$ctrl['delete']])) {
-            $systemProperties['isDeleted'] = (bool)$rawRecord[$ctrl['delete']];
-            unset($properties[$ctrl['delete']]);
-        }
-        if (($ctrl['crdate'] ?? false) && isset($rawRecord[$ctrl['crdate']])) {
-            $systemProperties['createdAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord[$ctrl['crdate']]);
-            unset($properties[$ctrl['crdate']]);
-        }
-        if (($ctrl['tstamp'] ?? false) && isset($rawRecord[$ctrl['tstamp']])) {
-            $systemProperties['lastUpdatedAt'] = (new \DateTimeImmutable())->setTimestamp(
-                $rawRecord[$ctrl['tstamp']]
-            );
-            unset($properties[$ctrl['tstamp']]);
-        }
-        if (($ctrl['descriptionColumn'] ?? false) && array_key_exists($ctrl['descriptionColumn'], $rawRecord->toArray())) {
-            $systemProperties['description'] = $rawRecord[$ctrl['descriptionColumn']];
-            unset($properties[$ctrl['descriptionColumn']]);
-        }
-        if (($ctrl['sortby'] ?? false) && isset($rawRecord[$ctrl['sortby']])) {
-            $systemProperties['sorting'] = $rawRecord[$ctrl['sortby']];
-            unset($properties[$ctrl['sortby']]);
-        }
-        if (($ctrl['editlock'] ?? false) && isset($rawRecord[$ctrl['editlock']])) {
-            $systemProperties['isLockedForEditing'] = (bool)$rawRecord[$ctrl['editlock']];
-            unset($properties[$ctrl['editlock']]);
-        }
-        foreach ($ctrl['enablecolumns'] ?? [] as $columnType => $fieldName) {
-            if (!isset($rawRecord[$fieldName])) {
+        // Date-related fields
+        foreach (TcaSchemaCapability::getSystemCapabilities() as $capability) {
+            if (!$schema->hasCapability($capability)) {
                 continue;
             }
-            switch ($columnType) {
-                case 'disabled':
-                    $systemProperties['isDisabled'] = (bool)$rawRecord[$fieldName];
+            /** @var SystemInternalFieldCapability|FieldCapability $capabilityInstance */
+            $capabilityInstance = $schema->getCapability($capability);
+            $fieldName = $capabilityInstance->getFieldName();
+            // Field is not set in the original record, just skip it
+            if (!$rawRecord->isDefined($fieldName)) {
+                continue;
+            }
+            switch ($capability) {
+                case TcaSchemaCapability::CreatedAt:
+                    $systemProperties['createdAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord[$fieldName]);
                     break;
-                case 'starttime':
+                case TcaSchemaCapability::UpdatedAt:
+                    $systemProperties['lastUpdatedAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord[$fieldName]);
+                    break;
+                case TcaSchemaCapability::RestrictionStartTime:
                     $systemProperties['publishAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord[$fieldName]);
                     break;
-                case 'endtime':
+                case TcaSchemaCapability::RestrictionEndTime:
                     $systemProperties['publishUntil'] = (new \DateTimeImmutable())->setTimestamp($rawRecord[$fieldName]);
                     break;
-                case 'fe_group':
+
+                case TcaSchemaCapability::SoftDelete:
+                    $systemProperties['isDeleted'] = (bool)($rawRecord[$fieldName]);
+                    break;
+                case TcaSchemaCapability::EditLock:
+                    $systemProperties['isLockedForEditing'] = (bool)($rawRecord[$fieldName]);
+                    break;
+                case TcaSchemaCapability::RestrictionDisabledField:
+                    $systemProperties['isDisabled'] = (bool)($rawRecord[$fieldName]);
+                    break;
+                case TcaSchemaCapability::InternalDescription:
+                    $systemProperties['description'] = $rawRecord[$fieldName];
+                    break;
+                case TcaSchemaCapability::SortByField:
+                    $systemProperties['sorting'] = (int)($rawRecord[$fieldName]);
+                    break;
+                case TcaSchemaCapability::RestrictionUserGroup:
                     $systemProperties['userGroupRestriction'] = GeneralUtility::intExplode(
                         ',',
                         $rawRecord[$fieldName],
@@ -276,6 +203,7 @@ class RecordFactory
             }
             unset($properties[$fieldName]);
         }
+
         $systemProperties = new SystemProperties(
             $systemProperties['language'] ?? null,
             $systemProperties['version'] ?? null,

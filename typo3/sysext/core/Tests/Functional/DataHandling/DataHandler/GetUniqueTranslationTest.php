@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -60,6 +61,8 @@ final class GetUniqueTranslationTest extends FunctionalTestCase
         $GLOBALS['TCA']['pages']['columns']['keywords']['transOrigPointerField'] = 'l10n_parent';
         $GLOBALS['TCA']['pages']['columns']['keywords']['languageField'] = 'sys_language_uid';
         $GLOBALS['TCA']['pages']['columns']['keywords']['config']['eval'] = 'unique';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $actionService = new ActionService();
         $map = $actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
         $newPageId = $map['pages'][self::PAGE_DATAHANDLER];
@@ -77,6 +80,8 @@ final class GetUniqueTranslationTest extends FunctionalTestCase
         $GLOBALS['TCA']['pages']['columns']['nav_title']['transOrigPointerField'] = 'l10n_parent';
         $GLOBALS['TCA']['pages']['columns']['nav_title']['languageField'] = 'sys_language_uid';
         $GLOBALS['TCA']['pages']['columns']['nav_title']['config']['eval'] = 'unique';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $actionService = new ActionService();
         $map = $actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
         $newPageId = $map['pages'][self::PAGE_DATAHANDLER];
@@ -99,6 +104,8 @@ final class GetUniqueTranslationTest extends FunctionalTestCase
         $GLOBALS['TCA']['pages']['columns']['nav_title']['transOrigPointerField'] = 'l10n_parent';
         $GLOBALS['TCA']['pages']['columns']['nav_title']['languageField'] = 'sys_language_uid';
         $GLOBALS['TCA']['pages']['columns']['nav_title']['config']['eval'] = 'unique';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $actionService = new ActionService();
         $map = $actionService->createNewRecord('pages', -self::PAGE_DATAHANDLER, [
             'title' => 'New Page',
@@ -122,6 +129,8 @@ final class GetUniqueTranslationTest extends FunctionalTestCase
         $GLOBALS['TCA']['pages']['columns']['nav_title']['transOrigPointerField'] = 'l10n_parent';
         $GLOBALS['TCA']['pages']['columns']['nav_title']['languageField'] = 'sys_language_uid';
         $GLOBALS['TCA']['pages']['columns']['nav_title']['config']['eval'] = 'unique';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $actionService = new ActionService();
         $map = $actionService->createNewRecord('pages', -self::PAGE_DATAHANDLER, [
             'title' => 'New Page',

@@ -87,6 +87,7 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
     {
         $identifier = StringUtility::getUniqueId('NEW');
         $backendUser = $this->setUpBackendUser(9);
+        $backendUser->groupData['pagetypes_select'] = '1';
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $dataMap = [

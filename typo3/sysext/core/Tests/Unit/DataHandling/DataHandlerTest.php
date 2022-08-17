@@ -25,12 +25,16 @@ use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMapBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SysLog\Action;
 use TYPO3\CMS\Core\SysLog\Error;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -46,6 +50,7 @@ final class DataHandlerTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
     protected DataHandler&MockObject&AccessibleObjectInterface $subject;
     protected BackendUserAuthentication&MockObject $backendUserMock;
+    protected TcaSchemaFactory $tcaSchemaFactory;
 
     protected function setUp(): void
     {
@@ -55,6 +60,15 @@ final class DataHandlerTest extends UnitTestCase
         $cacheManager->registerCache(new NullFrontend('runtime'));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
         $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $this->tcaSchemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder(),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $this->subject = $this->getAccessibleMock(DataHandler::class, null);
         $this->subject->start([], [], $this->backendUserMock);
     }
@@ -117,6 +131,7 @@ final class DataHandlerTest extends UnitTestCase
         ];
         $this->subject->admin = false;
         $this->backendUserMock->groupData['tables_modify'] = $tableName;
+        $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
         self::assertFalse($this->subject->checkModifyAccessList($tableName));
     }
 
@@ -640,6 +655,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $subject = $this->getMockBuilder(DataHandler::class)
             ->onlyMethods(['log'])
             ->getMock();
@@ -789,6 +805,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $subject = new DataHandler();
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
         $logDetails = StringUtility::getUniqueId('details');
@@ -800,6 +817,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithPlaceholders(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $subject = new DataHandler();
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
@@ -1000,6 +1018,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function deletePagesOnRootLevelIsDenied(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
             ->onlyMethods(['canDeletePage', 'log'])
             ->getMock();
@@ -1235,6 +1254,8 @@ final class DataHandlerTest extends UnitTestCase
         $languageServiceMock->method('sL')->with('testLabel')->willReturn('(copy %s)');
         $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
+        $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         self::assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
     }
 

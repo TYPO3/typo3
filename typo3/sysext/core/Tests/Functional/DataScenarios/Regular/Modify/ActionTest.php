@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\Modify;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -550,6 +551,7 @@ final class ActionTest extends AbstractActionTestCase
                 ],
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         parent::createPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageWithSlugOverrideConfiguration.csv');
     }

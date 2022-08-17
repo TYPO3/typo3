@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -65,6 +66,7 @@ final class DefaultValuesTest extends FunctionalTestCase
     {
         $GLOBALS['TCA']['pages']['columns']['subtitle']['config']['default'] = 'tca default subtitle';
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['default'] = 'tca default bodytext';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         // Create page and verify default from TCA is applied
         $map = $this->actionService->createNewRecord('pages', 88, [
@@ -164,6 +166,8 @@ final class DefaultValuesTest extends FunctionalTestCase
         // New content element without bodytext
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['l10n_mode'] = 'exclude';
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['enableRichtext'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $map = $this->actionService->createNewRecord('tt_content', 88, [
             'header' => 'Random header',
             'bodytext' => null,

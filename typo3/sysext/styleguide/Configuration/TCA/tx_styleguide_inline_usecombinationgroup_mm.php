@@ -21,6 +21,21 @@ return [
     ],
 
     'columns' => [
+        'hidden' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.hidden_toggle',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 1,
+                'items' => [
+                    [
+                        'label' => '',
+                        'invertStateDisplay' => true,
+                    ],
+                ],
+            ],
+        ],
 
         'group_parent' => [
             'label' => 'group parent',
