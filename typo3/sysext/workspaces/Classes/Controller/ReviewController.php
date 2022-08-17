@@ -169,6 +169,7 @@ class ReviewController
             'availableStages' => $this->stagesService->getStagesForWSUser(),
             'availableSelectStages' => $this->getAvailableSelectStages(),
             'stageActions' => $this->getStageActions(),
+            'showEntireWorkspaceDropDown' => !(($backendUser->workspaceRec['publish_access'] ?? 0) & 4),
             'selectedLanguage' => $this->getLanguageSelection(),
             'selectedDepth' => $this->getDepthSelection(),
             'selectedStage' => $this->getStageSelection(),
