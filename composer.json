@@ -72,6 +72,7 @@
 		"psr/http-server-handler": "^1.0",
 		"psr/http-server-middleware": "^1.0",
 		"psr/log": "^2.0 || ^3.0",
+		"scssphp/scssphp": "^1.11",
 		"symfony/config": "^6.1",
 		"symfony/console": "^6.1",
 		"symfony/dependency-injection": "^6.1",

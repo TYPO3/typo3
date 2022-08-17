@@ -124,6 +124,29 @@ declare module '@typo3/backend/form-engine' {
   export default _exported;
 }
 
+declare module '@typo3/ckeditor5-bundle' {
+  import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor.js';
+  export class CKEditor5 extends ClassicEditor {
+    // using `any` due to type-hell
+    static builtinPlugins: any[];
+  }
+
+  export * as UI from '@ckeditor/ckeditor5-ui';
+  export * as Core from '@ckeditor/ckeditor5-core';
+  export * as Engine from '@ckeditor/ckeditor5-engine';
+  export * as Utils from '@ckeditor/ckeditor5-utils';
+
+  export * as Clipboard from '@ckeditor/ckeditor5-clipboard';
+  export * as Essentials from '@ckeditor/ckeditor5-essentials';
+  export * as Link from '@ckeditor/ckeditor5-link';
+  export * as LinkUtils from '@ckeditor/ckeditor5-link/src/utils';
+  export * as Typing from '@ckeditor/ckeditor5-typing'
+  export * as Widget from '@ckeditor/ckeditor5-widget';
+
+  // single or prefixed exports
+  export { default as WordCount } from '@ckeditor/ckeditor5-word-count/src/wordcount';
+}
+
 // type definition for global namespace object
 interface Window {
   TYPO3: any;

@@ -186,6 +186,7 @@ module.exports = function (grunt) {
     },
     exec: {
       ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
+      ckeditor: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c ckeditor5.rollup.config.js',
       lintspaces: ((process.platform === 'win32') ? 'node_modules\\.bin\\lintspaces.cmd' : './node_modules/.bin/lintspaces') + ' --editorconfig ../.editorconfig "../typo3/sysext/*/Resources/Private/**/*.html"',
       squoosh: ((process.platform === 'win32') ? 'node_modules\\.bin\\squoosh-cli.cmd' : './node_modules/.bin/squoosh-cli') + ' --oxipng auto --output-dir ../typo3/sysext/core/Resources/Public/Icons/Flags/ ../typo3/sysext/core/Resources/Public/Icons/Flags/*.png' + ((process.platform === 'win32') ? '' : ' 2>&1'),
       'npm-install': 'npm install'
@@ -497,39 +498,6 @@ module.exports = function (grunt) {
         report: false,
         srcPrefix: "node_modules/"
       },
-      ckeditor: {
-        options: {
-          copyOptions: {
-            // Using null encoding to allow passthrough of binary files in `process`
-            encoding: null,
-            // Convert CRLF to LF in plain text files to mimic git's autocrlf behaviour
-            process: (content, srcpath) => srcpath.match(/\.(css|js|txt|html|md)$/) ? content.toString('utf8').replace(/\r\n/g, '\n') : content
-          },
-          destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib"
-        },
-        files: {
-          'ckeditor.js': 'ckeditor4/ckeditor.js',
-          'plugins/': 'ckeditor4/plugins/',
-          'skins/': 'ckeditor4/skins/',
-          'lang/': 'ckeditor4/lang/'
-        }
-      },
-      ckeditor_externalplugins: {
-        options: {
-          copyOptions: {
-            // Using null encoding to allow passthrough of binary files in `process`
-            encoding: null,
-            // Convert CRLF to LF in plain text files to mimic git's autocrlf behaviour
-            process: (content, srcpath) => srcpath.match(/\.(css|js|txt|html|md)$/) ? content.toString('utf8').replace(/\r\n/g, '\n') : content
-          },
-          destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib/plugins"
-        },
-        files: {
-          'wordcount/plugin.js': 'ckeditor-wordcount-plugin/wordcount/plugin.js',
-          'wordcount/lang/': 'ckeditor-wordcount-plugin/wordcount/lang/',
-          'wordcount/css/': 'ckeditor-wordcount-plugin/wordcount/css/',
-        }
-      },
       dashboard: {
         options: {
           destPrefix: "<%= paths.dashboard %>Public",
@@ -752,7 +720,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:ckeditor', 'npmcopy:ckeditor_externalplugins', 'npmcopy:dashboard', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
+      npmcopy: ['npmcopy:dashboard', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],
@@ -807,7 +775,7 @@ module.exports = function (grunt) {
    * this task does the following things:
    * - copy some components to a specific destinations because they need to be included via PHP
    */
-  grunt.registerTask('update', ['rollup', 'concurrent:npmcopy']);
+  grunt.registerTask('update', ['rollup', 'exec:ckeditor', 'concurrent:npmcopy']);
 
   /**
    * grunt compile-typescript task

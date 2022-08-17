@@ -5,39 +5,67 @@ imports:
     - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
 
 # Add configuration for the editor
-# For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
+# For complete documentation see https://ckeditor.com/docs/ckeditor5/latest/features/index.html
 editor:
   config:
+    toolbar:
+      items:
+        - style
+        - heading
+        # grouping separator
+        - '|'
+        - bold
+        - italic
+        - subscript
+        - superscript
+        - '|'
+        - bulletedList
+        - numberedList
+        - blockQuote
+        - alignment
+        - '|'
+        - findAndReplace
+        - Typo3Link
+        - Typo3Unlink
+        - SoftHyphen
+        - '|'
+        - removeFormat
+        - undo
+        - redo
+        - '|'
+        - insertTable
+        - '|'
+        - specialCharacters
+        - horizontalLine
+        - sourceEditing
 
-    format_tags: 'p;h1;h2;h3;h4;h5;pre'
+    heading:
+      options:
+        - { model: 'paragraph', title: 'Paragraph' }
+        - { model: 'heading2', view: 'h2', title: 'Heading 2' }
+        - { model: 'heading3', view: 'h3', title: 'Heading 3' }
+        - { model: 'formatted', view: 'pre', title: 'Pre-Formatted Text' }
 
-    toolbarGroups:
-      - { name: styles, groups: [ styles, format ] }
-      - { name: basicstyles, groups: [ basicstyles ] }
-      - { name: paragraph, groups: [ list, indent, blocks, align ] }
-      - { name: links, groups: [ links ] }
-      - { name: clipboard, groups: [ clipboard, cleanup, undo ] }
-      - { name: editing, groups: [ spellchecker ] }
-      - { name: insert, groups: [ insert ] }
-      - { name: tools, groups: [ table, specialchar, insertcharacters ] }
-      - { name: document, groups: [ mode ] }
+    style:
+      definitions:
+        - { name: "Lead", element: "p", classes: ['lead'] }
+        - { name: "Small", element: "small", classes: [] }
+        - { name: "Muted", element: "span", classes: ['text-muted'] }
 
-    justifyClasses:
-      - text-left
-      - text-center
-      - text-right
-      - text-justify
+    alignment:
+      options:
+        - { name: 'left', className: 'text-left' }
+        - { name: 'center', className: 'text-center' }
+        - { name: 'right', className: 'text-right' }
+        - { name: 'justify', className: 'text-justify' }
+
+    table:
+      defaultHeadings: { rows: 1 }
+      contentToolbar:
+        - tableColumn
+        - tableRow
+        - mergeTableCells
+        - tableProperties
+        - tableCellProperties
 
     extraPlugins:
-      - justify
-      - autolink
-      - editorplaceholder
-
-    removePlugins:
-      - image
-
-    removeButtons:
-      - Anchor
-      - Underline
-      - Strike
-      - Styles

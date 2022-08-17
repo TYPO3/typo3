@@ -6,12 +6,11 @@ imports:
 # Minimal configuration for the editor
 editor:
   config:
-    toolbarGroups:
-      - { name: basicstyles, groups: [ basicstyles] }
-      - { name: clipboard, groups: [clipboard, undo] }
-    removeButtons:
-      - Anchor
-      - Superscript
-      - Subscript
-      - Underline
-      - Strike
+    toolbar:
+      items:
+        - bold
+        - italic
+        - '|'
+        - clipboard
+        - undo
+        - redo

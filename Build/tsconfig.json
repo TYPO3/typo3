@@ -95,7 +95,6 @@
         "types": [
             "TYPO3",
             "chosen-js",
-            "ckeditor",
             "d3-dispatch",
             "d3-drag",
             "d3-selection",

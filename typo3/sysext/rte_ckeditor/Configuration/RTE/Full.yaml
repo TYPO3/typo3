@@ -9,58 +9,73 @@ imports:
     - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
 
 # Add configuration for the editor
-# For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
+# For complete documentation see https://ckeditor.com/docs/ckeditor5/latest/features/index.html
 editor:
   config:
-    # can be "default", but a custom stylesSet can be defined here, which fits TYPO3 best
-    stylesSet:
-      # block level styles
-      - { name: 'Orange title H2', element: 'h2', styles: { color: 'orange', background: 'blue' } }
-      - { name: 'Orange title H3', element: 'h3', styles: { color: 'orange', background: 'blue' } }
-      - { name: 'Quote / Citation', element: 'blockquote' }
-      - { name: 'Code block', element: 'code' }
-      # Inline styles
-      - { name: 'Yellow marker', element: 'span', styles: { background-color: 'yellow' } }
+    style:
+      definitions:
+        # block level styles
+        - { name: 'Orange title H2', element: 'h2', classes: [], styles: { color: 'orange', background: 'blue' } }
+        - { name: 'Orange title H3', element: 'h3', classes: [], styles: { color: 'orange', background: 'blue' } }
+        - { name: 'Quote / Citation', element: 'blockquote', classes: [],  }
+        - { name: 'Code block', element: 'code', classes: [],  }
+        # Inline styles
+        - { name: 'Yellow marker', element: 'span', classes: [], styles: { background-color: 'yellow' } }
 
-    format_tags: 'p;h1;h2;h3;pre'
+    heading:
+      options:
+        - { model: 'paragraph', title: 'Paragraph' }
+        - { model: 'heading2', view: 'h2', title: 'Heading 2' }
+        - { model: 'heading3', view: 'h3', title: 'Heading 3' }
+        - { model: 'formatted', view: 'pre', title: 'Pre-Formatted Text' }
 
-    toolbarGroups:
-      - { name: clipboard, groups: [clipboard, undo] }
-      - { name: editing,   groups: [find, selection, spellchecker] }
-      - { name: links }
-      - { name: insert }
-      - { name: tools }
-      - { name: table }
-      - { name: tabletools }
-      - { name: document,  groups: [ mode, document, doctools ] }
-      - { name: others }
-      - '/'
-      - { name: basicstyles, groups: [ basicstyles, align, cleanup ] }
-      - { name: paragraph,   groups: [ list, indent, blocks, align, bidi ] }
-      - { name: specialcharacters,   groups: [ insertcharacters ] }
-      - '/'
-      - { name: styles }
+    toolbar:
+      items:
+        - clipboard
+        - undo
+        - redo
+        # grouping separator
+        - '|'
+        - find
+        - selectAll
+        - '|'
+        - Link
+        - SoftHyphen
+        - insertTable
+        - tableColumn
+        - tableRow
+        - mergeTableCells
+        - '|'
+        - sourceEditing
+        - horizontalLine
+        # line break
+        - '-'
+        - bold
+        - italic
+        - underline
+        - strikethrough
+        - subscript
+        - superscript
+        - alignment
+        - removeFormat
+        - '|'
+        - bulletedList
+        - numberedList
+        - blockQuote
+        - indent
+        - outdent
+        - '|'
+        - specialCharacters
+        - '-'
+        - style
+        - heading
 
-    justifyClasses:
-      - text-left
-      - text-center
-      - text-right
-      - text-justify
-
-    extraPlugins:
-      - justify
-      - font
-      - find
-      - bidi
-      - selectall
-      - autolink
-      - wordcount
-      - editorplaceholder
-
-    removePlugins:
-      - image
-
-    removeButtons:
+    alignment:
+      options:
+        - { name: 'left', className: 'text-left' }
+        - { name: 'center', className: 'text-center' }
+        - { name: 'right', className: 'text-right' }
+        - { name: 'justify', className: 'text-justify' }
 
 # Allow s and u tag
 processing:
