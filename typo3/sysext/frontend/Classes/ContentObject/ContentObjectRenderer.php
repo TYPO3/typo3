@@ -2082,7 +2082,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_bytes($content = '', $conf = [])
     {
-        return GeneralUtility::formatSize((int)$content, $conf['bytes.']['labels'], $conf['bytes.']['base']);
+        return GeneralUtility::formatSize((int)$content, $conf['bytes.']['labels'] ?? '', $conf['bytes.']['base'] ?? 0);
     }
 
     /**

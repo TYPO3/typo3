@@ -3546,12 +3546,12 @@ class ContentObjectRendererTest extends UnitTestCase
      * - Almost all stdWrap_[type] are callable if called with 2 parameters:
      *   - string $content Empty string.
      *   - array $conf ['type' => '', 'type.' => []].
-     * - Exceptions: stdWrap_numRows, stdWrap_split
+     * - Exceptions: stdWrap_numRows
      * - The overall count is 91.
      *
      *  Note:
      *
-     *  The two exceptions break, if the configuration is empty. This test just
+     *  The exceptions break, if the configuration is empty. This test just
      *  tracks the different behaviour to gain information. It doesn't mean
      *  that it is an issue.
      *
@@ -3563,7 +3563,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
 
         // `parseFunc` issues deprecation in case `htmlSanitize` is not given
-        $expectExceptions = ['numRows', 'parseFunc', 'bytes'];
+        $expectExceptions = ['numRows', 'parseFunc'];
         $count = 0;
         $processors = [];
         $exceptions = [];
@@ -3981,6 +3981,16 @@ class ContentObjectRendererTest extends UnitTestCase
                 '1.15 Gi',
                 '1234567890',
                 ['labels' => '', 'base' => 0],
+            ],
+            'value 1234 iec no base' => [
+                '1.21 Ki',
+                '1234',
+                ['labels' => 'iec'],
+            ],
+            'value 1234 no labels base set' => [
+                '1.21 Ki',
+                '1234',
+                ['base' => 0],
             ],
         ];
     }
