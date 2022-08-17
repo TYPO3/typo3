@@ -105,6 +105,9 @@
 			<trans-unit id="sys_workspace.publish_access.2" resname="sys_workspace.publish_access.2">
 				<source>Restrict publishing to workspace owners</source>
 			</trans-unit>
+			<trans-unit id="sys_workspace.publish_access.3" resname="sys_workspace.publish_access.3">
+				<source>Hide "Entire workspace" action drop down</source>
+			</trans-unit>
 			<trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification">
 				<source>Notification settings during state change</source>
 			</trans-unit>

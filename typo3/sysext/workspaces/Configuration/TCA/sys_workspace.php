@@ -107,6 +107,7 @@ return [
                 'items' => [
                     ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_access.1'],
                     ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_access.2'],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_access.3'],
                 ],
             ],
         ],
