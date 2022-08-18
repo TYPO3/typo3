@@ -40,6 +40,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Extbase\Tests\Fixture\StringBackedEnum;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -362,6 +363,20 @@ final class UriBuilderTest extends UnitTestCase
     }
 
     #[Test]
+    public function buildBackendUriConvertsEnumAfterArgumentsHaveBeenMerged(): void
+    {
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request =  new Request($serverRequest);
+        $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
+        $subject->setRequest($request);
+        $subject->setArguments(['somePrefix' => ['someDomainObject' => StringBackedEnum::FirstCase]]);
+        $expectedResult = '/typo3/test/Path?token=dummyToken&somePrefix%5BsomeDomainObject%5D=' . StringBackedEnum::FirstCase->value;
+        $actualResult = $subject->buildBackendUri();
+        self::assertEquals($expectedResult, $actualResult);
+    }
+
+    #[Test]
     public function buildBackendUriRespectsSection(): void
     {
         $serverRequest = $this->getRequestWithRouteAttribute()->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -497,6 +512,25 @@ final class UriBuilderTest extends UnitTestCase
         $uriBuilder->setAbsoluteUriScheme('someScheme');
         $expectedResult = 'http://baseuri/relative/uri';
         self::assertSame($expectedResult, $uriBuilder->buildFrontendUri());
+    }
+
+    #[Test]
+    public function buildFrontendUriConvertsEnumAfterArgumentsHaveBeenMerged(): void
+    {
+        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request =  new Request($serverRequest);
+        $mockContentObject->method('createUrl')->willReturn('/benni');
+        $request = $request->withAttribute('currentContentObject', $mockContentObject);
+        $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
+        $subject->setRequest($request);
+        $subject->setTargetPageUid(1);
+        $subject->setArguments(['somePrefix' => ['someDomainObject' => StringBackedEnum::FirstCase]]);
+        self::assertEquals([
+            'parameter' => 1,
+            'additionalParams' => '&somePrefix%5BsomeDomainObject%5D=' . StringBackedEnum::FirstCase->value,
+        ], $subject->_call('buildTypolinkConfiguration'));
     }
 
     #[Test]
