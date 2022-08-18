@@ -11,7 +11,6 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import $ from 'jquery';
 import Modal from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -32,7 +31,7 @@ class WidgetSelector {
         title: this.dataset.modalTitle,
         size: Modal.sizes.medium,
         severity: SeverityEnum.notice,
-        content: $(document.getElementById('widgetSelector').innerHTML),
+        content: (document.getElementById('widgetSelector') as HTMLTemplateElement).content.cloneNode(true),
         additionalCssClasses: ['dashboard-modal'],
         callback: (currentModal: JQuery): void => {
           currentModal.on('click', 'a.dashboard-modal-item-block', (e: JQueryEventObject): void => {

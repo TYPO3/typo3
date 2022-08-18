@@ -88,7 +88,7 @@
         </button>
     </div>
 
-    <div id="widgetSelector" class="hide">
+    <template id="widgetSelector">
         <div class="dashboard-modal-tabpanel" role="tabpanel">
             <ul class="nav nav-tabs t3js-tabs" id="widget-selector" role="tablist">
                 <f:variable name="firstGroupActive" value="false" />
@@ -148,9 +148,9 @@
                 </f:for>
             </div>
         </div>
-    </div>
+    </template>
 
-    <div id="dashboardModal-add" class="hide">
+    <template id="dashboardModal-add">
         <form action="{addDashboardUri}" id="formAddDashboard" class="dashboardModal-form" target="list_frame" method="post">
             <div class="form-group">
                 <label for="dashboardModalAdd-title"><f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.title" /></label>
@@ -194,9 +194,9 @@
                 </f:for>
             </div>
         </form>
-    </div>
+    </template>
 
-    <div id="dashboardModal-configure" class="hide">
+    <template id="dashboardModal-configure">
         <form action="{configureDashboardUri}" id="configureDashboardForm" class="dashboardModal-form" target="list_frame" method="post">
             <input type="hidden" name="currentDashboard" value="{currentDashboard.identifier}">
             <div class="form-group">
@@ -204,7 +204,7 @@
                 <input class="form-control" id="dashboardModalConfigure-title" type="text" name="dashboard[title]" value="{currentDashboard.title}" required="required">
             </div>
         </form>
-    </div>
+    </template>
 
 </f:section>
 
