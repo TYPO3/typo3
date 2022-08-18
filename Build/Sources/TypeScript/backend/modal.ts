@@ -56,19 +56,19 @@ enum Types {
 
 interface Button {
   text: string;
-  active: boolean;
+  active?: boolean;
   btnClass: string;
-  name: string;
-  trigger: (e: JQueryEventObject) => {};
-  dataAttributes: { [key: string]: string };
-  icon: string;
-  action: AbstractAction;
+  name?: string;
+  trigger?: (e?: JQueryEventObject) => void;
+  dataAttributes?: { [key: string]: string };
+  icon?: string;
+  action?: AbstractAction;
 }
 
 interface Configuration {
   type: Types;
   title: string;
-  content: string | JQuery;
+  content: string | JQuery | Element | DocumentFragment;
   severity: SeverityEnum;
   buttons: Array<Button>;
   style: string;
@@ -170,7 +170,7 @@ class Modal {
    * - confirm.button.ok
    *
    * @param {string} title The title for the confirm modal
-   * @param {string | JQuery} content The content for the conform modal, e.g. the main question
+   * @param {string | JQuery | Element | DocumentFragment} content The content for the conform modal, e.g. the main question
    * @param {SeverityEnum} severity Default SeverityEnum.warning
    * @param {Array<Button>} buttons An array with buttons, default no buttons
    * @param {Array<string>} additionalCssClasses Additional css classes to add to the modal
@@ -178,20 +178,20 @@ class Modal {
    */
   public confirm(
     title: string,
-    content: string | JQuery,
+    content: string | JQuery | Element | DocumentFragment,
     severity: SeverityEnum = SeverityEnum.warning,
-    buttons: Array<Object> = [],
+    buttons: Array<Button> = [],
     additionalCssClasses?: Array<string>,
   ): JQuery {
     if (buttons.length === 0) {
       buttons.push(
-        {
+        <Button>{
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
-        {
+        <Button>{
           text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(severity),
           name: 'ok',
@@ -232,7 +232,7 @@ class Modal {
   public loadUrl(
     title: string,
     severity: SeverityEnum = SeverityEnum.info,
-    buttons: Array<Object>,
+    buttons: Array<Button>,
     url: string,
     callback?: Function,
     target?: string,
@@ -252,17 +252,17 @@ class Modal {
    * Shows a dialog
    *
    * @param {string} title
-   * @param {string | JQuery} content
+   * @param {string | JQuery | Element | DocumentFragment} content
    * @param {number} severity
-   * @param {Array<Object>} buttons
+   * @param {Array<Button>} buttons
    * @param {Array<string>} additionalCssClasses
    * @returns {JQuery}
    */
   public show(
     title: string,
-    content: string | JQuery,
+    content: string | JQuery | Element | DocumentFragment,
     severity: SeverityEnum = SeverityEnum.info,
-    buttons?: Array<Object>,
+    buttons?: Array<Button>,
     additionalCssClasses?: Array<string>,
   ): JQuery {
     return this.advanced({
@@ -277,10 +277,8 @@ class Modal {
 
   /**
    * Loads modal by configuration
-   *
-   * @param {object} configuration configuration for the modal
    */
-  public advanced(configuration: { [key: string]: any }): JQuery {
+  public advanced(configuration: Partial<Configuration>): JQuery {
     // Validation of configuration
     configuration.type = typeof configuration.type === 'string' && configuration.type in Types
       ? configuration.type
@@ -310,7 +308,7 @@ class Modal {
       ? configuration.ajaxTarget
       : this.defaultConfiguration.ajaxTarget;
 
-    return this.generate(<Configuration>configuration);
+    return this.generate(configuration);
   }
 
   /**
@@ -380,9 +378,11 @@ class Modal {
       evt.preventDefault();
       const $element = $(evt.currentTarget);
       const content = $element.data('bs-content') || 'Are you sure?';
-      const severity = typeof SeverityEnum[$element.data('severity')] !== 'undefined'
-        ? SeverityEnum[$element.data('severity')]
-        : SeverityEnum.info;
+      let severity = SeverityEnum.info;
+      if ($element.data('severity') in SeverityEnum) {
+        const severityKey: keyof typeof SeverityEnum = $element.data('severity');
+        severity = SeverityEnum[severityKey];
+      }
       let url = $element.data('url') || null;
       if (url !== null) {
         const separator = url.includes('?') ? '&' : '?';
@@ -445,10 +445,7 @@ class Modal {
     });
   }
 
-  /**
-   * @param {Configuration} configuration
-   */
-  private generate(configuration: Configuration): JQuery {
+  private generate(configuration: Partial<Configuration>): JQuery {
     const currentModal = this.$template.clone();
     if (configuration.additionalCssClasses.length > 0) {
       for (let additionalClass of configuration.additionalCssClasses) {
