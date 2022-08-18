@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  */
 interface FieldGeneratorInterface
 {
-
     /**
      * Return true if this FieldGenerator matches
      *

@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  */
 interface TableHandlerInterface
 {
-
     /**
      * Return true if this table handler can handle given table name
      *

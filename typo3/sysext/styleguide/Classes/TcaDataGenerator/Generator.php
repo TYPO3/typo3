@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class Generator extends AbstractGenerator
 {
-
     /**
      * List of handlers to create full table data. There is a
      * "default" handler for casual tables, but some $mainTables
