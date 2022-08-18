@@ -43,7 +43,6 @@ class BackendLogin {
       errorNoCookies: '.t3js-login-error-nocookies',
       errorNoReferrer: '.t3js-login-error-noreferrer',
       formFields: '.t3js-login-formfields',
-      interfaceField: '.t3js-login-interface-field',
       loginForm: '#typo3-login-form',
       loginUrlLink: 't3js-login-url',
       submitButton: '.t3js-login-submit',
@@ -53,7 +52,6 @@ class BackendLogin {
 
     this.checkLoginRefresh();
     this.checkCookieSupport();
-    this.checkForInterfaceCookie();
     this.checkDocumentReferrerSupport();
     this.initializeEvents();
 
@@ -94,33 +92,6 @@ class BackendLogin {
 
     if (typeof this.options.submitHandler === 'function') {
       this.options.submitHandler(event);
-    }
-  }
-
-  /**
-   * Store the new selected Interface in a cookie to save it for future visits
-   */
-  private interfaceSelectorChanged(): void {
-    const now = new Date();
-    // cookie expires in one year
-    const expires = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 365);
-    document.cookie = 'typo3-login-interface='
-      + (document.querySelector(this.options.interfaceField) as HTMLInputElement).value
-      + '; expires=' + expires.toUTCString() + ';';
-  }
-
-  /**
-   * Check if an interface was stored in a cookie and preselect it in the select box
-   */
-  private checkForInterfaceCookie(): void {
-    const interfaceField = document.querySelector(this.options.interfaceField) as HTMLInputElement;
-    if (interfaceField !== null) {
-      const posStart = document.cookie.indexOf('typo3-login-interface=');
-      if (posStart !== -1) {
-        let selectedInterface = document.cookie.substring(posStart + 22);
-        selectedInterface = selectedInterface.substring(0, selectedInterface.indexOf(';'));
-        interfaceField.value = selectedInterface;
-      }
     }
   }
 
@@ -204,12 +175,6 @@ class BackendLogin {
    */
   private initializeEvents(): void {
     new RegularEvent('submit', this.handleSubmit.bind(this)).bindTo(document.querySelector(this.options.loginForm));
-
-    // the Interface selector is not always present, so this check is needed
-    const interfaceField = document.querySelector(this.options.interfaceField) as HTMLInputElement;
-    if (interfaceField !== null) {
-      new RegularEvent('change blur', this.interfaceSelectorChanged.bind(this)).bindTo(interfaceField);
-    }
 
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('.t3js-clearable')).forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable(),

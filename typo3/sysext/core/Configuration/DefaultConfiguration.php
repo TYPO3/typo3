@@ -1299,7 +1299,6 @@ return [
         'defaultPermissions' => [],
         'defaultUC' => [],
         'customPermOptions' => [], // Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language split', 'items' => array('key' => array('label, language split','icon reference', 'Description text, language split'))). Keys cannot contain ":|," characters.
-        'interfaces' => 'backend',
         'flexformForceCDATA' => 0,
         'versionNumberInFilename' => false,
         'debug' => false,

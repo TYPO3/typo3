@@ -357,9 +357,6 @@ BE:
         fileDenyPattern:
             type: text
             description: 'A perl-compatible and JavaScript-compatible regular expression (without delimiters "/"!) that - if it matches a filename - will deny the file upload/rename or whatever. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in PHP constant FILE_DENY_PATTERN_DEFAULT'
-        interfaces:
-            type: text
-            description: 'This determines which interface options are available in the login prompt (All options: "backend,frontend")'
         flexformForceCDATA:
             type: bool
             description: 'If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.'

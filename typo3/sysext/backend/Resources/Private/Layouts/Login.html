@@ -51,8 +51,6 @@
 
                                         <f:render section="loginFormFields" />
 
-                                        <f:render partial="Login/InterfaceSelector" arguments="{_all}" />
-
                                         <div class="form-group d-grid mb-2" id="t3-login-submit-section">
                                             <button
                                                 class="btn btn-login d-block t3js-login-submit"
@@ -106,27 +104,6 @@
                                                     {backendUser.username}
                                                 </div>
                                             </div>
-                                            <f:if condition="{showInterfaceSelector}">
-                                                <f:then>
-                                                    <div class="t3-login-interface">
-                                                        <div class="t3-login-label t3-interface-selector">
-                                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.interface" />
-                                                        </div>
-                                                        <select
-                                                            name="users"
-                                                        >
-                                                            <f:for each="{interfaces}" as="option">
-                                                                <option value="{option.jumpScript}">{option.label}</option>
-                                                            </f:for>
-                                                        </select>
-                                                    </div>
-                                                </f:then>
-                                                <f:else>
-                                                    <f:if condition="{interface}">
-                                                        <input type="hidden" name="interface" value="{interface}" />
-                                                    </f:if>
-                                                </f:else>
-                                            </f:if>
                                             <input type="hidden" name="p_field" value="" />
                                             <div class="d-grid">
                                                 <input

@@ -231,7 +231,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @internal should only be used from within TYPO3 Core
      */
     public $uc_default = [
-        'interfaceSetup' => '',
         // serialized content that is used to store interface pane and menu positions. Set by the logout.php-script
         'moduleData' => [],
         // user-data for the modules

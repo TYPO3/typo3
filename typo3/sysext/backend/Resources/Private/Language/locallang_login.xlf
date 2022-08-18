@@ -12,12 +12,6 @@
 			<trans-unit id="availableInterfaces" resname="availableInterfaces">
 				<source>Backend,Front End,Traditional Backend</source>
 			</trans-unit>
-			<trans-unit id="interface.backend" resname="interface.backend">
-				<source>Backend</source>
-			</trans-unit>
-			<trans-unit id="interface.frontend" resname="interface.frontend">
-				<source>Frontend</source>
-			</trans-unit>
 			<trans-unit id="headline" resname="headline">
 				<source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
 			</trans-unit>

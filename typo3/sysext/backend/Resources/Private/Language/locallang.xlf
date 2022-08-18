@@ -79,9 +79,6 @@ Have a nice day.</source>
 			<trans-unit id="login.error.capslockStatus" resname="login.error.capslockStatus">
 				<source>Caps lock enabled</source>
 			</trans-unit>
-			<trans-unit id="login.interface" resname="login.interface">
-				<source>Interface</source>
-			</trans-unit>
 			<trans-unit id="login.news.header" resname="login.news.header">
 				<source>System News</source>
 			</trans-unit>

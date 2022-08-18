@@ -175,6 +175,8 @@ class SilentConfigurationUpgradeService
         'EXT/allowLocalInstall',
         // #97265
         'BE/explicitADmode',
+        // #98179
+        'BE/interfaces',
         // Please note that further migrations in this file are kept in order to remove the setting at the very end
         // #97797
         'GFX/processor_path_lzw',

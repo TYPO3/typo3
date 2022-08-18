@@ -846,4 +846,9 @@ return [
             'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'interfaces\']' => [
+        'restFiles' => [
+            'Breaking-98179-RemoveBackendInterfaceSelectorAndConfigurableRedirect.rst',
+        ],
+    ],
 ];

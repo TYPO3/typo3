@@ -305,7 +305,6 @@ class LoginController
         ]);
 
         // Initialize interface selectors:
-        $this->makeInterfaceSelector($request);
         $this->renderHtmlViaLoginProvider();
 
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render());
@@ -355,27 +354,12 @@ class LoginController
             $this->redirectToURL = 'index.php?commandLI=setCookie';
         }
         $redirectToUrl = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '');
-        if (empty($redirectToUrl)) {
-            // Based on the interface we set the redirect script
-            $parsedBody = $request->getParsedBody();
-            $queryParams = $request->getQueryParams();
-            $interface = $parsedBody['interface'] ?? $queryParams['interface'] ?? '';
-            switch ($interface) {
-                case 'frontend':
-                    $this->redirectToURL = '../';
-                    break;
-                case 'backend':
-                    // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-                    $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
-                    break;
-            }
-        } else {
+        if (!empty($redirectToUrl)) {
             $this->redirectToURL = $redirectToUrl;
-            $interface = '';
+        } else {
+            // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
+            $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
         }
-        // store interface
-        $backendUser->uc['interfaceSetup'] = $interface;
-        $backendUser->writeUC();
 
         $formProtection = FormProtectionFactory::get();
         if (!$formProtection instanceof BackendFormProtection) {
@@ -388,40 +372,6 @@ class LoginController
         } else {
             $formProtection->storeSessionTokenInRegistry();
             $this->redirectToUrl();
-        }
-    }
-
-    /**
-     * Making interface selector.
-     */
-    protected function makeInterfaceSelector(ServerRequestInterface $request): void
-    {
-        $languageService = $this->getLanguageService();
-        // If interfaces are defined AND no input redirect URL in GET vars:
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress($request) || !$this->redirectUrl)) {
-            $parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
-            if (count($parts) > 1) {
-                // Only if more than one interface is defined we will show the selector
-                $interfaces = [
-                    'backend' => [
-                        'label' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:interface.backend'),
-                        'jumpScript' => (string)$this->uriBuilder->buildUriFromRoute('main'),
-                        'interface' => 'backend',
-                    ],
-                    'frontend' => [
-                        'label' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:interface.frontend'),
-                        'jumpScript' => '../',
-                        'interface' => 'frontend',
-                    ],
-                ];
-
-                $this->view->assign('showInterfaceSelector', true);
-                $this->view->assign('interfaces', $interfaces);
-            } elseif (!$this->redirectUrl) {
-                // If there is only ONE interface value set and no redirect_url is present
-                $this->view->assign('showInterfaceSelector', false);
-                $this->view->assign('interface', $parts[0]);
-            }
         }
     }
 
