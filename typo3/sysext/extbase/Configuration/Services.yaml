@@ -105,6 +105,13 @@ services:
         target: DateTime
         sources: string,integer,array
 
+  TYPO3\CMS\Extbase\Property\TypeConverter\EnumConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 20
+        target: object
+        sources: string,integer,float
+
   TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter:
     tags:
       - name: extbase.type_converter

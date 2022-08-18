@@ -193,9 +193,9 @@ class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "ExtbaseTeam\TypeConverterTest\Domain\Model\Cat"');
+        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "boolean" to "ExtbaseTeam\TypeConverterTest\Domain\Model\Cat"');
 
-        $result = $this->get(PropertyMapper::class)->convert(1, Cat::class);
+        $result = $this->get(PropertyMapper::class)->convert(false, Cat::class);
         self::assertNull($result);
     }
 
