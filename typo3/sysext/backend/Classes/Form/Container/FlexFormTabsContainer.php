@@ -57,7 +57,7 @@ class FlexFormTabsContainer extends AbstractContainer
         $tabCounter = 0;
         $tabElements = [];
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
-            $flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?: [];
+            $flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?? [];
 
             if (!is_array($sheetDataStructure['ROOT']['el'])) {
                 $resultArray['html'] .= LF . 'No Data Structure ERROR: No [\'ROOT\'][\'el\'] found for sheet "' . $sheetName . '".';
