@@ -11,8 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-
 /**
  * Module: @typo3/impexp/context-menu-actions
  *
@@ -21,8 +19,8 @@ import $ from 'jquery';
  */
 class ContextMenuActions {
 
-  public exportT3d(table: string, uid: number): void {
-    const actionUrl: string = $(this).data('action-url');
+  public exportT3d(table: string, uid: number, dataset: DOMStringMap): void {
+    const actionUrl: string = dataset.actionUrl;
     if (table === 'pages') {
       top.TYPO3.Backend.ContentContainer.setUrl(
         actionUrl +
@@ -40,8 +38,8 @@ class ContextMenuActions {
     }
   }
 
-  public importT3d(table: string, uid: number): void {
-    const actionUrl: string = $(this).data('action-url');
+  public importT3d(table: string, uid: number, dataset: DOMStringMap): void {
+    const actionUrl: string = dataset.actionUrl;
     top.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&id=' + uid + '&table=' + table,
     );

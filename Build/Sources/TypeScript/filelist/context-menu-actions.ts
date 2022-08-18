@@ -13,7 +13,6 @@
 
 import {lll} from '@typo3/core/lit-helper';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
-import $ from 'jquery';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
@@ -44,22 +43,22 @@ class ContextMenuActions {
     Notification.success(lll('file_download.success'), '', 2);
   }
 
-  public static renameFile(table: string, uid: string): void {
-    const actionUrl: string = $(this).data('action-url');
+  public static renameFile(table: string, uid: string, dataset: DOMStringMap): void {
+    const actionUrl: string = dataset.actionUrl;
     top.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }
 
-  public static editFile(table: string, uid: string): void {
-    const actionUrl: string = $(this).data('action-url');
+  public static editFile(table: string, uid: string, dataset: DOMStringMap): void {
+    const actionUrl: string = dataset.actionUrl;
     top.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
-  public static editMetadata(): void {
-    const metadataUid: string = $(this).data('metadata-uid');
+  public static editMetadata(table: string, uid: string, dataset: DOMStringMap): void {
+    const metadataUid: string = dataset.metadataUid;
     if (!metadataUid) {
       return;
     }
@@ -79,28 +78,28 @@ class ContextMenuActions {
     }
   }
 
-  public static uploadFile(table: string, uid: string): void {
-    const actionUrl: string = $(this).data('action-url');
+  public static uploadFile(table: string, uid: string, dataset: DOMStringMap): void {
+    const actionUrl: string = dataset.actionUrl;
     top.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
-  public static createFile(table: string, uid: string): void {
-    const actionUrl: string = $(this).data('action-url');
+  public static createFile(table: string, uid: string, dataset: DOMStringMap): void {
+    const actionUrl: string = dataset.actionUrl;
     top.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
-  public static downloadFile(): void {
-    ContextMenuActions.triggerFileDownload($(this).data('url'), $(this).data('name'));
+  public static downloadFile(table: string, uid: string, dataset: DOMStringMap): void {
+    ContextMenuActions.triggerFileDownload(dataset.url, dataset.name);
   }
 
-  public static downloadFolder(table: string, uid: string): void {
+  public static downloadFolder(table: string, uid: string, dataset: DOMStringMap): void {
     // Add notification about the download being prepared
     Notification.info(lll('file_download.prepare'), '', 2);
-    const actionUrl: string = $(this).data('action-url');
+    const actionUrl: string = dataset.actionUrl;
     (new AjaxRequest(actionUrl)).post({items: [uid]})
       .then(async (response): Promise<any> => {
         let fileName = response.response.headers.get('Content-Disposition');
@@ -135,8 +134,7 @@ class ContextMenuActions {
     );
   }
 
-  public static deleteFile(table: string, uid: string): void {
-    const $anchorElement = $(this);
+  public static deleteFile(table: string, uid: string, dataset: DOMStringMap): void {
     const performDelete = () => {
       top.TYPO3.Backend.ContentContainer.setUrl(
         top.TYPO3.settings.FileCommit.moduleUrl
@@ -144,31 +142,31 @@ class ContextMenuActions {
         + '&data[delete][0][redirect]=' + ContextMenuActions.getReturnUrl(),
       );
     };
-    if (!$anchorElement.data('title')) {
+    if (!dataset.title) {
       performDelete();
       return;
     }
 
     const $modal = Modal.confirm(
-      $anchorElement.data('title'),
-      $anchorElement.data('message'),
+      dataset.title,
+      dataset.message,
       SeverityEnum.warning, [
         {
-          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
+          text: dataset.buttonOkText || TYPO3.lang['button.delete'] || 'Delete',
           btnClass: 'btn-warning',
           name: 'delete',
         },
       ]);
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {
-      const $element: HTMLInputElement = <HTMLInputElement>e.target;
-      if ($element.name === 'delete') {
+      const element: HTMLInputElement = <HTMLInputElement>e.target;
+      if (element.name === 'delete') {
         performDelete();
       }
       Modal.dismiss();
@@ -237,9 +235,7 @@ class ContextMenuActions {
     });
   }
 
-  public static pasteFileInto(table: string, uid: string): void {
-    const $anchorElement = $(this);
-    const title = $anchorElement.data('title');
+  public static pasteFileInto(table: string, uid: string, dataset: DOMStringMap): void {
     const performPaste = (): void => {
       top.TYPO3.Backend.ContentContainer.setUrl(
         top.TYPO3.settings.FileCommit.moduleUrl
@@ -247,30 +243,30 @@ class ContextMenuActions {
         + '&CB[pad]=normal&redirect=' + ContextMenuActions.getReturnUrl(),
       );
     };
-    if (!title) {
+    if (!dataset.title) {
       performPaste();
       return;
     }
     const $modal = Modal.confirm(
-      title,
-      $anchorElement.data('message'),
+      dataset.title,
+      dataset.message,
       SeverityEnum.warning, [
         {
-          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+          text: dataset.buttonOkText || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-warning',
           name: 'ok',
         },
       ]);
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {
-      const $element: HTMLInputElement = <HTMLInputElement>e.target;
-      if ($element.name === 'ok') {
+      const element: HTMLInputElement = <HTMLInputElement>e.target;
+      if (element.name === 'ok') {
         performPaste();
       }
       Modal.dismiss();

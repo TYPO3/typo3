@@ -13,7 +13,6 @@
 
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {SeverityEnum} from './enum/severity';
-import $ from 'jquery';
 import AjaxDataHandler from './ajax-data-handler';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoWindow from './info-window';
@@ -35,13 +34,9 @@ class ContextMenuActions {
     return encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static editRecord(table: string, uid: number): void {
+  public static editRecord(table: string, uid: number, dataset: DOMStringMap): void {
     let overrideVals = '',
-      pageLanguageId = $(this).data('pages-language-uid');
+      pageLanguageId = dataset.pagesLanguageUid;
 
     if (pageLanguageId) {
       // Disallow manual adjustment of the language field for pages
@@ -56,26 +51,18 @@ class ContextMenuActions {
     );
   }
 
-  public static viewRecord(): void {
-    const $viewUrl = $(this).data('preview-url');
-    if ($viewUrl) {
-      const previewWin = window.open($viewUrl, 'newTYPO3frontendWindow');
+  public static viewRecord(table: string, uid: number, dataset: DOMStringMap): void {
+    const viewUrl = dataset.previewUrl;
+    if (viewUrl) {
+      const previewWin = window.open(viewUrl, 'newTYPO3frontendWindow');
       previewWin.focus();
     }
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static openInfoPopUp(table: string, uid: number): void {
     InfoWindow.showItem(table, uid);
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static mountAsTreeRoot(table: string, uid: number): void {
     if (table === 'pages') {
       const event = new CustomEvent('typo3:pagetree:mountPoint', {
@@ -87,27 +74,22 @@ class ContextMenuActions {
     }
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static newPageWizard(table: string, uid: number): void {
-    const moduleUrl: string = $(this).data('pages-new-wizard-url');
+  public static newPageWizard(table: string, uid: number, dataset: DOMStringMap): void {
+    const moduleUrl: string = dataset.pagesNewWizardUrl;
     Viewport.ContentContainer.setUrl(
       moduleUrl + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
-  public static newContentWizard(): void {
-    const $me = $(this);
-    let $wizardUrl = $me.data('new-wizard-url');
-    if ($wizardUrl) {
-      $wizardUrl += '&returnUrl=' + ContextMenuActions.getReturnUrl();
+  public static newContentWizard(table: string, uid: number, dataset: DOMStringMap): void {
+    let wizardUrl = dataset.newWizardUrl;
+    if (wizardUrl) {
+      wizardUrl += '&returnUrl=' + ContextMenuActions.getReturnUrl();
       Modal.advanced({
-        title: $me.data('title'),
+        title: dataset.title,
         type: Modal.types.ajax,
         size: Modal.sizes.medium,
-        content: $wizardUrl,
+        content: wizardUrl,
         severity: SeverityEnum.notice,
         ajaxCallback: (): void => {
           const currentModal: HTMLElement = Modal.currentModal.get(0);
@@ -121,9 +103,6 @@ class ContextMenuActions {
 
   /**
    * Create new records on the same level. Pages are being inserted "inside".
-   *
-   * @param {string} table
-   * @param {number} uid
    */
   public static newRecord(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
@@ -131,45 +110,33 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static openHistoryPopUp(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static openListModule(table: string, uid: number): void {
-    const pageId = table === 'pages' ? uid : $(this).data('page-uid');
+  public static openListModule(table: string, uid: number, dataset: DOMStringMap): void {
+    const pageId = table === 'pages' ? uid : dataset.pageUid;
     ModuleMenu.App.showModule('web_list', 'id=' + pageId);
   }
 
-  public static pagesSort(): void {
-    const pagesSortUrl = $(this).data('pages-sort-url');
+  public static pagesSort(table: string, uid: number, dataset: DOMStringMap): void {
+    const pagesSortUrl = dataset.pagesSortUrl;
     if (pagesSortUrl) {
       Viewport.ContentContainer.setUrl(pagesSortUrl);
     }
   }
 
-  public static pagesNewMultiple(): void {
-    const pagesSortUrl = $(this).data('pages-new-multiple-url');
+  public static pagesNewMultiple(table: string, uid: number, dataset: DOMStringMap): void {
+    const pagesSortUrl = dataset.pagesNewMultipleUrl;
     if (pagesSortUrl) {
       Viewport.ContentContainer.setUrl(pagesSortUrl);
     }
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static disableRecord(table: string, uid: number): void {
-    const disableFieldName = $(this).data('disable-field') || 'hidden';
+  public static disableRecord(table: string, uid: number, dataset: DOMStringMap): void {
+    const disableFieldName = dataset.disableField || 'hidden';
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
@@ -177,12 +144,8 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static enableRecord(table: string, uid: number): void {
-    const disableFieldName = $(this).data('disable-field') || 'hidden';
+  public static enableRecord(table: string, uid: number, dataset: DOMStringMap): void {
+    const disableFieldName = dataset.disableField || 'hidden';
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
@@ -190,10 +153,6 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static showInMenus(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
@@ -202,10 +161,6 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static hideInMenus(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
@@ -214,24 +169,19 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static deleteRecord(table: string, uid: number): void {
-    const $anchorElement = $(this);
+  public static deleteRecord(table: string, uid: number, dataset: DOMStringMap): void {
     const $modal = Modal.confirm(
-      $anchorElement.data('title'),
-      $anchorElement.data('message'),
+      dataset.title,
+      dataset.message,
       SeverityEnum.warning, [
         {
-          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
+          text: dataset.buttonOkText || TYPO3.lang['button.delete'] || 'Delete',
           btnClass: 'btn-warning',
           name: 'delete',
         },
@@ -256,10 +206,6 @@ class ContextMenuActions {
     });
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static copy(table: string, uid: number): void {
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard
       + '&CB[el][' + table + '%7C' + uid + ']=1'
@@ -270,10 +216,6 @@ class ContextMenuActions {
     });
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static clipboardRelease(table: string, uid: number): void {
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard
       + '&CB[el][' + table + '%7C' + uid + ']=0';
@@ -283,10 +225,6 @@ class ContextMenuActions {
     });
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
   public static cut(table: string, uid: number): void {
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard
       + '&CB[el][' + table + '%7C' + uid + ']=1'
@@ -297,9 +235,6 @@ class ContextMenuActions {
     });
   }
 
-  /**
-   * @param {string} iframeUrl
-   */
   public static triggerRefresh(iframeUrl: string): void {
     if (!iframeUrl.includes('record%2Fedit')) {
       Viewport.ContentContainer.refresh();
@@ -308,9 +243,6 @@ class ContextMenuActions {
 
   /**
    * Clear cache for given page uid
-   *
-   * @param {string} table pages table
-   * @param {number} uid uid of the page
    */
   public static clearCache(table: string, uid: number): void {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache)).withQueryArguments({id: uid}).get({cache: 'no-cache'}).then(
@@ -335,9 +267,10 @@ class ContextMenuActions {
    *
    * @param {string} table any db table except sys_file
    * @param {number} uid uid of the record after which record from the clipboard will be pasted
+   * @param {DOMStringMap} dataset The data attributes of the invoked menu item
    */
-  public static pasteAfter(table: string, uid: number): void {
-    ContextMenuActions.pasteInto.bind($(this))(table, -uid);
+  public static pasteAfter(table: string, uid: number, dataset: DOMStringMap): void {
+    ContextMenuActions.pasteInto(table, -uid, dataset);
   }
 
   /**
@@ -345,9 +278,9 @@ class ContextMenuActions {
    *
    * @param {string} table any db table except sys_file
    * @param {number} uid uid of the record after which record from the clipboard will be pasted
+   * @param {DOMStringMap} dataset The data attributes of the invoked menu item
    */
-  public static pasteInto(table: string, uid: number): void {
-    const $anchorElement = $(this);
+  public static pasteInto(table: string, uid: number, dataset: DOMStringMap): void {
     const performPaste = (): void => {
       const url = '&CB[paste]=' + table + '%7C' + uid
         + '&CB[pad]=normal'
@@ -357,22 +290,22 @@ class ContextMenuActions {
         top.TYPO3.settings.RecordCommit.moduleUrl + url,
       );
     };
-    if (!$anchorElement.data('title')) {
+    if (!dataset.title) {
       performPaste();
       return;
     }
     const $modal = Modal.confirm(
-      $anchorElement.data('title'),
-      $anchorElement.data('message'),
+      dataset.title,
+      dataset.message,
       SeverityEnum.warning, [
         {
-          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+          text: dataset.buttonOkText || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-warning',
           name: 'ok',
         },

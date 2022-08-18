@@ -212,23 +212,38 @@ class ContextMenu {
 
       $('li.context-menu-item', $obj).on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
-        const $me = $(event.currentTarget);
+        const me = event.currentTarget as HTMLElement;
 
-        if ($me.hasClass('context-menu-item-submenu')) {
-          this.openSubmenu(level, $me, false);
+        if (me.classList.contains('context-menu-item-submenu')) {
+          this.openSubmenu(level, $(me), false);
           return;
         }
 
-        const callbackName = $me.data('callback-action');
-        const callbackModule = $me.data('callback-module');
-        if ($me.data('callback-module')) {
+        const { callbackAction, callbackModule, ...dataAttributesToPass } = me.dataset;
+        // @deprecated Remove binding of `this` in TYPO3 v13
+        const thisProxy = new Proxy<JQuery>($(me), {
+          /**
+           * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#no_private_property_forwarding
+           */
+          get(target: JQuery, prop: any, receiver: any) {
+            console.warn(`\`this\` being bound to the selected context menu item is marked as deprecated. To access data attributes, use the 3rd argument passed to callback \`${callbackAction}\` in \`${callbackModule}\`.`);
+            const value = target[prop];
+            if (value instanceof Function) {
+              return function (this: JQuery, ...args: any) {
+                return value.apply(this === receiver ? target : this, args);
+              };
+            }
+            return value;
+          },
+        });
+        if (me.dataset.callbackModule) {
           import(callbackModule + '.js').then(({default: callbackModuleCallback}: {default: any}): void => {
-            callbackModuleCallback[callbackName].bind($me)(this.record.table, this.record.uid);
+            callbackModuleCallback[callbackAction].bind(thisProxy)(this.record.table, this.record.uid, dataAttributesToPass);
           });
-        } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackName] === 'function') {
-          (ContextMenuActions as any)[callbackName].bind($me)(this.record.table, this.record.uid);
+        } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackAction] === 'function') {
+          (ContextMenuActions as any)[callbackAction].bind(thisProxy)(this.record.table, this.record.uid, dataAttributesToPass);
         } else {
-          console.log('action: ' + callbackName + ' not found');
+          console.log('action: ' + callbackAction + ' not found');
         }
         this.hideAll();
       });
