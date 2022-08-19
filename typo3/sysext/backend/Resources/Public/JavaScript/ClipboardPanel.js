@@ -29,7 +29,7 @@ var __decorate=this&&this.__decorate||function(e,t,a,i){var n,l=arguments.length
                 </tbody>
               </tabel>
             </div>
-          `}return c.error("Clipboard data could not be fetched"),a.html``}).catch(()=>(c.error("An error occured while fetching clipboard data"),a.html``))}renderTab(e,t){return a.html`
+          `}return c.error("Clipboard data could not be fetched"),a.html``}).catch(()=>(c.error("An error occurred while fetching clipboard data"),a.html``))}renderTab(e,t){return a.html`
       <tr>
         <td colspan="2" class="nowrap">
           <button type="button" class="btn btn-link p-0" title="${e.description}" data-action="setP" @click="${t=>this.updateClipboard(t,{CB:{setP:e.identifier}})}">
