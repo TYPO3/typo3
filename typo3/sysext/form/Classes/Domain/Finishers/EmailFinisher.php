@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
@@ -338,6 +339,17 @@ class EmailFinisher extends AbstractFinisher
 
         $addresses = [];
         foreach ($recipients as $address => $name) {
+            // The if is needed to set address and name with TypoScript
+            if (MathUtility::canBeInterpretedAsInteger($address)) {
+                if (is_array($name)) {
+                    $address = $name[0] ?? '';
+                    $name = $name[1] ?? '';
+                } else {
+                    $address = $name;
+                    $name = '';
+                }
+            }
+
             if (!GeneralUtility::validEmail($address)) {
                 // Drop entries without valid address
                 continue;
