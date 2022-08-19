@@ -26,12 +26,16 @@ class DashboardModal {
   public initialize(): void {
     new RegularEvent('click', function (this: HTMLElement, e: Event): void {
       e.preventDefault();
+
+      const modalContent = new DocumentFragment();
+      modalContent.append((document.getElementById(`dashboardModal-${this.dataset.modalIdentifier}`) as HTMLTemplateElement).content.cloneNode(true));
+
       const configuration = {
         type: Modal.types.default,
         title: this.dataset.modalTitle,
         size: Modal.sizes.medium,
         severity: SeverityEnum.notice,
-        content: (document.getElementById(`dashboardModal-${this.dataset.modalIdentifier}`) as HTMLTemplateElement).content.cloneNode(true),
+        content: modalContent,
         additionalCssClasses: ['dashboard-modal'],
         callback: (currentModal: any): void => {
           currentModal.on('submit', '.dashboardModal-form', (e: JQueryEventObject): void => {
