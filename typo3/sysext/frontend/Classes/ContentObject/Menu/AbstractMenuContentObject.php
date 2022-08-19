@@ -1684,7 +1684,7 @@ abstract class AbstractMenuContentObject
             $this->sys_page->versionOL('tt_content', $row);
             if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
                 $languageAspect = new LanguageAspect($basePageRow['_PAGES_OVERLAY_LANGUAGE'], $basePageRow['_PAGES_OVERLAY_LANGUAGE'], $this->getCurrentLanguageAspect()->getOverlayType());
-                $row = $this->sys_page->getRecordOverlay(
+                $row = $this->sys_page->getLanguageOverlay(
                     'tt_content',
                     $row,
                     $languageAspect

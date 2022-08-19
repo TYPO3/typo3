@@ -565,9 +565,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
                     $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;
                 }
-                // Currently this needs to return the default record ("1"), however this is a hack and should actually use
-                // the overlay functionality as given in the LanguageAspect.
-                $row = $pageRepository->getRecordOverlay($tableName, $row, $languageUid, '1');
+                // Currently this needs to return the default record (OVERLAYS_MIXED) if no translation is found
+                //however this is a hack and should actually use the overlay functionality as given in the original LanguageAspect.
+                $customLanguageAspect = new LanguageAspect($languageUid, $languageUid, LanguageAspect::OVERLAYS_MIXED);
+                $row = $pageRepository->getLanguageOverlay($tableName, $row, $customLanguageAspect);
             }
         } elseif (is_array($row)) {
             // If an already localized record is fetched, the "uid" of the default language is used

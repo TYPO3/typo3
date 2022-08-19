@@ -203,7 +203,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(['_PAGES_OVERLAY_LANGUAGE' => 1]);
-        $pageRepository->expects(self::once())->method('getRecordOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
+        $pageRepository->expects(self::once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $this->subject->_set('sys_page', $pageRepository);
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();

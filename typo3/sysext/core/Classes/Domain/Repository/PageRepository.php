@@ -362,9 +362,10 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table the name of the table, should be a TCA table with localization enabled
      * @param array $row the current (full-fletched) record.
+     * @param LanguageAspect|null $languageAspect an alternative language aspect if needed (optional)
      * @return array|null
      */
-    public function getLanguageOverlay(string $table, array $row)
+    public function getLanguageOverlay(string $table, array $row, LanguageAspect $languageAspect = null)
     {
         // table is not localizable, so return directly
         if (!isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
@@ -372,7 +373,7 @@ class PageRepository implements LoggerAwareInterface
         }
         try {
             /** @var LanguageAspect $languageAspect */
-            $languageAspect = $this->context->getAspect('language');
+            $languageAspect = $languageAspect ?? $this->context->getAspect('language');
             if ($languageAspect->doOverlays()) {
                 if ($table === 'pages') {
                     return $this->getPageOverlay($row, $languageAspect->getId());
