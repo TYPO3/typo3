@@ -115,7 +115,7 @@ export class ClipboardPanel extends LitElement {
         }
       })
       .catch((): TemplateResult => {
-        Notification.error('An error occured while fetching clipboard data');
+        Notification.error('An error occurred while fetching clipboard data');
         return html``;
       });
   }
@@ -220,7 +220,7 @@ export class ClipboardPanel extends LitElement {
         }
       })
       .catch((): void => {
-        Notification.error('An error occured while updating clipboard data');
+        Notification.error('An error occurred while updating clipboard data');
       });
   }
 

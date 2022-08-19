@@ -543,7 +543,7 @@ class SettingsController extends AbstractController
                 $message = "Successfully updated the following feature toggles:\n" . implode(",\n", $updatedFeatures);
                 $severity = ContextualFeedbackSeverity::OK;
             } else {
-                $message = 'An error occured while saving. Some settings may not have been updated.';
+                $message = 'An error occurred while saving. Some settings may not have been updated.';
                 $severity = ContextualFeedbackSeverity::ERROR;
             }
         } else {
