@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,287 +27,165 @@ class Constraint
 {
     /**
      * Selected user/group; possible values are "gr-<uid>" for a group, "us-<uid>" for a user or -1 for "all users"
-     *
-     * @var string
      */
-    protected $userOrGroup = '0';
+    protected string $userOrGroup = '0';
 
     /**
      * Number of log rows to show
-     *
-     * @var int
      */
-    protected $number = 20;
+    protected int $number = 20;
 
     /**
      * UID of selected workspace
-     *
-     * @var int
      */
-    protected $workspaceUid = -99;
+    protected int $workspaceUid = -99;
 
     /**
      * Selected channel
-     *
-     * @var string
      */
     protected string $channel = '';
 
     /**
      * Selected level
-     *
-     * @var string
      */
     protected string $level = LogLevel::DEBUG;
 
     /**
      * Calculated start timestamp
-     *
-     * @var int
      */
-    protected $startTimestamp = 0;
+    protected int $startTimestamp = 0;
 
     /**
      * Calculated end timestamp
-     *
-     * @var int
      */
-    protected $endTimestamp = 0;
+    protected int $endTimestamp = 0;
 
     /**
      * Manual date start
-     * @var \DateTime|null
      */
-    protected $manualDateStart;
+    protected ?\DateTime $manualDateStart = null;
 
     /**
      * Manual date stop
-     * @var \DateTime|null
      */
-    protected $manualDateStop;
+    protected ?\DateTime $manualDateStop = null;
 
     /**
      * Selected page ID in page context
-     *
-     * @var int
      */
-    protected $pageId = 0;
+    protected int $pageId = 0;
 
     /**
      * Page level depth
-     *
-     * @var int
      */
-    protected $depth = 0;
+    protected int $depth = 0;
 
-    /**
-     * Set user
-     *
-     * @param string $user
-     */
-    public function setUserOrGroup($user)
+    public function setUserOrGroup(string $user): void
     {
         $this->userOrGroup = $user;
     }
 
-    /**
-     * Get user
-     *
-     * @return string
-     */
-    public function getUserOrGroup()
+    public function getUserOrGroup(): string
     {
         return $this->userOrGroup;
     }
 
-    /**
-     * Set number of log rows to show
-     *
-     * @param int $number
-     */
-    public function setNumber($number)
+    public function setNumber(int $number): void
     {
         $this->number = (int)$number;
     }
 
-    /**
-     * Get number of log entries to show
-     *
-     * @return int
-     */
-    public function getNumber()
+    public function getNumber(): int
     {
         return $this->number;
     }
 
-    /**
-     * Set workspace
-     *
-     * @param int $workspace
-     */
-    public function setWorkspaceUid($workspace)
+    public function setWorkspaceUid(int $workspace): void
     {
         $this->workspaceUid = $workspace;
     }
 
-    /**
-     * Get workspace
-     *
-     * @return int
-     */
-    public function getWorkspaceUid()
+    public function getWorkspaceUid(): int
     {
         return $this->workspaceUid;
     }
 
-    /**
-     * Set channel
-     */
     public function setChannel(string $channel): void
     {
         $this->channel = $channel;
     }
 
-    /**
-     * Get channel
-     */
     public function getChannel(): string
     {
         return $this->channel;
     }
 
-    /**
-     * Set level
-     */
     public function setLevel(string $level): void
     {
         $this->level = $level;
     }
 
-    /**
-     * Get level
-     */
     public function getLevel(): string
     {
         return $this->level;
     }
 
-    /**
-     * Set calculated start timestamp from query constraints
-     *
-     * @param int $timestamp
-     */
-    public function setStartTimestamp($timestamp)
+    public function setStartTimestamp(int $timestamp): void
     {
-        $this->startTimestamp = (int)$timestamp;
+        $this->startTimestamp = $timestamp;
     }
 
-    /**
-     * Get calculated start timestamp from query constraints
-     *
-     * @return int
-     */
-    public function getStartTimestamp()
+    public function getStartTimestamp(): int
     {
         return $this->startTimestamp;
     }
 
-    /**
-     * Set calculated end timestamp from query constraints
-     *
-     * @param int $timestamp
-     */
-    public function setEndTimestamp($timestamp)
+    public function setEndTimestamp(int $timestamp): void
     {
-        $this->endTimestamp = (int)$timestamp;
+        $this->endTimestamp = $timestamp;
     }
 
-    /**
-     * Get calculated end timestamp from query constraints
-     *
-     * @return int
-     */
-    public function getEndTimestamp()
+    public function getEndTimestamp(): int
     {
         return $this->endTimestamp;
     }
 
-    /**
-     * Set page id
-     *
-     * @param int $id
-     */
-    public function setPageId($id)
+    public function setPageId(int $id): void
     {
-        $this->pageId = (int)$id;
+        $this->pageId = $id;
     }
 
-    /**
-     * Get page id
-     *
-     * @return int
-     */
-    public function getPageId()
+    public function getPageId(): int
     {
         return $this->pageId;
     }
 
-    /**
-     * Set page level depth
-     *
-     * @param int $depth
-     */
-    public function setDepth($depth)
+    public function setDepth(int $depth): void
     {
         $this->depth = $depth;
     }
 
-    /**
-     * Get page level depth
-     *
-     * @return int
-     */
-    public function getDepth()
+    public function getDepth(): int
     {
-        return (int)$this->depth;
+        return $this->depth;
     }
 
-    /**
-     * Set manual date start
-     *
-     * @param \DateTime $manualDateStart
-     */
-    public function setManualDateStart(\DateTime $manualDateStart = null)
+    public function setManualDateStart(?\DateTime $manualDateStart = null): void
     {
         $this->manualDateStart = $manualDateStart;
     }
 
-    /**
-     * Get manual date start
-     *
-     * @return \DateTime|null
-     */
-    public function getManualDateStart()
+    public function getManualDateStart(): ?\DateTime
     {
         return $this->manualDateStart;
     }
 
-    /**
-     * Set manual date stop
-     *
-     * @param \DateTime $manualDateStop
-     */
-    public function setManualDateStop(\DateTime $manualDateStop = null)
+    public function setManualDateStop(?\DateTime $manualDateStop = null): void
     {
         $this->manualDateStop = $manualDateStop;
     }
 
-    /**
-     * Get manual date stop
-     *
-     * @return \DateTime|null
-     */
-    public function getManualDateStop()
+    public function getManualDateStop(): ?\DateTime
     {
         return $this->manualDateStop;
     }

@@ -67,7 +67,7 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
     protected static function stripPathFromFilenames(array $files = []): array
     {
         foreach ($files as $key => $file) {
-            $files[$key] = PathUtility::basename($file);
+            $files[$key] = PathUtility::basename((string)$file);
         }
         return $files;
     }

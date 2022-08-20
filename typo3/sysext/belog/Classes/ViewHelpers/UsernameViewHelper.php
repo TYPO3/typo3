@@ -33,10 +33,8 @@ final class UsernameViewHelper extends AbstractViewHelper
 
     /**
      * First level cache of user names
-     *
-     * @var array
      */
-    protected static $usernameRuntimeCache = [];
+    protected static array $usernameRuntimeCache = [];
 
     /**
      * Initializes the arguments

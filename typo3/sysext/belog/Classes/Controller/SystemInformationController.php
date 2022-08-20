@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Belog\Controller;
 
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Database\Connection;
@@ -32,10 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class SystemInformationController
 {
-    /**
-     * @var array
-     */
-    protected $backendUserConfiguration;
+    protected array $backendUserConfiguration;
 
     public function __construct(array $backendUserConfiguration = null)
     {
@@ -44,8 +42,7 @@ final class SystemInformationController
 
     /**
      * Modifies the SystemInformation toolbar to inject a new message
-     * @param SystemInformationToolbarCollectorEvent $event
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     public function appendMessage(SystemInformationToolbarCollectorEvent $event): void
     {

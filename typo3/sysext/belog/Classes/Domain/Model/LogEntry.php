@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -87,7 +89,7 @@ class LogEntry extends AbstractEntity
     /**
      * Channel name.
      */
-    protected string $channel = 'narf';
+    protected string $channel = '';
 
     /**
      * Level.
@@ -123,164 +125,85 @@ class LogEntry extends AbstractEntity
      * New ID
      *
      * @var string
-     * @todo: should be string|int but extbase chokes on this while mapping
+     * @todo: should be string|int but extbase chokes on this while mapping - see #98132
      */
     protected $newId = 0;
 
-    /**
-     * Set backend user uid
-     *
-     * @param int $beUserUid
-     */
-    public function setBackendUserUid($beUserUid)
+    public function setBackendUserUid(int $beUserUid): void
     {
         $this->backendUserUid = $beUserUid;
     }
 
-    /**
-     * Get backend user id
-     *
-     * @return int
-     */
-    public function getBackendUserUid()
+    public function getBackendUserUid(): int
     {
         return $this->backendUserUid;
     }
 
-    /**
-     * Set action
-     *
-     * @param int $action
-     */
-    public function setAction($action)
+    public function setAction(int $action): void
     {
         $this->action = $action;
     }
 
-    /**
-     * Get action
-     *
-     * @return int
-     */
-    public function getAction()
+    public function getAction(): int
     {
-        return (int)$this->action;
+        return $this->action;
     }
 
-    /**
-     * Set record uid
-     *
-     * @param int $recordUid
-     */
-    public function setRecordUid($recordUid)
+    public function setRecordUid(int $recordUid): void
     {
         $this->recordUid = $recordUid;
     }
 
-    /**
-     * Get record uid
-     *
-     * @return int
-     */
-    public function getRecordUid()
+    public function getRecordUid(): int
     {
-        return (int)$this->recordUid;
+        return $this->recordUid;
     }
 
-    /**
-     * Set table name
-     *
-     * @param string $tableName
-     */
-    public function setTableName($tableName)
+    public function setTableName(string $tableName): void
     {
         $this->tableName = $tableName;
     }
 
-    /**
-     * Get table name
-     *
-     * @return string
-     */
-    public function getTableName()
+    public function getTableName(): string
     {
         return $this->tableName;
     }
 
-    /**
-     * Set record pid
-     *
-     * @param int $recordPid
-     */
-    public function setRecordPid($recordPid)
+    public function setRecordPid(int $recordPid): void
     {
         $this->recordPid = $recordPid;
     }
 
-    /**
-     * Get record pid
-     *
-     * @return int
-     */
-    public function getRecordPid()
+    public function getRecordPid(): int
     {
-        return (int)$this->recordPid;
+        return $this->recordPid;
     }
 
-    /**
-     * Set error
-     *
-     * @param int $error
-     */
-    public function setError($error)
+    public function setError(int $error): void
     {
         $this->error = $error;
     }
 
-    /**
-     * Get error
-     *
-     * @return int
-     */
-    public function getError()
+    public function getError(): int
     {
-        return (int)$this->error;
+        return $this->error;
     }
 
-    /**
-     * Get class name for the error code
-     *
-     * @return string
-     */
     public function getErrorIconClass(): string
     {
-        switch ($this->getError()) {
-            case 1:
-                return 'status-dialog-warning';
-            case 2:
-            case 3:
-                return 'status-dialog-error';
-            default:
-                return 'empty-empty';
-        }
+        return match ($this->getError()) {
+            1 => 'status-dialog-warning',
+            2, 3 => 'status-dialog-error',
+            default => 'empty-empty',
+        };
     }
 
-    /**
-     * Set details
-     *
-     * @param string $details
-     */
-    public function setDetails($details)
+    public function setDetails(string $details): void
     {
         $this->details = $details;
     }
 
-    /**
-     * Get details
-     *
-     * @return string
-     */
-    public function getDetails()
+    public function getDetails(): string
     {
         if ($this->type === 255) {
             return str_replace('###IP###', $this->ip, $this->details);
@@ -288,134 +211,72 @@ class LogEntry extends AbstractEntity
         return $this->details;
     }
 
-    /**
-     * Set tstamp
-     *
-     * @param int $tstamp
-     */
-    public function setTstamp($tstamp)
+    public function setTstamp(int $tstamp): void
     {
         $this->tstamp = $tstamp;
     }
 
-    /**
-     * Get tstamp
-     *
-     * @return int
-     */
-    public function getTstamp()
+    public function getTstamp(): int
     {
-        return (int)$this->tstamp;
+        return $this->tstamp;
     }
 
-    /**
-     * Set type
-     *
-     * @param int $type
-     */
-    public function setType($type)
+    public function setType(int $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * Get type
-     *
-     * @return int
-     */
-    public function getType()
+    public function getType(): int
     {
-        return (int)$this->type;
+        return $this->type;
     }
 
-    /**
-     * Set channel
-     */
     public function setChannel(string $channel): void
     {
         $this->channel = $channel;
     }
 
-    /**
-     * Get channel
-     */
     public function getChannel(): string
     {
         return $this->channel;
     }
 
-    /**
-     * Set level
-     */
     public function setLevel(string $level): void
     {
         $this->level = $level;
     }
 
-    /**
-     * Get level
-     */
     public function getLevel(): string
     {
         return $this->level;
     }
 
-    /**
-     * Set details number
-     *
-     * @param int $detailsNumber
-     */
-    public function setDetailsNumber($detailsNumber)
+    public function setDetailsNumber(int $detailsNumber): void
     {
         $this->detailsNumber = $detailsNumber;
     }
 
-    /**
-     * Get details number
-     *
-     * @return int
-     */
-    public function getDetailsNumber()
+    public function getDetailsNumber(): int
     {
-        return (int)$this->detailsNumber;
+        return $this->detailsNumber;
     }
 
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     */
-    public function setIp($ip)
+    public function setIp(string $ip): void
     {
         $this->ip = $ip;
     }
 
-    /**
-     * Get ip
-     *
-     * @return string
-     */
-    public function getIp()
+    public function getIp(): string
     {
         return $this->ip;
     }
 
-    /**
-     * Set log data
-     *
-     * @param string $logData
-     */
-    public function setLogData($logData)
+    public function setLogData(string $logData): void
     {
         $this->logData = $logData;
     }
 
-    /**
-     * Get log data
-     *
-     * @return array
-     */
-    public function getLogData()
+    public function getLogData(): array
     {
         if ($this->logData === '') {
             return [];
@@ -424,44 +285,24 @@ class LogEntry extends AbstractEntity
         return $logData ?? [];
     }
 
-    /**
-     * Set event pid
-     *
-     * @param int $eventPid
-     */
-    public function setEventPid($eventPid)
+    public function setEventPid(int $eventPid): void
     {
         $this->eventPid = $eventPid;
     }
 
-    /**
-     * Get event pid
-     *
-     * @return int
-     */
-    public function getEventPid()
+    public function getEventPid(): int
     {
-        return (int)$this->eventPid;
+        return $this->eventPid;
     }
 
-    /**
-     * Set workspace uid
-     *
-     * @param int $workspaceUid
-     */
-    public function setWorkspaceUid($workspaceUid)
+    public function setWorkspaceUid(int $workspaceUid): void
     {
         $this->workspaceUid = $workspaceUid;
     }
 
-    /**
-     * Get workspace
-     *
-     * @return int
-     */
-    public function getWorkspaceUid()
+    public function getWorkspaceUid(): int
     {
-        return (int)$this->workspaceUid;
+        return $this->workspaceUid;
     }
 
     /**
@@ -469,7 +310,7 @@ class LogEntry extends AbstractEntity
      *
      * @param string $newId
      */
-    public function setNewId($newId)
+    public function setNewId($newId): void
     {
         $this->newId = $newId;
     }

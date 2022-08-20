@@ -21,7 +21,6 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
-use TYPO3\CMS\Belog\Domain\Model\Workspace;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel as Typo3LogLevel;
@@ -41,9 +40,6 @@ class LogEntryRepository extends Repository
 {
     public ?QuerySettingsInterface $querySettings = null;
 
-    /**
-     * @param QuerySettingsInterface $querySettings
-     */
     public function injectQuerySettings(QuerySettingsInterface $querySettings): void
     {
         $this->querySettings = $querySettings;
@@ -59,9 +55,6 @@ class LogEntryRepository extends Repository
 
     /**
      * Finds all log entries that match all given constraints.
-     *
-     * @param Constraint $constraint
-     * @return QueryResultInterface
      */
     public function findByConstraint(Constraint $constraint): QueryResultInterface
     {
@@ -80,8 +73,6 @@ class LogEntryRepository extends Repository
     /**
      * Create an array of query constraints from constraint object
      *
-     * @param QueryInterface $query
-     * @param Constraint $constraint
      * @return ConstraintInterface[]
      */
     protected function createQueryConstraints(QueryInterface $query, Constraint $constraint): array
@@ -90,7 +81,7 @@ class LogEntryRepository extends Repository
         // User / group handling
         $this->addUsersAndGroupsToQueryConstraints($constraint, $query, $queryConstraints);
         // Workspace
-        if ((int)$constraint->getWorkspaceUid() !== -99) {
+        if ($constraint->getWorkspaceUid() !== -99) {
             $queryConstraints[] = $query->equals('workspace', $constraint->getWorkspaceUid());
         }
         // Channel
@@ -113,10 +104,6 @@ class LogEntryRepository extends Repository
     /**
      * Adds constraints for the page(s) to the query; this could be one single page or a whole subtree beneath a given
      * page.
-     *
-     * @param Constraint $constraint
-     * @param QueryInterface $query
-     * @param array $queryConstraints the query constraints to add to, will be modified
      */
     protected function addPageTreeConstraintsToQuery(
         Constraint $constraint,
@@ -143,10 +130,6 @@ class LogEntryRepository extends Repository
 
     /**
      * Adds users and groups to the query constraints.
-     *
-     * @param Constraint $constraint
-     * @param QueryInterface $query
-     * @param array $queryConstraints the query constraints to add to, will be modified
      */
     protected function addUsersAndGroupsToQueryConstraints(
         Constraint $constraint,
@@ -179,9 +162,6 @@ class LogEntryRepository extends Repository
 
     /**
      * Deletes all messages which have the same message details
-     *
-     * @param LogEntry $logEntry
-     * @return int
      */
     public function deleteByMessageDetails(LogEntry $logEntry): int
     {
