@@ -53,7 +53,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
      */
     public function checkAccess(): bool
     {
-        return count($this->availableWorkspaces) > 1;
+        return count($this->availableWorkspaces) > 1 || !isset($this->availableWorkspaces[0]);
     }
 
     /**
