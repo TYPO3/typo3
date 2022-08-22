@@ -310,8 +310,11 @@ class Backend implements BackendInterface, SingletonInterface
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
+            if (!$dataMap->isPersistableProperty($propertyName)) {
+                continue;
+            }
             $propertyValue = $object->_getProperty($propertyName);
-            if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) {
+            if ($this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
@@ -601,8 +604,11 @@ class Backend implements BackendInterface, SingletonInterface
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
+            if (!$dataMap->isPersistableProperty($propertyName)) {
+                continue;
+            }
             $propertyValue = $object->_getProperty($propertyName);
-            if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) {
+            if ($this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
@@ -906,11 +912,11 @@ class Backend implements BackendInterface, SingletonInterface
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
-            $propertyValue = $object->_getProperty($propertyName);
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($columnMap === null) {
                 continue;
             }
+            $propertyValue = $object->_getProperty($propertyName);
             if ($property->getCascadeValue() === 'remove') {
                 if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {
