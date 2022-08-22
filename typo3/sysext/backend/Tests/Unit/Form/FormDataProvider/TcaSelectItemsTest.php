@@ -132,7 +132,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAllAssociative()->shouldBeCalled();
 
-        $queryBuilderProphet->select('foreignTable.uid')
+        $queryBuilderProphet->select('foreignTable.uid', 'foreignTable.pid')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('foreignTable')
@@ -1008,7 +1008,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([]);
 
-        $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->select('fTable.uid', 'fTable.pid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->where(...array_shift($expectedWhere))->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1103,7 +1103,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([]);
 
-        $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->select('fTable.uid', 'fTable.pid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->groupBy('groupField1', 'groupField2')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1166,7 +1166,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->select('fTable.uid', 'fTable.pid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1206,7 +1206,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $statementProphet = $this->prophesize(Result::class);
 
-        $queryBuilderProphet->select('fTable.uid', 'fTable.labelField')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->select('fTable.uid', 'fTable.pid', 'fTable.labelField')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1365,7 +1365,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $statementProphet = $this->prophesize(Result::class);
 
-        $queryBuilderProphet->select('sys_file_storage.uid', 'sys_file_storage.labelField')
+        $queryBuilderProphet->select('sys_file_storage.uid', 'sys_file_storage.pid', 'sys_file_storage.labelField')
             ->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('sys_file_storage')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1463,7 +1463,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $statementProphet = $this->prophesize(Result::class);
 
-        $queryBuilderProphet->select('fTable.uid', 'fTable.icon')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->select('fTable.uid', 'fTable.pid', 'fTable.icon')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());

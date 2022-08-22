@@ -609,12 +609,12 @@ class BackendUtilityTest extends UnitTestCase
     public function getCommonSelectFieldsReturnsCorrectFieldsDataProvider(): array
     {
         return [
-            'only uid' => [
+            'minimum fields' => [
                 'table' => 'test_table',
                 'prefix' => '',
                 'presetFields' => [],
                 'tca' => [],
-                'expectedFields' => 'uid',
+                'expectedFields' => 'uid,pid',
             ],
             'label set' => [
                 'table' => 'test_table',
@@ -625,7 +625,7 @@ class BackendUtilityTest extends UnitTestCase
                         'label' => 'label',
                     ],
                 ],
-                'expectedFields' => 'uid,label',
+                'expectedFields' => 'uid,pid,label',
             ],
             'label_alt set' => [
                 'table' => 'test_table',
@@ -636,7 +636,7 @@ class BackendUtilityTest extends UnitTestCase
                         'label_alt' => 'label,label2',
                     ],
                 ],
-                'expectedFields' => 'uid,label,label2',
+                'expectedFields' => 'uid,pid,label,label2',
             ],
             'versioningWS set' => [
                 'table' => 'test_table',
@@ -647,7 +647,7 @@ class BackendUtilityTest extends UnitTestCase
                         'versioningWS' => true,
                     ],
                 ],
-                'expectedFields' => 'uid,t3ver_state,t3ver_wsid',
+                'expectedFields' => 'uid,pid,t3ver_state,t3ver_wsid',
             ],
             'selicon_field set' => [
                 'table' => 'test_table',
@@ -658,7 +658,7 @@ class BackendUtilityTest extends UnitTestCase
                         'selicon_field' => 'field',
                     ],
                 ],
-                'expectedFields' => 'uid,field',
+                'expectedFields' => 'uid,pid,field',
             ],
             'typeicon_column set' => [
                 'table' => 'test_table',
@@ -669,7 +669,7 @@ class BackendUtilityTest extends UnitTestCase
                         'typeicon_column' => 'field',
                     ],
                 ],
-                'expectedFields' => 'uid,field',
+                'expectedFields' => 'uid,pid,field',
             ],
             'enablecolumns set' => [
                 'table' => 'test_table',
@@ -685,7 +685,7 @@ class BackendUtilityTest extends UnitTestCase
                         ],
                     ],
                 ],
-                'expectedFields' => 'uid,hidden,start,stop,groups',
+                'expectedFields' => 'uid,pid,hidden,start,stop,groups',
             ],
             'label set to uid' => [
                 'table' => 'test_table',
@@ -696,7 +696,7 @@ class BackendUtilityTest extends UnitTestCase
                         'label' => 'uid',
                     ],
                 ],
-                'expectedFields' => 'uid',
+                'expectedFields' => 'uid,pid',
             ],
         ];
     }

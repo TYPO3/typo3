@@ -89,7 +89,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
 
-        $queryBuilderProphet->select('foreignTable.uid')
+        $queryBuilderProphet->select('foreignTable.uid', 'foreignTable.pid')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('foreignTable')
