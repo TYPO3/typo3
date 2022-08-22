@@ -1853,10 +1853,14 @@ class BackendUtility
      * @param array $fields Preset fields (must include prefix if that is used)
      * @return string List of fields.
      * @internal should only be used from within TYPO3 Core
+     * @todo: Consider dropping this method: It is used only twice and may select not actually needed fields.
+     *        Also, the CSV string return is unfortunate. Consuming callers know better what they actually need,
+     *        this method should be inlined to consumers instead.
      */
     public static function getCommonSelectFields($table, $prefix = '', $fields = [])
     {
         $fields[] = $prefix . 'uid';
+        $fields[] = $prefix . 'pid';
         if (isset($GLOBALS['TCA'][$table]['ctrl']['label']) && $GLOBALS['TCA'][$table]['ctrl']['label'] != '') {
             $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['label'];
         }
