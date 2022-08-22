@@ -382,10 +382,9 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
-            $propertyValue = $object->_getProperty($propertyName);
-
             // @todo We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
             if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== 'uid' && $propertyName !== 'pid' && $propertyName !== 'isClone') {
+                $propertyValue = $object->_getProperty($propertyName);
                 $fieldName = $dataMap->getColumnMap($propertyName)->getColumnName();
                 if ($propertyValue === null) {
                     $whereClause[] = $queryBuilder->expr()->isNull($fieldName);

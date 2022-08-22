@@ -23,6 +23,24 @@ class DateTimeImmutableExample extends AbstractEntity
 {
 
     /**
+     * Static value which is not part of an "entity".
+     * (this property has to be ignored by Extbase when persisting this entity)
+     */
+    public static string $publicStaticValue;
+
+    /**
+     * Transient value, having a name starting with `_`.
+     * (this property has to be ignored by Extbase when persisting this entity)
+     */
+    public string $_publicTransientValue;
+
+    /**
+     * Transient value without any getter or setter.
+     * (this property has to be ignored by Extbase when persisting this entity)
+     */
+    private string $privateTransientValue; // @phpstan-ignore-line since it is unused on purpose
+
+    /**
      * A datetimeImmutable stored in a text field
      *
      * @var \DateTimeImmutable
