@@ -93,7 +93,7 @@ class XmlSitemapRenderer
                     $config['provider'],
                     $request,
                     $sitemap,
-                    (array)$config['config']
+                    (array)($config['config'] ?? [])
                 );
 
                 $pages = $provider->getNumberOfPages();
@@ -132,7 +132,7 @@ class XmlSitemapRenderer
                     $sitemapConfig['provider'],
                     $request,
                     $sitemap,
-                    (array)$sitemapConfig['config']
+                    (array)($sitemapConfig['config'] ?? [])
                 );
 
                 $items = $provider->getItems();
