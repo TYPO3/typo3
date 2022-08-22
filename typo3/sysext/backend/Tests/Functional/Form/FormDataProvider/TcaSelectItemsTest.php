@@ -1108,11 +1108,11 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 99999,
                             'foreign_table' => 'foreign_table',
-                            // @todo Using "uid" and "title" inside GROUP BY to satisfy the `ONLY_FULL_GROUP_BY` rule on
+                            // @todo Using "uid", "pid" and "title" inside GROUP BY to satisfy the `ONLY_FULL_GROUP_BY` rule on
                             // @todo some dbms. Doing so renders the GROUP statement useless, though.
                             'foreign_table_where' => '
                                 AND foreign_table.uid > 1
-                                GROUP BY uid, title, groupingfield1, groupingfield2
+                                GROUP BY uid, pid, title, groupingfield1, groupingfield2
                                 ORDER BY uid
                                 LIMIT 1,2',
                         ],
