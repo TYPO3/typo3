@@ -107,8 +107,8 @@ class SystemInformationMenu {
 
     moduleStorageObject[requestedModule] = {lastAccess: timestamp};
     $.extend(true, storedSystemInformationSettings, moduleStorageObject);
-    const $ajax = PersistentStorage.set('systeminformation', JSON.stringify(storedSystemInformationSettings));
-    $ajax.done((): void => {
+    const ajax = PersistentStorage.set('systeminformation', JSON.stringify(storedSystemInformationSettings));
+    ajax.then((): void => {
       // finally, open the module now
       TYPO3.ModuleMenu.App.showModule(requestedModule, moduleParams);
       Viewport.Topbar.refresh();

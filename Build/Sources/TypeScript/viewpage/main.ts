@@ -84,7 +84,7 @@ class ViewPage {
     if (this.queueIsRunning === false && this.queue.length >= 1) {
       this.queueIsRunning = true;
       let item = this.queue.shift();
-      PersistentStorage.set(item.storageIdentifier, item.data).done((): void => {
+      PersistentStorage.set(item.storageIdentifier, item.data).then((): void => {
         this.queueIsRunning = false;
         this.persistQueue();
       });

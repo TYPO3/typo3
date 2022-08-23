@@ -11,7 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+
+type UC = { [key: string]: string | number | boolean | null | UC };
 
 /**
  * Module: @typo3/backend/storage/persistent
@@ -19,24 +22,19 @@ import $ from 'jquery';
  * @exports @typo3/backend/storage/persistent
  */
 class Persistent {
-  private data: any = false;
+  private data: UC|null = null;
 
   /**
    * Persistent storage, stores everything on the server via AJAX, does a greedy load on read
    * common functions get/set/clear
    *
    * @param {String} key
-   * @returns {*}
+   * @returns {any}
    */
-  public get = (key: string): any => {
-    const me = this;
-
-    if (this.data === false) {
-      let value;
-      this.loadFromServer().done(() => {
-        value = me.getRecursiveDataByDeepKey(me.data, key.split('.'));
-      });
-      return value;
+  public get(key: string): any {
+    if (this.data === null) {
+      const response = this.loadFromServer();
+      return this.getRecursiveDataByDeepKey(response, key.split('.'));
     }
 
     return this.getRecursiveDataByDeepKey(this.data, key.split('.'));
@@ -47,10 +45,10 @@ class Persistent {
    *
    * @param {String} key
    * @param {String} value
-   * @returns {$}
+   * @returns {Promise<UC>}
    */
-  public set = (key: string, value: string|object): any => {
-    if (this.data !== false) {
+  public set(key: string, value: string|UC): Promise<UC> {
+    if (this.data !== null) {
       this.data = this.setRecursiveDataByDeepKey(this.data, key.split('.'), value);
     }
     return this.storeOnServer(key, value);
@@ -59,65 +57,47 @@ class Persistent {
   /**
    * @param {string} key
    * @param {string} value
-   * @returns {$}
+   * @returns {Promise<UC>}
    */
-  public addToList = (key: string, value: string): any => {
-    const me = this;
-    return $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
-      data: {
-        action: 'addToList',
-        key,
-        value,
-      },
-      method: 'post',
-    }).done((data: any): any => {
-      me.data = data;
+  public async addToList(key: string, value: string): Promise<UC> {
+    const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.usersettings_process).post({
+      action: 'addToList',
+      key,
+      value,
     });
+    return this.resolveResponse(response);
   }
 
   /**
    * @param {string} key
    * @param {string} value
-   * @returns {$}
+   * @returns {Promise<UC>}
    */
-  public removeFromList = (key: string, value: string): any => {
-    const me = this;
-    return $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
-      data: {
-        action: 'removeFromList',
-        key,
-        value,
-      },
-      method: 'post',
-    }).done((data: any): any => {
-      me.data = data;
+  public async removeFromList(key: string, value: string): Promise<UC> {
+    const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.usersettings_process).post({
+      action: 'removeFromList',
+      key,
+      value,
     });
+    return this.resolveResponse(response);
   }
 
-  public unset = (key: string): any => {
-    const me = this;
-    return $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
-      data: {
-        action: 'unset',
-        key,
-      },
-      method: 'post',
-    }).done((data: any): any => {
-      me.data = data;
+  public async unset(key: string): Promise<UC> {
+    const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.usersettings_process).post({
+      action: 'unset',
+      key,
     });
+    return this.resolveResponse(response);
   }
 
   /**
    * Clears the UC
    */
-  public clear = (): any => {
-    $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
-      data: {
-        action: 'clear',
-      },
-      method: 'post',
+  public clear(): void {
+    new AjaxRequest(TYPO3.settings.ajaxUrls.usersettings_process).post({
+      action: 'clear',
     });
-    this.data = false;
+    this.data = null;
   }
 
   /**
@@ -126,7 +106,7 @@ class Persistent {
    * @param {string} key
    * @returns {boolean}
    */
-  public isset = (key: string): boolean => {
+  public isset(key: string): boolean {
     const value = this.get(key);
     return (typeof value !== 'undefined' && value !== null);
   }
@@ -134,27 +114,31 @@ class Persistent {
   /**
    * Loads the data from outside, only used for the initial call from BackendController
    *
-   * @param {String} data
+   * @param {UC} data
    */
-  public load = (data: any): any => {
+  public load(data: UC): any {
     this.data = data;
   }
 
   /**
    * Loads all data from the server
-   *
-   * @returns {$}
    */
-  private loadFromServer = (): any => {
-    const me = this;
-    return $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
-      async: false,
-      data: {
-        action: 'getAll',
-      },
-    }).done((data: any) => {
-      me.data = data;
-    });
+  private loadFromServer(): UC {
+    const url = new URL(location.origin + TYPO3.settings.ajaxUrls.usersettings_process);
+    url.searchParams.set('action', 'getAll');
+
+    const request = new XMLHttpRequest();
+    const async = false;
+    request.open('GET', url.toString(), async);
+    request.send();
+
+    if (request.status === 200) {
+      const response = JSON.parse(request.responseText);
+      this.data = response;
+      return response;
+    }
+
+    throw `Unexpected response code ${request.status}, reason: ${request.responseText}`;
   }
 
   /**
@@ -162,32 +146,27 @@ class Persistent {
    * to always be up-to-date inside the browser
    *
    * @param {string} key
-   * @param {string} value
-   * @returns {*}
+   * @param {string|object} value
+   * @returns {Promise<UC>}
    */
-  private storeOnServer = (key: string, value: string|object): any => {
-    const me = this;
-    return $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
-      data: {
-        action: 'set',
-        key,
-        value,
-      },
-      method: 'post',
-    }).done((data: any): any => {
-      me.data = data;
+  private async storeOnServer(key: string, value: string|object): Promise<UC> {
+    const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.usersettings_process).post({
+      action: 'set',
+      key,
+      value,
     });
+    return this.resolveResponse(response);
   }
 
   /**
    * Helper function used to set a value which could have been a flat object key data["my.foo.bar"] to
    * data[my][foo][bar] is called recursively by itself
    *
-   * @param {Object} data the data to be used as base
-   * @param {String} keyParts the keyParts for the subtree
-   * @returns {Object}
+   * @param {object} data the data to be used as base
+   * @param {string[]} keyParts the keyParts for the subtree
+   * @returns {UC}
    */
-  private getRecursiveDataByDeepKey = (data: any, keyParts: any[]): any => {
+  private getRecursiveDataByDeepKey(data: any, keyParts: string[]): any {
     if (keyParts.length === 1) {
       return (data || {})[keyParts[0]];
     }
@@ -201,20 +180,27 @@ class Persistent {
    * data[my][foo][bar]
    * is called recursively by itself
    *
-   * @param data
-   * @param {any[]} keyParts
-   * @param {string} value
-   * @returns {any[]}
+   * @param {UC} data
+   * @param {string[]} keyParts
+   * @param {UC} value
+   * @returns {UC}
    */
-  private setRecursiveDataByDeepKey = (data: any, keyParts: any[], value: string|object): any[] => {
+  private setRecursiveDataByDeepKey(data: UC, keyParts: string[], value: string | UC): UC {
     if (keyParts.length === 1) {
       data = data || {};
       data[keyParts[0]] = value;
     } else {
       const firstKey = keyParts.shift();
-      data[firstKey] = this.setRecursiveDataByDeepKey(data[firstKey] || {}, keyParts, value);
+      data[firstKey] = this.setRecursiveDataByDeepKey((data[firstKey] as UC) || {}, keyParts, value);
     }
     return data;
+  }
+
+  private async resolveResponse(response: AjaxResponse): Promise<UC> {
+    const resolvedResponse = await response.resolve();
+    this.data = resolvedResponse;
+
+    return resolvedResponse;
   }
 }
 

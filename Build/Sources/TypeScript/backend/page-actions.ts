@@ -119,7 +119,7 @@ class PageActions {
       $hiddenElements.slideUp();
     }
 
-    PersistentStorage.set('moduleData.web_layout.showHidden', $me.prop('checked') ? '1' : '0').done((): void => {
+    PersistentStorage.set('moduleData.web_layout.showHidden', $me.prop('checked') ? '1' : '0').then((): void => {
       $spinner.remove();
       $me.show();
     });
