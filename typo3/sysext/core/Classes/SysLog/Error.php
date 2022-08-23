@@ -27,12 +27,4 @@ class Error
     public const SYSTEM_ERROR = 2;
     public const SECURITY_NOTICE = 3;
     public const WARNING = 4;
-
-    /*
-     * 100 is a code, which has been introduced by Kasper in his "Todays special" commit:
-     * @see https://github.com/typo3/typo3/commit/7496d6d033
-     *
-     * @todo The constant should either be renamed or replaced completely in the future
-     */
-    public const TODAYS_SPECIAL = 100;
 }
