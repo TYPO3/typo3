@@ -50,17 +50,20 @@ class FormEngineReview {
    * @param {Object} context
    */
   public static attachButtonToModuleHeader(context: any): void {
-    const $leastButtonBar: any = $('.t3js-module-docheader-bar-buttons').children().last().find('[role="toolbar"]');
-    const $button: any = $('<a />', {
-      class: 'btn btn-danger btn-sm hidden ' + context.toggleButtonClass,
-      href: '#',
-      title: TYPO3.lang['buttons.reviewFailedValidationFields'],
-    }).append(
-      $('<typo3-backend-icon/>', {identifier: 'actions-info', size: 'small'}),
-    );
+    const leastButtonBar: HTMLElement = document.querySelector('.t3js-module-docheader-bar-buttons').lastElementChild.querySelector('[role="toolbar"]');
 
-    Popover.popover($button);
-    $leastButtonBar.prepend($button);
+    const icon = document.createElement('typo3-backend-icon');
+    icon.setAttribute('identifier', 'actions-info');
+    icon.setAttribute('size', 'small');
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.classList.add('btn', 'btn-danger', 'btn-sm', 'hidden', context.toggleButtonClass);
+    button.title = TYPO3.lang['buttons.reviewFailedValidationFields'];
+    button.appendChild(icon);
+
+    Popover.popover(button);
+    leastButtonBar.prepend(button);
   }
 
   /**
@@ -89,7 +92,10 @@ class FormEngineReview {
   public checkForReviewableField = (): void => {
     const me: any = this;
     const $invalidFields: any = FormEngineReview.findInvalidField();
-    const $toggleButton: any = $('.' + this.toggleButtonClass);
+    const toggleButton: HTMLElement = document.querySelector('.' + this.toggleButtonClass);
+    if (toggleButton === null) {
+      return;
+    }
 
     if ($invalidFields.length > 0) {
       const $list: any = $('<div />', {class: 'list-group'});
@@ -107,14 +113,14 @@ class FormEngineReview {
         $list.append(link);
       });
 
-      $toggleButton.removeClass('hidden');
-      Popover.setOptions($toggleButton, <BootstrapPopover.Options>{
+      toggleButton.classList.remove('hidden');
+      Popover.setOptions(toggleButton, <BootstrapPopover.Options>{
         html: true,
         content: $list[0]
       });
     } else {
-      $toggleButton.addClass('hidden');
-      Popover.hide($toggleButton);
+      toggleButton.classList.add('hidden');
+      Popover.hide(toggleButton);
     }
   }
 

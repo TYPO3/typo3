@@ -12,9 +12,9 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import {Popover as BootstrapPopover} from 'bootstrap';
 import Popover from './popover';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/backend/context-help
@@ -31,36 +31,37 @@ class ContextHelp {
   }
 
   public initialize(): void {
-    const $element = $(this.selector);
-    $element
-      .attr('data-bs-html', 'true')
-      .attr('data-bs-placement', this.placement)
-      .attr('data-bs-trigger', this.trigger);
-    Popover.popover($element);
+    const elements = document.querySelectorAll(this.selector);
+    elements.forEach((element: HTMLElement): void => {
+      element.dataset.bsHtml = 'true';
+      element.dataset.bsPlacement = this.placement;
+      element.dataset.bsTrigger = this.trigger;
 
-    $(document).on('show.bs.popover', this.selector, (e: Event): void => {
-      const $me = $(e.currentTarget);
-      const description = $me.data('description');
-      if (typeof description !== 'undefined' && description !== '') {
+      Popover.popover(element);
+    });
+
+    new RegularEvent('show.bs.popover', (e: Event): void => {
+      const me = e.target as HTMLElement;
+      const description = me.dataset.description;
+
+      if (!!description) {
         const options = <BootstrapPopover.Options>{
-          title: $me.data('title') || '',
+          title: me.dataset.title || '',
           content: description,
         };
-        Popover.setOptions($me, options);
+        Popover.setOptions(me, options);
       }
-    }).on('click', 'body', (e: any): void => {
-      $(this.selector).each((index: number, triggerElement: Element): void => {
-        const $triggerElement = $(triggerElement);
-        // the 'is' for buttons that trigger popups
-        // the 'has' for icons within a button that triggers a popup
-        if (!$triggerElement.is(e.target)
-          && $triggerElement.has(e.target).length === 0
-          && $('.popover').has(e.target).length === 0
-        ) {
-          Popover.hide($triggerElement);
+    }).delegateTo(document, this.selector);
+
+    new RegularEvent('click', (e: Event): void => {
+      const me = e.target as HTMLElement;
+      const elements = document.querySelectorAll(this.selector);
+      elements.forEach((element: HTMLElement): void => {
+        if (!element.isEqualNode(me)) {
+          Popover.hide(element);
         }
       });
-    });
+    }).delegateTo(document, 'body');
   }
 }
 

@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {Popover as BootstrapPopover} from 'bootstrap';
 
 /**
@@ -37,22 +36,20 @@ class Popover {
    */
   public initialize(selector?: string): void {
     selector = selector || this.DEFAULT_SELECTOR;
-    $(selector).each((i, el) => {
-      const popover = new BootstrapPopover(el);
-      $(el).data('typo3.bs.popover', popover);
+    document.querySelectorAll(selector).forEach((element: HTMLElement): void => {
+      this.applyTitleIfAvailable(element);
+      new BootstrapPopover(element);
     });
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Popover wrapper function
-   *
-   * @param {JQuery} $element
    */
-  public popover($element: JQuery) {
-    $element.each((i, el) => {
-      const popover = new BootstrapPopover(el);
-      $(el).data('typo3.bs.popover', popover);
+  public popover(element: NodeListOf<HTMLElement> | HTMLElement) {
+    this.toIterable(element).forEach((element: HTMLElement): void => {
+      this.applyTitleIfAvailable(element);
+      new BootstrapPopover(element);
     });
   }
 
@@ -60,117 +57,99 @@ class Popover {
   /**
    * Set popover options on $element
    *
-   * @param {JQuery} $element
-   * @param {PopoverOptions} options
+   * @param {element: HTMLElement} element
+   * @param {BootstrapPopover.Options} options
    */
-  public setOptions($element: JQuery, options?: BootstrapPopover.Options): void {
+  public setOptions(element: HTMLElement, options?: BootstrapPopover.Options): void {
     options = options || <BootstrapPopover.Options>{};
-    options.html = true;
-    const title: string = options.title || $element.data('title') || '';
-    const content: string = options.content || $element.data('bs-content') || '';
-    $element
-      .attr('data-bs-original-title', (title as string))
-      .attr('data-bs-content', (content as string))
-      .attr('data-bs-placement', 'auto')
+    const title: string = (options.title as string) || element.dataset.title || element.dataset.bsTitle || '';
+    const content: string = (options.content as string) || element.dataset.bsContent || '';
+    element.dataset.bsTitle = title;
+    element.dataset.bsOriginalTitle = title;
+    element.dataset.bsContent = content;
+    element.dataset.bsPlacement = 'auto';
 
     delete options.title;
     delete options.content;
-    $.each(options, (key, value) => {
-      this.setOption($element, key, value);
-    });
 
-    const popover = $element.data('typo3.bs.popover');
+    const popover = BootstrapPopover.getInstance(element);
+    // @ts-ignore
     popover.setContent({
       '.popover-header': title,
       '.popover-body': content
     });
-  }
 
-  // noinspection JSMethodCanBeStatic
-  /**
-   * Set popover option on $element
-   *
-   * @param {JQuery} $element
-   * @param {String} key
-   * @param {String} value
-   */
-  public setOption($element: JQuery, key: string, value: string): void {
-    $element.each((i, el) => {
-      const popover = $(el).data('typo3.bs.popover');
-      if (popover) {
-        popover._config[key] = value;
-      }
-    });
+    for (const [optionName, optionValue] of Object.entries(options)) {
+      // @ts-ignore: using internal _config attribute
+      popover._config[optionName] = optionValue;
+    }
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Show popover with title and content on $element
    *
-   * @param {JQuery} $element
+   * @param {element: HTMLElement} element
    */
-  public show($element: JQuery): void {
-    $element.each((i, el) => {
-      const popover = $(el).data('typo3.bs.popover');
-      if (popover) {
-        popover.show();
-      }
-    });
+  public show(element: HTMLElement): void {
+    const popover = BootstrapPopover.getInstance(element);
+    popover.show();
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Hide popover on $element
    *
-   * @param {JQuery} $element
+   * @param {HTMLElement} element
    */
-  public hide($element: JQuery): void {
-    $element.each((i, el) => {
-      const popover = $(el).data('typo3.bs.popover');
-      if (popover) {
-        popover.hide();
-      }
-    });
+  public hide(element: HTMLElement): void {
+    const popover = BootstrapPopover.getInstance(element);
+    popover.hide();
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Destroy popover on $element
    *
-   * @param {Object} $element
+   * @param {HTMLElement} element
    */
-  public destroy($element: JQuery): void {
-    $element.each((i, el) => {
-      const popover = $(el).data('typo3.bs.popover');
-      if (popover) {
-        popover.dispose();
-      }
-    });
+  public destroy(element: HTMLElement): void {
+    const popover = BootstrapPopover.getInstance(element);
+    popover.dispose();
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Toggle popover on $element
    *
-   * @param {Object} $element
+   * @param {HTMLElement} element
    */
-  public toggle($element: JQuery): void {
-    $element.each((i, el) => {
-      const popover = $(el).data('typo3.bs.popover');
-      if (popover) {
-        popover.toggle();
-      }
-    });
+  public toggle(element: HTMLElement): void {
+    const popover = BootstrapPopover.getInstance(element);
+    popover.toggle();
   }
 
-  // noinspection JSMethodCanBeStatic
+  private toIterable(element: NodeListOf<HTMLElement> | HTMLElement | unknown): NodeList | HTMLElement[] {
+    let elementList;
+    if (element instanceof HTMLElement) {
+      elementList = [element];
+    } else if (element instanceof NodeList) {
+      elementList = element;
+    } else {
+      throw `Cannot consume element of type ${element.constructor.name}, expected NodeListOf<HTMLElement> or HTMLElement`;
+    }
+
+    return elementList;
+  }
+
   /**
-   * Update popover with new content
-   *
-   * @param $element
+   * If the element contains an attributes that qualifies as a title, store it as data attribute "bs-title"
    */
-  public update($element: JQuery): void {
-    $element.data('typo3.bs.popover')._popper.update();
+  private applyTitleIfAvailable(element: HTMLElement): void {
+    const title = (element.title as string) || element.dataset.title || '';
+    if (title) {
+      element.dataset.bsTitle = title;
+    }
   }
 }
 
