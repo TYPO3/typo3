@@ -68,7 +68,7 @@ checks if the given value contains the specified amount of elements. The
 validator has 2 options:
 
 - Minimum [:yaml:`options.minimum`]: The minimum count to accept.
-- Maximum [:yaml:`options.minimum`]: The maximum count to accept.
+- Maximum [:yaml:`options.maximum`]: The maximum count to accept.
 
 
 .. _concepts-validators-date_range:
