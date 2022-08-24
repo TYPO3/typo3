@@ -372,6 +372,8 @@ class InlineControlContainer extends AbstractContainer
                     'nameForm' => $nameForm,
                     'config' => $config,
                     'customControlConfig' => $customControlConfig,
+                    // Warning: By reference should be used with care here and exists mostly to allow additional $resultArray['requireJsModules']
+                    'resultArray' => &$resultArray,
                 ];
                 $html .= GeneralUtility::callUserFunction($customControlConfig['userFunc'], $parameters, $this);
             }
