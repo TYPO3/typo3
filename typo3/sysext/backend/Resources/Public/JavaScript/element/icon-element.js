@@ -25,9 +25,9 @@ var __decorate=function(e,i,t,o){var n,r=arguments.length,s=r<3?i:null===o?o=Obj
     line-height: calc(var(--icon-size) / 1.6);
     font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
   }
-`;let IconElement=class extends LitElement{constructor(){super(...arguments),this.size=null,this.state=States.default,this.overlay=null,this.markup=MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return html`${unsafeHTML(this.raw)}`;if(!this.identifier)return html``;const e=Icons.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>html`
+`;let IconElement=class extends LitElement{constructor(){super(...arguments),this.size=null,this.state=States.default,this.overlay=null,this.markup=MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return html`${unsafeHTML(this.raw)}`;if(!this.identifier)return html``;const e=Icons.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then((e=>html`
           ${unsafeHTML(e)}
-        `);return html`${until(e,html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};IconElement.styles=[css`
+        `));return html`${until(e,html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};IconElement.styles=[css`
       :host {
         --icon-color-primary: currentColor;
         --icon-size-small: 16px;

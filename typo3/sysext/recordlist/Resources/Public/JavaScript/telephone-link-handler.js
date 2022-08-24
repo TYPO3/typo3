@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import LinkBrowser from"@typo3/recordlist/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class TelephoneLinkHandler{constructor(){new RegularEvent("submit",(e,t)=>{e.preventDefault();let r=t.querySelector('[name="ltelephone"]').value;"tel:"!==r&&(r.startsWith("tel:")&&(r=r.substr(4)),LinkBrowser.finalizeFunction("tel:"+r))}).delegateTo(document,"#ltelephoneform")}}export default new TelephoneLinkHandler;
+import LinkBrowser from"@typo3/recordlist/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class TelephoneLinkHandler{constructor(){new RegularEvent("submit",((e,t)=>{e.preventDefault();let r=t.querySelector('[name="ltelephone"]').value;"tel:"!==r&&(r.startsWith("tel:")&&(r=r.substr(4)),LinkBrowser.finalizeFunction("tel:"+r))})).delegateTo(document,"#ltelephoneform")}}export default new TelephoneLinkHandler;

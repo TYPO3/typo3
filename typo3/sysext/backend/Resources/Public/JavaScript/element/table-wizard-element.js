@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(t,e,l,a){var o,i=arguments.length,n=i<3?e:null===a?a=Object.getOwnPropertyDescriptor(e,l):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,l,a);else for(var s=t.length-1;s>=0;s--)(o=t[s])&&(n=(i<3?o(n):i>3?o(e,l,n):o(e,l))||n);return i>3&&n&&Object.defineProperty(e,l,n),n};import{html,LitElement,render}from"lit";import{customElement,property}from"lit/decorators.js";import{lll}from"@typo3/core/lit-helper.js";import"@typo3/backend/element/icon-element.js";import Severity from"@typo3/backend/severity.js";import Modal from"@typo3/backend/modal.js";import{SeverityEnum}from"@typo3/backend/enum/severity.js";let TableWizardElement=class extends LitElement{constructor(){super(),this.type="textarea",this.selectorData="",this.delimiter="|",this.enclosure="",this.appendRows=1,this.l10n={},this.table=[],this.selectorData=this.getAttribute("selector"),this.delimiter=this.getAttribute("delimiter"),this.enclosure=this.getAttribute("enclosure")||"",this.readTableFromTextarea()}get firstRow(){return this.table[0]||[]}createRenderRoot(){return this}render(){return this.renderTemplate()}provideMinimalTable(){0!==this.table.length&&0!==this.firstRow.length||(this.table=[[""]])}readTableFromTextarea(){let t=document.querySelector(this.selectorData),e=[];t.value.split("\n").forEach(t=>{if(""!==t){this.enclosure&&(t=t.replace(new RegExp(this.enclosure,"g"),""));let l=t.split(this.delimiter);e.push(l)}}),this.table=e}writeTableSyntaxToTextarea(){let t=document.querySelector(this.selectorData),e="";this.table.forEach(t=>{let l=t.length;e+=t.reduce((t,e,a)=>{let o=l-1===a?"":this.delimiter;return t+this.enclosure+e+this.enclosure+o},"")+"\n"}),t.value=e,t.dispatchEvent(new CustomEvent("change",{bubbles:!0}))}modifyTable(t,e,l){const a=t.target;this.table[e][l]=a.value,this.writeTableSyntaxToTextarea(),this.requestUpdate()}toggleType(t){this.type="input"===this.type?"textarea":"input"}moveColumn(t,e,l){this.table=this.table.map(t=>{const a=t.splice(e,1);return t.splice(l,0,...a),t}),this.writeTableSyntaxToTextarea(),this.requestUpdate()}appendColumn(t,e){this.table=this.table.map(t=>(t.splice(e+1,0,""),t)),this.writeTableSyntaxToTextarea(),this.requestUpdate()}removeColumn(t,e){this.table=this.table.map(t=>(t.splice(e,1),t)),this.writeTableSyntaxToTextarea(),this.requestUpdate()}moveRow(t,e,l){const a=this.table.splice(e,1);this.table.splice(l,0,...a),this.writeTableSyntaxToTextarea(),this.requestUpdate()}appendRow(t,e){let l=this.firstRow.concat().fill(""),a=new Array(this.appendRows).fill(l);this.table.splice(e+1,0,...a),this.writeTableSyntaxToTextarea(),this.requestUpdate()}removeRow(t,e){this.table.splice(e,1),this.writeTableSyntaxToTextarea(),this.requestUpdate()}renderTemplate(){this.provideMinimalTable();const t=Object.keys(this.firstRow).map(t=>parseInt(t,10)),e=t[t.length-1],l=this.table.length-1;return html`
+var __decorate=function(t,e,l,a){var o,i=arguments.length,n=i<3?e:null===a?a=Object.getOwnPropertyDescriptor(e,l):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,l,a);else for(var s=t.length-1;s>=0;s--)(o=t[s])&&(n=(i<3?o(n):i>3?o(e,l,n):o(e,l))||n);return i>3&&n&&Object.defineProperty(e,l,n),n};import{html,LitElement,render}from"lit";import{customElement,property}from"lit/decorators.js";import{lll}from"@typo3/core/lit-helper.js";import"@typo3/backend/element/icon-element.js";import Severity from"@typo3/backend/severity.js";import Modal from"@typo3/backend/modal.js";import{SeverityEnum}from"@typo3/backend/enum/severity.js";let TableWizardElement=class extends LitElement{constructor(){super(),this.type="textarea",this.selectorData="",this.delimiter="|",this.enclosure="",this.appendRows=1,this.l10n={},this.table=[],this.selectorData=this.getAttribute("selector"),this.delimiter=this.getAttribute("delimiter"),this.enclosure=this.getAttribute("enclosure")||"",this.readTableFromTextarea()}get firstRow(){return this.table[0]||[]}createRenderRoot(){return this}render(){return this.renderTemplate()}provideMinimalTable(){0!==this.table.length&&0!==this.firstRow.length||(this.table=[[""]])}readTableFromTextarea(){let t=document.querySelector(this.selectorData),e=[];t.value.split("\n").forEach((t=>{if(""!==t){this.enclosure&&(t=t.replace(new RegExp(this.enclosure,"g"),""));let l=t.split(this.delimiter);e.push(l)}})),this.table=e}writeTableSyntaxToTextarea(){let t=document.querySelector(this.selectorData),e="";this.table.forEach((t=>{let l=t.length;e+=t.reduce(((t,e,a)=>{let o=l-1===a?"":this.delimiter;return t+this.enclosure+e+this.enclosure+o}),"")+"\n"})),t.value=e,t.dispatchEvent(new CustomEvent("change",{bubbles:!0}))}modifyTable(t,e,l){const a=t.target;this.table[e][l]=a.value,this.writeTableSyntaxToTextarea(),this.requestUpdate()}toggleType(t){this.type="input"===this.type?"textarea":"input"}moveColumn(t,e,l){this.table=this.table.map((t=>{const a=t.splice(e,1);return t.splice(l,0,...a),t})),this.writeTableSyntaxToTextarea(),this.requestUpdate()}appendColumn(t,e){this.table=this.table.map((t=>(t.splice(e+1,0,""),t))),this.writeTableSyntaxToTextarea(),this.requestUpdate()}removeColumn(t,e){this.table=this.table.map((t=>(t.splice(e,1),t))),this.writeTableSyntaxToTextarea(),this.requestUpdate()}moveRow(t,e,l){const a=this.table.splice(e,1);this.table.splice(l,0,...a),this.writeTableSyntaxToTextarea(),this.requestUpdate()}appendRow(t,e){let l=this.firstRow.concat().fill(""),a=new Array(this.appendRows).fill(l);this.table.splice(e+1,0,...a),this.writeTableSyntaxToTextarea(),this.requestUpdate()}removeRow(t,e){this.table.splice(e,1),this.writeTableSyntaxToTextarea(),this.requestUpdate()}renderTemplate(){this.provideMinimalTable();const t=Object.keys(this.firstRow).map((t=>parseInt(t,10))),e=t[t.length-1],l=this.table.length-1;return html`
       <style>
         :host, typo3-backend-table-wizard { display: inline-block; }
       </style>
@@ -18,29 +18,29 @@ var __decorate=function(t,e,l,a){var o,i=arguments.length,n=i<3?e:null===a?a=Obj
         <table class="table table-center">
           <thead>
             <th>${this.renderTypeButton()}</th>
-            ${t.map(t=>html`
+            ${t.map((t=>html`
             <th>${this.renderColButtons(t,e)}</th>
-            `)}
+            `))}
           </thead>
           <tbody>
-            ${this.table.map((t,e)=>html`
+            ${this.table.map(((t,e)=>html`
             <tr>
               <th>${this.renderRowButtons(e,l)}</th>
-              ${t.map((t,l)=>html`
+              ${t.map(((t,l)=>html`
               <td>${this.renderDataElement(t,e,l)}</td>
-              `)}
+              `))}
             </tr>
-            `)}
+            `))}
           </tbody>
         </table>
       </div>
-    `}renderDataElement(t,e,l){const a=t=>this.modifyTable(t,e,l);switch(this.type){case"input":return html`
+    `}renderDataElement(t,e,l){const a=t=>this.modifyTable(t,e,l);return"input"===this.type?html`
           <input class="form-control" type="text" name="TABLE[c][${e}][${l}]"
             @change="${a}" .value="${t.replace(/\n/g,"<br>")}">
-        `;case"textarea":default:return html`
+        `:html`
           <textarea class="form-control" rows="6" name="TABLE[c][${e}][${l}]"
             @change="${a}" .value="${t.replace(/<br[ ]*\/?>/g,"\n")}"></textarea>
-        `}}renderTypeButton(){return html`
+        `}renderTypeButton(){return html`
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${lll("table_smallFields")}"
                 @click="${t=>this.toggleType(t)}">

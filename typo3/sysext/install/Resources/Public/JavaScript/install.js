@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import $ from"jquery";import Router from"@typo3/install/router.js";class Install{constructor(){$(()=>{Router.initialize()})}}export default new Install;
+import $ from"jquery";import Router from"@typo3/install/router.js";class Install{constructor(){$((()=>{Router.initialize()}))}}export default new Install;

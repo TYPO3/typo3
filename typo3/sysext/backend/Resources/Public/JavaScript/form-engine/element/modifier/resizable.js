@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export class Resizable{static enable(e){import("autosize").then(({default:t})=>{t(e)})}}
+export class Resizable{static enable(e){import("autosize").then((({default:t})=>{t(e)}))}}

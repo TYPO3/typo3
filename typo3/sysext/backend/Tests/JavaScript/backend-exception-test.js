@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{BackendException}from"@typo3/backend/backend-exception.js";describe("@typo3/backend/backend-exception",()=>{it("sets exception message",()=>{const e=new BackendException("some message");expect(e.message).toBe("some message")}),it("sets exception code",()=>{const e=new BackendException("",12345);expect(e.code).toBe(12345)})});
+import{BackendException}from"@typo3/backend/backend-exception.js";describe("@typo3/backend/backend-exception",(()=>{it("sets exception message",(()=>{const e=new BackendException("some message");expect(e.message).toBe("some message")})),it("sets exception code",(()=>{const e=new BackendException("",12345);expect(e.code).toBe(12345)}))}));

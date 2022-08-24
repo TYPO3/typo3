@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import LinkBrowser from"@typo3/recordlist/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class UrlLinkHandler{constructor(){new RegularEvent("submit",(e,r)=>{e.preventDefault();let l=r.querySelector('[name="lurl"]').value;""!==l&&LinkBrowser.finalizeFunction(l)}).delegateTo(document,"#lurlform")}}export default new UrlLinkHandler;
+import LinkBrowser from"@typo3/recordlist/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class UrlLinkHandler{constructor(){new RegularEvent("submit",((e,r)=>{e.preventDefault();let l=r.querySelector('[name="lurl"]').value;""!==l&&LinkBrowser.finalizeFunction(l)})).delegateTo(document,"#lurlform")}}export default new UrlLinkHandler;

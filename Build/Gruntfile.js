@@ -22,7 +22,8 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('formatsass', 'Grunt task for stylefmt', function () {
     var options = this.options(),
       done = this.async(),
-      stylefmt = require('stylefmt'),
+      stylefmt = require('@ronilaukkarinen/stylefmt'),
+      postcss = require('postcss'),
       scss = require('postcss-scss'),
       files = this.filesSrc.filter(function (file) {
         return grunt.file.isFile(file);
@@ -35,7 +36,7 @@ module.exports = function (grunt) {
           from: filepath,
           syntax: scss
         };
-        stylefmt.process(content, settings).then(function (result) {
+        postcss([stylefmt]).process(content, settings).then(function (result) {
           grunt.file.write(file.dest, result.css);
           grunt.log.success('Source file "' + filepath + '" was processed.');
           counter++;
@@ -185,6 +186,8 @@ module.exports = function (grunt) {
     },
     exec: {
       ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
+      lintspaces: ((process.platform === 'win32') ? 'node_modules\\.bin\\lintspaces.cmd' : './node_modules/.bin/lintspaces') + ' --editorconfig ../.editorconfig "../typo3/sysext/*/Resources/Private/**/*.html"',
+      squoosh: ((process.platform === 'win32') ? 'node_modules\\.bin\\squoosh-cli.cmd' : './node_modules/.bin/squoosh-cli') + ' --oxipng auto --output-dir ../typo3/sysext/core/Resources/Public/Icons/Flags/ ../typo3/sysext/core/Resources/Public/Icons/Flags/*.png' + ((process.platform === 'win32') ? '' : ' 2>&1'),
       'npm-install': 'npm install'
     },
     eslint: {
@@ -729,31 +732,9 @@ module.exports = function (grunt) {
         ]
       }
     },
-    imagemin: {
-      flags: {
-        files: [
-          {
-            cwd: '<%= paths.sysext %>core/Resources/Public/Icons/Flags',
-            src: ['**/*.{png,jpg,gif}'],
-            dest: '<%= paths.sysext %>core/Resources/Public/Icons/Flags',
-            expand: true
-          }
-        ]
-      }
-    },
-    lintspaces: {
-      html: {
-        src: [
-          '<%= paths.sysext %>*/Resources/Private/**/*.html'
-        ],
-        options: {
-          editorconfig: '../.editorconfig'
-        }
-      }
-    },
     concurrent: {
       npmcopy: ['npmcopy:ckeditor', 'npmcopy:ckeditor_externalplugins', 'npmcopy:dashboard', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
-      lint: ['eslint', 'stylelint', 'lintspaces'],
+      lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],
       copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
@@ -767,13 +748,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-rollup');
   grunt.loadNpmTasks('grunt-npmcopy');
   grunt.loadNpmTasks('grunt-terser');
-  grunt.loadNpmTasks('grunt-postcss');
+  grunt.loadNpmTasks('@lodder/grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-stylelint');
-  grunt.loadNpmTasks('grunt-lintspaces');
-  grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-concurrent');
 
@@ -879,7 +858,7 @@ module.exports = function (grunt) {
    * - minifies svg files
    * - compiles TypeScript files
    */
-  grunt.registerTask('default', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_assets', 'concurrent:minify_assets', 'imagemin']);
+  grunt.registerTask('default', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_assets', 'concurrent:minify_assets', 'exec:squoosh']);
 
   /**
    * grunt build task (legacy, for those used to it). Use `grunt default` instead.

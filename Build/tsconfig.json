@@ -95,6 +95,22 @@
             ]
         },
         "outDir": "./JavaScript/",
+        "types": [
+            "TYPO3",
+            "chosen-js",
+            "ckeditor",
+            "d3-dispatch",
+            "d3-drag",
+            "d3-selection",
+            "imagesloaded",
+            "jasmine",
+            "jquery",
+            "jqueryui",
+            "bootstrap",
+            "nprogress",
+            "requirejs",
+            "sortablejs"
+        ],
         "typeRoots": [
             "node_modules/@types",
             "types"

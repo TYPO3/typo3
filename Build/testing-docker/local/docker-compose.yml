@@ -1173,7 +1173,7 @@ services:
         fi
         mkdir -p ${CORE_ROOT}/.cache
         npm ci || exit 1
-        node_modules/grunt/bin/grunt lintspaces;
+        node_modules/grunt/bin/grunt exec:lintspaces;
       "
 
   lint_typescript:

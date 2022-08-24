@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import $ from"jquery";class ConsumerScope{constructor(){this.consumers=[]}getConsumers(){return this.consumers}hasConsumer(s){return this.consumers.includes(s)}attach(s){this.hasConsumer(s)||this.consumers.push(s)}detach(s){this.consumers=this.consumers.filter(e=>e!==s)}invoke(s){const e=[];return this.consumers.forEach(r=>{const o=r.consume.call(r,s);o&&e.push(o)}),$.when.apply($,e)}}export default new ConsumerScope;
+import $ from"jquery";class ConsumerScope{constructor(){this.consumers=[]}getConsumers(){return this.consumers}hasConsumer(s){return this.consumers.includes(s)}attach(s){this.hasConsumer(s)||this.consumers.push(s)}detach(s){this.consumers=this.consumers.filter((e=>e!==s))}invoke(s){const e=[];return this.consumers.forEach((r=>{const o=r.consume.call(r,s);o&&e.push(o)})),$.when.apply($,e)}}export default new ConsumerScope;

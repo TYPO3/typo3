@@ -1,4 +1,4 @@
-import __import_ev_emitter from"ev-emitter";let require=t=>{switch(t){case"ev-emitter":return __import_ev_emitter}throw new Error("module "+t+" missing")};export default(new function(){const t={exports:{}};
+import __import_ev_emitter from"ev-emitter";let require=t=>{if("ev-emitter"===t)return __import_ev_emitter;throw new Error("module "+t+" missing")};export default(new function(){const t={exports:{}};
 /*!
  * imagesLoaded v4.1.4
  * JavaScript is all like "You images are done yet or what?"
