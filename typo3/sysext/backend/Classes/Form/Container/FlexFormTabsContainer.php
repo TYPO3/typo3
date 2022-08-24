@@ -83,7 +83,7 @@ class FlexFormTabsContainer extends AbstractContainer
 
             if ($childReturn['html'] !== '') {
                 $tabElements[] = [
-                    'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'])) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
+                    'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'] ?? '')) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
                     'content' => $childReturn['html'],
                     'description' => trim($sheetDataStructure['ROOT']['sheetDescription'] ?? '') ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
                     'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr'] ?? '') ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
