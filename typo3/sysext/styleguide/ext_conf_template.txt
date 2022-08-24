@@ -107,13 +107,13 @@ int_2 =
 integer_1 = 1
 # cat=Boolean and Integer/102/11; type=int; label=Integer 2 - no value
 integer_2 =
+# cat=Boolean and Integer/102/12; type=int; label=Integer 3 - negative value
+integer_3 = -100
 
 # cat=Boolean and Integer/103/10; type=int+; label=Int+ 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
 intplus_1 = 1
 # cat=Boolean and Integer/103/11; type=int+; label=Int+ 2 - no value
 intplus_2 =
-# cat=Boolean and Integer/103/11; type=int+; label=Int+ 2 - negative value
-intplus_3 = -100
 
 
 #####################
