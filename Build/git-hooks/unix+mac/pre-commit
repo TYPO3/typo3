@@ -1,26 +1,34 @@
 #!/usr/bin/env bash
 
 # pre-commit hook
-# - check if staged files adhere to Coding Guidelines
+# - check if staged files adhere to Coding Guidelines and have proper file header
 # - abort on error:no for now, override with environment variable TYPO3_GIT_HOOK_ABORT_ON_ERROR
 #
 # Dependencies:
 #   uses: Build/Scripts/cglFixMyCommit.sh
 #
 
+USE_EXIT_CODE=0
 script=Build/Scripts/cglFixMyCommit.sh
+scriptFileHeader=Build/Scripts/cglFixMyCommitFileHeader.sh
 
 ABORT_ON_ERROR="no"
 ERROR_TEXT="\n"
 ERROR_CODE=0
+ERROR_CODE_FILE_HEADER=0
 
 if [ -z "${TYPO3_GIT_HOOK_ABORT_ON_ERROR+x}" ]; then
     ABORT_ON_ERROR=${TYPO3_GIT_HOOK_ABORT_ON_ERROR}
 fi
 
 if [ ! -x $script ];then
-    "echo "$script does not exist or is not executable"
-    "exit 0
+    echo "$script does not exist or is not executable"
+    exit 0
+fi
+
+if [ ! -x $scriptFileHeader ];then
+    echo "$scriptFileHeader does not exist or is not executable"
+    exit 0
 fi
 
 # call script with -f <cache> parameter: check files in git cache (staging area)
@@ -28,21 +36,42 @@ fi
 $script -f cache -n
 ERROR_CODE=$?
 
-
 if [ ${ERROR_CODE} -ne 0 ];then
-     echo -e "\n-----------------------------------------------------------------\n"
-     echo -e "  >> ERROR: There was a coding guideline problem in one or more of  "
-     echo -e "              your php files.                                       "
-     echo -e "   Please refer to [1] for details on the coding guidelines         "
-     echo -e "   Please refer to [2] for details on contribution                  "
-     echo -e "   [1] https://docs.typo3.org/typo3cms/CoreApiReference/CodingGuidelines/Index.html"
-     echo -e "   [2] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/   "
-     echo -e "------------------------------------------------------------------\n"
-     if [[ ${ABORT_ON_ERROR} == "yes" ]];then
-         echo -e "   Your commit is being aborted ... Fix and try again!          "
-         exit 1
-     else
-         echo -e "   You must fix this and then commit again (git commit --amend) "
-     fi
+    echo -e "\n-----------------------------------------------------------------\n"
+    echo -e "  >> ERROR: There was a coding guideline problem in one or more of  "
+    echo -e "              your php files.                                       "
+    echo -e "   Please refer to [1] for details on the coding guidelines         "
+    echo -e "   Please refer to [2] for details on contribution                  "
+    echo -e "   [1] https://docs.typo3.org/typo3cms/CoreApiReference/CodingGuidelines/Index.html"
+    echo -e "   [2] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/   "
+    echo -e "------------------------------------------------------------------\n"
+    if [[ ${ABORT_ON_ERROR} == "yes" ]];then
+        echo -e "   Your commit is being aborted ... Fix and try again!          "
+        USE_EXIT_CODE=1
+    else
+        echo -e "   You must fix this and then commit again (git commit --amend) "
+    fi
 fi
-exit 0
+
+$scriptFileHeader -f cache -n
+ERROR_CODE_FILE_HEADER=$?
+
+if [ ${ERROR_CODE_FILE_HEADER} -ne 0 ];then
+
+    echo -e "\n-----------------------------------------------------------------\n"
+    echo -e "  >> ERROR: There was a missing or wrong php file header in one or  "
+    echo -e "               more of your php files.                              "
+    echo -e "   Please refer to [1] for details on the coding guidelines         "
+    echo -e "   Please refer to [2] for details on contribution                  "
+    echo -e "   [1] https://docs.typo3.org/typo3cms/CoreApiReference/CodingGuidelines/Index.html"
+    echo -e "   [2] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/   "
+    echo -e "------------------------------------------------------------------\n"
+    if [[ ${ABORT_ON_ERROR} == "yes" ]];then
+        echo -e "   Your commit is being aborted ... Fix and try again!          "
+        USE_EXIT_CODE=1
+    else
+        echo -e "   You must fix this and then commit again (git commit --amend) "
+    fi
+fi
+
+exit ${USE_EXIT_CODE}

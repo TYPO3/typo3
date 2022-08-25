@@ -513,6 +513,35 @@ services:
           --config=Build/php-cs-fixer.php typo3/
       "
 
+  cgl_header_git:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        Build/Scripts/cglFixMyCommitFileHeader.sh ${CGLCHECK_DRY_RUN};
+      "
+
+  cgl_header_all:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection \
+          --config=Build/php-cs-fixer/header-comment.php typo3/
+      "
+
   check_annotations:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"

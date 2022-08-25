@@ -17,6 +17,7 @@ cgl pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.1
+    - Build/Scripts/runTests.sh -s cglHeaderGit -n -p 8.1
 
 grunt clean pre-merge:
   stage: main

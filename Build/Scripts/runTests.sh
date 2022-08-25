@@ -135,6 +135,8 @@ Options:
             - buildJavascript: execute typescript to javascript builder
             - cgl: test and fix all core php files
             - cglGit: test and fix latest committed patch for CGL compliance
+            - cglHeader: test and fix file header for all core php files
+            - cglHeaderGit: test and fix latest committed patch for CGL file header compliance
             - checkAnnotations: check php code for allowed annotations
             - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
@@ -246,7 +248,7 @@ Options:
         replay the unit tests in that order.
 
     -n
-        Only with -s cgl|cglGit
+        Only with -s cgl|cglGit|cglHeader|cglGitHeader
         Activate dry-run in CGL check that does not actively change files and only prints broken ones.
 
     -u
@@ -556,6 +558,22 @@ case ${TEST_SUITE} in
     cglGit)
         setUpDockerComposeDotEnv
         docker-compose run cgl_git
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    cglHeader)
+        # Active dry-run for cgl needs not "-n" but specific options
+        if [ -n "${CGLCHECK_DRY_RUN}" ]; then
+            CGLCHECK_DRY_RUN="--dry-run --diff"
+        fi
+        setUpDockerComposeDotEnv
+        docker-compose run cgl_header_all
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    cglHeaderGit)
+        setUpDockerComposeDotEnv
+        docker-compose run cgl_header_git
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
