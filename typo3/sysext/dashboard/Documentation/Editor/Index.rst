@@ -16,14 +16,31 @@ We will explain the basic usage of the TYPO3 dashboard.
 Opening Dashboard
 =================
 
-TODO: Add documentation once dashboard position is fixed.
+By default the dashboard is opened when logging into the backend.
+
+The dashboard can be opened at any time by clicking the entry
+:guilabel:`Dashboard` in the module menu.
+
+.. figure:: /Images/DashboardPosition.png
+   :align: center
+
+   Open the dashboard by clicking on :guilabel:`Dashboard`.
+
+..  note::
+    If the entry :guilabel:`Dashboard` is not visible in the menu there are two
+    possible causes:
+
+    *   You lack sufficient rights to view the dashboard.
+    *   The system extension `dashboard` was not installed on your system.
+
+    Ask your administrator about this.
 
 .. _adding-dashboard:
 
 Adding Dashboard
 ================
 
-The ext:dashboard allows to have multiple dashboards.
+The EXT:dashboard allows to have multiple dashboards.
 Switching between different dashboards is possible by using the corresponding tab.
 
 In order to add further dashboards, press the :guilabel:`+` sign.
