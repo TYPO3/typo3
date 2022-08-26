@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/info/translation-status
@@ -22,25 +22,19 @@ class TranslationStatus {
   }
 
   private registerEvents(): void {
-    $('input[type="checkbox"][data-lang]').on('change', this.toggleNewButton);
+    new RegularEvent('click', this.toggleNewButton).delegateTo(document, 'input[type="checkbox"][data-lang]');
   }
 
-  /**
-   * @param {JQueryEventObject} e
-   */
-  private toggleNewButton(e: JQueryEventObject): void {
-    const $me = $(e.currentTarget);
-    const languageId = parseInt($me.data('lang'), 10);
-    const $newButton = $('.t3js-language-new-' + languageId);
-    const $selected = $('input[type="checkbox"][data-lang="' + languageId + '"]:checked');
-
-    const additionalArguments: string[] = [];
-    $selected.each((index: number, element: Element): void => {
-      additionalArguments.push('cmd[pages][' + (<HTMLInputElement>element).dataset.uid + '][localize]=' + languageId);
+  private toggleNewButton(this: HTMLInputElement): void {
+    const relatedCreationButton = document.querySelector(`.t3js-language-new[data-lang="${this.dataset.lang}"]`) as HTMLAnchorElement;
+    const selectedButtons = document.querySelectorAll(`input[type="checkbox"][data-lang="${this.dataset.lang}"]:checked`);
+    const actionUrl = new URL(location.origin + relatedCreationButton.dataset.editUrl);
+    selectedButtons.forEach((element: HTMLInputElement): void => {
+      actionUrl.searchParams.set(`cmd[pages][${element.dataset.uid}][localize]`, this.dataset.lang);
     });
-    const updatedHref = $newButton.data('editUrl') + '&' + additionalArguments.join('&');
-    $newButton.attr('href', updatedHref);
-    $newButton.toggleClass('disabled', $selected.length === 0);
+
+    relatedCreationButton.href = actionUrl.toString();
+    relatedCreationButton.classList.toggle('disabled', selectedButtons.length === 0);
   }
 }
 

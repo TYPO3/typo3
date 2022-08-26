@@ -11,8 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import Modal from '@typo3/backend/modal';
+import RegularEvent from '@typo3/core/event/regular-event';
+import DocumentService from '@typo3/core/document-service';
 
 /**
  * Module: @typo3/impexp/import-export
@@ -21,29 +22,40 @@ import Modal from '@typo3/backend/modal';
  */
 class ImportExport {
   constructor() {
-    $((): void => {
-      $(document).on('click', '.t3js-confirm-trigger', (e: JQueryEventObject): void => {
-        const $button = $(e.currentTarget);
-        Modal.confirm($button.data('title'), $button.data('message'))
-          .on('confirm.button.ok', (): void => {
-            $('#t3js-submit-field')
-              .attr('name', $button.attr('name'))
-              .closest('form').trigger('submit');
-            Modal.currentModal.trigger('modal-dismiss');
-          })
-          .on('confirm.button.cancel', (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-          });
-      });
+    DocumentService.ready().then((): void => this.registerEvents());
+  }
 
-      $('.t3js-impexp-toggledisabled').on('click', (): void => {
-        const $checkboxes = $('table.t3js-impexp-preview tr[data-active="hidden"] input.t3js-exclude-checkbox');
-        if ($checkboxes.length) {
-          const $firstCheckbox = $checkboxes.get(0) as HTMLInputElement;
-          $checkboxes.prop('checked', !$firstCheckbox.checked);
-        }
+  private registerEvents(): void {
+    new RegularEvent('click', this.triggerConfirmation).delegateTo(document, '.t3js-confirm-trigger');
+
+    const toggleDisabledControl = document.querySelector('.t3js-impexp-toggledisabled');
+    if (toggleDisabledControl !== null) {
+      new RegularEvent('click', this.toggleDisabled).bindTo(toggleDisabledControl);
+    }
+  }
+
+  private triggerConfirmation(this: HTMLButtonElement): void {
+    Modal.confirm(this.dataset.title, this.dataset.message)
+      .on('confirm.button.ok', (): void => {
+        const submitTrigger: HTMLInputElement = document.getElementById('t3js-submit-field') as HTMLInputElement;
+        submitTrigger.name = this.name;
+        submitTrigger.closest('form').submit();
+
+        Modal.currentModal.trigger('modal-dismiss');
+      })
+      .on('confirm.button.cancel', (): void => {
+        Modal.currentModal.trigger('modal-dismiss');
       });
-    });
+  }
+
+  private toggleDisabled() {
+    const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll('table.t3js-impexp-preview tr[data-active="hidden"] input.t3js-exclude-checkbox');
+    if (checkboxes.length > 0) {
+      const firstCheckbox = checkboxes.item(0);
+      checkboxes.forEach((element: HTMLInputElement): void => {
+        element.checked = !firstCheckbox.checked;
+      });
+    }
   }
 }
 
