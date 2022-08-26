@@ -29,6 +29,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -210,72 +211,24 @@ class BackendController
         $view->assign('logoHeight', $logoHeight);
         $view->assign('applicationVersion', $this->typo3Version->getVersion());
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $view->assign('toolbar', $this->renderToolbar($request));
+        $view->assign('toolbarItems', $this->getToolbarItems($request));
     }
 
     /**
-     * Renders the items in the top toolbar.
-     *
-     * @todo: Inline this to the topbar template
+     * @param ServerRequestInterface $request
+     * @return ToolbarItemInterface[]
      */
-    protected function renderToolbar(ServerRequestInterface $request): string
+    protected function getToolbarItems(ServerRequestInterface $request): array
     {
-        $toolbarItems = $this->toolbarItemsRegistry->getToolbarItems();
-        $toolbar = [];
-        foreach ($toolbarItems as $toolbarItem) {
+        return array_map(static function (ToolbarItemInterface $toolbarItem) use ($request) {
             if ($toolbarItem instanceof RequestAwareToolbarItemInterface) {
                 $toolbarItem->setRequest($request);
             }
-            if ($toolbarItem->checkAccess()) {
-                $hasDropDown = (bool)$toolbarItem->hasDropDown();
-                $additionalAttributes = (array)$toolbarItem->getAdditionalAttributes();
-
-                $liAttributes = [];
-
-                // Merge class: Add dropdown class if hasDropDown, add classes from additional attributes
-                $classes = [];
-                $classes[] = 'toolbar-item';
-                $classes[] = 't3js-toolbar-item';
-                if (isset($additionalAttributes['class'])) {
-                    $classes[] = $additionalAttributes['class'];
-                    unset($additionalAttributes['class']);
-                }
-                $liAttributes['class'] = implode(' ', $classes);
-
-                // Add further attributes
-                foreach ($additionalAttributes as $name => $value) {
-                    $liAttributes[(string)$name] = (string)$value;
-                }
-
-                // Create a unique id from class name
-                $fullyQualifiedClassName = \get_class($toolbarItem);
-                $className = GeneralUtility::underscoredToLowerCamelCase($fullyQualifiedClassName);
-                $className = GeneralUtility::camelCaseToLowerCaseUnderscored($className);
-                $className = str_replace(['_', '\\'], '-', $className);
-                $liAttributes['id'] = $className;
-
-                // Create data attribute identifier
-                $shortName = substr($fullyQualifiedClassName, (int)strrpos($fullyQualifiedClassName, '\\') + 1);
-                $dataToolbarIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($shortName);
-                $dataToolbarIdentifier = str_replace('_', '-', $dataToolbarIdentifier);
-                $liAttributes['data-toolbar-identifier'] = $dataToolbarIdentifier;
-
-                $toolbar[] = '<li ' . GeneralUtility::implodeAttributes($liAttributes, true) . '>';
-
-                if ($hasDropDown) {
-                    $toolbar[] = '<a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,-2">';
-                    $toolbar[] = $toolbarItem->getItem();
-                    $toolbar[] = '</a>';
-                    $toolbar[] = '<div class="dropdown-menu" role="menu">';
-                    $toolbar[] = $toolbarItem->getDropDown();
-                    $toolbar[] = '</div>';
-                } else {
-                    $toolbar[] = $toolbarItem->getItem();
-                }
-                $toolbar[] = '</li>';
-            }
-        }
-        return implode(LF, $toolbar);
+            return $toolbarItem;
+        }, array_filter(
+            $this->toolbarItemsRegistry->getToolbarItems(),
+            static fn (ToolbarItemInterface $toolbarItem) => $toolbarItem->checkAccess()
+        ));
     }
 
     /**

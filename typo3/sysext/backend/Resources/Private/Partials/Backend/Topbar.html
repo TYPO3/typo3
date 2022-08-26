@@ -1,4 +1,5 @@
 <html
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
@@ -48,7 +49,23 @@
 <div class="scaffold-toolbar t3js-scaffold-toolbar" data-toolbar-identifier="toolbar">
     <div class="toolbar t3js-topbar-toolbar">
         <ul class="toolbar-list" data-typo3-role="typo3-module-menu">
-            <f:format.raw>{toolbar}</f:format.raw>
+            <f:for each="{toolbarItems}" as="toolbarItem">
+                <li {be:toolbar.attributes(class: toolbarItem) -> f:format.raw()}>
+                    <f:if condition="{toolbarItem.dropdown}">
+                        <f:then>
+                            <a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,-2">
+                                {toolbarItem.item -> f:format.raw()}
+                            </a>
+                            <div class="dropdown-menu" role="menu">
+                                {toolbarItem.dropdown -> f:format.raw()}
+                            </div>
+                        </f:then>
+                        <f:else>
+                            {toolbarItem.item -> f:format.raw()}
+                        </f:else>
+                    </f:if>
+                </li>
+            </f:for>
         </ul>
     </div>
 </div>
