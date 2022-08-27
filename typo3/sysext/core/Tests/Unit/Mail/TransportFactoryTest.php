@@ -293,6 +293,8 @@ class TransportFactoryTest extends UnitTestCase
 
     /**
      * @test
+     * @requires PHP < 8.1
+     * @todo Temporarly restrict to PHP version before 8.1, until symfony/mailer deprecation issue has been fixed.
      */
     public function sendmailTransportCallsDispatchOfDispatcher(): void
     {
