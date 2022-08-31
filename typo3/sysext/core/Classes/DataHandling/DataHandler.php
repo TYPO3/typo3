@@ -7685,7 +7685,6 @@ class DataHandler implements LoggerAwareInterface
                                 $errors[] = $key;
                             }
                         } else {
-                            $dbType = $GLOBALS['TCA'][$table]['columns'][$key]['config']['dbType'] ?? false;
                             if ((string)$value !== (string)$row[$key]) {
                                 // The is_numeric check catches cases where we want to store a float/double value
                                 // and database returns the field as a string with the least required amount of
