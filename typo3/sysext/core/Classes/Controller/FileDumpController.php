@@ -229,9 +229,13 @@ class FileDumpController
     {
         $extension = PathUtility::pathinfo($file->getName(), PATHINFO_EXTENSION);
         // same as in `typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess`
-        $policy = $extension === 'pdf' || $response->getHeaderLine('content-type') === 'application/pdf'
-            ? "default-src 'self' 'unsafe-inline'; script-src 'none'; object-src 'self'; plugin-types application/pdf;"
-            : "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';";
+        if ($extension === 'pdf' || $response->getHeaderLine('content-type') === 'application/pdf') {
+            $policy = "default-src 'self' 'unsafe-inline'; script-src 'none'; object-src 'self'; plugin-types application/pdf;";
+        } elseif ($extension === 'svg' || $response->getHeaderLine('content-type') === 'image/svg+xml') {
+            $policy = "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; object-src 'none';";
+        } else {
+            $policy = "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';";
+        }
         return $response->withAddedHeader('content-security-policy', $policy);
     }
 }
