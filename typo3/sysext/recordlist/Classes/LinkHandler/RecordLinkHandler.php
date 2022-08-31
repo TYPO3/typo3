@@ -116,7 +116,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         } else {
             $linkParts['tableName'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
             $linkParts['pid'] = (int)$record['pid'];
-            $linkParts['title'] = $linkParts['title'] ?: BackendUtility::getRecordTitle($table, $record);
+            $linkParts['title'] = !empty($linkParts['title']) ? $linkParts['title'] : BackendUtility::getRecordTitle($table, $record);
         }
         $linkParts['url']['type'] = $linkParts['type'];
         $this->linkParts = $linkParts;
