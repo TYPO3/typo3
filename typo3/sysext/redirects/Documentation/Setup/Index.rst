@@ -41,7 +41,7 @@ section if you use the defaults.
         autoCreateRedirects: true
         # Time To Live in days for redirect records to be created - `0` disables TTL, no expiration
         # (default: 0)
-        redirectTTL: 30
+        redirectTTL: 0
         # HTTP status code for automatically created redirects, see
         # https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections#Temporary_redirections
         # (default: 307)
