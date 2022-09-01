@@ -603,7 +603,7 @@ class InlineControlContainer extends AbstractContainer
         if (!empty($allowedList)) {
             $item .= '<div class="help-block">' . $allowedLabel . '<br>' . $allowedList . '</div>';
         }
-        $item = '<div class="form-group t3js-formengine-validation-marker">' . $item . '</div>';
+        $item = '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
         return $item;
     }
 
@@ -665,7 +665,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Wrap the selector and add a spacer to the bottom
-        $item = '<div class="input-group form-group t3js-formengine-validation-marker">' . $item . '</div>';
+        $item = '<div class="input-group form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
         return $item;
     }
 
