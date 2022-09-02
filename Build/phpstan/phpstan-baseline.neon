@@ -31,6 +31,16 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
+			message: "#^Offset 'noExportRecordsLinks' on array in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/RecordListController.php
+
+		-
+			message: "#^Offset 'eval' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/AbstractNode.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\ReloadOnFieldChange\\:\\:toArray\\(\\) should return array\\{name\\: string, data\\?\\: string\\} but returns array\\{name\\: 'typo3\\-backend\\-form…', data\\: array\\{confirmation\\: bool\\}\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Behavior/ReloadOnFieldChange.php
@@ -46,14 +56,34 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Behavior/UpdateValueOnFieldChange.php
 
 		-
+			message: "#^Offset 'isInlineDefaultLang…' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
+
+		-
 			message: "#^Offset 'arguments' on array\\{arguments\\: string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
 
 		-
+			message: "#^If condition is always true\\.$#"
+			count: 3
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
+
+		-
+			message: "#^Result of \\|\\| is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
+
+		-
 			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<'disabled'\\|'title'\\|int, mixed\\> and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
+
+		-
+			message: "#^Ternary operator condition is always true\\.$#"
+			count: 2
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -94,6 +124,11 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\RecordLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/LinkHandler/RecordLinkHandler.php
+
+		-
+			message: "#^Offset 'config\\.' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Provider/PageTsBackendLayoutDataProvider.php
 
 		-
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
@@ -171,6 +206,16 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
+			message: "#^Offset 'TCEFORM\\.' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
+
+		-
+			message: "#^Offset 'record_pid' on non\\-empty\\-array\\<string, mixed\\> on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayout\\\\ContentFetcher\\:\\:getRuntimeCache\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\VariableFrontend but returns TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
@@ -224,6 +269,11 @@ parameters:
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\FooResolver has an unused parameter \\$nodeFactory\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with \\*NEVER\\* and array will always evaluate to false\\.$#"
+			count: 2
+			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int\\<0, 4\\> given\\.$#"
@@ -284,6 +334,11 @@ parameters:
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
+
+		-
+			message: "#^Offset 'access' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
 
 		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
@@ -361,7 +416,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Core/ClassLoadingInformationGenerator.php
 
 		-
-			message: "#^Binary operation \"\\*\\=\" between non\\-empty\\-string and \\-1 results in an error\\.$#"
+			message: "#^Binary operation \"\\*\\=\" between non\\-falsy\\-string and \\-1 results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
@@ -401,6 +456,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
+			message: "#^Offset 't3ver_oid' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
 			message: "#^Offset string does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
@@ -424,6 +484,11 @@ parameters:
 			message: "#^Variable \\$incomingFieldArray on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
+			message: "#^Offset 'l10n_state' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapItem.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapProcessor\\:\\:fetchDependencies\\(\\) should return array\\<array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\> but returns array\\<int\\|string, array\\<string, array\\<int, TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\>\\>\\.$#"
@@ -581,6 +646,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Hooks/TcaItemsProcessorFunctions.php
 
 		-
+			message: "#^Comparison operation \"\\>\" between 1\\|2\\|3\\|6\\|7\\|8 and 0 is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Http\\\\ImmediateResponseException\\:\\:getResponse\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response but returns Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/ImmediateResponseException.php
@@ -736,6 +806,16 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
+			message: "#^Parameter \\#3 \\$red of function imagecolorset expects int, float given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
+
+		-
+			message: "#^Parameter \\#4 \\$green of function imagecolorset expects int, float given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
+
+		-
 			message: "#^Parameter \\#5 \\$blue of function imagecolorset expects int, float given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
@@ -751,7 +831,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
 
 		-
-			message: "#^Binary operation \"/\" between float and non\\-empty\\-string results in an error\\.$#"
+			message: "#^Binary operation \"/\" between float and non\\-falsy\\-string results in an error\\.$#"
 			count: 4
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
 
@@ -1221,7 +1301,17 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'ch' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
+			message: "#^Offset 'ch' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
+
+		-
+			message: "#^Offset 'tag' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
+
+		-
+			message: "#^Offset 'values' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
@@ -1726,7 +1816,7 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$widgets of method TYPO3\\\\CMS\\\\Dashboard\\\\DashboardRepository\\:\\:updateWidgetConfig\\(\\) expects array\\<string\\>, array\\<int\\|string, array\\<string, mixed\\>\\> given\\.$#"
+			message: "#^Parameter \\#2 \\$widgets of method TYPO3\\\\CMS\\\\Dashboard\\\\DashboardRepository\\:\\:updateWidgetConfig\\(\\) expects array\\<string\\>, array\\<string, array\\<string, string\\>\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
 
@@ -2666,8 +2756,28 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: "#^Offset 'additionalParams' on array\\{parameter\\: string, target\\?\\: non\\-empty\\-string, extTarget\\?\\: non\\-empty\\-string, fileTarget\\?\\: non\\-empty\\-string\\} on left side of \\?\\? does not exist\\.$#"
+			message: "#^Offset 'additionalParams' on array\\{parameter\\: string, target\\: non\\-falsy\\-string, extTarget\\: non\\-falsy\\-string, fileTarget\\: non\\-falsy\\-string\\}\\|array\\{parameter\\: string\\} on left side of \\?\\? does not exist\\.$#"
 			count: 2
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
+			message: "#^Offset 'cObjNum\\.' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
+			message: "#^Offset 'cache\\.' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
+			message: "#^Offset 'cache\\.' on non\\-empty\\-array\\<non\\-empty\\-array\\> on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 2
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
+			message: "#^Offset 'strPad\\.' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
@@ -2771,6 +2881,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
 
 		-
+			message: "#^Offset '_PAGES_OVERLAY_UID' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
+
+		-
 			message: "#^Parameter \\#1 \\$content of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:stdWrap\\(\\) expects string, int given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
@@ -2856,8 +2971,18 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Http/RequestHandler.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:\\$setup \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 9
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 3
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-
@@ -2921,7 +3046,17 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
 		-
-			message: "#^Offset 'extTarget' on array\\<'parameter', mixed\\> in isset\\(\\) does not exist\\.$#"
+			message: "#^Offset 'extTarget' on array\\{parameter\\: mixed\\} in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
+
+		-
+			message: "#^Offset 'linkAccessRestricte…' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
+
+		-
+			message: "#^Offset 'no_cache' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
@@ -3001,29 +3136,9 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableCompiler.php
 
 		-
-			message: "#^Call to function array_key_exists\\(\\) with string and array\\{\\} will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableItem.php
-
-		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableItem.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableItem.php
-
-		-
-			message: "#^Call to function array_key_exists\\(\\) with string and array\\{\\} will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableValue.php
-
-		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableValue.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -3161,7 +3276,7 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
-			message: "#^Offset 'updatePath' does not exist on array\\{msg\\: string, ref\\: 'FILE', type\\: 'file', preCode\\: non\\-empty\\-string, title\\: string, showDiffContent\\: string\\}\\.$#"
+			message: "#^Offset 'updatePath' does not exist on array\\{msg\\: string, ref\\: 'FILE', type\\: 'file', preCode\\: non\\-falsy\\-string, title\\: string, showDiffContent\\: string\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
@@ -3181,12 +3296,17 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/AdministrationRepository.php
 
 		-
+			message: "#^Offset 'query' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int\\<0, 65535\\>, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\: string, fragment\\?\\: string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
+
+		-
 			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
 
 		-
-			message: "#^Offset int\\<0, max\\> on array\\{\\} in isset\\(\\) does not exist\\.$#"
+			message: "#^Parameter \\#1 \\$tag of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:get_tag_attributes\\(\\) expects string, array\\<string, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
 
@@ -3209,6 +3329,11 @@ parameters:
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Utility/DoubleMetaPhoneUtility.php
+
+		-
+			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Command\\\\UpgradeWizardListCommand\\:\\:\\$input is never read, only written\\.$#"
@@ -3441,9 +3566,29 @@ parameters:
 			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
 
 		-
+			message: "#^Offset 'queryConfig' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+
+		-
+			message: "#^Offset 'queryLimit' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+
+		-
+			message: "#^Offset 'userFunc' on 'user' in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+
+		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
+
+		-
+			message: "#^Offset 'records' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/recycler/Classes/Controller/RecyclerAjaxController.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"
@@ -3466,7 +3611,17 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-string and '' will always evaluate to false\\.$#"
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between non\\-falsy\\-string and '' will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between non\\-falsy\\-string and '0' will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
 
@@ -3498,5 +3653,10 @@ parameters:
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
+			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
+
+		-
+			message: "#^Variable \\$column in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 
