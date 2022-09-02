@@ -79,6 +79,7 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
      *
      * @return string
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         /** @var File $currentRecord */
