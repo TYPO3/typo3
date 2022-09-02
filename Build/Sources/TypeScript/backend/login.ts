@@ -179,52 +179,6 @@ class BackendLogin {
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('.t3js-clearable')).forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable(),
     );
-
-    this.registerNewsCarouselEvents();
-  }
-
-  private registerNewsCarouselEvents(): void {
-    const newsCarouselInner: HTMLElement = document.querySelector('.t3js-login-news-carousel .carousel-inner');
-    if (newsCarouselInner !== null) {
-      const newsCarousel = newsCarouselInner.closest('.t3js-login-news-carousel');
-
-      this.calculateScrollbarWidth(newsCarouselInner);
-
-      new RegularEvent('scroll', (e: Event): void => {
-        const el = e.currentTarget as HTMLElement;
-        this.setOverflowClasses(el);
-      }).bindTo(newsCarouselInner);
-
-      new RegularEvent('slid.bs.carousel', (): void => {
-        newsCarouselInner.scrollTop = 0;
-        this.setOverflowClasses(newsCarouselInner);
-        this.calculateScrollbarWidth(newsCarouselInner);
-      }).bindTo(newsCarousel);
-
-      this.setOverflowClasses(newsCarouselInner);
-    }
-  }
-
-  private calculateScrollbarWidth(newsCarouselInner: HTMLElement): void {
-    const scrollbarWidth = newsCarouselInner.offsetWidth - newsCarouselInner.clientWidth;
-    newsCarouselInner.setAttribute('style', '--scrollbar-width: ' + scrollbarWidth + 'px');
-  }
-
-  private setOverflowClasses(el: HTMLElement): void {
-    enum OverflowClasses {
-      top = 'carousel-inner--overflowing-top',
-      bottom = 'carousel-inner--overflowing-bottom',
-    }
-    const isScrollable = el.scrollHeight > el.clientHeight;
-    if (!isScrollable) {
-      el.classList.remove(OverflowClasses.bottom, OverflowClasses.top);
-      return;
-    }
-
-    const isScrolledToBottom = el.scrollHeight <= el.clientHeight + el.scrollTop;
-    const isScrolledToTop = el.scrollTop === 0;
-    el.classList.toggle(OverflowClasses.bottom, !isScrolledToBottom);
-    el.classList.toggle(OverflowClasses.top, !isScrolledToTop);
   }
 }
 
