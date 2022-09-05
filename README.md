@@ -2,7 +2,7 @@ TYPO3 CMS
 =========
 
 TYPO3 is an open source PHP based web content management system released
-under the GNU GPL. TYPO3 is copyright © 1999-2022 by Kasper Skaarhoj.
+under the GNU GPL. TYPO3 is copyright © 1999-2022 by Kasper Skårhøj.
 
 This document provides a basic introduction to TYPO3.
 
@@ -10,7 +10,7 @@ Getting Started
 ---------------
 
 TYPO3 requires a web server with PHP and a database (e.g. MySQL).
-Accessing the backend through a supported browser.
+The backend is accessed via a supported browser.
 
 Please see the [Installation Guide](https://docs.typo3.org/installation)
 in order to set up a basic TYPO3 installation on your web server.
@@ -21,7 +21,7 @@ What is TYPO3?
 TYPO3 is a free and open source Content Management Framework. It is
 released under the GNU General Public License. It can run on several web
 servers, such as Apache, nginx or IIS, on top of many operating systems,
-among them Linux, Microsoft Windows, FreeBSD or MacOS.
+among them Linux, Microsoft Windows, FreeBSD or macOS.
 
 TYPO3 was initially authored by Kasper Skårhøj and is now further
 developed by a community of contributors and the [TYPO3 Core Development
@@ -36,7 +36,7 @@ What is a Content Management Framework?
 A Content Management Framework is more than just a content management
 system, due to the separation of the streamlined core and optional
 plugins (extensions). TYPO3 has an open API that allows you to extend
-the frontend (web site) and/or backend (administration) functionality.
+the frontend (website) and/or backend (administration) functionality.
 
 The concept of extensions makes TYPO3 capable of being developed and
 used in almost any way you can imagine, either by using any of the many
@@ -48,8 +48,8 @@ TYPO3 System requirements
 TYPO3 is based upon PHP and uses a database management system like
 MySQL.
 
-For more specific information regarding requirements see the
-[INSTALL.md](INSTALL.md#server-system-requirements) file in this folder.
+For more specific information regarding requirements see the file
+[INSTALL.md](INSTALL.md#server-system-requirements) in this folder.
 
 TYPO3 resources
 ---------------
@@ -59,7 +59,7 @@ get started:
 
 ### Get more information
 
-* https://typo3.org is the main project website. It provides up to date
+* https://typo3.org/ is the main project website. It provides up-to-date
   official news, information about events and the TYPO3 community.
 
 * https://docs.typo3.org/: TYPO3 is one of the most thoroughly
@@ -120,7 +120,7 @@ Contributors Walkthrough and Review System:
 The [repository at GitHub](https://github.com/typo3/typo3) is a
 synchronized mirror of the primary TYPO3 core git repository:
 
-* https://git.typo3.org/Packages/TYPO3.CMS.git
+* https://git.typo3.org/typo3/typo3
 
 If you want to file a bug report, take a look at:
 

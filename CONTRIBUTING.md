@@ -14,8 +14,8 @@ If you like to contribute to our [documentation][5], use the "Edit me on GitHub"
  that can be found in the TYPO3 [documentation team GitHub organisation][6].
 
 [1]: https://docs.typo3.org/core-contribution
-[2]: https://git.typo3.org/Packages/TYPO3.CMS.git
-[3]: https://review.typo3.org/#/q/project:Packages/TYPO3.CMS,n,z
+[2]: https://git.typo3.org/typo3/typo3
+[3]: https://review.typo3.org/q/project:Packages/TYPO3.CMS
 [4]: https://github.com/typo3/typo3
 [5]: https://docs.typo3.org
 [6]: https://github.com/TYPO3-Documentation
