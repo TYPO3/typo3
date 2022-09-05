@@ -1100,8 +1100,18 @@ class FileList
         // Compile items into a dropdown
         $cellOutput = '';
         $output = '';
+        $primaryActions = ['view', 'metadata', 'translations', 'delete'];
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        if ($userTsConfig['options.']['file_list.']['primaryActions'] ?? false) {
+            $primaryActions = GeneralUtility::trimExplode(',', $userTsConfig['options.']['file_list.']['primaryActions']);
+
+            // Always add "translations" as this action has an own dropdown container and therefore cannot be a secondary action
+            if (!in_array('translations', $primaryActions, true)) {
+                $primaryActions[] = 'translations';
+            }
+        }
         foreach ($cells as $key => $action) {
-            if (in_array($key, ['view', 'metadata', 'translations', 'delete'])) {
+            if (in_array($key, $primaryActions, true)) {
                 $output .= $action;
                 continue;
             }
@@ -1131,8 +1141,8 @@ class FileList
                 if (!empty($title[0] ?? '')) {
                     $action = str_replace($title[0], '', $action);
                 }
+                $cellOutput .= '<li>' . $action . '</li>';
             }
-            $cellOutput .= '<li>' . $action . '</li>';
         }
 
         if ($cellOutput !== '') {
