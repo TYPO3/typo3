@@ -3087,10 +3087,6 @@ Example:
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="border" type="int">
-			<description><![CDATA[Value of the "border" attribute of the image tag.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
 		<property name="emptyTitleHandling" type="string">
 			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
 ]]></description>
@@ -3132,11 +3128,6 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 		</property>
 		<property name="linkWrap" type="wrap">
 			<description><![CDATA[(before ".wrap")]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="longdescURL" type="stdWrap">
-			<description><![CDATA["longdesc" attribute (URL pointing to document with extensive details about image).]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3240,11 +3231,6 @@ Important:
 			<description><![CDATA[Default altText/titleText if no alternatives are provided by the ->IMAGE cObjects
 
 If no alttext is specified, it will use an empty alttext]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="border" type="stdWrap ">
-			<description><![CDATA[If true, a border i generated around the images.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3364,13 +3350,6 @@ Example:
 		</property>
 		<property name="imgStart" type="stdWrap">
 			<description><![CDATA[start with image-number ".imgStart"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="longdescURL" type="stdWrap">
-			<description><![CDATA[Default longdescURL if no alternatives are provided by the ->IMAGE cObjects
-
-"longdesc" attribute (URL pointing to document with extensive details about image).]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4279,13 +4258,6 @@ If this is set, it'll substitute the use of the thumbs-script for display of thu
 		<property name="labelStdWrap" type="stdWrap">
 			<description><![CDATA[stdWrap options for the label (by default the label is the filename) before being wrapped with the A-tags.
 Use this to eg. import another label from a database field or such.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="longdescURL" type="stdWrap">
-			<description><![CDATA[For icons (image made with "iconCObject" must have their own properties)
-
-"longdesc" attribute (URL pointing to document with extensive details about image).]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

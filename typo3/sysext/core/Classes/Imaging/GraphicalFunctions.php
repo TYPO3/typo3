@@ -2732,17 +2732,6 @@ class GraphicalFunctions
     }
 
     /**
-     * Returns Image Tag for input image information array.
-     *
-     * @param array $imgInfo Image information array, key 0/1 is width/height and key 3 is the src value
-     * @return string Image tag for the input image information array.
-     */
-    public function imgTag($imgInfo)
-    {
-        return '<img src="' . $imgInfo[3] . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '" border="0" alt="" />';
-    }
-
-    /**
      * Writes the input GDlib image pointer to file
      *
      * @param resource $destImg The GDlib image resource pointer

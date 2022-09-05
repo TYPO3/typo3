@@ -339,14 +339,8 @@
 			<trans-unit id="titleText_formlabel" resname="titleText_formlabel">
 				<source>Titles (one per line)</source>
 			</trans-unit>
-			<trans-unit id="image_longdescURL" resname="image_longdescURL">
-				<source>Long Description URL</source>
-			</trans-unit>
 			<trans-unit id="images.addFileReference" resname="images.addFileReference">
 				<source>Add image</source>
-			</trans-unit>
-			<trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel">
-				<source>Long Description URLs (one per line)</source>
 			</trans-unit>
 			<trans-unit id="cols" resname="cols">
 				<source>Columns</source>

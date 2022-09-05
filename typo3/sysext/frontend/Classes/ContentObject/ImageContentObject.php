@@ -97,7 +97,6 @@ class ImageContentObject extends AbstractContentObject
             'src' => htmlspecialchars($source),
             'params' => $params,
             'altParams' => $altParam,
-            'border' =>  $this->getBorderAttr(' border="' . (int)($conf['border'] ?? 0) . '"'),
             'sourceCollection' => $sourceCollection,
             'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
         ];
@@ -119,27 +118,6 @@ class ImageContentObject extends AbstractContentObject
     }
 
     /**
-     * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict, xhtml_11 or html5
-     * or if the config parameter 'disableImgBorderAttr' is not set.
-     *
-     * @param string $borderAttr The border attribute
-     * @return string The border attribute
-     */
-    protected function getBorderAttr($borderAttr)
-    {
-        $tsfe = $this->getTypoScriptFrontendController();
-        $docType = $tsfe->xhtmlDoctype;
-        if (
-            $docType !== 'xhtml_strict' && $docType !== 'xhtml_11'
-            && ($tsfe->config['config']['doctype'] ?? '') !== 'html5'
-            && !($tsfe->config['config']['disableImgBorderAttr'] ?? false)
-        ) {
-            return $borderAttr;
-        }
-        return '';
-    }
-
-    /**
      * Returns the html-template for rendering the image-Tag if no template is defined via typoscript the
      * default <img> tag template is returned
      *
@@ -152,7 +130,7 @@ class ImageContentObject extends AbstractContentObject
         if ($layoutKey && isset($conf['layout.']) && isset($conf['layout.'][$layoutKey . '.'])) {
             return $this->cObj->stdWrapValue('element', $conf['layout.'][$layoutKey . '.']);
         }
-        return '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
+        return '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###SELFCLOSINGTAGSLASH###>';
     }
 
     /**
@@ -292,26 +270,15 @@ class ImageContentObject extends AbstractContentObject
 
     /**
      * An abstraction method which creates an alt or title parameter for an HTML img, applet, area or input element and the FILE content element.
-     * From the $conf array it implements the properties "altText", "titleText" and "longdescURL"
+     * From the $conf array it implements the properties "altText" and "titleText"
      *
      * @param array $conf TypoScript configuration properties
-     * @param bool $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
      * @return string Parameter string containing alt and title parameters (if any)
-     * @see cImage()
      */
-    public function getAltParam($conf, $longDesc = true)
+    protected function getAltParam(array $conf): string
     {
         $altText = trim((string)$this->cObj->stdWrapValue('altText', $conf ?? []));
         $titleText = trim((string)$this->cObj->stdWrapValue('titleText', $conf ?? []));
-        $frontendController = $this->hasTypoScriptFrontendController()
-            ? $this->getTypoScriptFrontendController()
-            : null;
-        if (isset($conf['longdescURL.']) && ($frontendController->config['config']['doctype'] ?? '') !== 'html5') {
-            $longDescUrl = $this->cObj->createUrl($conf['longdescURL.']);
-        } else {
-            $longDescUrl = trim($conf['longdescURL'] ?? '');
-        }
-        $longDescUrl = strip_tags($longDescUrl);
 
         // "alt":
         $altParam = ' alt="' . htmlspecialchars($altText) . '"';
@@ -322,10 +289,6 @@ class ImageContentObject extends AbstractContentObject
             $altParam .= ' title="' . htmlspecialchars($titleText) . '"';
         } elseif (!$titleText && $emptyTitleHandling === 'useAlt') {
             $altParam .= ' title="' . htmlspecialchars($altText) . '"';
-        }
-        // "longDesc" URL
-        if ($longDesc && !empty($longDescUrl)) {
-            $altParam .= ' longdesc="' . htmlspecialchars($longDescUrl) . '"';
         }
         return $altParam;
     }

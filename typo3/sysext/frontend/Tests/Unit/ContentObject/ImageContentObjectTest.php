@@ -83,7 +83,7 @@ class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration): void
     {
-        $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
+        $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###SELFCLOSINGTAGSLASH###>';
         $result = $this->subject->_call('getImageTagTemplate', $key, $configuration);
         self::assertEquals($result, $defaultImgTagTemplate);
     }
@@ -235,7 +235,7 @@ class ImageContentObjectTest extends UnitTestCase
                     'layoutKey' => 'default',
                     'layout.' => [
                         'default.' => [
-                            'element' => '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>',
+                            'element' => '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ##SELFCLOSINGTAGSLASH###>',
                             'source' => '',
                         ],
                     ],

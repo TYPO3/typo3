@@ -489,7 +489,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $languageColumn = $sortedLanguageColumn;
             } else {
                 // GRID VIEW:
-                $grid = '<div class="t3-grid-container"><table border="0" cellspacing="0" cellpadding="0" width="100%" class="t3-page-columns t3-grid-table t3js-page-columns">';
+                $grid = '<div class="t3-grid-container"><table class="t3-page-columns t3-grid-table t3js-page-columns">';
                 // Add colgroups
                 $colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
                 $rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
@@ -784,7 +784,7 @@ class PageLayoutView implements LoggerAwareInterface
         // Finally, wrap it all in a table and add the language selector on top of it:
         return $languageSelector . '
                 <div class="t3-grid-container">
-                    <table cellpadding="0" cellspacing="0" class="t3-page-columns t3-grid-table t3js-page-columns">
+                    <table class="t3-page-columns t3-grid-table t3js-page-columns">
 						' . $out . '
                     </table>
 				</div>';

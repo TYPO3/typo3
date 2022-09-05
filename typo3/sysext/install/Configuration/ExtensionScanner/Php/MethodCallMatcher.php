@@ -5337,4 +5337,11 @@ return [
             'Breaking-98100-CompressionAndConcatenationOfJavaScriptAndCSSFilesForBackendRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->imgTag' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-98308-LegacyHTMLAttributesBorderAndLongdescRemovedFromFrontendRendering.rst',
+        ],
+    ],
 ];
