@@ -19,20 +19,20 @@
         </h2>
     </f:then>
     <f:else>
-        <f:if condition="{inData.action} == 'export'">
-            <h2>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:execlistqu_structureToBeExported"/>
-            </h2>
-        </f:if>
+        <h2>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:execlistqu_structureToBeExported"/>
+        </h2>
     </f:else>
 </f:if>
 <div>
     <f:if condition="{inData.excludeDisabled}">
         <f:else>
-            <f:if condition="{inData.action} == 'export'">
-                <f:form.button class="btn btn-default t3js-impexp-toggledisabled" type="button">
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_toggle_all_disabled_records"/>
-                </f:form.button>
+            <f:if condition="{import.mode} == 'import'">
+                <f:else>
+                    <f:form.button class="btn btn-default t3js-impexp-toggledisabled" type="button">
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_toggle_all_disabled_records"/>
+                    </f:form.button>
+                </f:else>
             </f:if>
         </f:else>
     </f:if>
