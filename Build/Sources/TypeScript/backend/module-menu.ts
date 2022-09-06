@@ -96,17 +96,17 @@ class ModuleMenu {
    * @param {boolean} collapse
    */
   private static toggleMenu(collapse?: boolean): void {
-    const $mainContainer = $(ScaffoldIdentifierEnum.scaffold);
+    const scaffold = document.querySelector(ScaffoldIdentifierEnum.scaffold);
     const expandedClass = 'scaffold-modulemenu-expanded';
 
     if (typeof collapse === 'undefined') {
-      collapse = $mainContainer.hasClass(expandedClass);
+      collapse = scaffold.classList.contains(expandedClass);
     }
-    $mainContainer.toggleClass(expandedClass, !collapse);
+    scaffold.classList.toggle(expandedClass, !collapse);
+
     if (!collapse) {
-      $('.scaffold')
-        .removeClass('scaffold-search-expanded')
-        .removeClass('scaffold-toolbar-expanded');
+      scaffold.classList.remove('scaffold-search-expanded');
+      scaffold.classList.remove('scaffold-toolbar-expanded');
     }
 
     // Persist collapsed state in the UC of the current user
@@ -144,12 +144,15 @@ class ModuleMenu {
    * @param {string} module
    */
   private static highlightModuleMenuItem(module: string): void {
-    $('.modulemenu-action.modulemenu-action-active')
-      .removeClass('modulemenu-action-active')
-      .removeAttr('aria-current');
-    $('#' + module)
-      .addClass('modulemenu-action-active')
-      .attr('aria-current', 'location');
+    document.querySelectorAll('.modulemenu-action.modulemenu-action-active').forEach((element: Element) => {
+      element.classList.remove('modulemenu-action-active');
+      element.removeAttribute('aria-current');
+    });
+    const moduleElement = document.getElementById(module);
+    if (moduleElement) {
+      moduleElement.classList.add('modulemenu-action-active');
+      moduleElement.setAttribute('aria-current', 'location');
+    }
   }
 
   private static getPreviousItem(item: HTMLButtonElement): HTMLButtonElement {
@@ -418,7 +421,10 @@ class ModuleMenu {
       }
 
       ModuleMenu.highlightModuleMenuItem(moduleName);
-      $('#' + moduleName).focus();
+      const moduleElement = document.getElementById(moduleName);
+      if (moduleElement) {
+        moduleElement.focus();
+      }
       this.loadedModule = moduleName;
 
       // Synchronise navigation container if module is a standalone module (linked via ModuleMenu).

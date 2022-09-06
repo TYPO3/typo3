@@ -25,32 +25,32 @@
     }"
 />
 
-<div class="scaffold-header t3js-scaffold-header">
-    <f:render partial="Backend/Topbar" arguments="{_all}" />
-</div>
-
-<f:if condition="{hasModules}">
-    <div class="scaffold-modulemenu t3js-scaffold-modulemenu" data-modules-information="{modulesInformation}">
-        <f:render partial="Backend/ModuleMenu" arguments="{modules: modules}" />
+<div class="scaffold t3js-scaffold{f:if(condition: '!{modulesCollapsed} && {modules}', then: ' scaffold-modulemenu-expanded')}">
+    <div class="scaffold-header t3js-scaffold-header">
+        <f:render partial="Backend/Topbar" arguments="{_all}" />
     </div>
-</f:if>
-
-<div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
-    <div class="scaffold-content-navigation t3js-scaffold-content-navigation">
-        <div class="scaffold-content-navigation-component" data-component="typo3-navigationIframe">
-            <iframe name="nav_frame" src="about:blank" id="typo3-navigationContainerIframe" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:iframe.navFrame')}" scrolling="no" class="scaffold-content-navigation-iframe t3js-scaffold-content-navigation-iframe"></iframe>
+    <f:if condition="{hasModules}">
+        <div class="scaffold-modulemenu t3js-scaffold-modulemenu" data-modules-information="{modulesInformation}">
+            <f:render partial="Backend/ModuleMenu" arguments="{modules: modules}" />
         </div>
+    </f:if>
+    <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
+        <div class="scaffold-content-navigation t3js-scaffold-content-navigation">
+            <div class="scaffold-content-navigation-component" data-component="typo3-navigationIframe">
+                <iframe name="nav_frame" src="about:blank" id="typo3-navigationContainerIframe" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:iframe.navFrame')}" scrolling="no" class="scaffold-content-navigation-iframe t3js-scaffold-content-navigation-iframe"></iframe>
+            </div>
+        </div>
+        <typo3-backend-navigation-switcher
+            parent=".t3js-scaffold"
+            navigation=".t3js-scaffold-content-navigation"
+            minimum-width="300"
+            persistence-identifier="navigation.width"
+        ></typo3-backend-navigation-switcher>
+        <div class="scaffold-content-module t3js-scaffold-content-module">
+            <typo3-backend-module-router module="{startupModule.0}" endpoint="{startupModule.1}" state-tracker="{stateTracker}" sitename="{sitename}"{f:if(condition: sitenameFirstInBackendTitle, then: ' sitename-first')}></typo3-backend-module-router>
+        </div>
+        <div class="scaffold-content-overlay t3js-scaffold-content-overlay"></div>
     </div>
-    <typo3-backend-navigation-switcher
-        parent=".t3js-scaffold"
-        navigation=".t3js-scaffold-content-navigation"
-        minimum-width="300"
-        persistence-identifier="navigation.width"
-    ></typo3-backend-navigation-switcher>
-    <div class="scaffold-content-module t3js-scaffold-content-module">
-        <typo3-backend-module-router module="{startupModule.0}" endpoint="{startupModule.1}" state-tracker="{stateTracker}" sitename="{sitename}"{f:if(condition: sitenameFirstInBackendTitle, then: ' sitename-first')}></typo3-backend-module-router>
-    </div>
-    <div class="scaffold-content-overlay t3js-scaffold-content-overlay"></div>
 </div>
 
 </html>

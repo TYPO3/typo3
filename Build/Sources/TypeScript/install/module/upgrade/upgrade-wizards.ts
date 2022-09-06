@@ -108,6 +108,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private getData(): Promise<any> {
     const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     return (new AjaxRequest(Router.getUrl('upgradeWizardsGetData')))
       .get({cache: 'no-cache'})
       .then(
@@ -121,7 +122,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error);
+          Router.handleAjaxError(error, $outputContainer);
         }
       );
   }
@@ -221,7 +222,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error);
+          Router.handleAjaxError(error, $outputContainer);
         }
       );
   }
@@ -320,7 +321,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error);
+          Router.handleAjaxError(error, $outputContainer);
         }
       );
   }

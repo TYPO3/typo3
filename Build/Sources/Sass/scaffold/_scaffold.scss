@@ -49,12 +49,12 @@ body {
 // Component
 //
 .scaffold {
+    display: flex;
+    flex-wrap: wrap;
     background-color: $scaffold-bg;
     color: $scaffold-color;
     position: relative;
     height: 100vh;
-    display: flex;
-    flex-flow: row wrap;
 }
 
 .scaffold-header {
@@ -84,14 +84,19 @@ body {
 .scaffold-modulemenu {
     background-color: $scaffold-modulemenu-bg;
     color: $scaffold-modulemenu-color;
-    position: sticky;
     top: $scaffold-topbar-height;
     width: auto;
     height: calc(100vh - #{$scaffold-topbar-height});
     max-width: 100%;
-    z-index: $scaffold-modulemenu-zindex;
     overflow: auto;
     color-scheme: dark;
+    position: absolute;
+    z-index: $scaffold-overlay-zindex + 1;
+
+    @media (min-width: $scaffold-breakpoint) {
+        z-index: $scaffold-modulemenu-zindex;
+        position: sticky;
+    }
 }
 
 //
@@ -158,7 +163,7 @@ body {
 .scaffold-content {
     position: relative !important;
     flex: 1 0 0%;
-    min-height: calc(100vh - #{$scaffold-topbar-height});
+    height: calc(100vh - #{$scaffold-topbar-height});
     display: flex;
     flex-direction: row;
     background: white;
@@ -234,8 +239,6 @@ body {
 }
 
 .scaffold-modulemenu-expanded {
-    display: flex;
-
     .scaffold-modulemenu {
         width: $scaffold-modulemenu-expanded-width;
 

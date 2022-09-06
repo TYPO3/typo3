@@ -23,10 +23,29 @@ import ProgressBar from './renderable/progress-bar';
 import Severity from './renderable/severity';
 
 class Router {
-  private selectorBody: string = '.t3js-body';
-  private selectorMainContent: string = '.t3js-module-body';
+  private rootSelector: string = '.t3js-body';
+  private contentSelector: string = '.t3js-module-body';
+
+  private scaffoldSelector: string = '.t3js-scaffold';
+  private scaffoldContentOverlaySelector: string = '.t3js-scaffold-content-overlay';
+  private scaffoldMenuToggleSelector: string = '.t3js-topbar-button-modulemenu';
+  private scaffoldMenuActionSelector: string = '.t3js-modulemenu-action';
+
+  private rootContainer: HTMLElement;
+  private controller: string;
+  private context: string;
+
+  public setContent(content: string): void
+  {
+    let container = this.rootContainer.querySelector(this.contentSelector) as HTMLElement
+    container.innerHTML = content;
+  }
 
   public initialize(): void {
+    this.rootContainer = document.querySelector(this.rootSelector);
+    this.context = this.rootContainer.dataset.context ?? '';
+    this.controller = this.rootContainer.dataset.controller ?? '';
+
     this.registerInstallToolRoutes();
 
     $(document).on('click', '.t3js-login-lockInstallTool', (e: JQueryEventObject): void => {
@@ -76,8 +95,7 @@ class Router {
       }
     });
 
-    const $context = $(this.selectorBody).data('context');
-    if ($context === 'backend') {
+    if (this.context === 'backend') {
       this.executeSilentConfigurationUpdate();
     } else {
       this.preAccessCheck();
@@ -96,16 +114,13 @@ class Router {
   }
 
   public getUrl(action?: string, controller?: string, query?: string): string {
-    const context = $(this.selectorBody).data('context');
     let url = location.href;
     url = url.replace(location.search, '');
     if (controller === undefined) {
-      controller = $(this.selectorBody).data('controller');
+      controller = this.controller;
     }
     url = url + '?install[controller]=' + controller;
-    if (context !== undefined && context !== '') {
-      url = url + '&install[context]=' + context;
-    }
+    url = url + '&install[context]=' + this.context;
     if (action !== undefined) {
       url = url + '&install[action]=' + action;
     }
@@ -158,7 +173,6 @@ class Router {
    * configuration files get their new defaults written to LocalConfiguration.
    */
   public executeSilentExtensionConfigurationSynchronization(): void {
-    const $outputContainer = $(this.selectorBody);
     this.updateLoadingInfo('Executing silent extension configuration synchronization');
     (new AjaxRequest(this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout')))
       .get({cache: 'no-cache'})
@@ -168,8 +182,7 @@ class Router {
           if (data.success === true) {
             this.loadMainLayout();
           } else {
-            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().append(message);
+            this.setContent(InfoBox.render(Severity.error, 'Something went wrong', '').html());
           }
         },
         (error: AjaxResponse): void => {
@@ -179,24 +192,22 @@ class Router {
   }
 
   public loadMainLayout(): void {
-    const $outputContainer = $(this.selectorBody);
-    const controller = $outputContainer.data('controller');
     this.updateLoadingInfo('Loading main layout');
-    (new AjaxRequest(this.getUrl('mainLayout', 'layout', 'install[module]=' + controller)))
+    (new AjaxRequest(this.getUrl('mainLayout', 'layout', 'install[module]=' + this.controller)))
       .get({cache: 'no-cache'})
       .then(
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-            $outputContainer.empty().append(data.html);
+            this.rootContainer.innerHTML = data.html;
             // Mark main module as active in standalone
-            if ($(this.selectorBody).data('context') !== 'backend') {
-              $outputContainer.find('.t3js-modulemenu-action[data-controller="' + controller + '"]').addClass('modulemenu-action-active');
+            if (this.context !== 'backend') {
+              this.rootContainer.querySelector('.t3js-modulemenu-action[data-controller="' + this.controller + '"]').classList.add('modulemenu-action-active');
+              this.registerScaffoldEvents();
             }
             this.loadCards();
           } else {
-            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().append(message);
+            this.rootContainer.innerHTML = InfoBox.render(Severity.error, 'Something went wrong', '').html();
           }
         },
         (error: AjaxResponse): void => {
@@ -209,26 +220,25 @@ class Router {
     let $message: any;
     if (error.response.status === 403) {
       // Install tool session expired - depending on context render error message or login
-      const $context = $(this.selectorBody).data('context');
-      if ($context === 'backend') {
-        $message = InfoBox.render(Severity.error, 'The install tool session expired. Please reload the backend and try again.');
-        $(this.selectorBody).empty().append($message);
+      if (this.context === 'backend') {
+        this.rootContainer.innerHTML = InfoBox.render(Severity.error, 'The install tool session expired. Please reload the backend and try again.').html();
       } else {
         this.checkEnableInstallToolFile();
       }
     } else {
       // @todo Recovery tests should be started here
       const url = this.getUrl(undefined, 'upgrade');
-      $message = $(
+      const message =
         '<div class="t3js-infobox callout callout-sm callout-danger">'
+        + '<h4 class="callout-title">Something went wrong</h4>'
         + '<div class="callout-body">'
-        + '<p>Something went wrong. Please use <b><a href="' + url + '">Check for broken'
+        + '<p>Please use <b><a href="' + url + '">Check for broken'
         + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
         + ' and unload it.</p>'
         + '<p>The box below may additionally reveal further details on what went wrong depending on your debug settings.'
         + ' It may help to temporarily switch to debug mode using <b>Settings > Configuration Presets > Debug settings.</b></p>'
         + '<p>If this error happens at an early state and no full exception back trace is shown, it may also help'
-        + ' to manually increase debugging output in <code>typo3conf/LocalConfiguration.php</code>:'
+        + ' to manually increase debugging output in <strong>typo3conf/LocalConfiguration.php</strong>:'
         + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, '
         + '<code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
         + '<code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
@@ -251,15 +261,15 @@ class Router {
         + '</div>'
         + '</div>'
         + '</div>'
-        + '</div>',
-      );
+        + '</div>'
+      ;
 
       if (typeof $outputContainer !== 'undefined') {
         // Write to given output container. This is typically a modal if given
-        $($outputContainer).empty().html($message);
+        $($outputContainer).empty().html(message);
       } else {
         // Else write to main frame
-        $(this.selectorBody).empty().html($message);
+        this.rootContainer.innerHTML = message;
       }
     }
   }
@@ -289,7 +299,7 @@ class Router {
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true) {
-            $(this.selectorBody).empty().append(data.html);
+            this.rootContainer.innerHTML = data.html;
           }
         },
         (error: AjaxResponse): void => {
@@ -323,7 +333,7 @@ class Router {
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true) {
-            $(this.selectorBody).empty().append(data.html);
+            this.rootContainer.innerHTML = data.html;
           }
         },
         (error: AjaxResponse): void => {
@@ -379,17 +389,15 @@ class Router {
   }
 
   public loadCards(): void {
-    const outputContainer = $(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('cards')))
       .get({cache: 'no-cache'})
       .then(
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-            outputContainer.empty().append(data.html);
+            this.setContent(data.html);
           } else {
-            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            outputContainer.empty().append(message);
+            this.setContent(InfoBox.render(Severity.error, 'Something went wrong', '').html());
           }
         },
         (error: AjaxResponse): void => {
@@ -398,9 +406,43 @@ class Router {
       );
   }
 
+  public registerScaffoldEvents(): void {
+    if(!localStorage.getItem('typo3-install-modulesCollapsed')) {
+      localStorage.setItem('typo3-install-modulesCollapsed', 'false');
+    }
+    this.toggleMenu(localStorage.getItem('typo3-install-modulesCollapsed') === 'true' ? true : false);
+    document.querySelector(this.scaffoldMenuToggleSelector).addEventListener('click', (event: MouseEvent) => {
+      event.preventDefault();
+      this.toggleMenu();
+    });
+    document.querySelector(this.scaffoldContentOverlaySelector).addEventListener('click', (event: MouseEvent) => {
+      event.preventDefault();
+      this.toggleMenu(true);
+    });
+    document.querySelectorAll(this.scaffoldMenuActionSelector).forEach((element: Element) => {
+      element.addEventListener('click', (event: MouseEvent) => {
+        if (window.innerWidth < 768) {
+          localStorage.setItem('typo3-install-modulesCollapsed', 'true');
+        }
+      });
+    });
+  }
+
+  public toggleMenu(collapse?: boolean): void {
+    const scaffold = document.querySelector(this.scaffoldSelector);
+    const expandedClass = 'scaffold-modulemenu-expanded';
+    if (typeof collapse === 'undefined') {
+      collapse = scaffold.classList.contains(expandedClass);
+    }
+    scaffold.classList.toggle(expandedClass, !collapse);
+    localStorage.setItem('typo3-install-modulesCollapsed', collapse ? 'true' : 'false');
+  }
+
   public updateLoadingInfo(info: string): void {
-    const $outputContainer = $(this.selectorBody);
-    $outputContainer.find('#t3js-ui-block-detail').text(info);
+    const infoElement = this.rootContainer.querySelector('#t3js-ui-block-detail');
+    if (infoElement !== undefined && infoElement instanceof HTMLElement) {
+      infoElement.innerText = info;
+    }
   }
 
   private preAccessCheck(): void {

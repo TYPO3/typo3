@@ -14,9 +14,6 @@
 import $ from 'jquery';
 import Router from './router';
 
-/**
- * Walk through the installation process of TYPO3
- */
 class Install {
   constructor() {
     $((): void => {

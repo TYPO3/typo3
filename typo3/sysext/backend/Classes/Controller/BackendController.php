@@ -132,12 +132,12 @@ class BackendController
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
         $pageRenderer->setTitle($title);
-        $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
 
         $view = $this->viewFactory->create($request);
         $this->assignTopbarDetailsToView($request, $view);
         $view->assignMultiple([
             'modules' => $this->modules,
+            'modulesCollapsed' => $this->getCollapseStateOfMenu(),
             'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
@@ -146,8 +146,7 @@ class BackendController
         ]);
         $content = $view->render('Backend/Main');
         $content = $this->eventDispatcher->dispatch(new AfterBackendPageRenderEvent($content, $view))->getContent();
-        $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $this->modules ? ' scaffold-modulemenu-expanded' : '') . '">';
-        $pageRenderer->addBodyContent($bodyTag . $content);
+        $pageRenderer->addBodyContent('<body>' . $content);
         return $pageRenderer->renderResponse();
     }
 
