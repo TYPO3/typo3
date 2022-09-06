@@ -14,6 +14,8 @@
 import 'bootstrap';
 import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import Popover = require('TYPO3/CMS/Backend/Popover');
+import {Popover as BootstrapPopover} from 'bootstrap';
 
 /**
  * Module: TYPO3/CMS/Backend/FormEngineReview
@@ -25,17 +27,12 @@ class FormEngineReview {
   /**
    * Class for the toggle button
    */
-  private toggleButtonClass: string;
-
-  /**
-   * Class for field list items
-   */
-  private fieldListItemClass: string;
+  private readonly toggleButtonClass: string = 't3js-toggle-review-panel';
 
   /**
    * Class of FormEngine labels
    */
-  private labelSelector: string;
+  private readonly labelSelector: string = '.t3js-formengine-label';
 
   /**
    * Fetches all fields that have a failed validation
@@ -61,12 +58,7 @@ class FormEngineReview {
       $('<span />', {class: 'fa fa-fw fa-info'}),
     );
 
-    $button.popover({
-      container: 'body',
-      html: true,
-      placement: 'bottom',
-    });
-
+    Popover.popover($button);
     $leastButtonBar.prepend($button);
   }
 
@@ -74,10 +66,6 @@ class FormEngineReview {
    * The constructor, set the class properties default values
    */
   constructor() {
-    this.toggleButtonClass = 't3js-toggle-review-panel';
-    this.fieldListItemClass = 't3js-field-item';
-    this.labelSelector = '.t3js-formengine-label';
-
     this.initialize();
   }
 
@@ -91,7 +79,6 @@ class FormEngineReview {
     $((): void => {
       FormEngineReview.attachButtonToModuleHeader(me);
     });
-    $document.on('click', '.' + this.fieldListItemClass, this.switchToField);
     $document.on('t3-formengine-postfieldvalidation', this.checkForReviewableField);
   }
 
@@ -108,34 +95,25 @@ class FormEngineReview {
 
       $invalidFields.each(function(this: Element): void {
         const $field: any = $(this);
-        const $input: any = $field.find('[data-formengine-validation-rules]');
-        let inputId: any = $input.attr('id');
+        const $input: JQuery = $field.find('[data-formengine-validation-rules]');
 
-        if (typeof inputId === 'undefined') {
-          inputId = $input.parent().children('[id]').first().attr('id');
-        }
+        const link = document.createElement('a');
+        link.classList.add('list-group-item');
+        link.href = '#';
+        link.textContent = $field.find(me.labelSelector).text();
+        link.addEventListener('click', (e: Event) => me.switchToField(e, $input));
 
-        $list.append(
-          $('<a />', {
-            'class': 'list-group-item ' + me.fieldListItemClass,
-            'data-field-id': inputId,
-            'href': '#',
-          }).text($field.find(me.labelSelector).text()),
-        );
+        $list.append(link);
       });
 
       $toggleButton.removeClass('hidden');
-
-      // bootstrap has no official API to update the content of a popover w/o destroying it
-      const $popover: any = $toggleButton.data('bs.popover');
-      if ($popover) {
-        $popover.options.html = true;
-        $popover.options.content = $list.wrapAll('<div>').parent().html();
-        $popover.setContent($popover.$tip);
-        $popover.$tip.addClass($popover.options.placement);
-      }
+      Popover.setOptions($toggleButton, <BootstrapPopover.Options>{
+        html: true,
+        content: $list[0]
+      });
     } else {
-      $toggleButton.addClass('hidden').popover('hide');
+      $toggleButton.addClass('hidden');
+      Popover.hide($toggleButton);
     }
   }
 
@@ -143,13 +121,10 @@ class FormEngineReview {
    * Finds the field in the form and focuses it
    *
    * @param {Event} e
+   * @param {JQuery} $referenceField
    */
-  public switchToField = (e: Event): void => {
+  public switchToField = (e: Event, $referenceField: JQuery): void => {
     e.preventDefault();
-
-    const $listItem: any = $(e.currentTarget);
-    const referenceFieldId: string = $listItem.data('fieldId');
-    const $referenceField: any = $('#' + referenceFieldId);
 
     // iterate possibly nested tab panels
     $referenceField.parents('[id][role="tabpanel"]').each(function(this: Element): void {

@@ -18,7 +18,7 @@ define(['jquery', 'bootstrap', 'TYPO3/CMS/Backend/Popover'], function($, bootstr
       $body.append($element2);
       it('works with default selector and title attribute', function() {
         Popover.initialize();
-        expect($element2[0].outerHTML).toBe('<div data-bs-toggle="popover" data-title="foo"></div>');
+        expect($element2[0].outerHTML).toBe('<div data-bs-toggle="popover" data-title="foo" data-bs-title="foo"></div>');
       });
 
       var $element3 = $('<div data-bs-toggle="popover" data-bs-content="foo">');
