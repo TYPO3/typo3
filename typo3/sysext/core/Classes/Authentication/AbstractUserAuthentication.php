@@ -636,9 +636,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->regenerateSessionId();
             }
 
-            // Check if multi-factor authentication is required
-            $this->evaluateMfaRequirements();
-
             if ($activeLogin) {
                 // User logged in - write that to the log!
                 if ($this->writeStdLog) {
@@ -654,6 +651,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     'ip' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
                 ]);
             }
+            // Check if multi-factor authentication is required
+            $this->evaluateMfaRequirements();
         } else {
             // Mark the current login attempt as failed
             if (empty($tempuserArr) && $activeLogin) {
