@@ -1,8 +1,6 @@
 //
 // Fix scroll behavior with local anchor in page module.
 //
-@use "sass:math";
-
 html {
     scroll-behavior: smooth;
 }
@@ -343,9 +341,10 @@ html {
     .t3-new-content-element-wizard-title {
         background-color: #292929;
         color: #fff;
-        padding: math.div($grid-gutter-width, 3) $grid-gutter-width * .5;
+        padding: .625rem 1rem;
 
         h2 {
+            font-size: 1rem;
             margin: 0;
         }
 

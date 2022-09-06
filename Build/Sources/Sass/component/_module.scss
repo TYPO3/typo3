@@ -7,7 +7,6 @@
 //
 // Variables
 //
-@use "sass:math";
 $module-bg: #fff !default;
 $module-color: inherit !default;
 $module-dark-bg: #333 !default;
@@ -131,22 +130,6 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 
             .form-control {
                 vertical-align: top;
-            }
-        }
-
-        .panel {
-            margin: 0;
-            border-left: none;
-            border-right: none;
-            border-bottom: none;
-            border-radius: 0;
-            margin-left: -$module-docheader-padding-horizontal;
-            margin-right: -$module-docheader-padding-horizontal;
-            background-color: #fafafa;
-            box-shadow: none;
-
-            .panel-body {
-                padding: ceil(math.div($module-docheader-padding-horizontal, 3)) $module-docheader-padding-horizontal;
             }
         }
 

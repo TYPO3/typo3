@@ -1,5 +1,3 @@
-@use "sass:math";
-
 //
 // Admin panel
 // ===========
@@ -73,14 +71,6 @@ $adminPanel-input-horizontal-padding: .75em;
 // Progress
 $adminPanel-progress-default: #333;
 $adminPanel-progress-green: #629755;
-
-//
-// Mixins
-//
-@mixin make-col($size, $columns: 12) {
-    flex: 0 0 percentage(math.div($size, $columns));
-    max-width: percentage(math.div($size, $columns));
-}
 
 //
 // NoScroll
@@ -565,20 +555,6 @@ body.typo3-adminPanel-noscroll {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    @for $i from 1 through 12 {
-        .typo3-adminPanel-col-#{$i} {
-            @include make-col($i);
-        }
-    }
-
-    @media (max-width: $screen-sm-max) {
-        @for $i from 1 through 12 {
-            .typo3-adminPanel-col-sm-#{$i} {
-                @include make-col($i);
-            }
-        }
     }
 }
 

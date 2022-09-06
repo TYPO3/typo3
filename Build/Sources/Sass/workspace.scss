@@ -1,5 +1,3 @@
-@use "sass:math";
-
 //
 // Workspace Preview
 // =================
@@ -50,8 +48,8 @@ $workspace-topbar-logo-width: 22px;
 .typo3-topbar-tabs,
 .typo3-topbar-workspace-actions,
 .workspace-action {
-    margin-top: ceil(math.div(($workspace-topbar-height - $workspace-topbar-line-height), 2));
-    margin-bottom: ceil(math.div(($workspace-topbar-height - $workspace-topbar-line-height), 2));
+    margin-top: calc((#{$workspace-topbar-height} - #{$workspace-topbar-line-height}) / 2);
+    margin-bottom: calc((#{$workspace-topbar-height} - #{$workspace-topbar-line-height}) / 2);
 }
 
 .typo3-topbar-site {

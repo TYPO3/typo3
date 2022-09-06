@@ -1,5 +1,3 @@
-@use "sass:math";
-
 //
 // Form Framework
 // ===========
@@ -629,14 +627,11 @@ $tree-line-height: 20px;
     }
 
     .t3-form-new-element-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: $stage-abstract-element-height;
         border: 1px dashed $panel-default-heading-bg;
-        text-align: center;
-        padding-top: math.div($stage-abstract-element-height, 2);
-
-        .btn {
-            transform: translateY(-50%);
-        }
     }
 
     // Abstract

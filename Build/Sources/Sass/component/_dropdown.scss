@@ -1,12 +1,11 @@
 //
 // Dropdowns
 //
-@use "sass:math";
-
 .dropdown-menu {
     line-height: 1.45em;
     border: 0;
     margin: 0;
+    padding: 1.5em;
     border-radius: 0;
     color: $dropdown-color;
 
@@ -23,7 +22,7 @@
 
     hr {
         border-top: 1px solid rgba(0, 0, 0, .35);
-        margin: 1.25em math.div($grid-gutter-width, -2);
+        margin: 1.25em -1.5em;
     }
 
     > *:last-child {
@@ -63,10 +62,6 @@
     a {
         display: inline-block;
     }
-}
-
-div.dropdown-menu {
-    padding: 1.5em;
 }
 
 .dropdown-list {
