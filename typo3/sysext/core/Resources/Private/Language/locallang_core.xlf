@@ -1464,6 +1464,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="iframe.listFrame" resname="iframe.listFrame">
 				<source>List frame (content area) to create and modify pages, content and records</source>
 			</trans-unit>
+			<trans-unit id="message.confirmation" resname="message.confirmation">
+				<source>Are you sure?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
