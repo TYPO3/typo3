@@ -139,13 +139,13 @@ class ReportController
         $menu->setIdentifier('WebFuncJumpMenu');
         $menuItem = $menu->makeMenuItem()
             ->setHref(
-                $this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
+                (string)$this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
             )
             ->setTitle($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview'));
         $menu->addMenuItem($menuItem);
         foreach ($this->reportRegistry->getReports() as $report) {
             $menuItem = $menu->makeMenuItem()
-                ->setHref($this->uriBuilder->buildUriFromRoute(
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                     'system_reports',
                     ['action' => 'detail', 'report' => $report->getIdentifier()]
                 ))

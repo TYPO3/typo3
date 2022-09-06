@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type;
@@ -2066,7 +2067,8 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     {
         if (empty($this->user['uid'])) {
             // @todo: throw a proper AccessDeniedException in TYPO3 v12.0. and handle this functionality in the calling code
-            $url = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir;
+            $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
+            $url = $entryPointResolver->getUriFromRequest($GLOBALS['TYPO3_REQUEST']);
             throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
         }
         if ($this->isUserAllowedToLogin()) {

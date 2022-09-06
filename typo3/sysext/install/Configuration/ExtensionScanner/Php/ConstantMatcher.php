@@ -283,4 +283,9 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3_mainDir' => [
+        'restFiles' => [
+            'Deprecation-98283-PHPConstantTYPO3_mainDir.rst',
+        ],
+    ],
 ];

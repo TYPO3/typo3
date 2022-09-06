@@ -16,13 +16,14 @@
 namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -54,22 +55,17 @@ class UriBuilder implements SingletonInterface
     const SHAREABLE_URL = 'share';
 
     /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
      * @var array
      */
     protected $generated = [];
 
     /**
      * Loads the router to fetch the available routes from the Router to be used for generating routes
-     * @param Router $router
      */
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
+    public function __construct(
+        protected readonly Router $router,
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+    ) {
     }
 
     /**
@@ -81,7 +77,7 @@ class UriBuilder implements SingletonInterface
      * @param string $pathInfo The path to the route
      * @param array $parameters An array of parameters
      * @param string $referenceType The type of reference to be generated (one of the constants)
-     * @return Uri The generated Uri
+     * @return UriInterface The generated Uri
      * @throws RouteNotFoundException If the named route doesn't exist
      */
     public function buildUriFromRoutePath($pathInfo, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
@@ -98,11 +94,11 @@ class UriBuilder implements SingletonInterface
      * @param array $parameters
      * @param RouteRedirect|null $redirect
      * @param string $referenceType
-     * @return Uri
+     * @return UriInterface
      * @throws RouteNotFoundException
      * @internal this is experimental API used for creating logins to redirect to a different route
      */
-    public function buildUriWithRedirect(string $name, array $parameters = [], RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): Uri
+    public function buildUriWithRedirect(string $name, array $parameters = [], RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): UriInterface
     {
         if ($redirect === null) {
             return $this->buildUriFromRoute($name, $parameters, $referenceType);
@@ -129,7 +125,7 @@ class UriBuilder implements SingletonInterface
      * @param string $name The name of the route
      * @param array $parameters An array of parameters
      * @param string $referenceType The type of reference to be generated (one of the constants)
-     * @return Uri The generated Uri
+     * @return UriInterface The generated Uri
      * @throws RouteNotFoundException If the named route doesn't exist
      */
     public function buildUriFromRoute($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
@@ -167,20 +163,18 @@ class UriBuilder implements SingletonInterface
      * @param array $parameters An array of GET parameters
      * @param string $referenceType The type of reference to be generated (one of the constants)
      *
-     * @return Uri
+     * @return UriInterface
      */
-    protected function buildUri(string $route, array $parameters, string $referenceType): Uri
+    protected function buildUri(string $route, array $parameters, string $referenceType): UriInterface
     {
         $path = ltrim($route . HttpUtility::buildQueryString($parameters, '?'), '/');
         if ($referenceType === self::ABSOLUTE_PATH) {
             $uri = PathUtility::getAbsoluteWebPath(Environment::getBackendPath() . '/' . $path);
-        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams') instanceof NormalizedParams
-        ) {
-            $uri = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestDir() . $path;
+        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            $uri = $this->backendEntryPointResolver->getUriFromRequest($GLOBALS['TYPO3_REQUEST'], $path);
         } else {
-            $uri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
+            $uri = $path;
         }
-        return GeneralUtility::makeInstance(Uri::class, $uri);
+        return $uri instanceof UriInterface ? $uri : GeneralUtility::makeInstance(Uri::class, $uri);
     }
 }

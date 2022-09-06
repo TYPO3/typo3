@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -75,7 +76,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      */
     protected function setUpFakeSitePathAndHost(): void
     {
-        $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
+        $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . 'index.php';
         $_SERVER['HTTP_HOST'] = $this->testHostName;
 
         $request = ServerRequestFactory::fromGlobals();
@@ -122,7 +123,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         self::assertFalse($this->accessibleFixture->isValid($url));
@@ -160,7 +161,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         self::assertTrue($this->accessibleFixture->isValid($url));
@@ -187,6 +188,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      */
     public function validateRedirectUrlClearsInvalidUrlInSubdirectory(string $url): void
     {
+        GeneralUtility::flushInternalRuntimeCaches();
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
         self::assertFalse($this->accessibleFixture->isValid($url));
@@ -222,7 +224,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $this->testSitePath = '/subdir/';
@@ -280,7 +282,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = $host;

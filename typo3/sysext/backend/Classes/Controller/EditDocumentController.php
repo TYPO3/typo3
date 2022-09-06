@@ -57,6 +57,7 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -341,7 +342,8 @@ class EditDocumentController
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver
     ) {
     }
 
@@ -1269,7 +1271,7 @@ class EditDocumentController
                         $l18nParent
                     );
                 }
-                $this->registerDeleteButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 6);
+                $this->registerDeleteButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 6, $request);
                 $this->registerColumnsOnlyButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 7);
                 $this->registerHistoryButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 1);
             }
@@ -1493,7 +1495,7 @@ class EditDocumentController
     /**
      * Register the delete button to the button bar
      */
-    protected function registerDeleteButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    protected function registerDeleteButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
     {
         if ($this->firstEl['deleteAccess']
             && !$this->getDisableDelete()
@@ -1506,7 +1508,7 @@ class EditDocumentController
                 // The below is a hack to replace the return url with an url to the current module on id=0. Otherwise,
                 // this might lead to empty views, since the current id is the page, which is about to be deleted.
                 $parsedUrl = parse_url($returnUrl);
-                $routePath = str_replace(TYPO3_mainDir, '', $parsedUrl['path'] ?? '');
+                $routePath = str_replace($this->backendEntryPointResolver->getPathFromRequest($request), '', $parsedUrl['path'] ?? '');
                 parse_str($parsedUrl['query'] ?? '', $queryParams);
                 if ($routePath
                     && isset($queryParams['id'])

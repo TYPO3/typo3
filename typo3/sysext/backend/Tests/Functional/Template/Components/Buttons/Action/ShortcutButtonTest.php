@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Template\Components\Buttons\Action;
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ShortcutButtonTest extends FunctionalTestCase
 {
     private const FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.html';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
 
     /**
      * @test
@@ -65,6 +63,11 @@ class ShortcutButtonTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/typo3/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/index.php', 'GET', null, $serverParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($serverParams));
 
         self::assertEquals(
             $this->normalizeSpaces(file_get_contents(sprintf(self::FIXTURES_PATH_PATTERN, $expectedMarkupFile))),

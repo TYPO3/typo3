@@ -68,7 +68,7 @@ final class LinkViewHelper extends AbstractTagBasedViewHelper
         $parameters = $this->arguments['parameters'];
         $referenceType = $this->arguments['referenceType'];
         $uri = $uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
-        $this->tag->addAttribute('href', $uri);
+        $this->tag->addAttribute('href', (string)$uri);
         $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
         return $this->tag->render();

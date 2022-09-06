@@ -80,6 +80,7 @@ class ServiceProvider extends AbstractServiceProvider
             Middleware\VerifyHostHeader::class => [ static::class, 'getVerifyHostHeaderMiddleware' ],
             Package\FailsafePackageManager::class => [ static::class, 'getFailsafePackageManager' ],
             Package\Cache\PackageDependentCacheIdentifier::class => [ static::class, 'getPackageDependentCacheIdentifier' ],
+            Routing\BackendEntryPointResolver::class => [ static::class, 'getBackendEntryPointResolver' ],
             Registry::class => [ static::class, 'getRegistry' ],
             Resource\Index\FileIndexRepository::class => [ static::class, 'getFileIndexRepository' ],
             Resource\Index\MetaDataRepository::class => [ static::class, 'getMetaDataRepository' ],
@@ -480,6 +481,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getTypoScriptService(ContainerInterface $container): TypoScript\TypoScriptService
     {
         return self::new($container, TypoScript\TypoScriptService::class);
+    }
+
+    public static function getBackendEntryPointResolver(ContainerInterface $container): Routing\BackendEntryPointResolver
+    {
+        return self::new($container, Routing\BackendEntryPointResolver::class);
     }
 
     public static function getGuzzleClientFactory(ContainerInterface $container): Http\Client\GuzzleClientFactory

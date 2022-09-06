@@ -32,17 +32,11 @@ use TYPO3\CMS\Core\Http\AbstractApplication;
  */
 class Application extends AbstractApplication
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
     public function __construct(
         RequestHandlerInterface $requestHandler,
-        Context $context
+        protected readonly Context $context
     ) {
         $this->requestHandler = $requestHandler;
-        $this->context = $context;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

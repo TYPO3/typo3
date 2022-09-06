@@ -130,10 +130,6 @@ class MainController implements SingletonInterface
                 $arguments,
                 UriBuilder::SHAREABLE_URL
             );
-            // this is a workaround as the UriBuilder uses the frontend request to build the URL
-            // and the requestDir does not contain /typo3
-            $requestDir = $request->getAttribute('normalizedParams')->getRequestDir();
-            $backendUrl = str_replace($requestDir, $requestDir . 'typo3/', $backendUrl);
 
             $view->assignMultiple(
                 [

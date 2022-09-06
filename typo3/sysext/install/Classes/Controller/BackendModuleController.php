@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\SessionService;
@@ -161,7 +161,7 @@ class BackendModuleController
         return new RedirectResponse((string)$redirectUri, 403);
     }
 
-    protected function getBackendUserConfirmationUri(array $parameters): Uri
+    protected function getBackendUserConfirmationUri(array $parameters): UriInterface
     {
         return $this->uriBuilder->buildUriFromRoute(
             'install.backend-user-confirmation',

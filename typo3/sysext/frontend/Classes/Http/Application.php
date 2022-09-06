@@ -30,36 +30,26 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 
 /**
  * Entry point for the TYPO3 Frontend
  */
 class Application extends AbstractApplication
 {
-    /**
-     * @var ConfigurationManager
-     */
-    protected $configurationManager;
-
-    /**
-     * @var Context
-     */
-    protected $context;
-
     public function __construct(
         RequestHandlerInterface $requestHandler,
-        ConfigurationManager $configurationManager,
-        Context $context
+        protected readonly ConfigurationManager $configurationManager,
+        protected readonly Context $context,
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver
     ) {
         $this->requestHandler = $requestHandler;
-        $this->configurationManager = $configurationManager;
-        $this->context = $context;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (!Bootstrap::checkIfEssentialConfigurationExists($this->configurationManager)) {
-            return $this->installToolRedirect();
+            return $this->installToolRedirect($request);
         }
 
         // Create new request object having applicationType "I am a frontend request" attribute.
@@ -71,13 +61,10 @@ class Application extends AbstractApplication
 
     /**
      * Create a PSR-7 Response that redirects to the install tool
-     *
-     * @return ResponseInterface
      */
-    protected function installToolRedirect(): ResponseInterface
+    protected function installToolRedirect(ServerRequestInterface $request): ResponseInterface
     {
-        $path = TYPO3_mainDir . 'install.php';
-        return new RedirectResponse($path, 302);
+        return new RedirectResponse($this->backendEntryPointResolver->getPathFromRequest($request) . 'install.php', 302);
     }
 
     /**

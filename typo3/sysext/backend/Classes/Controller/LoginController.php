@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -109,6 +110,7 @@ class LoginController
         protected readonly Context $context,
         protected readonly LoginProviderResolver $loginProviderResolver,
         protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver
     ) {
     }
 
@@ -121,7 +123,7 @@ class LoginController
         $this->request = $request;
         $this->init($request);
         $response = $this->createLoginLogoutForm($request);
-        return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
+        return $this->appendLoginProviderCookie($request, $request->getAttribute('normalizedParams'), $response);
     }
 
     /**
@@ -133,7 +135,7 @@ class LoginController
         $this->init($request);
         $this->loginRefresh = true;
         $response = $this->createLoginLogoutForm($request);
-        return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
+        return $this->appendLoginProviderCookie($request, $request->getAttribute('normalizedParams'), $response);
     }
 
     /**
@@ -157,7 +159,7 @@ class LoginController
      * If a login provider was chosen in the previous request, which is not the default provider,
      * it is stored in a Cookie and appended to the HTTP Response.
      */
-    protected function appendLoginProviderCookie(NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
+    protected function appendLoginProviderCookie(ServerRequestInterface $request, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
     {
         if ($this->loginProviderIdentifier === $this->loginProviderResolver->getPrimaryLoginProviderIdentifier()) {
             return $response;
@@ -167,7 +169,7 @@ class LoginController
             'be_lastLoginProvider',
             $this->loginProviderIdentifier,
             $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
-            $normalizedParams->getSitePath() . TYPO3_mainDir,
+            $this->backendEntryPointResolver->getPathFromRequest($request),
             '',
             $normalizedParams->isHttps(),
             true,

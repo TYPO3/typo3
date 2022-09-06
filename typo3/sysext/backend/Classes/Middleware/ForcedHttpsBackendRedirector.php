@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 
 /**
  * Check lockSSL configuration variable and redirect
@@ -34,6 +35,10 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
  */
 class ForcedHttpsBackendRedirector implements MiddlewareInterface
 {
+    public function __construct(
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+    ) {
+    }
     /**
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -43,13 +48,14 @@ class ForcedHttpsBackendRedirector implements MiddlewareInterface
     {
         if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$request->getAttribute('normalizedParams')->isHttps()) {
             if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
-                $sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
+                $sslPortSuffix = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
             } else {
-                $sslPortSuffix = '';
+                $sslPortSuffix = null;
             }
-            [, $url] = explode('://', $request->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir, 2);
-            [$server, $address] = explode('/', $url, 2);
-            return new RedirectResponse('https://' . $server . $sslPortSuffix . '/' . $address);
+            $backendUrl = $this->backendEntryPointResolver->getUriFromRequest($request)
+                ->withScheme('https')
+                ->withPort($sslPortSuffix);
+            return new RedirectResponse($backendUrl);
         }
 
         return $handler->handle($request);

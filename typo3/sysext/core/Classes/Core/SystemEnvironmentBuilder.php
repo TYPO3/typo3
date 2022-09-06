@@ -100,6 +100,7 @@ class SystemEnvironmentBuilder
         defined('TYPO3') ?: define('TYPO3', true);
 
         // Relative path from document root to typo3/ directory, hardcoded to "typo3/"
+        // @deprecated: will be removed in TYPO3 v13.0
         if (!defined('TYPO3_mainDir')) {
             define('TYPO3_mainDir', 'typo3/');
         }
