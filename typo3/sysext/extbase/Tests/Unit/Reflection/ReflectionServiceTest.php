@@ -94,19 +94,4 @@ class ReflectionServiceTest extends UnitTestCase
         self::assertInstanceOf(ReflectionService::class, $reflectionService);
         self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
     }
-
-    /**
-     * @test
-     */
-    public function reflectionServiceIsResetDuringWakeUp(): void
-    {
-        $insecureString = file_get_contents(__DIR__ . '/Fixture/InsecureSerializedReflectionService.txt');
-        $reflectionService = unserialize($insecureString);
-
-        $reflectionClass = new \ReflectionClass($reflectionService);
-        $classSchemaProperty = $reflectionClass->getProperty('classSchemata');
-        $classSchemaProperty->setAccessible(true);
-
-        self::assertSame([], $classSchemaProperty->getValue($reflectionService));
-    }
 }
