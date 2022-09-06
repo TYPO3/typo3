@@ -25,8 +25,7 @@ nbproject
 .webprj
 #
 # Temporary files and folders
-/.cache/*
-!/.cache/.npmrc
+/.cache
 .php_cs.cache
 .php-cs-fixer.cache
 .sass-cache
