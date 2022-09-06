@@ -12,7 +12,7 @@
  */
 
 import {loadCKEditor} from '@typo3/rte-ckeditor/ckeditor-loader';
-import $ from 'jquery';
+import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
 
 interface CKEditorOptions {
@@ -36,23 +36,22 @@ export class FormEngineInitializer {
       CKEDITOR.timestamp += '-' + options.configurationHash;
       options.externalPlugins
         .forEach((item: CKEditorExternalPlugin) => CKEDITOR.plugins.addExternal(item.name, item.resource, ''));
-      $(() => {
+      DocumentService.ready().then((): void => {
         const fieldId = options.fieldId;
-        const escapedFieldSelector = '#' + $.escapeSelector(fieldId);
+        const field = document.getElementById(fieldId) as HTMLTextAreaElement;
         CKEDITOR.replace(fieldId, options.configuration);
 
         const instance = CKEDITOR.instances[fieldId];
         instance.on('change', (evt: CKEDITOR.eventInfo) => {
           let commands = evt.sender.commands;
           instance.updateElement();
-          FormEngine.Validation.validateField($(escapedFieldSelector));
-          FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
+          FormEngine.Validation.validateField(field);
+          FormEngine.Validation.markFieldAsChanged(field);
 
           // remember changes done in maximized state and mark field as changed, once minimized again
           if (typeof commands.maximize !== 'undefined' && commands.maximize.state === 1) {
-            instance.on('maximize', (evt: CKEDITOR.eventInfo) => {
-              $(this).off('maximize');
-              FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
+            instance.once('maximize', (evt: CKEDITOR.eventInfo) => {
+              FormEngine.Validation.markFieldAsChanged(field);
             });
           }
         });
@@ -61,17 +60,15 @@ export class FormEngineInitializer {
           if (evt.editor.mode === 'source') {
             const sourceArea = instance.editable();
             sourceArea.attachListener(sourceArea, 'change', () => {
-              FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
+              FormEngine.Validation.markFieldAsChanged(field);
             });
           }
         });
-        document.addEventListener('inline:sorting-changed', () => {
-          instance.destroy();
-          CKEDITOR.replace(fieldId, options.configuration);
-        });
-        document.addEventListener('formengine:flexform:sorting-changed', () => {
-          instance.destroy();
-          CKEDITOR.replace(fieldId, options.configuration);
+        ['inline:sorting-changed', 'formengine:flexform:sorting-changed'].forEach((eventType: string): void => {
+          document.addEventListener(eventType, () => {
+            instance.destroy();
+            CKEDITOR.replace(fieldId, options.configuration);
+          });
         });
       });
     });

@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser from '@typo3/recordlist/link-browser';
 import Modal from '@typo3/backend/modal';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/rte-ckeditor/rte-link-browser
@@ -23,29 +23,12 @@ class RteLinkBrowser {
   protected plugin: any = null;
   protected CKEditor: CKEDITOR.editor = null;
   protected ranges: CKEDITOR.dom.range[] = [];
-  protected siteUrl: string = '';
 
   /**
    * @param {String} editorId Id of CKEditor
    */
   public initialize(editorId: string): void {
-    let editor: CKEDITOR.editor = Modal.currentModal.data('ckeditor');
-    if (typeof editor !== 'undefined') {
-      this.CKEditor = editor;
-    } else {
-      let callerWindow;
-      if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.get() !== 'undefined') {
-        callerWindow = top.TYPO3.Backend.ContentContainer.get();
-      } else {
-        callerWindow = window.parent;
-      }
-
-      $.each(callerWindow.CKEDITOR.instances, (name: number, instance: any): void => {
-        if (instance.id === editorId) {
-          this.CKEditor = instance;
-        }
-      });
-    }
+    this.CKEditor = Modal.currentModal.data('ckeditor');
 
     window.addEventListener('beforeunload', (): void => {
       this.CKEditor.getSelection().selectRanges(this.ranges);
@@ -54,14 +37,14 @@ class RteLinkBrowser {
     // Backup all ranges that are active when the Link Browser is requested
     this.ranges = this.CKEditor.getSelection().getRanges();
 
-    // siteUrl etc are added as data attributes to the body tag
-    $.extend(RteLinkBrowser, $('body').data());
-
-    $('.t3js-removeCurrentLink').on('click', (event: JQueryEventObject): void => {
-      event.preventDefault();
-      this.CKEditor.execCommand('unlink');
-      Modal.dismiss();
-    });
+    const removeLinkElement = document.querySelector('.t3js-removeCurrentLink');
+    if (removeLinkElement !== null) {
+      new RegularEvent('click', (e: Event): void => {
+        e.preventDefault();
+        this.CKEditor.execCommand('unlink');
+        Modal.dismiss();
+      }).bindTo(removeLinkElement);
+    }
   }
 
   /**
@@ -71,26 +54,13 @@ class RteLinkBrowser {
    */
   public finalizeFunction(link: string): void {
     const linkElement = this.CKEditor.document.createElement('a');
-    const attributes = LinkBrowser.getLinkAttributeValues();
+    const attributes: { [key: string]: string } = LinkBrowser.getLinkAttributeValues();
     let params = attributes.params ? attributes.params : '';
-
-    if (attributes.target) {
-      linkElement.setAttribute('target', attributes.target);
-    }
-    if (attributes.class) {
-      linkElement.setAttribute('class', attributes.class);
-    }
-    if (attributes.title) {
-      linkElement.setAttribute('title', attributes.title);
-    }
-    delete attributes.title;
-    delete attributes.class;
-    delete attributes.target;
     delete attributes.params;
 
-    $.each(attributes, (attrName: string, attrValue: string): void => {
-      linkElement.setAttribute(attrName, attrValue);
-    });
+    for (const [attribute, value] of Object.entries(attributes)) {
+      linkElement.setAttribute(attribute, value);
+    }
 
     // Make sure, parameters and anchor are in correct order
     const linkMatch = link.match(/^([a-z0-9]+:\/\/[^:\/?#]+(?:\/?[^?#]*)?)(\??[^#]*)(#?.*)$/)

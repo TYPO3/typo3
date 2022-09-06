@@ -396,7 +396,12 @@ export default (function() {
     });
 
     const isValid = !markParent;
-    field.closest(FormEngineValidation.markerSelector).classList.toggle(FormEngineValidation.errorClass, !isValid);
+    const validationMarker = field.closest(FormEngineValidation.markerSelector);
+    if (validationMarker !== null) {
+      // Validation marker may be unavailable (e.g. due to maximized ckeditor)
+      validationMarker.classList.toggle(FormEngineValidation.errorClass, !isValid);
+    }
+
     FormEngineValidation.markParentTab($(field), isValid);
 
     $(document).trigger('t3-formengine-postfieldvalidation');
@@ -586,7 +591,9 @@ export default (function() {
       return;
     }
     const paletteField = field.closest('.t3js-formengine-palette-field');
-    paletteField.classList.add('has-change');
+    if (paletteField !== null) {
+      paletteField.classList.add('has-change');
+    }
   };
 
   /**
