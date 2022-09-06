@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Domain\Repository;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Core\Domain\Repository\PageRepository
+ *
+ * @deprecated since TYPO3 v12, will be removed in TYPO3 v13.0. Use the PSR-14 events instead.
  */
 interface PageRepositoryGetPageOverlayHookInterface
 {

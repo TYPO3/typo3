@@ -857,4 +857,18 @@ return [
             'Feature-97449-PSR-14EventsForModifyingFlexFormParsing.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_page.php\'][\'getRecordOverlay\']' => [
+        'restFiles' => [
+            'Breaking-98303-RemovedHooksForLanguageOverlaysInPageRepository.rst',
+            'Deprecation-98303-InterfacesForPageRepositoryLanguageOverlayHooks.rst',
+            'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_page.php\'][\'getPageOverlay\']' => [
+        'restFiles' => [
+            'Breaking-98303-RemovedHooksForLanguageOverlaysInPageRepository.rst',
+            'Deprecation-98303-InterfacesForPageRepositoryLanguageOverlayHooks.rst',
+            'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
+        ],
+    ],
 ];

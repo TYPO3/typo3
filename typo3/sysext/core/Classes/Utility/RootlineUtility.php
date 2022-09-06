@@ -218,9 +218,7 @@ class RootlineUtility
             }
             $this->pageRepository->versionOL('pages', $row, false, true);
             if (is_array($row)) {
-                if ($this->languageUid > 0) {
-                    $row = $this->pageRepository->getPageOverlay($row, $this->languageUid);
-                }
+                $row = $this->pageRepository->getLanguageOverlay('pages', $row, $this->context->getAspect('language'));
                 $row = $this->enrichWithRelationFields($row['_PAGES_OVERLAY_UID'] ??  $uid, $row);
                 self::$pageRecordCache[$currentCacheIdentifier] = $row;
             }

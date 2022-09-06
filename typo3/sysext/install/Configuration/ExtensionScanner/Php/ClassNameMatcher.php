@@ -1984,4 +1984,18 @@ return [
             'Breaking-97752-MailerAdapterInterfaceRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageOverlayHookInterface' => [
+        'restFiles' => [
+            'Breaking-98303-RemovedHooksForLanguageOverlaysInPageRepository.rst',
+            'Deprecation-98303-InterfacesForPageRepositoryLanguageOverlayHooks.rst',
+            'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetRecordOverlayHookInterface' => [
+        'restFiles' => [
+            'Breaking-98303-RemovedHooksForLanguageOverlaysInPageRepository.rst',
+            'Deprecation-98303-InterfacesForPageRepositoryLanguageOverlayHooks.rst',
+            'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
+        ],
+    ],
 ];

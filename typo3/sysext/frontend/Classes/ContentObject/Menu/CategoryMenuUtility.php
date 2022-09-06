@@ -63,7 +63,7 @@ class CategoryMenuUtility
             foreach ($collection as $pageItem) {
                 $parentObject->getSysPage()->versionOL('pages', $pageItem, true);
                 if (is_array($pageItem)) {
-                    $selectedPages[$pageItem['uid']] = $parentObject->getSysPage()->getPageOverlay($pageItem);
+                    $selectedPages[$pageItem['uid']] = $parentObject->getSysPage()->getLanguageOverlay('pages', $pageItem);
                     // Keep a list of the categories each page belongs to
                     if (!isset($categoriesPerPage[$pageItem['uid']])) {
                         $categoriesPerPage[$pageItem['uid']] = [];

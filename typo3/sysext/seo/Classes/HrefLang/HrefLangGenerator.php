@@ -109,9 +109,11 @@ class HrefLangGenerator
         $context->setAspect('language', $languageAspect);
 
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
-        if ($languageId > 0) {
-            return $pageRepository->getPageOverlay($pageId, $languageId);
+        $pageRecord = $pageRepository->getPage($pageId);
+        // Overlay was requested but did not apply
+        if ($languageId > 0 && !($pageRecord['_PAGES_OVERLAY'] ?? false)) {
+            return [];
         }
-        return $pageRepository->getPage($pageId);
+        return $pageRecord;
     }
 }

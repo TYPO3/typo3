@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Routing;
 
 use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
@@ -265,7 +266,7 @@ class PageSlugCandidateProvider
                 $row['MPvar'] = $mountPageInformation['MPvar'];
                 $mountedPage = $pageRepository->getPage_noCheck($mountPageInformation['mount_pid_rec']['uid']);
                 // Ensure to fetch the slug in the translated page
-                $mountedPage = $pageRepository->getPageOverlay($mountedPage, $languageId);
+                $mountedPage = $pageRepository->getLanguageOverlay('pages', $mountedPage, new LanguageAspect($languageId, $languageId));
                 // Mount wasn't connected properly, so it is skipped
                 if (!$mountedPage) {
                     continue;

@@ -112,7 +112,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Now overlay the page in the target language, in order to have valid title attributes etc.
         if ($siteLanguageOfTargetPage->getLanguageId() > 0) {
-            $page = $pageRepository->getPageOverlay($page);
+            $page = $pageRepository->getLanguageOverlay('pages', $page);
             // Check if the translated page is a shortcut, but the default page wasn't a shortcut, so this is
             // resolved as well, see ScenarioDTest in functional tests.
             // Currently not supported: When this is the case (only a translated page is a shortcut),

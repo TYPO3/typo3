@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Core\Domain\Repository;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -38,6 +40,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Domain\Event\AfterRecordLanguageOverlayEvent;
+use TYPO3\CMS\Core\Domain\Event\BeforePageLanguageOverlayEvent;
+use TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,6 +60,11 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class PageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicMethodDeprecationTrait;
+
+    private array $deprecatedPublicMethods = [
+        'getRecordOverlay' => 'Using PageRepository::getRecordOverlay() is deprecated and will not be possible anymore in TYPO3 v13.0. Use PageRepository:getLanguageOverlay() instead.',
+    ];
 
     /**
      * This is not the final clauses. There will normally be conditions for the
@@ -304,7 +314,7 @@ class PageRepository implements LoggerAwareInterface
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
-                $result = $this->getPageOverlay($row);
+                $result = $this->getLanguageOverlay('pages', $row);
             }
         }
 
@@ -347,7 +357,7 @@ class PageRepository implements LoggerAwareInterface
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
-                $result = $this->getPageOverlay($row);
+                $result = $this->getLanguageOverlay('pages', $row);
             }
         }
         $cache->set($cacheIdentifier, $result);
@@ -361,46 +371,61 @@ class PageRepository implements LoggerAwareInterface
      * This might change through a feature switch in the future.
      *
      * @param string $table the name of the table, should be a TCA table with localization enabled
-     * @param array $row the current (full-fletched) record.
+     * @param array $originalRow the current (full-fletched) record.
      * @param LanguageAspect|null $languageAspect an alternative language aspect if needed (optional)
-     * @return array|null
+     * @return array|null NULL If overlays were activated but no overlay was found and LanguageAspect was NOT set to MIXED
      */
-    public function getLanguageOverlay(string $table, array $row, LanguageAspect $languageAspect = null)
+    public function getLanguageOverlay(string $table, array $originalRow, LanguageAspect $languageAspect = null): ?array
     {
         // table is not localizable, so return directly
         if (!isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
-            return $row;
+            return $originalRow;
         }
+
         try {
             /** @var LanguageAspect $languageAspect */
             $languageAspect = $languageAspect ?? $this->context->getAspect('language');
-            if ($languageAspect->doOverlays()) {
-                if ($table === 'pages') {
-                    return $this->getPageOverlay($row, $languageAspect->getId());
-                }
-                return $this->getRecordOverlay(
-                    $table,
-                    $row,
-                    $languageAspect
-                );
-            }
         } catch (AspectNotFoundException $e) {
             // no overlays
+            return $originalRow;
         }
-        return $row;
+
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+
+        $event = $eventDispatcher->dispatch(new BeforeRecordLanguageOverlayEvent($table, $originalRow, $languageAspect));
+        $languageAspect = $event->getLanguageAspect();
+        $originalRow = $event->getRecord();
+
+        $attempted = false;
+        $localizedRecord = null;
+        if ($languageAspect->doOverlays()) {
+            $attempted = true;
+            if ($table === 'pages') {
+                $localizedRecord = $this->getPageOverlay($originalRow, $languageAspect);
+            } else {
+                $localizedRecord = $this->getRecordOverlay($table, $originalRow, $languageAspect);
+            }
+        }
+
+        $event = new AfterRecordLanguageOverlayEvent($table, $originalRow, $localizedRecord, $attempted, $languageAspect);
+        /** @var AfterRecordLanguageOverlayEvent $event */
+        $event = $eventDispatcher->dispatch($event);
+
+        // Return localized record or the original row, if no overlays were done
+        return $event->overlayingWasAttempted() ? $event->getLocalizedRecord() : $originalRow;
     }
 
     /**
      * Returns the relevant page overlay record fields
      *
      * @param mixed $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAID before the page record is returned.
-     * @param int $languageUid anguage UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int|LanguageAspect|null $language language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page row which is overlaid with language_overlay record (or the overlay record alone)
      */
-    public function getPageOverlay($pageInput, $languageUid = null)
+    public function getPageOverlay($pageInput, $language = null)
     {
-        $rows = $this->getPagesOverlay([$pageInput], $languageUid);
+        $rows = $this->getPagesOverlay([$pageInput], $language);
         // Always an array in return
         return $rows[0] ?? [];
     }
@@ -409,37 +434,27 @@ class PageRepository implements LoggerAwareInterface
      * Returns the relevant page overlay record fields
      *
      * @param array $pagesInput Array of integers or array of arrays. If each value is an integer, it's the pids of the pageOverlay records and thus the page overlay records are returned. If each value is an array, it's page-records and based on this page records the language records are found and OVERLAID before the page records are returned.
-     * @param int $languageUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int|LanguageAspect|null $language Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page rows which are overlaid with language_overlay record.
      *               If the input was an array of integers, missing records are not
      *               included. If the input were page rows, untranslated pages
      *               are returned.
      */
-    public function getPagesOverlay(array $pagesInput, $languageUid = null)
+    public function getPagesOverlay(array $pagesInput, int|LanguageAspect $language = null)
     {
         if (empty($pagesInput)) {
             return [];
         }
-        if ($languageUid === null) {
-            $languageUid = $this->sys_language_uid;
+        if (is_int($language)) {
+            $languageAspect = new LanguageAspect($language, $language);
+        } else {
+            $languageAspect = $language ?? $this->context->getAspect('language');
         }
-        foreach ($pagesInput as &$origPage) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
-                }
-                $hookObject->getPageOverlay_preProcess($origPage, $languageUid, $this);
-            }
-        }
-        unset($origPage);
 
         $overlays = [];
         // If language UID is different from zero, do overlay:
-        if ($languageUid) {
-            $languageUids = array_merge([$languageUid], $this->getLanguageFallbackChain(null));
-
+        if ($languageAspect->getId() > 0) {
             $pageIds = [];
             foreach ($pagesInput as $origPage) {
                 if (is_array($origPage)) {
@@ -450,7 +465,12 @@ class PageRepository implements LoggerAwareInterface
                     $pageIds[] = (int)$origPage;
                 }
             }
-            $overlays = $this->getPageOverlaysForLanguageUids($pageIds, $languageUids);
+
+            $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new BeforePageLanguageOverlayEvent($pagesInput, $pageIds, $languageAspect)
+            );
+            $pagesInput = $event->getPageInput();
+            $overlays = $this->getPageOverlaysForLanguage($event->getPageIds(), $event->getLanguageAspect());
         }
 
         // Create output:
@@ -466,10 +486,8 @@ class PageRepository implements LoggerAwareInterface
                         }
                     }
                 }
-            } else {
-                if (isset($overlays[$origPage])) {
-                    $pagesOutput[$key] = $overlays[$origPage];
-                }
+            } elseif (isset($overlays[$origPage])) {
+                $pagesOutput[$key] = $overlays[$origPage];
             }
         }
         return $pagesOutput;
@@ -529,11 +547,12 @@ class PageRepository implements LoggerAwareInterface
      * But that's not how it's done right now.
      *
      * @param array $pageUids
-     * @param array $languageUids uid of site language, please note that the order is important here.
+     * @param LanguageAspect $languageAspect Used for the fallback chain
      * @return array
      */
-    protected function getPageOverlaysForLanguageUids(array $pageUids, array $languageUids): array
+    protected function getPageOverlaysForLanguage(array $pageUids, LanguageAspect $languageAspect): array
     {
+        $languageUids = array_merge([$languageAspect->getId()], $this->getLanguageFallbackChain($languageAspect));
         // Remove default language ("0")
         $languageUids = array_filter($languageUids);
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
@@ -598,30 +617,26 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
-     * @param LanguageAspect|int|null $sys_language_content Pointer to the site language id for content on the site.
-     * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is NULL)
+     * @param LanguageAspect|int|null $languageAspect Pointer to the site language id for content on the site.
+     * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is NULL) - will be removed in TYPOO3 v13.0.
      * @throws \UnexpectedValueException
-     * @return mixed Returns the input record, possibly overlaid with a translation.  But if $OLmode is "hideNonTranslated" then it will return NULL if no translation is found.
+     * @return array|null Returns the input record, possibly overlaid with a translation. But if overlays are not mixed ("fallback to default language") then it will return NULL if no translation is found.
      */
-    public function getRecordOverlay($table, $row, $sys_language_content = null, $OLmode = '')
+    protected function getRecordOverlay(string $table, array $row, $languageAspect = null, $OLmode = '')
     {
-        if ($sys_language_content === null) {
-            $sys_language_content = $this->context->getAspect('language');
+        // Kept for backwards-compatibility, can be removed in TYPO3 v13.0.
+        if (is_int($languageAspect)) {
+            $OLmode = func_get_args()[3] ?? '';
+            $languageAspect = new LanguageAspect(
+                $languageAspect,
+                $languageAspect,
+                ($OLmode === 'hideNonTranslated' ? LanguageAspect::OVERLAYS_ON_WITH_FLOATING : ($OLmode ? LanguageAspect::OVERLAYS_MIXED : LanguageAspect::OVERLAYS_OFF))
+            );
         }
-        if ($sys_language_content instanceof LanguageAspect) {
-            // Early return when no overlays are needed
-            if ($sys_language_content->getOverlayType() === $sys_language_content::OVERLAYS_OFF) {
-                return $row;
-            }
-            $OLmode = $sys_language_content->getOverlayType() === $sys_language_content::OVERLAYS_MIXED ? '1' : 'hideNonTranslated';
-            $sys_language_content = $sys_language_content->getContentId();
-        }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
-            }
-            $hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
+        $languageAspect ??= $this->context->getAspect('language');
+        // Early return when no overlays are needed
+        if ($languageAspect->getOverlayType() === $languageAspect::OVERLAYS_OFF) {
+            return $row;
         }
 
         $tableControl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
@@ -634,7 +649,7 @@ class PageRepository implements LoggerAwareInterface
             && $row['uid'] > 0
             && ($row['pid'] > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))) {
             // Will try to overlay a record only if the sys_language_content value is larger than zero.
-            if ($sys_language_content > 0) {
+            if ($languageAspect->getContentId() > 0) {
                 // Must be default language, otherwise no overlaying
                 if ((int)$row[$tableControl['languageField']] === 0) {
                     // Select overlay record:
@@ -680,7 +695,7 @@ class PageRepository implements LoggerAwareInterface
                             ),
                             $queryBuilder->expr()->eq(
                                 $tableControl['languageField'],
-                                $queryBuilder->createNamedParameter($sys_language_content, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($languageAspect->getContentId(), \PDO::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 $tableControl['transOrigPointerField'],
@@ -707,12 +722,12 @@ class PageRepository implements LoggerAwareInterface
                                 $row['_LOCALIZED_UID'] = $olrow['uid'];
                             }
                         }
-                    } elseif ($OLmode === 'hideNonTranslated' && (int)$row[$tableControl['languageField']] === 0) {
+                    } elseif (in_array($languageAspect->getOverlayType(), [LanguageAspect::OVERLAYS_ON_WITH_FLOATING, LanguageAspect::OVERLAYS_ON]) && (int)$row[$tableControl['languageField']] === 0) {
                         // Unset, if non-translated records should be hidden. ONLY done if the source
                         // record really is default language and not [All] in which case it is allowed.
                         $row = null;
                     }
-                } elseif ($sys_language_content != $row[$tableControl['languageField']]) {
+                } elseif ($languageAspect->getContentId() != $row[$tableControl['languageField']]) {
                     $row = null;
                 }
             } else {
@@ -723,15 +738,6 @@ class PageRepository implements LoggerAwareInterface
                 }
             }
         }
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
-            }
-            $hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
-        }
-
         return $row;
     }
 
