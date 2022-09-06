@@ -22,7 +22,7 @@
         border: 1px solid #aaa;
         border-top: 0;
         background: #fff;
-        box-shadow: 0 4px 5px rgba(#000, 0.15);
+        box-shadow: 0 4px 5px rgba(#000, .15);
         clip: rect(0, 0, 0, 0);
     }
 
@@ -61,7 +61,7 @@
         border-radius: 2px;
         background-color: #fff;
         background-clip: padding-box;
-        box-shadow: 0 0 3px #fff inset, 0 1px 1px rgba(#000, 0.1);
+        box-shadow: 0 0 3px #fff inset, 0 1px 1px rgba(#000, .1);
         color: #444;
         text-decoration: none;
         white-space: nowrap;
@@ -279,7 +279,6 @@
 
                 &:after {
                     @include icon-background($icon-actions-close, $white);
-
                     width: 16px;
                     height: 16px;
                 }
@@ -336,7 +335,7 @@
 .chosen-container-active {
     .chosen-single {
         border: 1px solid #5897fb;
-        box-shadow: 0 0 5px rgba(#000, 0.3);
+        box-shadow: 0 0 5px rgba(#000, .3);
     }
 
     &.chosen-with-drop {
@@ -352,7 +351,7 @@
 
     .chosen-choices {
         border: 1px solid #5897fb;
-        box-shadow: 0 0 5px rgba(#000, 0.3);
+        box-shadow: 0 0 5px rgba(#000, .3);
 
         li.search-field input[type="text"] {
             color: #222 !important;
@@ -364,7 +363,7 @@
 // Disabled Support
 //
 .chosen-disabled {
-    opacity: 0.5 !important;
+    opacity: .5 !important;
     cursor: default;
 
     .chosen-single {

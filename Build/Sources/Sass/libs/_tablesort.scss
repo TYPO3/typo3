@@ -28,5 +28,5 @@ th[aria-sort="descending"]:not([data-sort-method="none"]):after {
 
 th[aria-sort]:not([data-sort-method="none"]):after {
     visibility: visible;
-    opacity: 0.4;
+    opacity: .4;
 }

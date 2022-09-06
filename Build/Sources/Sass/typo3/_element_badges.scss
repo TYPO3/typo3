@@ -5,17 +5,13 @@
 // Mixins
 @mixin badge-create-variant($name, $color) {
     --badge-#{$name}-color: #{color-contrast($color)};
-
     --badge-#{$name}-bg: #{$color};
-
     --badge-#{$name}-link-bg-hover: #{darken($color, 10%)};
 }
 
 @mixin badge-use-variant($name) {
     --badge-color: var(--badge-#{$name}-color);
-
     --badge-bg: var(--badge-#{$name}-bg);
-
     --badge-link-bg-hover: var(--badge-#{$name}-link-bg-hover);
 }
 

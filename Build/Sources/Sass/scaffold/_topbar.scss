@@ -59,7 +59,7 @@ $toolbar-item-padding-horizontal: 15px;
     &[disabled]:hover {
         background-color: $topbar-button-active-bg;
         cursor: not-allowed;
-        opacity: 0.5;
+        opacity: .5;
     }
 
     &.topbar-button-modulemenu {
@@ -194,7 +194,7 @@ $toolbar-item-padding-horizontal: 15px;
 .topbar-header-site-logo {
     height: $topbar-height;
     display: none;
-    padding-right: 0.5em;
+    padding-right: .5em;
 
     img {
         max-width: 180px;
@@ -219,5 +219,5 @@ $toolbar-item-padding-horizontal: 15px;
 }
 
 .topbar-header-site-version {
-    opacity: 0.5;
+    opacity: .5;
 }

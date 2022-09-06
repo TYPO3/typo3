@@ -5,7 +5,6 @@
 //
 // used in the admin tools => DB check
 //
-
 .t3-overview-list dt {
     padding: 0 0 2px 20px;
 
@@ -51,10 +50,8 @@ table {
         + .table {
             margin-top: 6px;
         }
-
         margin: 0;
     }
-
     background-color: $table-bg;
     border: 1px solid $table-border-color;
 
@@ -118,7 +115,7 @@ table {
     .btn-default,
     .btn-warning {
         &:not(.btn-sm) {
-            padding: 0.375rem;
+            padding: .375rem;
         }
     }
 

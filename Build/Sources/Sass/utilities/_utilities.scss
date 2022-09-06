@@ -1,13 +1,17 @@
-/* stylelint-disable function-comma-newline-after, indentation */
-// todo: check why 'grunt formatsass' and 'grunt stylelint:sass' are not using the same format settings
 $utilities: map-merge(
     (
         "background-color": (
-            property: background-color, class: bg, values: map-merge(
-                $theme-colors-state, (
-                    "body": $body-bg, "white": $white, "transparent": transparent
+            property: background-color,
+            class: bg,
+            values: map-merge(
+                $theme-colors-state,
+                (
+                    "body": $body-bg,
+                    "white": $white,
+                    "transparent": transparent
                 )
             )
-        ), ), $utilities
+        ),
+    ),
+    $utilities
 );
-/* stylelint-enable function-comma-newline-after, indentation */

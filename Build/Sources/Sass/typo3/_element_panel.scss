@@ -7,8 +7,7 @@ $panel-lg-padding: 35px;
 // Panel
 //
 .panel {
-    @include box-shadow(0 2px 0 rgba(0, 0, 0, 0.1));
-
+    @include box-shadow(0 2px 0 rgba(0, 0, 0, .1));
     margin-bottom: 1.125rem;
 
     &.ui-sortable-helper {
@@ -61,8 +60,7 @@ $panel-lg-padding: 35px;
 
 .panel-collapsed {
     .caret {
-        @include transition(all 0.25s ease-in-out);
-
+        @include transition(all .25s ease-in-out);
         transform: rotate(-90deg);
     }
 }
@@ -71,7 +69,7 @@ $panel-lg-padding: 35px;
 .panel-collapse {
     .panel-heading {
         .caret {
-            @include transition(all 0.25s ease-in-out);
+            @include transition(all .25s ease-in-out);
         }
 
         .collapsed {
@@ -163,7 +161,7 @@ $panel-lg-padding: 35px;
 
     .panel-heading,
     .panel-footer {
-        padding: ceil($panel-lg-padding * 0.5) $panel-lg-padding;
+        padding: ceil($panel-lg-padding * .5) $panel-lg-padding;
     }
 
     .panel-carousel {

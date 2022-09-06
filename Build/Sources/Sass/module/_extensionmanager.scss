@@ -17,7 +17,7 @@
 // Extension List
 .extension-list-last-updated {
     font-weight: bold;
-    padding-right: 0.4em;
+    padding-right: .4em;
     cursor: help;
 }
 
@@ -98,7 +98,7 @@
 .distribution-official-badge {
     position: absolute;
     bottom: 0;
-    right: 0.75em;
+    right: .75em;
     transform: translate(0, 25%);
 
     img {
@@ -135,7 +135,7 @@
 
 .distribution-detail-header {
     h1 {
-        margin-bottom: 0.5em;
+        margin-bottom: .5em;
     }
 
     p {
@@ -143,7 +143,6 @@
         max-width: 500px;
         margin-bottom: 1.25em;
     }
-
     margin-bottom: 2.5em;
 }
 
@@ -152,6 +151,6 @@
     padding: 0;
 
     li {
-        margin: 0.25em 0;
+        margin: .25em 0;
     }
 }

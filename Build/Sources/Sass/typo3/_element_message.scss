@@ -1,4 +1,4 @@
-$contrast-color: rgba(0, 0, 0, 0.1);
+$contrast-color: rgba(0, 0, 0, .1);
 
 //
 // Alert notice
@@ -27,13 +27,13 @@ $contrast-color: rgba(0, 0, 0, 0.1);
 .alert-title {
     font-size: 1.12em;
     font-weight: bold;
-    margin: 0 0 0.25em;
+    margin: 0 0 .25em;
 }
 
 .alert-body,
 .alert-message {
     margin: 0;
-    font-size: 0.9em;
+    font-size: .9em;
 
     > *:last-child {
         margin-bottom: 0;
@@ -53,9 +53,9 @@ $contrast-color: rgba(0, 0, 0, 0.1);
         line-height: 1;
         padding: 0;
         position: absolute;
-        right: 0.625rem;
-        top: 0.625rem;
-        opacity: 0.5;
+        right: .625rem;
+        top: .625rem;
+        opacity: .5;
 
         &:hover {
             color: inherit;
@@ -74,7 +74,7 @@ $contrast-color: rgba(0, 0, 0, 0.1);
         border-bottom: 1px solid $contrast-color;
         flex-basis: 25%;
         flex-grow: 1;
-        font-size: 0.75rem;
+        font-size: .75rem;
         font-weight: bold;
         padding: 4px 0;
         text-align: center;
@@ -86,7 +86,7 @@ $contrast-color: rgba(0, 0, 0, 0.1);
 
         &.disabled {
             pointer-events: none;
-            opacity: 0.4;
+            opacity: .4;
         }
 
         &:not(:last-child) {
@@ -106,12 +106,12 @@ $contrast-color: rgba(0, 0, 0, 0.1);
     z-index: 10000;
 
     .alert {
-        box-shadow: inset 0 0 0 1px $contrast-color, 0 2px 0 0 rgba(0, 0, 0, 0.15);
+        box-shadow: inset 0 0 0 1px $contrast-color, 0 2px 0 0 rgba(0, 0, 0, .15);
         position: relative;
         margin: 5px auto;
 
         &.fade.in {
-            opacity: 0.95;
+            opacity: .95;
         }
     }
 }

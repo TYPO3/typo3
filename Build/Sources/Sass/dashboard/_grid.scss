@@ -1,15 +1,15 @@
 // Grid
 .dashboard-grid {
     position: relative;
-    margin-right: -($dashboard-column-gutter * 0.5);
-    margin-left: -($dashboard-column-gutter * 0.5);
+    margin-right: -($dashboard-column-gutter * .5);
+    margin-left: -($dashboard-column-gutter * .5);
 }
 
 // Items
 .dashboard-item {
     position: absolute;
     z-index: 1;
-    padding: ($dashboard-column-gutter * 0.5);
+    padding: ($dashboard-column-gutter * .5);
     width: 100%;
     height: auto;
 
@@ -33,7 +33,7 @@
     &.muuri-item-placeholder {
         z-index: 2;
         margin: 0;
-        opacity: 0.5;
+        opacity: .5;
 
         .widget {
             border: 1px dashed $gray-600;

@@ -36,26 +36,17 @@
 
 :root {
     --statusreport-border-color: #{$gray-300};
-
     --statusreport-border-radius: 4px;
-
-    --statusreport-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
-
-    --statusreport-spacing: 0.5rem;
-
+    --statusreport-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+    --statusreport-spacing: .5rem;
     --statusreport-bg: #{$white};
-
     --statusreport-color: #{$body-color};
-
     --statusreport-icon-size: 16px;
-
     --statusreport-icon-bg: #{$light};
-
     --statusreport-icon-color: #{color-contrast($light)};
 
     @each $state, $value in $theme-colors {
         --statusreport-icon-#{$state}-bg: #{$value};
-
         --statusreport-icon-#{$state}-color: #{color-contrast($value)};
     }
 }
@@ -134,7 +125,6 @@
 @each $state, $value in $theme-colors {
     .statusreport[data-severity=#{$state}] {
         --statusreport-icon-bg: var(--statusreport-icon-#{$state}-bg);
-
         --statusreport-icon-color: var(--statusreport-icon-#{$state}-color);
     }
 }
@@ -144,8 +134,6 @@
 //
 // Container queries are expected to be stable by the end of 2022:
 // Edge, Chrome, Firefox, Safari
-
-/* stylelint-disable */
 
 /* clean-css ignore:start */
 
@@ -160,5 +148,3 @@
 }
 
 /* clean-css ignore:end */
-
-/* stylelint-enable */

@@ -1,26 +1,19 @@
 :root {
     --context-menu-bg: #eaeaea;
-
     --context-menu-border-radius: 2px;
-
     --context-menu-item-bg: #fff;
-
     --context-menu-item-focus-bg: #{tint-color($primary, 90%)};
-
     --context-menu-item-focus-outline-color: #{tint-color($primary, 20%)};
-
     --context-menu-item-hover-bg: #{tint-color($primary, 95%)};
-
-    --context-menu-item-padding-y: 0.5rem;
-
-    --context-menu-item-padding-x: 0.75rem;
+    --context-menu-item-padding-y: .5rem;
+    --context-menu-item-padding-x: .75rem;
 }
 
 .context-menu {
     position: absolute;
     z-index: 310;
     background-color: var(--context-menu-bg);
-    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, .25);
     border-radius: var(--context-menu-border-radius);
 
     &-group:first-child &-item:first-child {
@@ -87,7 +80,7 @@
             height: 1px;
             margin-top: -1px;
             margin-bottom: -1px;
-            background-color: rgba(0, 0, 0, 0.15);
+            background-color: rgba(0, 0, 0, .15);
         }
     }
 }

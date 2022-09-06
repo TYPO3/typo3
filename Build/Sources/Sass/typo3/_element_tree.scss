@@ -21,7 +21,7 @@ $tree-control-icon-size: 12px;
 //
 .list-tree,
 .list-tree ul {
-    margin-left: ceil(($tree-indentation * 0.5));
+    margin-left: ceil(($tree-indentation * .5));
     padding: 0;
     list-style: none;
     position: relative;
@@ -32,7 +32,7 @@ $tree-control-icon-size: 12px;
         width: 0;
         position: absolute;
         top: 0;
-        bottom: ceil($tree-line-height * 0.5);
+        bottom: ceil($tree-line-height * .5);
         left: 0;
         margin-bottom: -2px;
         border-left: 1px dotted $tree-border;
@@ -51,8 +51,8 @@ $tree-control-icon-size: 12px;
                     top: -1px;
                     bottom: -1px;
                     display: block;
-                    border: 1px solid rgba(0, 0, 0, 0.25);
-                    background-color: rgba(255, 255, 255, 0.75);
+                    border: 1px solid rgba(0, 0, 0, .25);
+                    background-color: rgba(255, 255, 255, .75);
                     border-radius: 2px;
                 }
             }
@@ -66,7 +66,7 @@ $tree-control-icon-size: 12px;
             border-top: 1px dotted $tree-border;
             margin-top: -2px;
             position: absolute;
-            top: ceil($tree-line-height * 0.5) + 1;
+            top: ceil($tree-line-height * .5) + 1;
             left: 2px;
         }
 
@@ -77,7 +77,6 @@ $tree-control-icon-size: 12px;
             width: ceil($tree-indentation - $tree-intendation-space) + 1;
             bottom: 0;
         }
-
         margin: 0;
         padding-left: $tree-indentation;
         line-height: $tree-line-height;
@@ -127,7 +126,7 @@ $tree-control-icon-size: 12px;
     top: 0;
     left: 0;
     display: block;
-    margin-left: -($tree-indentation + ceil($tree-control-size * 0.5));
+    margin-left: -($tree-indentation + ceil($tree-control-size * .5));
     text-align: center;
     line-height: $tree-control-size;
     width: $tree-control-size;
@@ -139,8 +138,8 @@ $tree-control-icon-size: 12px;
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-top: ceil(-($tree-control-icon-size * 0.5));
-        margin-left: ceil(-($tree-control-icon-size * 0.5));
+        margin-top: ceil(-($tree-control-icon-size * .5));
+        margin-left: ceil(-($tree-control-icon-size * .5));
         width: $tree-control-icon-size;
         height: $tree-control-icon-size;
     }
@@ -282,7 +281,7 @@ span.dragIcon {
     position: absolute;
     visibility: hidden;
     z-index: 20;
-    opacity: 0.5;
+    opacity: .5;
     white-space: nowrap;
 }
 

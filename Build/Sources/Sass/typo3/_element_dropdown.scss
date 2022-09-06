@@ -5,7 +5,7 @@
     .dropdown-item {
         &.disabled,
         &:disabled {
-            opacity: 0.5;
+            opacity: .5;
             box-shadow: none;
         }
     }

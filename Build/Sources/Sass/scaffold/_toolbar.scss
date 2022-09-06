@@ -99,7 +99,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     @media (max-width: $scaffold-breakpoint-max) {
         .dropdown-menu {
             overflow: auto;
-            padding: $grid-gutter-width * 0.5;
+            padding: $grid-gutter-width * .5;
             position: fixed;
             width: 100%;
             top: 50%;
@@ -107,8 +107,8 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
             transform: translate(-50%, -50%);
 
             hr {
-                margin-left: -$grid-gutter-width * 0.5;
-                margin-right: -$grid-gutter-width * 0.5;
+                margin-left: -$grid-gutter-width * .5;
+                margin-right: -$grid-gutter-width * .5;
             }
         }
 
@@ -118,7 +118,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         }
 
         .dropdown-backdrop {
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, .65);
         }
 
         .dropdown-table-title {
@@ -167,11 +167,11 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, .5);
     position: relative;
     display: flex;
     align-items: center;
-    gap: 0.35em;
+    gap: .35em;
     text-decoration: none;
     padding: $toolbar-item-padding-vertical $toolbar-item-padding-horizontal;
     height: $toolbar-height;
@@ -259,12 +259,11 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     padding-left: 1.5rem;
     margin: 0;
     border-radius: 0;
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, .5);
 
     @media (min-width: $scaffold-breakpoint) {
         border: none;
     }
-
     height: $toolbar-height;
     box-shadow: none;
 
@@ -288,10 +287,10 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     }
 
     .dropdown-list-link {
-        padding: $toolbar-dropdown-padding * 0.5;
+        padding: $toolbar-dropdown-padding * .5;
     }
 
     .dropdown-headline {
-        padding-top: $toolbar-dropdown-padding * 0.5;
+        padding-top: $toolbar-dropdown-padding * .5;
     }
 }

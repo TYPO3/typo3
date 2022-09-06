@@ -98,7 +98,7 @@ $callout-notice-border: $state-notice-border;
 
 .callout-title {
     font-size: 1.3em;
-    margin: 0 0 0.5em;
+    margin: 0 0 .5em;
 }
 
 .callout-body {
@@ -112,7 +112,7 @@ $callout-notice-border: $state-notice-border;
 //
 .callout-sm {
     margin: 10px 0;
-    padding: $callout-padding * 0.5;
+    padding: $callout-padding * .5;
 
     .callout-title {
         font-size: 1em;

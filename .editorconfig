@@ -38,6 +38,10 @@ indent_size = 2
 indent_size = 2
 indent_style = tab
 
+# stylelint
+[.stylelintrc]
+indent_size = 2
+
 # package.json
 [package.json]
 indent_size = 2

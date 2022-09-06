@@ -11,8 +11,8 @@
 $checkbox-bg: #dadada;
 $checkbox-bg-active: #79a548;
 $checkbox-bg-inactive: #e74856;
-$checkbox-focus-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.35);
-$checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
+$checkbox-focus-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .35);
+$checkbox-focus-border: 1px solid rgba(0, 0, 0, .45);
 
 //
 // Component
@@ -25,7 +25,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
     .form-check-spinner {
         float: left;
         margin-left: $form-check-padding-start * -1;
-        margin-top: ($line-height-base - $form-check-input-width) * 0.5;
+        margin-top: ($line-height-base - $form-check-input-width) * .5;
     }
 
     &.form-check-type-icon-toggle {
@@ -40,13 +40,13 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         align-items: baseline;
         padding: 0;
         min-height: 0;
-        transition: all 0.3s ease-in-out;
+        transition: all .3s ease-in-out;
     }
 
     .form-check-label-switch,
     .form-check-label-icon {
         flex-shrink: 0;
-        transition: all 0.3s ease-in-out;
+        transition: all .3s ease-in-out;
     }
 
     &:not(.disabled) {
@@ -57,7 +57,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
     }
 
     input + .help-link {
-        margin-left: 0.5rem;
+        margin-left: .5rem;
         font-weight: normal;
     }
 }
@@ -66,7 +66,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 //
 .form-check {
     .form-check-input:disabled + .form-check-label {
-        opacity: 0.5;
+        opacity: .5;
     }
 }
 
@@ -139,8 +139,8 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         height: 24px;
         background-color: $checkbox-bg-inactive;
         border-radius: 2px;
-        margin-right: 0.5rem;
-        border: 1px solid rgba(0, 0, 0, 0.3);
+        margin-right: .5rem;
+        border: 1px solid rgba(0, 0, 0, .3);
         color: #fff;
         display: inline-flex;
         flex-direction: column;
@@ -240,7 +240,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         text-align: center;
         background-color: $checkbox-bg;
         color: #333;
-        border: 1px solid rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(0, 0, 0, .3);
 
         .input-group & {
             /* special handling for constant editor */
@@ -255,7 +255,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
     }
 
     .form-check-label-text {
-        padding-left: 0.5rem;
+        padding-left: .5rem;
     }
 
     .form-check-label-icon-checked {

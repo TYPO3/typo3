@@ -63,7 +63,7 @@ $picker-width: $row-days-width;
         z-index: 200;
 
         &.animate {
-            animation: fpFadeInDown 300ms cubic-bezier(0.23, 1, 0.32, 1);
+            animation: fpFadeInDown 300ms cubic-bezier(.23, 1, .32, 1);
         }
     }
 
@@ -208,7 +208,7 @@ $picker-width: $row-days-width;
 
 .flatpickr-months .flatpickr-prev-month svg path,
 .flatpickr-months .flatpickr-next-month svg path {
-    transition: fill 0.1s;
+    transition: fill .1s;
 }
 
 .numInputWrapper {
@@ -274,7 +274,7 @@ $picker-width: $row-days-width;
 .numInputWrapper span.arrowUp:after {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-bottom: 4px solid rgba(57, 57, 57, 0.6);
+    border-bottom: 4px solid rgba(57, 57, 57, .6);
 }
 
 .numInputWrapper span.arrowDown {
@@ -284,7 +284,7 @@ $picker-width: $row-days-width;
 .numInputWrapper span.arrowDown:after {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 4px solid rgba(57, 57, 57, 0.6);
+    border-top: 4px solid rgba(57, 57, 57, .6);
 }
 
 .numInputWrapper span svg {
@@ -293,11 +293,11 @@ $picker-width: $row-days-width;
 }
 
 .numInputWrapper span svg path {
-    fill: rgba(0, 0, 0, 0.5);
+    fill: rgba(0, 0, 0, .5);
 }
 
 .numInputWrapper:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, .05);
 }
 
 .numInputWrapper:hover span {
@@ -323,12 +323,12 @@ $picker-width: $row-days-width;
     font-weight: 700;
     color: inherit;
     display: inline-block;
-    margin-left: 0.5ch;
+    margin-left: .5ch;
     padding: 0;
 }
 
 .flatpickr-current-month span.cur-month:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, .05);
 }
 
 .flatpickr-current-month .numInputWrapper {
@@ -370,7 +370,7 @@ $picker-width: $row-days-width;
     &[disabled],
     &[disabled]:hover {
         font-size: 100%;
-        color: rgba(0, 0, 0, 0.5);
+        color: rgba(0, 0, 0, .5);
         background: transparent;
         pointer-events: none;
     }

@@ -33,12 +33,11 @@
 
 .btn-block {
     @extend .d-block;
-
     width: 100%;
 
     // Vertically space out multiple block buttons
     + .btn-block {
-        margin-top: $spacer * 0.5;
+        margin-top: $spacer * .5;
     }
 }
 
@@ -51,5 +50,5 @@ table .btn-borderless {
     border-color: transparent;
     box-shadow: none;
     background: none;
-    padding: 0.375rem;
+    padding: .375rem;
 }

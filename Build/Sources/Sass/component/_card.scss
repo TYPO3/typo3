@@ -212,8 +212,8 @@ $card-padding: 1.5em;
 $card-base-color: #000;
 $card-border-color: lighten($card-base-color, 80);
 $card-border-hover-color: lighten($card-base-color, 70);
-$card-shadow-color: transparentize($card-base-color, 0.8);
-$card-shadow-hover-color: transparentize($card-base-color, 0.7);
+$card-shadow-color: transparentize($card-base-color, .8);
+$card-shadow-hover-color: transparentize($card-base-color, .7);
 
 //
 // Component
@@ -223,7 +223,7 @@ $card-shadow-hover-color: transparentize($card-base-color, 0.7);
     box-shadow: 0 1px 1px $card-shadow-color;
     border-color: $card-border-color;
     margin-bottom: ($card-spacing*2);
-    transition: all 0.2s ease-in-out;
+    transition: all .2s ease-in-out;
     transition-property: box-shadow, border, transform;
 }
 
@@ -289,7 +289,7 @@ a.card:hover {
 // Disabled Cards
 //
 .card-disabled {
-    opacity: 0.4;
+    opacity: .4;
 }
 
 //
@@ -326,7 +326,7 @@ a.card:hover {
         padding-top: 0;
 
         .card-image-badge {
-            top: $card-padding * 0.5;
+            top: $card-padding * .5;
         }
     }
 
@@ -337,7 +337,7 @@ a.card:hover {
     .card-image-badge {
         position: absolute;
         top: $card-padding;
-        right: $card-padding * 0.5;
+        right: $card-padding * .5;
     }
 
     img {
@@ -356,7 +356,7 @@ a.card:hover {
 
     .card-icon {
         float: left;
-        margin-right: $card-padding * 0.5;
+        margin-right: $card-padding * .5;
     }
 
     .card-header-body {
@@ -375,10 +375,10 @@ a.card:hover {
 
     .card-subtitle {
         display: block;
-        margin-top: 0.5em;
+        margin-top: .5em;
         font-size: 1em;
         line-height: 1.2em;
-        opacity: 0.5;
+        opacity: .5;
     }
 
     .card-longdesc {

@@ -36,7 +36,7 @@ $dropzone-icon-ok-bg: $success;
     color: $dropzone-text;
     border: 1px dashed $dropzone-border;
 
-    @include transition(all 0.3s ease-in-out);
+    @include transition(all .3s ease-in-out);
 
     &:hover {
         border-color: $dropzone-hover-border;
@@ -81,7 +81,6 @@ $dropzone-icon-ok-bg: $success;
 
     &:before {
         @include icon-background($icon-actions-close, $dropzone-close-text);
-
         width: $dropzone-close-size;
         height: $dropzone-close-size;
     }
@@ -144,7 +143,6 @@ $dropzone-icon-ok-bg: $success;
 
     &:before {
         @include icon-background($icon-actions-upload, $dropzone-text);
-
         width: $dropzone-icon-size;
         height: $dropzone-icon-size;
     }
@@ -153,7 +151,7 @@ $dropzone-icon-ok-bg: $success;
 .dropzone-hint-title {
     font-size: $dropzone-hint-title-size;
     font-weight: $dropzone-hint-title-weight;
-    margin-bottom: 0.25em;
+    margin-bottom: .25em;
 }
 
 //
@@ -198,7 +196,7 @@ $upload-queue-progress-error-bg: $danger;
     padding: 5px;
     color: #fff;
     background-color: #999;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, .15);
     text-align: right;
 }
 

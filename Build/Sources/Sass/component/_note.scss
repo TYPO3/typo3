@@ -26,7 +26,7 @@
 //
 // Variables
 //
-$note-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.25);
+$note-shadow: 0 2px 2px 1px rgba(0, 0, 0, .25);
 $note-padding: 20px;
 $note-default-background: #fff;
 $note-notice-background: $state-notice-bg;
@@ -53,19 +53,19 @@ $note-template-background: $state-warning-bg;
 
 .note-header {
     background-color: darken($note-default-background, 5%);
-    padding: ($note-padding * 0.5) $note-padding;
+    padding: ($note-padding * .5) $note-padding;
 }
 
 .note-header-bar {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin-left: -($note-padding * 0.25);
-    margin-right: -($note-padding * 0.25);
+    margin-left: -($note-padding * .25);
+    margin-right: -($note-padding * .25);
 
     > * {
-        padding-left: ($note-padding * 0.25);
-        padding-right: ($note-padding * 0.25);
+        padding-left: ($note-padding * .25);
+        padding-right: ($note-padding * .25);
     }
 }
 

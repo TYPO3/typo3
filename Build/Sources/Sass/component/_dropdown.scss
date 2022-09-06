@@ -22,7 +22,7 @@
     }
 
     hr {
-        border-top: 1px solid rgba(0, 0, 0, 0.35);
+        border-top: 1px solid rgba(0, 0, 0, .35);
         margin: 1.25em math.div($grid-gutter-width, -2);
     }
 
@@ -31,7 +31,7 @@
     }
 
     .form-group {
-        margin-bottom: 0.75em;
+        margin-bottom: .75em;
     }
 
     .form-control {
@@ -56,7 +56,7 @@
 .dropdown-headline {
     font-size: 1.15em;
     margin-top: 0;
-    margin-bottom: 0.5em;
+    margin-bottom: .5em;
 }
 
 .dropdown-text {
@@ -74,12 +74,11 @@ div.dropdown-menu {
 
     > li {
         @extend .clearfix;
-
         position: relative;
     }
 
     > li + li {
-        margin-top: 0.5em;
+        margin-top: .5em;
     }
 }
 
@@ -107,8 +106,8 @@ div.dropdown-menu {
 
 .dropdown-table-column {
     display: table-cell;
-    padding-top: 0.25em;
-    padding-bottom: 0.25em;
+    padding-top: .25em;
+    padding-bottom: .25em;
     vertical-align: middle;
     word-break: break-word;
 }
@@ -119,7 +118,7 @@ div.dropdown-menu {
 
 .dropdown-table-icon {
     width: 16px;
-    padding-right: 0.5em;
+    padding-right: .5em;
 
     &-actions-system-cache-clear-impact-low {
         color: $state-success-text;

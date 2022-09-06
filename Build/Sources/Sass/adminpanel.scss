@@ -68,7 +68,7 @@ $adminPanel-input-border: #dadada;
 $adminPanel-input-hover-border: #cacaca;
 $adminPanel-input-border-radius: 2px;
 $adminPanel-input-vertical-padding: 1.25em;
-$adminPanel-input-horizontal-padding: 0.75em;
+$adminPanel-input-horizontal-padding: .75em;
 
 // Progress
 $adminPanel-progress-default: #333;
@@ -147,7 +147,7 @@ body.typo3-adminPanel-noscroll {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, .5);
     }
 }
 
@@ -160,7 +160,7 @@ body.typo3-adminPanel-noscroll {
         background-color: $adminPanel-message-bg;
         border-left: 3px solid $adminPanel-message-default-border;
         margin-bottom: 1em;
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 1px rgba(0, 0, 0, .15);
     }
 
     .typo3-adminPanel-message-info {
@@ -308,7 +308,7 @@ body.typo3-adminPanel-noscroll {
 
     .typo3-adminPanel-module-trigger-information {
         display: none;
-        opacity: 0.5;
+        opacity: .5;
 
         @media (min-width: $screen-sm) {
             display: block;
@@ -466,7 +466,7 @@ body.typo3-adminPanel-noscroll {
         background-color: $adminPanel-content-bg;
         padding: $adminPanel-content-padding;
         border-bottom: 1px solid $adminPanel-content-border-color;
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 1px rgba(0, 0, 0, .1);
 
         &.typo3-adminPanel-content-settings-active {
             display: block;
@@ -487,7 +487,7 @@ body.typo3-adminPanel-noscroll {
     .typo3-adminPanel-content-settings-group + .typo3-adminPanel-content-settings-group {
         margin-top: $adminPanel-content-padding;
         padding-top: $adminPanel-content-padding;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-top: 1px solid rgba(0, 0, 0, .1);
     }
 }
 
@@ -589,7 +589,7 @@ body.typo3-adminPanel-noscroll {
     .typo3-adminPanel-headline {
         font-weight: bold;
         margin-top: 1.5em;
-        margin-bottom: 0.75em;
+        margin-bottom: .75em;
     }
 
     h1.typo3-adminPanel-headline {
@@ -622,7 +622,7 @@ body.typo3-adminPanel-noscroll {
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         border: 1px solid $adminPanel-table-border;
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 1px rgba(0, 0, 0, .15);
 
         .typo3-adminPanel-table {
             border: none;
@@ -665,7 +665,7 @@ body.typo3-adminPanel-noscroll {
 
         th,
         td {
-            padding: 0.75em;
+            padding: .75em;
             vertical-align: top;
             border-top: 1px solid #dee2e6;
         }
@@ -748,7 +748,7 @@ body.typo3-adminPanel-noscroll {
     .typo3-adminPanel-card {
         background-color: $adminPanel-card-bg;
         margin-bottom: 1em;
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 1px rgba(0, 0, 0, .15);
     }
 
     .typo3-adminPanel-card-header,
@@ -778,7 +778,7 @@ body.typo3-adminPanel-noscroll {
         position: relative;
         height: 1em;
         width: 1em;
-        opacity: 0.75;
+        opacity: .75;
 
         .icon {
             position: absolute;
@@ -789,7 +789,7 @@ body.typo3-adminPanel-noscroll {
     }
 
     .typo3-adminPanel-card-header-text {
-        padding-left: 0.5em;
+        padding-left: .5em;
         font-size: 1.25em;
     }
 
@@ -838,12 +838,12 @@ body.typo3-adminPanel-noscroll {
 
     .typo3-adminPanel-form-group-checkbox {
         + .typo3-adminPanel-form-group-checkbox {
-            margin-top: -0.5em;
+            margin-top: -.5em;
         }
     }
 
     .typo3-adminPanel-group-disable {
-        opacity: 0.5;
+        opacity: .5;
     }
 }
 
@@ -908,7 +908,7 @@ body.typo3-adminPanel-noscroll {
 #{$adminPanel-prefix} {
     .typo3-adminPanel-form-select {
         .typo3-adminPanel-form-select-label {
-            margin-bottom: 0.5em;
+            margin-bottom: .5em;
             display: block;
         }
 
@@ -917,7 +917,7 @@ body.typo3-adminPanel-noscroll {
             display: block;
             border-radius: $adminPanel-input-border-radius;
             border: 1px solid $adminPanel-input-border;
-            background: $adminPanel-input-bg url("data:image/svg+xml;charset=utf8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23333' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>") no-repeat right 0.75em center;
+            background: $adminPanel-input-bg url("data:image/svg+xml;charset=utf8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23333' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>") no-repeat right .75em center;
             background-size: 8px 10px;
             appearance: none;
 
@@ -935,7 +935,7 @@ body.typo3-adminPanel-noscroll {
 #{$adminPanel-prefix} {
     .typo3-adminPanel-form-datetime {
         .typo3-adminPanel-form-datetime-label {
-            margin-bottom: 0.5em;
+            margin-bottom: .5em;
             display: block;
         }
 
@@ -974,14 +974,14 @@ body.typo3-adminPanel-noscroll {
         text-decoration: none;
         padding: $adminPanel-input-horizontal-padding $adminPanel-input-vertical-padding;
         display: inline-block;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, .1);
         border: 1px solid $adminPanel-input-border;
         border-radius: $adminPanel-input-border-radius;
 
         &:hover,
         &:focus {
             z-index: 1;
-            background-color: rgba(0, 0, 0, 0.15);
+            background-color: rgba(0, 0, 0, .15);
             border: 1px solid $adminPanel-input-hover-border;
         }
     }
@@ -1153,7 +1153,7 @@ body.typo3-adminPanel-noscroll {
             text-align: left;
             white-space: nowrap;
             background-color: $adminPanel-bar-color;
-            transition: all 0.5s ease;
+            transition: all .5s ease;
             width: 0;
         }
     }
@@ -1165,7 +1165,7 @@ body.typo3-adminPanel-noscroll {
 #{$adminPanel-prefix} {
     .typo3-adminPanel-sql-statement {
         margin: 1em 0;
-        padding: 0.75em 1em;
+        padding: .75em 1em;
         font-family: $font-family-monospace;
         background: #f2f2f2;
         font-size: $font-size-small;
@@ -1182,7 +1182,7 @@ body.typo3-adminPanel-noscroll {
 
     .typo3-adminPanel-sql-backtrace-item {
         margin: 1px 0;
-        padding: 0.75em 1em;
+        padding: .75em 1em;
         background-color: #f2f2f2;
         font-family: $font-family-monospace;
         word-break: break-word;
@@ -1194,7 +1194,7 @@ body.typo3-adminPanel-noscroll {
     }
 
     .typo3-adminPanel-sql-backtrace-item-file {
-        opacity: 0.5;
-        font-size: 0.8em;
+        opacity: .5;
+        font-size: .8em;
     }
 }

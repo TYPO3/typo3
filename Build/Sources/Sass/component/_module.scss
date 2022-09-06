@@ -66,7 +66,6 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 //
 .module-docheader {
     @extend .clearfix;
-
     position: sticky;
     width: 100%;
     top: 0;
@@ -79,7 +78,7 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
     border-bottom: 1px solid $module-docheader-border;
     padding: $module-docheader-padding;
 
-    @include transition(top 0.3s ease-in-out);
+    @include transition(top .3s ease-in-out);
 
     &-folded {
         top: -$module-docheader-scroll-offset;
@@ -87,7 +86,6 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 
     .module-docheader-bar {
         @extend .clearfix;
-
         flex: 1 0 100%;
         min-height: $module-docheader-bar-height;
         line-height: $module-docheader-bar-height;
@@ -115,7 +113,7 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
                     border-radius: 2px 0 0 2px;
                     border: 1px solid #bbb;
                     border-right: 0;
-                    background-color: rgba(0, 0, 0, 0.05);
+                    background-color: rgba(0, 0, 0, .05);
                 }
 
                 label + select {

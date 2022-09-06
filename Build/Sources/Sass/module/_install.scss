@@ -135,11 +135,11 @@
 
         .rst-tags {
             position: absolute;
-            top: 0.75em;
+            top: .75em;
             right: 1em;
 
             .badge {
-                margin: 0 0.25em;
+                margin: 0 .25em;
 
                 &:first-child {
                     margin-left: 0;
@@ -153,9 +153,9 @@
 
         .rst-links {
             position: absolute;
-            bottom: 0.5em;
+            bottom: .5em;
             right: 1.2em;
-            padding-left: (($line-height-computed - 1) * 0.5);
+            padding-left: (($line-height-computed - 1) * .5);
         }
 
         pre {

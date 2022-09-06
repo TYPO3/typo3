@@ -8,7 +8,7 @@
 //
 $scaffold-breakpoint-max: ($screen-md - 1);
 $scaffold-breakpoint: $screen-md;
-$scaffold-overlay-bg: rgba(0, 0, 0, 0.65);
+$scaffold-overlay-bg: rgba(0, 0, 0, .65);
 $scaffold-overlay-zindex: $zindex-modal-backdrop;
 $scaffold-bg: #f5f5f5;
 $scaffold-color: #333;
@@ -109,7 +109,7 @@ body {
 
     .dropdown-menu a,
     a {
-        color: transparentize($scaffold-toolbar-color, 0.3);
+        color: transparentize($scaffold-toolbar-color, .3);
 
         &:focus,
         &:hover {
@@ -124,7 +124,6 @@ body {
     .active > a {
         color: $scaffold-toolbar-color;
     }
-
     display: none;
 
     @media (min-width: $scaffold-breakpoint) {
@@ -148,7 +147,6 @@ body {
             .toolbar-item {
                 padding: 4px;
             }
-
             min-height: calc(100vh - #{$scaffold-topbar-height});
             padding: 8px;
             flex: 1 0 100%;
@@ -183,7 +181,6 @@ body {
     .scaffold-content-navigation-expanded & {
         display: flex;
     }
-
     flex-direction: column;
     position: sticky !important;
     left: 0;
@@ -256,7 +253,7 @@ body {
     user-select: none;
     z-index: 3;
     background-color: rgb(200, 200, 200);
-    transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
+    transition: background-color .2s ease-in-out, border .2s ease-in-out;
 
     &:hover {
         background-color: rgb(150, 150, 150);
@@ -323,8 +320,8 @@ body {
 
     .scaffold-content-navigation-switcher-btn {
         display: inline-block;
-        padding: 0.25rem 0.325rem;
-        margin-top: 0.125rem;
+        padding: .25rem .325rem;
+        margin-top: .125rem;
     }
 
     .scaffold-content-navigation-switcher-open {

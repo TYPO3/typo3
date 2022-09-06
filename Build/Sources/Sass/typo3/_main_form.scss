@@ -65,7 +65,7 @@ label {
 }
 
 .form-control-wrap {
-    margin: 0.5rem 0;
+    margin: .5rem 0;
 }
 
 .form-control-holder {
@@ -138,7 +138,6 @@ fieldset[disabled] .form-control {
 .form-group.has-error {
     label:before {
         @include icon-background($icon-actions-exclamation-circle, $danger);
-
         border-radius: 50%;
         width: 14px;
         height: 14px;
@@ -224,12 +223,12 @@ select {
         height: 16px;
         z-index: 3;
         top: 50%;
-        right: 0.5em;
+        right: .5em;
         transform: translate(0, -50%);
-        opacity: 0.2;
+        opacity: .2;
 
         &:hover {
-            opacity: 0.5;
+            opacity: .5;
         }
 
         .icon {
@@ -265,7 +264,7 @@ select {
 
     > img {
         display: block;
-        opacity: 0.5;
+        opacity: .5;
     }
 }
 
@@ -538,12 +537,12 @@ textarea {
 /**
  * A toggle checkbox. Using TYPO3 icons.
  */
-$form-toggle-color: rgba(0, 0, 0, 0.25) !default;
+$form-toggle-color: rgba(0, 0, 0, .25) !default;
 $form-toggle-width: 2em !default;
 $form-toggle-padding-start: $form-toggle-width !default;
-$form-toggle-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M13 2c.6 0 1 0.4 1 1v10c0 0.6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 0.9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
+$form-toggle-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
 $form-toggle-checked-color: $component-active-color !default;
-$form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M12.1 5.3l-.4-.3c-.1-.1-.3-.1-.4 0L6.6 9.8l-2-2c-.1-.1-.3-.1-.4 0l-.3.4c-.1.1-.1.3 0 0.4L6 10.7l.4.3c.1.1.3.1.4 0l.4-.4 4.9-4.9c.1-.1.1-.3 0-.4z'/><path d='M13 2c.6 0 1 0.4 1 1v10c0 0.6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 0.9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
+$form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M12.1 5.3l-.4-.3c-.1-.1-.3-.1-.4 0L6.6 9.8l-2-2c-.1-.1-.3-.1-.4 0l-.3.4c-.1.1-.1.3 0 .4L6 10.7l.4.3c.1.1.3.1.4 0l.4-.4 4.9-4.9c.1-.1.1-.3 0-.4z'/><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
 
 .form-toggle {
     padding-left: $form-toggle-padding-start;
@@ -575,7 +574,7 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
         }
 
         &:disabled {
-            opacity: 0.5;
+            opacity: .5;
         }
     }
 }
@@ -589,16 +588,16 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
     z-index: 1;
     margin-left: -1rem; // revert modal-body padding
     margin-right: -1rem; // revert modal-body padding
-    margin-bottom: -0.625rem; // revert for modal-header / modal-footer like padding
+    margin-bottom: -.625rem; // revert for modal-header / modal-footer like padding
     transform: translateY(-1rem); // revert modal-body padding
-    padding: 0.625rem 1rem; // modal-header / modal-footer like padding
+    padding: .625rem 1rem; // modal-header / modal-footer like padding
     background: $white;
 
     a,
     button,
     input,
     .input-group-addon {
-        margin: 0.25rem 0;
+        margin: .25rem 0;
     }
 }
 
@@ -606,7 +605,7 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
     // Calculation of min height for the multi record selection actions, based on the fact that btn-sm is used
     min-height: floor(2px + ($padding-small-vertical * 2) + ($font-size-small * $line-height-small));
     // Consistent space between actions and listing
-    margin: 0.5rem 0;
+    margin: .5rem 0;
 }
 
 .input-group > .btn {

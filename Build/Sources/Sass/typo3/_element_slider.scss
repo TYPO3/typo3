@@ -16,14 +16,14 @@ $slider-disabled-handle-bg: $danger;
 $slider-disabled-handle-border: darken($danger, 15%);
 $slider-horizontal-width: 210px;
 $slider-horizontal-height: $input-height-base;
-$slider-horizontal-handle-height: ceil($slider-horizontal-height * 0.6);
-$slider-horizontal-handle-width: ceil($slider-horizontal-height * 0.5);
+$slider-horizontal-handle-height: ceil($slider-horizontal-height * .6);
+$slider-horizontal-handle-width: ceil($slider-horizontal-height * .5);
 $slider-vertical-width: $input-height-base;
 $slider-vertical-height: 210px;
-$slider-vertical-handle-height: ceil($slider-vertical-width * 0.5);
-$slider-vertical-handle-width: ceil($slider-vertical-width * 0.6);
+$slider-vertical-handle-height: ceil($slider-vertical-width * .5);
+$slider-vertical-handle-width: ceil($slider-vertical-width * .6);
 $slider-track-bg: #ddd;
-$slider-horizontal-track-height: ceil($slider-horizontal-handle-height * 0.6);
+$slider-horizontal-track-height: ceil($slider-horizontal-handle-height * .6);
 
 //
 // Slider Mixins
@@ -34,7 +34,7 @@ $slider-horizontal-track-height: ceil($slider-horizontal-handle-height * 0.6);
     border-radius: $slider-handle-border-radius;
     height: $slider-horizontal-handle-height;
     width: $slider-horizontal-handle-width;
-    margin-top: -($slider-horizontal-handle-height * 0.5 - $slider-horizontal-track-height * 0.5);
+    margin-top: -($slider-horizontal-handle-height * .5 - $slider-horizontal-track-height * .5);
     cursor: grab;
 
     /**
@@ -42,7 +42,6 @@ $slider-horizontal-track-height: ceil($slider-horizontal-handle-height * 0.6);
      * (Except Edge, of course).
      */
     @include box-shadow(inset 0 calc(#{$slider-horizontal-handle-height} / 4 * -1) 0 0 $slider-handle-bg, inset 0 calc(#{$slider-horizontal-handle-height} / 4) 0 0 $slider-handle-bg);
-
     background-color: $slider-handle-bg;
     background-image: linear-gradient(90deg, $slider-handle-bg 30%, $slider-handle-color 30%, $slider-handle-color 40%, $slider-handle-bg 40%, $slider-handle-bg 60%, $slider-handle-color 60%, $slider-handle-color 70%, $slider-handle-bg 70%, $slider-handle-bg);
 
@@ -82,7 +81,7 @@ $slider-horizontal-track-height: ceil($slider-horizontal-handle-height * 0.6);
     border-radius: $slider-border-radius;
     box-sizing: border-box;
 
-    @include box-shadow(inset 0 0 2px rgba(0, 0, 0, 0.25));
+    @include box-shadow(inset 0 0 2px rgba(0, 0, 0, .25));
 }
 
 @mixin slider-track-disabled() {
@@ -118,7 +117,6 @@ input[type=range].slider {
 
     &::-moz-range-track {
         @include slider-track();
-
         width: 100%;
     }
 
@@ -128,7 +126,6 @@ input[type=range].slider {
 
     &::-ms-thumb {
         @include slider-thumb();
-
         margin-top: inherit;
     }
 
@@ -178,8 +175,8 @@ input[type=range].slider {
 .form-wizards-items {
     > input[type=range].slider {
         &.slider-horizontal {
-            margin-left: $slider-horizontal-height * 0.5 * 0.5;
-            margin-right: $slider-horizontal-height * 0.5 * 0.5;
+            margin-left: $slider-horizontal-height * .5 * .5;
+            margin-right: $slider-horizontal-height * .5 * .5;
         }
     }
 }

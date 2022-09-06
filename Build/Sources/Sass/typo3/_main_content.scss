@@ -23,7 +23,7 @@ h1 {
 h2,
 h3 {
     margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: .75rem;
 }
 
 h1,
@@ -31,7 +31,7 @@ h2,
 h3,
 h4 {
     small {
-        font-size: 0.65em;
+        font-size: .65em;
         color: $gray-700;
     }
 }
@@ -39,7 +39,7 @@ h4 {
 ul,
 ol,
 blockquote {
-    margin-bottom: ($line-height-computed * 0.5);
+    margin-bottom: ($line-height-computed * .5);
 }
 
 // Lists
@@ -139,7 +139,7 @@ em {
         left: 0;
         right: 0;
         bottom: 0;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, .1);
         border-radius: $app-icon-border-radius;
     }
 }

@@ -2,25 +2,15 @@
 
 :root {
     --grideditor-grid-spacing: 1rem;
-
     --grideditor-cell-spacing: 1rem;
-
     --grideditor-cell-bg: #fff;
-
     --grideditor-cell-border-radius: 4px;
-
-    --grideditor-cell-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
-
+    --grideditor-cell-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
     --grideditor-action-size: 32px;
-
     --grideditor-action-spacing: 2px;
-
     --grideditor-action-bg: #fafafa;
-
     --grideditor-action-focus-bg: #{tint-color($primary, 90%)};
-
     --grideditor-action-focus-outline-color: #{tint-color($primary, 20%)};
-
     --grideditor-action-hover-bg: #{tint-color($primary, 95%)};
 }
 
@@ -69,13 +59,9 @@
 // Cell
 .grideditor-cell {
     --grideditor-cell-col-start: var(--grideditor-cell-col, 1);
-
     --grideditor-cell-col-end: calc(var(--grideditor-cell-col, 1) + var(--grideditor-cell-colspan, 1));
-
     --grideditor-cell-row-start: var(--grideditor-cell-row, 1);
-
     --grideditor-cell-row-end: calc(var(--grideditor-cell-row, 1) + var(--grideditor-cell-rowspan, 1));
-
     grid-column: list.slash(var(--grideditor-cell-col-start), var(--grideditor-cell-col-end));
     grid-row: list.slash(var(--grideditor-cell-row-start), var(--grideditor-cell-row-end));
     height: 100%;
@@ -101,10 +87,10 @@
 
     &-info {
         font-family: $font-family-monospace;
-        font-size: 0.75rem;
+        font-size: .75rem;
         line-height: 1.2em;
         padding: calc(var(--grideditor-cell-spacing) / 2) var(--grideditor-cell-spacing);
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: rgba(0, 0, 0, .05);
         border-bottom-left-radius: var(--grideditor-cell-border-radius);
         border-bottom-right-radius: var(--grideditor-cell-border-radius);
     }

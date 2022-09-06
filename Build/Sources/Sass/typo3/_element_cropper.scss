@@ -106,7 +106,6 @@
         label {
             color: $color-white;
         }
-
         position: relative;
         margin: -15px;
     }
@@ -287,7 +286,7 @@
         cursor: move;
         height: 200px;
         width: 200px;
-        background-color: rgba(215, 187, 0, 0.5);
+        background-color: rgba(215, 187, 0, .5);
         position: absolute;
         z-index: 999999;
         opacity: 1;
@@ -296,17 +295,17 @@
 
         &.has-nodrop,
         &.has-nodrop:hover {
-            background-color: rgba(211, 35, 46, 0.6) !important;
+            background-color: rgba(211, 35, 46, .6) !important;
             transition: background-color 300ms;
         }
 
         &:hover,
         &:focus {
-            background-color: rgba(215, 187, 0, 0.7);
+            background-color: rgba(215, 187, 0, .7);
         }
 
         &:after {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, .95);
             content: "Focus";
             position: absolute;
             left: 0;
@@ -333,7 +332,7 @@
         z-index: 99999;
 
         &:after {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, .95);
             content: "Cover area";
             position: absolute;
             left: 0;
@@ -359,7 +358,7 @@
         user-select: none;
 
         &:after {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, .5);
             content: " ";
             top: 0;
             left: 0;
@@ -403,7 +402,7 @@
     }
 
     .cropper-preview-thumbnail-focus-area {
-        background-color: rgba(215, 187, 0, 0.7);
+        background-color: rgba(215, 187, 0, .7);
         position: absolute;
         z-index: 11;
     }

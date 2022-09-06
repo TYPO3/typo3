@@ -15,22 +15,17 @@
 
 .alert .close {
     position: absolute;
-    right: 0.5rem;
-    top: 0.625rem;
+    right: .5rem;
+    top: .625rem;
 }
 
-// scss-docs-start alert-modifiers
 // Generate contextual modifier classes for colorizing the alert.
-
 @each $state, $value in $theme-colors {
     $background: shift-color($value, $alert-bg-scale);
-
     $border: shift-color($value, $alert-border-scale);
-
     $color: $white;
 
     .alert-#{$state} {
         @include alert-variant($background, $border, $color);
     }
 }
-// scss-docs-end alert-modifiers

@@ -24,6 +24,7 @@ $modal-danger-color: $white;
 $modal-danger-border: darken($danger, 5%);
 $modal-sidebar-sm: 250px;
 $modal-sidebar-md: 300px;
+
 //
 // Component
 //
@@ -34,8 +35,8 @@ $modal-sidebar-md: 300px;
         color: inherit;
         padding: 0;
         margin: 0;
-        text-shadow: rgba(0, 0, 0, 0.5) 0 0 3px;
-        opacity: 0.5;
+        text-shadow: rgba(0, 0, 0, .5) 0 0 3px;
+        opacity: .5;
         user-select: none;
 
         &:hover,
@@ -84,7 +85,7 @@ $modal-sidebar-md: 300px;
 
 .modal-header,
 .modal-footer {
-    padding: 0.625rem 1rem;
+    padding: .625rem 1rem;
 }
 
 .modal-footer {
@@ -116,7 +117,7 @@ $modal-sidebar-md: 300px;
 }
 
 .modal-content {
-    transition: margin-top 0.1s ease-in;
+    transition: margin-top .1s ease-in;
     border: none;
 
     .modal-loading {
@@ -169,7 +170,7 @@ $modal-sidebar-md: 300px;
     .modal-panel-sidebar {
         padding: 15px;
         flex-shrink: 0;
-        border-left: 1px solid rgba(0, 0, 0, 0.25);
+        border-left: 1px solid rgba(0, 0, 0, .25);
         position: relative;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
@@ -365,7 +366,7 @@ $modal-sidebar-md: 300px;
 
     .modal-footer {
         .btn + .btn {
-            margin-left: 0.5em;
+            margin-left: .5em;
         }
 
         .progress-bar {

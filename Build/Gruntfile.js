@@ -71,7 +71,7 @@ module.exports = function (grunt) {
     },
     stylelint: {
       options: {
-        configFile: '<%= paths.root %>.stylelintrc',
+        configFile: '<%= paths.root %>/Build/.stylelintrc',
       },
       sass: ['<%= paths.sass %>**/*.scss']
     },

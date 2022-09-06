@@ -14,7 +14,7 @@ $dashboard-button-padding: 8px;
 $widget-color: $text-color;
 $widget-border-radius: 2px;
 $widget-background: #fff;
-$widget-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+$widget-shadow: 0 2px 2px 0 rgba(0, 0, 0, .15);
 $widget-padding: 20px;
 $widget-height: 200px;
 $widget-title-font-family: 'Source Sans Pro', sans-serif;
@@ -43,7 +43,7 @@ $widget-table-padding: 10px;
 
 // Modal Block
 $dashboard-modal-block-background: #fff;
-$dashboard-modal-block-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+$dashboard-modal-block-shadow: 0 2px 2px 0 rgba(0, 0, 0, .15);
 $dashboard-modal-block-padding: 20px;
 $dashboard-modal-block-border: 1px solid #cacaca;
 $dashboard-modal-block-checked-border: 1px solid #313131;

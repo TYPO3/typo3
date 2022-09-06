@@ -15,7 +15,6 @@
         image-orientation: 0deg !important; // https://developer.mozilla.org/en-US/docs/Web/CSS/image-orientation
 
         @include square(100%);
-
         min-width: 0 !important;
         min-height: 0 !important;
         max-width: none !important;
@@ -41,31 +40,29 @@
 
 .cropper-modal {
     background-color: #000;
-    opacity: 0.5;
+    opacity: .5;
 }
 
 .cropper-view-box {
     display: block;
 
     @include square(100%);
-
     overflow: hidden;
     outline: 1px solid $color-brand;
-    outline-color: transparentize($color-brand, 0.25);
+    outline-color: transparentize($color-brand, .25);
 }
 
 .cropper-dashed {
     position: absolute;
     display: block;
     border: 0 dashed #fff;
-    opacity: 0.5;
+    opacity: .5;
 
     &.dashed-h {
         top: percentage(math.div(1, 3));
         left: 0;
 
         @include size(100%, percentage(math.div(1, 3)));
-
         border-top-width: 1px;
         border-bottom-width: 1px;
     }
@@ -75,7 +72,6 @@
         left: percentage(math.div(1, 3));
 
         @include size(percentage(math.div(1, 3)), 100%);
-
         border-right-width: 1px;
         border-left-width: 1px;
     }
@@ -86,7 +82,7 @@
 .cropper-point {
     position: absolute;
     display: block;
-    opacity: 0.1;
+    opacity: .1;
 
     @include square(100%);
 }
@@ -132,9 +128,8 @@
 
 .cropper-point {
     @include square(5px);
-
     background-color: $color-brand;
-    opacity: 0.75;
+    opacity: .75;
 
     &.point-e {
         top: 50%;
@@ -187,7 +182,6 @@
         bottom: -3px;
 
         @include square(20px);
-
         cursor: se-resize;
         opacity: 1;
     }
@@ -199,7 +193,6 @@
         display: block;
 
         @include square(200%);
-
         content: " ";
         background-color: $color-brand;
         opacity: 0;
@@ -220,8 +213,7 @@
     @media (min-width: $screen-lg) {
         &.point-se {
             @include square(5px);
-
-            opacity: 0.75;
+            opacity: .75;
         }
     }
 }

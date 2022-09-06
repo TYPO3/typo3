@@ -30,7 +30,13 @@ $black: #000;
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
-    "primary": $primary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "default": $light
+    "primary": $primary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "default": $light
 );
 // scss-docs-end theme-colors-map
 
@@ -63,7 +69,7 @@ $headings-line-height: 1.1;
 $line-height-base: 1.5;
 
 // Paragraphs
-$paragraph-margin-bottom: 0.5rem;
+$paragraph-margin-bottom: .5rem;
 
 // Screen Dimensions
 $screen-xs: 480px;
@@ -95,7 +101,7 @@ $padding-xs-vertical: 2px;
 $padding-xs-horizontal: 4px;
 $line-height-large: 1.3333333;
 $line-height-small: 1.5;
-$border-radius: 0.125rem;
+$border-radius: .125rem;
 $border-radius-sm: $border-radius;
 $border-radius-lg: $border-radius;
 
@@ -105,7 +111,7 @@ $table-bg-accent: darken($table-bg, 1%);
 $table-bg-hover: darken($table-bg, 5%);
 $table-bg-active: $table-bg-hover;
 $table-border-color: $gray-400;
-$table-striped-bg-factor: 0.025;
+$table-striped-bg-factor: .025;
 $table-bg-level: -7;
 $table-group-separator-color: $table-border-color;
 
@@ -117,10 +123,10 @@ $btn-default-border: #bbb;
 $btn-primary-color: #fff;
 $btn-primary-bg: $primary;
 $btn-primary-border: darken($btn-primary-bg, 5%);
-$btn-disabled-opacity: 0.5 !default;
+$btn-disabled-opacity: .5;
 
 // Pill
-$rounded-pill: 0.625rem;
+$rounded-pill: .625rem;
 
 // Forms
 $input-bg: #fefefe;
@@ -132,7 +138,7 @@ $input-color-disabled: $gray-600;
 $input-height-large: (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 1.6) + 2);
 $input-border-color: $gray-500;
 $form-label-font-weight: 400;
-$form-label-margin-bottom: 0.25rem;
+$form-label-margin-bottom: .25rem;
 $form-switch-width: 2.5em;
 
 // Navbar
@@ -218,8 +224,8 @@ $alert-notice-bg: $notice;                // TYPO3 SPECIFIC
 $alert-notice-text: #fff;                         // TYPO3 SPECIFIC
 $alert-notice-border: transparent;                  // TYPO3 SPECIFIC
 $alert-margin-bottom: 1.125rem;
-$alert-padding-y: 0.75rem;
-$alert-padding-x: 0.75rem;
+$alert-padding-y: .75rem;
+$alert-padding-x: .75rem;
 $alert-color-scale: 0;
 $alert-bg-scale: 0;
 
@@ -233,7 +239,7 @@ $well-border: #ccc;
 
 // Badges
 $badge-bg: $gray-600;
-$badge-border-radius: 0.125rem;
+$badge-border-radius: .125rem;
 
 // Type
 $text-muted: lighten($text-color, 45%);
@@ -250,13 +256,13 @@ $modal-sm: 100vw;
 $modal-md: 100vw;
 $modal-lg: 100vw;
 $modal-xl: 100vw;
-$modal-content-box-shadow-xs: 0 0.375rem 1rem rgba($black, 0.5);
-$modal-content-box-shadow-sm-up: 0 0.375rem 1rem rgba($black, 0.5);
+$modal-content-box-shadow-xs: 0 .375rem 1rem rgba($black, .5);
+$modal-content-box-shadow-sm-up: 0 .375rem 1rem rgba($black, .5);
 
 // Dropdown
 $dropdown-bg: #292929;
 $dropdown-color: #fff;                   // TYPO3 SPECIFIC
-$dropdown-border: rgba(0, 0, 0, 0.15);
+$dropdown-border: rgba(0, 0, 0, .15);
 $dropdown-fallback-border: #ccc;
 $dropdown-divider-bg: #424242;
 $dropdown-link-color: #fff;
@@ -269,8 +275,8 @@ $dropdown-header-color: $gray-300;
 $dropdown-caret-color: #000;
 
 // CSS Caret
-$caret-width: 0.4em;
-$caret-vertical-align: $caret-width * 0.38;
+$caret-width: .4em;
+$caret-vertical-align: $caret-width * .38;
 
 // Card
 $card-cap-bg: transparent;
@@ -284,14 +290,14 @@ $bs-datetimepicker-btn-hover-bg: lighten($dropdown-bg, 10%);
 $bs-datetimepicker-disabled-color: $text-muted;
 $bs-datetimepicker-alternate-color: lighten($bs-datetimepicker-disabled-color, 10%);
 $bs-datetimepicker-secondary-border-color: $dropdown-bg;
-$bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, 0.2);
+$bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, .2);
 $bs-datetimepicker-primary-border-color: $dropdown-bg;
 $bs-datetimepicker-text-shadow: none;
 
 // Overwrite Progress bar background color
 $progress-bg: #dedede;
 $progress-height: 1.25rem;
-$progress-font-size: $font-size-base * 0.9;
+$progress-font-size: $font-size-base * .9;
 
 //
 // Components

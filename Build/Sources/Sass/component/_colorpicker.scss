@@ -92,7 +92,7 @@ $minicolors-panel-border-radius: $border-radius;
     height: 152px;
     background: $minicolors-panel-bg;
     border: solid 1px $minicolors-panel-border;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
     z-index: 99999;
     box-sizing: content-box;
     display: none;

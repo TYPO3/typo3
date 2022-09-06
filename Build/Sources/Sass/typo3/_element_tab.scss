@@ -15,7 +15,7 @@
         > a.nav-link {
             margin-right: 0;
 
-            @include transition(all 0.25s ease-in-out);
+            @include transition(all .25s ease-in-out);
 
             &:focus,
             &:hover {
@@ -32,7 +32,7 @@
 
         &[class*='has-'] > a.nav-link {
             &:before {
-                @include transition(all 0.25s ease-in-out);
+                @include transition(all .25s ease-in-out);
             }
         }
         // Has error state
@@ -51,7 +51,6 @@
 
                 &:before {
                     @include icon-background($icon-actions-exclamation-circle, $white);
-
                     border-radius: 50%;
                     width: 14px;
                     height: 14px;
