@@ -14,11 +14,17 @@ skip this part and continue reading
 
 We only cover configuration methods that are used to configure `rte_ckeditor`.
 
-
 .. _config-typo3-page-tsconfig:
 
 Page TSconfig
 =============
+
+We recommend you to put all configurations for the preset in the
+:ref:`YAML <config-typo3-yaml>` configuration. However, it is still possible to
+override these settings through the page TSconfig.
+
+You can find a list of configuration properties in the :ref:`Page TSconfig
+reference, chapter RTE <t3tsconfig:pageTsRte>`.
 
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
@@ -42,33 +48,13 @@ Page TSconfig can be used to change:
 
       RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
 
-For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
 
 How to change values
 --------------------
 
-As Page TSconfig always applies to a page and its subpages, you can modify it by
-editing a page.
-
-#. Go to the :guilabel:`Web > Page` module.
-#. Select a page in the page tree (usually your root page).
-#. Click on the button to :guilabel:`Edit page properties`
-
-   .. figure:: images/edit_page_properties.png
-      :class: with-shadow
-
-#. Select the :guilabel:`Resources` tab
-#. Enter the Page TSconfig in the field :guilabel:`"Page TSconfig"`
-
-
-Additionally, you can add Page TSconfig in an extension: :file:`Configuration/TSconfig/Page`, see
-:ref:`best-practice-sitepackage`.
-
-How to view settings
---------------------
-
-Go to the module :guilabel:`Web > Info` and select :guilabel:`Page TSconfig`.
-
+See the :ref:`Page TSconfig reference,
+chapter Setting Page TSconfig <t3tsconfig:setting-page-tsconfig>`. This chapter
+also expains how to verify the settings.
 
 .. _config-typo3-global-configuration:
 
@@ -181,6 +167,3 @@ look at :guilabel:`tt_content > types > text > columnsOverrides`.
    :class: with-shadow
 
    TCA: tt_content > types > text > columnsOverrides > bodytext
-
-
-

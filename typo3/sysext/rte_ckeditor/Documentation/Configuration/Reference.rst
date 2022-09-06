@@ -124,3 +124,16 @@ editor.*
    <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__.
 
 .. todo: change url to Plugins.yaml after branching main to 10.4
+
+
+.. _config-ref-tsconfig:
+
+Page TSconfig
+=============
+
+We recommend you to put all configurations for the preset in the
+:ref:`YAML <config-typo3-yaml>` configuration. However, it is still possible to
+override these settings through the page TSconfig.
+
+You can find a list of configuration properties in the :ref:`Page TSconfig
+reference, chapter RTE <t3tsconfig:pageTsRte>`.
