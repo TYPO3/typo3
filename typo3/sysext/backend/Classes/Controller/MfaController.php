@@ -32,6 +32,9 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\SysLog\Action\Login;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 
 /**
  * Controller to provide a multi-factor authentication endpoint.
@@ -121,7 +124,7 @@ class MfaController extends AbstractMfaController
         }
         // Call the provider to verify the request
         if (!$mfaProvider->verify($request, $propertyManager)) {
-            $this->log('Multi-factor authentication failed');
+            $this->log('Multi-factor authentication failed for user ###USERNAME###');
             // If failed, initiate a redirect back to the auth view
             return new RedirectResponse($this->uriBuilder->buildUriWithRedirect(
                 'auth_mfa',
@@ -132,7 +135,7 @@ class MfaController extends AbstractMfaController
                 RouteRedirect::createFromRequest($request)
             ));
         }
-        $this->log('Multi-factor authentication successful');
+        $this->log('Multi-factor authentication successful for user ###USERNAME###');
         // If verified, store this information in the session
         // and initiate a redirect back to the login view.
         $this->getBackendUser()->setAndSaveSessionData('mfa', true);
@@ -149,7 +152,7 @@ class MfaController extends AbstractMfaController
      */
     protected function cancelAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->log('Multi-factor authentication canceled');
+        $this->log('Multi-factor authentication canceled for user ###USERNAME###');
         $this->getBackendUser()->logoff();
         return new RedirectResponse($this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request)));
     }
@@ -173,10 +176,11 @@ class MfaController extends AbstractMfaController
     protected function log(string $message, array $additionalData = [], ?MfaProviderManifestInterface $mfaProvider = null): void
     {
         $user = $this->getBackendUser();
+        $username = $user->user[$user->username_column];
         $context = [
             'user' => [
                 'uid' => $user->user[$user->userid_column],
-                'username' => $user->user[$user->username_column],
+                'username' => $username,
             ],
         ];
         if ($mfaProvider !== null) {
@@ -185,7 +189,13 @@ class MfaController extends AbstractMfaController
                 MfaProviderPropertyManager::create($mfaProvider, $user)
             );
         }
-        $this->logger->debug($message, array_replace_recursive($context, $additionalData));
+        $message = str_replace('###USERNAME###', $username, $message);
+        $data = array_replace_recursive($context, $additionalData);
+        $this->logger->debug($message, $data);
+        if ($user->writeStdLog) {
+            // Write to sys_log if enabled
+            $user->writelog(SystemLogType::LOGIN, Login::LOGIN, SystemLogErrorClassification::MESSAGE, 1, $message, $data);
+        }
     }
 
     protected function getMfaProviderFromRequest(ServerRequestInterface $request): ?MfaProviderManifestInterface
