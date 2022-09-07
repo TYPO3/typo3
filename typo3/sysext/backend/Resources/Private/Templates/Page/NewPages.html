@@ -133,7 +133,7 @@
                         <div id="page_new_icon_{line.index}" class="input-group-addon input-group-icon">
                             <core:iconForRecord table="pages" row="{id: '0'}" />
                         </div>
-                        <select id="page_new_select_{line.index}" class="form-select t3js-newmultiplepages-select-doktype" name="pages[NEW{line.index}][doktype]" data-bs-target="#page_new_icon_{line.index}">
+                        <select id="page_new_select_{line.index}" class="form-select t3js-newmultiplepages-select-doktype" name="pages[NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
                             <f:for each="{line.pageTypes}" as="typegroup" key="group">
                                 <optgroup label="{f:translate(key: '{group}')}">
                                     <f:for each="{typegroup}" as="type">
