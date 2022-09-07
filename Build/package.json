@@ -75,7 +75,6 @@
     "build": "./node_modules/.bin/grunt",
     "build-css": "./node_modules/.bin/grunt css",
     "build-js": "./node_modules/.bin/grunt scripts",
-    "format": "./node_modules/.bin/grunt format",
     "update": "./node_modules/.bin/grunt update",
     "lint": "./node_modules/.bin/grunt lint",
     "postinstall": "patch-package"

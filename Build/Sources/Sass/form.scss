@@ -8,6 +8,7 @@
 // Load global variables
 //
 @import "../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
+@import "../../node_modules/bootstrap/scss/functions";
 @import "variables/main";
 @import "minimal";
 
@@ -636,12 +637,6 @@ $tree-line-height: 20px;
 
     // Abstract
     &.t3-form-stage-viewmode-abstract {
-        ol,
-        ul {
-            padding-left: $stage-icon-container-width;
-            padding-right: 1em;
-        }
-
         .t3-form-page-title {
             margin: 0 0 .5em;
         }
@@ -700,7 +695,6 @@ $tree-line-height: 20px;
         }
 
         .ui-sortable-handle {
-            overflow: hidden;
             position: relative;
             height: $stage-abstract-element-height;
             margin-bottom: 1em;
@@ -905,23 +899,6 @@ $tree-line-height: 20px;
 
                 &:after {
                     right: -1px;
-                }
-
-                .dropdown-menu {
-                    min-width: initial;
-                    padding-left: 0;
-                    padding-right: 0;
-                    background-color: darken($primary, 10%);
-
-                    > li a:hover {
-                        background-color: darken($primary, 5%);
-                    }
-
-                    .icon {
-                        svg path {
-                            fill: #fff;
-                        }
-                    }
                 }
 
                 .caret {

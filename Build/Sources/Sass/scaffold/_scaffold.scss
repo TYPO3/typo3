@@ -107,8 +107,7 @@ body {
     color: $scaffold-toolbar-color;
     z-index: $scaffold-toolbar-zindex;
 
-    .dropdown-menu a,
-    a {
+    .toolbar-item-link {
         color: transparentize($scaffold-toolbar-color, .3);
 
         &:focus,
@@ -121,7 +120,7 @@ body {
         }
     }
 
-    .active > a {
+    .active > .toolbar-item-link {
         color: $scaffold-toolbar-color;
     }
     display: none;

@@ -71,7 +71,7 @@ class Avatar
             $this->validateSortAndInitiateAvatarProviders();
             $icon = $showIcon ? $this->iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render() : '';
             $avatar =
-                '<span class="avatar">'
+                '<span class="avatar" style="--avatar-size: ' . $size . 'px;">'
                     . '<span class="avatar-image">' . $this->getImgTag($backendUser, $size) . '</span>'
                     . ($showIcon ? '<span class="avatar-icon">' . $icon . '</span>' : '')
                 . '</span>';

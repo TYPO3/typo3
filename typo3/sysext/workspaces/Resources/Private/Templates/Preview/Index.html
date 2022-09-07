@@ -45,7 +45,7 @@
                                     <f:for each="{splitPreviewModes}" as="mode">
                                         <li>
                                             <a href="#" class="dropdown-item" data-preview-mode="{mode}">
-                                                <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{mode -> f:format.case(mode: 'capital')}" /></span>
+                                                <f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{mode -> f:format.case(mode: 'capital')}" />
                                             </a>
                                         </li>
                                     </f:for>

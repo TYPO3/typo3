@@ -93,13 +93,19 @@
                                     </div>
                                     <div class="btn-group dropdown position-static">
                                         <a href="#actions-{form.identifier}" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false"><core:icon identifier="actions-menu-alternative" /></a>
-                                        <ul id="actions-{form.identifier}" class="dropdown-menu dropdown-list">
+                                        <ul id="actions-{form.identifier}" class="dropdown-menu">
                                             <f:if condition="{form.invalid}">
                                                 <f:else>
                                                     <li>
                                                         <a href="#" class="dropdown-item" data-bs-original-title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}">
-                                                            <core:icon identifier="actions-duplicate" />
-                                                            <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form" />
+                                                            <span class="dropdown-item-columns">
+                                                                <span class="dropdown-item-column dropdown-item-column-icon text-{cacheAction.severity}">
+                                                                    <core:icon identifier="actions-duplicate" />
+                                                                </span>
+                                                                <span class="dropdown-item-column dropdown-item-column-text">
+                                                                    <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form" />
+                                                                </span>
+                                                            </span>
                                                         </a>
                                                     </li>
                                                 </f:else>

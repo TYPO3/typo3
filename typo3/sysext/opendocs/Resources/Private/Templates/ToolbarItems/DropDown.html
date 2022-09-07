@@ -4,63 +4,68 @@
         0: '@typo3/opendocs/toolbar/opendocs-menu.js'
     }"
 />
-<h3 class="dropdown-headline">
-    {f:translate(key: 'LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbaritem')}
-</h3>
-<hr>
+
+<h3 class="dropdown-headline">{f:translate(key: 'LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbaritem')}</h3>
+<f:if condition="{noDocs}">
+    <p class="dropdown-item-text"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:no_docs" /></p>
+</f:if>
 
 <f:if condition="{noDocs}">
-    <f:then>
-        <p>
-            <f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:no_docs" />
-        </p>
-    </f:then>
     <f:else>
         <f:if condition="{openDocuments}">
-            <h3 class="dropdown-headline">
-                <f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:open_docs" />
-                <a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-close t3js-topbar-opendocs-close float-end"
-                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeAllDocs')}">
-                    <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
-                </a>
-            </h3>
-            <div class="dropdown-table">
+            <hr class="dropdown-divider" aria-hidden="true">
+            <ul class="dropdown-list">
+                <li>
+                    <h3 class="dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:open_docs" /></h3>
+                    <a href="#" class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
+                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeAllDocs')}">
+                        <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
+                    </a>
+                </li>
                 <f:for each="{openDocuments}" as="openDocument">
-                    <div class="dropdown-table-row t3js-topbar-opendocs-item">
-                        <div class="dropdown-table-column dropdown-table-title">
-                            <a class="dropdown-table-title-ellipsis t3js-open-doc" data-pid="{openDocument.pid}" href="{openDocument.uri}">
-                                <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
-                                {openDocument.label}
-                            </a>
-                        </div>
-                        <div class="dropdown-table-column dropdown-table-actions">
-                            <a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-close t3js-topbar-opendocs-close"
-                                data-opendocsidentifier="{openDocument.md5sum}"
-                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc')}">
-                                <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
-                            </a>
-                        </div>
-                    </div>
+                    <li>
+                        <a href="{openDocument.uri}" class="dropdown-item dropdown-item-title t3js-open-doc"
+                            data-pid="{openDocument.label}"
+                            title="{openDocument.label}">
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon">
+                                    <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-title">
+                                    {openDocument.label}
+                                </span>
+                            </span>
+                        </a>
+                        <a href="#" class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
+                            data-opendocsidentifier="{openDocument.md5sum}"
+                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc')}: {openDocument.label}">
+                            <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
+                        </a>
+                    </li>
                 </f:for>
-            </div>
-            <hr>
+            </ul>
         </f:if>
         <f:if condition="{recentDocuments}">
-            <h3 class="dropdown-headline">
-                <f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:recent_docs" />
-            </h3>
-            <div class="dropdown-table">
+            <hr class="dropdown-divider" aria-hidden="true">
+            <h3 class="dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:recent_docs" /></h3>
+            <ul class="dropdown-list">
                 <f:for each="{recentDocuments}" as="recentDocument">
-                    <div class="dropdown-table-row t3js-topbar-recentdoc">
-                        <div class="dropdown-table-column dropdown-table-title">
-                            <a class="dropdown-table-title-ellipsis t3js-open-doc" data-pid="{recentDocument.pid}" href="{recentDocument.uri}" >
-                                <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
-                                {recentDocument.label}
-                            </a>
-                        </div>
-                    </div>
+                    <li>
+                        <a href="{recentDocument.uri}" class="dropdown-item t3js-open-doc"
+                            data-pid="{recentDocument.pid}"
+                            title="{recentDocument.label}">
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon">
+                                    <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-title">
+                                    {recentDocument.label}
+                                </span>
+                            </span>
+                        </a>
+                    </li>
                 </f:for>
-            </div>
+            </ul>
         </f:if>
     </f:else>
 </f:if>

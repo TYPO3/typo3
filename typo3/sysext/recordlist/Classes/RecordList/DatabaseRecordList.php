@@ -1720,7 +1720,7 @@ class DatabaseRecordList
                         continue;
                     }
                     // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.
-                    $action = str_replace('btn btn-default', 'dropdown-item', $action);
+                    $action = str_replace('btn btn-default', 'dropdown-item dropdown-item-spaced', $action);
                     $title = [];
                     preg_match('/title="([^"]*)"/', $action, $title);
                     if (empty($title)) {
@@ -1752,7 +1752,7 @@ class DatabaseRecordList
                     $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
                     $output .= ' <div class="btn-group dropdown position-static" data-bs-toggle="tooltip" title="' . htmlspecialchars($title) . '">' .
                         '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-                        '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
+                        '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
                         '</div>';
                 } else {
                     $output .= ' <div class="btn-group">' . $this->spaceIcon . '</div>';
@@ -3343,7 +3343,7 @@ class DatabaseRecordList
     protected function addDividerToCellGroup(array &$cells): void
     {
         if (!($cells['secondary']['divider'] ?? false)) {
-            $this->addActionToCellGroup($cells, '<hr class="dropdown-divider me-0 ms-0 border-white">', 'divider');
+            $this->addActionToCellGroup($cells, '<hr class="dropdown-divider">', 'divider');
         }
     }
 }

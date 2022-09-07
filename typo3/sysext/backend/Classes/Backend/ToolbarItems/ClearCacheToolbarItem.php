@@ -52,6 +52,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
                 'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
                 'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']),
+                'severity' => 'success',
                 'iconIdentifier' => 'actions-system-cache-clear-impact-low',
             ];
             $this->optionValues[] = 'pages';
@@ -68,6 +69,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
                 'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
                 'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'all']),
+                'severity' => 'danger',
                 'iconIdentifier' => 'actions-system-cache-clear-impact-high',
             ];
             $this->optionValues[] = 'all';

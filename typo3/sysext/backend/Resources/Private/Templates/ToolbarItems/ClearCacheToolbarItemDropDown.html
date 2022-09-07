@@ -1,24 +1,20 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<h3 class="dropdown-headline">
-    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.clearCache_clearCache" />
-</h3>
-<hr>
-<div class="dropdown-table">
+<h3 class="dropdown-headline"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.clearCache_clearCache" /></h3>
+<ul class="dropdown-list">
     <f:for each="{cacheActions}" as="cacheAction">
-        <div class="dropdown-table-row">
-            <a href="{cacheAction.href}" class="toolbar-cache-flush-action">
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon dropdown-table-icon-{cacheAction.iconIdentifier}">
-                    <core:icon identifier="{cacheAction.iconIdentifier}" size="small" />
-                </div>
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
-                    <f:translate key="{cacheAction.title}" />
-                    <br>
-                    <small class="text-muted">{f:translate(key: '{f:if(condition: cacheAction.description, then: cacheAction.description, else:
-                        cacheAction.title)}')}
-                    </small>
-                </div>
+        <li>
+            <a href="{cacheAction.href}" class="dropdown-item t3js-toolbar-cache-flush-action">
+                <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon text-{cacheAction.severity}">
+                        <core:icon identifier="{cacheAction.iconIdentifier}" size="small" />
+                    </span>
+                    <span class="dropdown-item-column dropdown-item-column-text">
+                        <f:translate key="{cacheAction.title}" /><br>
+                        <small class="text-muted">{f:translate(key: '{f:if(condition: cacheAction.description, then: cacheAction.description, else: cacheAction.title)}')}</small>
+                    </span>
+                </span>
             </a>
-        </div>
+        </li>
     </f:for>
-</div>
+</ul>
 </html>

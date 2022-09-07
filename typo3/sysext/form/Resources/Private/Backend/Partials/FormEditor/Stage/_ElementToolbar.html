@@ -13,14 +13,26 @@
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li data-no-sorting>
                         <a href="#" data-identifier="stageElementToolbarNewElementSplitButtonInside" class="dropdown-item">
-                            <core:icon identifier="actions-form-insert-in" alternativeMarkupIdentifier="inline" />
-                            <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element.inside" />
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon text-{cacheAction.severity}">
+                                    <core:icon identifier="actions-form-insert-in" alternativeMarkupIdentifier="inline" />
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-text">
+                                    <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element.inside" />
+                                </span>
+                            </span>
                         </a>
                     </li>
                     <li data-no-sorting>
                         <a href="#" data-identifier="stageElementToolbarNewElementSplitButtonAfter" class="dropdown-item">
-                            <core:icon identifier="actions-form-insert-after" alternativeMarkupIdentifier="inline" />
-                            <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element.after" />
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon text-{cacheAction.severity}">
+                                    <core:icon identifier="actions-form-insert-after" alternativeMarkupIdentifier="inline" />
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-text">
+                                    <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element.after" />
+                                </span>
+                            </span>
                         </a>
                     </li>
                 </ul>

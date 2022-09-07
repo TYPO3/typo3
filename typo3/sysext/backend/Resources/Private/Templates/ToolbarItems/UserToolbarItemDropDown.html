@@ -8,33 +8,35 @@
         0: '@typo3/backend/switch-user.js'
     }"
 />
-<h3 class="dropdown-headline">
-    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}
-</h3>
-<hr>
+<h3 class="dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</h3>
 <f:if condition="{modules}">
-    <ul class="modulemenu-group-container">
+    <ul class="dropdown-list">
         <f:for each="{modules}" as="module">
             <li>
                 <a
                     title="{f:translate(key: module.description, default: module.description)}"
-                    class="modulemenu-action t3js-modulemenu-action"
+                    class="dropdown-item t3js-modulemenu-action"
                     role="menuitem"
                     id="{module.identifier}"
                     data-modulename="{module.identifier}"
                     {f:if(condition: module.path, then: 'href="{f:be.uri(route: module.identifier)}"')}
                     {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
                 >
-                    <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="{module.iconIdentifier}" size="medium" alternativeMarkupIdentifier="inline"/></span>
-                    <span class="modulemenu-name"><f:translate key="{module.title}">{module.title}</f:translate></span>
-                    <span class="modulemenu-indicator" aria-hidden="true"></span>
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="{module.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline"/>
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="{module.title}">{module.title}</f:translate>
+                        </span>
+                    </span>
                 </a>
             </li>
         </f:for>
     </ul>
-    <hr>
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
+    <hr class="dropdown-divider" aria-hidden="true">
     <h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></h3>
     <ul class="modulemenu-group-container">
         <f:for each="{recentUsers}" as="user">
@@ -42,31 +44,49 @@
                 <typo3-backend-switch-user mode="switch" targetUser="{user.uid}">
                     <button
                         type="button"
-                        class="modulemenu-action"
+                        class="dropdown-item"
                         title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.tooltip', arguments: '{0: user.username}')}"
                     >
-                        <span class="modulemenu-icon" aria-hidden="true"><be:avatar backendUser="{user.uid}" size="32" /></span>
-                        <span class="modulemenu-name">{f:if(condition: user.realName, then: user.realName, else: user.username)}</span>
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                                <be:avatar backendUser="{user.uid}" size="16" />
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                    {f:if(condition: user.realName, then: user.realName, else: user.username)}
+                            </span>
+                        </span>
                     </button>
                 </typo3-backend-switch-user>
             </li>
         </f:for>
     </ul>
-    <hr>
+    <hr class="dropdown-divider" aria-hidden="true">
 </f:if>
 <f:if condition="{switchUserMode}">
     <f:then>
         <typo3-backend-switch-user mode="exit">
-            <button type="button" class="btn btn-danger float-start">
-                <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-                {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser')}
+            <button type="button" class="dropdown-item">
+                <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                        <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+                    </span>
+                    <span class="dropdown-item-column dropdown-item-column-title">
+                        {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser')}
+                    </span>
+                </span>
             </button>
         </typo3-backend-switch-user>
     </f:then>
     <f:else>
-        <f:be.link route="logout" class="btn btn-danger float-start" target="_top">
-            <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout')}
+        <f:be.link route="logout" class="dropdown-item" target="_top">
+            <span class="dropdown-item-columns">
+                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                    <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+                </span>
+                <span class="dropdown-item-column dropdown-item-column-title">
+                    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout')}
+                </span>
+            </span>
         </f:be.link>
     </f:else>
 </f:if>

@@ -1,69 +1,59 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<h3 class="dropdown-headline">
-    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace" />
-</h3>
 
-<hr>
-
-<div class="dropdown-table">
+<h3 class="dropdown-headline"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace" /></h3>
+<ul class="dropdown-list">
     <f:if condition="{topItem}">
         <f:then>
             <f:render section="workspaceItem" arguments="{item: topItem}" />
-            <f:if condition="{showLinkToModule}">
-                <div class="dropdown-table-row">
-                    <div class="dropdown-table-column dropdown-table-icon">
-                        <f:render section="uncheckedIcon" />
-                    </div>
-                    <div class="dropdown-table-column">
-                        <a href="#" target="list_frame" data-module="workspaces_admin" class="t3js-workspaces-modulelink">
-                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_workspace" />
-                        </a>
-                    </div>
-                </div>
-            </f:if>
         </f:then>
         <f:else>
-            <f:comment>no items on top (= no workspace to work in)</f:comment>
-            <div class="dropdown-table-row">
-                <div class="dropdown-table-column dropdown-table-icon">
-                    <f:render section="uncheckedIcon" />
-                </div>
-                <div class="dropdown-table-column">
+            <li>
+                <f:comment>no items on top (= no workspace to work in)</f:comment>
+                <p class="dropdown-item-text">
                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_noWSfound" />
-                </div>
-            </div>
+                </p>
+            </li>
         </f:else>
     </f:if>
-</div>
-
-<f:if condition="{additionalItems}">
-    <hr>
-    <div class="dropdown-table">
+    <f:if condition="{additionalItems}">
         <f:for each="{additionalItems}" as="item">
             <f:render section="workspaceItem" arguments="{item: item}" />
         </f:for>
-    </div>
+    </f:if>
+</ul>
+
+
+<f:if condition="{showLinkToModule}">
+    <hr class="dropdown-divider" aria-hidden="true">
+    <a href="#" target="list_frame" data-module="workspaces_admin" class="dropdown-item t3js-workspaces-modulelink">
+        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_workspace" />
+    </a>
 </f:if>
 
 <f:section name="workspaceItem">
-    <div class="dropdown-table-row t3js-workspace-item{f:if(condition: item.isActive, then: ' selected')}">
-        <div class="dropdown-table-column dropdown-table-icon">
-            <f:if condition="{item.isActive}">
-                <f:then><core:icon identifier="status-status-checked" size="small" /></f:then>
-                <f:else><f:render section="uncheckedIcon" /></f:else>
-            </f:if>
-        </div>
-        <div class="dropdown-table-column">
-            <a href="{item.link}" data-workspaceid="{item.workspaceId}" class="t3js-workspaces-switchlink">
-                {item.label -> f:format.htmlspecialchars()}
-            </a>
-        </div>
-    </div>
+    <li class="t3js-workspace-item{f:if(condition: item.isActive, then: ' selected')}">
+        <a href="{item.link}" data-workspaceid="{item.workspaceId}" class="dropdown-item t3js-workspaces-switchlink">
+            <span class="dropdown-item-columns">
+                <span class="dropdown-item-column dropdown-item-column-icon t3js-workspace-item-icon">
+                    <f:if condition="{item.isActive}">
+                        <f:then>
+                            <span class="text-success">
+                                <core:icon identifier="status-status-checked" size="small" />
+                            </span>
+                        </f:then>
+                        <f:else>
+                            <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_inactive')}">
+                                <core:icon identifier="empty-empty" size="small" />
+                            </span>
+                        </f:else>
+                    </f:if>
+                </span>
+                <span class="dropdown-item-column dropdown-item-column-title">
+                    {item.label -> f:format.htmlspecialchars()}
+                </span>
+            </span>
+        </a>
+    </li>
 </f:section>
 
-<f:section name="uncheckedIcon">
-    <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_inactive')}">
-        <core:icon identifier="empty-empty" size="small" />
-    </span>
-</f:section>
 </html>

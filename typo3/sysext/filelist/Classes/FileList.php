@@ -1088,7 +1088,7 @@ class FileList
         $clipboardActions = $this->makeClip($fileOrFolderObject);
         if ($clipboardActions !== []) {
             // Add divider in case at least one clipboard action is displayed
-            $cells['divider'] = '<hr class="dropdown-divider me-0 ms-0 border-white">';
+            $cells['divider'] = '<hr class="dropdown-divider">';
         }
         // Merge the clipboard actions into the existing cells
         $cells = array_merge($cells, $clipboardActions);
@@ -1109,7 +1109,7 @@ class FileList
                 continue;
             }
             // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.
-            $action = str_replace('btn btn-default', 'dropdown-item', $action);
+            $action = str_replace('btn btn-default', 'dropdown-item dropdown-item-spaced', $action);
             $title = [];
             preg_match('/title="([^"]*)"/', $action, $title);
             if (empty($title)) {
@@ -1140,7 +1140,7 @@ class FileList
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
             $output .= '<div class="btn-group dropdown position-static" data-bs-toggle="tooltip" title="' . htmlspecialchars($title) . '" >' .
                 '<a href="#actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-                '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
+                '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
                 '</div>';
         } else {
             $output .= $this->spaceIcon;
@@ -1272,7 +1272,14 @@ class FileList
             $translations[] = '
                 <li>
                     <a href="' . htmlspecialchars($url) . '" class="dropdown-item" title="' . htmlspecialchars($title) . '">
-                        ' . $this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType)->render() . ' ' . htmlspecialchars($title) . '
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                                ' . $this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType)->render() . '
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                ' . htmlspecialchars($title) . '
+                            </span>
+                        </span>
                     </a>
                 </li>';
         }
@@ -1327,21 +1334,42 @@ class FileList
         $dropdownItems['checkAll'] = '
             <li>
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
-                    ' . $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            ' . $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL)->render() . '
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
+                        </span>
+                    </span>
                 </button>
             </li>';
 
         $dropdownItems['checkNone'] = '
             <li>
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
-                    ' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            ' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
+                        </span>
+                    </span>
                 </button>
             </li>';
 
         $dropdownItems['toggleSelection'] = '
             <li>
                 <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
-                    ' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                        ' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
+                        </span>
+                    </span>
                 </button>
             </li>';
 

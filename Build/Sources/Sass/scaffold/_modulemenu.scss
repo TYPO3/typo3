@@ -169,20 +169,6 @@ button[aria-expanded="true"]:not(:disabled) {
 }
 
 //
-// Dropdown
-//
-.dropdown-menu {
-    a.modulemenu-action {
-        color: inherit;
-        display: flex;
-    }
-
-    .modulemenu-name {
-        display: block;
-    }
-}
-
-//
 // Scaffold
 //
 .scaffold-modulemenu-expanded {

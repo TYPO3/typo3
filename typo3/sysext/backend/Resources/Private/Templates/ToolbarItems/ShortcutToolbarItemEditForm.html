@@ -1,8 +1,8 @@
 <form class="shortcut-form" role="form" data-shortcutid="{selectedShortcutId}">
-    <h3 class="dropdown-headline">
+    <h3 class="dropdown-header">
         {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksEdit')}
     </h3>
-    <hr>
+    <hr class="dropdown-divider" aria-hidden="true">
     <div class="form-group">
         <input type="text" class="form-control" name="shortcut-title" value="{selectedShortcut.label}"/>
     </div>
@@ -13,7 +13,7 @@
             </f:for>
         </select>
     </div>
-    <hr>
+    <hr class="dropdown-divider" aria-hidden="true">
     <input type="button" class="btn btn-default shortcut-form-cancel" value="Cancel"/>
     <input type="button" class="btn btn-success shortcut-form-save" value="Save"/>
 </form>

@@ -23,7 +23,7 @@ import Icons from '@typo3/backend/icons';
 enum Identifiers {
   containerSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
   activeMenuItemLinkSelector = '.dropdown-menu .selected',
-  menuItemIconHolderSelector = '.dropdown-table-icon',
+  menuItemIconHolderSelector = '.t3js-workspace-item-icon',
   menuItemSelector = '.t3js-workspace-item',
   menuItemLinkSelector = '.t3js-workspaces-switchlink',
   toolbarItemSelector = '.dropdown-toggle',

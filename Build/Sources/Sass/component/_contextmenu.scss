@@ -1,0 +1,78 @@
+//
+// Context Menu
+//
+.context-menu {
+    font-size: var(--typo3-component-font-size);
+    line-height: var(--typo3-component-line-height);
+    padding: 2px;
+    position: absolute;
+    z-index: 310;
+    color: var(--typo3-component-color);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    background-color: var(--typo3-component-bg);
+    box-shadow: var(--typo3-component-box-shadow);
+    border-radius: var(--typo3-component-border-radius);
+
+    &-group {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-width: 150px;
+    }
+
+    &-item {
+        position: relative;
+        display: flex;
+        border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
+        gap: .5em;
+        padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            z-index: 1;
+            outline-offset: -1px;
+        }
+
+        &:hover {
+            color: var(--typo3-component-hover-color);
+            background-color: var(--typo3-component-hover-bg);
+            outline: 1px solid var(--typo3-component-hover-border-color);
+        }
+
+        &:focus {
+            color: var(--typo3-component-focus-color);
+            background-color: var(--typo3-component-focus-bg);
+            outline: 1px solid var(--typo3-component-focus-border-color);
+        }
+
+        &-icon {
+            flex-shrink: 0;
+            flex-grow: 0;
+            width: var(--icon-size-small);
+        }
+
+        &-label {
+            flex-grow: 1;
+        }
+
+        &-indicator {
+            flex-shrink: 0;
+            flex-grow: 0;
+            width: var(--icon-size-small);
+        }
+
+        &-divider {
+            padding: 0;
+            height: 0;
+            margin-top: var(--typo3-list-item-padding-y);
+            margin-bottom: var(--typo3-list-item-padding-y);
+            border-top: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+        }
+    }
+}

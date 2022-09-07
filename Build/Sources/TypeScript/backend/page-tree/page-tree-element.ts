@@ -499,14 +499,26 @@ class PageTreeToolbar extends Toolbar {
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <button class="dropdown-item" @click="${() => this.refreshTree()}">
-                <typo3-backend-icon identifier="actions-refresh" size="small" class="icon icon-size-small"></typo3-backend-icon>
-                ${lll('labels.refresh')}
+                <span class="dropdown-item-columns">
+                  <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                    <typo3-backend-icon identifier="actions-refresh" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                  </span>
+                  <span class="dropdown-item-column dropdown-item-column-title">
+                    ${lll('labels.refresh')}
+                  </span>
+                </span>
               </button>
             </li>
             <li>
               <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
-                <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small" class="icon icon-size-small"></typo3-backend-icon>
-                ${lll('labels.collapse')}
+                <span class="dropdown-item-columns">
+                  <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                    <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                  </span>
+                  <span class="dropdown-item-column dropdown-item-column-title">
+                    ${lll('labels.collapse')}
+                  </span>
+                </span>
               </button>
             </li>
           </ul>

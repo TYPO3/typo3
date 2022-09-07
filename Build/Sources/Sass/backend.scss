@@ -5,11 +5,6 @@
 //
 
 //
-// Load global Variables
-//
-@import "variables/main";
-
-//
 // Load minimal Setup including variables
 //
 @import "minimal";
@@ -54,6 +49,7 @@
 @import "component/modal";
 @import "component/note";
 @import "component/card";
+@import "component/contextmenu";
 
 //
 // TYPO3 Backend Components
@@ -61,7 +57,6 @@
 @import "typo3/element_badges";
 @import "typo3/element_animation";
 @import "typo3/element_cropper";
-@import "typo3/element_contextmenu";
 @import "typo3/element_docheader";
 @import "typo3/element_message";
 @import "typo3/element_slider";
@@ -76,7 +71,6 @@
 @import "typo3/element_pagination";
 @import "typo3/element_buttons";
 @import "typo3/element_draguploader";
-@import "typo3/element_dropdown";
 @import "typo3/install";
 @import "typo3/main_type";
 @import "typo3/icons";

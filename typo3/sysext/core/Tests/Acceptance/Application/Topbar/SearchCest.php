@@ -72,7 +72,7 @@ class SearchCest
         $I->waitForElementVisible(self::$dropdownListSelector);
 
         $I->canSee('fileadmin', self::$dropdownListSelector);
-        $I->click('.t3js-live-search-show-all', self::$dropdownListSelector);
+        $I->click('Show All', self::$dropdownListSelector);
 
         $I->switchToContentFrame();
 

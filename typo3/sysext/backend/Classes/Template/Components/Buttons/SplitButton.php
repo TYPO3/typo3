@@ -180,8 +180,17 @@ class SplitButton extends AbstractButton
                 foreach ($optionAttributes as $key => $value) {
                     $optionAttributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
                 }
-                $html =  '<a' . $optionAttributesString . '>' . $option->getIcon()->render('inline') . ' '
-                    . htmlspecialchars($option->getTitle()) . '</a>';
+                $html = '' .
+                    '<a' . $optionAttributesString . '>' .
+                        '<span class="dropdown-item-columns">' .
+                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
+                                $option->getIcon()->render('inline') .
+                            '</span>' .
+                            '<span class="dropdown-item-column dropdown-item-column-title">' .
+                                htmlspecialchars($option->getTitle()) .
+                            '</span>' .
+                        '</span>' .
+                    '</a>';
             } else {
                 // for any other kind of button we simply use what comes along (e.g. LinkButton)
                 $html = $option->render();

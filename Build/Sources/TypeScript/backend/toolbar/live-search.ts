@@ -84,9 +84,9 @@ class LiveSearch {
       triggerSelectOnValidInput: false,
       preventBadQueries: false,
       noSuggestionNotice: '<h3 class="dropdown-headline">' + TYPO3.lang.liveSearch_listEmptyText + '</h3>'
-      + '<p>' + TYPO3.lang.liveSearch_helpTitle + '</p>'
-      + '<hr>'
-      + '<p>' + TYPO3.lang.liveSearch_helpDescription + '<br>' + TYPO3.lang.liveSearch_helpDescriptionPages + '</p>',
+      + '<p class="dropdown-item-text">' + TYPO3.lang.liveSearch_helpTitle + '</p>'
+      + '<hr class="dropdown-divider" aria-hidden="true">'
+      + '<p class="dropdown-item-text">' + TYPO3.lang.liveSearch_helpDescription + '<br>' + TYPO3.lang.liveSearch_helpDescriptionPages + '</p>',
       // put the AJAX results in the right format
       transformResult: (response: Array<ResultItem>): { [key: string]: Array<Suggestion> } => {
         let allSuggestions = $.map(response, (dataItem: ResultItem): Suggestion => {
@@ -128,11 +128,7 @@ class LiveSearch {
       // Rendering of each item
       formatResult: (suggestion: Suggestion): string => {
         return renderHTML(html`
-          <div class="dropdown-table">
-            <div class="dropdown-table-row">
-              ${this.linkItem(suggestion)}
-            </div>
-          </div>
+          ${this.linkItem(suggestion)}
         `);
       },
       onSearchStart: (): void => {
@@ -198,20 +194,21 @@ class LiveSearch {
   private linkItem(suggestion: Suggestion): TemplateResult {
     if(suggestion.value === 'search_all') {
       return html`
-        <a class="dropdown-list-link btn btn-primary float-end t3js-live-search-show-all" data-pageid="0">${suggestion.data.title}</a>
+        <a href="#" class="dropdown-item" data-pageid="0">${suggestion.data.title}</a>
       `
     }
 
     return suggestion.data.editLink
       ? html`
-        <a class="dropdown-list-link"
-           data-pageid="${suggestion.data.pageId}" href="#">
-          <div class="dropdown-table-column dropdown-table-icon">
-            ${unsafeHTML(suggestion.data.iconHTML)}
-          </div>
-          <div class="dropdown-table-column">
-            ${suggestion.data.title}
-          </div>
+        <a class="dropdown-item" data-pageid="${suggestion.data.pageId}" href="#">
+          <span class="dropdown-item-columns">
+            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+              ${unsafeHTML(suggestion.data.iconHTML)}
+            </span>
+            <span class="dropdown-item-column dropdown-item-column-title">
+              ${suggestion.data.title}
+            </span>
+          </span>
         </a>`
       : html`<span class="dropdown-list-title">${suggestion.data.title}</span>`;
   }

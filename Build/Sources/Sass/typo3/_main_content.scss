@@ -13,7 +13,7 @@ $app-icon-bg: #484848;
 // TYPO3 styles for basic elements
 //
 h1 {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: var(--typo3-header-font-family);
     font-variant: normal;
     font-weight: 400;
     margin-top: 0;

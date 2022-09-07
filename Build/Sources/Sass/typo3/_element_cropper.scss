@@ -149,17 +149,13 @@
         }
     }
 
-    .open .dropdown-toggle.btn-secondary {
-        @extend .btn-secondary;
-    }
-
     /**
-	 * Style overrides for CropperJS CSS and additional styles to make cropper look like expected
-	 *
-	 * 1. Fixes hidden drag/resize handles for cropper
-	 * 2. Fixes containment on the jQuery UI resizeable
-	 * 3. Offset cropper lines and handles to inside of container
-	 */
+     * Style overrides for CropperJS CSS and additional styles to make cropper look like expected
+     *
+     * 1. Fixes hidden drag/resize handles for cropper
+     * 2. Fixes containment on the jQuery UI resizeable
+     * 3. Offset cropper lines and handles to inside of container
+     */
     .cropper-container.cropper-bg {
         overflow: visible; /* 1 */
     }

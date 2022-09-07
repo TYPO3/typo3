@@ -1,36 +1,44 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<h3 class="dropdown-headline" id="help-dropdown-headline">
-    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help')}
-</h3>
+<h3 class="dropdown-headline" id="help-dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help')}</h3>
 <f:if condition="{modules}">
-    <hr aria-hidden="true">
+    <hr class="dropdown-divider" aria-hidden="true">
     <nav class="t3js-helpmenu">
-        <ul class="modulemenu-group-container" role="menu" aria-labelledby="help-dropdown-headline">
+        <ul class="dropdown-list" role="menu" aria-labelledby="help-dropdown-headline">
             <f:for each="{modules}" as="module">
                 <li data-level="1">
                     <a
                         title="{f:translate(key: module.description, default: module.description)}"
-                        class="modulemenu-action t3js-modulemenu-action"
+                        class="dropdown-item t3js-modulemenu-action"
                         role="menuitem"
                         id="{module.identifier}"
                         data-modulename="{module.identifier}"
                         {f:if(condition: module.path, then: 'href="{f:be.uri(route: module.identifier)}"')}
                         {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
                     >
-                        <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="{module.iconIdentifier}" size="medium" alternativeMarkupIdentifier="inline"/></span>
-                        <span class="modulemenu-name"><f:translate key="{module.title}">{module.title}</f:translate></span>
-                        <span class="modulemenu-indicator" aria-hidden="true"></span>
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                                <core:icon identifier="{module.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline" />
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                <f:translate key="{module.title}">{module.title}</f:translate>
+                            </span>
+                        </span>
                     </a>
                 </li>
             </f:for>
             <li data-level="1">
                 <a
-                    class="modulemenu-action"
+                    class="dropdown-item"
                     role="menuitem"
                     href="https://docs.typo3.org/" target="_blank" rel="noreferrer">
-                    <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-cshmanual" size="medium" alternativeMarkupIdentifier="inline"/></span>
-                    <span class="modulemenu-name"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:onlineDocumentation">TYPO3 Online Documentation</f:translate></span>
-                    <span class="modulemenu-indicator" aria-hidden="true"></span>
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="module-cshmanual" size="small" alternativeMarkupIdentifier="inline" />
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:onlineDocumentation">TYPO3 Online Documentation</f:translate>
+                        </span>
+                    </span>
                 </a>
             </li>
         </ul>

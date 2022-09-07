@@ -231,16 +231,28 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             $menuItems[] =
                 '<li>' .
                     '<button type="button" class="dropdown-item disabled">' .
-                        $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . ' ' .
-                        htmlspecialchars($alreadyBookmarkedText) .
+                        '<span class="dropdown-item-columns">' .
+                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
+                                $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() .
+                            '</span>' .
+                            '<span class="dropdown-item-column dropdown-item-column-title">' .
+                                htmlspecialchars($alreadyBookmarkedText) .
+                            '</span>' .
+                        '</span>' .
                     '</button>' .
                 '</li>';
         } else {
             $menuItems[] = '
                 <li>' .
                     '<button type="button" class="dropdown-item" ' . $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText) . '>' .
-                        $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . ' ' .
-                        htmlspecialchars($confirmationText) .
+                        '<span class="dropdown-item-columns">' .
+                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
+                                $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() .
+                            '</span>' .
+                            '<span class="dropdown-item-column dropdown-item-column-title">' .
+                                htmlspecialchars($confirmationText) .
+                            '</span>' .
+                        '</span>' .
                     '</button>' .
                 '</li>';
         }
@@ -259,8 +271,14 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             <li>
                 <typo3-copy-to-clipboard text="' . htmlspecialchars($currentUrl) . '">
                     <button type="button" class="dropdown-item">' .
-                        $iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render() . ' ' .
-                        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl')) .
+                        '<span class="dropdown-item-columns">' .
+                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
+                                $iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render() .
+                            '</span>' .
+                            '<span class="dropdown-item-column dropdown-item-column-title">' .
+                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl')) .
+                            '</span>' .
+                        '</span>' .
                     '</button>' .
                 '</typo3-copy-to-clipboard>' .
             '</li>';

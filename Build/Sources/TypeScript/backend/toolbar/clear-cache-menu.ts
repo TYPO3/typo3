@@ -20,7 +20,7 @@ import Viewport from '../viewport';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
-  menuItemSelector = 'a.toolbar-cache-flush-action',
+  menuItemSelector = '.t3js-toolbar-cache-flush-action',
   toolbarIconSelector = '.toolbar-item-icon .t3js-icon',
 }
 

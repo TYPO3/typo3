@@ -4,11 +4,9 @@
     data-count="{count}"
     data-severityclass="{severityBadgeClass}"></span>
 
-<h3 class="dropdown-headline">
-    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.header"/>
-</h3>
+<h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.header"/></h3>
 <f:if condition="{environmentToolUrl}">
-    <p class="dropdown-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
+    <p class="dropdown-item-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
         <f:format.raw>
             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.intro" arguments="{0: environmentToolUrl}"/>
         </f:format.raw>
@@ -16,32 +14,31 @@
 </f:if>
 
 <f:if condition="{systemInformation}">
-    <hr>
-    <div class="dropdown-table">
+    <hr class="dropdown-divider" aria-hidden="true">
+    <table class="dropdown-table">
         <f:for each="{systemInformation}" as="info">
-            <div class="dropdown-table-row">
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">
+            <tr>
+                <th data-type="icon">
                     <f:if condition="{info.iconIdentifier}">
                         <f:then>
                             <core:icon identifier="{info.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline" />
                         </f:then>
                         <f:else>{info.icon -> f:format.raw()}</f:else>
                     </f:if>
-                </div>
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">
+                </th>
+                <th data-type="title">
                     <f:translate key="{info.title}" default="{info.title}"/>
                     <f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>
-                </div>
-                <div
-                    class="dropdown-table-column dropdown-table-column-top dropdown-table-value {f:if(condition: info.status, then: 'text-{info.status}')}">
+                </th>
+                <td class="{f:if(condition: info.status, then: 'text-{info.status}')}">
                     {info.value}
-                </div>
-            </div>
+                </td>
+            </tr>
         </f:for>
-    </div>
+    </table>
 </f:if>
 
-<hr>
+<hr class="dropdown-divider" aria-hidden="true">
 
 <f:if condition="{messages -> f:count()} > 0">
     <f:then>
@@ -49,13 +46,13 @@
             <f:if condition="{message.module}">
                 <f:then>
                     <p id="systeminformation_{message.module}"
-                        class="dropdown-text t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}"
+                        class="dropdown-item-text t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}"
                         data-modulename="{message.module}" data-moduleparams="{message.params}">
                         <span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
                     </p>
                 </f:then>
                 <f:else>
-                    <p class="dropdown-text text-{message.status}">
+                    <p class="dropdown-item-text text-{message.status}">
                         <f:format.raw>{message.text}</f:format.raw>
                     </p>
                 </f:else>
@@ -63,7 +60,7 @@
         </f:for>
     </f:then>
     <f:else>
-        <p class="dropdown-text text-success">
+        <p class="dropdown-item-text text-success">
             <f:format.nl2br>
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood"/>
             </f:format.nl2br>

@@ -1,10 +1,11 @@
 <button type="button"
-   class="btn btn-default btn-sm"
-   id="dropdownShortcutMenu"
-   data-bs-toggle="dropdown"
-   aria-expanded="false"
-   title="Share">
-    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt" data-identifier="actions-share-alt">
+    class="btn btn-default btn-sm"
+    id="dropdownShortcutMenu"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    title="Share">
+    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt"
+          data-identifier="actions-share-alt">
         <span class="icon-markup">
             <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-share-alt" /></svg>
         </span>
@@ -13,26 +14,34 @@
 <ul class="dropdown-menu" aria-labelledby="dropdownShortcutMenu">
     <li>
         <button type="button"
-           class="dropdown-item"
-           data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
-           data-dispatch-args="[&quot;web_list&quot;,&quot;[]&quot;,&quot;Recordlist&quot;,&quot;Create a bookmark to this page&quot;,&quot;{$target}&quot;]">
-            <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-system-shortcut-new" data-identifier="actions-system-shortcut-new">
-                <span class="icon-markup">
-                    <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-star" /></svg>
+            class="dropdown-item"
+            data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
+            data-dispatch-args="[&quot;web_list&quot;,&quot;[]&quot;,&quot;Recordlist&quot;,&quot;Create a bookmark to this page&quot;,&quot;{$target}&quot;]">
+            <span class="dropdown-item-columns">
+                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-system-shortcut-new" data-identifier="actions-system-shortcut-new">
+                        <span class="icon-markup">
+                            <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-star" /></svg>
+                        </span>
+                    </span>
                 </span>
+                <span class="dropdown-item-column dropdown-item-column-title">Create a bookmark to this page</span>
             </span>
-            Create a bookmark to this page
         </button>
     </li>
     <li>
         <typo3-copy-to-clipboard text="http://example.com/typo3/module/web/list">
             <button type="button" class="dropdown-item">
-                <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-link" data-identifier="actions-link">
-                    <span class="icon-markup">
-                        <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-link" /></svg>
+                <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                        <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-link" data-identifier="actions-link">
+                            <span class="icon-markup">
+                                <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-link" /></svg>
+                            </span>
+                        </span>
                     </span>
+                    <span class="dropdown-item-column dropdown-item-column-title">Copy URL of this page</span>
                 </span>
-                Copy URL of this page
             </button>
         </typo3-copy-to-clipboard>
     </li>
