@@ -189,7 +189,8 @@ class RecyclerAjaxController
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
-                $backendUserName = $this->getBackendUserInformation((int)$row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']]);
+                $userIdField = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? '';
+                $backendUserName = $this->getBackendUserInformation($userIdField !== '' ? (int)$row[$userIdField] : 0);
                 $userIdWhoDeleted = $this->getUserWhoDeleted($table, (int)$row['uid']);
 
                 $groupedRecords[$table]['records'][] = [
@@ -200,7 +201,7 @@ class RecyclerAjaxController
                     'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
                     'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
                     'owner' => $backendUserName,
-                    'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
+                    'owner_uid' => $userIdField !== '' ? $row[$userIdField] : 0,
                     'title' => BackendUtility::getRecordTitle($table, $row),
                     'path' => RecyclerUtility::getRecordPath((int)$row['pid']),
                     'delete_user_uid' => $userIdWhoDeleted,
