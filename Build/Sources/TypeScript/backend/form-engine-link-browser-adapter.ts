@@ -15,13 +15,18 @@
  * Module: @typo3/backend/form-engine-link-browser-adapter
  * LinkBrowser communication with parent window
  */
-import $ from 'jquery';
 import LinkBrowser from '@typo3/recordlist/link-browser'
 import Modal from '@typo3/backend/modal';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 
 interface OnFieldChangeItem {
   name: string;
   data: {[key: string]: string|number|boolean|null}
+}
+
+interface Response {
+  typoLink?: string;
 }
 
 export default (function() {
@@ -68,24 +73,24 @@ export default (function() {
       // encode link on server
       attributeValues.url = input;
 
-      $.ajax({
-        url: TYPO3.settings.ajaxUrls.link_browser_encodetypolink,
-        data: attributeValues,
-        method: 'GET'
-      }).done(function(data: {typoLink: string}) {
-        if (data.typoLink) {
-          field.value = data.typoLink;
-          field.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+      (new AjaxRequest(TYPO3.settings.ajaxUrls.link_browser_encodetypolink))
+        .withQueryArguments(attributeValues)
+        .get()
+        .then(async (response: AjaxResponse): Promise<any> => {
+          const data: Response = await response.resolve();
+          if (data.typoLink) {
+            field.value = data.typoLink;
+            field.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
 
-          if (FormEngineLinkBrowserAdapter.onFieldChangeItems instanceof Array) {
-            // @todo us `CustomEvent` or broadcast channel as alternative
-            FormEngineLinkBrowserAdapter.getParent()
-              .TYPO3.FormEngine.processOnFieldChange(FormEngineLinkBrowserAdapter.onFieldChangeItems);
+            if (FormEngineLinkBrowserAdapter.onFieldChangeItems instanceof Array) {
+              // @todo us `CustomEvent` or broadcast channel as alternative
+              FormEngineLinkBrowserAdapter.getParent()
+                .TYPO3.FormEngine.processOnFieldChange(FormEngineLinkBrowserAdapter.onFieldChangeItems);
+            }
+
+            Modal.dismiss();
           }
-
-          Modal.dismiss();
-        }
-      });
+        });
     }
   };
 

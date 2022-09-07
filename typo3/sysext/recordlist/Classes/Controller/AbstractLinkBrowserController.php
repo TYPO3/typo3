@@ -522,7 +522,7 @@ abstract class AbstractLinkBrowserController
             [
                 'data-url-parameters' => json_encode($this->getUrlParameters()) ?: '',
                 'data-parameters' => json_encode($this->parameters) ?: '',
-                'data-link-attribute-fields' => json_encode($this->linkAttributeFields) ?: '',
+                'data-link-attribute-fields' => json_encode(array_values($this->linkAttributeFields)) ?: '',
             ]
         );
     }

@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService from '@typo3/core/document-service';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 interface LinkAttributes {
   [s: string]: any;
@@ -24,66 +25,39 @@ interface LinkAttributes {
 class LinkBrowser {
   private urlParameters: Object = {};
   private parameters: Object = {};
-  private linkAttributeFields: Array<any>;
-  private additionalLinkAttributes: LinkAttributes = {};
+  private linkAttributeFields: LinkAttributes;
 
   constructor() {
-    $((): void => {
-      const data = $('body').data();
+    DocumentService.ready().then((): void => {
+      this.urlParameters = JSON.parse(document.body.dataset.urlParameters || '{}');
+      this.parameters =  JSON.parse(document.body.dataset.parameters || '{}');
+      this.linkAttributeFields = JSON.parse(document.body.dataset.linkAttributeFields || '{}');
 
-      this.urlParameters = data.urlParameters;
-      this.parameters = data.parameters;
-      this.linkAttributeFields = data.linkAttributeFields;
-
-      $('.t3js-targetPreselect').on('change', this.loadTarget);
-      $('form.t3js-dummyform').on('submit', (evt: JQueryEventObject): void => {
-        evt.preventDefault();
-      });
+      new RegularEvent('change', this.loadTarget)
+        .delegateTo(document, '.t3js-targetPreselect');
+      new RegularEvent('submit', (event: SubmitEvent): void => event.preventDefault())
+        .delegateTo(document, 'form.t3js-dummyform');
     });
   }
 
   public getLinkAttributeValues(): Object {
-    const attributeValues: LinkAttributes = {};
-    $.each(this.linkAttributeFields, (index: number, fieldName: string) => {
-      const val: string = $('[name="l' + fieldName + '"]').val();
-      if (val) {
-        attributeValues[fieldName] = val;
-      }
-    });
-    $.extend(attributeValues, this.additionalLinkAttributes);
-    return attributeValues;
-  }
-
-  public loadTarget = (evt: JQueryEventObject): void => {
-    const $element = $(evt.currentTarget);
-    $('.t3js-linkTarget').val($element.val());
-    (<HTMLSelectElement>$element.get(0)).selectedIndex = 0;
-  }
-
-  /**
-   * Encode objects to GET parameter arrays in PHP notation
-   */
-  public encodeGetParameters(obj: LinkAttributes, prefix: string, url: string): string {
-    const str = [];
-    for (const entry of Object.entries(obj)) {
-      const [p, v] = entry;
-      const k: string = prefix ? prefix + '[' + p + ']' : p;
-      if (!url.includes(k + '=')) {
-        str.push(
-          typeof v === 'object'
-            ? this.encodeGetParameters(v, k, url)
-            : encodeURIComponent(k) + '=' + encodeURIComponent(v),
-        );
+    const linkAttributeValues: LinkAttributes = {};
+    for (const fieldName of this.linkAttributeFields.values()) {
+      const linkAttribute: HTMLInputElement = document.querySelector('[name="l' + fieldName + '"]');
+      if (linkAttribute !== null && linkAttribute.value !== '') {
+        linkAttributeValues[fieldName] = linkAttribute.value;
       }
     }
-    return '&' + str.join('&');
+
+    return linkAttributeValues;
   }
 
-  /**
-   * Set an additional attribute for the link
-   */
-  public setAdditionalLinkAttribute(name: string, value: any): void {
-    this.additionalLinkAttributes[name] = value;
+  public loadTarget(this: HTMLSelectElement): void {
+    const linkTarget: HTMLInputElement = document.querySelector('.t3js-linkTarget');
+    if (linkTarget !== null) {
+      linkTarget.value = this.value;
+      this.selectedIndex = 0;
+    }
   }
 
   /**
