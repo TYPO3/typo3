@@ -281,19 +281,6 @@ $caret-vertical-align: $caret-width * .38;
 // Card
 $card-cap-bg: transparent;
 
-// Datetime Picker
-$bs-datetimepicker-timepicker-font-size: $font-size-base;
-$bs-datetimepicker-active-bg: $btn-primary-bg;
-$bs-datetimepicker-active-color: $btn-primary-color;
-$bs-datetimepicker-border-radius: 0;
-$bs-datetimepicker-btn-hover-bg: lighten($dropdown-bg, 10%);
-$bs-datetimepicker-disabled-color: $text-muted;
-$bs-datetimepicker-alternate-color: lighten($bs-datetimepicker-disabled-color, 10%);
-$bs-datetimepicker-secondary-border-color: $dropdown-bg;
-$bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, .2);
-$bs-datetimepicker-primary-border-color: $dropdown-bg;
-$bs-datetimepicker-text-shadow: none;
-
 // Overwrite Progress bar background color
 $progress-bg: #dedede;
 $progress-height: 1.25rem;
