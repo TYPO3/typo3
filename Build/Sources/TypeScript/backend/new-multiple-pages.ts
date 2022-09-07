@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService from '@typo3/core/document-service';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
   containerSelector = '.t3js-newmultiplepages-container',
@@ -28,7 +29,7 @@ class NewMultiplePages {
   private lineCounter: number = 5;
 
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initializeEvents();
     });
   }
@@ -37,36 +38,36 @@ class NewMultiplePages {
    * Register listeners
    */
   private initializeEvents(): void {
-    $(Identifiers.addMoreFieldsButtonSelector).on('click', (): void => {
-      this.createNewFormFields();
-    });
-
-    $(document).on('change', Identifiers.doktypeSelector, (e: JQueryEventObject): void => {
-      this.actOnTypeSelectChange($(e.currentTarget));
-    });
+    new RegularEvent('click', this.createNewFormFields.bind(this))
+      .delegateTo(document, Identifiers.addMoreFieldsButtonSelector);
+    new RegularEvent('change', this.actOnTypeSelectChange)
+      .delegateTo(document, Identifiers.doktypeSelector);
   }
 
   /**
    * Add further input rows
    */
   private createNewFormFields(): void {
+    const multiplePagesContainer: HTMLDivElement = document.querySelector(Identifiers.containerSelector);
+    const lineMarkup: string = document.querySelector(Identifiers.templateRow)?.innerHTML || '';
+    if (multiplePagesContainer === null || lineMarkup === '') {
+      return;
+    }
     for (let i = 0; i < 5; i++) {
       const label = this.lineCounter + i + 1;
-      const line = $(Identifiers.templateRow).html()
+      multiplePagesContainer.innerHTML += lineMarkup
         .replace(/\[0\]/g, (this.lineCounter + i).toString())
         .replace(/\[1\]/g, label.toString());
-      $(line).appendTo(Identifiers.containerSelector);
     }
     this.lineCounter += 5;
   }
 
-  /**
-   * @param {JQuery} $selectElement
-   */
-  private actOnTypeSelectChange($selectElement: JQuery): void {
-    const $optionElement = $selectElement.find(':selected');
-    const $target = $($selectElement.data('target'));
-    $target.html($optionElement.data('icon'));
+  private actOnTypeSelectChange(this: HTMLSelectElement): void {
+    const optionElement: HTMLOptionElement = this.options[this.selectedIndex];
+    const targetElement = document.querySelector(this.dataset.target);
+    if (optionElement !== null && targetElement !== null) {
+      targetElement.innerHTML = optionElement.dataset.icon;
+    }
   }
 }
 
