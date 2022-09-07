@@ -205,7 +205,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                                 }
                             }
                         }
-                        if ($readOnlyTitle && $conf['titleText']) {
+                        if ($readOnlyTitle && ($conf['titleText'] ?? '')) {
                             $this->classesAnchorClassTitle[$conf['class']] = ($this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText'])));
                         }
                     }
