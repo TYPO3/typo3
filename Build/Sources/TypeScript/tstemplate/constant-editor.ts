@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService from '@typo3/core/document-service';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Selectors {
   editIconSelector = '.t3js-toggle',
-  colorSelectSelector = '.t3js-color-select',
   colorInputSelector = '.t3js-color-input',
   formFieldsSelector = '.tstemplate-constanteditor [data-form-update-fragment]'
 }
@@ -27,28 +27,34 @@ enum Selectors {
  */
 class ConstantEditor {
   constructor() {
-    $(document)
-      .on('click', Selectors.editIconSelector, this.changeProperty)
-      .on('change', Selectors.colorSelectSelector, this.updateColorFromSelect)
-      .on('blur', Selectors.colorInputSelector, this.updateColorFromInput)
-      .on('change', Selectors.formFieldsSelector, this.updateFormFragment)
-      .ready((): void => {
-        const $colorInputElements: JQuery = $(Selectors.colorInputSelector);
-        if ($colorInputElements.length) {
-          import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
-            $colorInputElements.each((i: number, element: HTMLInputElement) => ColorPicker.initialize(element));
+    DocumentService.ready().then((document: Document): void => {
+      const colorInputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.colorInputSelector);
+      if (colorInputElements.length) {
+        import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
+          colorInputElements.forEach((element: HTMLInputElement): void => {
+            ColorPicker.initialize(element);
+            new RegularEvent('blur', this.updateFormFragment).bindTo(element);
           });
-        }
-      });
+        });
+      }
+
+      this.registerEvents();
+    });
+  }
+
+  private registerEvents(): void {
+    new RegularEvent('click', this.changeProperty)
+      .delegateTo(document, Selectors.editIconSelector);
+    new RegularEvent('change', this.updateFormFragment)
+      .delegateTo(document, Selectors.formFieldsSelector);
   }
 
   /**
    * Sets the # suffix for the form action to jump directly to the last updated Constant Editor field on submit.
    * Removes any existing "#" suffixes in case multiple fields were updated
    */
-  private updateFormFragment = (evt: JQueryEventObject): void => {
-    const $formField = $(evt.currentTarget);
-    const fragment = $formField.attr('data-form-update-fragment');
+  private updateFormFragment(this: HTMLInputElement): void {
+    const fragment = this.dataset.formUpdateFragment;
     let formTargetAction = document.forms[0].action;
     // Strip away any existing fragments
     if (formTargetAction.indexOf('#') !== -1) {
@@ -60,50 +66,25 @@ class ConstantEditor {
   /**
    * initially register event listeners
    */
-  private changeProperty = (evt: JQueryEventObject): void => {
-    const $editIcon = $(evt.currentTarget);
-    const constantName = $editIcon.attr('rel');
-    const $defaultDiv = $('#defaultTS-' + constantName);
-    const $userDiv = $('#userTS-' + constantName);
-    const $checkBox = $('#check-' + constantName);
-    const toggleState = $editIcon.data('bsToggle');
+  private changeProperty(this: HTMLElement): void {
+    const constantName: string = this.getAttribute('rel');
+    const defaultDiv: HTMLDivElement = document.getElementById('defaultTS-' + constantName) as HTMLDivElement;
+    const userDiv: HTMLDivElement = document.getElementById('userTS-' + constantName) as HTMLDivElement;
+    const checkBox: HTMLInputElement = document.getElementById('check-' + constantName) as HTMLInputElement;
+    const toggleState: string = this.dataset.bsToggle;
 
     if (toggleState === 'edit') {
-      $defaultDiv.hide();
-      $userDiv.show();
-      $userDiv.find('input').css({background: '#fdf8bd'});
-      $checkBox.prop('disabled', false).prop('checked', true);
+      defaultDiv.style.display = 'none';
+      userDiv.style.removeProperty('display');
+      userDiv.querySelectorAll('input').forEach((element: HTMLInputElement): void => {element.style.background = '#fdf8bd'});
+      checkBox.removeAttribute('disabled');
+      checkBox.setAttribute('checked', 'checked');
     } else if (toggleState === 'undo') {
-      $userDiv.hide();
-      $defaultDiv.show();
-      $checkBox.val('').prop('disabled', true);
+      userDiv.style.display = 'none';
+      defaultDiv.style.removeProperty('display');
+      checkBox.value = '';
+      checkBox.setAttribute('disabled', 'disabled');
     }
-  }
-
-  /**
-   * updates the color from a dropdown
-   */
-  private updateColorFromSelect = (evt: JQueryEventObject): void => {
-    const $colorSelect = $(evt.currentTarget);
-    let constantName = $colorSelect.attr('rel');
-    let colorValue = $colorSelect.val();
-
-    $('#input-' + constantName).val(colorValue);
-    $('#colorbox-' + constantName).css({background: colorValue});
-  }
-
-  /**
-   * updates the color from an input field
-   */
-  private updateColorFromInput = (evt: JQueryEventObject): void => {
-    const $colorInput = $(evt.currentTarget);
-    let constantName = $colorInput.attr('rel');
-    let colorValue = $colorInput.val();
-
-    $('#colorbox-' + constantName).css({background: colorValue});
-    $('#select-' + constantName).children().each((i: number, option: Element) => {
-      (<HTMLOptionElement>option).selected = ((<HTMLOptionElement>option).value === colorValue);
-    });
   }
 }
 
