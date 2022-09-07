@@ -1998,4 +1998,9 @@ return [
             'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin' => [
+        'restFiles' => [
+            'Breaking-98281-MakeAbstractPluginInternal.rst',
+        ],
+    ],
 ];
