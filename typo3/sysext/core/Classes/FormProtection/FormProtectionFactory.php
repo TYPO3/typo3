@@ -111,7 +111,7 @@ class FormProtectionFactory
             $isAjaxCall = false;
             $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
             if ($request instanceof ServerRequestInterface
-                && (bool)((int)$request->getAttribute('applicationType') & SystemEnvironmentBuilder::REQUESTTYPE_AJAX)
+                && (bool)($request->getAttribute('route')?->getOption('ajax'))
             ) {
                 $isAjaxCall = true;
             }
