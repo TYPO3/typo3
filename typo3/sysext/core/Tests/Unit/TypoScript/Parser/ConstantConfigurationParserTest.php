@@ -89,7 +89,7 @@ t9 = xyz';
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $rawConfiguration = '

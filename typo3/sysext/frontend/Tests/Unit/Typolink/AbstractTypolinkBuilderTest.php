@@ -189,7 +189,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $this->frontendControllerMock->absRefPrefix = '';
@@ -201,7 +201,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         );
         // Force hostname
         $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
         self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
 
@@ -218,7 +218,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
@@ -229,7 +229,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         );
         // Force hostname
         $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = '/subfolder/typo3/index.php';
+        $_SERVER['SCRIPT_NAME'] = '/subfolder/index.php';
 
         $expected = 'http://localhost/subfolder/fileadmin/my.pdf';
         $url = 'fileadmin/my.pdf';

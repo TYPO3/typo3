@@ -29,8 +29,8 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -77,10 +77,10 @@ class BackendModuleController
         }
         if ($flags & self::FLAG_CONFIRMATION_REQUEST) {
             if ($flagInstallToolPassword && $this->verifyInstallToolPassword($request)) {
-                return $this->setAuthorizedAndRedirect($targetController);
+                return $this->setAuthorizedAndRedirect($targetController, $request);
             }
             if (!$flagInstallToolPassword && $this->verifyBackendUserPassword($request)) {
-                return $this->setAuthorizedAndRedirect($targetController);
+                return $this->setAuthorizedAndRedirect($targetController, $request);
             }
             $flagInvalidPassword = true;
         }
@@ -110,37 +110,37 @@ class BackendModuleController
     /**
      * Initialize session and redirect to "maintenance"
      */
-    public function maintenanceAction(): ResponseInterface
+    public function maintenanceAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->getBackendUserConfirmationRedirect('maintenance')
-            ?? $this->setAuthorizedAndRedirect('maintenance');
+            ?? $this->setAuthorizedAndRedirect('maintenance', $request);
     }
 
     /**
      * Initialize session and redirect to "settings"
      */
-    public function settingsAction(): ResponseInterface
+    public function settingsAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->getBackendUserConfirmationRedirect('settings')
-            ?? $this->setAuthorizedAndRedirect('settings');
+            ?? $this->setAuthorizedAndRedirect('settings', $request);
     }
 
     /**
      * Initialize session and redirect to "upgrade"
      */
-    public function upgradeAction(): ResponseInterface
+    public function upgradeAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->getBackendUserConfirmationRedirect('upgrade')
-            ?? $this->setAuthorizedAndRedirect('upgrade');
+            ?? $this->setAuthorizedAndRedirect('upgrade', $request);
     }
 
     /**
      * Initialize session and redirect to "environment"
      */
-    public function environmentAction(): ResponseInterface
+    public function environmentAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->getBackendUserConfirmationRedirect('environment')
-            ?? $this->setAuthorizedAndRedirect('environment');
+            ?? $this->setAuthorizedAndRedirect('environment', $request);
     }
 
     /**
@@ -173,11 +173,12 @@ class BackendModuleController
      * Starts / updates the session and redirects to the Install Tool
      * with given action.
      */
-    protected function setAuthorizedAndRedirect(string $controller): ResponseInterface
+    protected function setAuthorizedAndRedirect(string $controller, ServerRequestInterface $request): ResponseInterface
     {
         $userSession = $this->getBackendUser()->getSession();
         $this->getSessionService()->setAuthorizedBackendSession($userSession);
-        $redirectLocation = PathUtility::getAbsoluteWebPath('install.php?install[controller]=' . $controller . '&install[context]=backend');
+        $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
+        $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?install[controller]=' . $controller . '&install[context]=backend');
         return new RedirectResponse($redirectLocation, 303);
     }
 

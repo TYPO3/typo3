@@ -259,7 +259,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
 
@@ -302,7 +302,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $this->initConditionMatcher();
