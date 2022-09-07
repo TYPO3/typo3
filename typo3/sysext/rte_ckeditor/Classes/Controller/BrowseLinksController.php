@@ -43,8 +43,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected array $buttonConfig = [];
     protected array $thisConfig = [];
     protected array $classesAnchorDefault = [];
-    protected array $classesAnchorDefaultTitle = [];
-    protected array $classesAnchorClassTitle = [];
     protected array $classesAnchorDefaultTarget = [];
     protected array $classesAnchorJSOptions = [];
     protected string $defaultLinkTarget = '';
@@ -145,7 +143,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
             ];
 
             if (is_array($this->thisConfig['classesAnchor'] ?? null)) {
-                $readOnlyTitle = $this->isReadonlyTitle();
                 foreach ($this->thisConfig['classesAnchor'] as $label => $conf) {
                     if (in_array($conf['class'] ?? null, $classesAnchorArray, true)) {
                         $classesAnchor['all'][] = $conf['class'];
@@ -153,16 +150,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
                             $classesAnchor[$conf['type']][] = $conf['class'];
                             if (($this->buttonConfig[$conf['type']]['properties']['class']['default'] ?? null) === $conf['class']) {
                                 $this->classesAnchorDefault[$conf['type']] = $conf['class'];
-                                if (isset($conf['titleText'])) {
-                                    $this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim((string)$conf['titleText']));
-                                }
                                 if (isset($conf['target'])) {
                                     $this->classesAnchorDefaultTarget[$conf['type']] = trim((string)$conf['target']);
                                 }
                             }
-                        }
-                        if ($readOnlyTitle && ($conf['titleText'] ?? '')) {
-                            $this->classesAnchorClassTitle[$conf['class']] = ($this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText'])));
                         }
                     }
                 }
@@ -197,12 +188,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     $classStyle = !empty($this->thisConfig['classes'][$class]['value'])
                         ? $this->thisConfig['classes'][$class]['value']
                         : '';
-                    $title = $this->classesAnchorClassTitle[$class] ?? $this->classesAnchorDefaultTitle[$class] ?? '';
 
                     $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] ??= '';
                     $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . htmlspecialchars($class) . '"'
                         . ($classStyle ? ' style="' . htmlspecialchars($classStyle) . '"' : '')
-                        . 'data-link-title="' . htmlspecialchars($title) . '"'
                         . '>' . htmlspecialchars($classLabel)
                         . '</option>';
                 }
@@ -381,29 +370,16 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
     protected function getTitleField(): string
     {
-        if ($this->linkAttributeValues['title'] ?? null) {
-            $title = $this->linkAttributeValues['title'];
-        } else {
-            $title = ($this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?? false) ?: '';
-        }
-        $readOnlyTitle = $this->isReadonlyTitle();
+        $title = $this->linkAttributeValues['title'] ?? '';
 
-        if ($readOnlyTitle) {
-            $currentClass = $this->linkAttributeFields['class'] ?? '';
-            if (!$currentClass) {
-                $currentClass = empty($this->classesAnchorDefault[$this->displayedLinkHandlerId]) ? '' : $this->classesAnchorDefault[$this->displayedLinkHandlerId];
-            }
-            $title = $this->classesAnchorClassTitle[$currentClass] ?? $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?? '';
-        }
         return '
                 <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">
                             ' . htmlspecialchars($this->getLanguageService()->getLL('title')) . '
-                         </label>
-                         <div class="col-sm-9">
-                                <input ' . ($readOnlyTitle ? 'disabled' : '') . ' type="text" name="ltitle" class="form-control t3js-linkTitle"
-                                        value="' . htmlspecialchars($title) . '" />
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" name="ltitle" class="form-control" value="' . htmlspecialchars($title) . '">
                         </div>
                     </div>
                 </form>
@@ -446,14 +422,5 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $parameters['data-site-url'] = $this->siteUrl;
         $parameters['data-default-link-target'] = $this->defaultLinkTarget;
         return $parameters;
-    }
-
-    protected function isReadonlyTitle(): bool
-    {
-        if (isset($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['title']['readOnly'])) {
-            return (bool)$this->buttonConfig[$this->displayedLinkHandlerId]['properties']['title']['readOnly'];
-        }
-
-        return (bool)($this->buttonConfig['properties']['title']['readOnly'] ?? false);
     }
 }

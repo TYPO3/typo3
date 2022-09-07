@@ -57,12 +57,6 @@ class RteLinkBrowser {
     // siteUrl etc are added as data attributes to the body tag
     $.extend(RteLinkBrowser, $('body').data());
 
-    $('.t3js-class-selector').on('change', (): void => {
-      if ($('option:selected', this).data('linkTitle')) {
-        $('.t3js-linkTitle').val($('option:selected', this).data('linkTitle'));
-      }
-    });
-
     $('.t3js-removeCurrentLink').on('click', (event: JQueryEventObject): void => {
       event.preventDefault();
       this.CKEditor.execCommand('unlink');
