@@ -2429,22 +2429,26 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function set_no_cache($reason = '', $internal = false)
     {
+        $warning = '';
         $context = [];
         if ($reason !== '') {
             $warning = '$TSFE->set_no_cache() was triggered. Reason: {reason}.';
             $context['reason'] = $reason;
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-            // This is a hack to work around ___FILE___ resolving symbolic links
-            $realWebPath = PathUtility::dirname((string)realpath(Environment::getBackendPath())) . '/';
-            $file = $trace[0]['file'];
-            if (str_starts_with($file, $realWebPath)) {
-                $file = str_replace($realWebPath, '', $file);
-            } else {
-                $file = str_replace(Environment::getPublicPath() . '/', '', $file);
+            if (isset($trace[0]['class'])) {
+                $context['class'] = $trace[0]['class'];
+                $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {class} on line {line}.';
             }
-            $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {file} on line {line}.';
-            $context['file'] = $file;
+            if (isset($trace[0]['function'])) {
+                $context['function'] = $trace[0]['function'];
+                $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {class}->{function} on line {line}.';
+            }
+            if ($context === []) {
+                // Only store the filename, not the full path for safety reasons
+                $context['file'] = basename($trace[0]['file']);
+                $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {file} on line {line}.';
+            }
             $context['line'] = $trace[0]['line'];
         }
         if (!$internal && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
