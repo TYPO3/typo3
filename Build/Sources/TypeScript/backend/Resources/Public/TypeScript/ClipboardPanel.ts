@@ -110,13 +110,15 @@ export class ClipboardPanel extends LitElement {
             </div>
           `;
         } else {
-          Notification.error('Clipboard data could not be fetched');
-          return html``;
+          return html`
+            <div class="alert alert-danger">Clipboard data could not be fetched</div>
+          `;
         }
       })
       .catch((): TemplateResult => {
-        Notification.error('An error occurred while fetching clipboard data');
-        return html``;
+        return html`
+          <div class="alert alert-danger">An error occurred while fetching clipboard data</div>
+        `;
       });
   }
 
