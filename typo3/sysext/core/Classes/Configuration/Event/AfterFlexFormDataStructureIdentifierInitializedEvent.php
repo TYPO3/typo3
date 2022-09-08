@@ -19,14 +19,14 @@ namespace TYPO3\CMS\Core\Configuration\Event;
 
 /**
  * Listeners to this event are able to modify or enhance the data structure identifier,
- * used for a given TCA flex field.
+ * which is used for a given TCA flex field.
  *
  * This event can be used to add additional data to an identifier. Be careful here, especially if
  * stuff from the source record like uid or pid is added! This may easily lead to issues with
  * data handler details like copy or move records, localization and version overlays.
  * Test this very well! Multiple listeners may add information to the same identifier here -
  * take care to namespace array keys. Information added here can be later used in the
- * data structure related PSR-14 Events (AfterFlexFormDataStructureParsedEvent and
+ * data structure related PSR-14 Events (BeforeFlexFormDataStructureParsedEvent and
  * AfterFlexFormDataStructureParsedEvent) again.
  *
  * See the note on FlexFormTools regarding the schema of $dataStructure.
@@ -49,6 +49,10 @@ final class AfterFlexFormDataStructureIdentifierInitializedEvent
     ) {
     }
 
+    /**
+     * Returns the full TCA of the currently handled field, having
+     * `type=flex` set.
+     */
     public function getFieldTca(): array
     {
         return $this->fieldTca;
@@ -64,16 +68,28 @@ final class AfterFlexFormDataStructureIdentifierInitializedEvent
         return $this->fieldName;
     }
 
+    /**
+     * Returns the whole database row of the current record.
+     */
     public function getRow(): array
     {
         return $this->row;
     }
 
+    /**
+     * Allows to modify or completely replace the initialized data
+     * structure identifier.
+     */
     public function setIdentifier(array $identifier): void
     {
         $this->identifier = $identifier;
     }
 
+    /**
+     * Returns the initialized data structure identifier, which has
+     * either been defined by an event listener or set to the default
+     * by the `FlexFormTools` component.
+     */
     public function getIdentifier(): array
     {
         return $this->identifier;

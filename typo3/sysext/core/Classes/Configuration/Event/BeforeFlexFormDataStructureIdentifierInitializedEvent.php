@@ -58,6 +58,10 @@ final class BeforeFlexFormDataStructureIdentifierInitializedEvent implements Sto
     ) {
     }
 
+    /**
+     * Returns the full TCA of the currently handled field, having
+     * `type=flex` set.
+     */
     public function getFieldTca(): array
     {
         return $this->fieldTca;
@@ -73,16 +77,30 @@ final class BeforeFlexFormDataStructureIdentifierInitializedEvent implements Sto
         return $this->fieldName;
     }
 
+    /**
+     * Returns the whole database row of the current record.
+     */
     public function getRow(): array
     {
         return $this->row;
     }
 
+    /**
+     * Allows to define the data structure identifier for the TCA field.
+     * Setting an identifier will immediately stop propagation. Avoid
+     * setting this parameter to an empty array as this will also stop
+     * propagation.
+     */
     public function setIdentifier(array $identifier): void
     {
         $this->identifier = $identifier;
     }
 
+    /**
+     * Returns the current data structure identifier, which will always be
+     * `null` for listeners, since the event propagation is
+     * stopped as soon as a listener defines an identifier.
+     */
     public function getIdentifier(): ?array
     {
         return $this->identifier ?? null;

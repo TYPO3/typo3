@@ -41,11 +41,20 @@ final class AfterFlexFormDataStructureParsedEvent
         return $this->identifier;
     }
 
+    /**
+     * Returns the current data structure, which has been processed and
+     * parsed by the `FlexFormTools` component. Might contain additional
+     * data from previously called listeners.
+     */
     public function getDataStructure(): array
     {
         return $this->dataStructure;
     }
 
+    /**
+     * Allows to modify or completely replace the parsed data
+     * structure identifier.
+     */
     public function setDataStructure(array $dataStructure): void
     {
         $this->dataStructure = $dataStructure;

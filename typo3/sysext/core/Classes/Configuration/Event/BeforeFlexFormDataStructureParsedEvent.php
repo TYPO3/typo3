@@ -40,11 +40,22 @@ final class BeforeFlexFormDataStructureParsedEvent implements StoppableEventInte
     ) {
     }
 
+    /**
+     * Returns the current data structure, which will always be `null`
+     * for listeners, since the event propagation is stopped as soon as
+     * a listener sets a data structure.
+     */
     public function getDataStructure(): array|string|null
     {
         return $this->dataStructure ?? null;
     }
 
+    /**
+     * Allows to either set an already parsed data structure as `array`,
+     * a file reference or the XML structure as `string`. Setting a data
+     * structure will immediately stop propagation. Avoid setting this parameter
+     * to an empty array or string as this will also stop propagation.
+     */
     public function setDataStructure(array|string $dataStructure): void
     {
         $this->dataStructure = $dataStructure;
