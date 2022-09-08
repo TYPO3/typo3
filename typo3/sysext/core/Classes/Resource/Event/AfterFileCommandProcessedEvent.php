@@ -36,12 +36,12 @@ final class AfterFileCommandProcessedEvent
     }
 
     /**
-     * A single command, e.g.:
+     * A single command, e.g.::
      *
-     * 'upload' => [
-     *     'target' => '1:/some/folder/'
-     *     'data' => '1'
-     * ]
+     *     'upload' => [
+     *         'target' => '1:/some/folder/'
+     *         'data' => '1'
+     *     ]
      *
      * @return array<string, array<string, mixed>>
      */
