@@ -62,6 +62,10 @@ final class StoragePermissionsAspect
     private function addFileMountsToStorage(ResourceStorage $storage)
     {
         foreach ($GLOBALS['BE_USER']->getFileMountRecords() as $fileMountRow) {
+            if (!str_contains($fileMountRow['identifier'], ':')) {
+                // Skip record since the file mount identifier is invalid
+                continue;
+            }
             [$base, $path] = GeneralUtility::trimExplode(':', $fileMountRow['identifier'], false, 2);
             if ((int)$base === (int)$storage->getUid()) {
                 try {
