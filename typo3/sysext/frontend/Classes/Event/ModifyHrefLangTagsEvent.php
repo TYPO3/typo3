@@ -42,11 +42,13 @@ final class ModifyHrefLangTagsEvent
     }
 
     /**
-     * Set the hreflangs. This should be an array in format:
-     *  [
-     *     'en-US' => 'https://example.com',
-     *     'nl-NL' => 'https://example.com/nl'
-     *  ]
+     * Set the hreflangs. This should be an array in format::
+     *
+     *     [
+     *         'en-US' => 'https://example.com',
+     *         'nl-NL' => 'https://example.com/nl'
+     *     ]
+     *
      * @param array $hrefLangs
      */
     public function setHrefLangs(array $hrefLangs): void
