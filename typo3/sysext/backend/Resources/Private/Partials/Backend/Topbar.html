@@ -51,7 +51,7 @@
         <ul class="toolbar-list" data-typo3-role="typo3-module-menu">
             <f:for each="{toolbarItems}" as="toolbarItem">
                 <li {be:toolbar.attributes(class: toolbarItem) -> f:format.raw()}>
-                    <f:if condition="{toolbarItem.dropdown}">
+                    <be:toolbar.ifHasDropdown class="{toolbarItem}">
                         <f:then>
                             <a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,-2">
                                 {toolbarItem.item -> f:format.raw()}
@@ -63,7 +63,7 @@
                         <f:else>
                             {toolbarItem.item -> f:format.raw()}
                         </f:else>
-                    </f:if>
+                    </be:toolbar.ifHasDropdown>
                 </li>
             </f:for>
         </ul>
