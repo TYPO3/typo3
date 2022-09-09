@@ -156,6 +156,7 @@ class ViewModuleController
                 ]),
             ])
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 

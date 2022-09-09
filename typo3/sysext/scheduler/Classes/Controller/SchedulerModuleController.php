@@ -1009,6 +1009,7 @@ class SchedulerModuleController
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $addButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -1029,7 +1030,8 @@ class SchedulerModuleController
             ->setValue('save')
             ->setForm('tx_scheduler_form')
             ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'));
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'))
+            ->setShowLabelText(true);
         $saveButtonDropdown->addItem($saveButton);
         $saveAndNewButton = $buttonBar->makeInputButton()
             ->setName('CMD')
@@ -1062,7 +1064,8 @@ class SchedulerModuleController
                 'bs-content' => $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete'),
             ])
             ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'));
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))
+            ->setShowLabelText(true);
         $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
     }
 

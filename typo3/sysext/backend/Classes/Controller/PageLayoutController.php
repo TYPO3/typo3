@@ -551,8 +551,9 @@ class PageLayoutController
                 ->setDataAttributes($previewDataAttributes ?? [])
                 ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+                ->setShowLabelText(true)
                 ->setHref('#');
-            $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
 
         // Shortcut
@@ -572,6 +573,7 @@ class PageLayoutController
             ->setHref('#')
             ->setDataAttributes(['id' => $this->pageinfo['uid']])
             ->setClasses('t3js-clear-page-cache')
+            ->setShowLabelText(true)
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
             ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
         $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
@@ -592,8 +594,9 @@ class PageLayoutController
             $editPageButton = $buttonBar->makeLinkButton()
                 ->setHref($url)
                 ->setTitle($languageService->getLL('editPageProperties'))
+                ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
-            $buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            $buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         // Edit page properties of page language overlay (Only when one specific language is selected)
@@ -636,6 +639,7 @@ class PageLayoutController
             );
             $editLanguageButton = $buttonBar->makeLinkButton()
                 ->setHref($url)
+                ->setShowLabelText(true)
                 ->setTitle($languageService->getLL('editPageLanguageOverlayProperties'))
                 ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
             $buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);

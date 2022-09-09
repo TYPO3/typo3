@@ -131,6 +131,7 @@ class ManagementController
             ]
             ))
             ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
         $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 

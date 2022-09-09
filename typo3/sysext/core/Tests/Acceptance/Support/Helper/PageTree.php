@@ -61,7 +61,7 @@ class PageTree extends AbstractPageTree
 
         $this->tester->pressKey($nodeEditInput, WebDriverKeys::ENTER);
         $this->tester->waitForElementNotVisible($nodeEditInput);
-        $this->tester->see($pageTitle);
+        $this->tester->waitForText($pageTitle);
     }
 
     /**

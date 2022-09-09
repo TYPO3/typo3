@@ -169,6 +169,7 @@ class BackendUserController extends ActionController
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
+            ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
@@ -232,6 +233,7 @@ class BackendUserController extends ActionController
         $editButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [$uid => 'edit']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
@@ -240,6 +242,7 @@ class BackendUserController extends ActionController
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
+            ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
@@ -401,6 +404,7 @@ class BackendUserController extends ActionController
         $addGroupButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
+            ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_groups' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),

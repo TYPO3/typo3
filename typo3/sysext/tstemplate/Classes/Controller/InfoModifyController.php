@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
@@ -120,5 +122,24 @@ class InfoModifyController extends AbstractTemplateModuleController
             'numberOfSetupLines' => trim((string)($templateRow['config'] ?? '')) ? count(explode(LF, (string)$templateRow['config'])) : 0,
         ]);
         return $view->renderResponse('InfoModifyMain');
+    }
+
+    protected function addNewButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, int $pageId): void
+    {
+        $languageService = $this->getLanguageService();
+        if ($pageId) {
+            $urlParameters = [
+                'id' => $pageId,
+                'template' => 'all',
+                'createExtension' => 'new',
+            ];
+            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+            $newButton = $buttonBar->makeLinkButton()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier, $urlParameters))
+                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
+                ->setShowLabelText(true)
+                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+            $buttonBar->addButton($newButton);
+        }
     }
 }

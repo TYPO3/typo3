@@ -280,6 +280,7 @@ class RecordListController
             ->setHref('#')
             ->setClasses('t3js-toggle-search-toolbox')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
         $buttonBar->addButton(
             $searchButton,
@@ -307,6 +308,7 @@ class RecordListController
             $newRecordButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
+                ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
             $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -320,8 +322,9 @@ class RecordListController
                     ->setHref('#')
                     ->setDataAttributes($previewDataAttributes ?? [])
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
-                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
+                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 15);
             }
             // If edit permissions are set, see BackendUserAuthentication
             if ($this->isPageEditable()) {
@@ -337,6 +340,7 @@ class RecordListController
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$editLink)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editPage'))
+                    ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
                 $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
@@ -356,7 +360,8 @@ class RecordListController
                         'bs-content' => $confirmMessage,
                         'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'),
                     ])
-                    ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL))
+                    ->setShowLabelText(true);
                 $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
             }
         }
@@ -366,6 +371,7 @@ class RecordListController
                 ->setHref('#')
                 ->setDataAttributes(['id' => $this->id])
                 ->setClasses('t3js-clear-page-cache')
+                ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -382,15 +388,9 @@ class RecordListController
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
-                $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
+                $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 50);
             }
         }
-        // Reload
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($listUrl)
-            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');

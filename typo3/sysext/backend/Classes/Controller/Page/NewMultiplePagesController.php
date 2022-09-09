@@ -72,6 +72,7 @@ class NewMultiplePagesController
         $viewButton = $buttonBar->makeLinkButton()
             ->setDataAttributes($previewDataAttributes ?? [])
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
         $buttonBar->addButton($viewButton);

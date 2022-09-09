@@ -231,6 +231,7 @@ class ListController extends AbstractController
         $button = $buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($title)
+            ->setShowLabelText(true)
             ->setClasses($classes)
             ->setIcon($icon);
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);

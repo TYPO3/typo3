@@ -136,6 +136,7 @@ class ImportController
             ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setShowLabelText(true)
             ->setHref('#')
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setDataAttributes($previewDataAttributes ?? []);
