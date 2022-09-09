@@ -279,6 +279,12 @@ services:
         method: 'afterFileMetaDataUpdated'
         event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent
 
+  TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect:
+    tags:
+      - name: event.listener
+        identifier: 'evaluate-file-meta-data-edit-form-access'
+        method: 'isAllowedToShowEditForm'
+
   TYPO3\CMS\Core\Resource\Security\SvgHookHandler:
     public: true
 

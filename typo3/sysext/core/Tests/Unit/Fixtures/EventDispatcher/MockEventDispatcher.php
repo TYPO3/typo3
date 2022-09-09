@@ -30,9 +30,18 @@ class MockEventDispatcher implements EventDispatcherInterface
 {
     /** @var object[] */
     public array $events = [];
+    /** @var \Closure[] */
+    public array $listeners = [];
     public function dispatch(object $event): object
     {
         $this->events[] = $event;
+        foreach ($this->listeners as $listener) {
+            $listener($event);
+        }
         return $event;
+    }
+    public function addListener(\Closure $listener): void
+    {
+        $this->listeners[] = $listener;
     }
 }

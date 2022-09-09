@@ -2021,4 +2021,10 @@ return [
             'Feature-98375-PSR-14EventsInPageModule.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException' => [
+        'restFiles' => [
+            'Breaking-98304-RemovedHookForModifyingEditFormUserAccess.rst',
+            'Feature-98304-PSR-14EventForModifyingEditFormUserAccess.rst',
+        ],
+    ],
 ];

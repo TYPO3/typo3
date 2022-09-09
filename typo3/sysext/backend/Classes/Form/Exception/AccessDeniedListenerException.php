@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,8 +18,8 @@
 namespace TYPO3\CMS\Backend\Form\Exception;
 
 /**
- * User access to record was denied by a makeEditForm_accessCheck hook
+ * User access to record was denied by a ModifyRecordEditUserAccessEvent listener
  */
-class AccessDeniedHookException extends AccessDeniedException
+class AccessDeniedListenerException extends AccessDeniedException
 {
 }

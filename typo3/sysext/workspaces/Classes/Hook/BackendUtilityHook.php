@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Hook;
 
+use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -58,30 +59,32 @@ class BackendUtilityHook
     }
 
     /**
-     * Use that hook to show an info message in case someone starts editing
-     * a staged element
-     *
-     * @param array $params
-     * @return bool
+     * Use that hook to show an info message in case someone starts editing a staged element
      */
-    public function makeEditForm_accessCheck($params)
+    public function displayEditingStagedElementInformation(ModifyEditFormUserAccessEvent $event): void
     {
-        if ($GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($params['table'])) {
-            $record = BackendUtility::getRecordWSOL($params['table'], $params['uid']);
-            if (isset($record['t3ver_stage']) && abs($record['t3ver_stage']) > StagesService::STAGE_EDIT_ID) {
-                $stages = GeneralUtility::makeInstance(StagesService::class);
-                $stageName = $stages->getStageTitle($record['t3ver_stage']);
-                $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
-                $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
-
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', ContextualFeedbackSeverity::INFO, true);
-
-                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                $defaultFlashMessageQueue->enqueue($flashMessage);
-            }
+        $tableName = $event->getTableName();
+        if ($GLOBALS['BE_USER']->workspace === 0 || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            return;
         }
-        return $params['hasAccess'];
+
+        $record = BackendUtility::getRecordWSOL($tableName, (int)($event->getDatabaseRow()['uid'] ?? 0));
+        if (!isset($record['t3ver_stage']) || abs($record['t3ver_stage']) <= StagesService::STAGE_EDIT_ID) {
+            return;
+        }
+
+        $stages = GeneralUtility::makeInstance(StagesService::class);
+        $stageName = $stages->getStageTitle($record['t3ver_stage']);
+        $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
+        $message = ($languageService = $this->getLanguageService()) !== null
+            ? $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified')
+            : 'Element is in workspace stage "%s", modifications will send it back to "%s".';
+
+        GeneralUtility::makeInstance(FlashMessageService::class)
+            ->getMessageQueueByIdentifier()
+            ->enqueue(
+                GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', ContextualFeedbackSeverity::INFO, true)
+            );
     }
 
     protected function getLanguageService(): ?LanguageService

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
@@ -131,22 +132,19 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
 
     /**
      * Deny access to the edit form. This is not mandatory, but better to show this right away that access is denied.
-     *
-     * @param array $parameters
-     * @return bool
      */
-    public function isAllowedToShowEditForm(array $parameters)
+    public function isAllowedToShowEditForm(ModifyEditFormUserAccessEvent $event): void
     {
-        $table = $parameters['table'];
-        $uid = $parameters['uid'];
-        $cmd = $parameters['cmd'];
-        $accessAllowed = $parameters['hasAccess'];
-
-        if ($accessAllowed && $table === 'sys_file_metadata' && $cmd === 'edit') {
-            $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', $uid);
-            $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
+        if (!$event->doesUserHaveAccess()
+            || $event->getTableName() !== 'sys_file_metadata'
+            || $event->getCommand() !== 'edit'
+        ) {
+            return;
         }
-        return $accessAllowed;
+
+        $this->checkFileWriteAccessForFileMetaData(
+            (array)BackendUtility::getRecord('sys_file_metadata', (int)($event->getDatabaseRow()['uid'] ?? 0))
+        ) ? $event->allowUserAccess() : $event->denyUserAccess();
     }
 
     /**

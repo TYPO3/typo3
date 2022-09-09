@@ -911,4 +911,10 @@ return [
             'Breaking-97452-RemovedEditFileControllerHooks.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/alt_doc.php\'][\'makeEditForm_accessCheck\']' => [
+        'restFiles' => [
+            'Breaking-98304-RemovedHookForModifyingEditFormUserAccess.rst',
+            'Feature-98304-PSR-14EventForModifyingEditFormUserAccess.rst',
+        ],
+    ],
 ];

@@ -39,6 +39,9 @@ services:
       - name: event.listener
         identifier: 'typo3-workspaces/link-modifier'
         method: 'createPageUriForWorkspaceVersion'
+      - name: event.listener
+        identifier: 'typo3-workspaces/display-editing-staged-element-information'
+        method: 'displayEditingStagedElementInformation'
 
   TYPO3\CMS\Workspaces\EventListener\PageTreeItemsHighlighter:
     tags:

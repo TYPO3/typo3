@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedEditInternalsException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedListenerException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageEditException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageNewException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedRootNodeException;
@@ -48,7 +50,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
      *
      * @param array $result
      * @return array
-     * @throws AccessDeniedException|\LogicException|\RuntimeException
+     * @throws AccessDeniedException
      */
     public function addData(array $result)
     {
@@ -70,7 +72,6 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
         }
 
         $exception = null;
-        $userHasAccess = false;
         $userPermissionOnPage = new Permission(Permission::NOTHING);
         if ($result['command'] === 'new') {
             // A new record is created. Access rights of parent record are important here
@@ -81,28 +82,21 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
                 $userPermissionOnPage = new Permission($backendUser->calcPerms($result['parentPageRow']));
                 if ($result['tableName'] === 'pages') {
                     // New page is created, user needs PAGE_NEW for this
-                    if ($userPermissionOnPage->createPagePermissionIsGranted()) {
-                        $userHasAccess = true;
-                    } else {
+                    if (!$userPermissionOnPage->createPagePermissionIsGranted()) {
                         $exception = new AccessDeniedPageNewException(
                             'No page new permission for user ' . $backendUser->user['uid'] . ' on page ' . $result['databaseRow']['uid'],
                             1437745640
                         );
                     }
-                } else {
+                } elseif (!$userPermissionOnPage->editContentPermissionIsGranted()) {
                     // A regular record is added, not a page. User needs CONTENT_EDIT permission
-                    if ($userPermissionOnPage->editContentPermissionIsGranted()) {
-                        $userHasAccess = true;
-                    } else {
-                        $exception = new AccessDeniedContentEditException(
-                            'No content new permission for user ' . $backendUser->user['uid'] . ' on page ' . $result['parentPageRow']['uid'],
-                            1437745759
-                        );
-                    }
+                    $exception = new AccessDeniedContentEditException(
+                        'No content new permission for user ' . $backendUser->user['uid'] . ' on page ' . $result['parentPageRow']['uid'],
+                        1437745759
+                    );
                 }
             } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
                 // Non admin is creating a record on root node for a table that is actively allowed
-                $userHasAccess = true;
                 $userPermissionOnPage->set(Permission::ALL);
             } else {
                 // Non admin has no create permission on root node records
@@ -116,93 +110,63 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             if ($result['tableName'] === 'pages') {
                 // A page record is edited, check edit rights of this record directly
                 $userPermissionOnPage = new Permission($backendUser->calcPerms($result['defaultLanguagePageRow'] ?? $result['databaseRow']));
-                if ($userPermissionOnPage->editPagePermissionIsGranted() && $backendUser->check('pagetypes_select', $result['databaseRow'][$result['processedTca']['ctrl']['type']])) {
-                    $userHasAccess = true;
-                } else {
+                if (!$userPermissionOnPage->editPagePermissionIsGranted()
+                    || !$backendUser->check('pagetypes_select', $result['databaseRow'][$result['processedTca']['ctrl']['type']])
+                ) {
                     $exception = new AccessDeniedPageEditException(
                         'No page edit permission for user ' . $backendUser->user['uid'] . ' on page ' . $result['databaseRow']['uid'],
                         1437679336
                     );
                 }
-            } else {
+            } elseif (isset($result['parentPageRow']) && is_array($result['parentPageRow'])) {
                 // A non page record is edited.
-                if (isset($result['parentPageRow']) && is_array($result['parentPageRow'])) {
-                    // If there is a parent page row, check content edit right of user
-                    $userPermissionOnPage = new Permission($backendUser->calcPerms($result['parentPageRow']));
-                    if ($userPermissionOnPage->editContentPermissionIsGranted()) {
-                        $userHasAccess = true;
-                    } else {
-                        $exception = new AccessDeniedContentEditException(
-                            'No content edit permission for user ' . $backendUser->user['uid'] . ' on page ' . $result['parentPageRow']['uid'],
-                            1437679657
-                        );
-                    }
-                } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
-                    // Non admin is editing a record on root node for a table that is actively allowed
-                    $userHasAccess = true;
-                    $userPermissionOnPage->set(Permission::ALL);
-                } else {
-                    // Non admin has no edit permission on root node records
-                    // @todo: This probably needs further handling, see http://review.typo3.org/40835
-                    $exception = new AccessDeniedRootNodeException(
-                        'No content edit permission for user ' . $backendUser->user['uid'] . ' on page root node',
-                        1437679856
+                // If there is a parent page row, check content edit right of user
+                $userPermissionOnPage = new Permission($backendUser->calcPerms($result['parentPageRow']));
+                if (!$userPermissionOnPage->editContentPermissionIsGranted()) {
+                    $exception = new AccessDeniedContentEditException(
+                        'No content edit permission for user ' . $backendUser->user['uid'] . ' on page ' . $result['parentPageRow']['uid'],
+                        1437679657
                     );
                 }
-            }
-            if ($userHasAccess) {
-                // If general access is allowed, check "recordEditAccessInternals"
-                $userHasAccess = $backendUser->recordEditAccessInternals($result['tableName'], $result['databaseRow']);
-                if (!$userHasAccess) {
-                    $exception = new AccessDeniedEditInternalsException(
-                        $backendUser->errorMsg,
-                        1437687404
-                    );
-                }
-            }
-        }
-
-        if ($userHasAccess && $exception) {
-            // Having user access TRUE here and an exception defined must not happen,
-            // indicates an internal error and throws a logic exception
-            throw new \LogicException(
-                'Access was TRUE but an exception was raised as well for table ' . $result['tableName'] . ' and user ' . $backendUser->user['uid'],
-                1437688402
-            );
-        }
-
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] ?? null)) {
-            // A hook may modify the $userHasAccess decision. Previous state is saved to see if a hook changed
-            // a previous decision from TRUE to FALSE to throw a specific exception in this case
-            $userHasAccessBeforeHook = $userHasAccess;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] as $methodReference) {
-                $parameters = [
-                    'table' => $result['tableName'],
-                    'uid' => $result['databaseRow']['uid'] ?? 0,
-                    'cmd' => $result['command'],
-                    'hasAccess' => $userHasAccess,
-                ];
-                $userHasAccess = (bool)GeneralUtility::callUserFunction($methodReference, $parameters, $this);
-            }
-            if ($userHasAccessBeforeHook && !$userHasAccess) {
-                $exception = new AccessDeniedHookException(
-                    'Access to table ' . $result['tableName'] . ' for user ' . $backendUser->user['uid'] . ' was denied by a makeEditForm_accessCheck hook',
-                    1437689705
+            } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
+                // Non admin is editing a record on root node for a table that is actively allowed
+                $userPermissionOnPage->set(Permission::ALL);
+            } else {
+                // Non admin has no edit permission on root node records
+                // @todo: This probably needs further handling, see http://review.typo3.org/40835
+                $exception = new AccessDeniedRootNodeException(
+                    'No content edit permission for user ' . $backendUser->user['uid'] . ' on page root node',
+                    1437679856
                 );
             }
-            if (!$userHasAccessBeforeHook && $userHasAccess) {
-                // Unset a previous exception if hook allowed access where previous checks didn't
-                $exception = null;
+            // If general access is allowed, check "recordEditAccessInternals"
+            if ($exception === null
+                && !$backendUser->recordEditAccessInternals($result['tableName'], $result['databaseRow'])
+            ) {
+                $exception = new AccessDeniedEditInternalsException($backendUser->errorMsg, 1437687404);
             }
         }
 
-        if (!$userHasAccess && !$exception) {
-            // User has no access, but no according exception was defined. This is an
-            // internal error and throws a logic exception.
-            throw new \LogicException(
-                'Access to table ' . $result['tableName'] . ' denied, but no reason given',
-                1437690507
+        $userHasAccess = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new ModifyEditFormUserAccessEvent(
+                $exception,
+                $result['tableName'],
+                $result['command'],
+                $result['databaseRow'],
+            )
+        )->doesUserHaveAccess();
+
+        // Throw specific exception because a listener to the Event denied the previous positive user access decision
+        if ($exception === null && !$userHasAccess) {
+            $exception = new AccessDeniedListenerException(
+                'Access to table ' . $result['tableName'] . ' for user ' . $backendUser->user['uid'] . ' was denied by a ModifyRecordEditUserAccessEvent listener',
+                1662727149
             );
+        }
+
+        // Unset a previous exception because a listener to the Event allowed the previous negative user access decision
+        if ($exception !== null && $userHasAccess) {
+            $exception = null;
         }
 
         if ($exception) {
