@@ -84,10 +84,11 @@ $sourcesanspro-font-path: "../Fonts/SourceSansPro";
 @import "scaffold/modulemenu";
 
 //
-// Custom Components
+// Components
 //
 @import "component/alert";
 @import "component/autocomplete";
+@import "component/badges";
 @import "component/buttons";
 @import "component/dropdown";
 @import "component/avatar";

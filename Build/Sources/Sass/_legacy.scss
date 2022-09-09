@@ -33,11 +33,6 @@
         + .panel-collapse > .panel-body {
             border-top-color: $border;
         }
-
-        .badge {
-            color: $heading-bg-color;
-            background-color: $heading-text-color;
-        }
     }
 
     & > .panel-footer {
@@ -192,13 +187,6 @@ label {
     @include table-variant($color, $value);
 }
 // scss-docs-end table-variant
-
-// badge fallback
-// todo use ".badge .rounded-pill .bg-{themeColor}" instead of only .badge
-[class="badge"] {
-    background-color: $gray-600;
-    border-radius: $rounded-pill;
-}
 
 // nav fallback
 // todo add ".nav-item" and ".nav-link" classes to markup

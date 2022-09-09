@@ -73,10 +73,6 @@
             .panel-progress .panel-progress-bar {
                 background-color: $danger;
             }
-
-            .badge {
-                @include badge-use-variant('danger');
-            }
         }
 
         &.panel-deprecation,
@@ -86,10 +82,6 @@
 
             .panel-progress .panel-progress-bar {
                 background-color: $warning;
-            }
-
-            .badge {
-                @include badge-use-variant('warning');
             }
         }
 
@@ -101,10 +93,6 @@
             .panel-progress .panel-progress-bar {
                 background-color: $success;
             }
-
-            .badge {
-                @include badge-use-variant('success');
-            }
         }
 
         &.panel-important,
@@ -114,10 +102,6 @@
 
             .panel-progress .panel-progress-bar {
                 background-color: $info;
-            }
-
-            .badge {
-                @include badge-use-variant('info');
             }
         }
 

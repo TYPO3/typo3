@@ -251,14 +251,14 @@ class ExtensionScanner extends AbstractInteractableModule {
                     aMatch.find('.t3js-extensionScanner-hit-message').text(match.message);
                     if (match.indicator === 'strong') {
                       aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
-                        .append('<span class="badge" title="Reliable match, false positive unlikely">strong</span>');
+                        .append('<span class="badge badge-danger" title="Reliable match, false positive unlikely">strong</span>');
                     } else {
                       aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
-                        .append('<span class="badge" title="Probable match, but can be a false positive">weak</span>');
+                        .append('<span class="badge badge-warning" title="Probable match, but can be a false positive">weak</span>');
                     }
                     if (match.silenced === true) {
                       aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
-                        .append('<span class="badge" title="Match has been annotated by extension author' +
+                        .append('<span class="badge badge-info" title="Match has been annotated by extension author' +
                           ' as false positive match">silenced</span>');
                     }
                     aMatch.find('.t3js-extensionScanner-hit-file-lineContent').empty().text(match.lineContent);
