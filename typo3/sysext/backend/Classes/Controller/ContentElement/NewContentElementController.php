@@ -370,7 +370,7 @@ class NewContentElementController
         $itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
         $itemConf['description'] = $this->getLanguageService()->sL($itemConf['description']);
         $itemConf['saveAndClose'] = (bool)($itemConf['saveAndClose'] ?? false);
-        $itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
+        $itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'] ?? [];
         unset($itemConf['tt_content_defValues.']);
         return $itemConf;
     }
