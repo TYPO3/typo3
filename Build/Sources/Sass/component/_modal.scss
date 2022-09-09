@@ -59,7 +59,6 @@ $modal-sidebar-md: 300px;
 .modal-body {
     flex: 1 1 auto;
     overflow-y: auto;
-    padding-bottom: 0;
     display: flex;
     flex-direction: column;
 
@@ -72,7 +71,7 @@ $modal-sidebar-md: 300px;
 
 .modal-header,
 .modal-footer {
-    padding: .625rem 1rem;
+    padding: calc(var(--#{$prefix}modal-padding) / 2) var(--#{$prefix}modal-padding);
 }
 
 .modal-footer {

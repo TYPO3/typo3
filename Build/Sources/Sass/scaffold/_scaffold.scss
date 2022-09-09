@@ -42,7 +42,6 @@ html {
 
 body {
     height: 100%;
-    overflow: auto;
 }
 
 //
@@ -135,8 +134,7 @@ body {
     }
 }
 
-.scaffold-toolbar-expanded,
-.scaffold-search-expanded {
+.scaffold-toolbar-expanded {
     .scaffold-toolbar {
         .toolbar {
             background-color: $scaffold-modulemenu-bg;

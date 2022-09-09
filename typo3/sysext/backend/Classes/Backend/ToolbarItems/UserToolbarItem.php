@@ -149,7 +149,7 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
      */
     public function getIndex(): int
     {
-        return 80;
+        return 90;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

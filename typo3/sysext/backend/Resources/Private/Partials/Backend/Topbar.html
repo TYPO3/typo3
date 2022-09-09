@@ -53,7 +53,7 @@
                 <li {be:toolbar.attributes(class: toolbarItem) -> f:format.raw()}>
                     <be:toolbar.ifHasDropdown class="{toolbarItem}">
                         <f:then>
-                            <a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,-2">
+                            <a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,0">
                                 {toolbarItem.item -> f:format.raw()}
                             </a>
                             <div class="dropdown-menu" role="menu">

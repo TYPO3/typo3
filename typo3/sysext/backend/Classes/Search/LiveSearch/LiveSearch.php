@@ -46,7 +46,7 @@ class LiveSearch
 
     private string $queryString = '';
     private int $startCount = 0;
-    private int $limitCount = 5;
+    private int $limitCount = 50;
     protected string $userPermissions = '';
 
     protected UriBuilder $uriBuilder;
@@ -216,11 +216,16 @@ class LiveSearch
             }
             $onlineUid = ($row['t3ver_oid'] ?? false) ?: $row['uid'];
             $title = 'id=' . $row['uid'] . ', pid=' . $row['pid'];
+            $icon = $this->iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL);
             $collect[$onlineUid] = [
-                'id' => $tableName . ':' . $row['uid'],
-                'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
                 'typeLabel' => $this->getTitleOfCurrentRecordType($tableName),
-                'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $this->iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
+                'uid' => $row['uid'],
+                'pid' => $row['pid'],
+                'icon' => [
+                    'title' => $title,
+                    'identifier' => $icon->getIdentifier(),
+                    'overlay' => $icon->getOverlayIcon()?->getIdentifier(),
+                ],
                 'title' => BackendUtility::getRecordTitle($tableName, $row),
                 'editLink' => $this->getEditLink($tableName, $row),
             ];

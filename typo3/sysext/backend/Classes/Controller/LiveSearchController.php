@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch;
 use TYPO3\CMS\Backend\Search\LiveSearch\QueryParser;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,6 +39,9 @@ class LiveSearchController
      */
     public function liveSearchAction(ServerRequestInterface $request): ResponseInterface
     {
+        if (!isset($request->getQueryParams()['q'])) {
+            return new Response('', 400, [], 'Missing argument "q"');
+        }
         $queryString = trim($request->getQueryParams()['q']);
         $liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
         $queryParser = GeneralUtility::makeInstance(QueryParser::class);

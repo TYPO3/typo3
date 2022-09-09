@@ -210,7 +210,10 @@ select {
     position: relative;
     border: 0;
     padding: 0;
-    height: 100%;
+
+    input[type=search]::-webkit-search-cancel-button {
+        display: none;
+    }
 
     .form-control {
         padding-right: 2.3em;
@@ -585,19 +588,21 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
 .sticky-form-actions {
     position: sticky;
     top: 0;
-    z-index: 1;
-    margin-left: -1rem; // revert modal-body padding
-    margin-right: -1rem; // revert modal-body padding
-    margin-bottom: -.625rem; // revert for modal-header / modal-footer like padding
-    transform: translateY(-1rem); // revert modal-body padding
-    padding: .625rem 1rem; // modal-header / modal-footer like padding
+    z-index: 2;
+    padding: calc(#{$spacer} / 2) $spacer;
     background: $white;
 
-    a,
-    button,
-    input,
-    .input-group-addon {
-        margin: .25rem 0;
+    .modal-body & {
+        margin-left: calc(var(--#{$prefix}modal-padding) * -1);
+        margin-right: calc(var(--#{$prefix}modal-padding) * -1);
+        margin-bottom: var(--#{$prefix}modal-padding);
+        padding: calc(var(--#{$prefix}modal-padding) / 2) var(--#{$prefix}modal-padding);
+        border-bottom: var(--#{$prefix}modal-border-width) solid var(--#{$prefix}modal-border-color);
+
+        &:first-child {
+            transform: translateY(calc(var(--#{$prefix}modal-padding) * -1));
+            margin-bottom: 0;
+        }
     }
 }
 

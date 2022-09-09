@@ -27,14 +27,13 @@ class Toolbar {
   private static initializeEvents(): void {
     new RegularEvent('click', (): void => {
       const scaffold = document.querySelector('.scaffold');
-      scaffold.classList.remove('scaffold-modulemenu-expanded', 'scaffold-search-expanded');
+      scaffold.classList.remove('scaffold-modulemenu-expanded');
       scaffold.classList.toggle('scaffold-toolbar-expanded');
     }).bindTo(document.querySelector('.t3js-topbar-button-toolbar'));
 
     new RegularEvent('click', (): void => {
       const scaffold = document.querySelector('.scaffold');
       scaffold.classList.remove('scaffold-modulemenu-expanded', 'scaffold-toolbar-expanded');
-      scaffold.classList.toggle('scaffold-search-expanded');
     }).bindTo(document.querySelector('.t3js-topbar-button-search'))
   }
 }

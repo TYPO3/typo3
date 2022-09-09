@@ -105,7 +105,6 @@ class ModuleMenu {
     scaffold.classList.toggle(expandedClass, !collapse);
 
     if (!collapse) {
-      scaffold.classList.remove('scaffold-search-expanded');
       scaffold.classList.remove('scaffold-toolbar-expanded');
     }
 

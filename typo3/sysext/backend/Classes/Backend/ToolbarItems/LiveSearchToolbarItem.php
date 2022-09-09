@@ -65,7 +65,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getAdditionalAttributes(): array
     {
-        return ['class' => 'toolbar-item-search t3js-toolbar-item-search'];
+        return ['class' => 't3js-toolbar-item-search'];
     }
 
     /**
@@ -89,7 +89,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getIndex(): int
     {
-        return 90;
+        return 80;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

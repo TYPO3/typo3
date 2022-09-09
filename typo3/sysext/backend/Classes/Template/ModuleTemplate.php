@@ -149,6 +149,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/live-search/double-shift-trigger.js');
         $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render($templateFileName));
         $this->pageRenderer->setTitle($this->title);
         $updateSignalDetails = BackendUtility::getUpdateSignalDetails();

@@ -444,6 +444,12 @@
 			<trans-unit id="liveSearch_helpDescriptionPages" resname="liveSearch_helpDescriptionPages">
 				<source>#page:Home will search for all pages with the title "Home"</source>
 			</trans-unit>
+			<trans-unit id="liveSearch_helpDescriptionContent" resname="liveSearch_helpDescriptionContent">
+				<source>#content:Professional will search for all content elements containing the term "Professional"</source>
+			</trans-unit>
+			<trans-unit id="liveSearch_help.doubleShift" resname="liveSearch_help.doubleShift">
+				<source>You can open the live search by pressing the Shift key twice</source>
+			</trans-unit>
 			<trans-unit id="viewPort_tooltipModuleMenuSplit" resname="viewPort_tooltipModuleMenuSplit">
 				<source>Drag to resize the Modules Menu</source>
 			</trans-unit>

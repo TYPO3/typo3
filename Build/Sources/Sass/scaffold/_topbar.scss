@@ -86,39 +86,7 @@ $toolbar-item-padding-horizontal: 15px;
 }
 
 .scaffold-toolbar-expanded {
-    @media (max-width: $scaffold-breakpoint-max) {
-        .toolbar-item-search {
-            display: none;
-        }
-    }
-
     .topbar-button-toolbar {
-        background-color: $topbar-button-active-bg;
-    }
-}
-
-.scaffold-search-expanded {
-    @media (max-width: $scaffold-breakpoint-max) {
-        .toolbar-item {
-            display: none;
-        }
-
-        .toolbar-item-search {
-            display: block;
-            width: 100%;
-            padding: 0;
-
-            .form-control-icon {
-                display: none;
-            }
-
-            input[type=search] {
-                padding-left: 1.25rem;
-            }
-        }
-    }
-
-    .topbar-button-search {
         background-color: $topbar-button-active-bg;
     }
 }

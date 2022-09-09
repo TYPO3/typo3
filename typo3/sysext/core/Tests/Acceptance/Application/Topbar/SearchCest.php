@@ -17,62 +17,67 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Topbar;
 
+use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
-use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 /**
  * Test the search module in the top bar
  */
 class SearchCest
 {
-    /**
-     * Selector for the module container in the topbar
-     *
-     * @var string
-     */
-    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
-    public static $dropdownListSelector = '.t3js-toolbar-item-search.toolbar-item-search-field-dropdown';
+    public static string $toolbarItemSelector = '.t3js-toolbar-item-search';
+    public static string $searchField = 'input[type="search"][name="searchField"]';
+    public static string $searchResultContainer = 'typo3-backend-live-search-result-container';
+    public static string $searchResultItem = 'typo3-backend-live-search-result-item';
 
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    public function searchAndTestIfAutocompletionWorks(ApplicationTester $I): void
+    public function searchAndTestIfAutocompletionWorks(ApplicationTester $I, ModalDialog $dialog): void
     {
-        // .t3js-toolbar-item-search.toolbar-item-search-field-dropdown
-        $I->cantSeeElement(self::$dropdownListSelector);
-        $I->fillField('#live-search-box', 'adm');
-        $I->waitForElementVisible(self::$dropdownListSelector);
+        $I->cantSeeElement(self::$searchField);
+        $I->click(self::$toolbarItemSelector);
+        $dialog->canSeeDialog();
 
-        $I->canSee('Backend user', self::$dropdownListSelector);
-        $I->click('admin', self::$dropdownListSelector);
+        $I->fillField(self::$searchField, 'adm');
+
+        $I->canSee('Backend user', self::$searchResultItem);
+        $I->click(self::$searchResultItem . '[itemtitle="admin"]');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "admin" on root level');
     }
 
-    public function searchForFancyTextAndCheckEmptyResultInfo(ApplicationTester $I): void
+    public function searchForFancyTextAndCheckEmptyResultInfo(ApplicationTester $I, ModalDialog $dialog): void
     {
-        $I->fillField('#live-search-box', 'Kasper = Jesus # joh316');
-        $I->waitForElementVisible(self::$dropdownListSelector, 100);
+        $I->click(self::$toolbarItemSelector);
+        $dialog->canSeeDialog();
 
-        // tod0: check why TYPO3 does not return a result for "Kasper" by itself
-        $I->canSee('No results found.', self::$dropdownListSelector);
+        $I->fillField(self::$searchField, 'Kasper = Jesus # joh316');
 
-        $I->click(self::$topBarModuleSelector . ' .close');
-        $I->waitForElementNotVisible(self::$dropdownListSelector, 100);
-        $I->cantSeeInField('#live-search-box', 'Kasper = Jesus # joh316');
+        // todo: check why TYPO3 does not return a result for "Kasper" by itself
+        $I->canSee('No results found.', 'div.alert');
+
+        $I->pressKey(self::$searchField, WebDriverKeys::ESCAPE);
+
+        $I->waitForElementNotVisible(self::$searchResultContainer);
+        $I->cantSee(self::$searchField);
     }
 
-    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(ApplicationTester $I): void
+    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(ApplicationTester $I, ModalDialog $dialog): void
     {
-        $I->fillField('#live-search-box', 'fileadmin');
-        $I->waitForElementVisible(self::$dropdownListSelector);
+        $I->click(self::$toolbarItemSelector);
+        $dialog->canSeeDialog();
 
-        $I->canSee('fileadmin', self::$dropdownListSelector);
-        $I->click('Show All', self::$dropdownListSelector);
+        $I->fillField(self::$searchField, 'fileadmin');
+
+        $I->canSee('fileadmin', self::$searchResultItem);
+        $I->click('Show All', '#backend-live-search');
+        $I->waitForElementNotVisible(self::$searchResultContainer);
 
         $I->switchToContentFrame();
 

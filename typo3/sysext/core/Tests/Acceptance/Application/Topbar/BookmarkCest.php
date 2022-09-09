@@ -68,6 +68,9 @@ class BookmarkCest
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->cantSeeElement(self::$topBarModuleSelector . ' .shortcut');
 
+        // Click toolbar item to close dropdown again
+        $this->clickBookmarkDropdownToggleInTopbar($I);
+
         $I->switchToContentFrame();
         $I->click(self::$docHeaderBookmarkButtonSelector);
         $I->waitForElementVisible('.module-docheader .dropdown-menu');

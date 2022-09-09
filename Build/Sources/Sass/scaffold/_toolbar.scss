@@ -44,12 +44,6 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         display: table;
         content: '';
     }
-
-    > li:last-child {
-        @media (min-width: $scaffold-breakpoint) {
-            width: 300px;
-        }
-    }
 }
 
 // Toolbar Item
@@ -80,7 +74,6 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         overflow-y: auto;
 
         @media (min-width: $scaffold-breakpoint) {
-            margin-top: 1px !important;
             border-top: 0;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
@@ -102,10 +95,6 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     margin-right: 2px;
     display: inline-block;
     vertical-align: middle;
-
-    .avatar {
-        --avatar-size: 28px;
-    }
 }
 
 .toolbar-item-icon {
@@ -157,90 +146,5 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 @media (min-width: $scaffold-breakpoint) {
     .toolbar-item-title {
         display: none;
-    }
-}
-
-// Search
-.toolbar-item-search {
-    form {
-        padding: 0;
-        margin: 0;
-    }
-
-    .toolbar-item-link {
-        padding: 0;
-        margin: 0;
-        height: 0;
-    }
-
-    .form-group {
-        margin: 0;
-    }
-
-    .close {
-        color: #fff;
-        text-shadow: none;
-        opacity: 1;
-    }
-
-    input[type=search]::-webkit-search-cancel-button {
-        display: none;
-    }
-
-    &.open {
-        .toolbar-item-search-form {
-            position: relative;
-            z-index: 991;
-        }
-    }
-}
-
-.toolbar-item-search {
-    .form-control {
-        color: $white;
-        background-color: $toolbar-navigation-search-bg;
-    }
-}
-
-.toolbar-item-search-field {
-    color: $white;
-    background-color: $toolbar-navigation-search-bg;
-    padding-left: 1.5rem;
-    margin: 0;
-    border-radius: 0;
-    border: 1px solid rgba(0, 0, 0, .5);
-
-    @media (min-width: $scaffold-breakpoint) {
-        border: none;
-    }
-    height: $toolbar-height;
-    box-shadow: none;
-
-    &:hover {
-        background-color: $toolbar-navigation-search-hover-bg;
-    }
-
-    &:focus {
-        box-shadow: none;
-        background-color: $toolbar-navigation-search-focus-bg;
-    }
-}
-
-.toolbar-item-search-field-dropdown {
-    @media (min-width: $scaffold-breakpoint) {
-        width: 100%;
-        max-width: 300px !important;
-        border-top: 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .autocomplete-suggestions {
-        position: static !important;
-    }
-
-    .autocomplete-suggestion {
-        border: none;
     }
 }

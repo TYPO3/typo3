@@ -1,0 +1,55 @@
+//
+// Livesearch
+//
+typo3-backend-live-search-result-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+typo3-backend-live-search-result-item {
+    display: flex;
+    gap: .5em;
+    font-size: var(--typo3-component-font-size);
+    line-height: var(--typo3-component-line-height);
+    padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+    border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
+    color: #{$body-color};
+    background-color: #{$white};
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        z-index: 1;
+        outline-offset: -1px;
+    }
+
+    &:hover {
+        background-color: tint-color($primary, 95%);
+        outline: 1px solid tint-color($primary, 85%);
+    }
+
+    &:focus {
+        background-color: tint-color($primary, 95%);
+        outline: 1px solid tint-color($primary, 20%);
+    }
+
+    .livesearch-result-item-icon {
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .livesearch-result-item-title {
+        flex-grow: 1;
+
+        small {
+            opacity: .5;
+        }
+    }
+
+    .livesearch-result-item-type {
+        flex-shrink: 0;
+        flex-grow: 0;
+        opacity: .5;
+    }
+}
