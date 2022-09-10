@@ -209,11 +209,11 @@ module.exports = function (grunt) {
       },
       sass: {
         files: '<%= paths.sass %>**/*.scss',
-        tasks: 'css'
+        tasks: ['css', 'bell']
       },
       ts: {
         files: '<%= paths.typescript %>/**/*.ts',
-        tasks: 'scripts'
+        tasks: ['scripts', 'bell']
       }
     },
     copy: {
@@ -844,6 +844,13 @@ module.exports = function (grunt) {
 
     grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4) + '\n');
   });
+
+  /**
+   * Outputs a "bell" character. When output, modern terminals flash shortly or produce a notification (usually configurable).
+   * This Grunt config uses it after the "watch" task finished compiling, signaling to the developer that her/his changes
+   * are now compiled.
+   */
+  grunt.registerTask('bell', () => console.log('\u0007'));
 
   /**
    * grunt default task
