@@ -575,9 +575,9 @@ class SchedulerModuleController
                 // Try to execute it and report result
                 $result = $this->scheduler->executeTask($task);
                 if ($result) {
-                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executed'), $name));
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executed'), $name, $uid));
                 } else {
-                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.notExecuted'), $name), ContextualFeedbackSeverity::ERROR);
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.notExecuted'), $name, $uid), ContextualFeedbackSeverity::ERROR);
                 }
                 $this->scheduler->recordLastRun('manual');
             } catch (\OutOfBoundsException $e) {
