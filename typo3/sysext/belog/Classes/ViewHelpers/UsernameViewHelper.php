@@ -46,7 +46,7 @@ class UsernameViewHelper extends AbstractViewHelper
     /**
      * Resolve user name from backend user id.
      *
-     * @param array $arguments
+     * @param array{uid: int} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *

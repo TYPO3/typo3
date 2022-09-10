@@ -49,7 +49,7 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
     /**
      * Resolve workspace title from UID.
      *
-     * @param array $arguments
+     * @param array{uid: int} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *

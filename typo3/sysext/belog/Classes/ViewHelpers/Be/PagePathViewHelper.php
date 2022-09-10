@@ -50,7 +50,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper
     }
 
     /**
-     * @param array $arguments
+     * @param array{pid: int, titleLimit: int} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
