@@ -36,7 +36,7 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('logEntry', LogEntry::class, '', true);
+        $this->registerArgument('logEntry', LogEntry::class, 'Log entry instance to be rendered', true);
     }
 
     /**
@@ -47,6 +47,8 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
      * with the substitutions.
      * Furthermore, possible files in logData are stripped to their basename if
      * the action logged was a file action
+     *
+     * @param array{logEntry: LogEntry} $arguments
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {

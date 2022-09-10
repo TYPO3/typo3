@@ -47,6 +47,9 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
         );
     }
 
+    /**
+     * @param array{pid: int, titleLimit: int} $arguments
+     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         return BackendUtility::getRecordPath($arguments['pid'], '', $arguments['titleLimit']);

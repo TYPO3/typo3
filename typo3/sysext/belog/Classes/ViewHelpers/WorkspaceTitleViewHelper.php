@@ -46,6 +46,7 @@ final class WorkspaceTitleViewHelper extends AbstractViewHelper
     /**
      * Return resolved workspace title or empty string if it can not be resolved.
      *
+     * @param array{uid: int} $arguments
      * @throws \InvalidArgumentException
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string

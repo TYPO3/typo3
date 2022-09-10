@@ -46,6 +46,8 @@ final class UsernameViewHelper extends AbstractViewHelper
 
     /**
      * Resolve user name from backend user id. Can return empty string if there is no user with that UID.
+     *
+     * @param array{uid: int} $arguments
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
