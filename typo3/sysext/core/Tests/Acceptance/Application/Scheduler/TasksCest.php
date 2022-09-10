@@ -62,7 +62,7 @@ class TasksCest
     {
         // run the task
         $I->click('button[name="tx_scheduler[execute]"]');
-        $I->waitForText('Executed: System Status Update');
+        $I->waitForText('Task "System Status Update (reports)" with uid "1" has been executed.');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
     }

@@ -794,9 +794,9 @@ class SchedulerModuleController
                         try {
                             $result = $this->scheduler->executeTask($task);
                             if ($result) {
-                                $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.executed'), $name));
+                                $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.executed'), $name, $uid));
                             } else {
-                                $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.notExecuted'), $name), FlashMessage::ERROR);
+                                $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.notExecuted'), $name, $uid), FlashMessage::ERROR);
                             }
                         } catch (\Exception $e) {
                             // An exception was thrown, display its message as an error

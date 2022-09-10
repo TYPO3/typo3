@@ -223,7 +223,7 @@
 				<source>The end date is before the start date.</source>
 			</trans-unit>
 			<trans-unit id="msg.executed" resname="msg.executed">
-				<source>Executed: %s</source>
+				<source>Task "%s" with uid "%s" has been executed.</source>
 			</trans-unit>
 			<trans-unit id="msg.frequencyError" resname="msg.frequencyError">
 				<source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
@@ -271,7 +271,7 @@
 				<source>No tasks defined yet.</source>
 			</trans-unit>
 			<trans-unit id="msg.notExecuted" resname="msg.notExecuted">
-				<source>Not executed: %s</source>
+				<source>Task "%s" with uid "%s" has not been executed.</source>
 			</trans-unit>
 			<trans-unit id="msg.executionFailed" resname="msg.executionFailed">
 				<source>Execution of task "%1$s" failed with the following message: %2$s</source>
