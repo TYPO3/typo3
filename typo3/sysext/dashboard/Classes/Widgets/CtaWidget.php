@@ -44,7 +44,7 @@ class CtaWidget implements WidgetInterface
     private $view;
 
     /**
-     * @var array
+     * @var array{text: string}
      */
     private $options;
 

@@ -53,7 +53,7 @@ class RssWidget implements WidgetInterface
     private $cache;
 
     /**
-     * @var array
+     * @var array{limit: int, lifeTime: int, feedUrl?: string}
      */
     private $options;
 
@@ -96,6 +96,9 @@ class RssWidget implements WidgetInterface
 
     protected function getRssItems(): array
     {
+        if (empty($this->options['feedUrl'])) {
+            return [];
+        }
         $cacheHash = md5($this->options['feedUrl']);
         if ($items = $this->cache->get($cacheHash)) {
             return $items;

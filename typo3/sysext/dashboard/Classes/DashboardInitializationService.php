@@ -59,7 +59,7 @@ class DashboardInitializationService
     protected $javaScriptModuleInstructions = [];
 
     /**
-     * @var list<string|list<string>>
+     * @var list<string|array{0:string, 1:string}>
      */
     private $requireJsModules = [];
     private $jsFiles = [];
@@ -239,7 +239,7 @@ class DashboardInitializationService
     }
 
     /**
-     * @return list<string|list<string>>
+     * @return list<string|array{0:string, 1:string}>
      * @internal Deprecate in TYPO3 v12.0
      */
     public function getRequireJsModules(): array

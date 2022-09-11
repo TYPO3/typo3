@@ -62,9 +62,9 @@ class WidgetAjaxController extends AbstractController
     public function getContent(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-
+        $widget = (string)($queryParams['widget'] ?? '');
         try {
-            $widgetObject = $this->widgetRegistry->getAvailableWidget((string)$queryParams['widget']);
+            $widgetObject = $this->widgetRegistry->getAvailableWidget($widget);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse(['error' => 'Widget is not available!']);
         }
@@ -74,7 +74,7 @@ class WidgetAjaxController extends AbstractController
         }
 
         $data = [
-            'widget' => $queryParams['widget'],
+            'widget' => $widget,
             'content' => $widgetObject->renderWidgetContent(),
             'eventdata' => $widgetObject instanceof EventDataInterface ? $widgetObject->getEventData() : [],
         ];
@@ -92,7 +92,10 @@ class WidgetAjaxController extends AbstractController
     {
         $body = $request->getParsedBody();
         $widgets = [];
-        foreach ($body['widgets'] as $widget) {
+        foreach ($body['widgets'] ?? [] as $widget) {
+            if (!is_string($widget[0] ?? null) || !is_string($widget[1] ?? null)) {
+                continue;
+            }
             $widgets[$widget[1]] = ['identifier' => $widget[0]];
         }
 
