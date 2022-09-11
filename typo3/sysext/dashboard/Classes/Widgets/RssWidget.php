@@ -39,6 +39,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
+    /**
+     * @var array{limit: int, lifeTime: int, feedUrl?: string}
+     */
     private readonly array $options;
     private ServerRequestInterface $request;
 
@@ -79,6 +82,9 @@ class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
 
     protected function getRssItems(): array
     {
+        if (empty($this->options['feedUrl'])) {
+            return [];
+        }
         $cacheHash = md5($this->options['feedUrl']);
         if ($items = $this->cache->get($cacheHash)) {
             return $items;

@@ -35,6 +35,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class CtaWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
+    /**
+     * @var array{text: string}
+     */
     private readonly array $options;
     private ServerRequestInterface $request;
 

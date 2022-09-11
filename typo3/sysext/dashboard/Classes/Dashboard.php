@@ -116,10 +116,11 @@ class Dashboard
     {
         $availableWidgets = $this->widgetRegistry->getAvailableWidgets();
         foreach ($this->widgetConfig as $hash => $widgetConfig) {
-            if (array_key_exists($widgetConfig['identifier'], $availableWidgets)) {
-                $this->widgets[$hash] = $availableWidgets[$widgetConfig['identifier']];
+            $widgetConfigIdentifier = $widgetConfig['identifier'] ?? '';
+            if ($widgetConfigIdentifier !== '' && array_key_exists($widgetConfigIdentifier, $availableWidgets)) {
+                $this->widgets[$hash] = $availableWidgets[$widgetConfigIdentifier];
 
-                $widgetObject = $this->widgetRegistry->getAvailableWidget($request, $widgetConfig['identifier']);
+                $widgetObject = $this->widgetRegistry->getAvailableWidget($request, $widgetConfigIdentifier);
                 $this->widgetOptions[$hash] = $widgetObject->getOptions();
             }
         }

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardInitializationService;
+use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\CMS\Dashboard\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
@@ -100,7 +101,7 @@ class DashboardController
 
     protected function setActiveDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->saveCurrentDashboard($request->getQueryParams()['currentDashboard']);
+        $this->saveCurrentDashboard((string)($request->getQueryParams()['currentDashboard'] ?? ''));
         $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
         return new RedirectResponse($route);
     }
@@ -108,9 +109,14 @@ class DashboardController
     protected function addDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getParsedBody();
-        $dashboardIdentifier = $parameters['dashboard'] ?? '';
-        if ($dashboardIdentifier !== '') {
-            $dashboard = $this->dashboardRepository->create($this->dashboardPresetRepository->getDashboardPresets()[$dashboardIdentifier], (int)$this->getBackendUser()->user['uid'], $parameters['dashboard-title']);
+        $dashboardIdentifier = (string)($parameters['dashboard'] ?? '');
+        $dashboardPreset = $this->dashboardPresetRepository->getDashboardPresets()[$dashboardIdentifier] ?? null;
+        if ($dashboardPreset instanceof DashboardPreset) {
+            $dashboard = $this->dashboardRepository->create(
+                $dashboardPreset,
+                (int)$this->getBackendUser()->user['uid'],
+                $parameters['dashboard-title'] ?? ''
+            );
             if ($dashboard instanceof Dashboard) {
                 $this->saveCurrentDashboard($dashboard->getIdentifier());
             }
@@ -141,9 +147,9 @@ class DashboardController
     protected function removeWidgetAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getQueryParams();
-        $widgetHash = $parameters['widgetHash'];
+        $widgetHash = $parameters['widgetHash'] ?? '';
         $widgets = $this->currentDashboard->getWidgetConfig();
-        if (array_key_exists($widgetHash, $widgets)) {
+        if ($widgetHash !== '' && array_key_exists($widgetHash, $widgets)) {
             unset($widgets[$widgetHash]);
             $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
         }

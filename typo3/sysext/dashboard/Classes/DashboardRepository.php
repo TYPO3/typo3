@@ -206,9 +206,9 @@ class DashboardRepository
     {
         return GeneralUtility::makeInstance(
             Dashboard::class,
-            $row['identifier'],
-            $row['title'],
-            json_decode((string)$row['widgets'], true) ?? [],
+            $row['identifier'] ?? '',
+            $row['title'] ?? '',
+            json_decode((string)($row['widgets'] ?? ''), true) ?? [],
             $this->widgetRegistry,
             $this->container
         );

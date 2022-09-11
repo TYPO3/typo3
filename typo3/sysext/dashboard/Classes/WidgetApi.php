@@ -25,7 +25,7 @@ class WidgetApi
     /**
      * Provides default colors to use for charts.
      *
-     * @return array Hex codes of default colors.
+     * @return array{0:string, 1:string, 2:string, 3:string, 4:string} Hex codes of default colors.
      */
     public static function getDefaultChartColors(): array
     {

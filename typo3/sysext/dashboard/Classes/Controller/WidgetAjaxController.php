@@ -40,8 +40,9 @@ class WidgetAjaxController
     public function getContent(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
+        $widget = (string)($queryParams['widget'] ?? '');
         try {
-            $widgetObject = $this->widgetRegistry->getAvailableWidget($request, (string)$queryParams['widget']);
+            $widgetObject = $this->widgetRegistry->getAvailableWidget($request, $widget);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse(['error' => 'Widget is not available!']);
         }
@@ -49,7 +50,7 @@ class WidgetAjaxController
             return new JsonResponse(['error' => 'Widget doesn\'t have a valid widget class']);
         }
         $data = [
-            'widget' => $queryParams['widget'],
+            'widget' => $widget,
             'content' => $widgetObject->renderWidgetContent(),
             'eventdata' => $widgetObject instanceof EventDataInterface ? $widgetObject->getEventData() : [],
         ];
@@ -64,7 +65,10 @@ class WidgetAjaxController
         $backendUser = $this->getBackendUser();
         $body = $request->getParsedBody();
         $widgets = [];
-        foreach ($body['widgets'] as $widget) {
+        foreach ($body['widgets'] ?? [] as $widget) {
+            if (!is_string($widget[0] ?? null) || !is_string($widget[1] ?? null)) {
+                continue;
+            }
             $widgets[$widget[1]] = ['identifier' => $widget[0]];
         }
         $currentDashboard = $this->dashboardRepository->getDashboardByIdentifier($backendUser->getModuleData('dashboard/current_dashboard/') ?? '');
