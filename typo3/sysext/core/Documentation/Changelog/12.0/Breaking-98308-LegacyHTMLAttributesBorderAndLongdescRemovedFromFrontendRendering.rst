@@ -16,6 +16,9 @@ to be set to the :html:`<img>` tag which was composed. The appropriate settings
 :typoscript:`longDesc` and :typoscript:`border` within :typoscript:`IMAGE` cObject
 have been removed.
 
+The TypoScript property :typoscript:`config.disableImgBorderAttr` has been removed
+as well.
+
 Also, the :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions` PHP class, which
 generated default :html:`<img>` tags via the :php:`imgTag()` method, has been
 adapted as the method is removed.
