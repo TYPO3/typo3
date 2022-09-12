@@ -165,14 +165,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected $currentFinisher;
 
-    /**
-     * Only TRUE if there is a post request and if the requested arguments
-     * are meant for the loaded form definition.
-     * The component that integrates this FormRuntime must ensure that
-     * the content is rendered uncached in the case of a POST request.
-     */
-    protected bool $canProcessFormSubmission = false;
-
     public function __construct(
         ContainerInterface $container,
         ObjectManagerInterface $objectManager,
@@ -201,15 +193,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         $arguments = $this->request->getArguments();
         $formIdentifier = $this->formDefinition->getIdentifier();
-        // There are arguments which are intended for the formDefinition
-        // currently being rendered
-        // (in the case of multiple forms being rendered on the same page)
         if (isset($arguments[$formIdentifier])) {
             $this->request->setArguments($arguments[$formIdentifier]);
-            // There is a post request
-            if ($this->isPostRequest()) {
-                $this->canProcessFormSubmission = true;
-            }
         }
 
         $this->initializeCurrentSiteLanguage();
@@ -222,7 +207,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
         // Only validate and set form values within the form state
         // if the current request is not the very first request
-        // and the current request can be processed (POST request).
+        // and the current request can be processed (POST request and uncached).
         if (!$this->isFirstRequest() && $this->canProcessFormSubmission()) {
             $this->processSubmittedFormValues();
         }
@@ -236,7 +221,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function initializeFormSessionFromRequest(): void
     {
         // Initialize the form session only if the current request can be processed
-        // (POST request) to ensure unique sessions for each form submitter.
+        // (POST request and uncached) to ensure unique sessions for each form submitter.
         if (!$this->canProcessFormSubmission()) {
             return;
         }
@@ -253,7 +238,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         // Only try to reconstitute the form state if the current request
         // is not the very first request and if the current request can
-        // be processed (POST request).
+        // be processed (POST request and uncached).
         $serializedFormStateWithHmac = $this->request->getInternalArgument('__state');
         if ($serializedFormStateWithHmac === null || !$this->canProcessFormSubmission()) {
             $this->formState = GeneralUtility::makeInstance(FormState::class);
@@ -283,7 +268,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function initializeCurrentPageFromRequest()
     {
         // If there was no previous form submissions or if the current request
-        // can't be processed (no POST request) then display the first
+        // can't be processed (no POST request and/or cached) then display the first
         // form step
         if (!$this->formState->isFormSubmitted() || !$this->canProcessFormSubmission()) {
             $this->currentPage = $this->formDefinition->getPageByIndex(0);
@@ -531,6 +516,24 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Determine whether the surrounding content object is cached.
+     * If no surrounding content object can be found (which would be strange)
+     * we assume a cached request for safety which means that an empty form
+     * will be rendered.
+     *
+     * @todo: this should be checked against https://forge.typo3.org/issues/91625 as this was fixed differently for UriBuilder
+     * @return bool
+     */
+    protected function isRenderedCached(): bool
+    {
+        $contentObject = $this->configurationManager->getContentObject();
+        return $contentObject === null
+            ? true
+            // @todo this does not work when rendering a cached `FLUIDTEMPLATE` (not nested in `COA_INT`)
+            : $contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER;
+    }
+
+    /**
      * Runs through all validations
      */
     protected function processSubmittedFormValues()
@@ -768,8 +771,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * Only process values if there is a post request and if the requested
-     * arguments are meant for the loaded form definition.
+     * Only process values if there is a post request and if the
+     * surrounding content object is uncached.
      * Is this not the case, all possible submitted values will be discarded
      * and the first form step will be shown with an empty form state.
      *
@@ -778,7 +781,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     public function canProcessFormSubmission(): bool
     {
-        return $this->canProcessFormSubmission;
+        return $this->isPostRequest() && !$this->isRenderedCached();
     }
 
     /**

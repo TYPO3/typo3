@@ -48,50 +48,56 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
             'formNamePrefix' => 'tx_formcachingtests_allactionsuncached',
         ];
 
-        yield 'Multistep form / custom extbase controller => AllActionsCached' => [
-            'formIdentifier' => 'AllActionsCached-1004',
-            'formNamePrefix' => 'tx_formcachingtests_allactionscached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / custom extbase controller => AllActionsCached' => [
+        //     'formIdentifier' => 'AllActionsCached-1004',
+        //     'formNamePrefix' => 'tx_formcachingtests_allactionscached',
+        // ];
 
-        yield 'Multistep form / simple FLUIDTEMPLATE' => [
-            'formIdentifier' => 'FormFromSimpleFluidtemplate',
-            'formNamePrefix' => 'tx_form_formframework',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / simple FLUIDTEMPLATE' => [
+        //     'formIdentifier' => 'FormFromSimpleFluidtemplate',
+        //     'formNamePrefix' => 'tx_form_formframework',
+        // ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsCached' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsCached',
-            'formNamePrefix' => 'tx_formcachingtests_allactionscached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsCached' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsCached',
+        //     'formNamePrefix' => 'tx_formcachingtests_allactionscached',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through custom extbase controller => AllActionsCached' => [
             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsCached',
             'formNamePrefix' => 'tx_formcachingtests_allactionscached',
         ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => RenderActionIsCached' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached',
-            'formNamePrefix' => 'tx_formcachingtests_renderactioniscached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => RenderActionIsCached' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached',
+        //     'formNamePrefix' => 'tx_formcachingtests_renderactioniscached',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through custom extbase controller => RenderActionIsCached' => [
             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached',
             'formNamePrefix' => 'tx_formcachingtests_renderactioniscached',
         ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsUncached' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsUncached',
-            'formNamePrefix' => 'tx_formcachingtests_allactionsuncached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsUncached' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsUncached',
+        //     'formNamePrefix' => 'tx_formcachingtests_allactionsuncached',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through custom extbase controller => AllActionsUncached' => [
             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsUncached',
             'formNamePrefix' => 'tx_formcachingtests_allactionsuncached',
         ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through ext:form controller' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughExtFormController',
-            'formNamePrefix' => 'tx_form_formframework',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through ext:form controller' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughExtFormController',
+        //     'formNamePrefix' => 'tx_form_formframework',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through ext:form controller' => [
              'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughExtFormController',
@@ -185,41 +191,47 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
             'formIdentifier' => 'AllActionsUncached-1003',
         ];
 
-        yield 'Multistep form / custom extbase controller => AllActionsCached' => [
-            'formIdentifier' => 'AllActionsCached-1004',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / custom extbase controller => AllActionsCached' => [
+        //     'formIdentifier' => 'AllActionsCached-1004',
+        // ];
 
-        yield 'Multistep form / simple FLUIDTEMPLATE' => [
-            'formIdentifier' => 'FormFromSimpleFluidtemplate',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / simple FLUIDTEMPLATE' => [
+        //     'formIdentifier' => 'FormFromSimpleFluidtemplate',
+        // ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsCached' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsCached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsCached' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsCached',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through custom extbase controller => AllActionsCached' => [
             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsCached',
         ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => RenderActionIsCached' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => RenderActionIsCached' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through custom extbase controller => RenderActionIsCached' => [
             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached',
         ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsUncached' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsUncached',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through custom extbase controller => AllActionsUncached' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsUncached',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through custom extbase controller => AllActionsUncached' => [
             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsUncached',
         ];
 
-        yield 'Multistep form / COA FLUIDTEMPLATE through ext:form controller' => [
-            'formIdentifier' => 'FormFromCoaFluidtemplateThroughExtFormController',
-        ];
+        // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/70460 is fixed
+        // yield 'Multistep form / COA FLUIDTEMPLATE through ext:form controller' => [
+        //     'formIdentifier' => 'FormFromCoaFluidtemplateThroughExtFormController',
+        // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through ext:form controller' => [
              'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughExtFormController',

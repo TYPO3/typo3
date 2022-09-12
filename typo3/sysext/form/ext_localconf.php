@@ -76,10 +76,8 @@ call_user_func(static function () {
     ExtensionUtility::configurePlugin(
         'Form',
         'Formframework',
-        // Both actions are cached to avoid 2 USER_INT objects on the page.
-        // `TYPO3\CMS\Form\Core\FormRequestHandler` takes care of the caching behavior.
         [FormFrontendController::class => 'render, perform'],
-        [],
+        [FormFrontendController::class => 'perform'],
         ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
     );
 });
