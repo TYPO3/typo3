@@ -32,9 +32,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FlexFormFinish
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
- * The frontend controller.
- * Please read the inline docs from `TYPO3\CMS\Form\Core\FormRequestHandler` for
- * more details about the rendering / bootstrap process.
+ * The frontend controller
  *
  * Scope: frontend
  * @internal
@@ -59,6 +57,8 @@ class FormFrontendController extends ActionController
      * Take the form which should be rendered from the plugin settings
      * and overlay the formDefinition with additional data from
      * flexform and typoscript settings.
+     * This method is used directly to display the first page from the
+     * formDefinition because its cached.
      *
      * @internal
      */
@@ -78,12 +78,8 @@ class FormFrontendController extends ActionController
     }
 
     /**
-     * This method **was** used to display all pages / finishers except the
-     * first page because this action **was** non cached.
-     * Since the `TYPO3\CMS\Form\Core\FormRequestHandler` takes care of the
-     * caching behavior this action has no function anymore.
-     * It is however preserved for compatibility reasons, since this
-     * action was documented and thus also used by developers.
+     * This method is used to display all pages / finishers except the
+     * first page because its non cached.
      *
      * @internal
      */
