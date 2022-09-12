@@ -2,32 +2,6 @@
 
 defined('TYPO3') or die();
 
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-// Register styleguide module icon
-$iconRegistry->registerIcon(
-    'module-styleguide',
-    TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [ 'source' => 'EXT:styleguide/Resources/Public/Icons/module.svg' ]
-);
-// Register styleguide svg for use within backend module
-$iconRegistry->registerIcon(
-    'tcarecords-tx_styleguide_forms-default',
-    TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [ 'source' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg' ]
-);
-// Register example SVG for icon submodule
-$iconRegistry->registerIcon(
-    'provider-svg',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_svg_icon.svg']
-);
-// Register example Bitmap for icon submodule
-$iconRegistry->registerIcon(
-    'provider-bitmap',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_bitmap_icon.png' ]
-);
-
 // Register some custom permission options shown in BE group access lists
 $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions']['tx_styleguide_custom'] = [
     'header' => 'Custom styleguide permissions',
