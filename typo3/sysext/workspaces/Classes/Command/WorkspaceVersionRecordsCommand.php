@@ -301,7 +301,7 @@ class WorkspaceVersionRecordsCommand extends Command
                         $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid' . (($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false) ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
                         if (is_array($versions)) {
                             foreach ($versions as $verRec) {
-                                if (!$verRec['_CURRENT_VERSION']) {
+                                if (!($verRec['_CURRENT_VERSION'] ?? false)) {
                                     // Register version
                                     $this->foundRecords['all_versioned_records'][$tableName][$verRec['uid']] = $verRec['uid'];
                                     $workspaceId = (int)$verRec['t3ver_wsid'];
