@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Asset\CssViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -78,5 +80,77 @@ class CssViewHelperTest extends FunctionalTestCase
         $collectedJavaScripts = $assetCollector->getStyleSheets();
         self::assertSame($collectedJavaScripts['test']['source'], 'my.css');
         self::assertSame($collectedJavaScripts['test']['attributes'], ['disabled' => 'disabled']);
+    }
+
+    public static function childNodeRenderingIsCorrectDataProvider(): array
+    {
+        return [
+            // Double quotes
+            'variable with double quotes is encoded' => [
+                '</style>/* " ', // variable value
+                'body { color: #{color}; }', // inner template source
+                'body { color: #&lt;/style&gt;/* &quot; ; }', // expectation
+            ],
+            'variable with double quotes is encoded in single quotes' => [
+                '</style>/* " ', // variable value
+                'body { color: \'#{color}\'; }', // inner template source
+                'body { color: \'#&lt;/style&gt;/* &quot; \'; }', // expectation
+            ],
+            'variable with double quotes is encoded in double quotes' => [
+                '</style>/* " ', // variable value
+                'body { color: "#{color}"; }', // inner template source
+                'body { color: "#&lt;/style&gt;/* &quot; "; }', // expectation
+            ],
+            // Single quotes
+            'variable with single quotes is encoded' => [
+                '</style>/* \' ', // variable value
+                'body { color: #{color}; }', // inner template source
+                'body { color: #&lt;/style&gt;/* &#039; ; }', // expectation
+            ],
+            'variable with single quotes is encoded in single quotes' => [
+                '</style>/* \' ', // variable value
+                'body { color: \'#{color}\'; }', // inner template source
+                'body { color: \'#&lt;/style&gt;/* &#039; \'; }', // expectation
+            ],
+            'variable with single quotes is encoded in double quotes' => [
+                '</style>/* \' ', // variable value
+                'body { color: "#{color}"; }', // inner template source
+                'body { color: "#&lt;/style&gt;/* &#039; "; }', // expectation
+            ],
+            // Raw instruction
+            'raw instruction is passed' => [
+                '</style>/* " ',
+                'body { color: #{color -> f:format.raw()}; }',
+                'body { color: #</style>/* " ; }',
+            ],
+            'raw instruction is passed in sigle quotes' => [
+                '</style>/* " ',
+                'body { color: \'#{color -> f:format.raw()}\'; }',
+                'body { color: \'#</style>/* " \'; }',
+            ],
+            'raw instruction is passed in double quotes' => [
+                '</style>/* " ',
+                'body { color: "#{color -> f:format.raw()}"; }',
+                'body { color: "#</style>/* " "; }',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider childNodeRenderingIsCorrectDataProvider
+     */
+    public function childNodeRenderingIsCorrect(string $value, string $source, string $expectation): void
+    {
+        $assetCollector = new AssetCollector();
+        GeneralUtility::setSingletonInstance(AssetCollector::class, $assetCollector);
+
+        $view = new StandaloneView();
+        $view->setTemplateSource(sprintf('<f:asset.css identifier="test">%s</f:asset.css>', $source));
+        $view->assign('color', $value);
+        $view->render();
+        GeneralUtility::removeSingletonInstance(AssetCollector::class, $assetCollector);
+
+        self::assertSame($expectation, $assetCollector->getInlineStyleSheets()['test']['source']);
     }
 }
