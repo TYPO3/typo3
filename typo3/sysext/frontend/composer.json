@@ -21,7 +21,7 @@
 	"require": {
 		"ext-libxml": "*",
 		"symfony/polyfill-mbstring": "^1.16",
-		"typo3/cms-core": "10.4.32"
+		"typo3/cms-core": "10.4.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
