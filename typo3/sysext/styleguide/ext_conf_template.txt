@@ -87,32 +87,31 @@ options_2 = option_2
 options_3 =
 
 
-############################
-### Boolean and Integers ###
-############################
+###############
+### Boolean ###
+###############
 
-# cat=Boolean and Integer/100/10; type=boolean; label=Boolean 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+# cat=Boolean/100/10; type=boolean; label=Boolean 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
 boolean_1 = 0
-# cat=Boolean and Integer/100/11; type=boolean; label=Boolean 2 - checked
+# cat=Boolean/100/11; type=boolean; label=Boolean 2 - checked
 boolean_2 = 1
-# cat=Boolean and Integer/100/11; type=boolean; label=Boolean 3 - no value
+# cat=Boolean/100/11; type=boolean; label=Boolean 3 - no value
 boolean_3 =
 
-# cat=Boolean and Integer/101/10; type=int; label=Int 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
-int_1 = 1
-# cat=Boolean and Integer/101/11; type=int; label=Int 2 - no value
-int_2 =
+################
+### Integers ###
+################
 
-# cat=Boolean and Integer/102/10; type=int; label=Integer 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+# cat=Integer/101/10; type=int; label=Integer 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
 integer_1 = 1
-# cat=Boolean and Integer/102/11; type=int; label=Integer 2 - no value
+# cat=Integer/101/11; type=int; label=Integer 2 - no value
 integer_2 =
-# cat=Boolean and Integer/102/12; type=int; label=Integer 3 - negative value
+# cat=Integer/101/12; type=int; label=Integer 3 - negative value
 integer_3 = -100
 
-# cat=Boolean and Integer/103/10; type=int+; label=Int+ 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+# cat=Integer/102/10; type=int+; label=Int+ 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
 intplus_1 = 1
-# cat=Boolean and Integer/103/11; type=int+; label=Int+ 2 - no value
+# cat=Integer/102/11; type=int+; label=Int+ 2 - no value
 intplus_2 =
 
 
