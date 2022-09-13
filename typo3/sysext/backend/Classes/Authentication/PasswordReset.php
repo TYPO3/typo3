@@ -278,6 +278,11 @@ class PasswordReset implements LoggerAwareInterface
      */
     protected function findValidUserForToken(string $token, string $identity, int $expirationTimestamp): ?array
     {
+        // Early return if token expired
+        if ($expirationTimestamp < time()) {
+            return null;
+        }
+
         $user = null;
         // Find the token in the database
         $queryBuilder = $this->getPreparedQueryBuilder();
