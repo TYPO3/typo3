@@ -41,7 +41,7 @@
 		"guzzlehttp/guzzle": "^7.4.5",
 		"guzzlehttp/psr7": "^1.8.5 || ^2.1.2",
 		"lolli42/finediff": "^1.0.2",
-		"masterminds/html5": "^2.7.5",
+		"masterminds/html5": "^2.7.6",
 		"nikic/php-parser": "^4.14.0",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
@@ -68,7 +68,7 @@
 		"typo3/class-alias-loader": "^1.1.4",
 		"typo3/cms-cli": "^3.1",
 		"typo3/cms-composer-installers": "^2.0 || ^3.0 || ^4.0",
-		"typo3/html-sanitizer": "^2.0.15",
+		"typo3/html-sanitizer": "^2.0.16",
 		"typo3fluid/fluid": "^2.7.2"
 	},
 	"suggest": {
