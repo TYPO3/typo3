@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Authentication services class
  */
-class AuthenticationService extends AbstractAuthenticationService
+class AuthenticationService extends AbstractAuthenticationService implements MimicServiceInterface
 {
     /**
      * Process the submitted credentials.
@@ -191,6 +191,22 @@ class AuthenticationService extends AbstractAuthenticationService
         // Responsible, authentication ok, domain lock ok. Log successful login and return 'auth ok, do NOT check other services'
         $this->writeLogMessage($this->pObj->loginType . ' Authentication successful for username \'%s\'', $submittedUsername);
         return 200;
+    }
+
+    /**
+     * Mimics password hashing for invalid authentication requests to mitigate
+     * @link https://cwe.mitre.org/data/definitions/208.html: CWE-208: Observable Timing Discrepancy
+     */
+    public function mimicAuthUser(): bool
+    {
+        try {
+            $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
+            $defaultHashInstance = $hashFactory->getDefaultHashInstance($this->pObj->loginType);
+            $defaultHashInstance->getHashedPassword(random_bytes(10));
+        } catch (\Exception $exception) {
+            // no further processing here
+        }
+        return false;
     }
 
     /**
