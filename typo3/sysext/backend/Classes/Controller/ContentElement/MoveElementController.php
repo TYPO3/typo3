@@ -169,7 +169,7 @@ class MoveElementController
                     // Create the position tree (for pages) without insert lines:
                     $pagePositionMap->dontPrintPageInsertIcons = 1;
                     $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
-                }
+            }
         }
 
         // Rendering of the output via fluid

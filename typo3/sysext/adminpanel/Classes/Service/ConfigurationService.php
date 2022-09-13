@@ -126,7 +126,7 @@ class ConfigurationService implements SingletonInterface
                     ($module instanceof ConfigurableInterface && $module->isEnabled())
                     || !($module instanceof ConfigurableInterface)
                 )
-             ) {
+            ) {
                 $module->onSubmit($configurationToSave, $request);
             }
             if ($module instanceof SubmoduleProviderInterface) {

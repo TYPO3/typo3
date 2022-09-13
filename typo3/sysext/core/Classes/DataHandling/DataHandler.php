@@ -1557,8 +1557,8 @@ class DataHandler implements LoggerAwareInterface
                 }
                 break;
             default:
-                // Do nothing
-        }
+            // Do nothing
+            }
         $res = $this->checkValueForInternalReferences($res, $value, $tcaFieldConf, $table, $id, $field);
         return $res;
     }
@@ -2452,7 +2452,7 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->orX(
-                    // records without l10n_parent must be taken into account (in any language)
+                        // records without l10n_parent must be taken into account (in any language)
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                             $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT)

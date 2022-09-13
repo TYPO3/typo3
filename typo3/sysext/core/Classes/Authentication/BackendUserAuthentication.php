@@ -1877,33 +1877,33 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 return array_merge($wsRec, ['_ACCESS' => 'admin']);
             }
             switch ((string)$wsRec['uid']) {
-                    case '0':
-                        $retVal = (($this->groupData['workspace_perms'] ?? 0) & 1)
-                            ? array_merge($wsRec, ['_ACCESS' => 'online'])
-                            : false;
-                        break;
-                    default:
-                        // Checking if the guy is admin:
-                        if (GeneralUtility::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
+                case '0':
+                    $retVal = (($this->groupData['workspace_perms'] ?? 0) & 1)
+                        ? array_merge($wsRec, ['_ACCESS' => 'online'])
+                        : false;
+                    break;
+                default:
+                    // Checking if the guy is admin:
+                    if (GeneralUtility::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
+                        return array_merge($wsRec, ['_ACCESS' => 'owner']);
+                    }
+                    // Checking if he is owner through a user group of his:
+                    foreach ($this->userGroupsUID as $groupUid) {
+                        if (GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
                             return array_merge($wsRec, ['_ACCESS' => 'owner']);
                         }
-                        // Checking if he is owner through a user group of his:
-                        foreach ($this->userGroupsUID as $groupUid) {
-                            if (GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
-                                return array_merge($wsRec, ['_ACCESS' => 'owner']);
-                            }
-                        }
-                        // Checking if he is member as user:
-                        if (GeneralUtility::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
+                    }
+                    // Checking if he is member as user:
+                    if (GeneralUtility::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
+                        return array_merge($wsRec, ['_ACCESS' => 'member']);
+                    }
+                    // Checking if he is member through a user group of his:
+                    foreach ($this->userGroupsUID as $groupUid) {
+                        if (GeneralUtility::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
                             return array_merge($wsRec, ['_ACCESS' => 'member']);
                         }
-                        // Checking if he is member through a user group of his:
-                        foreach ($this->userGroupsUID as $groupUid) {
-                            if (GeneralUtility::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
-                                return array_merge($wsRec, ['_ACCESS' => 'member']);
-                            }
-                        }
-                }
+                    }
+            }
         }
         return $retVal;
     }

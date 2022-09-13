@@ -259,7 +259,7 @@ class PropertyType
                 $name = self::TYPENAME_URI;
                 break;
             default:
-            // case self::UNDEFINED:
+                // case self::UNDEFINED:
                 $name = self::TYPENAME_UNDEFINED;
         }
 
@@ -315,7 +315,7 @@ class PropertyType
                 $value = self::URI;
                 break;
             default:
-            // case self::TYPENAME_UNDEFINED:
+                // case self::TYPENAME_UNDEFINED:
                 $value = self::UNDEFINED;
         }
 

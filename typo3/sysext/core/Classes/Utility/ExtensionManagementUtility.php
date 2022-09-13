@@ -293,8 +293,8 @@ class ExtensionManagementUtility
                                     }
                                     break;
                                 default:
-                                    // Intentionally left blank
-                            }
+                                // Intentionally left blank
+                                }
                         }
                     }
                 }
@@ -699,7 +699,7 @@ class ExtensionManagementUtility
                 $newList = preg_replace($pattern, '$1' . $insertionList . '$4', $list);
                 break;
             default:
-        }
+            }
 
         // When preg_replace did not replace anything; append the $insertionList.
         if ($list === $newList) {

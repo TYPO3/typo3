@@ -855,7 +855,7 @@ class Typo3DbQueryParser
             case 1:
                 $storagePageIds = [0];
                 break;
-            // Pid 0 and pagetree
+                // Pid 0 and pagetree
             case -1:
                 if (empty($storagePageIds)) {
                     $storagePageIds = [0];
@@ -863,13 +863,13 @@ class Typo3DbQueryParser
                     $storagePageIds[] = 0;
                 }
                 break;
-            // Only pagetree or not set
+                // Only pagetree or not set
             case 0:
                 if (empty($storagePageIds)) {
                     throw new InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
                 }
                 break;
-            // Invalid configuration
+                // Invalid configuration
             default:
                 return '';
         }

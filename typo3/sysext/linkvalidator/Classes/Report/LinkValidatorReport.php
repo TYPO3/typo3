@@ -579,7 +579,7 @@ class LinkValidatorReport
         } else {
             $linkMessage = '<span class="text-danger">'
                 . nl2br(
-                // Encode for output
+                    // Encode for output
                     htmlspecialchars(
                         $hookObj->getErrorMessage($response['errorParams']),
                         ENT_QUOTES,

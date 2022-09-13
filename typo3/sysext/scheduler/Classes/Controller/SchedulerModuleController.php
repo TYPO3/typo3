@@ -318,13 +318,13 @@ class SchedulerModuleController
                 }
                 break;
 
-            // Setup check screen
+                // Setup check screen
             case 'check':
                 // @todo move check to the report module
                 $content .= $this->checkScreenAction();
                 break;
 
-            // Information screen
+                // Information screen
             case 'info':
                 $content .= $this->infoScreenAction();
                 break;

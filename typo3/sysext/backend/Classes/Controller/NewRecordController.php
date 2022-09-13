@@ -459,7 +459,7 @@ class NewRecordController
                             'items' => $newPageLinks,
                         ];
                     }
-                break;
+                    break;
                 case 'tt_content':
                     if (!$this->newContentInto || !$this->isRecordCreationAllowedForTable($table) || !$this->isTableAllowedOnPage($table, $this->pageinfo)) {
                         break;

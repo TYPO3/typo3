@@ -483,15 +483,15 @@ class Scheduler implements SingletonInterface
             case 1:
                 $this->logger->alert($messageTemplate, ['code' => $code, 'original_message' => $message]);
                 break;
-            // System Error (which should not happen)
+                // System Error (which should not happen)
             case 2:
                 $this->logger->error($messageTemplate, ['code' => $code, 'original_message' => $message]);
                 break;
-            // security notice (admin)
+                // security notice (admin)
             case 3:
                 $this->logger->emergency($messageTemplate, ['code' => $code, 'original_message' => $message]);
                 break;
-            // regular message (= 0)
+                // regular message (= 0)
             default:
                 $this->logger->info($messageTemplate, ['code' => $code, 'original_message' => $message]);
         }

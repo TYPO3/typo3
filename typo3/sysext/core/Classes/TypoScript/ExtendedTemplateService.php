@@ -242,7 +242,7 @@ class ExtendedTemplateService extends TemplateService
                 );
                 break;
             default:
-        }
+            }
         return $all;
     }
 

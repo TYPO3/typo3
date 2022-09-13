@@ -124,7 +124,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$iconIdentifier') ===  'content-dashboard'
                 && $definition->getArgument('$height') === 'small'
                 && $definition->getArgument('$width') === 'small'
-                ;
+            ;
         }))->shouldBeCalled();
         $this->widgetRegistryDefinition->addMethodCall(
             'registerWidget',
@@ -166,7 +166,7 @@ class DashboardWidgetPassTest extends UnitTestCase
             return $definition instanceof Definition
                 && $definition->getClass() === WidgetConfiguration::class
                 && $definition->getArgument('$groupNames') === ['typo3', 'general']
-                ;
+            ;
         }))->shouldBeCalled();
         $this->widgetRegistryDefinition->addMethodCall(
             'registerWidget',
@@ -217,7 +217,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$iconIdentifier') ===  'some-icon'
                 && $definition->getArgument('$height') === 'large'
                 && $definition->getArgument('$width') === 'medium'
-                ;
+            ;
         }))->shouldBeCalled();
         $this->widgetRegistryDefinition->addMethodCall(
             'registerWidget',

@@ -366,14 +366,14 @@ class PageRenderer implements SingletonInterface
     {
         foreach ($newState as $var => $value) {
             switch ($var) {
-            case 'locales':
-                break;
-            case 'metaTagRegistry':
-                $this->metaTagRegistry->updateState($value);
-                break;
-            default:
-                $this->{$var} = $value;
-                break;
+                case 'locales':
+                    break;
+                case 'metaTagRegistry':
+                    $this->metaTagRegistry->updateState($value);
+                    break;
+                default:
+                    $this->{$var} = $value;
+                    break;
             }
         }
     }
@@ -387,14 +387,14 @@ class PageRenderer implements SingletonInterface
         $state = [];
         foreach (get_object_vars($this) as $var => $value) {
             switch ($var) {
-            case 'locales':
-                break;
-            case 'metaTagRegistry':
-                $state[$var] = $this->metaTagRegistry->getState();
-                break;
-            default:
-                $state[$var] = $value;
-                break;
+                case 'locales':
+                    break;
+                case 'metaTagRegistry':
+                    $state[$var] = $this->metaTagRegistry->getState();
+                    break;
+                default:
+                    $state[$var] = $value;
+                    break;
             }
         }
         return $state;

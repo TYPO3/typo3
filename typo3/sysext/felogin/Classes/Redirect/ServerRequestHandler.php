@@ -56,7 +56,7 @@ class ServerRequestHandler
     public function getPropertyFromGetAndPost(string $propertyName)
     {
         return $this->request->getParsedBody()[$propertyName] ?? $this->request->getQueryParams(
-            )[$propertyName] ?? null;
+        )[$propertyName] ?? null;
     }
 
     /**

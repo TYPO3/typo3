@@ -98,7 +98,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                     );
                 } else {
                     $searchConstraint = $this->queryBuilder->expr()->andX(
-                    // case insensitive
+                        // case insensitive
                         $this->queryBuilder->expr()->comparison(
                             'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
                             'LIKE',

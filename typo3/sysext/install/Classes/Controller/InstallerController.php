@@ -1041,7 +1041,7 @@ class InstallerController
                 );
                 break;
 
-            // Create a page with UID 1 and PID1 and fluid_styled_content for page TS config, respect ownership
+                // Create a page with UID 1 and PID1 and fluid_styled_content for page TS config, respect ownership
             case 'createsite':
                 $databaseConnectionForPages = $connectionPool->getConnectionForTable('pages');
                 $databaseConnectionForPages->insert(

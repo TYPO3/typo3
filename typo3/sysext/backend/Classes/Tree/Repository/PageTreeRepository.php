@@ -352,7 +352,7 @@ class PageTreeRepository
             ->select(...$this->fields)
             ->from('pages')
             ->where(
-            // Only show records in default language
+                // Only show records in default language
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
 

@@ -99,10 +99,10 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
             switch ($attributeName) {
                 case 'href':
                     $newObject->url = $attributeValue;
-                break;
+                    break;
                 case 'target':
                     $newObject->target = $attributeValue;
-                break;
+                    break;
             }
             if ($attributeValue !== null) {
                 $newObject->additionalAttributes[$attributeName] = $attributeValue;
@@ -254,8 +254,8 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
                 $this->target = (string)$value;
                 break;
             default:
-                // do nothing
-        }
+            // do nothing
+            }
     }
 
     // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
@@ -276,7 +276,7 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
                 $this->target = '';
                 break;
             default:
-                // do nothing
-        }
+            // do nothing
+            }
     }
 }
