@@ -94,8 +94,11 @@ options_3 =
 boolean_1 = 0
 # cat=Boolean/100/11; type=boolean; label=Boolean 2 - checked
 boolean_2 = 1
-# cat=Boolean/100/11; type=boolean; label=Boolean 3 - no value
+# cat=Boolean/100/12; type=boolean; label=Boolean 3 - no value
 boolean_3 =
+# cat=Boolean/100/13; type=boolean[myTrueValue]; label=Boolean 4 - different bool value
+boolean_4 = 0
+
 
 ################
 ### Integers ###
@@ -114,7 +117,7 @@ int_4 = 2
 intplus_1 = 1
 # cat=Integer/102/11; type=int+; label=Int+ 2 - no value
 intplus_2 =
-# cat=Integer/101/13; type=int+[1-5]; label=Int+ 3 - range
+# cat=Integer/101/12; type=int+[1-5]; label=Int+ 3 - range
 intplus_3 = 2
 
 
