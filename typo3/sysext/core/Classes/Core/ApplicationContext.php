@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Exception;
  * Mainly, you will use $context->isProduction(), $context->isTesting() and
  * $context->isDevelopment() inside your custom code.
  *
+ * ATTENTION: The Testing context is only used internally when executing TYPO3 Core tests. It must not be used otherwise.
+ *
  * This class is derived from the TYPO3 Flow framework.
  * Credits go to the respective authors.
  */
