@@ -95,6 +95,13 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $urlParams['pageuid'] = (int)($urlParams['pageuid'] ?? 0);
             $resolvedUrl = $this->resolveUrl($request, $urlParams);
 
+            // avoid denial-of-service amplification scenario
+            if ($resolvedUrl === (string)$request->getUri()) {
+                return new HtmlResponse(
+                    'The error page could not be resolved, as the error page itself is not accessible',
+                    $this->statusCode
+                );
+            }
             if ($this->useSubrequest) {
                 // Create a subrequest and do not take any special query parameters into account
                 $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
