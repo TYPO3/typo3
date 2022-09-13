@@ -51,7 +51,7 @@ class CssViewHelper extends AbstractTagBasedViewHelper
      *
      * @var bool
      */
-    protected $escapeChildren = false;
+    protected $escapeChildren = true;
 
     /**
      * @var AssetCollector
