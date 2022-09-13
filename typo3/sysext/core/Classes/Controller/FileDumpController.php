@@ -29,8 +29,10 @@ use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class FileDumpController
@@ -77,7 +79,7 @@ class FileDumpController
             }
             $response = $hookObject->checkFileAccess($file);
             if ($response instanceof ResponseInterface) {
-                return $response;
+                return $this->applyContentSecurityPolicy($file, $response);
             }
         }
 
@@ -120,7 +122,10 @@ class FileDumpController
             $file = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
         }
 
-        return $file->getStorage()->streamFile($file);
+        return $this->applyContentSecurityPolicy(
+            $file,
+            $file->getStorage()->streamFile($file)
+        );
     }
 
     protected function buildParametersFromRequest(ServerRequestInterface $request): array
@@ -215,5 +220,18 @@ class FileDumpController
         return $file->getStorage()->getDriverType() !== 'Local'
             || GeneralUtility::makeInstance(FileNameValidator::class)
                 ->isValid(basename($file->getIdentifier()));
+    }
+
+    /**
+     * Applies hard-coded content-security-policy (CSP) for file to be dumped.
+     */
+    protected function applyContentSecurityPolicy(ResourceInterface $file, ResponseInterface $response): ResponseInterface
+    {
+        $extension = PathUtility::pathinfo($file->getName(), PATHINFO_EXTENSION);
+        // same as in `typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess`
+        $policy = $extension === 'pdf' || $response->getHeaderLine('content-type') === 'application/pdf'
+            ? "default-src 'self' 'unsafe-inline'; script-src 'none'; object-src 'self'; plugin-types application/pdf;"
+            : "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';";
+        return $response->withAddedHeader('content-security-policy', $policy);
     }
 }
