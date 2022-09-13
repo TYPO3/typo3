@@ -3,8 +3,7 @@
 ###########################
 # customsubcategory=100=Boolean
 # customsubcategory=101=Int
-# customsubcategory=102=Integer
-# customsubcategory=103=Int+
+# customsubcategory=102=Int+
 # customsubcategory=200=String
 # customsubcategory=201=Small
 # customsubcategory=202=Wrap
@@ -102,17 +101,22 @@ boolean_3 =
 ### Integers ###
 ################
 
-# cat=Integer/101/10; type=int; label=Integer 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
-integer_1 = 1
-# cat=Integer/101/11; type=int; label=Integer 2 - no value
-integer_2 =
-# cat=Integer/101/12; type=int; label=Integer 3 - negative value
-integer_3 = -100
+# cat=Integer/101/10; type=int; label=Int 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+int_1 = 1
+# cat=Integer/101/11; type=int; label=Int 2 - no value
+int_2 =
+# cat=Integer/101/12; type=int; label=Int 3 - negative value
+int_3 = -100
+# cat=Integer/101/13; type=int[1-5]; label=Int 4 - range
+int_4 = 2
 
 # cat=Integer/102/10; type=int+; label=Int+ 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
 intplus_1 = 1
 # cat=Integer/102/11; type=int+; label=Int+ 2 - no value
 intplus_2 =
+# cat=Integer/101/13; type=int+[1-5]; label=Int+ 3 - range
+intplus_3 = 2
+
 
 
 #####################
