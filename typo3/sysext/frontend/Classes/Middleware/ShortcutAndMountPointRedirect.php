@@ -121,7 +121,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         if (!($uI['scheme'] ?? false)) {
             if (GeneralUtility::validEmail($redirectTo)) {
                 $redirectTo = 'mailto:' . $redirectTo;
-            } elseif ($redirectTo[0] !== '/') {
+            } elseif (!str_starts_with($redirectTo, '/')) {
                 $redirectTo = $sitePrefix . $redirectTo;
             }
         }
