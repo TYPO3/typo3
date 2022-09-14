@@ -3735,14 +3735,17 @@ class GeneralUtility
     }
 
     /**
-     * Flush internal runtime caches
+     * Flushes some internal runtime caches:
+     * - the class-name mapping used by `makeInstance()`
+     * - the cache for `getIndpEnv()`
      *
-     * Used in unit tests only.
+     * This function is intended to be used in unit tests to keep environment changes from spilling into the next test.
      *
      * @internal
      */
     public static function flushInternalRuntimeCaches()
     {
+        self::$finalClassNameCache = [];
         self::$indpEnvCache = [];
     }
 
