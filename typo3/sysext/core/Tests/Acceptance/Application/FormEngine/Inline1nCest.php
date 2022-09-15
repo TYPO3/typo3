@@ -178,4 +178,29 @@ class Inline1nCest
         $I->comment('Test value of "visible" field');
         $I->canSeeInField($inputField, $testValue);
     }
+
+    public function disableInline1nInlineElementWithoutRenderedDisableField(ApplicationTester $I): void
+    {
+        $I->wantTo('Disable an Inline Element which has no checkbox for disabled state');
+
+        // Switch to "inline_2" tab.
+        $I->click('inline_2');
+
+        // Open the inline element.
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
+        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_2_child][1][input_1]"]');
+
+        // Hide the inline element.
+        $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["] button span[data-identifier="actions-edit-unhide"]');
+
+        // Save the inline element.
+        $I->click('button[name="_savedok"]');
+        $I->wait(3);
+
+        // Unhide the previously hidden inline element.
+        $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden', 2);
+    }
 }
