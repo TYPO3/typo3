@@ -7,9 +7,9 @@ services:
   TYPO3\CMS\Fluid\:
     resource: '../Classes/*'
     # glob for services that have been previously available as
-    # container entries and have been removed in the mean time
+    # container entries and have been removed in the meantime
     # (e.g. because factories are to be used instead)
-    exclude: '../Classes/{Core/Rendering/RenderingContextFactory.php}'
+    exclude: '../Classes/{Core/Rendering/RenderingContext.php}'
 
   # Templateview has $context = null, symfony auto-injects in that case,
   # extbase did not, force passing `null`
