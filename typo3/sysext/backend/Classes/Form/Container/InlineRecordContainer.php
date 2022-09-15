@@ -153,12 +153,12 @@ class InlineRecordContainer extends AbstractContainer
                 // Set additional field for processing for saving
                 $html .= '<input type="hidden" name="cmd' . htmlspecialchars($appendFormFieldNames)
                     . '[delete]" value="1" disabled="disabled" />';
-                if (!$data['isInlineChildExpanded'] && !empty($hiddenField)) {
+                if (!empty($hiddenField) && (!$data['isInlineChildExpanded'] || !in_array($hiddenField, $data['columnsToProcess'], true))) {
                     $checked = !empty($record[$hiddenField]) ? ' checked="checked"' : '';
-                    $html .= '<input type="checkbox" data-formengine-input-name="data'
+                    $html .= '<input type="checkbox" class="d-none" data-formengine-input-name="data'
                         . htmlspecialchars($appendFormFieldNames)
                         . '[' . htmlspecialchars($hiddenField) . ']" value="1"' . $checked . ' />';
-                    $html .= '<input type="input" name="data' . htmlspecialchars($appendFormFieldNames)
+                    $html .= '<input type="input" class="d-none" name="data' . htmlspecialchars($appendFormFieldNames)
                         . '[' . htmlspecialchars($hiddenField) . ']" value="' . htmlspecialchars($record[$hiddenField]) . '" />';
                 }
             }
