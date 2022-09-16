@@ -88,7 +88,7 @@ type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: 
 
 @customElement('typo3-backend-modal')
 export class ModalElement extends LitElement {
-  @property({type: String, reflect: true}) title: string = '';
+  @property({type: String, reflect: true}) modalTitle: string = '';
   @property({type: String, reflect: true}) content: string = '';
   @property({type: String, reflect: true}) type: Types = Types.default;
   @property({type: String, reflect: true}) severity: SeverityEnum = SeverityEnum.notice;
@@ -149,7 +149,7 @@ export class ModalElement extends LitElement {
           <div class="modal-dialog">
               <div class="t3js-modal-content modal-content">
                   <div class="modal-header">
-                      <h4 class="t3js-modal-title modal-title">${this.title}</h4>
+                      <h4 class="t3js-modal-title modal-title">${this.modalTitle}</h4>
                       <button class="t3js-modal-close close" @click=${() => this.bootstrapModal.hide()}>
                           <span aria-hidden="true">
                               <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
@@ -217,7 +217,7 @@ export class ModalElement extends LitElement {
         <iframe src="${this.content}"
                 name="modal_frame"
                 class="modal-iframe t3js-modal-iframe"
-                @load=${(e: Event) => this.title = (e.currentTarget as HTMLIFrameElement).contentDocument.title}
+                @load=${(e: Event) => this.modalTitle = (e.currentTarget as HTMLIFrameElement).contentDocument.title}
         ></iframe>
       `;
     }
@@ -543,7 +543,7 @@ class Modal {
     currentModal.severity = configuration.severity;
     currentModal.variant = configuration.style;
     currentModal.size = configuration.size;
-    currentModal.title = configuration.title;
+    currentModal.modalTitle = configuration.title;
     currentModal.additionalCssClasses = configuration.additionalCssClasses;
     currentModal.buttons = <Array<Button>>configuration.buttons;
     if (configuration.callback) {
