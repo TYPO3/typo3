@@ -41,6 +41,7 @@ final class ArrayElementViewHelper extends AbstractViewHelper
     /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)
      *
+     * @param array{'array': array, 'key': string, 'subKey': string} $arguments
      * @throws Exception
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string

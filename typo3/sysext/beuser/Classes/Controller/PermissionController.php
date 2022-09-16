@@ -351,13 +351,14 @@ class PermissionController
 
         $dataHandlerInput = [];
         // Prepare the input data for data handler
-        if (is_array($data['pages'] ?? false) && $data['pages'] !== []) {
-            foreach ($data['pages'] as $pageUid => $properties) {
+        $dataPages = $data['pages'] ?? null;
+        if (is_array($dataPages) && $dataPages !== []) {
+            foreach ($dataPages as $pageUid => $properties) {
                 // if the owner and group field shouldn't be touched, unset the option
-                if ((int)$properties['perms_userid'] === -1) {
+                if ((int)($properties['perms_userid'] ?? 0) === -1) {
                     unset($properties['perms_userid']);
                 }
-                if ((int)$properties['perms_groupid'] === -1) {
+                if ((int)($properties['perms_groupid'] ?? 0) === -1) {
                     unset($properties['perms_groupid']);
                 }
                 $dataHandlerInput[$pageUid] = $properties;

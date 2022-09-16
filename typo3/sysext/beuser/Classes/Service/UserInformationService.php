@@ -114,7 +114,7 @@ class UserInformationService
             'user' => $user->user ?? [],
             'groups' => [
                 'inherit' => $user->userGroupsUID,
-                'direct' => GeneralUtility::trimExplode(',', $user->user['usergroup'], true),
+                'direct' => GeneralUtility::trimExplode(',', $user->user['usergroup'] ?? '', true),
             ],
             'modules' => [],
         ];
@@ -122,16 +122,17 @@ class UserInformationService
         foreach ($data['groups'] as $type => $groups) {
             foreach ($groups as $key => $id) {
                 $record = BackendUtility::getRecord('be_groups', (int)$id);
-                if ($record) {
-                    $data['groups']['all'][$record['uid']]['row'] = $record;
-                    $data['groups']['all'][$record['uid']][$type] = 1;
+                if (isset($record['uid'])) {
+                    $recordId = $record['uid'];
+                    $data['groups']['all'][$recordId]['row'] = $record;
+                    $data['groups']['all'][$recordId][$type] = 1;
                 }
             }
         }
 
         // languages
         $siteLanguages = $this->getAllSiteLanguages();
-        $userLanguages = GeneralUtility::trimExplode(',', $user->groupData['allowed_languages'], true);
+        $userLanguages = GeneralUtility::trimExplode(',', $user->groupData['allowed_languages'] ?? '', true);
         asort($userLanguages);
         foreach ($userLanguages as $languageId) {
             $languageId = (int)$languageId;
@@ -145,7 +146,7 @@ class UserInformationService
         $data['tables']['tables_select'] = [];
         $data['tables']['tables_modify'] = [];
         foreach (['tables_select', 'tables_modify'] as $tableField) {
-            $temp = GeneralUtility::trimExplode(',', $user->groupData[$tableField], true);
+            $temp = GeneralUtility::trimExplode(',', $user->groupData[$tableField] ?? '', true);
             foreach ($temp as $tableName) {
                 if (isset($GLOBALS['TCA'][$tableName]['ctrl']['title'])) {
                     $data['tables'][$tableField][$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['title'];
@@ -155,7 +156,7 @@ class UserInformationService
         $data['tables']['all'] = array_replace($data['tables']['tables_select'] ?? [], $data['tables']['tables_modify'] ?? []);
 
         // DB mounts
-        $dbMounts = GeneralUtility::trimExplode(',', $user->groupData['webmounts'], true);
+        $dbMounts = GeneralUtility::trimExplode(',', $user->groupData['webmounts'] ?? '', true);
         asort($dbMounts);
         foreach ($dbMounts as $mount) {
             $record = BackendUtility::getRecord('pages', (int)$mount);
@@ -165,7 +166,7 @@ class UserInformationService
         }
 
         // File mounts
-        $fileMounts = GeneralUtility::trimExplode(',', $user->groupData['filemounts'], true);
+        $fileMounts = GeneralUtility::trimExplode(',', $user->groupData['filemounts'] ?? '', true);
         asort($fileMounts);
         foreach ($fileMounts as $mount) {
             $record = BackendUtility::getRecord('sys_filemounts', (int)$mount);
@@ -175,7 +176,7 @@ class UserInformationService
         }
 
         // Modules
-        $modules = GeneralUtility::trimExplode(',', $user->groupData['modules'], true);
+        $modules = GeneralUtility::trimExplode(',', $user->groupData['modules'] ?? '', true);
         foreach ($modules as $moduleIdentifier) {
             if ($this->moduleProvider->isModuleRegistered($moduleIdentifier)) {
                 $data['modules'][] = $this->moduleProvider->getModule($moduleIdentifier);
@@ -200,7 +201,8 @@ class UserInformationService
         }
 
         // file & folder permissions
-        if ($filePermissions = $user->groupData['file_permissions']) {
+        $filePermissions = $user->groupData['file_permissions'] ?? '';
+        if ($filePermissions) {
             $items = GeneralUtility::trimExplode(',', $filePermissions, true);
             foreach ($GLOBALS['TCA']['be_groups']['columns']['file_permissions']['config']['items'] as $availableItem) {
                 if (in_array($availableItem[1], $items, true)) {
@@ -213,13 +215,15 @@ class UserInformationService
         $data['tsconfig'] = $user->getTSConfig();
 
         // non_exclude_fields
-        $fieldListTmp = GeneralUtility::trimExplode(',', $user->groupData['non_exclude_fields'], true);
+        $fieldListTmp = GeneralUtility::trimExplode(',', $user->groupData['non_exclude_fields'] ?? '', true);
         $fieldList = [];
         foreach ($fieldListTmp as $item) {
-            $split = explode(':', $item);
-            if (isset($GLOBALS['TCA'][$split[0]]['ctrl']['title'])) {
-                $fieldList[$split[0]]['label'] = $GLOBALS['TCA'][$split[0]]['ctrl']['title'];
-                $fieldList[$split[0]]['fields'][$split[1]] = $GLOBALS['TCA'][$split[0]]['columns'][$split[1]]['label'] ?? $split[1];
+            $itemParts = explode(':', $item);
+            $itemTable = $itemParts[0];
+            $itemField = $itemParts[1] ?? '';
+            if (!empty($itemField) && isset($GLOBALS['TCA'][$itemTable]['ctrl']['title'])) {
+                $fieldList[$itemTable]['label'] = $GLOBALS['TCA'][$itemTable]['ctrl']['title'];
+                $fieldList[$itemTable]['fields'][$itemField] = $GLOBALS['TCA'][$itemTable]['columns'][$itemField]['label'] ?? $itemField;
             }
         }
         ksort($fieldList);
@@ -232,7 +236,7 @@ class UserInformationService
         $specialItems = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         foreach ($specialItems as $specialItem) {
             $value = $specialItem[1];
-            if (!GeneralUtility::inList($user->groupData['pagetypes_select'], $value)) {
+            if (!GeneralUtility::inList($user->groupData['pagetypes_select'] ?? '', $value)) {
                 continue;
             }
             $label = $specialItem[0];

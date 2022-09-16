@@ -52,6 +52,9 @@ final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
         return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
+    /**
+     * @param array{'table': string, 'object': object} $arguments
+     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $object = $arguments['object'];

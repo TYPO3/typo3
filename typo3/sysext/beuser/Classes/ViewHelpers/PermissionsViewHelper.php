@@ -38,6 +38,8 @@ final class PermissionsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
+    protected const MASKS = [1, 16, 2, 4, 8];
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -51,25 +53,21 @@ final class PermissionsViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('permission', 'int', 'Current permission', true);
         $this->registerArgument('scope', 'string', '"user" / "group" / "everybody"', true);
-        $this->registerArgument('pageId', 'int', '', true);
+        $this->registerArgument('pageId', 'int', 'Page ID to evaluate permission for', true);
     }
 
+    /**
+     * @param array{permission: int, scope: string, pageId: int} $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        $masks = [1, 16, 2, 4, 8];
-
-        if (empty(self::$cachePermissionLabels)) {
-            foreach ($masks as $mask) {
-                self::$cachePermissionLabels[$mask] = htmlspecialchars(self::getLanguageService()->sL(
-                    'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $mask,
-                ));
-            }
-        }
-
         $icon = '';
-        foreach ($masks as $mask) {
+        foreach (self::MASKS as $mask) {
             if ($arguments['permission'] & $mask) {
                 $iconIdentifier = 'actions-check';
                 $iconClass = 'text-success';
@@ -80,7 +78,7 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 $mode = 'add';
             }
 
-            $label = self::$cachePermissionLabels[$mask];
+            $label = self::resolvePermissionLabel($mask);
             $icon .= '<button'
                 . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
@@ -96,6 +94,16 @@ final class PermissionsViewHelper extends AbstractViewHelper
         }
 
         return '<span id="' . htmlspecialchars($arguments['pageId'] . '_' . $arguments['scope']) . '">' . $icon . '</span>';
+    }
+
+    protected static function resolvePermissionLabel(int $mask): string
+    {
+        if (!isset(self::$cachePermissionLabels[$mask])) {
+            self::$cachePermissionLabels[$mask] = htmlspecialchars(self::getLanguageService()->sL(
+                'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $mask,
+            ));
+        }
+        return self::$cachePermissionLabels[$mask];
     }
 
     protected static function getLanguageService(): LanguageService
