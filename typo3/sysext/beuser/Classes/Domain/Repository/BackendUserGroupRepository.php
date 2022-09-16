@@ -48,16 +48,10 @@ class BackendUserGroupRepository extends Repository
      */
     public function findByUidList(array $uidList): array
     {
-        $items = [];
-
-        foreach ($uidList as $id) {
-            $query = $this->createQuery();
-            $query->matching($query->equals('uid', $id));
-            $result = $query->execute(true);
-            if ($result) {
-                $items[] = $result[0];
-            }
-        }
-        return $items;
+        $query = $this->createQuery();
+        // being explicit here, albeit `Typo3DbQueryParser::parseDynamicOperand` uses prepared parameters
+        $uidList = array_map('intval', $uidList);
+        $query->matching($query->in('uid', $uidList));
+        return $query->execute(true);
     }
 }

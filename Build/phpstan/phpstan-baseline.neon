@@ -276,11 +276,6 @@ parameters:
 			path: ../../typo3/sysext/beuser/Classes/Controller/BackendUserController.php
 
 		-
-			message: "#^Offset 0 does not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserGroupRepository.php
-
-		-
 			message: "#^Comparison operation \"\\>\\=\" between int\\<2, max\\> and 2 is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserRepository.php
