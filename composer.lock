@@ -8343,12 +8343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "08927b809a3d7a9af7505392c608e823a8383862"
+                "reference": "cae579350467f1d60bd0418f59e5459f1559b598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/08927b809a3d7a9af7505392c608e823a8383862",
-                "reference": "08927b809a3d7a9af7505392c608e823a8383862",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/cae579350467f1d60bd0418f59e5459f1559b598",
+                "reference": "cae579350467f1d60bd0418f59e5459f1559b598",
                 "shasum": ""
             },
             "require-dev": {
@@ -8361,7 +8361,6 @@
                 "typo3/cms-frontend": "~12.0@dev",
                 "typo3/cms-install": "~12.0@dev",
                 "typo3/coding-standards": "^0.5.0",
-                "typo3/tailor": "^1.2",
                 "typo3/testing-framework": "dev-main"
             },
             "default-branch": true,
@@ -8408,7 +8407,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2022-08-08T09:50:52+00:00"
+            "time": "2022-09-13T17:10:27+00:00"
         },
         {
             "name": "typo3/testing-framework",
@@ -8416,12 +8415,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "0059255c51af1a476eedfda3d5a52a210f3db093"
+                "reference": "ec6ce3a2731aa2dda89c42a4c9af9d1712457795"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/0059255c51af1a476eedfda3d5a52a210f3db093",
-                "reference": "0059255c51af1a476eedfda3d5a52a210f3db093",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ec6ce3a2731aa2dda89c42a4c9af9d1712457795",
+                "reference": "ec6ce3a2731aa2dda89c42a4c9af9d1712457795",
                 "shasum": ""
             },
             "require": {
@@ -8445,7 +8444,7 @@
                 "phpstan/phpstan": "^1.8.0",
                 "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "12.*.*@dev",
-                "typo3/coding-standards": "^0.5.3"
+                "typo3/coding-standards": "0.5.2"
             },
             "default-branch": true,
             "type": "library",
@@ -8483,7 +8482,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-07-31T10:03:57+00:00"
+            "time": "2022-08-12T17:18:51+00:00"
         }
     ],
     "aliases": [],
