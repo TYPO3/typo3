@@ -1158,7 +1158,7 @@ class ExtensionManagementUtility
     public static function isServiceAvailable($serviceType, $serviceKey, $serviceDetails)
     {
         // If the service depends on external programs - check if they exists
-        if (trim($serviceDetails['exec'])) {
+        if (trim($serviceDetails['exec'] ?? '')) {
             $executables = GeneralUtility::trimExplode(',', $serviceDetails['exec'], true);
             foreach ($executables as $executable) {
                 // If at least one executable file is not available, exit early returning FALSE
