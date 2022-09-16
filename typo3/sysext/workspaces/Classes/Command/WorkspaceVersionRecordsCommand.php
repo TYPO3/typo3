@@ -348,7 +348,7 @@ class WorkspaceVersionRecordsCommand extends Command
             $versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid', null, true);
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
-                    if (!$verRec['_CURRENT_VERSION']) {
+                    if (!($verRec['_CURRENT_VERSION'] ?? false)) {
                         $this->traversePageTreeForVersionedRecords((int)$verRec['uid'], $depth, true, true);
                     }
                 }
