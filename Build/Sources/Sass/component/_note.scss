@@ -26,33 +26,66 @@
 //
 // Variables
 //
-$note-shadow: 0 2px 2px 1px rgba(0, 0, 0, .25);
-$note-padding: 20px;
-$note-default-background: #fff;
-$note-notice-background: $state-notice-bg;
-$note-instruction-background: $state-info-bg;
-$note-todo-background: $state-success-bg;
-$note-template-background: $state-warning-bg;
+$note-header-bg-scale: -60%;
+$note-bg-scale: -85%;
+$note-padding: 1rem;
+
+@mixin note-create-variant($state, $value) {
+    $note-bg: shift-color($value, $note-bg-scale);
+    $note-color: color-contrast($note-bg);
+    $note-header-bg: shift-color($value, $note-header-bg-scale);
+    $note-header-color: color-contrast($note-header-bg);
+    --note-#{$state}-color: #{$note-color};
+    --note-#{$state}-bg: #{$note-bg};
+    --note-#{$state}-header-color: #{$note-header-color};
+    --note-#{$state}-header-bg: #{$note-header-bg};
+}
+
+@mixin note-use-variant($state) {
+    --note-color: var(--note-#{$state}-color);
+    --note-bg: var(--note-#{$state}-bg);
+    --note-header-color: var(--note-#{$state}-header-color);
+    --note-header-bg: var(--note-#{$state}-header-bg);
+}
+
+:root {
+    @each $state, $value in $theme-colors {
+        @include note-create-variant($state, $value);
+    }
+
+    //
+    // Variants
+    // The light variants have problems beeing generated, they need manual correction.
+    //
+    --note-light-bg: #{$light};
+    --note-light-header-bg: #{shade-color($light, 10%)};
+    --note-default-bg: #{$default};
+    --note-default-header-bg: #{shade-color($default, 10%)};
+}
 
 //
 // Component
 //
 .note-list {
-    margin: 1em 0;
+    margin: 1rem 0;
 }
 
 .note {
-    border-radius: 2px;
-    margin-bottom: 1em;
+    border-radius: var(--typo3-component-border-radius);
+    margin-bottom: 1rem;
     overflow: hidden;
     position: relative;
     z-index: 1;
-    background-color: $note-default-background;
-    box-shadow: $note-shadow;
+    color: var(--note-color);
+    background-color: var(--note-bg);
+    box-shadow: var(--typo3-component-box-shadow);
+
+    @include note-use-variant('default');
 }
 
 .note-header {
-    background-color: darken($note-default-background, 5%);
+    color: var(--note-header-color);
+    background-color: var(--note-header-bg);
     padding: ($note-padding * .5) $note-padding;
 }
 
@@ -60,13 +93,7 @@ $note-template-background: $state-warning-bg;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin-left: -($note-padding * .25);
-    margin-right: -($note-padding * .25);
-
-    > * {
-        padding-left: ($note-padding * .25);
-        padding-right: ($note-padding * .25);
-    }
+    gap: .5rem;
 }
 
 .note-actions {
@@ -88,47 +115,28 @@ $note-template-background: $state-warning-bg;
 //
 // Variants
 //
+@each $state, $value in $theme-colors {
+    .note-#{$state} {
+        @include note-use-variant($state);
+    }
+}
 
 // Instruction
 .note-category-1 {
-    .note-header {
-        background-color: darken($note-instruction-background, 5%);
-    }
-
-    .note-body {
-        background-color: $note-instruction-background;
-    }
+    @include note-use-variant('info');
 }
 
 // Template
 .note-category-2 {
-    .note-header {
-        background-color: darken($note-template-background, 5%);
-    }
-
-    .note-body {
-        background-color: $note-template-background;
-    }
+    @include note-use-variant('warning');
 }
 
 // Notice
 .note-category-3 {
-    .note-header {
-        background-color: darken($note-notice-background, 5%);
-    }
-
-    .note-body {
-        background-color: $note-notice-background;
-    }
+    @include note-use-variant('notice');
 }
 
 // Todo
 .note-category-4 {
-    .note-header {
-        background-color: darken($note-todo-background, 5%);
-    }
-
-    .note-body {
-        background-color: $note-todo-background;
-    }
+    @include note-use-variant('success');
 }

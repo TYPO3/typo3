@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="panel-group panel-group-rst" role="tablist" aria-multiselectable="true">
+    <div class="panel-group" role="tablist" aria-multiselectable="true">
         <f:for each="{upgradeDocsVersions}" as="version" iteration="iterator">
             <div class="panel panel-default panel-version t3js-version-changes" data-version="{version}">
                 <div class="panel-heading" role="tab" id="heading-{iterator.index}">
@@ -68,7 +68,7 @@
                     </a>
                 </h2>
             </div>
-            <div class="collapse" id="collapseRead" role="tabpanel" data-group-version="read">
+            <div class="panel-collapse collapse" id="collapseRead" role="tabpanel" data-group-version="read">
                 <div class="panel-body panel-body-read t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                     </a>
                 </h2>
             </div>
-            <div class="collapse" id="collapseNotAffected" role="tabpanel" data-group-version="notAffected">
+            <div class="panel-collapse collapse" id="collapseNotAffected" role="tabpanel" data-group-version="notAffected">
                 <div class="panel-body panel-body-not-affected t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
             </div>
         </div>

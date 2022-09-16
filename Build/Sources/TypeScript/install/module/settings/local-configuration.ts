@@ -25,6 +25,8 @@ import Router from '../../router';
  * Module: @typo3/install/module/local-configuration
  */
 class LocalConfiguration extends AbstractInteractableModule {
+  private searchInput: HTMLInputElement;
+  private selectorItem: string = '.t3js-localConfiguration-item';
   private selectorToggleAllTrigger: string = '.t3js-localConfiguration-toggleAll';
   private selectorWriteTrigger: string = '.t3js-localConfiguration-write';
   private selectorSearchTrigger: string = '.t3js-localConfiguration-search';
@@ -42,7 +44,7 @@ class LocalConfiguration extends AbstractInteractableModule {
     currentModal.on('click', this.selectorToggleAllTrigger, (): void => {
       const modalContent = this.getModalBody();
       const panels = modalContent.find('.panel-collapse');
-      const action = (panels.eq(0).hasClass('in')) ? 'hide' : 'show';
+      const action = (panels.eq(0).hasClass('show')) ? 'hide' : 'show';
       panels.collapse(action);
     });
 
@@ -72,21 +74,24 @@ class LocalConfiguration extends AbstractInteractableModule {
     // Perform expand collapse on search matches
     currentModal.on('keyup', this.selectorSearchTrigger, (e: JQueryEventObject): void => {
       const typedQuery = $(e.target).val();
-      const $searchInput = currentModal.find((this.selectorSearchTrigger));
-      currentModal.find('div.item').each((index: number, element: any): void => {
-        const $item = $(element);
-        if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
-          $item.removeClass('hidden').addClass('searchhit');
-        } else {
-          $item.removeClass('searchhit').addClass('hidden');
-        }
-      });
-      currentModal.find('.searchhit').parent().collapse('show');
-      // Make search field clearable
-      const searchInput = <HTMLInputElement>$searchInput.get(0);
-      searchInput.clearable();
-      searchInput.focus();
+      this.search(typedQuery);
     });
+    currentModal.on('change', this.selectorSearchTrigger, (e: JQueryEventObject): void => {
+      const typedQuery = $(e.target).val();
+      this.search(typedQuery);
+    });
+  }
+
+  private search(typedQuery: String): void {
+    this.currentModal.find(this.selectorItem).each((index: number, element: any): void => {
+      const $item = $(element);
+      if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
+        $item.removeClass('hidden').addClass('searchhit');
+      } else {
+        $item.removeClass('searchhit').addClass('hidden');
+      }
+    });
+    this.currentModal.find('.searchhit').parent().parent().parent().collapse('show');
   }
 
   private getContent(): void {
@@ -99,6 +104,8 @@ class LocalConfiguration extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.html(data.html);
             Modal.setButtons(data.buttons);
+            this.searchInput = <HTMLInputElement>modalContent.find((this.selectorSearchTrigger)).get(0);
+            this.searchInput.clearable();
           }
         },
         (error: AjaxResponse): void => {

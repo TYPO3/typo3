@@ -71,7 +71,7 @@ class Repository {
           },
         }, {
           text: TYPO3.lang['button.resolveDependencies'],
-          btnClass: 'btn-info',
+          btnClass: 'btn-primary',
           trigger: (): void => {
             this.getResolveDependenciesAndInstallResult(data.url
               + '&downloadPath=' + this.downloadPath);

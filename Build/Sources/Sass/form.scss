@@ -559,12 +559,6 @@ $tree-line-height: 20px;
                 }
             }
         }
-
-        .btn {
-            background-color: $btn-default-bg;
-            border-color: $btn-default-border;
-            font-size: .9em;
-        }
     }
 
     .sort-row-field {
@@ -722,10 +716,6 @@ $tree-line-height: 20px;
                     margin-right: ($stage-validation-list-width - 25);
                     transition: margin $stage-validation-transition-time-in;
                 }
-            }
-
-            span {
-                color: $gray-700;
             }
         }
 
@@ -1231,11 +1221,6 @@ $tree-line-height: 20px;
             &:active {
                 outline: initial initial 0;
             }
-        }
-
-        .btn-group,
-        .t3-form-element-form-settings-button {
-            margin-left: 25px;
         }
     }
 }

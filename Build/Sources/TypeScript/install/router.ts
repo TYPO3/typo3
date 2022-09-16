@@ -252,7 +252,7 @@ class Router {
         + '</div>'
         + '</div>'
         + '<div class="panel-group" role="tablist" aria-multiselectable="true">'
-        + '<div class="panel panel-default panel-flat searchhit">'
+        + '<div class="panel panel-default searchhit">'
         + '<div class="panel-heading" role="tab" id="heading-error">'
         + '<h3 class="panel-title">'
         + '<a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse-error" aria-expanded="true" '

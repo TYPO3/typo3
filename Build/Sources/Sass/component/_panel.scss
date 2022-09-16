@@ -10,18 +10,11 @@
 //
 // <div class="panel panel-default">
 //   <div class="panel-heading">
-//     <div class="panel-heading-right">
 //       <a href="#panelContentId" class="panel-heading-collapse" role="button" data-bs-toggle="collapse" aria-expanded="true">
 //         <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-view-list-collapse" data-identifier="actions-view-list-collapse">
 //           ... IconAPI ...
 //         </span>
 //       </a>
-//     </div>
-//     <div class="panel-heading-left">
-//       <a href="#" class="panel-title">
-//         ... Title ...
-//       </a>
-//     </div>
 //   </div>
 //   <div id="panelContentId" class="panel-collapse collapse show" aria-expanded="true">
 //     <div class="panel-body">
@@ -35,21 +28,132 @@
 //
 // Variables
 //
-$panel-active-text: #fff;
-$panel-active-border: #444;
-$panel-active-heading-bg: #666;
-$panel-progress-bg: #eee;
-$panel-progress-bar: #444;
+$panel-border-scale: -60%;
+$panel-heading-bg-scale: -85%;
+
+// Mixins
+@mixin panel-create-variant($name, $value, $border-scale: $panel-border-scale, $heading-scale: $panel-heading-bg-scale) {
+    $panel-border: shift-color($value, $border-scale);
+    $panel-heading-bg: shift-color($value, $heading-scale);
+    $panel-heading-color: color-contrast($panel-heading-bg);
+    --panel-#{$name}-border-color: #{$panel-border};
+    --panel-#{$name}-progress-bg: #{$value};
+    --panel-#{$name}-heading-color: #{$panel-heading-color};
+    --panel-#{$name}-heading-bg: #{$panel-heading-bg};
+}
+
+@mixin panel-use-variant($name) {
+    --panel-border-color: var(--panel-#{$name}-border-color);
+    --panel-progress-bg: var(--panel-#{$name}-progress-bg);
+    --panel-heading-color: var(--panel-#{$name}-heading-color);
+    --panel-heading-bg: var(--panel-#{$name}-heading-bg);
+}
+
+// Variables
+:root {
+    --panel-bg: #fff;
+    --panel-border-color: #ccc;
+    --panel-border-radius: var(--typo3-component-border-radius);
+    --panel-border-width: var(--typo3-component-border-width);
+    --panel-padding: 1rem;
+    --panel-header-padding-x: 1rem;
+    --panel-header-padding-y: .75rem;
+    --panel-spacing: var(--typo3-spacing);
+    --panel-box-shadow: var(--typo3-component-box-shadow);
+
+    @each $name, $value in $theme-colors {
+        @if $name == light {
+            @include panel-create-variant($name, $value, 20%, 0%);
+        }
+
+        @else if $name == default {
+            @include panel-create-variant($name, $value, 20%, 0%);
+        }
+
+        @else {
+            @include panel-create-variant($name, $value);
+        }
+    }
+}
 
 //
-// Panel
+// Group
+//
+.panel-group {
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+    margin-bottom: var(--panel-spacing);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--panel-box-shadow);
+
+    > .panel {
+        border-radius: 0;
+        margin-bottom: 0;
+        box-shadow: none;
+        margin-top: calc(var(--panel-border-width) * -1);
+
+        &:first-child {
+            margin-top: 0;
+            border-top-left-radius: var(--panel-border-radius);
+            border-top-right-radius: var(--panel-border-radius);
+        }
+
+        &:last-child {
+            border-bottom-left-radius: var(--panel-border-radius);
+            border-bottom-right-radius: var(--panel-border-radius);
+        }
+    }
+}
+
+//
+// Component
 //
 .panel {
-    display: block;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    background-color: var(--panel-bg);
+    border: var(--panel-border-width) solid var(--panel-border-color);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+    margin-bottom: var(--typo3-spacing);
+    transition: all .2s ease-in-out;
+    transition-property: box-shadow, border, transform;
 
-    &:hover,
-    &:focus {
-        text-decoration: none;
+    // @TODO NEED?
+    > .table-fit {
+        border: none;
+    }
+}
+
+//
+// Progress
+//
+.panel-progress {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    z-index: 1;
+    background-color: transparent;
+
+    .panel-progress-bar {
+        display: block;
+        height: 100%;
+        background-color: var(--panel-progress-bg, $primary);
+    }
+}
+
+.panel-has-progress {
+    > .panel-progress {
+        display: block;
     }
 }
 
@@ -57,7 +161,26 @@ $panel-progress-bar: #444;
 // Heading
 //
 .panel-heading {
-    @extend .clearfix;
+    position: relative;
+    color: var(--panel-heading-color);
+    background-color: var(--panel-heading-bg);
+    font-weight: bold;
+    padding: var(--panel-header-padding-y) var(--panel-header-padding-x);
+
+    .caret {
+        @include transition(all .25s ease-in-out);
+        border-top-color: var(--panel-heading-color);
+    }
+
+    /* stylelint-disable */
+    .panel-collapsed &,
+    .collapsed > ,
+    .collapsed > .form-irre-header-icon {
+        .caret {
+            transform: rotate(-90deg);
+        }
+    }
+    /* stylelint-enable */
 
     a,
     a:hover,
@@ -68,31 +191,25 @@ $panel-progress-bar: #444;
     }
 }
 
-.panel-heading-left {
-    float: left;
-}
-
-.panel-heading-right {
-    float: right;
-}
-
 //
 // Title
 //
 .panel-title {
     font-size: $font-size-base;
-}
-
-.panel-title-icon,
-.panel-title-name {
-    display: inline-block;
-    vertical-align: middle;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 //
 // Body
 //
 .panel-body {
+    padding: var(--panel-padding);
+
+    > p > a {
+        text-decoration: underline;
+    }
+
     > *:first-child {
         margin-top: 0;
     }
@@ -102,11 +219,11 @@ $panel-progress-bar: #444;
     }
 }
 
-// $TODO workaround to make links visible
-.panel-body-highlightlinks {
-    > p > a {
-        text-decoration: underline;
-    }
+//
+// Footer
+//
+.panel-footer {
+    padding: var(--panel-padding);
 }
 
 //
@@ -115,41 +232,128 @@ $panel-progress-bar: #444;
 .panel-table {
     th:first-child,
     td:first-child {
-        padding-left: $card-spacer-x;
+        padding-left: var(--panel-header-padding-x);
     }
 
     th:last-child,
     td:last-child {
-        padding-right: $card-spacer-x;
+        padding-right: var(--panel-header-padding-x);
     }
 }
 
 //
-// Progress
+// Condensed
 //
-.panel-progress {
-    background-color: $panel-progress-bg;
-    height: 3px;
-    position: relative;
-    width: 100%;
+.panel-condensed {
+    --panel-padding: .5rem;
+    --panel-header-padding-x: .5rem;
+    --panel-header-padding-y: .5rem;
+}
 
-    .panel-progress-bar {
-        display: block;
-        height: 100%;
-        background-color: $panel-progress-bar;
+//
+// Collapse
+//
+.panel-collapsed {
+    .panel-collapse {
+        display: none;
+        visibility: hidden;
     }
 }
 
 //
-// Additional Variations
+// Panel Tab
 //
+.panel-tab {
+    --panel-border-radius: 0;
+    border: 1px solid $nav-tabs-active-link-hover-border-color;
+    background-color: $nav-tabs-active-link-bg;
+}
+
+.panel-tab + .panel-tab,
+.panel-tab + .form-section {
+    margin-top: -($line-height-computed+1);
+}
+
+.tab-pane {
+    > .panel-tab:first-child {
+        border-top: none;
+    }
+}
+
+//
+// Colors
+//
+@each $state, $value in $theme-colors {
+    .panel-#{$state} {
+        @include panel-use-variant($state);
+    }
+}
+
 .panel-active {
-    @include panel-variant($panel-active-border, $panel-active-text, $panel-active-heading-bg, $panel-active-border);
+    @include panel-use-variant('primary');
+}
+
+.panel-feature {
+    @include panel-use-variant('success');
+}
+
+.panel-important {
+    @include panel-use-variant('info');
+}
+
+.panel-deprecation {
+    @include panel-use-variant('warning');
+}
+
+.panel-breaking {
+    @include panel-use-variant('danger');
 }
 
 //
-// Tab
+// LEGACY
+// This section is responsible for a lot of small corrections
+// that need to be resolved and removed in future patches
 //
-.panel-body {
-    padding: .75rem;
+.panel,
+.panel-collapse {
+    > .alert {
+        margin: 0;
+        border: none;
+        border-top: var(--panel-border-width) solid var(--panel-border-color);
+        --bs-alert-padding-x: var(--panel-header-padding-x);
+    }
+
+    > .form-section,
+    > .tab-content > .form-section,
+    > .tab-content > .tab-pane > .form-section,
+    > [role="tabpanel"] > .tab-content > .form-section,
+    > [role="tabpanel"] > .tab-content > .tab-pane > .form-section {
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+    }
+
+    > [role="tabpanel"] > .nav-tabs,
+    > .nav-tabs {
+        border-top: 1px solid $panel-default-border;
+        padding-top: 8px;
+
+        > li {
+            margin-left: -1px;
+        }
+    }
+
+    > .table,
+    > .table-responsive > .table,
+    > .table-fit,
+    > .table-responsive > .table-fit {
+        margin-bottom: 0;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
 }

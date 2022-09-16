@@ -46,7 +46,7 @@
                     </button>
                     <f:render partial="MultiRecordSelectionActions" />
                 </div>
-                <div class="collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroupId}" data-table="task-group-{taskGroupId}">
+                <div class="panel-collapse collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroupId}" data-table="task-group-{taskGroupId}">
                     <div class="table-fit mb-0">
                         <table class="table table-striped table-hover taskGroup-table">
                             <thead>
@@ -381,7 +381,7 @@
                         </span>
                     </button>
                 </div>
-                <div class="collapse {f:if(condition: '!{errorClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
+                <div class="panel-collapse collapse {f:if(condition: '!{errorClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
                     <div class="table-fit mb-0">
                         <table class="table table-striped table-hover">
                             <tr class="taskGroup" data-task-group-id="0">

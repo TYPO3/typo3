@@ -21,15 +21,15 @@ html {
     --pagemodule-grid-cell-header-size: 1em;
     --pagemodule-grid-cell-border-radius: 4px;
     --pagemodule-grid-cell-bg: #f2f2f2;
-    --pagemodule-grid-cell-restricted-bg: #{$state-warning-bg};
-    --pagemodule-grid-column-unused-bg: #{$state-warning-bg};
+    --pagemodule-grid-cell-restricted-bg: #{shift-color($warning, -85%)};
+    --pagemodule-grid-column-unused-bg: #{shift-color($warning, -85%)};
     --pagemodule-element-spacing: 1rem;
     --pagemodule-element-bg: #fff;
     --pagemodule-element-border-radius: 2px;
     --pagemodule-element-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
     --pagemodule-element-hidden-bg: #f2f2f2;
-    --pagemodule-dropzone-bg: #{$state-warning-bg};
-    --pagemodule-dropzone-possible-bg: #{$state-success-bg};
+    --pagemodule-dropzone-bg: #{shift-color($warning, -85%)};
+    --pagemodule-dropzone-possible-bg: #{shift-color($success, -85%)};
 }
 
 //

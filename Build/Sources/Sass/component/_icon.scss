@@ -57,3 +57,29 @@
 .icon-status-dialog-warning {
     --icon-color-primary: #{$warning};
 }
+
+//
+// Emphasized
+//
+.icon-emphasized {
+    --icon-emphasized-color: #313131;
+    --icon-emphasized-bg: #fff;
+    color: var(--icon-emphasized-color);
+    background-color: var(--icon-emphasized-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+
+    .alert & {
+        --icon-emphasized-color: var(--#{$prefix}alert-color);
+        --icon-emphasized-bg: var(--#{$prefix}alert-border-color);
+    }
+
+    .callout & {
+        --icon-emphasized-color: var(--callout-color);
+        --icon-emphasized-bg: var(--callout-border-color);
+    }
+}

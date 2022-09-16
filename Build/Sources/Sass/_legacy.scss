@@ -14,33 +14,8 @@
 // Backend Users module
 //      - table missing bottom footer divider line
 //
-// Reports module
-//      - Status report -> missing table 50-50 layout
-//      - adjust green saturation?
-//
 // DB Check module
 //      - Full search -> Advanced query -> fix form layouts
-
-//// Mixins
-@mixin panel-variant($border, $heading-text-color, $heading-bg-color, $heading-border) {
-    border-color: $border;
-
-    & > .panel-heading {
-        color: $gray-700;
-        background-color: $heading-bg-color;
-        border-color: $heading-border;
-
-        + .panel-collapse > .panel-body {
-            border-top-color: $border;
-        }
-    }
-
-    & > .panel-footer {
-        + .panel-collapse > .panel-body {
-            border-bottom-color: $border;
-        }
-    }
-}
 
 // Form control sizing
 //
@@ -200,50 +175,10 @@ label {
     }
 }
 
-// panel fallback
-// see bootstrap v4 migration https://getbootstrap.com/docs/4.5/migration/#panels
-// todo replace ".panel" classes with ".card"
-.panel {
-    @extend .card !optional;
-
-    &-group {
-        // .card-group is not a replacement for panel-group, therefore we build our own
-        display: flex;
-        flex-flow: column;
-    }
-
-    &-heading {
-        color: $gray-700;
-        padding: .625rem 1rem;
-    }
-
-    &-title {
-        @extend .card-title !optional;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    &-body {
-        @extend .card-body !optional;
-    }
-
-    &-footer {
-        @extend .card-footer !optional;
-    }
-
-    > .table-fit {
-        border: none;
-    }
-}
-
 .page-header {
     padding: .625rem 1rem;
     margin: 2rem 0 1rem;
     border-bottom: 1px solid $gray-700;
-}
-
-code {
-    margin: .25rem .5rem;
 }
 
 .help-block {
@@ -251,21 +186,6 @@ code {
     margin-top: .5rem;
     margin-bottom: 1rem;
     color: $gray-700;
-}
-
-.btn-toolbar {
-    > .btn,
-    > .btn-group,
-    > .input-group {
-        margin-left: .4rem;
-        float: left;
-    }
-
-    > .btn:first-child,
-    > .btn-group:first-child,
-    > .input-group:first-child {
-        margin-left: 0;
-    }
 }
 
 .input-group-btn {
@@ -276,11 +196,6 @@ code {
 
 .form-inline .form-group {
     display: inline-block;
-}
-
-.form-irre-object.panel {
-    flex: 1 0 100%;
-    width: 100%;
 }
 
 .modal-backdrop.in {

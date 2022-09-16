@@ -1,0 +1,17 @@
+//
+// Media
+//
+.media {
+    display: grid;
+    grid-template-columns: 2rem auto;
+    grid-gap: 1rem;
+
+    .media-body {
+        grid-column: 1 / 3;
+    }
+
+    .media-left + .media-body {
+        grid-column: 2 / 3;
+        align-self: center;
+    }
+}

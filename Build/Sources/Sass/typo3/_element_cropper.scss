@@ -134,21 +134,6 @@
         color: $color-white;
     }
 
-    .btn-secondary {
-        color: $color-white;
-        background-color: #777;
-        border-color: #555;
-
-        &:hover,
-        &:focus,
-        &:active,
-        &.active {
-            color: $color-white;
-            background-color: #888;
-            border-color: #444;
-        }
-    }
-
     /**
      * Style overrides for CropperJS CSS and additional styles to make cropper look like expected
      *

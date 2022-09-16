@@ -1,20 +1,3 @@
-@mixin panel-risk-levels($high-color, $medium-color) {
-    &.risk-high > .panel-heading {
-        background: $high-color;
-        color: $gray-100;
-    }
-
-    &.risk-medium > .panel-heading {
-        background: $medium-color;
-        color: $gray-900;
-    }
-
-    &.risk-low > .panel-heading {
-        background: white;
-        color: $gray-900;
-    }
-}
-
 .install-tool-init {
     // Styles for enable install tool and login view
     .logo-pageheader {
@@ -34,75 +17,14 @@
     .typo3-message p {
         margin-top: 9px;
     }
-
-    .alert-notice {
-        @include alert-variant($btn-default-bg, $btn-default-border, $btn-default-color);
-    }
 }
 
 .install-tool-modal {
-    .panel-group-flat,
-    .panel-group-rst {
-        .panel-body {
-            padding-right: 0;
-        }
-    }
-
-    .panel-flat,
     .panel-rst,
     .panel-version {
-        border: 0;
-        border-left: 2px solid $gray-300;
-        border-radius: 0;
-        margin: 0;
-
         .panel-collapse {
             position: relative;
             overflow: auto;
-        }
-
-        &.panel-default > .panel-heading {
-            background: $gray-100;
-        }
-
-        &.panel-breaking,
-        &.panel-danger {
-            @include panel-variant($danger, #fff, $danger, $danger);
-            @include panel-risk-levels($danger, lighten($danger, 40));
-
-            .panel-progress .panel-progress-bar {
-                background-color: $danger;
-            }
-        }
-
-        &.panel-deprecation,
-        &.panel-warning {
-            @include panel-variant($warning, #fff, $warning, $warning);
-            @include panel-risk-levels($warning, lighten($warning, 30));
-
-            .panel-progress .panel-progress-bar {
-                background-color: $warning;
-            }
-        }
-
-        &.panel-feature,
-        &.panel-success {
-            @include panel-variant($success, #fff, $success, $success);
-            @include panel-risk-levels($success, lighten($success, 40));
-
-            .panel-progress .panel-progress-bar {
-                background-color: $success;
-            }
-        }
-
-        &.panel-important,
-        &.panel-info {
-            @include panel-variant($info, #fff, $info, $info);
-            @include panel-risk-levels($info, lighten($info, 30));
-
-            .panel-progress .panel-progress-bar {
-                background-color: $info;
-            }
         }
 
         .panel-heading {
@@ -119,60 +41,27 @@
 
         .rst-tags {
             position: absolute;
-            top: .75em;
-            right: 1em;
+            display: flex;
+            gap: .5rem;
+            top: calc(var(--panel-padding) / 2);
+            right: var(--panel-padding);
 
-            .badge {
-                margin: 0 .25em;
-
-                &:first-child {
-                    margin-left: 0;
-                }
-
-                &:last-child {
-                    margin-right: 0;
-                }
+            ~ .panel-body {
+                padding-top: calc(var(--panel-padding) * 2);
             }
         }
 
         .rst-links {
             position: absolute;
-            bottom: .5em;
-            right: 1.2em;
-            padding-left: (($line-height-computed - 1) * .5);
-        }
+            display: flex;
+            gap: .5rem;
+            bottom: calc(var(--panel-padding) / 2);
+            right: var(--panel-padding);
 
-        pre {
-            margin: 0;
-            border-radius: 0;
-            border: 0;
-            border-top: 1px solid $gray-300;
-            white-space: pre-wrap;
-            word-break: normal;
-            word-wrap: normal;
-        }
-
-        .rst-links + pre {
-            padding-bottom: (($line-height-computed - 1) * 3);
-
-            @media (min-width: $screen-sm-min) {
-                padding-bottom: (($line-height-computed - 1) * 2);
+            ~ .panel-body {
+                padding-bottom: calc(var(--panel-padding) * 2);
             }
         }
-    }
-
-    .item {
-        margin: 1em;
-        border: 1px solid $panel-default-heading-bg;
-    }
-
-    .item .item-heading {
-        padding: 1em;
-        background-color: $panel-default-heading-bg;
-    }
-
-    .item .item-body {
-        padding: 1em;
     }
 
     .list-group-item {
@@ -247,5 +136,96 @@
 
     ul {
         word-wrap: anywhere;
+    }
+}
+
+//
+// Panel Severity Variants
+//
+
+// $panel-border-scale: -60%;
+// $panel-heading-bg-scale: -85%;
+$risk-high-border-scale: -20%;
+$risk-high-bg-scale: -45%;
+$risk-medium-border-scale: -40%;
+$risk-medium-bg-scale: -65%;
+
+.panel-success.risk-high {
+    @include panel-create-variant('success-high', $success, $risk-high-border-scale, $risk-high-bg-scale);
+    @include panel-use-variant('success-high');
+}
+
+.panel-success.risk-medium {
+    @include panel-create-variant('success-medium', $success, $risk-medium-border-scale, $risk-medium-bg-scale);
+    @include panel-use-variant('success-medium');
+}
+
+.panel-warning.risk-high {
+    @include panel-create-variant('warning-high', $warning, $risk-high-border-scale, $risk-high-bg-scale);
+    @include panel-use-variant('warning-high');
+}
+
+.panel-warning.risk-medium {
+    @include panel-create-variant('warning-medium', $warning, $risk-medium-border-scale, $risk-medium-bg-scale);
+    @include panel-use-variant('warning-medium');
+}
+
+.panel-danger.risk-high {
+    @include panel-create-variant('danger-high', $danger, $risk-high-border-scale, $risk-high-bg-scale);
+    @include panel-use-variant('danger-high');
+}
+
+.panel-danger.risk-medium {
+    @include panel-create-variant('danger-medium', $danger, $risk-medium-border-scale, $risk-medium-bg-scale);
+    @include panel-use-variant('danger-medium');
+}
+
+.panel-info.risk-high {
+    @include panel-create-variant('info-high', $info, $risk-high-border-scale, $risk-high-bg-scale);
+    @include panel-use-variant('info-high');
+}
+
+.panel-info.risk-medium {
+    @include panel-create-variant('info-medium', $info, $risk-medium-border-scale, $risk-medium-bg-scale);
+    @include panel-use-variant('info-medium');
+}
+
+//
+// Localconf Settings
+//
+.localconf-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.localconf-item {
+    width: 100%;
+    border: 1px solid #bebebe;
+
+    &.searchhit ~ .alert {
+        display: none;
+    }
+}
+
+.localconf-item-heading {
+    padding: .5rem 1rem;
+    background-color: #eee;
+}
+
+.localconf-item-body {
+    padding: 1rem;
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-text {
+        font-size: 1em;
+        margin-top: 0;
     }
 }

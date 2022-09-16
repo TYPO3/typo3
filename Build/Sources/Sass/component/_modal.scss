@@ -7,21 +7,6 @@
 //
 // Variables
 //
-$modal-notice-bg: $btn-default-bg;
-$modal-notice-color: $btn-default-color;
-$modal-notice-border: $btn-default-border;
-$modal-info-bg: $info;
-$modal-info-color: $white;
-$modal-info-border: darken($info, 5%);
-$modal-success-bg: $success;
-$modal-success-color: $white;
-$modal-success-border: darken($success, 5%);
-$modal-warning-bg: $warning;
-$modal-warning-color: $white;
-$modal-warning-border: darken($warning, 5%);
-$modal-danger-bg: $danger;
-$modal-danger-color: $white;
-$modal-danger-border: darken($danger, 5%);
 $modal-sidebar-sm: 250px;
 $modal-sidebar-md: 300px;
 
@@ -263,43 +248,13 @@ $modal-sidebar-md: 300px;
 //
 // Severity
 //
-.modal-severity-notice {
-    .modal-header {
-        background-color: $modal-notice-bg;
-        color: $modal-notice-color;
-        border-bottom-color: $modal-notice-border;
-    }
-}
-
-.modal-severity-info {
-    .modal-header {
-        background-color: $modal-info-bg;
-        color: $modal-info-color;
-        border-bottom-color: $modal-info-border;
-    }
-}
-
-.modal-severity-success {
-    .modal-header {
-        background-color: $modal-success-bg;
-        color: $modal-success-color;
-        border-bottom-color: $modal-success-border;
-    }
-}
-
-.modal-severity-warning {
-    .modal-header {
-        background-color: $modal-warning-bg;
-        color: $modal-warning-color;
-        border-bottom-color: $modal-warning-border;
-    }
-}
-
-.modal-severity-danger {
-    .modal-header {
-        background-color: $modal-danger-bg;
-        color: $modal-danger-color;
-        border-bottom-color: $modal-danger-border;
+@each $state, $value in $theme-colors {
+    .modal-severity-#{$state} {
+        .modal-header {
+            background-color: $value;
+            color: color-contrast($value);
+            border-bottom-color: shade-color($value, 10%);
+        }
     }
 }
 

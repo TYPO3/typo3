@@ -59,7 +59,6 @@
 @import "../../node_modules/bootstrap/scss/helpers";
 
 // extend bootstrap 5 utilities
-@import "utilities/utilities";
 @import "utilities/resets";
 
 // Utilities
@@ -90,6 +89,7 @@ $sourcesanspro-font-path: "../Fonts/SourceSansPro";
 @import "component/autocomplete";
 @import "component/badges";
 @import "component/buttons";
+@import "component/code";
 @import "component/dropdown";
 @import "component/avatar";
 @import "component/callout";

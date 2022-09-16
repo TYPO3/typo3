@@ -14,10 +14,10 @@
 // Form control state additions
 //
 .has-change {
-    @include form-control-validation($state-info-text, $state-info-text, $state-info-bg);
+    @include form-control-validation($info, $info, shift-color($info, -85%));
 
     .thumbnail-status {
-        border: 1px solid $state-info-text;
+        border: 1px solid $info;
     }
     // A loading order issue prevents .has-change to be overridden with .has-error
     // this is a workaround needs to be cleaned up in a less file restructuring

@@ -42,54 +42,28 @@
 //
 // Variables
 //
-$callout-padding: 20px;
-$callout-color: #333;
-$callout-icon-color: #fff;
-$callout-bg: #f0f0f0;
-$callout-border: #ccc;
-$callout-border-radius: 2px;
-$callout-success-bg: $state-success-bg;
-$callout-success-color: $callout-color;
-$callout-success-icon-color: $callout-icon-color;
-$callout-success-border: $state-success-border;
-$callout-info-bg: $state-info-bg;
-$callout-info-color: $callout-color;
-$callout-info-icon-color: $callout-icon-color;
-$callout-info-border: $state-info-border;
-$callout-warning-bg: $state-warning-bg;
-$callout-warning-color: $callout-color;
-$callout-warning-icon-color: $callout-icon-color;
-$callout-warning-border: $state-warning-border;
-$callout-danger-bg: $state-danger-bg;
-$callout-danger-color: $callout-color;
-$callout-danger-icon-color: $callout-icon-color;
-$callout-danger-border: $state-danger-border;
-$callout-notice-bg: $state-notice-bg;
-$callout-notice-color: $callout-color;
-$callout-notice-icon-color: $callout-icon-color;
-$callout-notice-border: $state-notice-border;
+$callout-bg-scale: -85%;
+$callout-border-scale: -60%;
+$callout-padding: 1rem;
 
 //
 // Component
 //
 .callout {
-    background-color: $callout-bg;
-    border-left: 3px solid $callout-border;
-    margin: 20px 0;
+    --callout-color: var(--typo3-component-color);
+    --callout-bg: var(--typo3-component-bg);
+    --callout-border-radius: var(--typo3-component-border-radius);
+    --callout-border-color: var(--typo3-component-border-color);
+    --callout-box-shadow: var(--typo3-component-box-shadow);
+    color: var(--callout-color);
+    background-color: var(--callout-bg);
+    border-left: .5em solid var(--callout-border-color);
+    border-radius: var(--callout-border-radius);
+    margin-bottom: 1rem;
     padding: $callout-padding;
-    color: $callout-color;
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
-
-    .media {
-        margin: 0;
-
-        .icon-emphasized {
-            color: $callout-icon-color;
-            background-color: $callout-border;
-        }
-    }
 }
 
 .callout-icon {
@@ -123,37 +97,32 @@ $callout-notice-border: $state-notice-border;
 //
 // Color Variants
 //
-@mixin callout-variant($background, $border, $text-color, $icon-color) {
-    background-color: $background;
-    border-color: $border;
-    color: $text-color;
+@mixin callout-variant($background, $border, $text-color) {
+    --callout-color: #{$text-color};
+    --callout-bg: #{$background};
+    --callout-border-color: #{$border};
+}
 
-    .media {
-        margin: 0;
+@each $state, $value in $theme-colors {
+    $callout-background: shift-color($value, $callout-bg-scale);
+    $callout-border: shift-color($value, $callout-border-scale);
+    $callout-color: color-contrast($callout-background);
 
-        .icon-emphasized {
-            color: $icon-color;
-            background-color: $border;
-        }
+    .callout-#{$state} {
+        @include callout-variant($callout-background, $callout-border, $callout-color);
     }
 }
 
-.callout-success {
-    @include callout-variant($callout-success-bg, $callout-success-border, $callout-success-color, $callout-success-icon-color);
+//
+// Variants
+// The light variants have problems beeing generated, they need manual correction.
+//
+.callout-light {
+    --callout-bg: #{$light};
+    --callout-border-color: #{shift-color($light, 20%)};
 }
 
-.callout-info {
-    @include callout-variant($callout-info-bg, $callout-info-border, $callout-info-color, $callout-info-icon-color);
-}
-
-.callout-warning {
-    @include callout-variant($callout-warning-bg, $callout-warning-border, $callout-warning-color, $callout-warning-icon-color);
-}
-
-.callout-danger {
-    @include callout-variant($callout-danger-bg, $callout-danger-border, $callout-danger-color, $callout-danger-icon-color);
-}
-
-.callout-notice {
-    @include callout-variant($callout-notice-bg, $callout-notice-border, $callout-notice-color, $callout-notice-icon-color);
+.callout-default {
+    --callout-bg: #{$default};
+    --callout-border-color: #{shift-color($default, 20%)};
 }

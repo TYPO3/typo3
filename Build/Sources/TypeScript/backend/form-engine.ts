@@ -788,7 +788,7 @@ export default (function() {
       if ($('.has-error').length === 0) {
         buttons.push({
           text: TYPO3.lang['buttons.confirm.save_and_close'] || 'Save and close',
-          btnClass: 'btn-warning',
+          btnClass: 'btn-primary',
           name: 'save',
           active: true
         });
@@ -959,12 +959,12 @@ export default (function() {
     };
     const modaldismissViewButtonConfiguration = {
       text: TYPO3.lang['buttons.confirm.view_record_changed.no-save'] || 'View without changes',
-      btnClass: 'btn-info',
+      btnClass: 'btn-default',
       name: 'discard'
     };
     const modalsaveViewButtonConfiguration = {
       text: TYPO3.lang['buttons.confirm.view_record_changed.save'] || 'Save changes and view',
-      btnClass: 'btn-info',
+      btnClass: 'btn-primary',
       name: 'save',
       active: true
     };
@@ -1068,7 +1068,7 @@ export default (function() {
     };
     const modalYesButtonConfiguration = {
       text: TYPO3.lang['buttons.confirm.new_record_changed.yes'] || 'Yes, save and create now',
-      btnClass: 'btn-info',
+      btnClass: 'btn-primary',
       name: 'yes',
       active: true
     };
@@ -1162,7 +1162,7 @@ export default (function() {
     };
     const modalSaveDuplicateButtonConfiguration = {
       text: TYPO3.lang['buttons.confirm.duplicate_record_changed.yes'] || 'Yes, save and duplicate this record',
-      btnClass: 'btn-info',
+      btnClass: 'btn-primary',
       name: 'yes',
       active: true
     };

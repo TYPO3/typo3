@@ -1,31 +1,121 @@
-.media {
-    display: grid;
-    grid-template-columns: 2rem auto;
-    grid-gap: 1rem;
-
-    .media-body {
-        grid-column: 1 / 3;
-    }
-
-    .media-left + .media-body {
-        grid-column: 2 / 3;
-        align-self: center;
+//
+// Alerts
+//
+.alert {
+    a {
+        color: inherit;
+        text-decoration: underline;
     }
 }
 
-.alert .close {
-    position: absolute;
-    right: .5rem;
-    top: .625rem;
+.alert-title {
+    font-size: 1.12em;
+    font-weight: bold;
+    margin: 0 0 .25em;
 }
 
-// Generate contextual modifier classes for colorizing the alert.
-@each $state, $value in $theme-colors {
-    $background: shift-color($value, $alert-bg-scale);
-    $border: shift-color($value, $alert-border-scale);
-    $color: $white;
+.alert-body,
+.alert-message {
+    margin: 0;
+    font-size: .9em;
 
-    .alert-#{$state} {
-        @include alert-variant($background, $border, $color);
+    > *:last-child {
+        margin-bottom: 0;
     }
+
+    > ul {
+        padding-left: 1.5em;
+    }
+}
+
+.alert-dismissible {
+    .close {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 1.125rem;
+        line-height: 1;
+        padding: 0;
+        position: absolute;
+        right: .625rem;
+        top: .625rem;
+        opacity: .5;
+
+        &:hover {
+            color: inherit;
+            opacity: 1;
+        }
+    }
+
+    .alert-actions {
+        margin-right: $alert-dismissible-padding-r * -1;
+    }
+}
+
+.alert-actions {
+    display: flex;
+    flex-flow: row wrap;
+    margin: var(--#{$prefix}alert-padding-y) calc(var(--#{$prefix}alert-padding-x) * -1) calc(var(--#{$prefix}alert-padding-y) * -1);
+
+    a {
+        border-top: 1px solid var(--#{$prefix}alert-border-color);
+        flex-basis: 25%;
+        flex-grow: 1;
+        font-weight: bold;
+        padding: .5rem var(--#{$prefix}alert-padding-x);
+        text-align: center;
+        text-decoration: none;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .25);
+        }
+
+        &.executing {
+            pointer-events: none;
+        }
+
+        &.disabled {
+            pointer-events: none;
+            opacity: .4;
+        }
+
+        &:not(:last-child) {
+            border-right: 1px solid var(--#{$prefix}alert-border-color);
+        }
+    }
+}
+
+//
+// JavaScript Flashmessages
+//
+#alert-container {
+    width: 400px;
+    position: fixed;
+    right: 5px;
+    top: 46px;
+    z-index: 10000;
+
+    .alert {
+        box-shadow: var(--typo3-component-box-shadow);
+        position: relative;
+        margin: 5px auto;
+
+        &.fade.in {
+            opacity: 1;
+        }
+    }
+}
+
+//
+// Variants
+// The light variants have problems beeing generated, they need manual correction.
+//
+.alert-light {
+    --#{$prefix}alert-bg: #{$light};
+    --#{$prefix}alert-border-color: #{shade-color($light, 10%)};
+}
+
+.alert-default {
+    --#{$prefix}alert-bg: #{$default};
+    --#{$prefix}alert-border-color: #{shade-color($default, 10%)};
 }

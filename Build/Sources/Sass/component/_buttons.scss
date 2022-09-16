@@ -1,38 +1,21 @@
 //
-// Alternate buttons
+// Group
 //
-
-.btn-default,
-.btn-light {
-    @include button-variant($gray-200, $gray-500, $gray-800, $gray-300, rgb(156, 156, 156), $gray-800, rgb(195, 195, 195), rgb(123, 123, 123), $gray-800);
+.btn-group {
+    & + .btn-group {
+        margin-left: .5em;
+    }
 }
 
-.btn-primary {
-    @include button-variant($primary, darken($primary, 10%), color-contrast(darken($primary, 50%)), darken($primary, 10%), darken($primary, 20%), $gray-100);
-}
-
-.btn-info {
-    @include button-variant($info, darken($info, 10%), color-contrast($info), darken($info, 10%), darken($info, 20%), color-contrast($info));
-}
-
-.btn-success {
-    @include button-variant($success, darken($success, 10%), color-contrast(darken($success, 50%)), darken($success, 10%), darken($success, 20%), $gray-100);
-}
-
-.btn-warning {
-    @include button-variant($warning, darken($warning, 10%), color-contrast(darken($warning, 50%)), darken($warning, 10%), darken($warning, 20%), $gray-100);
-}
-
-.btn-danger {
-    @include button-variant($danger, darken($danger, 10%), color-contrast($danger), darken($danger, 10%), darken($danger, 20%), color-contrast($danger));
+.btn-toolbar {
+    gap: .5rem;
 }
 
 //
 // Block button
 //
-
 .btn-block {
-    @extend .d-block;
+    display: block;
     width: 100%;
 
     // Vertically space out multiple block buttons
@@ -41,14 +24,51 @@
     }
 }
 
-.btn-borderless {
-    border-color: transparent;
-    box-shadow: none;
+//
+// Size
+//
+.btn-sm {
+    height: calc((var(--#{$prefix}btn-border-width) * 2) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-font-size) * var(--#{$prefix}btn-line-height)));
 }
 
-table .btn-borderless {
-    border-color: transparent;
-    box-shadow: none;
-    background: none;
-    padding: .375rem;
+//
+// Variants
+// The notice and default variants have problems beeing generated, they need manual correction.
+//
+.btn-notice {
+    @include button-variant($notice, $notice, $hover-background: tint-color($notice, $btn-hover-bg-tint-amount), $hover-border: tint-color($notice, $btn-hover-border-tint-amount), $active-background: tint-color($notice, $btn-active-bg-tint-amount), $active-border: tint-color($notice, $btn-active-border-tint-amount));
+}
+
+.btn-default {
+    @include button-variant($default, darken($default, 20%), $hover-background: shade-color($default, $btn-hover-bg-shade-amount), $hover-border: shade-color($default, $btn-hover-border-shade-amount), $active-background: shade-color($default, $btn-active-bg-shade-amount), $active-border: shade-color($default, $btn-active-border-shade-amount));
+}
+
+//
+// Borderless
+//
+.btn-borderless {
+    --#{$prefix}btn-bg: transparent;
+    --#{$prefix}btn-border-color: transparent;
+    --#{$prefix}btn-box-shadow: none;
+    --#{$prefix}btn-padding-x: var(--#{$prefix}btn-padding-y);
+}
+
+//
+// Permission
+//
+.btn-permission {
+    --#{$prefix}btn-bg: transparent;
+    --#{$prefix}btn-border-color: transparent;
+    --#{$prefix}btn-box-shadow: none;
+    --#{$prefix}btn-padding-x: 0;
+    --#{$prefix}btn-padding-y: 0;
+}
+
+//
+// Tables
+//
+.btn:not(.btn-sm) {
+    .table & {
+        --#{$prefix}btn-padding-x: var(--#{$prefix}btn-padding-y);
+    }
 }

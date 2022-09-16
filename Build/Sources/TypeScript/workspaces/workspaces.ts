@@ -110,7 +110,7 @@ export default class Workspaces {
         },
         {
           text: TYPO3.lang.ok,
-          btnClass: 'btn-info',
+          btnClass: 'btn-primary',
           name: 'ok',
         },
       ],

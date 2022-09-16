@@ -70,10 +70,4 @@ $autocomplete-suggestion-link-hover-bg: #fafafa;
 
 .toolbar-item-search-field-dropdown > .autocomplete-suggestion:last-child.autocomplete-selected {
     background-color: transparent;
-
-    .btn-primary {
-        color: #f5f5f5;             // @TODO
-        background-color: #005db3;  // @TODO
-        border-color: #004380;      // @TODO
-    }
 }

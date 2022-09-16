@@ -90,7 +90,7 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
-                . ' class="btn-clear change-permission ' . htmlspecialchars($iconClass) . '">'
+                . ' class="btn btn-permission change-permission ' . htmlspecialchars($iconClass) . '">'
                 . $iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
                 . '</button>';
         }

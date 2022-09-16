@@ -3,31 +3,26 @@
 //
 
 // Mixins
-@mixin badge-create-variant($name, $color) {
-    --badge-#{$name}-color: #{color-contrast($color)};
-    --badge-#{$name}-bg: #{$color};
-    --badge-#{$name}-link-bg-hover: #{darken($color, 10%)};
+@mixin badge-create-variant($state, $value) {
+    --badge-#{$state}-color: #{color-contrast($value)};
+    --badge-#{$state}-bg: #{$value};
+    --badge-#{$state}-link-bg-hover: #{darken($value, 10%)};
 }
 
-@mixin badge-use-variant($name) {
-    --badge-color: var(--badge-#{$name}-color);
-    --badge-bg: var(--badge-#{$name}-bg);
-    --badge-link-bg-hover: var(--badge-#{$name}-link-bg-hover);
+@mixin badge-use-variant($state) {
+    --badge-color: var(--badge-#{$state}-color);
+    --badge-bg: var(--badge-#{$state}-bg);
+    --badge-link-bg-hover: var(--badge-#{$state}-link-bg-hover);
+}
+
+// Variables
+@each $state, $value in $theme-colors {
+    :root {
+        @include badge-create-variant($state, $value);
+    }
 }
 
 // Base
-:root {
-    @include badge-create-variant('default', $gray-300);
-    @include badge-create-variant('primary', $primary);
-    @include badge-create-variant('secondary', $secondary);
-    @include badge-create-variant('success', $success);
-    @include badge-create-variant('info', $info);
-    @include badge-create-variant('warning', $warning);
-    @include badge-create-variant('danger', $danger);
-    @include badge-create-variant('light', $light);
-    @include badge-create-variant('dark', $dark);
-}
-
 .badge {
     color: var(--badge-color);
     background-color: var(--badge-bg);
@@ -35,6 +30,8 @@
     &[href] {
         &:hover,
         &:focus {
+            text-decoration: none;
+            color: var(--badge-color, inherit);
             background-color: var(--badge-link-bg-hover);
         }
     }
@@ -48,41 +45,27 @@
 }
 
 // Colors
-.badge-primary {
-    @include badge-use-variant('primary');
+@each $state, $value in $theme-colors {
+    .badge-#{$state} {
+        @include badge-use-variant($state);
+    }
 }
 
-.badge-secondary {
-    @include badge-use-variant('secondary');
-}
-
-.badge-success,
 .badge-stable {
     @include badge-use-variant('success');
 }
 
-.badge-info,
 .badge-experimental {
     @include badge-use-variant('info');
 }
 
-.badge-warning,
 .badge-beta {
     @include badge-use-variant('warning');
 }
 
-.badge-danger,
 .badge-alpha,
 .badge-deprecated {
     @include badge-use-variant('danger');
-}
-
-.badge-light {
-    @include badge-use-variant('light');
-}
-
-.badge-dark {
-    @include badge-use-variant('dark');
 }
 
 // Display Variants

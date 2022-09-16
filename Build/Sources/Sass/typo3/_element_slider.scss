@@ -7,9 +7,9 @@
 //
 $slider-selection-bg: #999;
 $slider-border-radius: $border-radius;
-$slider-handle-color: $btn-default-color;
-$slider-handle-bg: $btn-default-bg;
-$slider-handle-border: darken($btn-default-border, 15%);
+$slider-handle-color: #333;
+$slider-handle-bg: #eee;
+$slider-handle-border: darken(#bbb, 15%);
 $slider-handle-border-radius: $slider-border-radius;
 $slider-disabled-handle-color: $white;
 $slider-disabled-handle-bg: $danger;
