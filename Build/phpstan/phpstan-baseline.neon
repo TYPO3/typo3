@@ -461,11 +461,6 @@ parameters:
 			path: ../../typo3/sysext/beuser/Classes/Controller/PermissionController.php
 
 		-
-			message: "#^Offset 0 does not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserGroupRepository.php
-
-		-
 			message: "#^Offset 'tables_modify' on array\\{tables_select\\: array\\<string, mixed\\>, tables_modify\\: array\\<string, mixed\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/beuser/Classes/Service/UserInformationService.php
