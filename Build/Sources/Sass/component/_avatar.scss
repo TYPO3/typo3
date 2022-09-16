@@ -93,15 +93,15 @@ $avatar-size-mega: 64px !default;
 }
 
 .avatar-size-medium {
-    --avatar-size: var(--avatar-size-small);
+    --avatar-size: var(--avatar-size-medium);
 }
 
 .avatar-size-large {
-    --avatar-size: var(--avatar-size-small);
+    --avatar-size: var(--avatar-size-large);
 }
 
 .avatar-size-mega {
-    --avatar-size: var(--avatar-size-small);
+    --avatar-size: var(--avatar-size-mega);
 }
 
 .avatar-icon {

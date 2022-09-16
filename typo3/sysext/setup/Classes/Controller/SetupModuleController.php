@@ -468,10 +468,10 @@ class SetupModuleController
                         $defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);
                         $avatarImage = $defaultAvatarProvider->getImage($backendUser->user, 32);
                         if ($avatarImage) {
-                            $icon = '<span class="avatar"><span class="avatar-image">' .
+                            $icon = '<span class="avatar avatar-size-medium"><span class="avatar-image">' .
                                 '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
-                                ' width="' . (int)$avatarImage->getWidth() . '" ' .
-                                'height="' . (int)$avatarImage->getHeight() . '" />' .
+                                ' width="' . (int)$avatarImage->getWidth() . '"' .
+                                ' height="' . (int)$avatarImage->getHeight() . '" />' .
                                 '</span></span>';
                             $html .= '<span class="float-start" style="padding-right: 10px" id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
                         }
