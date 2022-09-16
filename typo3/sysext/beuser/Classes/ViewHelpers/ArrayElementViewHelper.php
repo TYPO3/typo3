@@ -41,7 +41,7 @@ class ArrayElementViewHelper extends AbstractViewHelper
     /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)
      *
-     * @param array $arguments
+     * @param array{'array': array, 'key': string, 'subKey': string} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @throws Exception

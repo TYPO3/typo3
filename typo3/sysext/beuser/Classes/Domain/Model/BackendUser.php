@@ -182,7 +182,7 @@ class BackendUser extends AbstractEntity
      */
     public function isCurrentlyLoggedIn()
     {
-        return $this->getUid() === (int)$this->getBackendUser()->user['uid'];
+        return $this->getUid() === (int)($this->getBackendUser()->user['uid'] ?? 0);
     }
 
     /**

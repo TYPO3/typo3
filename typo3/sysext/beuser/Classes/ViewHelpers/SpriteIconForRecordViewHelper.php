@@ -56,7 +56,7 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
     }
 
     /**
-     * @param array $arguments
+     * @param array{'table': string, 'object': object} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *

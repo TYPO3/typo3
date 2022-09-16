@@ -51,7 +51,7 @@ class SwitchUserViewHelper extends AbstractViewHelper
     /**
      * Render link with sprite icon to change current backend user to target
      *
-     * @param array $arguments
+     * @param array{backendUser: BackendUser} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *

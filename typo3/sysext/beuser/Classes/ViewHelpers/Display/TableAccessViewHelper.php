@@ -30,9 +30,14 @@ class TableAccessViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('modify', 'array', 'List of allowed tables to modify', false, []);
     }
 
+    /**
+     * @param array{table?: string, select?: array, modify?: array} $arguments
+     */
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        $table = $arguments['table'];
-        return array_key_exists($table, (array)$arguments['select']) || array_key_exists($table, (array)$arguments['modify']);
+        $table = (string)($arguments['table'] ?? '');
+        $select = (array)($arguments['select'] ?? []);
+        $modify = (array)($arguments['modify'] ?? []);
+        return array_key_exists($table, $select) || array_key_exists($table, $modify);
     }
 }

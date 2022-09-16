@@ -176,7 +176,7 @@ class BackendUserController extends ActionController
             'totalAmountOfBackendUsers' => $backendUsers->count(),
             'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
             'compareUserUidList' => array_combine($compareUserList, $compareUserList),
-            'currentUserUid' => $backendUser->user['uid'],
+            'currentUserUid' => $backendUser->user['uid'] ?? null,
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
 
@@ -263,10 +263,11 @@ class BackendUserController extends ActionController
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addUserButton);
+        $username = empty($data['user']['username']) ? '' : ': ' . $data['user']['username'];
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
             ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'show', 'uid' => $uid]])
-            ->setDisplayName(LocalizationUtility::translate('backendUser', 'beuser') . ': ' . (string)$data['user']['username']);
+            ->setDisplayName(LocalizationUtility::translate('backendUser', 'beuser') . $username);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         $this->moduleTemplate->setContent($this->view->render());

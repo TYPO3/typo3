@@ -31,6 +31,8 @@ class PermissionsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
+    protected const MASKS = [1, 16, 2, 4, 8];
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -50,13 +52,13 @@ class PermissionsViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('permission', 'int', 'Current permission', true);
         $this->registerArgument('scope', 'string', '"user" / "group" / "everybody"', true);
-        $this->registerArgument('pageId', 'int', '', true);
+        $this->registerArgument('pageId', 'int', 'Page ID to evaluate permission for', true);
     }
 
     /**
      * Return permissions.
      *
-     * @param array $arguments
+     * @param array{permission: int, scope: string, pageId: int} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
@@ -64,19 +66,8 @@ class PermissionsViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $masks = [1, 16, 2, 4, 8];
-
-        if (empty(static::$permissionLabels)) {
-            foreach ($masks as $mask) {
-                static::$permissionLabels[$mask] = LocalizationUtility::translate(
-                    'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $mask,
-                    'be_user'
-                );
-            }
-        }
-
         $icon = '';
-        foreach ($masks as $mask) {
+        foreach (self::MASKS as $mask) {
             if ($arguments['permission'] & $mask) {
                 $permissionClass = 'fa-check text-success';
                 $mode = 'delete';
@@ -85,13 +76,13 @@ class PermissionsViewHelper extends AbstractViewHelper
                 $mode = 'add';
             }
 
-            $label = static::$permissionLabels[$mask];
+            $label = self::resolvePermissionLabel($mask);
             $icon .= '<button'
                 . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
                 . ' data-bs-toggle="tooltip"'
-                . ' data-page="' . htmlspecialchars($arguments['pageId']) . '"'
-                . ' data-permissions="' . htmlspecialchars($arguments['permission']) . '"'
+                . ' data-page="' . htmlspecialchars((string)$arguments['pageId']) . '"'
+                . ' data-permissions="' . htmlspecialchars((string)$arguments['permission']) . '"'
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
@@ -99,5 +90,16 @@ class PermissionsViewHelper extends AbstractViewHelper
         }
 
         return '<span id="' . htmlspecialchars($arguments['pageId'] . '_' . $arguments['scope']) . '">' . $icon . '</span>';
+    }
+
+    protected static function resolvePermissionLabel(int $mask): string
+    {
+        if (!isset(self::$permissionLabels[$mask])) {
+            self::$permissionLabels[$mask] = LocalizationUtility::translate(
+                'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $mask,
+                'be_user'
+            );
+        }
+        return self::$permissionLabels[$mask];
     }
 }
