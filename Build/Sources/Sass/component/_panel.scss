@@ -32,12 +32,16 @@ $panel-border-scale: -60%;
 $panel-heading-bg-scale: -85%;
 
 // Mixins
-@mixin panel-create-variant($name, $value, $border-scale: $panel-border-scale, $heading-scale: $panel-heading-bg-scale) {
+@mixin panel-create-variant($name, $value, $border-scale: $panel-border-scale, $heading-scale: $panel-heading-bg-scale, $panel-progress-bg: null) {
     $panel-border: shift-color($value, $border-scale);
     $panel-heading-bg: shift-color($value, $heading-scale);
     $panel-heading-color: color-contrast($panel-heading-bg);
+
+    @if $panel-progress-bg == null {
+        $panel-progress-bg: $value;
+    }
     --panel-#{$name}-border-color: #{$panel-border};
-    --panel-#{$name}-progress-bg: #{$value};
+    --panel-#{$name}-progress-bg: #{$panel-progress-bg};
     --panel-#{$name}-heading-color: #{$panel-heading-color};
     --panel-#{$name}-heading-bg: #{$panel-heading-bg};
 }
@@ -63,11 +67,11 @@ $panel-heading-bg-scale: -85%;
 
     @each $name, $value in $theme-colors {
         @if $name == light {
-            @include panel-create-variant($name, $value, 20%, 0%);
+            @include panel-create-variant($name, $value, 20%, 0%, darken($value, 10%));
         }
 
         @else if $name == default {
-            @include panel-create-variant($name, $value, 20%, 0%);
+            @include panel-create-variant($name, $value, 20%, 0%, darken($value, 10%));
         }
 
         @else {
