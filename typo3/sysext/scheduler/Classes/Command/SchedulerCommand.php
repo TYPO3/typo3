@@ -169,7 +169,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      * Return task a task for a given UID
      *
      * @param int $taskUid
-     * @return AbstractTask
+     * @return AbstractTask|null
      */
     protected function getTask(int $taskUid)
     {
@@ -179,8 +179,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
         }
 
         $whereClause = 'uid = ' . (int)$taskUid . ' AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'];
-        [$task] = $this->scheduler->fetchTasksWithCondition($whereClause);
-        return $task;
+        return $this->scheduler->fetchTasksWithCondition($whereClause)[0] ?? null;
     }
 
     /**
