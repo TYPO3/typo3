@@ -31,7 +31,10 @@ abstract class AbstractContentObject
 {
     protected ?PageRenderer $pageRenderer = null;
 
-    protected ?ServerRequestInterface $request = null;
+    /**
+     * Always set via setRequest() by ContentObjectFactory after instantiation
+     */
+    protected ServerRequestInterface $request;
 
     protected ?ContentObjectRenderer $cObj = null;
 
