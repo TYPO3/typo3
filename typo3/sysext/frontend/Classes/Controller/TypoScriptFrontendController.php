@@ -847,7 +847,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Spacer and sysfolders is not accessible in frontend
-        $isSpacerOrSysfolder = $this->page['doktype'] == PageRepository::DOKTYPE_SPACER || $this->page['doktype'] == PageRepository::DOKTYPE_SYSFOLDER;
+        $pageDoktype = (int)($this->page['doktype'] ?? 0);
+        $isSpacerOrSysfolder = $pageDoktype === PageRepository::DOKTYPE_SPACER || $pageDoktype === PageRepository::DOKTYPE_SYSFOLDER;
         // Page itself is not accessible, but the parent page is a spacer/sysfolder
         if ($isSpacerOrSysfolder && !empty($requestedPageRowWithoutGroupCheck)) {
             try {
@@ -876,7 +877,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Is the ID a link to another page??
-        if ($this->page['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
+        if ($pageDoktype === PageRepository::DOKTYPE_SHORTCUT) {
             // We need to clear MP if the page is a shortcut. Reason is if the shortcut goes to another page, then we LEAVE the rootline which the MP expects.
             $this->MP = '';
             // saving the page so that we can check later - when we know
@@ -886,11 +887,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->originalShortcutPage = $this->page;
             $this->page = $this->sys_page->resolveShortcutPage($this->page, true);
             $this->id = (int)$this->page['uid'];
+            $pageDoktype = (int)($this->page['doktype'] ?? 0);
         }
         // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
         // it must never be accessible directly, but only in the mountpoint context. Therefore we change
         // the current ID and the user is redirected by checkPageForMountpointRedirect().
-        if ($this->page['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol']) {
+        if ($pageDoktype === PageRepository::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol']) {
             $this->originalMountPointPage = $this->page;
             $this->page = $this->sys_page->getPage($this->page['mount_pid']);
             if (empty($this->page)) {
@@ -905,6 +907,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->MP .= ',' . $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
             }
             $this->id = (int)$this->page['uid'];
+            $pageDoktype = (int)($this->page['doktype'] ?? 0);
         }
         // Gets the rootLine
         try {
