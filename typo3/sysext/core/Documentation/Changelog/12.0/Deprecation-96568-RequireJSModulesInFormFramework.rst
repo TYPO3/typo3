@@ -20,8 +20,7 @@ Impact
 
 RequireJS is no longer loaded and native module loading is approached,
 if :yaml:`dynamicRequireJsModules` is not defined. Extensions that
-use :yaml:`dynamicRequireJsModules` will work as before but trigger a
-deprecation message.
+use :yaml:`dynamicRequireJsModules` will work as before but trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

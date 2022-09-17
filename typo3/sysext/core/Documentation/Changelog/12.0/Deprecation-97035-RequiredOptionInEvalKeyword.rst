@@ -13,7 +13,7 @@ Since :issue:`67354`, the FormEngine may use :php:`required` with a bool value
 in a TCA field configuration, enabling the same functionality as the `required`
 option within `eval`.
 
-To clean TCA up and allow further refactoring, :php:`'eval' => 'required`
+To clean up TCA and allow further refactoring, :php:`'eval' => 'required`
 has been marked as deprecated.
 
 
@@ -21,7 +21,7 @@ Impact
 ======
 
 Using `required` within `eval` in TCA and Flexform will trigger an automatic
-migration and therefore a deprecation log entry.
+migration and therefore trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

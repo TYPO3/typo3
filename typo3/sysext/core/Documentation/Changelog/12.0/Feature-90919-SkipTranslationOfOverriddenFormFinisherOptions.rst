@@ -19,9 +19,9 @@ option value has been changed within a FlexForm. The translation option is only
 respected in :php:`TranslationService::translateFinisherOption()`.
 
 The following example excludes three properties (subject, recipients and format).
-That way, the options can only be overriden within a Flexform but not by
+That way, the options can only be overridden within a FlexForm but not by
 :php:`TranslationService`. The option is automatically generated as soon as
-flexform overrides are in place. The following syntax is only documented for
+FlexForm overrides are in place. The following syntax is only documented for
 completeness. Nonetheless, it can also be written manually into a form definition.
 
 .. code-block:: yaml
@@ -46,10 +46,10 @@ Impact
 The translation order is as follows:
 
 1. Default value from form definition
-2. Overridden value within a Flexform (if any)
+2. Overridden value within a FlexForm (if any)
 3. Localized value provided by translation files (if any)
 
 With the new translation option, the last (third) step can be skipped. That way,
-the Flexform value will be preferred.
+the FlexForm value will be preferred.
 
 .. index:: Frontend, FlexForm, ext:form

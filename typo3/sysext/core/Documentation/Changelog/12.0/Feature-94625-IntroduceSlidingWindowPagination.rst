@@ -9,9 +9,9 @@ See :issue:`94625`
 Description
 ===========
 
-Since TYPO3 10 a new `Pagination API <https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Pagination/Index.html>`__
+Since TYPO3 v10 a new `Pagination API <https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Pagination/Index.html>`__
 is shipped, which supersedes the pagination widget controller, which had
-been removed in TYPO3 11.
+been removed in TYPO3 v11.
 
 This patch provides an improved pagination which can be used to paginate array
 items or query results from Extbase. The main advantage is that it reduces the

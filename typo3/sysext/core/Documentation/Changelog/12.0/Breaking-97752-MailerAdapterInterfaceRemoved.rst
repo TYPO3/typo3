@@ -26,7 +26,7 @@ Affected installations
 ======================
 
 All installations implementing the interface in custom extension code,
-which is very unlikely. The extenion scanner will report any usage as
+which is very unlikely. The extension scanner will report any usage as
 strong match.
 
 Migration

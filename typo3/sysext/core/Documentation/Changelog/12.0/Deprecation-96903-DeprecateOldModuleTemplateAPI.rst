@@ -9,10 +9,10 @@ See :issue:`96903`
 Description
 ===========
 
-With introduction of the :doc:`simplified ModuleTemplate API <Feature-96730-SimplifiedExtbackendModuleTemplateAPI>`
+With the introduction of the :doc:`simplified ModuleTemplate API <Feature-96730-SimplifiedExtbackendModuleTemplateAPI>`
 a series of PHP methods in backend related :php:`ModuleTemplate` class became obsolete.
 
-These methods are now marked as deprecated in TYPO3 v12 and will be removed in v13 to
+These methods are now marked as deprecated in TYPO3 v12 and will be removed in TYPO3 v13 to
 encourage backend modules switching to the new API which is easier to use and
 allows :doc:`overriding backend templates <Feature-96812-OverrideBackendTemplatesWithTSconfig>`.
 
@@ -46,7 +46,7 @@ Methods :php:`setContent()`, :php:`header()` and :php:`getView()` are rather com
 scanner is not configured to scan for them. All other methods names are scanned, the extension scanner
 will report possible usages as weak match.
 
-All methods will raise a deprecation level log entry when called. One exception is :php:`setContent()`,
+All methods will trigger a PHP :php:`E_USER_DEPRECATED` error when called. One exception is :php:`setContent()`,
 which is always used in combination with :php:`renderContent()` to be useful, so only one deprecation
 log entry is created when using both methods.
 

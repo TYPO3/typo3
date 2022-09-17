@@ -53,6 +53,6 @@ This will result in:
 Impact
 ======
 
-The :html:`f:format.html` ViewHelper can now be utilized in more customized use-cases.
+The :html:`f:format.html` ViewHelper can now be utilized in more customized use cases.
 
 .. index:: Frontend, TypoScript, ext:fluid

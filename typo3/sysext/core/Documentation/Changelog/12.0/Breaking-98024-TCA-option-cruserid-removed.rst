@@ -9,7 +9,7 @@ See :issue:`98024`
 Description
 ===========
 
-The TCA option in the `ctrl` section of each TCA table `cruser_id` has been
+The TCA option in the :php:`ctrl` section of each TCA table :php:`cruser_id` has been
 removed, along with populating this system-related information within DataHandler
 and the auto-creation of the database field.
 
@@ -18,6 +18,7 @@ the affected row. However, this information is also available through TYPO3's
 History functionality, and does not need to be persisted twice.
 
 Several drawbacks came with this feature, which is why it was removed entirely:
+
 * Extbase did not support this functionality
 * When a record was created via the Frontend in the plugin, the userid was not available
 
@@ -50,6 +51,6 @@ If the need for the information – that is who created the record – is needed
 use the History functionality to fetch the creation details of a record.
 
 If this field is actively queried, it is recommended to add this field as a
-regular TCA column with a custom hook or PSR-14 Event to fill this information.
+regular TCA column with a custom hook or PSR-14 event to fill this information.
 
 .. index:: Database, TCA, NotScanned, ext:core

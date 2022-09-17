@@ -10,7 +10,7 @@ Description
 ===========
 
 Various methods related to shorthand syntax of generating
-Links and URLs have been deprecated:
+links and URLs have been marked as deprecated:
 
 * :php:`ContentObjectRenderer->getATagParams()`
 * :php:`ContentObjectRenderer->getTypoLink()`
@@ -26,8 +26,7 @@ methods.
 Impact
 ======
 
-Calling these methods in your own PHP code will trigger
-a PHP deprecation message.
+Calling these methods in your own PHP code will trigger PHP :php:`E_USER_DEPRECATED` errors.
 
 
 Affected Installations

@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook']`
-has been removed in favor of a new PSR-14 Event :php:`\TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent`.
+has been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent`.
 
 Impact
 ======
@@ -27,9 +27,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../12.0/Feature-97174-PSR-14EventForModifyingInfoModuleContent>`
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
+
+Use the :doc:`PSR-14 event <../12.0/Feature-97174-PSR-14EventForModifyingInfoModuleContent>`
 as an improved replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:info

@@ -12,7 +12,7 @@ Description
 ===========
 
 The global configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw']`
-which was used to compress GIF and TIFF files with a different ImageMagick version,
+was used to compress GIF and TIFF files with a different ImageMagick version,
 as LZW compression was removed from the distributed ImageMagick binaries back in
 2004-2006.
 

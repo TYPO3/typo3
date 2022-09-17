@@ -16,8 +16,8 @@ modal window to render the search controls and the results.
 As more space is now available, the amount of search results is increased to 50
 records per search.
 
-The modal may be opened via a keyboard shortcut by pressing the Shift key twice
-in a row.
+The modal may be opened via a keyboard shortcut by pressing the :kbd:`Shift` key
+twice in a row.
 
 Impact
 ======

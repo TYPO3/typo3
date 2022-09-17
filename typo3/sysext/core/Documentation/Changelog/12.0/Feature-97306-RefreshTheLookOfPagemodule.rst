@@ -20,13 +20,13 @@ Further links to the page module concept and official communication:
 Impact
 ======
 
-* Underlying CSS is refactored and optimised for future adaptations
-* Content element boxes and their header buttons are visually simplified
+* Underlying CSS is refactored and optimized for future adaptations.
+* Content element boxes and their header buttons are visually simplified.
 * Hidden content elements are now differentiated with a better opacity
-  and a dotted border
+  and a dotted border.
 * :guilabel:`New Content` buttons were placed in the centre in preparation
-  for implementation of later concepts
+  for implementation of later concepts.
 * A new button for the content element context menu is added in the content
-  element header right button bar
+  element header right button bar.
 
 .. index:: Backend, ext:backend

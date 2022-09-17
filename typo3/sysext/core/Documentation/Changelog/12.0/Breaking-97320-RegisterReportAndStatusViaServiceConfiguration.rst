@@ -145,15 +145,15 @@ Additionally, make sure to implement all methods of :php:`TYPO3\CMS\Reports\Stat
 
     class Status implements StatusProviderInterface
     {
-            public function getStatus(): array
-            {
-                return [];
-            }
+        public function getStatus(): array
+        {
+            return [];
+        }
 
-            public function getLabel(): string
-            {
-                return 'label';
-            }
+        public function getLabel(): string
+        {
+            return 'label';
+        }
     }
 
 .. index:: Backend, LocalConfiguration, PHP-API, FullyScanned, ext:reports

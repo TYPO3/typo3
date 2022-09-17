@@ -25,8 +25,7 @@ All of these properties can be accessed through TypoScript's config array.
 Impact
 ======
 
-Accessing these properties via TypoScript `getData` or via PHP will trigger a PHP deprecation
-notice.
+Accessing these properties via TypoScript `getData` or via PHP will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected installations

@@ -36,7 +36,7 @@ have been streamlined and simplified:
 Impact
 ======
 
-Using any of the above removed options will log deprecation level error messages.
+Using any of the above removed options will trigger a PHP :php:`E_USER_DEPRECATED` error.
 Using :php:`explicitDeny` and :php:`individual` as value for TCA config option
 :php:`authMode` is no longer supported by the system and may need manual
 adaptions. Accessing :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode']`

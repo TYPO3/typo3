@@ -14,7 +14,7 @@ are registered via the service configuration.
 
 The previous way of registering custom Content Objects via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']`
-added in 7.2 (see :issue:`64386`) has been removed.
+added in TYPO3 v7.2 (see :issue:`64386`) has been removed.
 
 
 Impact
@@ -45,7 +45,7 @@ configuration:
               identifier: 'MY_OBJ'
 
 Extensions can be made compatible with TYPO3 v7 - v12 by keeping the "old"
-way of registration in `ext_localconf.php` and additionally add the new
+way of registration in :file:`ext_localconf.php` and additionally add the new
 registration way, without any further changes.
 
 .. index:: Frontend, TypoScript, FullyScanned, ext:frontend

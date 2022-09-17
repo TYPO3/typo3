@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 =============================================================
-Feature: #94117 - Improve extbase type converter registration
+Feature: #94117 - Improve Extbase type converter registration
 =============================================================
 
 See :issue:`94117`
@@ -9,7 +9,7 @@ See :issue:`94117`
 Description
 ===========
 
-Extbase type converters are an important part of the extbase data and property
+Extbase type converters are an important part of the Extbase data and property
 mapping mechanism. Those converters usually convert data from simple types
 to objects or other simple types.
 
@@ -45,8 +45,8 @@ Registration is now done in your :file:`Services.yaml` like the following:
 
 .. tip::
 
-    Tag arguments (priority, target ,sources, etc.) have to be simple types.
-    Don't register the sources as array but as comma seperated list as shown
+    Tag arguments (priority, target, sources, etc.) have to be simple types.
+    Don't register the sources as array but as comma separated list as shown
     in the example.
 
 .. note::

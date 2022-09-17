@@ -3,7 +3,7 @@
 .. _feature-97737-1654595148:
 
 ================================================================================
-Feature: #97737 - New PSR-14 Events when Page + Rootline in Frontend is resolved
+Feature: #97737 - New PSR-14 events when Page + Rootline in Frontend is resolved
 ================================================================================
 
 See :issue:`97737`

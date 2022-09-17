@@ -11,7 +11,9 @@ See :issue:`98168`
 Description
 ===========
 
-Due to historical reasons, a context menu item is bound to :js:`this` in its callback action which was used to access the context menu item's :js:`dataset`. The invocation of assigned callback actions is adapted to pass the :js:`dataset` as the 3rd argument.
+Due to historical reasons, a context menu item is bound to :js:`this` in its callback action
+which was used to access the context menu item's :js:`dataset`. The invocation of assigned callback actions
+is adapted to pass the :js:`dataset` as the 3rd argument.
 
 Binding the context menu item to :js:`this` in the callback is now marked as deprecated.
 

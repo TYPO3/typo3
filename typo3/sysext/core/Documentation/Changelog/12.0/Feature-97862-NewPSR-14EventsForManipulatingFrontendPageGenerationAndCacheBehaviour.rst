@@ -11,7 +11,7 @@ See :issue:`97862`
 Description
 ===========
 
-Two new PSR-14 Events have been added:
+Two new PSR-14 events have been added:
 
 * :php:`TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent`
 * :php:`TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent`
@@ -59,10 +59,10 @@ The corresponding event listener class:
 Impact
 ======
 
-The Event `AfterCacheableContentIsGeneratedEvent` can be used
+The event :php:`AfterCacheableContentIsGeneratedEvent` can be used
 to decide if a page should be stored in cache and is executed right after
 all cacheable content is generated. It can also be used to manipulate
-the content before it is stored in TYPO3's page cache. The Event is used
+the content before it is stored in TYPO3's page cache. The event is used
 in indexed search to index cacheable content.
 
 The :php:`AfterCacheableContentIsGeneratedEvent` contains the

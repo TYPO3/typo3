@@ -20,7 +20,7 @@ As all `reports` have to implement the :php:`ReportInterface` this fact is now
 used to automatically register the `report`, based on the interface,
 if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`. Alternatively,
 one can manually tag a custom `report` with the
-:yaml:`reports.report` tag (See section "Migration" in the
+:yaml:`reports.report` tag (see section "Migration" in the
 :doc:`breaking changelog <Breaking-97320-RegisterReportAndStatusViaServiceConfiguration>`).
 
 Due to the autoconfiguration, the following methods have to be implemented:
@@ -36,7 +36,7 @@ As all `status` have to implement the :php:`StatusProviderInterface` this fact i
 used to automatically register the `status`, based on the interface,
 if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`. Alternatively,
 one can manually tag a custom `report` with the
-:yaml:`reports.status` tag (See section "Migration" in the
+:yaml:`reports.status` tag (eee section "Migration" in the
 :doc:`breaking changelog <./Breaking-97320-RegisterReportAndStatusViaServiceConfiguration>`).
 
 Due to the autoconfiguration, the label has to be provided by the

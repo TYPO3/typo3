@@ -28,7 +28,7 @@ For this reason, the related methods have been marked as deprecated:
 Impact
 ======
 
-Calling the methods directly will trigger a PHP deprecation warning.
+Calling the methods directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

@@ -11,8 +11,8 @@ Description
 
 With :issue:`96041`, the registration of backend toolbar items had been
 improved. Instead of being registered via :php:`$GLOBALS`, all implementations
-of :php:`ToolbarItemsInterface` are now automatically registered, while taking
-the defined :php:`index` into account.
+of :php:`TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface` are now automatically
+registered, while taking the defined :php:`index` into account.
 
 To still allow administrators an overview of the registered toolbar items,
 especially the final ordering, a corresponding list has been added to
@@ -22,6 +22,6 @@ Impact
 ======
 
 It's now possible for administrators to get an overview of all registered
-toolbar items and the final ordering in the configuration module.
+toolbar items and the final ordering in the :guilabel:`Configuration` module.
 
 .. index:: Backend, ext:lowlevel

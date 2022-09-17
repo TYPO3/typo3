@@ -15,7 +15,7 @@ of drawbacks, e.g. module registration could be changed at runtime,
 which had been resolved by introducing a new registration API.
 
 Therefore, instead of using the :php:`ExtensionManagementUtility::addModule()`
-and :php:`ExtensionUtility::registerModule()` (extbase) API methods in
+and :php:`ExtensionUtility::registerModule()` (Extbase) API methods in
 :file:`ext_tables.php` files, the configuration is now placed in the
 dedicated :file:`Configuration/Backend/Modules.php` configuration file.
 
@@ -121,10 +121,10 @@ Module configuration options
 +----------------------------------------------------------+------------------------------------------------------------------+
 | path (:php:`string`)                                     | Define the path to the default endpoint. The path can be         |
 |                                                          | anything, but will fallback to the known                         |
-|                                                          | `/module/<mainModue>/<subModule>` pattern, if not set.           |
+|                                                          | `/module/<mainModule>/<subModule>` pattern, if not set.          |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | standalone (:php:`bool`)                                 | Whether the module is a standalone module (parent without        |
-|                                                          | sub modules).                                                    |
+|                                                          | submodules).                                                    |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | access (:php:`string`)                                   | Can be `user` (editor permissions), `admin`, or                  |
 |                                                          | `systemMaintainer`.                                              |
@@ -138,7 +138,8 @@ Module configuration options
 |                                                          | be removed in upcoming versions.                                 |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | appearance (:php:`array`)                                | Allows to define additional appearance options:                  |
-|                                                          |   - `renderInModuleMenu` (:php:`bool`)                           |
+|                                                          |                                                                  |
+|                                                          | - `renderInModuleMenu` (:php:`bool`)                             |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | iconIdentifier (:php:`string`)                           | The module icon identifier                                       |
 +----------------------------------------------------------+------------------------------------------------------------------+
@@ -171,7 +172,7 @@ Module configuration options
 +----------------------------------------------------------+------------------------------------------------------------------+
 | inheritNavigationComponentFromMainModule (:php:`bool`)   | Whether the module should use the parents navigation component.  |
 |                                                          | This option defaults to :php:`true` and can therefore be used to |
-|                                                          | stop the inheritance for sub modules.                            |
+|                                                          | stop the inheritance for submodules.                             |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | moduleData (:php:`array`)                                | The allowed module data properties and their default value.      |
 |                                                          | Module data are the module specific settings of a backend user.  |
@@ -205,7 +206,7 @@ Default:
 |                            |         ],                                                          |
 |                            |     ],                                                              |
 |                            |                                                                     |
-|                            | Please note, using additional routes - next to `_default` is not    |
+|                            | Please note, using additional routes - next to `_default` - is not  |
 |                            | yet implemented.                                                    |
 +----------------------------+---------------------------------------------------------------------+
 
@@ -269,13 +270,13 @@ BeforeModuleCreationEvent methods
 | getIdentifier()         |                       | Returns the identifier of the module in question.  |
 +-------------------------+-----------------------+----------------------------------------------------+
 | getConfiguration()      |                       | Get the module configuration, as defined in the    |
-|                         |                       | :php:`Configuration/Backend/Modules.php` file.     |
+|                         |                       | :file:`Configuration/Backend/Modules.php` file.    |
 +-------------------------+-----------------------+----------------------------------------------------+
 | setConfiguration()      | :php:`$configuration` | Overrides the module configuration.                |
 +-------------------------+-----------------------+----------------------------------------------------+
 | hasConfigurationValue() | :php:`$key`           | Checks whether the given key is set.               |
 +-------------------------+-----------------------+----------------------------------------------------+
-| getConfigurationValue() | :php:`$key`           | Returns the value for the given :php:`key`, or     |
+| getConfigurationValue() | :php:`$key`           | Returns the value for the given :php:`$key`, or    |
 |                         | :php:`$default`       | the :php:`$default`, if not set.                   |
 +-------------------------+-----------------------+----------------------------------------------------+
 | setConfigurationValue() | :php:`$key`           | Updates the configuration :php:`$key` with the     |
@@ -289,7 +290,7 @@ New ModuleProvider API
 The other piece is the new :php:`ModuleProvider` API, which allows extension
 authors to work with the registered modules in a straightforward way.
 
-Previously there had been a couple of different classes and methods, which
+Previously, there had been a couple of different classes and methods, which
 did mostly the same but in other ways. Also handling of those classes had
 been tough, especially the :php:`ModuleLoader` component.
 
@@ -310,7 +311,7 @@ ModuleProvider API methods
 |                           |                                      | identifier. Does NOT perform any access check!           |
 +---------------------------+--------------------------------------+----------------------------------------------------------+
 | getModule()               | :php:`$identifier`                   | Returns a module for the given identifier. In case a     |
-|                           | :php:`$user`                         | user is given,also access checks are performed.          |
+|                           | :php:`$user`                         | user is given, also access checks are performed.         |
 |                           | :php:`$respectWorkspaceRestrictions` | Additionally, one can define whether workspace           |
 |                           |                                      | restrictions should be respected.                        |
 +---------------------------+--------------------------------------+----------------------------------------------------------+
@@ -339,12 +340,12 @@ ModuleInterface
 ===============
 
 Instead of a global array structure, the registered modules are stored as
-objects in a registry. The module objects do all implement the :php:`ModuleInterface`.
+objects in a registry. The module objects implement all the :php:`ModuleInterface`.
 This allows a well-defined OOP-based approach to work with registered models.
 
 The :php:`ModuleInterface` basically provides getters for the options,
 defined in the module registration and additionally provides methods for
-relation handling (main modules and sub modules).
+relation handling (main modules and submodules).
 
 +---------------------------+--------------------------+-----------------------------------------------+
 | Method                    | Return type              | Description                                   |
@@ -366,7 +367,7 @@ relation handling (main modules and sub modules).
 |                           |                          | `mlang_labels_tablabel`).                     |
 +---------------------------+--------------------------+-----------------------------------------------+
 | isStandalone()            | :php:`bool`              | Returns, whether the module is standalone     |
-|                           |                          | (main module without sub modules).            |
+|                           |                          | (main module without submodules).             |
 +---------------------------+--------------------------+-----------------------------------------------+
 | getComponent()            | :php:`string`            | Returns the view component responsible for    |
 |                           |                          | rendering the module (iFrame or name of the   |
@@ -388,26 +389,26 @@ relation handling (main modules and sub modules).
 | getWorkspaceAccess()      | :php:`string`            | Returns defined workspace access, can be `*`  |
 |                           |                          | (all), `live` or `offline`.                   |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getParentIdentifier()     | :php:`string`            | In case this is a sub module, returns the     |
+| getParentIdentifier()     | :php:`string`            | In case this is a submodule, returns the      |
 |                           |                          | parent module identifier.                     |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getParentModule()         | :php:`?ModuleInterface`  | In case this is a sub module, returns the     |
+| getParentModule()         | :php:`?ModuleInterface`  | In case this is a submodule, returns the      |
 |                           |                          | parent module.                                |
 +---------------------------+--------------------------+-----------------------------------------------+
 | hasParentModule()         | :php:`bool`              | Returns whether the module has a parent       |
-|                           |                          | module defined (is a sub module).             |
+|                           |                          | module defined (is a submodule).              |
 +---------------------------+--------------------------+-----------------------------------------------+
 | hasSubModule($identifier) | :php:`bool`              | Returns whether the module has a specific     |
-|                           |                          | sub module assigned.                          |
+|                           |                          | submodule assigned.                           |
 +---------------------------+--------------------------+-----------------------------------------------+
-| hasSubModules()           | :php:`bool`              | Returns whether the module has a sub modules  |
+| hasSubModules()           | :php:`bool`              | Returns whether the module has submodules     |
 |                           |                          | assigned.                                     |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getSubModule($identifier) | :php:`?ModuleInterface`  | If set, returns the requested sub module.     |
+| getSubModule($identifier) | :php:`?ModuleInterface`  | If set, returns the requested submodule.      |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getSubModules()           | :php:`ModuleInterface[]` | Returns all assigned sub modules.             |
+| getSubModules()           | :php:`ModuleInterface[]` | Returns all assigned submodules.              |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getDefaultRouteOptions()  | :php:`array`             | Returns options, to be added to the main      |
+| getDefaultRouteOptions()  | :php:`array`             | Returns options to be added to the main       |
 |                           |                          | module route. Usually `module`, `moduleName`  |
 |                           |                          | and `access`.                                 |
 +---------------------------+--------------------------+-----------------------------------------------+

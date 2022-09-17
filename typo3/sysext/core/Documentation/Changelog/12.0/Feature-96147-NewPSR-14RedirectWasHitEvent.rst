@@ -32,7 +32,7 @@ can either implement your own listener with the same identifier
 (:yaml:`redirects-increment-hit-count`) or add your custom listener
 before and dynamically set the records :php:`disable_hitcount` flag.
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 

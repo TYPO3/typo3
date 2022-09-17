@@ -17,8 +17,8 @@ dropped in favour of `size`.
 Impact
 ======
 
-Defining the option `cols` for the TCA type `none` will log a deprecation
-message. An automatic migration is in place, which will be displayed in the TCA
+Defining the option `cols` for the TCA type `none` will trigger a PHP :php:`E_USER_DEPRECATED` error.
+An automatic migration is in place, which will be displayed in the TCA
 Migrations view of the Upgrade module.
 
 

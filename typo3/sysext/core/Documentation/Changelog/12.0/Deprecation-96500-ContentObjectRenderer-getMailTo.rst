@@ -36,7 +36,7 @@ in custom extension code.
 Migration
 =========
 
-All occurences in extension code have to be replaced by
+All occurrences in extension code have to be replaced by
 :php:`EmailLinkBuilder->processEmailLink()`.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

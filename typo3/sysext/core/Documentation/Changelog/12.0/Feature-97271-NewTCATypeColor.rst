@@ -45,7 +45,7 @@ The TCA type :php:`color` features the following column configuration:
    The :php:`valuePicker` allows to define default color codes via :php:`items`
    for a TCA type :php:`color` field.
 
-The following column configuration can be overwritten by Page TSconfig:
+The following column configuration can be overwritten by page TSconfig:
 
 - :typoscript:`readOnly`
 - :typoscript:`size`

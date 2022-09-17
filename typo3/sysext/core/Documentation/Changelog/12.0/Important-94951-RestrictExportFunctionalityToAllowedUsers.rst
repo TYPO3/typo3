@@ -30,7 +30,7 @@ Impact
 
 The export functionality is restricted
 to TYPO3 admin users and to users, who explicitly have
-access through the new user TSConfig setting
+access through the new user TSconfig setting
 :typoscript:`options.impexp.enableExportForNonAdminUser`.
 
 Affected installations

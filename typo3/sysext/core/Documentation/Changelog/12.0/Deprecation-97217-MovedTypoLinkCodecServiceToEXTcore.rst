@@ -21,7 +21,7 @@ Impact
 
 The namespace has changed from :php:`\TYPO3\CMS\Frontend\Service\TypoLinkCodecService`
 to :php:`\TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService` and the old namespace
-has been deprecated.
+has been marked as deprecated.
 
 Affected Installations
 ======================

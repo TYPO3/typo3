@@ -20,7 +20,7 @@ Impact
 ======
 
 Using :php:`ExpressionBuilder->andX()` and :php:`ExpressionBuilder->orX()`
-will raise a deprecation level log entry when called.
+will trigger a PHP :php:`E_USER_DEPRECATED` error when called.
 
 
 Affected Installations
@@ -47,30 +47,30 @@ Extensions should use the corresponding replacement:
 
 For example, the following select query:
 
-.. code-block:: php
+..  code-block:: php
 
     $rows = $queryBuilder
-      ->select(...)
-      ->from(...)
-      ->where(
-        $queryBuilder->expr()->andX(...),   // replace with and(...)
-        $queryBuilder->expr()->orX(...)     // replace with or(...)
-      )
-      ->executeQuery()
-      ->fetchAllAssociative();
+        ->select(...)
+        ->from(...)
+        ->where(
+            $queryBuilder->expr()->andX(...),   // replace with and(...)
+            $queryBuilder->expr()->orX(...)     // replace with or(...)
+        )
+        ->executeQuery()
+        ->fetchAllAssociative();
 
 should be replaced with:
 
-.. code-block:: php
+..  code-block:: php
 
     $rows = $queryBuilder
-      ->select(...)
-      ->from(...)
-      ->where(
-        $queryBuilder->expr()->and(...), // replacement for andX(...)
-        $queryBuilder->expr()->or(...)   // replacement for orX(...)
-      )
-      ->executeQuery()
-      ->fetchAllAssociative();
+        ->select(...)
+        ->from(...)
+        ->where(
+            $queryBuilder->expr()->and(...), // replacement for andX(...)
+            $queryBuilder->expr()->or(...)   // replacement for orX(...)
+        )
+        ->executeQuery()
+        ->fetchAllAssociative();
 
 .. index:: Database, FullyScanned, ext:core

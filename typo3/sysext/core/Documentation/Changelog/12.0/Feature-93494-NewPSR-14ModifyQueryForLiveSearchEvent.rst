@@ -20,7 +20,7 @@ The event features the following methods:
 - :php:`getQueryBuilder()`: Returns the current :php:`QueryBuilder` instance
 - :php:`getTableName()`: Returns the table, for which the query will be executed
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -56,7 +56,7 @@ Impact
 ======
 
 It is now possible to use a new PSR-14 event for modifying the live
-search query. This can e.g. be used to adjust the limit for a specific
+search query. This can be used, for example, to adjust the limit for a specific
 table or to change the result order.
 
 .. index:: Backend, PHP-API, ext:backend

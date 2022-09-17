@@ -33,7 +33,7 @@ Affected installations
 
 TYPO3 installations with extensions using one of the hooks.
 
-Check the "Configuration" module to see if your TYPO3 installations is using
+Check the "Configuration" module to see if your TYPO3 installation is using
 one of the hooks by browsing :php:`$TYPO3_CONF_VARS[SC_OPTIONS]` or using the
 Extension Scanner.
 
@@ -42,10 +42,9 @@ Migration
 =========
 
 The hooks are removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
 
-Use the :doc:`PSR-14 Events <../12.0/Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved>`
+Use the :doc:`PSR-14 events <../12.0/Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved>`
 
 * :php:`BeforePageIsResolvedEvent`
 * :php:`AfterPageWithRootLineIsResolvedEvent`

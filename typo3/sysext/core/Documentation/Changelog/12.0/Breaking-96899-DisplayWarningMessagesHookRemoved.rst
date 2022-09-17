@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']`
-has been removed in favor of a new PSR-14 Event
+has been removed in favor of a new PSR-14 event
 :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyGenericBackendMessagesEvent`.
 
 The hook was used to display messages in the About module.
@@ -30,10 +30,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
 
-Use the :doc:`PSR-14 Event <Feature-96899-NewPSR-14EventModifyGenericBackendMessagesEvent>`
+Use the :doc:`PSR-14 event <Feature-96899-NewPSR-14EventModifyGenericBackendMessagesEvent>`
 as a direct replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

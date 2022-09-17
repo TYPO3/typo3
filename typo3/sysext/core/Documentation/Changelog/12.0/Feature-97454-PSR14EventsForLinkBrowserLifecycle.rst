@@ -3,7 +3,7 @@
 .. _feature-97454-1657327622:
 
 ===================================================================
-Feature: #97454 - PSR-14 Events for modifying link browser behavior
+Feature: #97454 - PSR-14 events for modifying link browser behavior
 ===================================================================
 
 See :issue:`97454`
@@ -11,7 +11,7 @@ See :issue:`97454`
 Description
 ===========
 
-Two new PSR-14 Events :php:`\TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent` and
+Two new PSR-14 events :php:`\TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent` and
 :php:`\TYPO3\CMS\Recordlist\Event\ModifyAllowedItemsEvent` have been introduced which
 serve as a direct replacement for the now removed
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']`
@@ -36,7 +36,7 @@ in the LinkBrowser hook.
 Example
 =======
 
-Registration of the Event in your extension's :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
 .. code-block:: yaml
 

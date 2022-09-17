@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 =====================================================================
-Feature: #97096 - Non-namespaced arguments in extbase backend modules
+Feature: #97096 - Non-namespaced arguments in Extbase backend modules
 =====================================================================
 
 See :issue:`97096`
@@ -10,15 +10,15 @@ Description
 ===========
 
 Extbase plugins and backend modules traditionally use the plugin / module
-namespace to prefix their get parameters and form data. In the frontend context,
+namespace to prefix their GET parameters and form data. In the frontend context,
 this makes sense, as multiple plugins may reside on a page. In the backend,
-however, an extbase module is responsible for rendering a complete view.
+however, an Extbase module is responsible for rendering a complete view.
 Therefore, the namespacing of arguments has been disabled, making URLs easier
-to read, more in line with non-extbase modules and allowing extbase modules
+to read, more in line with non-Extbase modules and allowing Extbase modules
 to directly access outside information like the `id` parameter handed over
 by the page tree for example.
 
-To allow extbase modules to configure this behaviour, the extbase feature
+To allow Extbase modules to configure this behaviour, the Extbase feature
 flag :typoscript:`enableNamespacedArgumentsForBackend` can be set in the module
 configuration, turning the namespacing off or on.
 

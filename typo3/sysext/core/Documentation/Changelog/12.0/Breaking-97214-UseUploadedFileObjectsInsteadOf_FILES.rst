@@ -11,7 +11,7 @@ Description
 
 The TYPO3 request already contains a "disentangled" array of UploadedFile
 objects. With this change, these UploadedFile objects are now used instead
-of the superglobal :php:`$_FILES` in extbase requests.
+of the superglobal :php:`$_FILES` in Extbase requests.
 
 Additionally, the FAL ResourceStorage has been adjusted for handling
 UploadedFile objects and the ExtensionManager upload handling has been
@@ -25,7 +25,7 @@ uploads in Extbase.
 Impact
 ======
 
-The global :php:`$_FILES` object is not used in extbase or the extension
+The global :php:`$_FILES` object is not used in Extbase or the extension
 manager anymore, instead the PSR request is used.
 
 

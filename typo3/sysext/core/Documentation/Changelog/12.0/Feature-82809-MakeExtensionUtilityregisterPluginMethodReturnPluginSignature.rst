@@ -10,7 +10,7 @@ Description
 ===========
 
 The API method :php:`TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()`
-is used to register an Extbase Plugin. The method is called in the
+is used to register an Extbase plugin. The method is called in the
 :file:`Configuration/TCA/Overrides/tt_content.php` file of an extension and
 often followed by the definition of a FlexForm.
 
@@ -30,7 +30,7 @@ Example
     );
 
 The above call returns the plugin signature: `indexedsearch_pi2`. This could
-then be used for e.g. adding a FlexForm:
+then be used for, e.g., adding a FlexForm:
 
 .. code-block:: php
 

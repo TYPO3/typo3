@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 ===============================================================
-Breaking: #94117 - Register extbase type converters as services
+Breaking: #94117 - Register Extbase type converters as services
 ===============================================================
 
 See :issue:`94117`

@@ -1,7 +1,9 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96879-1663513042:
+
 ==================================================================
-Feature: #96879 - New PSR-14 Event ModifyCacheLifetimeForPageEvent
+Feature: #96879 - New PSR-14 event ModifyCacheLifetimeForPageEvent
 ==================================================================
 
 See :issue:`96879`
@@ -9,7 +11,7 @@ See :issue:`96879`
 Description
 ===========
 
-A new PSR-14 Event :php:`ModifyCacheLifetimeForPageEvent` has been introduced.
+A new PSR-14 event :php:`ModifyCacheLifetimeForPageEvent` has been introduced.
 This event serves as a successor for the
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout']`
 hook.
@@ -18,7 +20,7 @@ hook.
 Impact
 ======
 
-The new Event allows to modify the lifetime how long a rendered page of a
+The new event allows to modify the lifetime how long a rendered page of a
 frontend call should be stored in the "pages" cache.
 
 Common registration and usage for a listener:

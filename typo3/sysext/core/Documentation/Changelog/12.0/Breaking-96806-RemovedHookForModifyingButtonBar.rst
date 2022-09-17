@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook']`
-has been removed in favor of a new PSR-14 Event :php:`\TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent`.
+has been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent`.
 
 Impact
 ======
@@ -29,10 +29,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
 
-Use the :doc:`PSR-14 Event <../12.0/Feature-96806-PSR-14EventForModifyingButtonBar>`
+Use the :doc:`PSR-14 event <../12.0/Feature-96806-PSR-14EventForModifyingButtonBar>`
 as a direct replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

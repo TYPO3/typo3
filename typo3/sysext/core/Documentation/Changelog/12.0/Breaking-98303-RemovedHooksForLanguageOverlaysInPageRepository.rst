@@ -39,14 +39,14 @@ TYPO3 installations with custom extensions using these hooks.
 Migration
 =========
 
-Migrate to the new PSR-14 Events:
+Migrate to the new :ref:`PSR-14 events <feature-98303-1662659478>`:
 
 * :php:`\TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent`
 * :php:`\TYPO3\CMS\Core\Domain\Event\AfterRecordLanguageOverlayEvent`
 * :php:`\TYPO3\CMS\Core\Domain\Event\BeforePageLanguageOverlayEvent`
 
 Extensions using the hooks can be made compatible with TYPO3 v11 and TYPO3 v12
-by registering a PSR-14-based Event Listener while keeping the legacy hook
+by registering a PSR-14-based event listener while keeping the legacy hook
 in place.
 
 Extensions calling :php:`PageRepository->getRecordOverlay()` should call

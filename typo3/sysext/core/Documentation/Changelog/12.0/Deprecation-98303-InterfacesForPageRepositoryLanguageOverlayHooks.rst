@@ -41,7 +41,7 @@ TYPO3 installations with custom extensions using these hooks and their interface
 Migration
 =========
 
-Migrate to the new PSR-14 Events:
+Migrate to the new :ref:`PSR-14 events <feature-98303-1662659478>`:
 
 * :php:`\TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent`
 * :php:`\TYPO3\CMS\Core\Domain\Event\AfterRecordLanguageOverlayEvent`

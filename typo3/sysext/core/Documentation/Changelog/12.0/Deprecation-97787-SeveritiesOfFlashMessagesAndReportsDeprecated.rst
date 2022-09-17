@@ -20,8 +20,7 @@ Impact
 ======
 
 Passing the constants as listed below to the constructor of
-:php:`\TYPO3\CMS\Core\Messaging\FlashMessage` will trigger a deprecation level
-log entry:
+:php:`\TYPO3\CMS\Core\Messaging\FlashMessage` will trigger a PHP :php:`E_USER_DEPRECATED` error:
 
 * :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE`
 * :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::INFO`
@@ -30,7 +29,7 @@ log entry:
 * :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR`
 
 Passing the constants as listed below to the constructor of
-:php:`\TYPO3\CMS\Reports\Status` will trigger a deprecation level log entry:
+:php:`\TYPO3\CMS\Reports\Status` will trigger a PHP :php:`E_USER_DEPRECATED` error:
 
 * :php:`\TYPO3\CMS\Reports\Status::NOTICE`
 * :php:`\TYPO3\CMS\Reports\Status::INFO`

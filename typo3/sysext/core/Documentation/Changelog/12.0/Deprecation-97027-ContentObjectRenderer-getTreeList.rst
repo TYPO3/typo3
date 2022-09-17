@@ -12,7 +12,7 @@ Description
 The method :php:`ContentObjectRenderer->getTreeList()` has been marked as
 deprecated.
 
-The method signature has had various side-effects, and too many options and
+The method signature has had various side-effects and too many options and
 was used in different places across TYPO3 Core, where
 :php:`ContentObjectRenderer` was not in use primarily.
 
@@ -20,7 +20,7 @@ was used in different places across TYPO3 Core, where
 Impact
 ======
 
-Calling the method directly will trigger a PHP deprecation warning.
+Calling the method directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

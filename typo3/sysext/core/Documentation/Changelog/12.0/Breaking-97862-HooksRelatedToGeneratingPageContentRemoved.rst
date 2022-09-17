@@ -21,9 +21,9 @@ The existing TYPO3 hooks in the process of generating a TYPO3 Frontend page
 have been removed. These hooks have been used to execute custom PHP code after
 a page is generated in the TYPO3 frontend and ready to be stored in cache.
 
-Due to the removal of the hooks and the introduction of the new PSR-14 Events
-has the method signature of :php:`TypoScriptFrontendController->generatePage_postProcessing()`
-been changed. The method now requires a :php:`ServerRequestInterface` as first
+Due to the removal of the hooks and the introduction of the new PSR-14 events
+the method signature of :php:`TypoScriptFrontendController->generatePage_postProcessing()`
+has been changed. The method now requires a :php:`ServerRequestInterface` as first
 argument.
 
 Impact
@@ -57,7 +57,7 @@ Use one of the two newly introduced :doc:`PSR-14 events <../12.0/Feature-97862-N
 * :php:`TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent`
 
 Extensions using the hooks can be made compatible with TYPO3 v11 and TYPO3 v12
-by registering a PSR-14-based Event Listener while keeping the legacy hook
+by registering a PSR-14-based event listener while keeping the legacy hook
 in place.
 
 The :php:`AfterCacheableContentIsGeneratedEvent` acts as a replacement for

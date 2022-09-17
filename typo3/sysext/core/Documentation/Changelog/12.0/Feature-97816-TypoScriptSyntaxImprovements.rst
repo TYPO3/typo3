@@ -70,8 +70,8 @@ A couple of examples to clarify:
 @import in conditions
 ---------------------
 
-Placing a :typoscript:`@import` keyword within a condition is now supported,
-the example below works. Note this obsoletes the clumsy :typoscript:`<INCLUDE_TYPOSCRIPT:`
+Placing an :typoscript:`@import` keyword within a condition is now supported,
+the example below works. Note that this obsoletes the clumsy :typoscript:`<INCLUDE_TYPOSCRIPT:`
 syntax, and integrators are encouraged to fully switch to :typoscript:`@import`.
 
 .. code-block:: typoscript

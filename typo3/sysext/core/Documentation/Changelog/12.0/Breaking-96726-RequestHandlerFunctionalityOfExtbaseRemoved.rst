@@ -23,7 +23,7 @@ TypoScript to PHP files (during build time).
 In TYPO3 v11, Fluid Widgets have been removed.
 
 The only available support is for Frontend requests (plugin), which could have
-been overridden by custom implementions.
+been overridden by custom implementations.
 
 From TYPO3 v12.0 onwards, Extbase Bootstrap for plugins is now calling the
 Extbase dispatcher directly, without loading possible RequestHandlers anymore.

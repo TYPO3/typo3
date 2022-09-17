@@ -14,7 +14,7 @@ Description
 The two fields :sql:`base` and :sql:`path` of the :sql:`sys_filemounts` table
 are now combined in one new field :sql:`identifier`. The field contains the so
 called combined identifier in the format `base:path`, where "base" is the
-storage id and "path" the path to the folder, e.g. `1:/user_upload`.
+storage ID and "path" the path to the folder, e.g. `1:/user_upload`.
 
 An upgrade wizard is in place, migrating the two fields of existing records
 into the new field.

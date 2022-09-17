@@ -17,7 +17,7 @@ adjusted accordingly.
 Impact
 ======
 
-Deprecation errors will be logged.
+Usages will trigger PHP :php:`E_USER_DEPRECATED` errors.
 
 
 Affected Installations

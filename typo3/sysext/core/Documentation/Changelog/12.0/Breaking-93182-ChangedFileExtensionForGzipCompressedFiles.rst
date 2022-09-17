@@ -36,7 +36,7 @@ TYPO3 installations setting the global configuration option.
 Migration
 =========
 
-Adapt possible .htaccess files by replacing ".gzip" with ".gz" if this feature
-is activated.
+Adapt possible :file:`.htaccess` or other webserver configuration files
+by replacing ".gzip" with ".gz" if this feature is activated.
 
 .. index:: Backend, Frontend, NotScanned, ext:core

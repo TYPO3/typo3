@@ -1,8 +1,8 @@
 .. include:: /Includes.rst.txt
 
-====================================
-Breaking: #96287 - Doctrine DBAL 3.2
-====================================
+===================================
+Breaking: #96287 - Doctrine DBAL v3
+===================================
 
 See :issue:`96287`
 
@@ -56,20 +56,20 @@ Examples:
       // use executeQuery() instead of execute()
       ->executeQuery();
 
-`$result` is now of type `\Doctrine\DBAL\Result`, and not of type
-`\Doctrine\DBAL\Statement` anymore, which allows to fetch rows / columns via
+:php:`$result` is now of type :php:`\Doctrine\DBAL\Result`, and not of type
+:php:`\Doctrine\DBAL\Statement` anymore, which allows to fetch rows / columns via
 new and more speaking methods:
 
-* ->fetchAllAssociative() instead of ->fetchAll()
-* ->fetchAssociative() - instead of ->fetch()
-* ->fetchOne() - instead of ->fetchColumn(0)
+* :php:`->fetchAllAssociative()` instead of :php:`->fetchAll()`
+* :php:`->fetchAssociative()` - instead of :php:`->fetch()`
+* :php:`->fetchOne()` - instead of :php:`->fetchColumn(0)`
 
-The method `executeQuery` - available in the QueryBuilder and
+The method :php:`executeQuery` - available in the QueryBuilder and
 the Connection class is now in for select/count queries and returns a Result
-object directly, whereas `executeStatement()` is used for insert / update / delete
+object directly, whereas :php:`executeStatement()` is used for insert / update / delete
 statements, returning an integer - the number of affected rows.
 
-Use both methods instead of the previous `execute()` method,
+Use both methods instead of the previous :php:`execute()` method,
 which is still available for backwards-compatibility.
 
-.. index:: Database, FullyScanned, ext:core
+.. index:: Database, NotScanned, ext:core

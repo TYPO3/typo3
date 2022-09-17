@@ -32,9 +32,9 @@ Migration
 =========
 
 The hooks are removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hooks) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../12.0/Feature-97945-PSR14AfterPageTreeItemsPreparedEvent>`
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
+
+Use the :doc:`PSR-14 event <../12.0/Feature-97945-PSR14AfterPageTreeItemsPreparedEvent>`
 as replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:workspaces

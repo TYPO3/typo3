@@ -126,12 +126,12 @@ Instances can check if they use UTF-8 BOM with a Unix shell command:
     sed -i '1s/^\xEF\xBB\xBF//' affectedFile.typoscript
 
 
-Support for \n and \r\n linebreaks only
----------------------------------------
+Support for \\n and \\r\\n linebreaks only
+------------------------------------------
 
-TypoScript sources must terminate single lines with either "\n" (Unix ending: LineFeed),
-or "\r\n" (Windows ending: Carriage return, LineFeed). Ancient Mac, prior to Mac OS X
-used "\r" as single linebreak character. This old linebreak type is no longer detected
+TypoScript sources must terminate single lines with either "\\n" (Unix ending: LineFeed),
+or "\\r\\n" (Windows ending: Carriage return, LineFeed). Ancient Mac, prior to Mac OS X
+used "\\r" as single linebreak character. This old linebreak type is no longer detected
 when parsing TypoScript and may lead to funny results, but chances are very low any
 instance is affected by this.
 

@@ -10,7 +10,7 @@ Description
 ===========
 
 `doctrine/dbal` `deprecated`_ direct instantiation of :php:`CompositeExpression`
-in favour of moving forward to a immutable class implementation. Therefore, this
+in favour of moving forward to an immutable class implementation. Therefore, this
 has also been deprecated in the core facade class (:php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`),
 to avoid shifting too far away.
 
@@ -19,8 +19,7 @@ to avoid shifting too far away.
 Impact
 ======
 
-Instantiating directly with :php:`new CompositeExpression(...)` will raise a
-deprecation level log entry.
+Instantiating directly with :php:`new CompositeExpression(...)` will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 The extension scanner cannot detect direct instantiation of this class.
 

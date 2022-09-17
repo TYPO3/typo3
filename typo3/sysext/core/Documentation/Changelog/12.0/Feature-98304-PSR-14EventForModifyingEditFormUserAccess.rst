@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 ==================================================================
-Feature: #98304 - PSR-14 Event for modifying edit form user access
+Feature: #98304 - PSR-14 event for modifying edit form user access
 ==================================================================
 
 See :issue:`98304`
@@ -9,12 +9,12 @@ See :issue:`98304`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent`
 has been introduced which serves as a more powerful and flexible alternative
 for the now removed :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck']`
 hook.
 
-In contrast to the removed hook does the new Event provide the full
+In contrast to the removed hook, the new event provides the full
 database row of the record in question next to the exception, which
 might have been set by the core. Additionally, the event allows to
 modify the user access decision in an object-oriented way, using
@@ -31,7 +31,7 @@ The following additional methods can be used for further context:
 
 - :php:`getTableName()`: Returns the table name of the record in question
 - :php:`getCommand()`: Returns the requested command, either `new` or `edit`
-- :php:`getDatabaseRow()`: Returns the records database row
+- :php:`getDatabaseRow()`: Returns the record's database row
 
 In case any listener to the new event denies user access, while it was initially
 allowed by core, the :php:`TYPO3\CMS\Backend\Form\Exception\AccessDeniedListenerException`
@@ -40,7 +40,7 @@ will be thrown.
 Example
 =======
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -70,8 +70,8 @@ Impact
 ======
 
 It's now possible to modify the user access for the editing form,
-using the new PSR-14 :php:`ModifyLinkExplanationEvent`. The main
-advantages of the new PSR-14 Event are the object-oriented approach
+using the new PSR-14 event :php:`ModifyLinkExplanationEvent`. The main
+advantages of the new PSR-14 event are the object-oriented approach
 as well as the built-in convenience features and an increased amount
 of context information.
 

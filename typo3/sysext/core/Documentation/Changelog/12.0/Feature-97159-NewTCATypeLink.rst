@@ -1,10 +1,10 @@
 .. include:: /Includes.rst.txt
 
 =====================================
-Feature: #97013 - New TCA type "link"
+Feature: #97159 - New TCA type "link"
 =====================================
 
-See :issue:`97013`
+See :issue:`97159`
 
 Description
 ===========
@@ -39,7 +39,7 @@ The TCA type :php:`link` features the following column configuration:
 
 .. note::
 
-    The softref definition :php:`softref=typolink` is automatically applied
+    The soft reference definition :php:`softref=typolink` is automatically applied
     to all TCA type :php:`link` columns.
 
 .. note::
@@ -48,23 +48,23 @@ The TCA type :php:`link` features the following column configuration:
    being stored in the database. Therefore, the :php:`eval=trim` option is no
    longer needed and should be removed from the TCA configuration.
 
-The following column configuration can be overwritten by Page TSconfig:
+The following column configuration can be overwritten by page TSconfig:
 
 - :typoscript:`readOnly`
 - :typoscript:`size`
 
 The previously configured :php:`linkPopup` field control is now integrated
 into the new TCA type directly. Additionally, instead of exclude lists
-(:php:`blindLink[Fields|Options]`), does the new type now use include lists.
-Those lists are furthermore no longer comma separated, but PHP :php:`array`'s,
+(:php:`[blindLink[Fields|Options]`) the new type now use include lists.
+Those lists are furthermore no longer comma-separated, but PHP :php:`array`s,
 with each option as a separate value.
 
 The replacement for the previously used :php:`blindLinkOptions` option is the
 :php:`allowedTypes` configuration. The :php:`blindLinkFields` option is
 now configured via :php:`appearance[allowedOptions]`. While latter only
 affects the display in the Link Browser, the :php:`allowedTypes` configuration
-is also evaluated in the :php:`Datahandler`, preventing the user from adding
-links of non allowed types.
+is also evaluated in the :php:`DataHandler`, preventing the user from adding
+links of non-allowed types.
 
 To allow all link types, skip the :php:`allowedTypes` configuration or set
 it to :php:`['*']`. It's not possible to deny all types.
@@ -75,14 +75,14 @@ deny all options in the Link Browser, set the :php:`appearance[allowedOptions]`
 configuration to :php:`[]` (empty :php:`array`).
 
 The :php:`allowedExtensions` option is renamed to :php:`allowedFileExtensions`
-and also moved to :php:`appearance`. It also now requires to be an :php:`array`.
+and also moved to :php:`appearance`. Now it requires to be an :php:`array`.
 To allow all extensions, skip the :php:`appearance[allowedFileExtensions]`
 configuration or set it to :php:`['*']`. It's not possible to deny all
 extensions.
 
 With :php:`appearance[browserTitle]`, a custom title for the Link Browser
 can be defined. To disable the Link Browser, :php:`appearance[enableBrowser]`
-has to be set to :php:`FALSE`.
+has to be set to :php:`false`.
 
 A complete migration from :php:`renderType=inputLink` to :php:`type=link`
 looks like the following:

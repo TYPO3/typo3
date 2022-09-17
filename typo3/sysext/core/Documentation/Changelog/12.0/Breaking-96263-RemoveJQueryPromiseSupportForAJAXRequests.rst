@@ -12,7 +12,7 @@ Description
 With :issue:`89738`, a polyfill for jQuery promises was introduced to ease the
 migration of :js:`$.ajax()` to our AJAX request API.
 
-The polyfilled methods :js:`done()` and :js:`fail()` are removed.
+The polyfilled methods :js:`done()` and :js:`fail()` are now removed.
 
 
 Impact

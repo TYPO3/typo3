@@ -2,9 +2,9 @@
 
 .. _breaking-98016-1658731955:
 
-================================================
-Breaking: #98016 - RemovedTypoScriptFunctionHook
-================================================
+===================================================
+Breaking: #98016 - Removed TypoScript function hook
+===================================================
 
 See :issue:`98016`
 
@@ -18,7 +18,7 @@ is no longer called.
 This hook has been used to implement own functions for the TypoScript "function" operator :typoscript:`:=`.
 
 Additional functions can now be implemented using the :php:`\TYPO3\CMS\Core\TypoScript\AST\Event\EvaluateModifierFunctionEvent`
-as described in :ref:`this Changelog <feature-98016-1658732423>`
+as described in :ref:`this Changelog <feature-98016-1658732423>`.
 
 Impact
 ======

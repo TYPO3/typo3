@@ -11,7 +11,7 @@ Description
 
 The class :php:`TYPO3\CMS\Core\Type\Enumeration\TableColumnSubType` has been
 removed. It has no use anymore, since TCA option `internal_type` is not
-evaluated. It was set for the extbase class :php:`ColumnMap`, but even there it
+evaluated. It was set for the Extbase class :php:`ColumnMap`, but even there it
 had no direct usage.
 
 

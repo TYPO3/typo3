@@ -18,14 +18,14 @@ adapted for the "date" validator.
 
 Since the order can only be adjusted by changing the key within the form
 configuration, this patch adds according comments to the form configuration.
-The breaking change will be done with TYPO3 13.0.
+The breaking change will be done with TYPO3 v13.0.
 
 
 Impact
 ======
 
 Since the YAML keys within the form configuration of the "date" form element
-will change in TYPO3 v13, custom configurations/ implementations can fail. An
+will change in TYPO3 v13, custom configurations/implementations can fail. An
 according comment has been added to the configuration file of the form
 framework. Furthermore, the new key has been reserved.
 
@@ -104,6 +104,6 @@ Migration
 =========
 
 Check your form configuration accordingly and adapt your custom configuration.
-That is, check if you set/ unset the above mentioned keys.
+That is, check if you set/unset the above mentioned keys.
 
 .. index:: Backend, NotScanned, ext:form

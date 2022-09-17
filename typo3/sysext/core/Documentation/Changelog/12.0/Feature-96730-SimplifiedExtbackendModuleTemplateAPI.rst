@@ -15,7 +15,7 @@ view for the 'body' part of the view and do not need to
 instantiate an own view anymore.
 
 The default document header of :php:`ModuleTemplate` can be rendered
-using a new fluid layout named `Module`.
+using a new Fluid layout named `Module`.
 
 
 Impact
@@ -38,7 +38,7 @@ looked like this until now:
 This can be streamlined as shown below. Template paths (Templates, Layouts, Partials)
 are configured automatically, calling :php:`renderResponse('SomeController/SomeAction')` will look for file
 :file:`Resources/Private/Templates/SomeController/SomeAction.html`. Templates can be
-overridden by other extensions using TsConfig, see :doc:`this changelog entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`
+overridden by other extensions using page TSconfig, see :doc:`this changelog entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`
 for details on this.
 
 .. code-block:: php

@@ -3,7 +3,7 @@
 .. _feature-93689-1654629861:
 
 ===============================================================
-Feature: #93689 - PSR-14 Events on sending messages with Mailer
+Feature: #93689 - PSR-14 events on sending messages with Mailer
 ===============================================================
 
 See :issue:`93689`
@@ -13,25 +13,25 @@ Description
 
 TYPO3's :php:`MailerInterface` implementation :php:`Mailer` is used for sending
 messages, e.g. in the EXT:form email finishers. To allow further handling and
-manipulation of the message sending process, two new PSR-14 Events have been
+manipulation of the message sending process, two new PSR-14 events have been
 introduced.
 
 The :php:`BeforeMailerSentMessageEvent` is dispatched before the message
 is sent by the mailer and can be used to manipulate the :php:`RawMessage`
 and the :php:`Envelope`. Usually an :php:`Email` or `FluidEmail` instance
-is given as :php:`RawMessage`. Additionally the :php:`MailerInstance` is
+is given as :php:`RawMessage`. Additionally, the :php:`MailerInstance` is
 given, which depending on the implementation - usually
 :php:`TYPO3\CMS\Core\Mail\Mailer` - contains the :php:`Transport` object,
 which can be retrieved using the :php:`getTransport()` method.
 
 The :php:`AfterMailerSentMessageEvent` is dispatched as soon as the
 message has been sent via the corresponding :php:`TransportInterface`.
-The Event receives the current :php:`MailerInstance`, which depending
+The event receives the current :php:`MailerInstance`, which, depending
 on the implementation - usually :php:`TYPO3\CMS\Core\Mail\Mailer` -
-contains the :php:`SentMessage` object, which can be retrieved using
+contains the :php:`SentMessage` object that can be retrieved using
 the :php:`getSentMessage()` method.
 
-Registration of the Event listeners in your extensions' :file:`Services.yaml`:
+Registration of the event listeners in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -48,17 +48,19 @@ The corresponding event listener class:
 
 .. code-block:: php
 
-    use Psr\Log\LoggerAwareInterface;
-    use Psr\Log\LoggerAwareTrait;
+    use Psr\Log\LoggerInterface;
     use Symfony\Component\Mime\Address;
     use Symfony\Component\Mime\Email;
     use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
     use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
     use TYPO3\CMS\Core\Mail\Mailer;
 
-    final class MailerSentMessageEventListener implementsLoggerAwareInterface
+    final class MailerSentMessageEventListener
     {
-        use LoggerAwareTrait;
+        public function __construct(
+            private readonly LoggerInterface $logger
+        ) {
+        }
 
         public function modifyMessage(BeforeMailerSentMessageEvent $event): void
         {

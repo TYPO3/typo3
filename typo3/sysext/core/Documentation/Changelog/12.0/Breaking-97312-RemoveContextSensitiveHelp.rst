@@ -45,11 +45,11 @@ empty string and trigger a deprecation warning.
 
 The CSH descriptions are not loaded any longer for tables.
 
-All labels are adjusted to not contain <abbr> tags inside any longer.
+All labels are adjusted to not contain :html:`<abbr>` tags inside any longer.
 
 The method :php:`cshItem()` of
 :php:`TYPO3\CMS\Backend\Utility\BackendUtility` always returns an empty
-string and triggers an deprecation warning.
+string and triggers a deprecation warning.
 
 The TYPO3 Manual menu item has been removed and a link to the
 TYPO3 Online Documentation has been added to the menu.
@@ -75,13 +75,13 @@ All installations that use CSH for own fields.
 Migration
 =========
 
-Important CSH texts need to be migrated to a TCA `description`, to
+Important CSH texts need to be migrated to a TCA :php:`description`, to
 make the information available for all users.
 
-An example for a TCA description is the `protected` column in the
-`sys_redirect` TCA.
+An example for a TCA description is the :php:`protected` column in the
+:php:`sys_redirect` TCA.
 
-The TCA option `['interface']['always_description']` can be removed from
+The TCA option :php:`['interface']['always_description']` can be removed from
 any TCA definition.
 
 

@@ -10,9 +10,9 @@ Description
 ===========
 
 The method signature of :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface::logicalAnd()`
-and :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface::logicalOr()` changed.
+and :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface::logicalOr()` has changed.
 As a consequence the method signature of :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query::logicalAnd()`
-and :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query::logicalOr()` changed as well.
+and :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query::logicalOr()` has changed as well.
 
 Both methods do no longer accept an array as first parameter. Furthermore both
 methods have two mandatory :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface`
@@ -54,7 +54,7 @@ Migration
 =========
 
 The migration is the same for :php:`logicalAnd()` and :php:`logicalOr()`
-since their param signature is the same. The upcoming example will show a
+since their method signature is the same. The upcoming example will show a
 migration for a :php:`logicalAnd()` call.
 
 **Example**:

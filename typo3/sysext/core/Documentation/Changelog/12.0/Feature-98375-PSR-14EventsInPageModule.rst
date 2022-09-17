@@ -3,7 +3,7 @@
 .. _feature-98375-1663598746:
 
 ==============================================
-Feature: #98375 - PSR-14 Events in Page Module
+Feature: #98375 - PSR-14 events in Page Module
 ==============================================
 
 See :issue:`98375`
@@ -11,7 +11,7 @@ See :issue:`98375`
 Description
 ===========
 
-Three new PSR-14 Events have been added to TYPO3's Page Module to modify
+Three new PSR-14 events have been added to TYPO3's Page Module to modify
 the preparation and rendering of content elements:
 
 * :php:`TYPO3\CMS\Backend\View\Event\IsContentUsedOnPageLayoutEvent`

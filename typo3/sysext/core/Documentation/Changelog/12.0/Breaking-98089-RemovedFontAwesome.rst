@@ -40,6 +40,6 @@ still requires FontAwesome, install the polyfill extension `fontawesome_provider
 To install the extension via Composer, run the command
 :bash:`composer require friendsoftypo3/fontawesome-provider`.
 
-The extension will be available in TER soon as `fontawesome_provider<https://extensions.typo3.org/extension/fontawesome_provider>`.
+The extension will be available in TER soon as `fontawesome_provider <https://extensions.typo3.org/extension/fontawesome_provider>`__.
 
 .. index:: Backend, PHP-API, NotScanned, ext:core

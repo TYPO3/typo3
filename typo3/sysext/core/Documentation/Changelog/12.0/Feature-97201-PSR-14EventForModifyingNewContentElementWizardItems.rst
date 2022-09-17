@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 =============================================================================
-Feature: #97201 - PSR-14 Event for modifying new content element wizard items
+Feature: #97201 - PSR-14 event for modifying new content element wizard items
 =============================================================================
 
 See :issue:`97201`
@@ -9,7 +9,7 @@ See :issue:`97201`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent`
 has been introduced which serves as a more powerful and flexible alternative
 for the now removed hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook']`.
 
@@ -27,13 +27,13 @@ Following methods are available:
 +=========================+=======================+====================================================+
 | getWizardItems()        |                       | Returns all available wizard items.                |
 +-------------------------+-----------------------+----------------------------------------------------+
-| setWizardItems()        | :php:`$wizardItems`   | Updates / overwrites the available wizard items    |
+| setWizardItems()        | :php:`$wizardItems`   | Updates / overwrites the available wizard items.   |
 +-------------------------+-----------------------+----------------------------------------------------+
 | hasWizardItem()         | :php:`$identifier`    | Whether a wizard item with the :php:`$identifier`  |
 |                         |                       | exists.                                            |
 +-------------------------+-----------------------+----------------------------------------------------+
 | getWizardItem()         | :php:`$identifier`    | Returns the wizard item with the                   |
-|                         |                       | :php:`$identifier` or :php:`NULL` if it does not   |
+|                         |                       | :php:`$identifier` or :php:`null` if it does not   |
 |                         |                       | exist.                                             |
 +-------------------------+-----------------------+----------------------------------------------------+
 | setWizardItem()         | :php:`$identifier`    | Add a new wizard item with the :php:`identifier`   |
@@ -61,7 +61,7 @@ Following methods are available:
 Example
 =======
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -99,8 +99,8 @@ The corresponding event listener class:
 Impact
 ======
 
-The main advantages of the new PSR-14 Event are the object-orientated
-apporach as well as the built-in convenience features, like relocating
+The main advantages of the new PSR-14 event are the object-oriented
+approach as well as the built-in convenience features, like relocating
 of the wizard items.
 
 .. index:: Frontend, ext:frontend

@@ -26,8 +26,10 @@ Relying on the return type of :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->g
 being `int` will throw a :php:`TypeError` exception.
 
 There is no negative impact in the following cases:
+
 * Using the severity enum in Fluid for direct rendering
 * Using the severity enum in :php:`json_encode()`
+
 In these cases, the enum's value is automatically used.
 
 

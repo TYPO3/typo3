@@ -24,7 +24,7 @@ compatibility support for extensions that load modules via RequireJS.
 
 For security reasons importmap configuration is only emitted when the modules
 are actually used, that means when a module has been added to the current
-page response via via :php:`PageRenderer->loadJavaScriptModule()` or
+page response via :php:`PageRenderer->loadJavaScriptModule()` or
 :php:`JavaScriptRenderer->addJavaScriptModuleInstruction()`.
 Exposing all module configurations is possible via
 :php:`JavaScriptRenderer->includeAllImports()`, but that should only be
@@ -60,7 +60,7 @@ the `Public/JavaScript` folder to an import prefix `@vendor/my-extensions`:
 
 
 Complex configuration example containing recursive-lookup exclusions,
-thirdparty library definitions and overwrites:
+third-party library definitions and overwrites:
 
 .. code-block:: php
 

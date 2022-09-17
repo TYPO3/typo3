@@ -27,7 +27,7 @@ able to make use of the :doc:`new ModuleData API <Feature-96895-IntroduceModuleD
 Example
 =======
 
-Registration of an additional - "third-level" - module for the
+Registration of an additional - "third-level" - module for
 :guilabel:`Web > Template` in the :file:`Configuration/Backend/Modules.php`
 file of an extension:
 
@@ -57,7 +57,7 @@ Impact
 
 Additional - "third-level" - modules are now registered in the
 extensions' :file:`Configuration/Backend/Modules.php` file, the
-same way as main and sub modules. This therefore allows those
+same way as main and submodules. This therefore allows those
 modules to benefit from the same functionality.
 
 .. index:: Backend, PHP-API, ext:backend

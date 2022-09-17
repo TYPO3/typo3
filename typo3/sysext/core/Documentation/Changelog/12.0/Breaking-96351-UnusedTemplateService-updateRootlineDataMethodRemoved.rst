@@ -9,9 +9,9 @@ See :issue:`96351`
 Description
 ===========
 
-The PHP method `TemplateService->updateRootlineData()` is removed.
+The PHP method :php:`TemplateService->updateRootlineData()` has been removed.
 
-It was used as a workaround to update the fetched Rootline with
+It was used as a workaround to update the fetched rootline with
 translated pages until TYPO3 v10. This was necessary because the
 TypoScript information contained the language information, and
 then the page translations were loaded accordingly.

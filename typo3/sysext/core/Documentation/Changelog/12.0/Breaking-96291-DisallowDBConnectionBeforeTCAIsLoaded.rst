@@ -18,7 +18,7 @@ Impact
 ======
 
 Extensions that access the TYPO3 database API in
-ext_localconf.php files or TCA files will not work
+:file:`ext_localconf.php` files or TCA files will not work
 any more, because TYPO3 will throw an exception in this case.
 
 
@@ -32,6 +32,6 @@ that access database API before TCA is loaded.
 Migration
 =========
 
-Database API can be accessed earliest in `BootCompleted` event.
+Database API can be accessed earliest in :php:`BootCompleted` event.
 
 .. index:: Database, NotScanned, ext:core

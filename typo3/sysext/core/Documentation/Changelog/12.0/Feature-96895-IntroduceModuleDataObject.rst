@@ -82,8 +82,8 @@ The :php:`ModuleData` object provides the following methods:
 |                         | :php:`$allowedValues` | list and falls back to either the default value    |
 |                         |                       | or the first allowed value.                        |
 +-------------------------+-----------------------+----------------------------------------------------+
-| cleanUp()               | :php:`$allowedData`   | Cleans up all module data, which are defined in    |
-|                         | :php:`$useKeys`       | the given allowed data list. Usually called with   |
+| cleanUp()               | :php:`$allowedData`   | Cleans up all module data defined in the given     |
+|                         | :php:`$useKeys`       | list of allowed data. Usually called with          |
 |                         |                       | :php:`$MOD_MENU` in a controller with module menu. |
 +-------------------------+-----------------------+----------------------------------------------------+
 | toArray()               |                       | Returns the module data as :php:`array`.           |

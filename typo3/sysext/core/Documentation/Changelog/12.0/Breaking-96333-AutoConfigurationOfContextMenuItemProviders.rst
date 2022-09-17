@@ -82,7 +82,7 @@ If your item providers extend :php:`AbstractProvider` and overwrite the
     }
 
 In case you rely on the arguments, previously passed to :php:`__construct()`,
-you can override the new :php:`setContext()` method, which is executed,
+you can override the new :php:`setContext()` method, which is executed
 prior to any other action like :php:`canHandle()`.
 
 .. code-block:: php

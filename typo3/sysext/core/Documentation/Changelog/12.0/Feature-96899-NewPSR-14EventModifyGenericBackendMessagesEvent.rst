@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 =====================================================================
-Feature: #96899 - New PSR-14 Event: ModifyGenericBackendMessagesEvent
+Feature: #96899 - New PSR-14 event: ModifyGenericBackendMessagesEvent
 =====================================================================
 
 See :issue:`96899`
@@ -9,7 +9,7 @@ See :issue:`96899`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyGenericBackendMessagesEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyGenericBackendMessagesEvent`
 has been introduced. It serves as direct replacement for the now removed hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']`.
 
@@ -44,7 +44,7 @@ The corresponding event listener class:
 Impact
 ======
 
-The PSR-14 Event allows to add or alter messages that are displayed
+The PSR-14 event allows to add or alter messages that are displayed
 in the "About" module (default start module of the TYPO3 Backend).
 
 Extensions such as "Reports" already use this Event to display custom

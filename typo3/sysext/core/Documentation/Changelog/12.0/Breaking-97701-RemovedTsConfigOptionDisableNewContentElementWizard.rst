@@ -46,7 +46,7 @@ It is also possible to create a custom backend route in your extension code
 to reimplement both functionalities in a custom TYPO3 Extension, if this option
 is still relevant for you.
 
-If you overwrite the fluid template :file:`EXT:backend/Resources/Private/Partials/PageLayout/Record.html`
+If you overwrite the Fluid template :file:`EXT:backend/Resources/Private/Partials/PageLayout/Record.html`
 you have to adjust your template accordingly and remove the "if" condition
 checking for `{item.column.context.drawingConfiguration.showNewContentWizard}`.
 

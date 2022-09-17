@@ -9,22 +9,22 @@ See :issue:`97945`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent`
 has been introduced which allows to modify prepared page tree items. It can also
 be used as a replacement for the now removed
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Workspaces\Service\WorkspaceService']['hasPageRecordVersions']`
 and :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Workspaces\Service\WorkspaceService']['fetchPagesWithVersionsInTable']`
 :doc:`hooks <../12.0/Breaking-97945-RemovedWorkspaceServiceHooks>`.
 
-The Event is dispatched in the :php:`TreeController` after the page tree items
-have been resolved and prepared. The Event provides the current PSR-7 Request
+The event is dispatched in the :php:`TreeController` after the page tree items
+have been resolved and prepared. The event provides the current PSR-7 Request
 as well as the page tree items. All items contain the corresponding page
 record in the special :php:`_page` key.
 
 Example
 =======
 
-Registration of the Event in your extensions' :file:`Services.yaml` file:
+Registration of the event in your extensions' :file:`Services.yaml` file:
 
 .. code-block:: yaml
 
@@ -58,7 +58,7 @@ Impact
 ======
 
 It's now possible to modify the prepared page tree items before they are
-returned by the :php:`TreeController`, using the new PSR-14
+returned by the :php:`TreeController`, using the new PSR-14 event
 :php:`AfterPageTreeItemsPreparedEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

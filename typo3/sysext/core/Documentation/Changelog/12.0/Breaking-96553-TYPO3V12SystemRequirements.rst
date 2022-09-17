@@ -9,8 +9,7 @@ See :issue:`96553`
 Description
 ===========
 
-The minimum PHP version required to run TYPO3 version v12 has been raised
-from 7.4 to 8.1.
+The minimum PHP version required to run TYPO3 version v12 has been defined as 8.1.
 
 TYPO3 v12 supports these database products and versions:
 
@@ -25,7 +24,7 @@ Impact
 ======
 
 The TYPO3 core codebase and extensions tailored for v12 and above can use
-features implemented with PHP 8.0 and 8.1. Running TYPO3 v12 with older PHP
+features implemented with PHP up to and including 8.1. Running TYPO3 v12 with older PHP
 versions or database engines will trigger fatal errors.
 
 

@@ -20,7 +20,7 @@ the following related methods have been deprecated:
 Impact
 ======
 
-Calling mentioned methods will trigger a deprecation log entry.
+Calling mentioned methods will trigger a PHP :php:`E_USER_DEPRECATED` error.
 The extension scanner will report usages.
 
 

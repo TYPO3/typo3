@@ -15,7 +15,7 @@ The configuration `contentsLangDirection` of the ckeditor is used to define the
 direction of the content. It is now filled by the direction defined in the site
 language of the current element.
 
-As fallback the Page TsConfig configuration :typoscript:`RTE.config.contentsLanguageDirection = rtl`
+As fallback the page TSconfig configuration :typoscript:`RTE.config.contentsLanguageDirection = rtl`
 can be used.
 
 

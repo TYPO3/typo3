@@ -9,7 +9,7 @@ See :issue:`94117`
 Description
 ===========
 
-Because extbase type converters are no longer registered via
+Because Extbase type converters are no longer registered via
 :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter()` but
 as container services, also the configuration, such as `sourceType` or
 `targetType` is now defined in the :file:`Services.yaml`.

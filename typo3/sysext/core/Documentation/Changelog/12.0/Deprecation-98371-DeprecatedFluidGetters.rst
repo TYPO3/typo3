@@ -23,7 +23,7 @@ As such, :php:`StandaloneView` should not allow fetching state since it allows
 to be misused to park state, which is primarily a controller concern instead.
 
 To enforce this pattern, the following methods have been marked as deprecated in
-TYPO3 core v12 and will be removed in v13:
+TYPO3 core v12 and will be removed in TYPO3 v13:
 
 * :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getRequest()`
 * :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getFormat()`

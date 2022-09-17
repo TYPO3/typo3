@@ -15,7 +15,7 @@ Extbase's Persistence functionality is basing ORM queries on certain settings
 usually fetched from :php:`QuerySettingsInterface`, with a default
 implementation :php:`Typo3QuerySettings`.
 
-The interface itself has changed that it now requires two new methods:
+The interface itself has changed so that it now requires two new methods:
 
 :php:`QuerySettingsInterface::getLanguageAspect(): LanguageAspect`
 :php:`QuerySettingsInterface::setLanguageAspect(LanguageAspect $aspect)`
@@ -32,7 +32,7 @@ For this reason, the following methods are removed from
 - :php:`QuerySettingsInterface::setLanguageUid($languageUid)`
 
 All adaptions have been made to the default implementation in
-`Typo3QuerySettings`, however the removed methods from the interface are kept
+:php:`Typo3QuerySettings`, however the removed methods from the interface are kept
 within the implementation to avoid fatal PHP errors.
 
 

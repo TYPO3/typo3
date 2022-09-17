@@ -20,7 +20,7 @@ with an explicitly empty reference which actually did not do anything
 and behaved the same as :html:`<f:format.raw>`.
 
 This change enforces that parseFunc is only invoked with actual
-instructions. An empty configuration will throw a LogicException and
+instructions. An empty configuration will throw a :php:`\LogicException` and
 requires corresponding source code or Fluid templates to be adjusted.
 
 
@@ -84,7 +84,7 @@ has the same effect as :html:`<f:format.raw>` which can be used
 as replacement. However content is used "as-is" without further
 sanitizing against cross-site scripting.
 
-In case the're the need for just replacing links with typolink,
+In case of the need for just replacing links with typolink,
 it is recommended to use :html:`<f:transform.html>` ViewHelper.
 
 Thus, any occurrence of the new :php:`\LogicException` mentioned above,

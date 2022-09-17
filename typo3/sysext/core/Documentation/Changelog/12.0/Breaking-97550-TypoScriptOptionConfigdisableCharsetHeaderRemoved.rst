@@ -14,7 +14,7 @@ Description
 The TypoScript flag :typoscript:`config.disableCharsetHeader` has been completely removed
 from TYPO3 Core.
 
-This option was used to avoid sending HTTP headers of type "Content-Type" to
+This option was used to avoid sending HTTP headers of type `Content-Type` to
 the client. This flag was mainly used to overcome a technical limitation to
 override the Content-Type information back in TYPO3 v4.x.
 

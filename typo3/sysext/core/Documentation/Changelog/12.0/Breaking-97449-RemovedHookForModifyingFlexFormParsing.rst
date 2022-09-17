@@ -17,7 +17,7 @@ supporting the four hook methods
 - :php:`parseDataStructureByIdentifierPreProcess`
 - :php:`parseDataStructureByIdentifierPostProcess`
 
-has been removed in favor of four new dedicated :doc:`PSR-14 Events <../12.0/Feature-97449-PSR-14EventsForModifyingFlexFormParsing>`.
+has been removed in favor of four new dedicated :doc:`PSR-14 events <../12.0/Feature-97449-PSR-14EventsForModifyingFlexFormParsing>`.
 
 Impact
 ======
@@ -34,8 +34,8 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Events)
-when implementing the Event as well without any further deprecations.
-Use the PSR-14 Events as an improved replacement.
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
+
+Use the PSR-14 events as an improved replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

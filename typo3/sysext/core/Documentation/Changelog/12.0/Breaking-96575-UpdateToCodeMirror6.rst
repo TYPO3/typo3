@@ -26,7 +26,7 @@ which brings a completely rewritten plugin infrastructure.
 Affected installations
 ======================
 
-TYPO3 Installations with third party extensions that register
+TYPO3 Installations with third-party extensions that register
 custom CodeMirror addons or modes.
 
 

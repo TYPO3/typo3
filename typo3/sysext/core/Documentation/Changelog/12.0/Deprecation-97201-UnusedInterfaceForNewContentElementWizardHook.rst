@@ -31,10 +31,10 @@ Migration
 
 The PHP interface is still available for TYPO3 v12.x, so extensions can
 provide a version which is compatible with TYPO3 v11 (using the hook)
-and TYPO3 v12.x (using the new :doc:`PSR-14 Event <../12.0/Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems>`),
+and TYPO3 v12.x (using the new :doc:`PSR-14 event <../12.0/Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems>`),
 at the same time.
 
 Remove any usage of the PHP interface and use the new PSR-14
-Event to avoid any further problems in TYPO3 v13+.
+event to avoid any further problems in TYPO3 v13+.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

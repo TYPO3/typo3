@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 ============================================================================
-Breaking: #97230 - Removed hook for modifying image manipulation preview url
+Breaking: #97230 - Removed hook for modifying image manipulation preview URL
 ============================================================================
 
 See :issue:`97230`
@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl']`
-has been removed in favor of a new PSR-14 Event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent`.
+has been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent`.
 
 Impact
 ======
@@ -27,9 +27,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../12.0/Feature-97230-PSR-14EventForModifyingImageManipulationPreviewUrl>`
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
+
+Use the :doc:`PSR-14 event <../12.0/Feature-97230-PSR-14EventForModifyingImageManipulationPreviewUrl>`
 as an improved replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

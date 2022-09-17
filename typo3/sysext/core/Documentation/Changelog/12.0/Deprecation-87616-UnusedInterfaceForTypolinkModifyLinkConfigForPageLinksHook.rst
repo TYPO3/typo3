@@ -38,6 +38,6 @@ and TYPO3 v12.x (using the new PSR-14 ModifyPageLinkConfigurationEvent),
 at the same time.
 
 Remove any usage of the PHP interface and use the new PSR-14
-Event to avoid any further problems in TYPO3 v13+.
+event to avoid any further problems in TYPO3 v13+.
 
 .. index:: Frontend, FullyScanned, ext:frontend

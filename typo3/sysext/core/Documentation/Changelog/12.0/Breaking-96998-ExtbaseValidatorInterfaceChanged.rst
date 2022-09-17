@@ -18,8 +18,8 @@ have been hardened.
 Furthermore, all default validators delivered by EXT:extbase and EXT:form are declared final.
 
 Following this, the framework no longer hands over :php:`options` array as constructor
-argument, and no abstract implements :php:`__costruct()` anymore. Classes that implement
-:php:`ValidatorInterface` are automatically set "public" ond "not-shared" by the framework,
+argument, and no abstract implements :php:`__construct()` anymore. Classes that implement
+:php:`ValidatorInterface` are automatically set "public" and "not-shared" by the framework,
 they do not need to set this themselves. See the
 :doc:`preparation in TYPO3 v11 <../11.5.x/Important-96332-ExtbaseValidatorsCanUseDependencyInjection>`
 for more details on this. As a result, Extbase validators can now use dependency injection.
@@ -28,7 +28,7 @@ Impact
 ======
 
 This has impact on custom Extbase validators which *may* need to adapt their method signatures.
-Extensions that don't follow this in v12 may trigger fatal PHP errors.
+Extensions that don't follow this in TYPO3 v12 may trigger fatal PHP errors.
 
 Affected Installations
 ======================

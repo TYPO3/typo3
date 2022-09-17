@@ -11,7 +11,7 @@ See :issue:`97605`
 Description
 ===========
 
-The field `resizeTextareas_MaxHeight` with the label *Maximum height of text areas in pixels* has been removed.
+The field :php:`resizeTextareas_MaxHeight` with the label *Maximum height of text areas in pixels* has been removed.
 
 The impact of the field is low and its removal simplifies the user settings module.
 

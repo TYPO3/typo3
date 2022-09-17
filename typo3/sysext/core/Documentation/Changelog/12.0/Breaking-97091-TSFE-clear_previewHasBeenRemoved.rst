@@ -15,7 +15,7 @@ The method :php:`clear_preview` of the :php:`TypoScriptFrontendController` has b
 Impact
 ======
 
-Calling the method will result in an error.
+Calling the method will result in a PHP Fatal Error.
 
 
 Affected Installations

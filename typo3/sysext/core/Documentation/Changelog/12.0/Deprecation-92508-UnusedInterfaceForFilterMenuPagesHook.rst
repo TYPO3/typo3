@@ -33,9 +33,9 @@ Migration
 
 The PHP interface is still available for TYPO3 v12.x, so extensions can
 provide a version which is compatible with TYPO3 v11 (using the hook)
-and TYPO3 v12.x (using the new Event), at the same time.
+and TYPO3 v12.x (using the new event), at the same time.
 
 Remove any usage of the PHP interface and use the new PSR-14
-Event to avoid any further problems in TYPO3 v13+.
+event to avoid any further problems in TYPO3 v13+.
 
 .. index:: Frontend, FullyScanned, ext:frontend

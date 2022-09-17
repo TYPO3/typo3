@@ -11,7 +11,7 @@ See :issue:`98016`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Core\TypoScript\AST\Event\EvaluateModifierFunctionEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Core\TypoScript\AST\Event\EvaluateModifierFunctionEvent`
 has been introduced which allows own TypoScript functions using the :typoscript:`:=` operator.
 
 This is a substitution of the old :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc']`

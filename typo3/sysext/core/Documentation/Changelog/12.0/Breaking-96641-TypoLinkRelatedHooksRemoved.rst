@@ -11,7 +11,7 @@ Description
 
 Following hooks, related to link generation with TYPO3's Frontend
 Link building technique `typoLink`, have been removed  in favor of
-the new PSR-14 Events :php:`\TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent`:
+the new PSR-14 events :php:`\TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent`:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc']`
@@ -21,7 +21,7 @@ Especially the latter functionality was not available
 for all link types (only mail, file + external links).
 
 At the same time, some external links and mail links were not
-using typolink, because internally the method :php:`$cObj->http_makelinks()`
+using `typoLink`, because internally the method :php:`$cObj->http_makelinks()`
 had been used.
 
 This architectural design flaw had been solved by introducing
@@ -46,10 +46,10 @@ Migration
 =========
 
 In order to make TYPO3 extensions compatible with TYPO3 v11 and
-TYPO3 v12 simultaneously, the new PSR-14 Event :php:`AfterLinkIsGeneratedEvent`
+TYPO3 v12 simultaneously, the new PSR-14 event :php:`AfterLinkIsGeneratedEvent`
 should be added in addition to the existing hooks.
 
-The new :doc:`PSR-14 Event <../12.0/Feature-96641-NewPSR-14EventForModifyingLinks>`
+The new :doc:`PSR-14 event <../12.0/Feature-96641-NewPSR-14EventForModifyingLinks>`
 contains all information about the link result and the configuration itself.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

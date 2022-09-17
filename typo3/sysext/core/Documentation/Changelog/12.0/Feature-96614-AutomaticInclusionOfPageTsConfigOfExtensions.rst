@@ -1,8 +1,8 @@
 .. include:: /Includes.rst.txt
 
-===================================================================
-Feature: #96614 - Automatic inclusion of PageTsConfig of extensions
-===================================================================
+====================================================================
+Feature: #96614 - Automatic inclusion of page TSconfig of extensions
+====================================================================
 
 See :issue:`96614`
 
@@ -12,7 +12,7 @@ Description
 Extension authors can now put a file named
 :file:`Configuration/page.tsconfig` in their extension folder.
 
-This file is then recognized to load the contents as global PageTsConfig
+This file is then recognized to load the contents as global page TSconfig
 for the whole TYPO3 installation during build-time. This is much
 more performant than the existing solution to use
 :php:`ExtensionManagementUtility::addPageTSConfig()` in
@@ -23,7 +23,7 @@ more performant than the existing solution to use
 Impact
 ======
 
-When a file is created, the pageTSconfig is loaded automatically without a
+When a file is created, the page TSconfig is loaded automatically without a
 custom registration anymore, and cached within the core caches, and more
 performant than the existing registration format.
 

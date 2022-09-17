@@ -12,7 +12,7 @@ Description
 ===========
 
 This change provides the option to add more primary actions to the list view.
-The list of actions to be displayed can be given in the TSConfig of the backend
+The list of actions to be displayed can be given in the TSconfig of the backend
 user. The actions that can be added are `view`, `metadata`, `copy` and `cut`.
 
 Example:

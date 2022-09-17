@@ -9,7 +9,7 @@ See :issue:`96522`
 Description
 ===========
 
-The TypoScript setting `config.disablePageExternalUrl` has been removed.
+The TypoScript setting :typoscript:`config.disablePageExternalUrl` has been removed.
 
 In previous versions, it allowed to have third-party extensions such as
 "jumpurl" handle the redirect, and/or do tracking like extensions "sys_stat"

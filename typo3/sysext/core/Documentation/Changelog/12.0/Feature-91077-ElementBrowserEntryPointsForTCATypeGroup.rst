@@ -1,15 +1,15 @@
 .. include:: /Includes.rst.txt
 
-===================================================================
-Feature: #91077 - Element browser entry points for TCA type "group"
-===================================================================
+=================================================================================
+Feature: #91077 - Element browser entry points for TCA types "group" and "folder"
+=================================================================================
 
 See :issue:`91077`
 
 Description
 ===========
 
-The TCA type "group" element allows an editor to create references
+The TCA types "group" and "folder" allow an editor to create references
 to folders or records from multiple tables in the system. By default,
 an editor can select those records by either using the suggest wizard
 or with the element browser. The latter displays the page or folder
@@ -24,7 +24,7 @@ for this particular page, which might take some time, especially in
 systems with large page trees.
 
 This situation has now been improved by introducing a new TCA field
-configuration `elementBrowserEntryPoints` for the TCA type "group".
+configuration `elementBrowserEntryPoints` for the TCA types "group" and "folder".
 It's a PHP :php:`array`, containing `table => id` pairs. When
 opening the element browser for a specific table (buttons below the
 group field), the defined page or folder is then always selected by
@@ -60,8 +60,7 @@ This could then be overridden via page TSconfig:
 
 Since only one table is allowed, the defined entry point is also automatically
 used for the general element browser button. In case the group field allows
-more than one table or is of `interna_type=folder`, the `_default` key has
-to be set:
+more than one table the `_default` key has to be set:
 
 .. code-block:: php
 
@@ -84,15 +83,14 @@ Of course, the `_default` key can also be overridden via page TSconfig:
 
     TCEFORM.my_table.extended_group.config.elementBrowserEntryPoints._default = 122
 
-For `internal_type=folder` one can also define a entry point with the `_default` key:
+For TCA type "folder" one can also define an entry point with the `_default` key:
 
 .. code-block:: php
 
     'folder_group' => [
         'label' => 'Folder group field',
         'config' => [
-            'type' => 'group',
-            'internal_type' => 'folder',
+            'type' => 'folder',
             'elementBrowserEntryPoints' => [
                 '_default' => '1:/styleguide/'
             ]
@@ -106,8 +104,7 @@ It's also possible to use a special TSconfig key:
     'folder_group' => [
         'label' => 'Folder group field',
         'config' => [
-            'type' => 'group',
-            'internal_type' => 'folder',
+            'type' => 'folder',
             'elementBrowserEntryPoints' => [
                 '_default' => '###PAGE_TSCONFIG_ID###'
             ]
@@ -127,7 +124,7 @@ used at all, the previous behaviour applies.
 Impact
 ======
 
-Editors workflow for selecting records or folders in TCA type "group" fields
-can now be improved by defining default entry points for tabels and folders.
+Editors workflow for selecting records or folders in TCA types "group" and "folder" fields
+can now be improved by defining default entry points for tables and folders.
 
 .. index:: TCA, ext:backend

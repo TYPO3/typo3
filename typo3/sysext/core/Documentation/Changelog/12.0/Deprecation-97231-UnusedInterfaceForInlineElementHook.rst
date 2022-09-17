@@ -30,9 +30,9 @@ Migration
 
 The PHP interface is still available for TYPO3 v12.x, so extensions can
 provide a version which is compatible with TYPO3 v11 (using the hook)
-and TYPO3 v12.x (using the new :doc:`PSR-14 Events <../12.0/Feature-97231-PSR-14EventsForModifyingInlineElementControls>`),
+and TYPO3 v12.x (using the new :doc:`PSR-14 events <../12.0/Feature-97231-PSR-14EventsForModifyingInlineElementControls>`),
 at the same time.
 Remove any usage of the PHP interface and use the new PSR-14
-Events to avoid any further problems in TYPO3 v13+.
+events to avoid any further problems in TYPO3 v13+.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

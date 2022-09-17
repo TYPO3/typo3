@@ -13,11 +13,12 @@ Description
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']`
 with its two functions :php:`modifyLinkHandlers()` and
-:php:`modifyAllowedItems()` has been removed in favor of two new PSR-14 Events
+:php:`modifyAllowedItems()` has been removed in favor of two new PSR-14 events
 :php:`\TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent`
 and :php:`\TYPO3\CMS\Recordlist\Event\ModifyAllowedItemsEvent`.
 
 .. seealso::
+
     *   :ref:`feature-97454-1657327622`
     *   :ref:`t3coreapi:modifyLinkHandlers`
     *   :ref:`t3coreapi:ModifyLinkHandlersEvent`
@@ -37,10 +38,10 @@ All TYPO3 installations using this hook in custom extension code.
 Migration
 =========
 
-The hooks are removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :ref:`PSR-14 Event <feature-97454-1657327622>`
+The hook is removed without deprecation in order to allow extensions
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
+
+Use the :ref:`PSR-14 event <feature-97454-1657327622>`
 as an improved replacement.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

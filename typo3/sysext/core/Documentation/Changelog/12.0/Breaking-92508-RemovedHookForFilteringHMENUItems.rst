@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages']`
-has been removed in favor of a new PSR-14 Event :php:`TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent`.
+has been removed in favor of a new PSR-14 event :php:`TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent`.
 
 The event is called with all menu items instead of operating on
 one single item.
@@ -32,10 +32,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
 
-Use the :doc:`PSR-14 Event <../12.0/Feature-92508-PSR-14EventForModifyingMenuItems>`
+Use the :doc:`PSR-14 event <../12.0/Feature-92508-PSR-14EventForModifyingMenuItems>`
 to allow greater influence in the functionality.
 
 .. index:: Frontend, FullyScanned, ext:frontend

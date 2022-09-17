@@ -17,8 +17,7 @@ Impact
 ======
 
 The TCA option :php:`eval=null` will be automatically migrated to
-:php:`'nullable' => true`. The migration will trigger a deprecation level log
-entry.
+:php:`'nullable' => true`. The migration will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

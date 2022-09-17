@@ -24,10 +24,10 @@ Impact
 ======
 
 Plugins based on :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin` will
-continue to function. However, there will be PHP warnings about using internal
+continue to function. However, there will be warnings about using internal
 code displayed in most IDEs.
 
-:typoscript`_DEFAULT_PI_VARS` has been removed from syntax highlighting as it is
+:typoscript:`_DEFAULT_PI_VARS` has been removed from syntax highlighting as it is
 not public API anymore.
 
 

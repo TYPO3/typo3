@@ -21,7 +21,7 @@ Impact
 ======
 
 Using :php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`
-will raise a deprecation level log entry when called.
+will trigger a PHP :php:`E_USER_DEPRECATED` error when called.
 
 Affected Installations
 ======================
@@ -37,7 +37,7 @@ Migration
 The deprecated methods :php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`
 can be replaced by using the new method :php:`CompositeExpression->with()`.
 
-.. note::
+..  note::
 
     The replacement method :php:`CompositeExpression->with()` has already been
     added in a forward-compatible way in TYPO3 v11. Thus giving extension developers
@@ -46,35 +46,35 @@ can be replaced by using the new method :php:`CompositeExpression->with()`.
 
 For example, the following code:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
     $compositeExpression = CompositeExpression::or();
 
     $compositeExpression->add(
-      $queryBuilder->expr()->eq(
-        'field',
-        $queryBuilder->createNamedParameter($singleValue)
-      )
+        $queryBuilder->expr()->eq(
+            'field',
+            $queryBuilder->createNamedParameter($singleValue)
+        )
     );
     $compositeExpression->addMultiple(
-      [
-        $queryBuilder->expr()->eq(
-          'field',
-          $queryBuilder->createNamedParameter($value1)
-        ),
-        $queryBuilder->expr()->eq(
-          'field',
-          $queryBuilder->createNamedParameter($value2)
-        ),
-        //...
-      ]
+        [
+            $queryBuilder->expr()->eq(
+                'field',
+                $queryBuilder->createNamedParameter($value1)
+            ),
+            $queryBuilder->expr()->eq(
+                'field',
+                $queryBuilder->createNamedParameter($value2)
+            ),
+            //...
+        ]
     );
 
 should be replaced with:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
@@ -83,30 +83,30 @@ should be replaced with:
     // note, you have to assign the return of with() to the
     // variable, otherwise added elements are lost.
     $compositeExpression = $compositeExpression->with(
-      $queryBuilder->expr()->eq(
-        'field',
-        $queryBuilder->createNamedParameter($singleValue)
-      )
+        $queryBuilder->expr()->eq(
+            'field',
+            $queryBuilder->createNamedParameter($singleValue)
+        )
     );
 
     // Note the spread operator for the array
     $compositeExpression = $compositeExpression->with(
-      ...[
-        $queryBuilder->expr()->eq(
-          'field',
-          $queryBuilder->createNamedParameter($value1)
-        ),
-        $queryBuilder->expr()->eq(
-          'field',
-          $queryBuilder->createNamedParameter($value2)
-        ),
-        //...
-      ]
+        ...[
+            $queryBuilder->expr()->eq(
+                'field',
+                $queryBuilder->createNamedParameter($value1)
+            ),
+            $queryBuilder->expr()->eq(
+                'field',
+                $queryBuilder->createNamedParameter($value2)
+            ),
+            //...
+        ]
     );
 
 The multi expression example can now also be replaced like this:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
@@ -132,26 +132,26 @@ either adding each element with the deprecated :php:`add(...)` method or
 collecting it in an array and using deprecated :php:`addMultiple(...)` method.
 Both use cases can be replaced with :php:`with(...)`.
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
     $compositeExpression = CompositeExpression::or();
 
     foreach($array as $element) {
-      // note, you have to assign the return of with() to the
-      // variable, otherwise added elements are lost.
-      $compositeExpression = $compositeExpression->with(
-        $queryBuilder->expr()->eq(
-          'field',
-          $queryBuilder->createNamedParameter($element)
-        )
-      );
+        // note, you have to assign the return of with() to the
+        // variable, otherwise added elements are lost.
+        $compositeExpression = $compositeExpression->with(
+            $queryBuilder->expr()->eq(
+                'field',
+                $queryBuilder->createNamedParameter($element)
+            )
+        );
     }
 
 or
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
@@ -159,10 +159,10 @@ or
 
     $expressions = [];
     foreach($array as $element) {
-      $expressions[] = $queryBuilder->expr()->eq(
-        'field',
-        $queryBuilder->createNamedParameter($element)
-      );
+        $expressions[] = $queryBuilder->expr()->eq(
+            'field',
+            $queryBuilder->createNamedParameter($element)
+        );
     }
 
     // note, you have to assign the return of with() to the
@@ -174,16 +174,16 @@ Instead of using :php:`with()` when collecting expressions in an array,
 it can be used when instantiating the composite expression after the
 expression collecting:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
     $expressions = [];
     foreach($array as $element) {
-      $expressions[] = $queryBuilder->expr()->eq(
-        'field',
-        $queryBuilder->createNamedParameter($element)
-      );
+        $expressions[] = $queryBuilder->expr()->eq(
+            'field',
+            $queryBuilder->createNamedParameter($element)
+        );
     }
 
     $compositeExpression = CompositeExpression::or(...$expressions);

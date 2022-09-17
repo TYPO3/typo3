@@ -22,10 +22,10 @@ encourage extension developers to use the cleaner methods and decrease issues wi
 Impact
 ======
 
-The Method :php:`execute()` is also used for extbase query execution and as Upgrade Wizard method, thus
+The method :php:`execute()` is also used for Extbase query execution and as Upgrade Wizard method, thus
 the extension scanner is not configured to scan for this method to avoid a lot of noisy weak matches.
 
-:php:`QueryBuilder->execute()` will raise a deprecation level log entry when called.
+:php:`QueryBuilder->execute()` will trigger a PHP :php:`E_USER_DEPRECATED` error when called.
 
 Affected Installations
 ======================

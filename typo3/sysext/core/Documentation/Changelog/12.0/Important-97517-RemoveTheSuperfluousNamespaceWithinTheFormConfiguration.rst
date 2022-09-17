@@ -9,7 +9,8 @@ See :issue:`97517`
 Description
 ===========
 
-The superfluous vendor namespace (:yaml:`TYPO3.CMS.Form`) has been removed from the form configuration. That way the configuration of the form framework is less deeply nested.
+The superfluous vendor namespace (:yaml:`TYPO3.CMS.Form`) has been removed from the form configuration.
+That way the configuration of the form framework is less deeply nested.
 
 The compatibility to the notation with the vendor namespace is
 maintained, both notations are still possible. Nevertheless we recommend not to apply the vendor namespace.

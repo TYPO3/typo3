@@ -2,9 +2,9 @@
 
 .. _deprecation-97576-1651949640:
 
-============================================================
-Deprecation: #97576 - TYPO3\CMS\Core\Utility\ResourceUtility
-============================================================
+================================================================
+Deprecation: #97576 - TYPO3\\CMS\\Core\\Utility\\ResourceUtility
+================================================================
 
 See :issue:`97576`
 
@@ -19,7 +19,7 @@ Impact
 ======
 
 Calling any method of the class :php:`TYPO3\CMS\Core\Utility\ResourceUtility`
-will trigger a deprecation level log entry.
+will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected installations

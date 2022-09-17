@@ -16,7 +16,7 @@ All `linktypes` have to implement the :php:`LinktypeInterface`.
 This fact is now used to automatically register the `linktypes`, based
 on the interface, if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`.
 Alternatively, one can manually tag a custom `linktype` with the
-:yaml:`linkvalidator.linktype` tag (See section "Migration" in the
+:yaml:`linkvalidator.linktype` tag (see section "Migration" in the
 :doc:`breaking changelog <Breaking-96935-RegisterLinkvalidatorLinktypesViaServiceConfiguration>`).
 
 Due to the autoconfiguration, the identifier has to be provided by the

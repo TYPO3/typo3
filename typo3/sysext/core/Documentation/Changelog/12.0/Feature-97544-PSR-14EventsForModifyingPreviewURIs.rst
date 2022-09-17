@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 ==========================================================
-Feature: #97544 - PSR-14 Events for modifying preview URIs
+Feature: #97544 - PSR-14 events for modifying preview URIs
 ==========================================================
 
 See :issue:`97544`
@@ -9,7 +9,7 @@ See :issue:`97544`
 Description
 ===========
 
-Two new PSR-14 Events :php:`\TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent`
+Two new PSR-14 events :php:`\TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent`
 and :php:`\TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent`
 have been introduced. Those serve as a direct replacement for the now deprecated
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']`
@@ -17,7 +17,7 @@ have been introduced. Those serve as a direct replacement for the now deprecated
 
 The :php:`BeforePagePreviewUriGeneratedEvent` is executed in the
 :php:`PreviewUriBuilder->buildUri()`, before the preview URI is actually built.
-It allows to either adjust the parameters, such as the page id or the language id,
+It allows to either adjust the parameters, such as the page ID or the language ID,
 or to set a custom preview URI, which will then stop the event propagation and
 also prevents :php:`PreviewUriBuilder` from building the URI based on the
 parameters.
@@ -67,7 +67,7 @@ Methods of :php:`AfterPagePreviewUriGeneratedEvent`:
 Example
 =======
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -113,9 +113,9 @@ Impact
 ======
 
 It's now possible to modify the parameters used to build a preview URI and
-also to directly set a custom preview URI, using the new PSR-14
+also to directly set a custom preview URI, using the new PSR-14 event
 :php:`BeforePagePreviewUriGeneratedEvent`. It's also now possible to
-modify or completely replace a built preview URI using the new PSR-14
+modify or completely replace a built preview URI using the new PSR-14 event
 :php:`AfterPagePreviewUriGeneratedEvent`.
 
 .. index:: Backend, Frontend, PHP-API, ext:backend

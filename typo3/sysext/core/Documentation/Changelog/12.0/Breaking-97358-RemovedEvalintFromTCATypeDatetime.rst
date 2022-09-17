@@ -18,7 +18,7 @@ native database type (:php:`dbType`) are now always handled with :php:`int`.
 It is therefore recommended to represent them by an :sql:`integer` database
 field. To allow negative timestamps - used for dates before 1970 - the
 :sql:`integer` database fields are required to be defined as :sql:`signed`.
-This means, the :sql:`unsigned` definiton must be omitted.
+This means, the :sql:`unsigned` definition must be omitted.
 
 .. note::
 
@@ -65,14 +65,14 @@ Migrate corresponding database fields to :sql:`integer` where applicable.
 .. code-block:: sql
 
     # Before
-	CREATE TABLE tx_ext_my_table (
-		datetime text
-	);
+    CREATE TABLE tx_ext_my_table (
+        datetime text
+    );
 
     # After
-	CREATE TABLE tx_ext_my_table (
-	    datetime int(11) DEFAULT '0' NOT NULL,
-	);
+    CREATE TABLE tx_ext_my_table (
+        datetime int(11) DEFAULT '0' NOT NULL,
+    );
 
 .. note::
 

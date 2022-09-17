@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 =====================================================================
-Feature: #97231 - PSR-14 Events for modifying inline element controls
+Feature: #97231 - PSR-14 events for modifying inline element controls
 =====================================================================
 
 See :issue:`97231`
@@ -9,7 +9,7 @@ See :issue:`97231`
 Description
 ===========
 
-The new PSR-14 Events :php:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent`
+The new PSR-14 events :php:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent`
 and :php:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent`
 have been introduced, which serve as a more powerful and flexible replacement
 for the now removed hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook']`.
@@ -29,14 +29,14 @@ or to completely remove a control.
     Previously the deprecated hook interface :php:`InlineElementHookInterface`
     required hook implementations to implement both methods
     :php:`renderForeignRecordHeaderControl_preProcess()` and
-    :php:`renderForeignRecordHeaderControl_postProcess()` even if only
+    :php:`renderForeignRecordHeaderControl_postProcess()`, even if only
     one was used. This is now resolved since listeners can be registered
-    only for the needed PSR-14 Event.
+    only for the needed PSR-14 event.
 
 Example
 =======
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -86,7 +86,7 @@ The corresponding event listener class:
 Available Methods
 =================
 
-The below list describes all specific methods for the :php:`ModifyInlineElementEnabledControlsEvent`:
+The list below describes all specific methods for the :php:`ModifyInlineElementEnabledControlsEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -100,7 +100,7 @@ The below list describes all specific methods for the :php:`ModifyInlineElementE
 | hasControl              | :php:`$identifier`    | Whether a control exists for the given identifier. |
 +-------------------------+-----------------------+----------------------------------------------------+
 | isControlEnabled()      | :php:`$identifier`    | Returns whether the control is enabled. Will also  |
-|                         |                       | return :php:`FALSE` in case no control exists for  |
+|                         |                       | return :php:`false` in case no control exists for  |
 |                         |                       | the requested identifier.                          |
 +-------------------------+-----------------------+----------------------------------------------------+
 | getControlsState()      | :php:`$identifier`    | Returns all controls with their state (enabled     |
@@ -109,7 +109,7 @@ The below list describes all specific methods for the :php:`ModifyInlineElementE
 | getEnabledControls()    |                       | Returns only the enabled controls.                 |
 +-------------------------+-----------------------+----------------------------------------------------+
 
-The below list describes all specific methods for the :php:`ModifyInlineElementControlsEvent`:
+The list below describes all specific methods for the :php:`ModifyInlineElementControlsEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -131,7 +131,7 @@ The below list describes all specific methods for the :php:`ModifyInlineElementC
 |                         |                       | whether the control could be disabled.             |
 +-------------------------+-----------------------+----------------------------------------------------+
 
-The below list describes all common methods both events provide:
+The list below describes all common methods of both events:
 
 +-------------------------+----------------------------------------------------------------------------+
 | Method                  | Description                                                                |
@@ -153,8 +153,8 @@ The below list describes all common methods both events provide:
 Impact
 ======
 
-The main advantages of the new PSR-14 Events are an increased amount of
-available information, the object-orientated approach as well as the new
+The main advantages of the new PSR-14 events are an increased amount of
+available information, the object-oriented approach as well as the new
 built-in convenience features.
 
 Additionally, it's no longer necessary to implement empty methods, required

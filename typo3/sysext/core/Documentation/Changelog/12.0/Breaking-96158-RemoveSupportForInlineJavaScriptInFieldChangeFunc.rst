@@ -15,7 +15,7 @@ Through TYPO3 v11 it was possible to directly use inline JavaScript that was
 assigned as plain :php:`string` type. With TYPO3 v12.0 inline JavaScript is
 not supported anymore - values assigned to `fieldChangeFunc` items have to
 implement :php:`\TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface`
-which allows to declare the behavior is a sturctured way.
+which allows to declare the behavior in a structured way.
 
 
 Impact

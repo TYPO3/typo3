@@ -30,7 +30,7 @@ TYPO3 installations using this hook in custom extensions.
 Migration
 =========
 
-Use the newly introduced PSR-14 Event `ModifyCacheLifetimeForPageEvent` and
-register a custom Event Listener.
+Use the newly introduced PSR-14 event :ref:`ModifyCacheLifetimeForPageEvent <feature-96879-1663513042>`
+and register a custom event listener.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

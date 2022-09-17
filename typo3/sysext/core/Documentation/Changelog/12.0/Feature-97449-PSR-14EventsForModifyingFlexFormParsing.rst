@@ -1,8 +1,8 @@
 .. include:: /Includes.rst.txt
 
-===============================================================
-Feature: #97449 - PSR-14 Events for modifying flex form parsing
-===============================================================
+==============================================================
+Feature: #97449 - PSR-14 events for modifying FlexForm parsing
+==============================================================
 
 See :issue:`97449`
 
@@ -11,7 +11,7 @@ Description
 
 Four new PSR-14 events have been introduced which serve as a more powerful
 and flexible alternative for the now removed :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing']`
-hooks. Corresponding docblocks describe how and when the new PRS-14 Events
+hooks. Corresponding docblocks describe how and when the new PSR-14 events
 
 - :php:`TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent`
 - :php:`TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent`
@@ -23,7 +23,7 @@ should be used.
 Example
 =======
 
-Registration of the Events in your extensions' :file:`Services.yaml`:
+Registration of the events in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -93,7 +93,7 @@ The corresponding event listener class:
 Available Methods
 =================
 
-The below list describes all available methods for the :php:`BeforeFlexFormDataStructureParsedEvent`:
+The list below describes all available methods for :php:`BeforeFlexFormDataStructureParsedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -115,15 +115,15 @@ The below list describes all available methods for the :php:`BeforeFlexFormDataS
 
 .. note::
 
-    Using the now removed hook method :php:`parseDataStructureByIdentifierPreProcess()` previously required
+    Using the now-removed hook method :php:`parseDataStructureByIdentifierPreProcess()` previously required
     implementations to always return an :php:`array` or :php:`string`. This means, implementations returned
     an empty :php:`array` or empty :php:`string` in case they did not want to set a data structure, allowing
     further implementations to be called. This has now changed. As soon as a listener sets a data structure
     using the :php:`setDataStructure()` method, the event propagation is stopped immediately and no further
     listeners are being called. Therefore, listeners should avoid setting an empty :php:`array` or an empty
-    :php:`string` but should just "return" without any change to the :php:`$event` object in such a case.
+    :php:`string`, but should just "return" without any change to the :php:`$event` object in such a case.
 
-The below list describes all available methods for the :php:`AfterFlexFormDataStructureParsedEvent`:
+The list below describes all available methods for :php:`AfterFlexFormDataStructureParsedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -139,7 +139,7 @@ The below list describes all available methods for the :php:`AfterFlexFormDataSt
 |                         |                       | previously called listeners.                       |
 +-------------------------+-----------------------+----------------------------------------------------+
 
-The below list describes all available methods for the :php:`BeforeFlexFormDataStructureIdentifierInitializedEvent`:
+The list below describes all available methods for :php:`BeforeFlexFormDataStructureIdentifierInitializedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -172,10 +172,10 @@ The below list describes all available methods for the :php:`BeforeFlexFormDataS
     :php:`array` in case they did not want to set an identifier, allowing further implementations to be
     called. This has now changed. As soon as a listener sets the identifier using the :php:`setIdentifier()`
     method, the event propagation is stopped immediately and no further listeners are being called.
-    Therefore, listeners should avoid setting an empty :php:`array` but should just "return" without
+    Therefore, listeners should avoid setting an empty :php:`array`, but should just "return" without
     any change to the :php:`$event` object in such a case.
 
-The below list describes all available methods for the :php:`AfterFlexFormDataStructureIdentifierInitializedEvent`:
+The list below describes all available methods for :php:`AfterFlexFormDataStructureIdentifierInitializedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -201,7 +201,7 @@ The below list describes all available methods for the :php:`AfterFlexFormDataSt
 Impact
 ======
 
-It's now possible to fully control the flex form parsing using an
-object oriented approach with four new PSR-14 Events.
+It's now possible to fully control the FlexForm parsing using an
+object oriented approach with four new PSR-14 events.
 
 .. index:: Backend, PHP-API, ext:backend

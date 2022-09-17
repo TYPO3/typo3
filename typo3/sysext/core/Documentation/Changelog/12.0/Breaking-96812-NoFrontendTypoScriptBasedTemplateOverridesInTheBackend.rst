@@ -11,14 +11,14 @@ Description
 
 A couple of core extensions with backend module controllers allowed overriding Fluid
 templates using frontend TypoScript. The two documented extensions are EXT:dashboard
-and the backend page module. The extbase based backend extensions EXT:belog, EXT:beuser
+and the backend page module. The Extbase based backend extensions EXT:belog, EXT:beuser
 and EXT:extensionmanager allowed this implicitly too, but this detail has never
 been directly documented.
 
 This functionality has been removed: All core extensions, and in general all extensions
 that switch to the :doc:`simplified backend templating <Feature-96730-SimplifiedExtbackendModuleTemplateAPI>`
 no longer use the frontend TypoScript based override approach. This has been superseded
-by a general override strategy based on TsConfig, as described in :doc:`this changelog
+by a general override strategy based on TSconfig, as described in :doc:`this changelog
 entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`.
 
 This change became necessary since configuring backend modules via frontend TypoScript
@@ -44,10 +44,10 @@ Impact
 The combination of performance drawbacks, the tight Extbase coupling, and the
 "which frontend TypoScript should be parsed for page zero?" problematic leads to the decision
 to phase out the "frontend TypoScript for backend module configuration" approach that
-Extbase brought us.
+Extbase brought in.
 
 One part of this process is a generic backend approach to :doc:`override backend templates
-using TsConfig <Feature-96812-OverrideBackendTemplatesWithTSconfig>`. This has impact
+using TSconfig <Feature-96812-OverrideBackendTemplatesWithTSconfig>`. This has impact
 on EXT:dashboard widgets and page module template overrides.
 
 Affected Installations
@@ -75,7 +75,7 @@ If extension "myext" now delivered a template file such as :file:`Resources/Priv
 that template file was used for rendering the page module instead of the default template.
 
 As described in this :doc:`changelog <Feature-96812-OverrideBackendTemplatesWithTSconfig>`,
-the new definition is now done using TsConfig. The extension "myext" with composer name "myvendor/myext" can
+the new definition is now done using TSconfig. The extension "myext" with composer name "myvendor/myext" can
 deliver a :file:`Configuration/page.tsconfig` file (see :doc:`changelog <Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions>`)
 with the below content to substitute the old definition and keep overriding template files at the current position:
 
@@ -172,7 +172,7 @@ method for argument :php:`$view`. The :yaml:`dashboard.views.widget` is deprecat
 TYPO3 core v12 and should not be used anymore. It logs a deprecation message upon use
 during build-time and will be removed in v13 together with the :php:`Factory`.
 
-The new registration should be adapted to this, simply removing the $views argument:
+The new registration should be adapted to this, simply removing the :php:`$view` argument:
 
 .. code-block:: yaml
 

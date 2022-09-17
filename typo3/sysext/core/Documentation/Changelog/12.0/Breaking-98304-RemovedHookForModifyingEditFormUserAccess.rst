@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck']`
-has been removed in favor of a new PSR-14 Event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent`.
+has been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent`.
 
 Additionally, the corresponding :php:`TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException`,
 which had been thrown in case a hook denied the user access has been replaced
@@ -33,9 +33,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../12.0/Feature-98304-PSR-14EventForModifyingEditFormUserAccess>`
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
+
+Use the :doc:`PSR-14 event <../12.0/Feature-98304-PSR-14EventForModifyingEditFormUserAccess>`
 as an improved replacement, providing an object-oriented approach
 as well as built-in convenience features and an increased amount
 of context information.

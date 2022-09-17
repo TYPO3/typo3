@@ -15,7 +15,7 @@ Therefore the registration via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']`
 has been removed.
 
-Additionally, to be able to use autoconfiguration, the `element browser
+Additionally, to be able to use autoconfiguration, the `element browser`
 identifier has to be provided by the service directly using the
 :php:`getIdentifier()` method, which is now required by the
 :php:`ElementBrowserInterface`.

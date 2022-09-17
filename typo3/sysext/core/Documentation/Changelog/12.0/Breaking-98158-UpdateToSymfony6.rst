@@ -21,7 +21,8 @@ Impact
 Some PHP code now might need to consider other types, especially regarding PHP classes which might be extended or used directly, where types for arguments are used.
 
 One example is that all CLI Commands (used in custom extensions) now need to define
-an "int" as return type otherwise the CLI command will not execute anymore.
+an "int" as return type of the :php:`execute()` method, otherwise the CLI
+command will not be executed anymore.
 
 
 Affected installations

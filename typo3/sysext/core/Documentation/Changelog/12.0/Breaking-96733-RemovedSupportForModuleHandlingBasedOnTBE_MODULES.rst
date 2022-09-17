@@ -16,7 +16,7 @@ Next to a very scattered and dated API to work with this array, it was still
 possible to modify entries of modules through this global array.
 
 With the introduction of the new Module Registration API, the global array is
-never filled anymore since TYPO3 v12.0.
+not filled anymore since TYPO3 v12.0.
 
 In addition, any previous functionality related to handling of the global array
 has been removed.
@@ -34,9 +34,9 @@ The PHP classes
 which were related to building the Module Menu on the left side
 of the TYPO3 Backend have been removed as well. The new API based
 on the :php:`ModuleProvider` takes care of permission handling
-and returns objects based on the :php:`ModuleInterface`, the
+and returns objects of :php:`ModuleInterface`, the
 rendering is now based on a well-defined OOP-based approach, which
-is used throughout all places in TYPO3 Backend now in a unified way.
+is used throughout all places in TYPO3 Backend in a unified way.
 
 As for TYPO3 Backend Modules, based on Extbase, their additional information
 (allowed controllers and actions) was previously stored in a different

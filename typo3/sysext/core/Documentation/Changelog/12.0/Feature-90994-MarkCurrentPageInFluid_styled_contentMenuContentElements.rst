@@ -23,7 +23,8 @@ The resulting HTML of these page link lists is then:
 Impact
 ======
 
-The aria attribute aria-current="page" is added to a-tag of a menu-item.
+The aria attribute :html:`aria-current="page"` is added to the :html:`a` tag of
+the menu item of the current page.
 
 For styling with CSS the attribute of the link can be used:
 

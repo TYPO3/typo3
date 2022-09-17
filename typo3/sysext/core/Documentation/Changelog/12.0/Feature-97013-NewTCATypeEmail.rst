@@ -37,10 +37,10 @@ The TCA type :php:`email` features the following column configuration:
 
 .. note::
 
-    The softref definition :php:`softref=>email[subst]` is automatically applied
+    The soft reference definition :php:`softref=>email[subst]` is automatically applied
     to all :php:`email` fields.
 
-The following column configuration can be overwritten by Page TSconfig:
+The following column configuration can be overwritten by page TSconfig:
 
 - :typoscript:`readOnly`
 - :typoscript:`size`

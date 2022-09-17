@@ -25,41 +25,41 @@ The return type of all :js:`Modal.*` factory methods has been changed from
 
 This affects the following methods which now return :js:`ModalElement`:
 
- * :js:`Modal.confirm()`
- * :js:`Modal.loadUrl()`
- * :js:`Modal.show()`
- * :js:`Modal.advanced()`
- * :js:`Modal.setButtons()`
- * :js:`Modal.generate()`
+* :js:`Modal.confirm()`
+* :js:`Modal.loadUrl()`
+* :js:`Modal.show()`
+* :js:`Modal.advanced()`
+* :js:`Modal.setButtons()`
+* :js:`Modal.generate()`
 
 Furthermore the following changes have been applied:
 
- * The :js:`Button` property `dataAttributes` has been removed without
-   replacement, as the functionality can be expressed via :js:`Button.name`
-   or :js:`Button.trigger` and is therefore redundant.
+* The :js:`Button` property `dataAttributes` has been removed without
+  replacement, as the functionality can be expressed via :js:`Button.name`
+  or :js:`Button.trigger` and is therefore redundant.
 
- * The :js:`ajaxTarget` of the modal :js:`Configuration` object has been
-   dropped, as it was never actually used in TYPO3. Use nested, custom
-   web components for dynamic ajax loading of modal sub areas.
+* The :js:`ajaxTarget` of the modal :js:`Configuration` object has been
+  dropped, as it was never actually used in TYPO3. Use nested, custom
+  web components for dynamic ajax loading of modal sub areas.
 
- * The rendering life cycle has been adapted to synchronize rendering to
-   the browsers idle callback. That means rendering is delayed and modal content
-   can not be modified directly after modal creation.
-   The existing API :js:`Configuration.callback` has to be used instead, but
-   usage of lit :js:`TemplateResult` without the need for post-processing is
-   suggested to be used instead.
+* The rendering life cycle has been adapted to synchronize rendering to
+  the browsers idle callback. That means rendering is delayed and modal content
+  can not be modified directly after modal creation.
+  The existing API :js:`Configuration.callback` has to be used instead, but
+  usage of lit :js:`TemplateResult` without the need for post-processing is
+  suggested to be used instead.
 
- * The :js:`bs.modal.*` events are no longer considered API, but remain working
-   for the time being (as bootstrap modal is still used right now).
-   These events may be dropped at any time, when the modal component is switched
-   to shadow dom, or the native `<dialog>` tag.
-   Therefore :js:`typo3-modal-*` events are to be used instead.
+* The :js:`bs.modal.*` events are no longer considered API, but remain working
+  for the time being (as bootstrap modal is still used right now).
+  These events may be dropped at any time, when the modal component is switched
+  to shadow dom, or the native `<dialog>` tag.
+  Therefore :js:`typo3-modal-*` events are to be used instead.
 
- * The event :js:`modal-destroyed` has been removed.
-   Use :js:`typo3-modal-hide` or :js:`typo3-modal-hidden` instead.
+* The event :js:`modal-destroyed` has been removed.
+  Use :js:`typo3-modal-hide` or :js:`typo3-modal-hidden` instead.
 
- * :js:`Modal.currentModal.trigger('modal-dismiss')` has been removed.
-   Use :js:`ModalElement.hideModal()` instead.
+* :js:`Modal.currentModal.trigger('modal-dismiss')` has been removed.
+  Use :js:`ModalElement.hideModal()` instead.
 
 
 Impact
@@ -80,7 +80,7 @@ to events or to customize the modal after creations.
 Migration
 =========
 
-Given the following fully-fleged example of a modal that uses custom buttons,
+Given the following fully-fledged example of a modal that uses custom buttons,
 with custom attributes, triggers and events, they should be migrated away
 from :js:`JQuery` to :js:`ModalElement` usage.
 

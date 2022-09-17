@@ -1,7 +1,9 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96996-1663513388:
+
 =====================================================================
-Feature: #96996 - PSR-14 Event for modifying record access evaluation
+Feature: #96996 - PSR-14 event for modifying record access evaluation
 =====================================================================
 
 See :issue:`96996`
@@ -10,19 +12,19 @@ Description
 ===========
 
 A new PSR-14 event :php:`RecordAccessGrantedEvent` has been added. It serves
-as replacement for the now removed hook
+as a replacement for the now removed hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields']`.
 
 The new PSR-14 event can be used to either define whether record access is granted
 for a user, or to even modify the record in question. In case the `$accessGranted`
-property is set (either :php:`true` or :php:`false`), the defined settings is
+property is set (either :php:`true` or :php:`false`), the defined settings are
 directly used, skipping any further event listener as well as any further
 evaluation.
 
 Example
 =======
 
-Registration of the Event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extensions' :file:`Services.yaml`:
 
 .. code-block:: yaml
 
@@ -56,7 +58,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new PSR-14 :php:`RecordAccessGrantedEvent`, it's
+With the new PSR-14 event :php:`RecordAccessGrantedEvent`, it's
 now possible to manipulate the record access evaluation by
 either directly granting access or by modifying the record
 to be evaluated.

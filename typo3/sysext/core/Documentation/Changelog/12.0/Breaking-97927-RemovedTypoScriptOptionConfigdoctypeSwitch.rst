@@ -20,7 +20,7 @@ Internet Explorer to be standards-compliant with XHTML. Otherwise IE's
 "Quirks Mode" was used.
 
 Nowadays, usages for both Internet Explorer (which is not supported anymore) and
-XHTML has been low, which is why the option is now removed from TYPO3 Core.
+XHTML have been low, which is why the option is now removed from TYPO3 Core.
 
 
 Impact

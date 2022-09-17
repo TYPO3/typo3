@@ -53,7 +53,7 @@ as a drop-in replacement for :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Pag
 Use :php:`TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent` as a
 drop-in replacement for :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']`
 
-For extension authors that use these hooks can register a new Event Listener
+Extension authors that use these hooks can register a new event listener
 and keep the hook registration to stay compatible with TYPO3 v11 and TYPO3 v12
 at the same time.
 

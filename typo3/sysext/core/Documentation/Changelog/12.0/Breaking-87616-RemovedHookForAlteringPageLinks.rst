@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 =======================================================
-Breaking: #87616 - Removed hook for altering Page Links
+Breaking: #87616 - Removed hook for altering page links
 =======================================================
 
 See :issue:`87616`
@@ -10,7 +10,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks']`
-has been removed in favor of a new PSR-14 Event :php:`TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent`.
+has been removed in favor of a new PSR-14 event :php:`TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent`.
 
 The event is called after TYPO3 has already prepared some functionality
 within the :php:`PageLinkBuilder`. This therefore allows to modify more
@@ -33,10 +33,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v11 (using the hook) and v12+ (using the new Event)
-when implementing the Event as well without any further deprecations.
+to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
 
-Use the :doc:`PSR-14 Event <../12.0/Feature-87616-PSR-14EventForModifyingPageLinkGeneration>`
+Use the :doc:`PSR-14 event <../12.0/Feature-87616-PSR-14EventForModifyingPageLinkGeneration>`
 to allow greater influence in the functionality.
 
 .. index:: Frontend, FullyScanned, ext:frontend
