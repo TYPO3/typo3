@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent;
@@ -94,9 +95,12 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
         // timestamp is expired or hash can not be assigned to a user
         if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash(GeneralUtility::hmac($hash))) {
-            $result = $this->request->getOriginalRequestMappingResults();
+            /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+            $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
+            $result = $extbaseRequestParameters->getOriginalRequestMappingResults();
             $result->addError(new Error($this->getTranslation('change_password_notvalid_message'), 1554994253));
-            $this->request->setOriginalRequestMappingResults($result);
+            $extbaseRequestParameters->setOriginalRequestMappingResults($result);
+            $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
             return (new ForwardResponse('recovery'))
                 ->withControllerName('PasswordRecovery')
@@ -139,7 +143,9 @@ class PasswordRecoveryController extends AbstractLoginFormController
         }
 
         // Exit early if newPass or newPassRepeat is not set.
-        $originalResult = $this->request->getOriginalRequestMappingResults();
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
+        $originalResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
         $argumentsExist = $this->request->hasArgument('newPass') && $this->request->hasArgument('newPassRepeat');
         $argumentsEmpty = empty($this->request->getArgument('newPass')) || empty($this->request->getArgument('newPassRepeat'));
 
@@ -148,7 +154,8 @@ class PasswordRecoveryController extends AbstractLoginFormController
                 $this->getTranslation('empty_password_and_password_repeat'),
                 1554971665
             ));
-            $this->request->setOriginalRequestMappingResults($originalResult);
+            $extbaseRequestParameters->setOriginalRequestMappingResults($originalResult);
+            $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')
@@ -223,8 +230,11 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $originalResult->merge($result);
         }
 
-        //set the result from all validators
-        $this->request->setOriginalRequestMappingResults($originalResult);
+        // Set the result from all validators
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
+        $extbaseRequestParameters->setOriginalRequestMappingResults($originalResult);
+        $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
     }
 
     /**
@@ -257,9 +267,12 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $this->eventDispatcher->dispatch($event);
             $hashedPassword = $event->getHashedPassword();
             if ($event->isPropagationStopped()) {
-                $requestResult = $this->request->getOriginalRequestMappingResults();
+                /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+                $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
+                $requestResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
                 $requestResult->addError(new Error($event->getErrorMessage() ?? '', 1562846833));
-                $this->request->setOriginalRequestMappingResults($requestResult);
+                $extbaseRequestParameters->setOriginalRequestMappingResults($requestResult);
+                $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
                 return (new ForwardResponse('showChangePassword'))
                     ->withControllerName('PasswordRecovery')
@@ -268,9 +281,12 @@ class PasswordRecoveryController extends AbstractLoginFormController
             }
         } else {
             // No user found
-            $requestResult = $this->request->getOriginalRequestMappingResults();
+            /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+            $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
+            $requestResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
             $requestResult->addError(new Error('Invalid hash', 1562846832));
-            $this->request->setOriginalRequestMappingResults($requestResult);
+            $extbaseRequestParameters->setOriginalRequestMappingResults($requestResult);
+            $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')

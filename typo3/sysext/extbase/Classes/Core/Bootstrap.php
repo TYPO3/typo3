@@ -32,7 +32,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Creates a request and dispatches it to the controller which was specified
- * by TS Setup, flexForm and returns the content.
+ * by TS Setup and returns the content.
  *
  * This class is the main entry point for extbase extensions.
  */
@@ -120,7 +120,7 @@ class Bootstrap
     }
 
     /**
-     * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
+     * Runs the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
      * If the Framework is not initialized yet, it will be initialized.
      *
      * This is usually used in Frontend plugins.

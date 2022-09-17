@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Extbase\Error\Result;
 
 /**
  * The extbase request.
@@ -33,7 +32,7 @@ use TYPO3\CMS\Extbase\Error\Result;
  * This class has no state except the PSR-7 request, all operations are
  * hand down to the PSR-7 request.
  */
-class Request implements ServerRequestInterface, RequestInterface
+class Request implements RequestInterface
 {
     protected ServerRequestInterface $request;
 
@@ -107,7 +106,7 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Return an instance with the specified plugin name set.
      */
-    public function withPluginName($pluginName = null): self
+    public function withPluginName(string $pluginName): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setPluginName($pluginName);
@@ -125,7 +124,7 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Return an instance with the specified controller extension name set.
      */
-    public function withControllerExtensionName(?string $controllerExtensionName = null): self
+    public function withControllerExtensionName(string $controllerExtensionName): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerExtensionName($controllerExtensionName);
@@ -152,7 +151,7 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Return an instance with the specified controller name set.
      */
-    public function withControllerName(?string $controllerName = null): self
+    public function withControllerName(string $controllerName): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerName($controllerName);
@@ -171,7 +170,7 @@ class Request implements ServerRequestInterface, RequestInterface
      * Return an instance with the specified controller action name set.
      * Note that the action name must start with a lower case letter and is case-sensitive.
      */
-    public function withControllerActionName(?string $actionName = null): self
+    public function withControllerActionName(string $actionName): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerActionName($actionName);
@@ -194,24 +193,20 @@ class Request implements ServerRequestInterface, RequestInterface
         return $this->withAttribute('extbase', $attribute);
     }
 
-    public function getArgument($argumentName)
+    public function getArgument(string $argumentName): mixed
     {
         return $this->getExtbaseAttribute()->getArgument($argumentName);
     }
 
-    public function hasArgument($argumentName): bool
+    public function hasArgument(string $argumentName): bool
     {
         return $this->getExtbaseAttribute()->hasArgument($argumentName);
     }
 
     /**
      * Return an instance with the specified argument set.
-     *
-     * @param string $argumentName Name of the argument to set
-     * @param mixed $value The new value
-     * @return self
      */
-    public function withArgument(string $argumentName, $value): self
+    public function withArgument(string $argumentName, mixed $value): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setArgument($argumentName, $value);
@@ -238,146 +233,6 @@ class Request implements ServerRequestInterface, RequestInterface
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setFormat($format);
         return $this->withAttribute('extbase', $attribute);
-    }
-
-    /**
-     * Extbase @internal methods, not part of extbase RequestInterface. Should vanish as soon as unused.
-     */
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setControllerObjectName($controllerObjectName)
-    {
-        $this->getExtbaseAttribute()->setControllerObjectName($controllerObjectName);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setPluginName($pluginName = null)
-    {
-        $this->getExtbaseAttribute()->setPluginName($pluginName);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setControllerExtensionName($controllerExtensionName)
-    {
-        $this->getExtbaseAttribute()->setControllerExtensionName($controllerExtensionName);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping)
-    {
-        // this is only needed as long as forwarded requests are altered and unless there
-        // is no new request object created by the request builder.
-        $this->getExtbaseAttribute()->setControllerAliasToClassNameMapping($controllerAliasToClassNameMapping);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function withControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping): self
-    {
-        $attribute = clone $this->getExtbaseAttribute();
-        // this is only needed as long as forwarded requests are altered and unless there
-        // is no new request object created by the request builder.
-        $attribute->setControllerAliasToClassNameMapping($controllerAliasToClassNameMapping);
-        return $this->withAttribute('extbase', $attribute);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setControllerName($controllerName)
-    {
-        $this->getExtbaseAttribute()->setControllerName($controllerName);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setControllerActionName($actionName)
-    {
-        $this->getExtbaseAttribute()->setControllerActionName($actionName);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setArgument($argumentName, $value)
-    {
-        $this->getExtbaseAttribute()->setArgument($argumentName, $value);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setArguments(array $arguments)
-    {
-        $this->getExtbaseAttribute()->setArguments($arguments);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setFormat($format)
-    {
-        $this->getExtbaseAttribute()->setFormat($format);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getOriginalRequest(): ?Request
-    {
-        return $this->getExtbaseAttribute()->getOriginalRequest();
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setOriginalRequest(Request $originalRequest)
-    {
-        $this->getExtbaseAttribute()->setOriginalRequest($originalRequest);
-    }
-
-    /**
-     * Get the request mapping results for the original request.
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getOriginalRequestMappingResults(): Result
-    {
-        return $this->getExtbaseAttribute()->getOriginalRequestMappingResults();
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
-     */
-    public function setOriginalRequestMappingResults(Result $originalRequestMappingResults)
-    {
-        $this->getExtbaseAttribute()->setOriginalRequestMappingResults($originalRequestMappingResults);
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getInternalArguments(): array
-    {
-        return $this->getExtbaseAttribute()->getInternalArguments();
-    }
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getInternalArgument($argumentName)
-    {
-        return $this->getExtbaseAttribute()->getInternalArgument($argumentName);
     }
 
     /**

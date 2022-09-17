@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Fluid\View;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
@@ -47,12 +48,15 @@ class StandaloneView extends AbstractTemplateView
      */
     public function setFormat($format)
     {
-        if ($this->baseRenderingContext instanceof RenderingContext) {
-            $this->baseRenderingContext->getRequest()->setFormat($format);
-            $this->baseRenderingContext->getTemplatePaths()->setFormat($format);
-        } else {
+        if (!$this->baseRenderingContext instanceof RenderingContext) {
             throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251886);
         }
+        $request = $this->baseRenderingContext->getRequest();
+        if ($request instanceof RequestInterface) {
+            $request = $request->withFormat($format);
+            $this->baseRenderingContext->setRequest($request);
+        }
+        $this->baseRenderingContext->getTemplatePaths()->setFormat($format);
     }
 
     /**

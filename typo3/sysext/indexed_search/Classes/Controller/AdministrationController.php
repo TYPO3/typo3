@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
@@ -151,11 +150,9 @@ class AdministrationController extends ActionController
             $beUser->uc['indexed_search']['arguments'] = $arguments;
             $beUser->writeUC();
         } elseif (isset($beUser->uc['indexed_search']['action'])) {
-            if ($request instanceof Request) {
-                $request->setControllerActionName($beUser->uc['indexed_search']['action']);
-            }
+            $request = $request->withControllerActionName((string)$beUser->uc['indexed_search']['action']);
             if (isset($beUser->uc['indexed_search']['arguments'])) {
-                $request->setArguments($beUser->uc['indexed_search']['arguments']);
+                $request = $request->withArguments($beUser->uc['indexed_search']['arguments']);
             }
         }
 

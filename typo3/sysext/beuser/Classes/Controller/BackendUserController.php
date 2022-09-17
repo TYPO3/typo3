@@ -88,7 +88,7 @@ class BackendUserController extends ActionController
             && $moduleData->has('defaultAction')
             && in_array((string)$moduleData->get('defaultAction'), ['index', 'groups', 'online'])
         ) {
-            $request->setControllerActionName((string)$moduleData->get('defaultAction'));
+            $request = $request->withControllerActionName((string)$moduleData->get('defaultAction'));
         }
         return parent::processRequest($request);
     }

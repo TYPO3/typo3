@@ -104,28 +104,22 @@ class Dispatcher
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      * @todo: make this a private method again as soon as the tests, that fake the dispatching of requests, are refactored.
      */
-    public static function buildRequestFromCurrentRequestAndForwardResponse(Request $currentRequest, ForwardResponse $forwardResponse): Request
+    public static function buildRequestFromCurrentRequestAndForwardResponse(RequestInterface $currentRequest, ForwardResponse $forwardResponse): RequestInterface
     {
-        $extbaseAttribute = clone $currentRequest->getAttribute('extbase');
-        $request = $currentRequest->withAttribute('extbase', $extbaseAttribute);
-
-        $request->setControllerActionName($forwardResponse->getActionName());
-
+        $request = $currentRequest->withControllerActionName($forwardResponse->getActionName());
         if ($forwardResponse->getControllerName() !== null) {
-            $request->setControllerName($forwardResponse->getControllerName());
+            $request = $request->withControllerName($forwardResponse->getControllerName());
         }
-
         if ($forwardResponse->getExtensionName() !== null) {
-            $request->setControllerExtensionName($forwardResponse->getExtensionName());
+            $request = $request->withControllerExtensionName($forwardResponse->getExtensionName());
         }
-
         if ($forwardResponse->getArguments() !== null) {
-            $request->setArguments($forwardResponse->getArguments());
+            $request = $request->withArguments($forwardResponse->getArguments());
         }
-
-        $request->setOriginalRequest($currentRequest);
-        $request->setOriginalRequestMappingResults($forwardResponse->getArgumentsValidationResult());
-
-        return $request;
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = clone $request->getAttribute('extbase');
+        $extbaseRequestParameters->setOriginalRequest($currentRequest);
+        $extbaseRequestParameters->setOriginalRequestMappingResults($forwardResponse->getArgumentsValidationResult());
+        return $request->withAttribute('extbase', $extbaseRequestParameters);
     }
 }

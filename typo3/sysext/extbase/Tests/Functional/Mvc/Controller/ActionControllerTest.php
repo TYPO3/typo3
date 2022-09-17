@@ -52,10 +52,10 @@ class ActionControllerTest extends FunctionalTestCase
         parent::setUp();
 
         $this->request = new Request();
-        $this->request->setPluginName('Pi1');
-        $this->request->setControllerExtensionName('ActionControllerTest');
-        $this->request->setControllerName('Test');
-        $this->request->setFormat('html');
+        $this->request = $this->request->withPluginName('Pi1');
+        $this->request = $this->request->withControllerExtensionName('ActionControllerTest');
+        $this->request = $this->request->withControllerName('Test');
+        $this->request = $this->request->withFormat('html');
 
         $this->subject = $this->get(TestController::class);
     }
@@ -66,8 +66,8 @@ class ActionControllerTest extends FunctionalTestCase
     public function customValidatorsAreProperlyResolved(): void
     {
         // Setup
-        $this->request->setControllerActionName('bar');
-        $this->request->setArgument('barParam', '');
+        $this->request = $this->request->withControllerActionName('bar');
+        $this->request = $this->request->withArgument('barParam', '');
 
         // Test run
         $this->subject->processRequest($this->request);
@@ -93,8 +93,8 @@ class ActionControllerTest extends FunctionalTestCase
     public function extbaseValidatorsAreProperlyResolved(): void
     {
         // Setup
-        $this->request->setControllerActionName('baz');
-        $this->request->setArgument('bazParam', [ 'notEmpty' ]);
+        $this->request = $this->request->withControllerActionName('baz');
+        $this->request = $this->request->withArgument('bazParam', [ 'notEmpty' ]);
 
         // Test run
         $this->subject->processRequest($this->request);
@@ -126,7 +126,7 @@ class ActionControllerTest extends FunctionalTestCase
         $reflectionMethod->setAccessible(true);
         $reflectionMethod->setValue($this->subject, JsonView::class);
 
-        $this->request->setControllerActionName('qux');
+        $this->request = $this->request->withControllerActionName('qux');
 
         // Test run
         $this->subject->processRequest($this->request);

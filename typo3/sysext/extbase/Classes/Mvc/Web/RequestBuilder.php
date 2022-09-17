@@ -99,11 +99,6 @@ class RequestBuilder implements SingletonInterface
     private $controllerClassToAliasMapping = [];
 
     /**
-     * @var array|string[]
-     */
-    private $allowedControllerAliases = [];
-
-    /**
      * @param ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
@@ -144,7 +139,6 @@ class RequestBuilder implements SingletonInterface
             $this->allowedControllerActions[$controllerClassName] = $controllerConfiguration['actions'] ?? null;
             $this->controllerAliasToClassMapping[$controllerConfiguration['alias']] = $controllerConfiguration['className'];
             $this->controllerClassToAliasMapping[$controllerConfiguration['className']] = $controllerConfiguration['alias'];
-            $this->allowedControllerAliases[] = $controllerConfiguration['alias'];
         }
         if (!empty($configuration['format'])) {
             $this->defaultFormat = $configuration['format'];
@@ -248,7 +242,7 @@ class RequestBuilder implements SingletonInterface
     /**
      * Backwards Compatibility File Mapping to Parameters
      *
-     * @deprecated Use $request->getUploadedFiles() instead
+     * @deprecated since v12, will be removed in v13. Use $request->getUploadedFiles() instead
      */
     protected function mapUploadedFileToParameters(UploadedFile $uploadedFile): array
     {

@@ -62,10 +62,10 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
         $this->request = new Request();
-        $this->request->setPluginName('Pi1');
-        $this->request->setControllerExtensionName(BlogController::class);
-        $this->request->setControllerName('Blog');
-        $this->request->setFormat('html');
+        $this->request = $this->request->withPluginName('Pi1');
+        $this->request = $this->request->withControllerExtensionName(BlogController::class);
+        $this->request = $this->request->withControllerName('Blog');
+        $this->request = $this->request->withFormat('html');
 
         $this->controller = $this->get(BlogController::class);
     }
@@ -94,8 +94,8 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($language, $language, LanguageAspect::OVERLAYS_ON));
-        $this->request->setControllerActionName('details');
-        $this->request->setArgument('blog', $blogUid);
+        $this->request = $this->request->withControllerActionName('details');
+        $this->request = $this->request->withArgument('blog', $blogUid);
 
         $response = $this->controller->processRequest($this->request);
 

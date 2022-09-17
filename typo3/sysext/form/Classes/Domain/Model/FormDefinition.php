@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Form\Domain\Model;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
@@ -644,11 +645,8 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Bind the current request & response to this form instance, effectively creating
      * a new "instance" of the Form.
-     *
-     * @param Request $request
-     * @return FormRuntime
      */
-    public function bind(Request $request): FormRuntime
+    public function bind(RequestInterface $request): FormRuntime
     {
         $formRuntime = GeneralUtility::makeInstance(FormRuntime::class);
         $formRuntime->setFormDefinition($this);

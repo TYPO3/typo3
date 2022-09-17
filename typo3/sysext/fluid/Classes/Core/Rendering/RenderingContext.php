@@ -102,7 +102,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->controllerAction = $action;
         if ($this->request instanceof RequestInterface) {
             // @todo: Avoid altogether?!
-            $this->request->setControllerActionName(lcfirst($action));
+            $this->request = $this->request->withControllerActionName(lcfirst($action));
         }
     }
 
@@ -114,7 +114,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->controllerName = $controllerName;
         if ($this->request instanceof RequestInterface) {
             // @todo: Avoid altogether?!
-            $this->request->setControllerName($controllerName);
+            $this->request = $this->request->withControllerName($controllerName);
         }
     }
 

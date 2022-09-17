@@ -95,7 +95,7 @@ class ExtbaseRequestParameters
     /**
      * If this request is a forward because of an error, the original request gets filled.
      */
-    protected ?Request $originalRequest = null;
+    protected ?RequestInterface $originalRequest = null;
 
     /**
      * If the request is a forward because of an error, these mapping results get filled here.
@@ -126,11 +126,9 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    public function setPluginName(?string $pluginName = null): self
+    public function setPluginName(string $pluginName): self
     {
-        if ($pluginName !== null) {
-            $this->pluginName = $pluginName;
-        }
+        $this->pluginName = $pluginName;
         return $this;
     }
 
@@ -139,11 +137,9 @@ class ExtbaseRequestParameters
         return $this->pluginName;
     }
 
-    public function setControllerExtensionName(?string $controllerExtensionName = null): self
+    public function setControllerExtensionName(string $controllerExtensionName): self
     {
-        if ($controllerExtensionName !== null) {
-            $this->controllerExtensionName = $controllerExtensionName;
-        }
+        $this->controllerExtensionName = $controllerExtensionName;
         return $this;
     }
 
@@ -165,13 +161,11 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    public function setControllerName(?string $controllerName = null): self
+    public function setControllerName(string $controllerName): self
     {
-        if ($controllerName !== null) {
-            $this->controllerName = $controllerName;
-            // There might be no Controller Class, for example for Fluid Templates.
-            $this->controllerObjectName = $this->controllerAliasToClassNameMapping[$controllerName] ?? '';
-        }
+        $this->controllerName = $controllerName;
+        // There might be no Controller Class, for example for Fluid Templates.
+        $this->controllerObjectName = $this->controllerAliasToClassNameMapping[$controllerName] ?? '';
         return $this;
     }
 
@@ -183,14 +177,12 @@ class ExtbaseRequestParameters
     /**
      * @throws InvalidActionNameException if the action name is not valid
      */
-    public function setControllerActionName(?string $actionName = null): self
+    public function setControllerActionName(string $actionName): self
     {
-        if ($actionName[0] !== strtolower($actionName[0]) && $actionName !== null) {
+        if ($actionName[0] !== strtolower($actionName[0])) {
             throw new InvalidActionNameException('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
         }
-        if ($actionName !== null) {
-            $this->controllerActionName = $actionName;
-        }
+        $this->controllerActionName = $actionName;
         return $this;
     }
 
@@ -219,7 +211,7 @@ class ExtbaseRequestParameters
      * @param mixed $value The new value
      * @throws InvalidArgumentNameException
      */
-    public function setArgument(string $argumentName, $value): self
+    public function setArgument(string $argumentName, mixed $value): self
     {
         if ($argumentName === '') {
             throw new InvalidArgumentNameException('Invalid argument name.', 1210858767);
@@ -237,6 +229,7 @@ class ExtbaseRequestParameters
     /**
      * Sets the whole arguments array and therefore replaces any arguments which existed before.
      *
+     * @param array<string, mixed> $arguments
      * @throws InvalidArgumentNameException
      */
     public function setArguments(array $arguments): self
@@ -256,10 +249,10 @@ class ExtbaseRequestParameters
     /**
      * Returns the value of the specified argument.
      *
-     * @return string|array Value of the argument
+     * @return mixed Value of the argument
      * @throws NoSuchArgumentException if such an argument does not exist
      */
-    public function getArgument(string $argumentName)
+    public function getArgument(string $argumentName): mixed
     {
         if (!isset($this->arguments[$argumentName])) {
             throw new NoSuchArgumentException('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
@@ -289,14 +282,15 @@ class ExtbaseRequestParameters
     /**
      * Returns the original request. Filled only if a property mapping error occurred.
      */
-    public function getOriginalRequest(): ?Request
+    public function getOriginalRequest(): ?RequestInterface
     {
         return $this->originalRequest;
     }
 
-    public function setOriginalRequest(Request $originalRequest): void
+    public function setOriginalRequest(RequestInterface $originalRequest): self
     {
         $this->originalRequest = $originalRequest;
+        return $this;
     }
 
     public function getOriginalRequestMappingResults(): Result
@@ -307,22 +301,18 @@ class ExtbaseRequestParameters
         return $this->originalRequestMappingResults;
     }
 
-    public function setOriginalRequestMappingResults(Result $originalRequestMappingResults): void
+    public function setOriginalRequestMappingResults(Result $originalRequestMappingResults): self
     {
         $this->originalRequestMappingResults = $originalRequestMappingResults;
-    }
-
-    public function getInternalArguments(): array
-    {
-        return $this->internalArguments;
+        return $this;
     }
 
     /**
      * Returns the value of the specified argument
      *
-     * @return string|object|null Value of the argument, or NULL if not set.
+     * @return mixed Value of the argument, or NULL if not set.
      */
-    public function getInternalArgument($argumentName)
+    public function getInternalArgument($argumentName): mixed
     {
         if (!isset($this->internalArguments[$argumentName])) {
             return null;
@@ -335,7 +325,7 @@ class ExtbaseRequestParameters
         return $this->uploadedFiles;
     }
 
-    public function setUploadedFiles(array $files): ExtbaseRequestParameters
+    public function setUploadedFiles(array $files): self
     {
         $this->validateUploadedFiles($files);
         $this->uploadedFiles = $files;

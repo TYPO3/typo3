@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
@@ -131,7 +132,9 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
      */
     public function initializePropertyMappingConfigurationFromRequest(Request $request, Arguments $controllerArguments)
     {
-        $trustedPropertiesToken = $request->getInternalArgument('__trustedProperties');
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $request->getAttribute('extbase');
+        $trustedPropertiesToken = $extbaseRequestParameters->getInternalArgument('__trustedProperties');
         if (!is_string($trustedPropertiesToken)) {
             return;
         }

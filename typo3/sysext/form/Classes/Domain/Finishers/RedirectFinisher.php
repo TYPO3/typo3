@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -40,10 +41,7 @@ class RedirectFinisher extends AbstractFinisher
         'fragment' => '',
     ];
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Request
-     */
-    protected $request;
+    protected RequestInterface $request;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder

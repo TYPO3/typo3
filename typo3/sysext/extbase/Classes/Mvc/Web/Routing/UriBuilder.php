@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -56,10 +57,7 @@ class UriBuilder
      */
     protected $contentObject;
 
-    /**
-     * @var Request|null
-     */
-    protected $request;
+    protected ?RequestInterface $request = null;
 
     /**
      * @var array
@@ -164,21 +162,19 @@ class UriBuilder
     /**
      * Sets the current request
      *
-     * @param Request $request
      * @return static the current UriBuilder to allow method chaining
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function setRequest(Request $request): UriBuilder
+    public function setRequest(RequestInterface $request): UriBuilder
     {
         $this->request = $request;
         return $this;
     }
 
     /**
-     * @return Request|null
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getRequest(): ?Request
+    public function getRequest(): ?RequestInterface
     {
         return $this->request;
     }

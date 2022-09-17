@@ -18,10 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -183,12 +185,13 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      */
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet(): void
     {
-        $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
-        $arguments = new Arguments();
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', null);
+        $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
+        $extbaseRequest = (new Request($coreRequest));
 
+        $arguments = new Arguments();
         $requestHashService = new MvcPropertyMappingConfigurationService();
-        $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
+        $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
     }
 
     /**
@@ -199,14 +202,15 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->expectException(BadRequestException::class);
         $this->expectExceptionCode(1581862822);
 
-        $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn('string with less than 40 characters');
-        $arguments = new Arguments();
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'string with less than 40 characters');
+        $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
+        $extbaseRequest = (new Request($coreRequest));
 
+        $arguments = new Arguments();
         $hashService = new HashService();
         $requestHashService = new MvcPropertyMappingConfigurationService();
         $requestHashService->injectHashService($hashService);
-        $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
+        $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
     }
 
     /**
@@ -321,8 +325,9 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      */
     protected function initializePropertyMappingConfiguration(array $trustedProperties): Arguments
     {
-        $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn('fooTrustedProperties');
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'fooTrustedProperties');
+        $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
+        $extbaseRequest = (new Request($coreRequest));
 
         $mockHashService = $this->getMockBuilder(HashService::class)
             ->onlyMethods(['validateAndStripHmac'])
@@ -342,7 +347,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $arguments = $this->getAccessibleMock(Arguments::class, ['dummy']);
         $arguments->addNewArgument('foo');
 
-        $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
+        $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
 
         return $arguments;
     }

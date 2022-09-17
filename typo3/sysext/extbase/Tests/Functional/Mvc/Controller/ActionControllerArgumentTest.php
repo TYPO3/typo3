@@ -205,13 +205,13 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     private function buildRequest(string $actionName, array $arguments = null): Request
     {
         $request = new Request();
-        $request->setPluginName($this->pluginName);
-        $request->setControllerExtensionName($this->extensionName);
-        $request->setControllerName('ArgumentTest');
-        $request->setFormat('html');
-        $request->setControllerActionName($actionName);
+        $request = $request->withPluginName($this->pluginName);
+        $request = $request->withControllerExtensionName($this->extensionName);
+        $request = $request->withControllerName('ArgumentTest');
+        $request = $request->withFormat('html');
+        $request = $request->withControllerActionName($actionName);
         if ($arguments !== null) {
-            $request->setArguments($arguments);
+            $request = $request->withArguments($arguments);
         }
         return $request;
     }

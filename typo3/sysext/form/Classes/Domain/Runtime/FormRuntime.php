@@ -37,7 +37,9 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -108,7 +110,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
     protected ?FormDefinition $formDefinition = null;
-    protected ?Request $request = null;
+    protected ?RequestInterface $request = null;
     protected ResponseInterface $response;
 
     /**
@@ -173,7 +175,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $this->formDefinition = $formDefinition;
     }
 
-    public function setRequest(Request $request)
+    public function setRequest(RequestInterface $request)
     {
         $this->request = clone $request;
     }
@@ -183,7 +185,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $arguments = $this->request->getArguments();
         $formIdentifier = $this->formDefinition->getIdentifier();
         if (isset($arguments[$formIdentifier])) {
-            $this->request->setArguments($arguments[$formIdentifier]);
+            $this->request = $this->request->withArguments($arguments[$formIdentifier]);
         }
 
         $this->initializeCurrentSiteLanguage();
@@ -215,7 +217,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             return;
         }
 
-        $sessionIdentifierFromRequest = $this->request->getInternalArgument('__session');
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->request->getAttribute('extbase');
+        $sessionIdentifierFromRequest = $extbaseRequestParameters->getInternalArgument('__session');
         $this->formSession = GeneralUtility::makeInstance(FormSession::class, $sessionIdentifierFromRequest);
     }
 
@@ -228,7 +232,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         // Only try to reconstitute the form state if the current request
         // is not the very first request and if the current request can
         // be processed (POST request and uncached).
-        $serializedFormStateWithHmac = $this->request->getInternalArgument('__state');
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->request->getAttribute('extbase');
+        $serializedFormStateWithHmac = $extbaseRequestParameters->getInternalArgument('__state');
         if ($serializedFormStateWithHmac === null || !$this->canProcessFormSubmission()) {
             $this->formState = GeneralUtility::makeInstance(FormState::class);
         } else {
@@ -281,7 +287,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         }
 
         $this->lastDisplayedPage = $this->formDefinition->getPageByIndex($this->formState->getLastDisplayedPageIndex());
-        $currentPageIndex = (int)$this->request->getInternalArgument('__currentPage');
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->request->getAttribute('extbase');
+        $currentPageIndex = (int)$extbaseRequestParameters->getInternalArgument('__currentPage');
 
         if ($this->userWentBackToPreviousStep()) {
             if ($currentPageIndex < $this->lastDisplayedPage->getIndex()) {
@@ -530,7 +538,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $result = $this->mapAndValidatePage($this->lastDisplayedPage);
         if ($result->hasErrors() && !$this->userWentBackToPreviousStep()) {
             $this->currentPage = $this->lastDisplayedPage;
-            $this->request->setOriginalRequestMappingResults($result);
+            /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+            $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
+            $extbaseRequestParameters->setOriginalRequestMappingResults($result);
+            $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
         }
     }
 
@@ -729,9 +740,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * This is mostly relevant inside Finishers, where you f.e. want to redirect
      * the user to another page.
      *
-     * @return Request the request this object is bound to
+     * @return RequestInterface The request this object is bound to
      */
-    public function getRequest(): Request
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }

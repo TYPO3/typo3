@@ -76,13 +76,13 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $response = new Response();
         $request = new Request();
 
-        $request->setControllerActionName('testForward');
-        $request->setArgument('blogPost', $blogPostArgument);
-        $request->setArgument('__trustedProperties', $this->generateTrustedPropertiesToken($trustedProperties));
+        $request = $request->withControllerActionName('testForward');
+        $request = $request->withArgument('blogPost', $blogPostArgument);
+        $request = $request->withArgument('__trustedProperties', $this->generateTrustedPropertiesToken($trustedProperties));
 
         $referrerRequest = [];
         $referrerRequest['@action'] = 'testForm';
-        $request->setArgument(
+        $request = $request->withArgument(
             '__referrer',
             ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
@@ -127,13 +127,13 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $response = new Response();
         $request = new Request();
 
-        $request->setControllerActionName('testRelatedObject');
-        $request->setArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
-        $request->setArgument(
+        $request = $request->withControllerActionName('testRelatedObject');
+        $request = $request->withArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
+        $request = $request->withArgument(
             'blogPost',
             ['__identity' => 1, 'title' => '77', 'blog' => ['__identity' => 1, 'title' => str_repeat('test', 21)]]
         );
-        $request->setArgument(
+        $request = $request->withArgument(
             '__trustedProperties',
             $this->generateTrustedPropertiesToken(
                 [
@@ -149,7 +149,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
 
         $referrerRequest = [];
         $referrerRequest['@action'] = 'testForm';
-        $request->setArgument(
+        $request = $request->withArgument(
             '__referrer',
             ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
@@ -193,13 +193,13 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $response = new Response();
         $request = new Request();
 
-        $request->setControllerActionName('testRelatedObject');
-        $request->setArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
-        $request->setArgument(
+        $request = $request->withControllerActionName('testRelatedObject');
+        $request = $request->withArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
+        $request = $request->withArgument(
             'blogPost',
             ['__identity' => 1, 'title' => '77', 'blog' => ['__identity' => 1, 'title' => str_repeat('test', 21)]]
         );
-        $request->setArgument(
+        $request = $request->withArgument(
             '__trustedProperties',
             $this->generateTrustedPropertiesToken(
                 [
@@ -215,7 +215,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
 
         $referrerRequest = [];
         $referrerRequest['@action'] = 'testForm';
-        $request->setArgument(
+        $request = $request->withArgument(
             '__referrer',
             ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
@@ -227,7 +227,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
             $response = $blogController->processRequest($request);
             if ($response instanceof ForwardResponse) {
                 $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
-                self::assertEquals($originalArguments, $request->getOriginalRequest()->getAttribute('extbase')->getArguments());
+                self::assertEquals($originalArguments, $request->getAttribute('extbase')->getOriginalRequest()->getAttribute('extbase')->getArguments());
             } else {
                 $isDispatched = true;
             }

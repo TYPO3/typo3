@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
@@ -200,7 +201,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function hasMappingErrorOccurred(): bool
     {
-        return $this->getRequest()->getOriginalRequest() !== null;
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->getRequest()->getAttribute('extbase');
+        return $extbaseRequestParameters->getOriginalRequest() !== null;
     }
 
     /**
@@ -212,8 +215,10 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function getLastSubmittedFormData()
     {
         $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()) ?? '', '.');
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->getRequest()->getAttribute('extbase');
         $value = ObjectAccess::getPropertyPath(
-            $this->getRequest()->getOriginalRequest()->getArguments(),
+            $extbaseRequestParameters->getOriginalRequest()->getArguments(),
             $propertyPath
         );
         return $value;
@@ -340,7 +345,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         if (!$this->isObjectAccessorMode()) {
             return new Result();
         }
-        $originalRequestMappingResults = $this->getRequest()->getOriginalRequestMappingResults();
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->getRequest()->getAttribute('extbase');
+        $originalRequestMappingResults = $extbaseRequestParameters->getOriginalRequestMappingResults();
         $formObjectName = $this->renderingContext->getViewHelperVariableContainer()->get(
             FormViewHelper::class,
             'formObjectName'

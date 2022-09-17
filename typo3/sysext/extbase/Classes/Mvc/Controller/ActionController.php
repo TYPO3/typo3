@@ -36,6 +36,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
@@ -130,11 +131,8 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * The current request.
-     *
-     * @var Request
-     * @todo v12: Change @var to RequestInterface, when RequestInterface extends ServerRequestInterface
      */
-    protected $request;
+    protected RequestInterface $request;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
@@ -674,7 +672,9 @@ abstract class ActionController implements ControllerInterface
      */
     protected function forwardToReferringRequest(): ?ResponseInterface
     {
-        $referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
+        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
+        $extbaseRequestParameters = $this->request->getAttribute('extbase');
+        $referringRequestArguments = $extbaseRequestParameters->getInternalArgument('__referrer') ?? null;
         if (is_string($referringRequestArguments['@request'] ?? null)) {
             $referrerArray = json_decode(
                 $this->hashService->validateAndStripHmac($referringRequestArguments['@request']),
