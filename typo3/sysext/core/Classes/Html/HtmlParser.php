@@ -577,7 +577,7 @@ class HtmlParser
                                                 }
                                             }
                                             if ($params['userFunc'] ?? false) {
-                                                if (is_array($params['userFunc.'])) {
+                                                if (is_array($params['userFunc.'] ?? null)) {
                                                     $params['userFunc.']['attributeValue'] = $tagAttrib[0][$attr];
                                                 } else {
                                                     $params['userFunc.'] = $tagAttrib[0][$attr];
