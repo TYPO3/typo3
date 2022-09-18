@@ -29,7 +29,6 @@
 
       return {
         '_CSS_DEFAULT_STYLE': kw('_CSS_DEFAULT_STYLE'),
-        '_DEFAULT_PI_VARS': kw('_DEFAULT_PI_VARS'),
         '_GIFBUILDER': kw('_GIFBUILDER'),
         '_LOCAL_LANG': kw('_LOCAL_LANG'),
         '_offset': kw('_offset'),

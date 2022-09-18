@@ -4840,14 +4840,8 @@ This value is for all plugins read by the pagegen script when making the header 
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="_DEFAULT_PI_VARS.[piVar-key]" type="string">
-			<description><![CDATA[Allows you to set default values of the piVars array which most plugins are using (and should use) for data exchange with themselves.
-This works only if the plugin calls $this->pi_setPiVarDefaults().]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="_LOCAL_LANG.[lang-key].[label-key]" type="string">
-			<description><![CDATA[Can be used to override the default locallang labels for the plugin.]]></description>
+			<description><![CDATA[Can be used to override the default locallang labels for an Extbase plugin.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
