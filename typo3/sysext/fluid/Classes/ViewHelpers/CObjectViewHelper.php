@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -124,6 +125,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         $typoscriptObjectPath = (string)$arguments['typoscriptObjectPath'];
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
+        /** @var RenderingContext $renderingContext */
         $contentObjectRenderer = self::getContentObjectRenderer($renderingContext->getRequest());
         $tsfeBackup = null;
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {

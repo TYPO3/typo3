@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -65,6 +66,7 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
         if ($arguments['query'] !== null) {
             ArrayUtility::mergeRecursiveWithOverrule($parameters, GeneralUtility::explodeUrl2Array($arguments['query']));
         }
+        /** @var RenderingContext $renderingContext */
         $request = $renderingContext->getRequest();
         if (!empty($arguments['currentUrlParameterName'])
             && empty($arguments['arguments'][$arguments['currentUrlParameterName']])

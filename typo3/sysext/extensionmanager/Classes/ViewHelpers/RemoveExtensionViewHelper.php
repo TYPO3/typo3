@@ -22,8 +22,10 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -59,7 +61,11 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->renderingContext->getRequest());
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        /** @var RequestInterface $request */
+        $request = $renderingContext->getRequest();
+        $uriBuilder->setRequest($request);
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');
         $uri = $uriBuilder->uriFor(

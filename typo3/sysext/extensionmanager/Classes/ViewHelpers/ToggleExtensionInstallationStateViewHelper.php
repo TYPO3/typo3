@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -63,7 +65,11 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
         }
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->renderingContext->getRequest());
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        /** @var RequestInterface $request */
+        $request = $renderingContext->getRequest();
+        $uriBuilder->setRequest($request);
         $uri = $uriBuilder->reset()->uriFor(
             'toggleExtensionInstallationState',
             ['extensionKey' => $extension['key']],

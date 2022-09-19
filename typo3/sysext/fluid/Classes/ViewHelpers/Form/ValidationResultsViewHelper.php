@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -96,6 +97,7 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
         $for = $arguments['for'];
         $as = $arguments['as'];
 
+        /** @var RenderingContext $renderingContext */
         /** @var ExtbaseRequestParameters $extbaseRequestParameters */
         $extbaseRequestParameters = $renderingContext->getRequest()->getAttribute('extbase');
         $validationResults = $extbaseRequestParameters->getOriginalRequestMappingResults();

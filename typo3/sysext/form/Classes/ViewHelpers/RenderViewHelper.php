@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -89,7 +91,10 @@ final class RenderViewHelper extends AbstractViewHelper
         $factory = GeneralUtility::getContainer()->get($factoryClass);
 
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
-        $form = $formDefinition->bind($renderingContext->getRequest());
+        /** @var RenderingContext $renderingContext */
+        /** @var RequestInterface $request */
+        $request = $renderingContext->getRequest();
+        $form = $formDefinition->bind($request);
 
         return $form->render();
     }

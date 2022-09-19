@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -85,7 +86,9 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
         if ($this->arguments['uid'] < 1) {
             throw new \InvalidArgumentException('Uid must be a positive integer, ' . $this->arguments['uid'] . ' given.', 1526127158);
         }
-        $request = $this->renderingContext->getRequest();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
         if (empty($this->arguments['returnUrl'])
             && $request instanceof ServerRequestInterface
         ) {

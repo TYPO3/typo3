@@ -166,21 +166,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Link/EditRecordViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Link/NewRecordViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ModuleLinkViewHelper.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:process\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
@@ -189,16 +174,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Area given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Uri/EditRecordViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Uri/NewRecordViewHelper.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement has an unused parameter \\$data\\.$#"
@@ -2361,26 +2336,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/InstallUtility.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/ViewHelpers/DownloadExtensionViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/ViewHelpers/ReloadSqlDataViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/ViewHelpers/RemoveExtensionViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/ViewHelpers/ToggleExtensionInstallationStateViewHelper.php
-
-		-
 			message: "#^Method PHPUnit\\\\Framework\\\\TestCase\\:\\:count\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Domain/Repository/ExtensionRepositoryTest.php
@@ -2436,19 +2391,9 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/View/TemplatePaths.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/Menus/ActionMenuItemViewHelper.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Fluid\\\\ViewHelpers\\\\Be\\\\Menus\\\\ActionMenuViewHelper\\:\\:compile\\(\\) should return string but returns null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/Menus/ActionMenuViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/PageRendererViewHelper.php
 
 		-
 			message: "#^Parameter \\#1 \\$namespace of method TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:addInlineSettingArray\\(\\) expects string, null given\\.$#"
@@ -2456,39 +2401,9 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/PageRendererViewHelper.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/CObjectViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FlashMessagesViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Form/AbstractFormFieldViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Form/ValidationResultsViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FormViewHelper.php
-
-		-
 			message: "#^Call to function is_int\\(\\) with mixed will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/HtmlViewHelper.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Fluid\\\\ViewHelpers\\\\Format\\\\HtmlentitiesDecodeViewHelper\\:\\:renderStatic\\(\\) should return string but returns mixed\\.$#"
@@ -2501,21 +2416,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Link/ActionViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Link/EmailViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Link/PageViewHelper.php
-
-		-
 			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Area given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/MediaViewHelper.php
@@ -2524,16 +2424,6 @@ parameters:
 			message: "#^Offset 'onFailure' does not exist on array\\{selector\\: string\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Transform/HtmlViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/ActionViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/PageViewHelper.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
@@ -2729,11 +2619,6 @@ parameters:
 			message: "#^Comparison operation \"\\<\" between int\\<1, max\\> and 1 is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/GridColumnClassAutoConfigurationViewHelper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
 
 		-
 			message: "#^Parameter \\#1 \\$fileReference of method TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageStore\\:\\:flushData\\(\\) expects string, array\\<int, string\\> given\\.$#"

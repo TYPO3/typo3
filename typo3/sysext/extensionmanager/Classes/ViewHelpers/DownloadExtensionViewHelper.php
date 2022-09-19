@@ -22,9 +22,11 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 
 /**
@@ -74,7 +76,11 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         }
         $pathSelector .= '</ul>';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->renderingContext->getRequest());
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        /** @var RequestInterface $request */
+        $request = $renderingContext->getRequest();
+        $uriBuilder->setRequest($request);
         $action = 'checkDependencies';
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');

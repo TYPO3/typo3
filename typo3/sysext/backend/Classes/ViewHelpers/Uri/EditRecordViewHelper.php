@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\ViewHelpers\Uri;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -69,7 +70,9 @@ final class EditRecordViewHelper extends AbstractViewHelper
             throw new \InvalidArgumentException('Uid must be a positive integer, ' . $arguments['uid'] . ' given.', 1526128259);
         }
         if (empty($arguments['returnUrl'])) {
-            $arguments['returnUrl'] = $renderingContext->getRequest()->getAttribute('normalizedParams')->getRequestUri();
+            /** @var RenderingContext $renderingContext */
+            $request = $renderingContext->getRequest();
+            $arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $params = [

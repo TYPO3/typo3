@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper;
 
@@ -135,7 +136,9 @@ class FormViewHelper extends AbstractFormViewHelper
 
     public function render(): string
     {
-        $request = $this->renderingContext->getRequest();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
         if (!$request instanceof RequestInterface) {
             throw new \RuntimeException(
                 'ViewHelper f:form can be used only in extbase context and needs a request implementing extbase RequestInterface.',
@@ -192,10 +195,14 @@ class FormViewHelper extends AbstractFormViewHelper
         if ($this->hasArgument('actionUri')) {
             $formActionUri = $this->arguments['actionUri'];
         } else {
+            /** @var RenderingContext $renderingContext */
+            $renderingContext = $this->renderingContext;
+            /** @var RequestInterface $request */
+            $request = $renderingContext->getRequest();
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $uriBuilder
                 ->reset()
-                ->setRequest($this->renderingContext->getRequest())
+                ->setRequest($request)
                 ->setTargetPageType($this->arguments['pageType'] ?? 0)
                 ->setNoCache($this->arguments['noCache'] ?? false)
                 ->setSection($this->arguments['section'] ?? '')
@@ -252,8 +259,10 @@ class FormViewHelper extends AbstractFormViewHelper
      */
     protected function renderHiddenReferrerFields(): string
     {
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
         /** @var RequestInterface $request */
-        $request = $this->renderingContext->getRequest();
+        $request = $renderingContext->getRequest();
         $extensionName = $request->getControllerExtensionName();
         $controllerName = $request->getControllerName();
         $actionName = $request->getControllerActionName();
@@ -387,7 +396,10 @@ class FormViewHelper extends AbstractFormViewHelper
      */
     protected function getDefaultFieldNamePrefix(): string
     {
-        $request = $this->renderingContext->getRequest();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        /** @var RequestInterface $request */
+        $request = $renderingContext->getRequest();
         // New Backend URLs doe not have a prefix anymore
         if (!$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')
             && $request instanceof ServerRequestInterface

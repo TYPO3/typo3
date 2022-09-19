@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -126,7 +127,10 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (empty($this->arguments['returnUrl'])) {
-            $this->arguments['returnUrl'] = $this->renderingContext->getRequest()->getAttribute('normalizedParams')->getRequestUri();
+            /** @var RenderingContext $renderingContext */
+            $renderingContext = $this->renderingContext;
+            $request = $renderingContext->getRequest();
+            $this->arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $params = [

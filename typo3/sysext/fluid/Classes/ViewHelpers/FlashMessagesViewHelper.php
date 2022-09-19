@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -134,6 +135,7 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
         $queueIdentifier = $arguments['queueIdentifier'];
 
         if ($queueIdentifier === null) {
+            /** @var RenderingContext $renderingContext */
             $request = $renderingContext->getRequest();
             if (!$request instanceof RequestInterface) {
                 // Throw if not an extbase request

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -148,6 +149,7 @@ final class HtmlViewHelper extends AbstractViewHelper
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
 
+        /** @var RenderingContext $renderingContext */
         $request = $renderingContext->getRequest();
         $isBackendRequest = $request instanceof ServerRequestInterface
             && $request->getAttribute('applicationType')

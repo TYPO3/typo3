@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -105,6 +106,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
 
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
+            /** @var RenderingContext $renderingContext */
             $request = $renderingContext->getRequest();
             if ($request instanceof RequestInterface) {
                 // Extbase request resolves extension key and allows overriding labels using TypoScript configuration.

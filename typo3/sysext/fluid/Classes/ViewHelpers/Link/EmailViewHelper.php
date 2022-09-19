@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -84,10 +85,10 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
         $linkHref = 'mailto:' . $email;
         $attributes = [];
         $linkText = htmlspecialchars($email);
-        $request = $this->renderingContext->getRequest();
-        if ($request instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()
-        ) {
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
+        if ($request instanceof ServerRequestInterface && ApplicationType::fromRequest($request)->isFrontend()) {
             // If there is no request, backend is assumed.
             /** @var TypoScriptFrontendController $frontend */
             $frontend = $GLOBALS['TSFE'];

@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -95,7 +96,9 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
-        $request = $this->renderingContext->getRequest();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
         if (!$request instanceof RequestInterface) {
             throw new \RuntimeException(
                 'ViewHelper f:link.page can be used only in extbase context and needs a request implementing extbase RequestInterface.',

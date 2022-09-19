@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**
@@ -88,7 +89,16 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getRequest(): RequestInterface
     {
-        return $this->renderingContext->getRequest();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
+        if (!$request instanceof RequestInterface) {
+            throw new \RuntimeException(
+                'Form ViewHelpers are Extbase specific and need an Extbase Request to work',
+                1663617170
+            );
+        }
+        return $request;
     }
 
     /**
