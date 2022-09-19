@@ -46,12 +46,12 @@ final class SubModuleRenderViewHelper extends AbstractViewHelper
 
     /**
      * Resolve user name from backend user id.
+     *
+     * @param array{module: ContentProviderInterface, data: ModuleDataStorageCollection} $arguments
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        /** @var ContentProviderInterface $module */
         $module = $arguments['module'];
-        /** @var ModuleDataStorageCollection $data */
         $data = $arguments['data'];
         $moduleData = $data->contains($module) ? $data->offsetGet($module) : new ModuleData();
         return $module->getContent($moduleData);

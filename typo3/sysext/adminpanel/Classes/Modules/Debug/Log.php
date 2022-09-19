@@ -100,7 +100,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Debug/LogSettings.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
-        $view->assign('languageKey', $this->getBackendUser()->user['lang']);
+        $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
 
         $maxLevel = LogLevel::normalizeLevel(\Psr\Log\LogLevel::DEBUG);
         $levels = [];
@@ -158,7 +158,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         $data['groupByComponent'] = $groupByComponent;
         $data['groupByLevel'] = $groupByLevel;
         $view->assignMultiple($data->getArrayCopy());
-        $view->assign('languageKey', $this->getBackendUser()->user['lang']);
+        $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
 
         return $view->render();
     }

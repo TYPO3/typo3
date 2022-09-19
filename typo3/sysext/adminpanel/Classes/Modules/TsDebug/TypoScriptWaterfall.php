@@ -92,7 +92,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
                 'trackContentRendering' => (int)$this->getConfigurationOption('LR'),
                 'forceTemplateParsing' => (int)$this->getConfigurationOption('forceTemplateParsing'),
                 'typoScriptLog' => $this->renderTypoScriptLog(),
-                'languageKey' => $this->getBackendUser()->user['lang'],
+                'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
 
@@ -116,7 +116,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
                 ],
                 'trackContentRendering' => (int)$this->getConfigurationOption('LR'),
                 'forceTemplateParsing' => (int)$this->getConfigurationOption('forceTemplateParsing'),
-                'languageKey' => $this->getBackendUser()->user['lang'],
+                'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
 

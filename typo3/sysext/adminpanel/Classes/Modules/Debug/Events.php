@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\AbstractDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
@@ -66,13 +67,13 @@ class Events extends AbstractSubModule implements DataProviderInterface
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
         $values = $data->getArrayCopy();
-        $events = $values['events'];
+        $events = $values['events'] ?? null;
 
         $dumper = new HtmlDumper(null, null, AbstractDumper::DUMP_LIGHT_ARRAY);
         $dumper->setTheme('light');
 
-        $view->assign('events', $dumper->dump($events, true));
-        $view->assign('languageKey', $this->getBackendUser()->user['lang']);
+        $view->assign('events', $events instanceof Data ? $dumper->dump($events, true) : null);
+        $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
 
         return $view->render();
     }

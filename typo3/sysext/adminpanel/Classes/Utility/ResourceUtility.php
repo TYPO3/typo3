@@ -29,7 +29,7 @@ class ResourceUtility
      * one array - returns an array of full html tags
      *
      * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
-     * @return array
+     * @return array{js: string, css: string}
      */
     public static function getAdditionalResourcesForModules(array $modules): array
     {

@@ -32,6 +32,9 @@ final class IsArrayViewHelper extends AbstractViewHelper
         $this->registerArgument('value', 'mixed', 'The variable being checked', true);
     }
 
+    /**
+     * @param array{value: mixed} $arguments
+     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): bool
     {
         return is_array($arguments['value']);
