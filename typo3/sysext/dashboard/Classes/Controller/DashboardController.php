@@ -168,10 +168,12 @@ class DashboardController
         }
         foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
             if (is_array($requireJsModule)) {
-                $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);
+                // Deprecation message is triggered by DashboardInitializationService::defineResourcesOfWidgets, and therefore silenced here.
+                $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1], true);
             } else {
+                // Deprecation message is triggered by DashboardInitializationService::defineResourcesOfWidgets, and therefore silenced here.
                 $javaScriptRenderer->addJavaScriptModuleInstruction(
-                    JavaScriptModuleInstruction::forRequireJS($requireJsModule)
+                    JavaScriptModuleInstruction::forRequireJS($requireJsModule, null, true)
                 );
             }
         }

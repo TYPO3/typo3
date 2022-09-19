@@ -108,7 +108,7 @@ class FormEditorController extends AbstractBackendController
             $this->prototypeConfiguration['formEditor']['dynamicJavaScriptModules']['additionalViewModelModules'] ?? []
         );
         $additionalViewModelRequireJsModules = array_map(
-            static fn (string $name) => JavaScriptModuleInstruction::forRequireJS($name),
+            static fn (string $name) => JavaScriptModuleInstruction::forRequireJS($name, null, true),
             $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'] ?? []
         );
         if (count($additionalViewModelRequireJsModules) > 0) {

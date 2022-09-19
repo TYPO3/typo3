@@ -17,9 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Page\JavaScriptRenderer;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -79,8 +78,8 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
             'data-action-navigate' => '$value',
         ]);
         $this->tag->setContent($options);
-        return $this->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler')
-            . '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
+        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
+        return '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
     }
 
     /**
@@ -95,17 +94,8 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
         return null;
     }
 
-    /**
-     * Renders `<script src="JavaScriptItemHandler.js">...</script>` for loading
-     * corresponding module. Using `JavaScriptRenderer` makes this independent
-     * from `PageRenderer` and its current application state.
-     */
-    protected function loadRequireJsModule(string $name): string
+    protected static function getPageRenderer(): PageRenderer
     {
-        $javaScriptRenderer = JavaScriptRenderer::create();
-        $javaScriptRenderer->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::forRequireJS($name)
-        );
-        return $javaScriptRenderer->render();
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

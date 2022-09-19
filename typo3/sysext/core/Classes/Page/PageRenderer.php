@@ -1578,9 +1578,13 @@ class PageRenderer implements SingletonInterface
      *
      * @param string $mainModuleName Must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
      * @param string $callBackFunction loaded right after the requireJS loading, must be wrapped in function() {}
+     * @deprecated will be removed in TYPO3 v13.0. Use loadJavaScriptModule() instead, available since TYPO3 v12.0.
      */
-    public function loadRequireJsModule($mainModuleName, $callBackFunction = null)
+    public function loadRequireJsModule($mainModuleName, $callBackFunction = null, bool $internal = false)
     {
+        if (!$internal) {
+            trigger_error('PageRenderer->loadRequireJsModule is deprecated in favor of native ES6 modules, use loadJavaScriptModule() instead. Support for RequireJS module loading will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
+        }
         $inlineCodeKey = $mainModuleName;
         // make sure requireJS is initialized
         $this->loadRequireJs();
@@ -1593,7 +1597,7 @@ class PageRenderer implements SingletonInterface
         }
         if ($callBackFunction === null && $this->getApplicationType() === 'BE') {
             $this->javaScriptRenderer->addJavaScriptModuleInstruction(
-                JavaScriptModuleInstruction::forRequireJS($mainModuleName)
+                JavaScriptModuleInstruction::forRequireJS($mainModuleName, null, true)
             );
             return;
         }

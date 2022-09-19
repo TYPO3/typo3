@@ -152,8 +152,12 @@ class SetupModuleController
         $event = new AddJavaScriptModulesEvent();
         /** @var AddJavaScriptModulesEvent $event */
         $event = $this->eventDispatcher->dispatch($event);
+        foreach ($event->getJavaScriptModules() as $specifier) {
+            $this->pageRenderer->loadJavaScriptModule($specifier);
+        }
         foreach ($event->getModules() as $moduleName) {
-            $this->pageRenderer->loadRequireJsModule($moduleName);
+            // The deprecation is added in AddJavaScriptModulesEvent::addModule, and therefore silenced here.
+            $this->pageRenderer->loadRequireJsModule($moduleName, null, true);
         }
     }
 

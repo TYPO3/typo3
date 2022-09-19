@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handling requirejs client requests.
+ *
+ * @deprecated will be removed in TYPO3 v13.0.
  */
 class RequireJsController
 {
