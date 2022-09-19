@@ -121,6 +121,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function initializeStandaloneViewInstance()
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setRequest($this->request);
     }
 
     /**
