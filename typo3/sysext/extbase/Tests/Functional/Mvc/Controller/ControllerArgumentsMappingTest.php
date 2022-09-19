@@ -21,14 +21,13 @@ use ExtbaseTeam\BlogExample\Controller\BlogController;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class ControllerArgumentsMappingTest extends FunctionalTestCase
 {
     /**
@@ -61,7 +60,8 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         ];
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
-        $this->request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $this->request = new Request($serverRequest);
         $this->request = $this->request->withPluginName('Pi1');
         $this->request = $this->request->withControllerExtensionName(BlogController::class);
         $this->request = $this->request->withControllerName('Blog');

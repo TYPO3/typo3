@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
  * The extbase request.
@@ -36,32 +35,8 @@ class Request implements RequestInterface
 {
     protected ServerRequestInterface $request;
 
-    /**
-     * @todo v12: final public function __construct(ServerRequestInterface $request)
-     */
-    public function __construct($request = null)
+    final public function __construct(ServerRequestInterface $request)
     {
-        if (is_string($request) && !empty($request)) {
-            // Deprecation layer for old extbase Request __construct(string $controllerClassName = '')
-            $controllerClassName = $request;
-            /** @var ServerRequestInterface $request */
-            $request = $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest();
-            $attribute = new ExtbaseRequestParameters($controllerClassName);
-            $request = $request->withAttribute('extbase', $attribute);
-        } elseif ($request === null) {
-            // Deprecation layer when ServerRequestInterface is not given yet
-            /** @var ServerRequestInterface $request */
-            // Fallback "new ServerRequest()" currently used in install tool.
-            $request = $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest();
-            $attribute = new ExtbaseRequestParameters('');
-            $request = $request->withAttribute('extbase', $attribute);
-        }
-        if (!$request instanceof ServerRequestInterface) {
-            throw new \InvalidArgumentException(
-                'Request must implement PSR-7 ServerRequestInterface',
-                1624452071
-            );
-        }
         if (!$request->getAttribute('extbase') instanceof ExtbaseRequestParameters) {
             throw new \InvalidArgumentException(
                 'Given request must have an attribute "extbase" of type ExtbaseAttribute',

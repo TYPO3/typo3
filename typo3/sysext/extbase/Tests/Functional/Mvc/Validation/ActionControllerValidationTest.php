@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 
 use ExtbaseTeam\BlogExample\Controller\BlogController;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -74,7 +76,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
-        $request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
 
         $request = $request->withControllerActionName('testForward');
         $request = $request->withArgument('blogPost', $blogPostArgument);
@@ -125,7 +128,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
-        $request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
 
         $request = $request->withControllerActionName('testRelatedObject');
         $request = $request->withArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
@@ -191,7 +195,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
-        $request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
 
         $request = $request->withControllerActionName('testRelatedObject');
         $request = $request->withArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);

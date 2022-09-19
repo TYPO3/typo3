@@ -204,6 +204,9 @@ class FormViewHelperTest extends FunctionalTestCase
 
     protected function createRequest(): ServerRequestInterface
     {
-        return (new Request())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        return new Request($serverRequest);
     }
 }

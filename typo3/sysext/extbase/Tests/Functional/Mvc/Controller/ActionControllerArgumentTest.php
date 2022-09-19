@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -204,7 +205,8 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function buildRequest(string $actionName, array $arguments = null): Request
     {
-        $request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
         $request = $request->withPluginName($this->pluginName);
         $request = $request->withControllerExtensionName($this->extensionName);
         $request = $request->withControllerName('ArgumentTest');

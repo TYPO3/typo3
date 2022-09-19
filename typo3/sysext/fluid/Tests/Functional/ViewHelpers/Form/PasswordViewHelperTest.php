@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -33,7 +35,8 @@ class PasswordViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.password />');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         self::assertSame('<input type="password" name="" value="" />', (new TemplateView($context))->render());
     }
 
@@ -44,7 +47,8 @@ class PasswordViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', (new TemplateView($context))->render());
     }
 
@@ -55,7 +59,8 @@ class PasswordViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());
     }
 }

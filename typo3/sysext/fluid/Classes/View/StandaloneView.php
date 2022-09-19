@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\View;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
@@ -38,7 +40,11 @@ class StandaloneView extends AbstractTemplateView
         //        usage is typically *not* extbase context. Controllers that want to get rid of this
         //        have to ->setRequest($myServerRequestInterface), or even ->setRequest(null) after
         //        object construction to get rid of an extbase request again.
-        $renderingContext->setRequest(GeneralUtility::makeInstance(Request::class));
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest();
+        if ($request->getAttribute('extbase') === null) {
+            $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        }
+        $renderingContext->setRequest(GeneralUtility::makeInstance(Request::class, $request));
         parent::__construct($renderingContext);
     }
 

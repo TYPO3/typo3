@@ -50,7 +50,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
@@ -63,7 +64,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject->someProperty = false;
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" checked="true" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
@@ -78,7 +80,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject->someProperty = true;
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
@@ -93,7 +96,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject->someProperty = [];
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="foo" />', $view->render());
@@ -108,7 +112,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject->someProperty = ['foo'];
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="foo" checked="checked" />', $view->render());
@@ -122,7 +127,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject = new \ArrayObject(['someProperty' => true]);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="bar" property="someProperty" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="bar" checked="checked" />', $view->render());
@@ -137,7 +143,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject->someProperty = 'bar';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
@@ -152,7 +159,8 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $formObject->someProperty = null;
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());

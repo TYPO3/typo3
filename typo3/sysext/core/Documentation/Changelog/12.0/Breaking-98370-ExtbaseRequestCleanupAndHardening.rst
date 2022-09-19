@@ -42,6 +42,11 @@ Affected installations
 Extensions that actively manipulate the given Extbase :php:`Request` using setter methods
 will trigger fatal PHP "method does not exist" errors.
 
+Instances with extensions actively creating a :php:`Request` must actively hand over
+a :php:`\Psr\Http\Message\ServerRequestInterface` as constructor argument, it must have
+the attribute :php:`extbase` set, which must be an instance of
+:php:`\TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters`.
+
 
 Migration
 =========

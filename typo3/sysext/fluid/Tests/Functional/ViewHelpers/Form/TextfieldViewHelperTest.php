@@ -58,7 +58,8 @@ class TextfieldViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 

@@ -48,7 +48,8 @@ class ResourceViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
-        $context->setRequest(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1640097205);
         (new TemplateView($context))->render();
@@ -113,7 +114,8 @@ class ResourceViewHelperTest extends FunctionalTestCase
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Core');
-        $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
+        $extbaseRequest = (new Request($serverRequest));
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest($extbaseRequest);

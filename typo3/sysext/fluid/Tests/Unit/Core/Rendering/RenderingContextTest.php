@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -76,7 +78,8 @@ class RenderingContextTest extends UnitTestCase
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
         $subject->setRequest($request);
         $subject->setControllerAction($input);
         self::assertSame(lcfirst($expected), $subject->getControllerAction());

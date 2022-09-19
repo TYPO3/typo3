@@ -1791,11 +1791,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
 
 		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 13
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
-
-		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Exception\\\\ResourceNotFoundException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Web/Routing/UriBuilder.php

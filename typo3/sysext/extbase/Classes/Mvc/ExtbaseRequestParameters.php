@@ -216,7 +216,7 @@ class ExtbaseRequestParameters
         if ($argumentName === '') {
             throw new InvalidArgumentNameException('Invalid argument name.', 1210858767);
         }
-        if ($argumentName[0] === '_' && $argumentName[1] === '_') {
+        if (str_starts_with($argumentName, '__')) {
             $this->internalArguments[$argumentName] = $value;
             return $this;
         }

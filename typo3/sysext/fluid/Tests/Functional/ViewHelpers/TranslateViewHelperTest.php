@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -174,7 +175,8 @@ class TranslateViewHelperTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('backend');
-        $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
+        $extbaseRequest = (new Request($serverRequest));
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest($extbaseRequest);

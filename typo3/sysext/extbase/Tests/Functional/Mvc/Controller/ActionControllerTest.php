@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use ExtbaseTeam\ActionControllerTest\Controller\TestController;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
@@ -51,7 +53,8 @@ class ActionControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->request = new Request();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $this->request = new Request($serverRequest);
         $this->request = $this->request->withPluginName('Pi1');
         $this->request = $this->request->withControllerExtensionName('ActionControllerTest');
         $this->request = $this->request->withControllerName('Test');

@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
@@ -63,7 +65,9 @@ class RedirectFinisherTest extends UnitTestCase
         ]);
 
         $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $formRuntimeProphecy->getRequest()->willReturn(new Request());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $formRuntimeProphecy->getRequest()->willReturn($request);
         $formRuntimeProphecy->getResponse()->willReturn(new Response());
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);

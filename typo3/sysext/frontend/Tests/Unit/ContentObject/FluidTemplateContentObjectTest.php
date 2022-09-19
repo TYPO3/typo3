@@ -24,6 +24,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Tests\Unit\Page\PageRendererFactoryTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -99,7 +101,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ['initializeStandaloneViewInstance'],
             [$this->contentDataProcessor]
         );
-        $this->request = $this->getMockBuilder(Request::class)->getMock();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $this->request = $this->getMockBuilder(Request::class)->setConstructorArgs([$serverRequest])->getMock();
         $this->subject->setRequest($this->request);
         $this->subject->setContentObjectRenderer($this->contentObjectRenderer);
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
