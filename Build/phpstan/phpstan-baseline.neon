@@ -2736,11 +2736,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/AbstractFinisherTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$fileReference of method TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageStore\\:\\:flushData\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 37
 			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php

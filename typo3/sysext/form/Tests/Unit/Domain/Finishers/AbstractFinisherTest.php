@@ -28,12 +28,10 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractFinisherTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @test
      */
@@ -533,7 +531,6 @@ class AbstractFinisherTest extends UnitTestCase
         ]);
 
         $formDefinitionProphecy = $this->prophesize(FormDefinition::class);
-        $formDefinitionProphecy->getElementByIdentifier('date-1')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $formRuntimeProphecy->getFormDefinition()->willReturn($formDefinitionProphecy->reveal());
 
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
