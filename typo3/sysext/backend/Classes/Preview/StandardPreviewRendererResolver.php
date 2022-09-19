@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Backend\Preview;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class StandardPreviewRendererResolver
- *
- * Default implementation of PreviewRendererResolverInterface.
  * Scans TCA configuration to detect:
  *
  * - TCA.$table.types.$typeFromTypeField.previewRenderer
@@ -31,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Depending on which one is defined and checking the first, type-specific
  * variant first.
  */
-class StandardPreviewRendererResolver implements PreviewRendererResolverInterface
+class StandardPreviewRendererResolver
 {
     /**
      * @param string $table The name of the table the returned PreviewRenderer must work with

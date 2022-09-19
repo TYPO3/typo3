@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
-use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Backend\Security\FailedLoginAttemptNotification;
@@ -24,11 +23,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['defaultAva
 
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
-
-// Register standard preview renderer resolver implementation.
-// Resolves PreviewRendererInterface implementations for a given table and record.
-// Can be replaced with custom implementation by overriding this value in extensions.
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['previewRendererResolver'] = StandardPreviewRendererResolver::class;
 
 // Register BackendLayoutDataProvider for PageTs
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets'] = PageTsBackendLayoutDataProvider::class;

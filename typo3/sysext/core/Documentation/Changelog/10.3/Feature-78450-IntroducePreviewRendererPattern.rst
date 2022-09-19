@@ -51,17 +51,6 @@ The feature adds two new concepts:
 Configuring the implementation
 ------------------------------
 
-The PreviewRendererResolver can be overridden by setting:
-
-.. code-block:: php
-
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['previewRendererResolver'] = \TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver::class;
-
-
-The class shown is the standard implementation TYPO3 provides. Inspect this class for further developer information.
-
-Once overridden, the old resolver will no longer be consulted.
-
 Individual preview renderers can be defined by using one of the following two approaches:
 
 .. code-block:: php
@@ -98,10 +87,6 @@ type of plugin you want to target is selected as plugin type.
 
 The PreviewRenderer interface
 -----------------------------
-
-:php:`\TYPO3\CMS\Backend\Preview\PreviewRendererResolverInterface` must be implemented by :php:`PreviewRendererResolvers` and
-contains a single API method, :php:`public function resolveRendererFor($table, array $row, int $pageUid);` which
-unsurprisingly returns a single :php:`PreviewRenderer` based on the given input.
 
 :php:`\TYPO3\CMS\Backend\Preview\PreviewRendererInterface` must be implemented by any :php:`PreviewRenderer` and contains some
 API methods:
