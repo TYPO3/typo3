@@ -51,8 +51,8 @@ class ModuleLoader
                     1519490105
                 );
             }
-            if (!is_string($configuration['module']) ||
-                empty($configuration['module']) ||
+            if (empty($configuration['module']) ||
+                !is_string($configuration['module']) ||
                 !class_exists($configuration['module']) ||
                 !is_subclass_of(
                     $configuration['module'],

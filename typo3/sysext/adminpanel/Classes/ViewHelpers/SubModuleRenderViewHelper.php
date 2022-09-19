@@ -50,7 +50,7 @@ class SubModuleRenderViewHelper extends AbstractViewHelper
     /**
      * Resolve user name from backend user id.
      *
-     * @param array $arguments
+     * @param array{module: ContentProviderInterface, data: ModuleDataStorageCollection} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string Username or an empty string if there is no user with that UID
@@ -61,7 +61,6 @@ class SubModuleRenderViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ): string {
         $module = $arguments['module'];
-        /** @var ModuleDataStorageCollection $data */
         $data = $arguments['data'];
         $moduleData = $data->contains($module) ? $data->offsetGet($module) : new ModuleData();
         return $module->getContent($moduleData);

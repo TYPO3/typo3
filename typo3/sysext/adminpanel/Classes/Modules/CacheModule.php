@@ -48,7 +48,8 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $feCacheClear = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->getTSConfig()['options.']['clearCache.']['pages'];
+        $feCacheClear = $this->getBackendUser()->isAdmin()
+            || !empty($this->getBackendUser()->getTSConfig()['options.']['clearCache.']['pages']);
 
         $pageId = 0;
         $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing');
@@ -68,7 +69,7 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
                         'cacheCmd' => $pageId,
                     ]
                 ),
-                'languageKey' => $this->getBackendUser()->user['lang'],
+                'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
 

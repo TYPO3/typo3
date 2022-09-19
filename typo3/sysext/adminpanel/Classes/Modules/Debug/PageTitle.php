@@ -79,12 +79,13 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
             $log = InMemoryLogWriter::$log;
             foreach ($log as $logEntry) {
                 if ($logEntry->getComponent() === self::LOG_COMPONENT) {
-                    if (isset($logEntry->getData()['orderedTitleProviders'])) {
-                        $data['orderedProviders'] = $logEntry->getData()['orderedTitleProviders'];
-                    } elseif (isset($logEntry->getData()['providerUsed'])) {
-                        $data['usedProvider'] = $logEntry->getData();
+                    $logEntryData = $logEntry->getData();
+                    if (isset($logEntryData['orderedTitleProviders'])) {
+                        $data['orderedProviders'] = $logEntryData['orderedTitleProviders'];
+                    } elseif (isset($logEntryData['providerUsed'])) {
+                        $data['usedProvider'] = $logEntryData;
                     } elseif (isset($logEntry->getData()['skippedProvider'])) {
-                        $data['skippedProviders'][] = $logEntry->getData();
+                        $data['skippedProviders'][] = $logEntryData;
                     }
                 }
             }
@@ -104,7 +105,7 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
         );
         $this->getLanguageService()->includeLLFile('EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf');
         $view->assignMultiple($data->getArrayCopy());
-        $view->assign('languageKey', $this->getBackendUser()->user['lang']);
+        $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
         return $view->render();
     }
 

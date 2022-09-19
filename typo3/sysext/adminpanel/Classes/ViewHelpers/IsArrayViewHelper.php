@@ -33,7 +33,7 @@ class IsArrayViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
+     * @param array{value: mixed} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return bool

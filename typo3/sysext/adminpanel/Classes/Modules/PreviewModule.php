@@ -40,7 +40,14 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
     /**
      * module configuration, set on initialize
      *
-     * @var array
+     * @var array{
+     *     showHiddenPages?: bool,
+     *     simulateDate?: int,
+     *     showHiddenRecords?: bool,
+     *     showScheduledRecords?: bool,
+     *     simulateUserGroup?: int,
+     *     showFluidDebug?: bool
+     * }
      */
     protected $config;
 
@@ -120,16 +127,16 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             [
                 'show' => [
                     'pageId' => $pageId,
-                    'hiddenPages' => $this->config['showHiddenPages'],
-                    'hiddenRecords' => $this->config['showHiddenRecords'],
-                    'fluidDebug' => $this->config['showFluidDebug'],
+                    'hiddenPages' => $this->config['showHiddenPages'] ?? false,
+                    'hiddenRecords' => $this->config['showHiddenRecords'] ?? false,
+                    'fluidDebug' => $this->config['showFluidDebug'] ?? false,
                 ],
-                'simulateDate' => $this->config['simulateDate'],
+                'simulateDate' => (int)($this->config['simulateDate'] ?? 0),
                 'frontendUserGroups' => [
                     'availableGroups' => $frontendGroupsRepository->getAvailableFrontendUserGroups(),
-                    'selected' => (int)$this->config['simulateUserGroup'],
+                    'selected' => (int)($this->config['simulateUserGroup'] ?? 0),
                 ],
-                'languageKey' => $this->getBackendUser()->user['lang'],
+                'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
         return $view->render();

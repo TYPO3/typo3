@@ -127,7 +127,7 @@ class MainController implements SingletonInterface
                 'toggleActiveUrl' => $this->generateBackendUrl('ajax_adminPanel_toggle'),
                 'resources' => $resources,
                 'adminPanelActive' => StateUtility::isOpen(),
-                'languageKey' => $this->getBackendUser()->user['lang'],
+                'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
         if (StateUtility::isOpen()) {
