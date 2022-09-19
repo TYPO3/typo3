@@ -2003,4 +2003,22 @@ return [
             'Breaking-98281-MakeAbstractPluginInternal.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\View\PageLayoutView' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\View\PageLayoutViewDrawFooterHookInterface' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
 ];

@@ -871,4 +871,34 @@ return [
             'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/layout/class.tx_cms_layout.php\'][\'record_is_used\']' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Backend\View\PageLayoutView\'][\'modifyQuery\']' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/layout/class.tx_cms_layout.php\'][\'tt_content_drawItem\']' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/layout/class.tx_cms_layout.php\'][\'list_type_Info\']' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/layout/class.tx_cms_layout.php\'][\'tt_content_drawFooter\']' => [
+        'restFiles' => [
+            'Breaking-98375-RemovedHooksInPageModule.rst',
+            'Feature-98375-PSR-14EventsInPageModule.rst',
+        ],
+    ],
 ];

@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Backend\View\PageLayoutView;
-use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -81,22 +81,11 @@ class GridColumnItem extends AbstractGridObject
             );
         $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
 
-        $drawItem = true;
-        $previewContent = '';
-        // Hook: Render an own preview of a record
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
-            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($this->getContext());
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1582574553);
-                }
-                $hookObject->preProcess($pageLayoutView, $drawItem, $previewHeader, $previewContent, $record);
-            }
-            $this->setRecord($record);
-        }
+        $event = new PageContentPreviewRenderingEvent('tt_content', $this->record, $this->context);
+        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
 
-        if ($drawItem) {
+        $previewContent = $event->getPreviewContent();
+        if ($previewContent === null) {
             $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
         }
 

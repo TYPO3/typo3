@@ -22,8 +22,6 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
-use TYPO3\CMS\Backend\View\PageLayoutView;
-use TYPO3\CMS\Backend\View\PageLayoutViewDrawFooterHookInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -145,22 +143,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 break;
             case 'list':
-                $hookOut = '';
-                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'])) {
-                    $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getContext());
-                    $_params = ['pObj' => &$pageLayoutView, 'row' => $record];
-                    foreach (
-                        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$record['list_type']] ??
-                        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'] ??
-                        [] as $_funcRef
-                    ) {
-                        $hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $pageLayoutView);
-                    }
-                }
-
-                if ((string)$hookOut !== '') {
-                    $out .= $hookOut;
-                } elseif (!empty($record['list_type'])) {
+                if (!empty($record['list_type'])) {
                     $label = BackendUtility::getLabelFromItemListMerged($record['pid'], 'tt_content', 'list_type', $record['list_type']);
                     if (!empty($label)) {
                         $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record);
@@ -209,7 +192,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string
     {
-        $content = '';
         $info = [];
         $record = $item->getRecord();
         $this->getProcessedValue($item, 'starttime,endtime,fe_group,space_before_class,space_after_class', $info);
@@ -218,24 +200,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $info[] = htmlspecialchars($record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']]);
         }
 
-        // Call drawFooter hooks
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'])) {
-            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getContext());
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawFooterHookInterface::class, 1582574541);
-                }
-                $hookObject->preProcess($pageLayoutView, $info, $record);
-            }
-            $item->setRecord($record);
-        }
-
         if (!empty($info)) {
-            $content = implode('<br>', $info);
+            return implode('<br>', $info);
         }
-
-        return $content;
+        return '';
     }
 
     public function wrapPageModulePreview(string $previewHeader, string $previewContent, GridColumnItem $item): string
