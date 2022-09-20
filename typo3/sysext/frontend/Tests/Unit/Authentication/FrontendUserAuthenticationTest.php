@@ -25,10 +25,10 @@ use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Http\Request;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -60,21 +60,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $uniqueSessionId = StringUtility::getUniqueId('test');
 
         // Prepare a request with session id cookie
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getCookieParams()->willReturn(['fe_typo_user' => $uniqueSessionId]);
-        $request->getParsedBody()->willReturn([]);
-        $request->getQueryParams()->willReturn([]);
-
-        // This setup fakes the "getAuthInfoArray() db call
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('fe_users')->willReturn($queryBuilderProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
-        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
-        $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
+        $request = new ServerRequest('http://example.com/', 'GET', null, [], []);
+        $request = $request->withCookieParams(['fe_typo_user' => $uniqueSessionId]);
 
         // Main session backend setup
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
@@ -95,7 +82,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());
         $subject->initializeUserSessionManager($userSessionManager);
-        $subject->start($request->reveal());
+        $subject->start($request);
 
         self::assertIsNotArray($subject->user);
         self::assertEquals('bar', $subject->getSessionData('foo'));
@@ -107,17 +94,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function storeSessionDataOnAnonymousUserWithNoData(): void
     {
-        // This setup fakes the "getAuthInfoArray() db call
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('fe_users')->willReturn($queryBuilderProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
-        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
-        $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
-
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn(UserSession::createNonFixated('newSessionId'));
         // Verify new session id is generated
@@ -142,17 +118,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function canSetAndUnsetSessionKey(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
-
-        // This setup fakes the "getAuthInfoArray() db call
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('fe_users')->willReturn($queryBuilderProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
-        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
-        $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         $sessionRecord = [
             'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
@@ -194,17 +159,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
         $currentTime = $GLOBALS['EXEC_TIME'];
-
-        // This setup fakes the "getAuthInfoArray() db call
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('fe_users')->willReturn($queryBuilderProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
-        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
-        $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
         $userSession = UserSession::createNonFixated($uniqueSessionId);
@@ -259,17 +213,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
         $currentTime = $GLOBALS['EXEC_TIME'];
-
-        // This setup fakes the "getAuthInfoArray() db call
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('fe_users')->willReturn($queryBuilderProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
-        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
-        $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
         $sessionRecord = [
@@ -328,16 +271,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function canLogUserInWithoutAnonymousSession(): void
     {
         $GLOBALS['BE_USER'] = [];
-        // This setup fakes the "getAuthInfoArray() db call
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('fe_users')->willReturn($queryBuilderProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
-        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
-        $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
         $userSession = UserSession::createNonFixated('newSessionId');
