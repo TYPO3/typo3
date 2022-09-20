@@ -36,10 +36,10 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
             $linkLocation = (!str_starts_with($linkLocation, '/') ? $tsfe->absRefPrefix : '') . $linkLocation;
             $url = $linkLocation;
             $url = $this->forceAbsoluteUrl($url, $conf);
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, (string)($tsfe->config['config']['fileTarget'] ?? ''));
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget');
         } elseif ($linkDetails['url']) {
             $linkDetails['type'] = LinkService::TYPE_URL;
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, (string)($tsfe->config['config']['extTarget'] ?? ''));
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget');
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
             $url = $linkDetails['url'];
         } else {

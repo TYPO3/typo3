@@ -31,7 +31,7 @@ class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
         return (new LinkResult(LinkService::TYPE_URL, (string)$url))
             ->withLinkConfiguration($conf)
             ->withTarget(
-                $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, (string)($this->getTypoScriptFrontendController()->config['config']['extTarget'] ?? '')),
+                $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true),
             )
             ->withLinkText($linkText);
     }

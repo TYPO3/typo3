@@ -184,7 +184,17 @@ abstract class AbstractTypolinkBuilder
         if (isset($conf[$name]) && $conf[$name] !== '') {
             $target = $conf[$name];
         } elseif ($targetAttributeAllowed && !($conf['directImageLink'] ?? false)) {
-            $target = $fallbackTarget;
+            switch ($name) {
+                case 'extTarget':
+                case 'fileTarget':
+                    $target = $fallbackTarget ?: (string)($tsfe->config['config'][$name] ?? '');
+                    break;
+                case 'target':
+                    $target = $fallbackTarget ?: (string)($tsfe->config['config']['intTarget'] ?? '');
+                    break;
+                default:
+                    $target = $fallbackTarget;
+            }
         }
         if (isset($conf[$name . '.']) && $conf[$name . '.']) {
             $target = (string)$this->contentObjectRenderer->stdWrap($target, $conf[$name . '.'] ?? []);

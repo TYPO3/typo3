@@ -305,13 +305,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function calculateTargetAttribute(array $page, array $conf, bool $treatAsExternalLink, string $target): string
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         if ($treatAsExternalLink) {
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, (string)($tsfe->config['config']['extTarget'] ?? ''));
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget');
         } else {
             $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
             if (empty($target)) {
-                $target = $this->resolveTargetAttribute($conf, 'target', true, (string)($tsfe->config['config']['intTarget'] ?? ''));
+                $target = $this->resolveTargetAttribute($conf, 'target', true);
             }
         }
         return $target;
