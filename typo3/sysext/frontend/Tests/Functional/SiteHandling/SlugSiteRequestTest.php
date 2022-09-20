@@ -33,6 +33,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     // Force subrequest-based errors ON, because some tests can't work otherwise.
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
+            'devIPmask' => '123.123.123.123',
             'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
             'features' => [
                 'subrequestPageErrors' => true,

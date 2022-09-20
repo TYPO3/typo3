@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,9 +42,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
-        $GLOBALS['TYPO3_REQUEST'] = [];
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->pageNotFoundAction(new ServerRequest(), 'This test page was not found!');
+        $response = $subject->pageNotFoundAction($request, 'This test page was not found!');
         self::assertSame(404, $response->getStatusCode());
         self::assertStringContainsString('This test page was not found!', $response->getBody()->getContents());
     }
@@ -56,9 +58,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
-        $GLOBALS['TYPO3_REQUEST'] = [];
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->unavailableAction(new ServerRequest(), 'This page is temporarily unavailable.');
+        $response = $subject->unavailableAction($request, 'This page is temporarily unavailable.');
         self::assertSame(503, $response->getStatusCode());
         self::assertStringContainsString('This page is temporarily unavailable.', $response->getBody()->getContents());
     }
@@ -73,8 +76,10 @@ class ErrorControllerTest extends UnitTestCase
 
         $this->expectExceptionMessage('All your system are belong to us!');
         $this->expectExceptionCode(1518472181);
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $subject->unavailableAction(new ServerRequest(), 'All your system are belong to us!');
+        $subject->unavailableAction($request, 'All your system are belong to us!');
     }
 
     /**
@@ -85,8 +90,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->internalErrorAction(new ServerRequest(), 'All your system are belong to us!');
+        $response = $subject->internalErrorAction($request, 'All your system are belong to us!');
         self::assertSame(500, $response->getStatusCode());
         self::assertStringContainsString('All your system are belong to us!', $response->getBody()->getContents());
     }
@@ -101,8 +108,10 @@ class ErrorControllerTest extends UnitTestCase
 
         $this->expectExceptionMessage('All your system are belong to us!');
         $this->expectExceptionCode(1607585445);
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $subject->internalErrorAction(new ServerRequest(), 'All your system are belong to us!');
+        $subject->internalErrorAction($request, 'All your system are belong to us!');
     }
 
     /**
@@ -113,8 +122,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->pageNotFoundAction(new ServerRequest(), 'Error handler is not configured.');
+        $response = $subject->pageNotFoundAction($request, 'Error handler is not configured.');
         self::assertSame(404, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
@@ -125,8 +136,10 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->pageNotFoundAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
+        $response = $subject->pageNotFoundAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(404, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -141,8 +154,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->unavailableAction(new ServerRequest(), 'Error handler is not configured.');
+        $response = $subject->unavailableAction($request, 'Error handler is not configured.');
         self::assertSame(503, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
@@ -153,8 +168,10 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->unavailableAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
+        $response = $subject->unavailableAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(503, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -169,8 +186,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->internalErrorAction(new ServerRequest(), 'Error handler is not configured.');
+        $response = $subject->internalErrorAction($request, 'Error handler is not configured.');
         self::assertSame(500, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
@@ -181,8 +200,10 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->internalErrorAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
+        $response = $subject->internalErrorAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(500, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -197,8 +218,10 @@ class ErrorControllerTest extends UnitTestCase
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->accessDeniedAction(new ServerRequest(), 'Error handler is not configured.');
+        $response = $subject->accessDeniedAction($request, 'Error handler is not configured.');
         self::assertSame(403, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
@@ -209,8 +232,10 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
+        $request = new ServerRequest();
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
-        $response = $subject->accessDeniedAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
+        $response = $subject->accessDeniedAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(403, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
