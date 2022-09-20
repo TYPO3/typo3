@@ -345,6 +345,7 @@ The following single field configurations have been removed from :php:`$GLOBALS[
 The following features are now always enabled:
 
 - `runtimeDbQuotingOfTcaConfiguration`
+- `subrequestPageErrors`
 
 The following features have been removed:
 

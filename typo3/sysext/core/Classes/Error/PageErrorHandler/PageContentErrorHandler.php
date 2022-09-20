@@ -20,14 +20,8 @@ namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -44,24 +38,12 @@ use TYPO3\CMS\Frontend\Http\Application;
 class PageContentErrorHandler implements PageErrorHandlerInterface
 {
     protected int $statusCode;
-
     protected array $errorHandlerConfiguration;
-
     protected int $pageUid = 0;
-
     protected Application $application;
-
-    protected RequestFactory $requestFactory;
-
     protected ResponseFactoryInterface $responseFactory;
-
     protected SiteFinder $siteFinder;
-
     protected LinkService $link;
-
-    protected FrontendInterface $cache;
-
-    protected bool $useSubrequest;
 
     /**
      * PageContentErrorHandler constructor.
@@ -80,12 +62,9 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         // @todo Convert this to DI once this class can be injected properly.
         $container = GeneralUtility::getContainer();
         $this->application = $container->get(Application::class);
-        $this->requestFactory = $container->get(RequestFactory::class);
         $this->responseFactory = $container->get(ResponseFactoryInterface::class);
         $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $this->link = $container->get(LinkService::class);
-        $this->cache = $container->get(CacheManager::class)->getCache('pages');
-        $this->useSubrequest = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('subrequestPageErrors');
     }
 
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -102,17 +81,9 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                     $this->statusCode
                 );
             }
-            if ($this->useSubrequest) {
-                // Create a subrequest and do not take any special query parameters into account
-                $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
-                $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $urlParams['pageuid']));
-            } else {
-                try {
-                    $subResponse = $this->cachePageRequest($resolvedUrl, $this->pageUid, fn () => $this->sendRawRequest($resolvedUrl));
-                } catch (\Exception $e) {
-                    throw new \RuntimeException(sprintf('Error handler could not fetch error page "%s", reason: %s', $resolvedUrl, $e->getMessage()), 1544172838, $e);
-                }
-            }
+            // Create a subrequest and do not take any special query parameters into account
+            $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
+            $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $urlParams['pageuid']));
 
             if ($subResponse->getStatusCode() >= 300) {
                 throw new \RuntimeException(sprintf('Error handler could not fetch error page "%s", status code: %s', $resolvedUrl, $subResponse->getStatusCode()), 1544172839);
@@ -127,7 +98,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     }
 
     /**
-     * Stash and restore portions of the global environment around a subreqest callable.
+     * Stash and restore portions of the global environment around a subrequest callable.
      */
     protected function stashEnvironment(callable $fetcher): ResponseInterface
     {
@@ -142,83 +113,19 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     }
 
     /**
-     * Caches a subrequest fetch.
-     */
-    protected function cachePageRequest(string $resolvedUrl, int $pageId, callable $fetcher): ResponseInterface
-    {
-        $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
-        $responseData = $this->cache->get($cacheIdentifier);
-
-        if (!is_array($responseData)) {
-            /** @var ResponseInterface $response */
-            $response = $fetcher();
-            $cacheTags = [];
-            if ($response->getStatusCode() === 200) {
-                $cacheTags[] = 'errorPage';
-                if ($pageId > 0) {
-                    // Cache Tag "pageId_" ensures, cache is purged when content of 404 page changes
-                    $cacheTags[] = 'pageId_' . $pageId;
-                }
-                $responseData = [
-                    'headers' => $response->getHeaders(),
-                    'body' => $response->getBody()->getContents(),
-                    'reasonPhrase' => $response->getReasonPhrase(),
-                ];
-                $this->cache->set($cacheIdentifier, $responseData, $cacheTags);
-            }
-        } else {
-            $body = new Stream('php://temp', 'wb+');
-            $body->write($responseData['body'] ?? '');
-            $body->rewind();
-            $response = new Response(
-                $body,
-                200,
-                $responseData['headers'] ?? [],
-                $responseData['reasonPhrase'] ?? ''
-            );
-        }
-
-        return $response;
-    }
-
-    /**
-     * Sends a full HTTP request to the specified URL.
-     */
-    protected function sendRawRequest(string $resolvedUrl): ResponseInterface
-    {
-        return $this->requestFactory->request($resolvedUrl, 'GET', $this->getSubRequestOptions());
-    }
-
-    /**
      * Sends an in-process subrequest.
      *
      * The $pageId is used to ensure the correct site is accessed.
      */
     protected function sendSubRequest(ServerRequestInterface $request, int $pageId): ResponseInterface
     {
-        $site = $request->getAttribute('site', null);
+        $site = $request->getAttribute('site');
         if (!$site instanceof Site) {
             $site = $this->siteFinder->getSiteByPageId($pageId);
             $request = $request->withAttribute('site', $site);
         }
 
         return $this->application->handle($request);
-    }
-
-    /**
-     * Returns request options for the subrequest
-     *
-     * @return array|int[]
-     */
-    protected function getSubRequestOptions(): array
-    {
-        $options = [];
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] === 0) {
-            $options = [
-                'timeout' => 30,
-            ];
-        }
-        return $options;
     }
 
     /**

@@ -74,7 +74,6 @@ return [
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false,
-            'subrequestPageErrors' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
