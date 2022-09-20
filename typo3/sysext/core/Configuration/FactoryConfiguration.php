@@ -20,7 +20,6 @@ return [
     'SYS' => [
         'sitename' => 'New TYPO3 site',
         'features' => [
-            'unifiedPageTranslationHandling' => true,
             'yamlImportsFollowDeclarationOrder' => true,
         ],
         'UTF8filesystem' => true,

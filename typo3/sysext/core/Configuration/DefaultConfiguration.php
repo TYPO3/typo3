@@ -71,7 +71,6 @@ return [
         'folderCreateMask' => '2775',
         'features' => [
             'redirects.hitCount' => false,
-            'unifiedPageTranslationHandling' => false,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false,
