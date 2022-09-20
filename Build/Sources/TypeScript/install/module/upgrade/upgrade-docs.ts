@@ -201,7 +201,7 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private combinedFilterSearch(): boolean {
     const modalContent = this.getModalBody();
-    const $items = modalContent.find('div.item');
+    const $items = modalContent.find(this.selectorUpgradeDoc);
     if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
       this.currentModal.find('.panel-version .panel-collapse.show').collapse('hide');
       $items.removeClass('hidden searchhit filterhit');
@@ -244,7 +244,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     }
     // apply fulltext search
     const typedQuery = this.fulltextSearchField.val();
-    modalContent.find('div.item.filterhit').each((index: number, element: any): void => {
+    modalContent.find('.filterhit').each((index: number, element: any): void => {
       const $item = $(element);
       if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
         $item.removeClass('hidden').addClass('searchhit');
