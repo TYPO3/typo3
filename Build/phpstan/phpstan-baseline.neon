@@ -231,11 +231,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/belog/Classes/Controller/BackendLogController.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$newId \\(string\\) does not accept default value of type int\\.$#"
 			count: 1
 			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php

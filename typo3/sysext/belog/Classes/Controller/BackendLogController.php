@@ -133,7 +133,7 @@ class BackendLogController extends ActionController
      */
     public function deleteMessageAction(int $errorUid): ResponseInterface
     {
-        /** @var LogEntry $logEntry */
+        /** @var LogEntry|null $logEntry */
         $logEntry = $this->logEntryRepository->findByUid($errorUid);
         if (!$logEntry) {
             $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog') ?? '', '', ContextualFeedbackSeverity::WARNING);
