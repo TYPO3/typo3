@@ -182,4 +182,4 @@ Impact
 This is a new backend module and will not replace any old features. If the dashboard
 extension is installed, it will be the default startup page in TYPO3 Backend.
 
-.. index:: Backend, Dashboard, ext:dashboard
+.. index:: Backend, ext:dashboard

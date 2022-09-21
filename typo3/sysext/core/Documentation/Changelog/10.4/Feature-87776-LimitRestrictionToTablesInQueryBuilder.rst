@@ -70,4 +70,4 @@ Impact
 It is now easily possible to add restrictions that are only applied to certain tables/ table aliases,
 by using :php:`\TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer`.
 
-.. index:: Database, ext:core, API
+.. index:: Database, ext:core, PHP-API
