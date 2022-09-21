@@ -67,7 +67,7 @@ class SortSubPagesController
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
-        $parentPageUid = (int)$request->getQueryParams()['id'];
+        $parentPageUid = (int)($request->getQueryParams()['id'] ?? 0);
 
         // Show only if there is a valid page and if this page may be viewed by the user
         $pageInformation = BackendUtility::readPageAccess($parentPageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
