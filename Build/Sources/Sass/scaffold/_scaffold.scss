@@ -90,7 +90,8 @@ body {
     height: calc(100vh - #{$scaffold-topbar-height});
     max-width: 100%;
     z-index: $scaffold-modulemenu-zindex;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     color-scheme: dark;
 }
 
