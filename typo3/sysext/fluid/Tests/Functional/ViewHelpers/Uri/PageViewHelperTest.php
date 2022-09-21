@@ -17,9 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PageViewHelperTest extends FunctionalTestCase
@@ -27,6 +35,152 @@ class PageViewHelperTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [];
+
+    public function tearDown(): void
+    {
+        FormProtectionFactory::purgeInstances();
+        parent::tearDown();
+    }
+
+    /**
+     * @test
+     */
+    public function renderThrowsExceptionWithoutRequest(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1639820200);
+        $view = new StandaloneView();
+        $view->setRequest();
+        $view->setTemplateSource('<f:uri.page />');
+        $view->render();
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendCoreContextCreatesNoUriWithoutRoute(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page>foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendCoreContextCreatesUriWithRouteFromQueryString(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withQueryParams(['route' => 'web_layout']);
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page addQueryString="1" pageUid="42">foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendCoreContextCreatesUriWithRouteFromAdditionalParams(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page additionalParams="{\'route\': \'web_layout\'}" pageUid="42">foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendCoreContextCreatesUriWithRouteFromRequest(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page pageUid="42">foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendCoreContextAddsSection(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page pageUid="42" section="mySection">foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42#mySection', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendCoreContextCreatesAbsoluteUri(): void
+    {
+        $request = new ServerRequest(null, null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page pageUid="42" absolute="1">foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('http://localhost/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendExtbaseContextCreatesUriWithId(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
+        $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($request);
+        $GLOBALS['_GET']['id'] = '42';
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page>foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderInBackendExtbaseContextCreatesAbsoluteUriWithId(): void
+    {
+        $request = new ServerRequest(null, null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
+        $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($request);
+        $GLOBALS['_GET']['id'] = '42';
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource('<f:uri.page absolute="1">foo</f:uri.page>');
+        $result = $view->render();
+        self::assertSame('http://localhost/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
+    }
 
     public function renderDataProvider(): array
     {
@@ -54,27 +208,49 @@ class PageViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderDataProvider
      */
-    public function render(string $template, string $expected): void
+    public function renderInFrontendWithCoreContext(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
-            'pid' => 1,
-            'root' => 1,
-            'clear' => 1,
-            'config' => <<<EOT
-page = PAGE
-page.10 = FLUIDTEMPLATE
-page.10 {
-    template = TEXT
-    template.value = $template
-}
-EOT
-        ]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
-        self::assertStringContainsString($expected, (string)$response->getBody());
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $GLOBALS['TSFE']->id = 1;
+        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource($template);
+        $result = $view->render();
+        self::assertSame($expected, $result);
+    }
+
+    /**
+     * @test
+     * @dataProvider renderDataProvider
+     */
+    public function renderInFrontendWithExtbaseContext(string $template, string $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+        );
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($request);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $GLOBALS['TSFE']->id = 1;
+        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $view = new StandaloneView();
+        $view->setRequest($request);
+        $view->setTemplateSource($template);
+        $result = $view->render();
+        self::assertSame($expected, $result);
     }
 }

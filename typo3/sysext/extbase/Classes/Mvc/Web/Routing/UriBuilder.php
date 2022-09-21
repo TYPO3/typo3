@@ -629,6 +629,7 @@ class UriBuilder
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
         ) {
+            /** @var Route $route */
             $arguments['route'] = $route->getPath();
         }
         ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);

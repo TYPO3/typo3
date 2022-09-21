@@ -17,15 +17,24 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A ViewHelper for creating links to TYPO3 pages. Tailored for extbase plugins, uses extbase Request and extbase UriBuilder.
+ * A ViewHelper for creating links to TYPO3 pages.
  *
  * Examples
  * ========
@@ -99,13 +108,138 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->renderingContext;
         $request = $renderingContext->getRequest();
-        if (!$request instanceof RequestInterface) {
-            throw new \RuntimeException(
-                'ViewHelper f:link.page can be used only in extbase context and needs a request implementing extbase RequestInterface.',
-                1639819269
-            );
+
+        if ($request instanceof ExtbaseRequestInterface) {
+            return $this->renderWithExtbaseContext($request);
+        }
+        if ($request instanceof ServerRequestInterface) {
+            if (ApplicationType::fromRequest($request)->isFrontend()) {
+                // Use the regular typolink functionality.
+                return $this->renderFrontendLinkWithCoreContext($request);
+            }
+            $uri = $this->renderBackendLinkWithCoreContext($request);
+            if ($uri !== '') {
+                $this->tag->addAttribute('href', $uri);
+                $this->tag->setContent($this->renderChildren());
+                $this->tag->forceClosingTag(true);
+                $result = $this->tag->render();
+            } else {
+                $result = (string)$this->renderChildren();
+            }
+            return $result;
+        }
+        throw new \RuntimeException(
+            'ViewHelper f:link.page needs a request implementing ServerRequestInterface.',
+            1639819269
+        );
+    }
+
+    protected function renderFrontendLinkWithCoreContext(ServerRequestInterface $request): string
+    {
+        $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : 'current';
+        $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
+        $noCache = isset($this->arguments['noCache']) && (bool)$this->arguments['noCache'];
+        $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
+        $language = $this->arguments['language'] ?? null;
+        $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) && (bool)$this->arguments['linkAccessRestrictedPages'];
+        $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
+        $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
+        $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
+        $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
+
+        $typolinkConfiguration = [
+            'parameter' => $pageUid,
+        ];
+        if ($pageType) {
+            $typolinkConfiguration['parameter'] .= ',' . $pageType;
+        }
+        if ($noCache) {
+            $typolinkConfiguration['no_cache'] = 1;
+        }
+        if ($language !== null) {
+            $typolinkConfiguration['language'] = $language;
+        }
+        if ($section) {
+            $typolinkConfiguration['fragment'] = $section;
+        }
+        if ($linkAccessRestrictedPages) {
+            $typolinkConfiguration['linkAccessRestrictedPages'] = 1;
+        }
+        if ($additionalParams) {
+            $typolinkConfiguration['additionalParams'] = $additionalParams;
+        }
+        if ($absolute) {
+            $typolinkConfiguration['forceAbsoluteUrl'] = true;
+        }
+        if ($addQueryString) {
+            $typolinkConfiguration['addQueryString'] = '1';
+            if ($argumentsToBeExcludedFromQueryString !== []) {
+                $typolinkConfiguration['addQueryString.']['exclude'] = implode(',', $argumentsToBeExcludedFromQueryString);
+            }
         }
 
+        try {
+            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $cObj->setRequest($request);
+            $linkFactory = GeneralUtility::makeInstance(LinkFactory::class);
+            $linkResult = $linkFactory->create((string)$this->renderChildren(), $typolinkConfiguration, $cObj);
+            $this->tag->addAttributes($linkResult->getAttributes());
+            $this->tag->setContent($this->renderChildren());
+            $this->tag->forceClosingTag(true);
+            $result = $this->tag->render();
+        } catch (UnableToLinkException $e) {
+            $result = (string)$this->renderChildren();
+        }
+        return $result;
+    }
+
+    protected function renderBackendLinkWithCoreContext(ServerRequestInterface $request): string
+    {
+        $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
+        $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
+        $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
+        $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
+        $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
+        $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
+
+        $arguments = [];
+        if ($addQueryString === true) {
+            $arguments = $request->getQueryParams();
+            foreach ($argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
+                $argumentArrayToBeExcluded = [];
+                parse_str($argumentToBeExcluded, $argumentArrayToBeExcluded);
+                $arguments = ArrayUtility::arrayDiffKeyRecursive($arguments, $argumentArrayToBeExcluded);
+            }
+        }
+
+        $id = $pageUid ?? $request->getQueryParams()['id'] ?? null;
+        if ($id !== null) {
+            $arguments['id'] = $id;
+        }
+        if (!isset($arguments['route']) && ($route = $request->getAttribute('route')) instanceof Route) {
+            $arguments['route'] = $route->getOption('_identifier');
+        }
+        $arguments = array_replace_recursive($arguments, $additionalParams);
+        $routeName = $arguments['route'] ?? null;
+        unset($arguments['route'], $arguments['token']);
+        $backendUriBuilder = GeneralUtility::makeInstance(BackendUriBuilder::class);
+        try {
+            if ($absolute) {
+                $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_URL);
+            } else {
+                $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_PATH);
+            }
+        } catch (RouteNotFoundException $e) {
+            $uri = '';
+        }
+        if ($section !== '') {
+            $uri .= '#' . $section;
+        }
+        return $uri;
+    }
+
+    protected function renderWithExtbaseContext(ExtbaseRequestInterface $request): string
+    {
         $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
         $noCache = isset($this->arguments['noCache']) && (bool)$this->arguments['noCache'];
@@ -117,7 +251,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(ExtbaseUriBuilder::class);
         $uriBuilder->reset()
             ->setRequest($request)
             ->setTargetPageType($pageType)
@@ -128,8 +262,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             ->setArguments($additionalParams)
             ->setCreateAbsoluteUri($absolute)
             ->setAddQueryString($addQueryString)
-            ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-        ;
+            ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
 
         if (MathUtility::canBeInterpretedAsInteger($pageUid)) {
             $uriBuilder->setTargetPageUid((int)$pageUid);
