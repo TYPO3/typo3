@@ -27,6 +27,9 @@ final class ModifyEditFormUserAccessEvent
 {
     private bool $userHasAccess;
 
+    /**
+     * @param 'new'|'edit' $command
+     */
     public function __construct(
         private readonly ?AccessDeniedException $exception,
         private readonly string $tableName,
@@ -36,36 +39,59 @@ final class ModifyEditFormUserAccessEvent
         $this->userHasAccess = $this->exception === null;
     }
 
+    /**
+     * Allows user access to the editing form
+     */
     public function allowUserAccess(): void
     {
         $this->userHasAccess = true;
     }
 
+    /**
+     * Denies user access to the editing form
+     */
     public function denyUserAccess(): void
     {
         $this->userHasAccess = false;
     }
 
+    /**
+     * Returns the current user access state
+     */
     public function doesUserHaveAccess(): bool
     {
         return $this->userHasAccess;
     }
 
+    /**
+     * If Core's DataProvider previously denied access, this returns the corresponding
+     * exception, `null` otherwise
+     */
     public function getAccessDeniedException(): ?AccessDeniedException
     {
         return $this->exception;
     }
 
+    /**
+     * Returns the table name of the record in question
+     */
     public function getTableName(): string
     {
         return $this->tableName;
     }
 
+    /**
+     * Returns the requested command, either `new` or `edit`
+     * @return 'new'|'edit'
+     */
     public function getCommand(): string
     {
         return $this->command;
     }
 
+    /**
+     * Returns the record's database row
+     */
     public function getDatabaseRow(): array
     {
         return $this->databaseRow;
