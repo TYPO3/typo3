@@ -285,7 +285,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
             $value = $this->parseOption('databaseColumnMappings.' . $databaseColumnName . '.value');
             if (
                 empty($value)
-                && $databaseColumnConfiguration['skipIfValueIsEmpty'] === true
+                && ($databaseColumnConfiguration['skipIfValueIsEmpty'] ?? false) === true
             ) {
                 continue;
             }
