@@ -435,7 +435,7 @@ class NewRecordController
                     $groupName = $v['ctrl']['groupName'] ?? null;
                     $title = (string)($v['ctrl']['title'] ?? '');
                     if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
-                        $groupName = $nameParts[1] ?? null;
+                        $groupName = $groupName ?? $nameParts[1] ?? null;
                         // Try to extract extension name
                         if ($groupName) {
                             $_EXTKEY = '';
