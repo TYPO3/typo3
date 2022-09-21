@@ -216,7 +216,7 @@ class LinkAnalyzerResult
      */
     protected function processLinkCounts(array $linkTypes): self
     {
-        foreach (array_keys($linkTypes) as $linkType) {
+        foreach ($linkTypes as $linkType) {
             if (!isset($this->newBrokenLinkCounts[$linkType])) {
                 $this->newBrokenLinkCounts[$linkType] = 0;
             }
