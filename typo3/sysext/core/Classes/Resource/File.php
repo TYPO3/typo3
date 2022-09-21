@@ -181,7 +181,7 @@ class File extends AbstractFile
             unset($properties['uid']);
         }
         foreach ($properties as $key => $value) {
-            if ($this->properties[$key] !== $value) {
+            if (!isset($this->properties[$key]) || $this->properties[$key] !== $value) {
                 if (!in_array($key, $this->updatedProperties)) {
                     $this->updatedProperties[] = $key;
                 }
