@@ -96,4 +96,4 @@ in Composer based instances. Make sure the information in the :file:`composer.js
 sync with the one in your :file:`ext_emconf.php` file in case you want to provide one for
 compatibility with non Composer mode.
 
-.. index:: CLI, Composer, ext:core
+.. index:: CLI, ext:core

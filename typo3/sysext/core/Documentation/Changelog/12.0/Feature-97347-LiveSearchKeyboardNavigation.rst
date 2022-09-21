@@ -18,4 +18,4 @@ record from the result list without using a mouse.
 Previously it was not possible to use the keyboard to navigate
 through the search results of the live search.
 
-.. index:: Backend, Search
+.. index:: Backend, ext:backend
