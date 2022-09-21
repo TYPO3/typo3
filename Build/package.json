@@ -128,7 +128,7 @@
     "nprogress": "^0.2.0",
     "requirejs": "^2.3.6",
     "sortablejs": "^1.12.0",
-    "source-sans-pro": "^3.6.0",
+    "source-sans": "^3.46.0",
     "tablesort": "^5.2.1",
     "taboverride": "^4.0.3",
     "tagsort": "^1.4.0",
