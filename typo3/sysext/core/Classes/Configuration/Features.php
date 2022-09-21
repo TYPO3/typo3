@@ -62,6 +62,7 @@ class Features
     protected array $alwaysActiveFeatures = [
         // Enabled since v12.0 at any time.
         'subrequestPageErrors',
+        'yamlImportsFollowDeclarationOrder',
         'security.frontend.htmlSanitizeParseFuncDefault',
         'runtimeDbQuotingOfTcaConfiguration',
         // Enabled since v11.0 at any time.

@@ -204,9 +204,6 @@ SYS:
                 description: 'If on, HTTP referrer headers are enforced for backend and install tool requests to mitigate
                   potential same-site request forgery attacks. The behavior can be disabled in case HTTP proxies filter
                   required `Referer` header. As this is a potential security risk, it is recommended to enable this option.'
-              yamlImportsFollowDeclarationOrder:
-                type: bool
-                description: 'If on, the YAML imports are imported in the order they are defined in the importing YAML configuration.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

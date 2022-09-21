@@ -19,9 +19,6 @@ return [
     ],
     'SYS' => [
         'sitename' => 'New TYPO3 site',
-        'features' => [
-            'yamlImportsFollowDeclarationOrder' => true,
-        ],
         'UTF8filesystem' => true,
     ],
 ];

@@ -73,7 +73,6 @@ return [
             'redirects.hitCount' => false,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
-            'yamlImportsFollowDeclarationOrder' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

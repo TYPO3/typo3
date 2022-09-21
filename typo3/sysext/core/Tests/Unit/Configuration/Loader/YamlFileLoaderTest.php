@@ -141,9 +141,6 @@ options:
             'betterthanbefore' => 1,
         ];
 
-        // Make sure, feature toggle is activated
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['yamlImportsFollowDeclarationOrder'] = true;
-
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
         $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
 

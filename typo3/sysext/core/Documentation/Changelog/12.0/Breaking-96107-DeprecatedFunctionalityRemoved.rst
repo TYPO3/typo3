@@ -346,6 +346,7 @@ The following features are now always enabled:
 
 - `runtimeDbQuotingOfTcaConfiguration`
 - `subrequestPageErrors`
+- `yamlImportsFollowDeclarationOrder`
 
 The following features have been removed:
 
