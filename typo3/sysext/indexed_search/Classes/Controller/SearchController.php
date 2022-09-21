@@ -215,7 +215,7 @@ class SearchController extends ActionController
 
         // Indexer configuration from Extension Manager interface:
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
-        $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
+        $this->enableMetaphoneSearch = (bool)($this->indexerConfig['enableMetaphoneSearch'] ?? false);
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
         if ($searchData['_sections'] ?? false) {
