@@ -1052,10 +1052,10 @@ abstract class AbstractMenuContentObject
                 }
             }
             if ($this->conf['special.']['items.']['prevnextToSection'] ?? false) {
-                if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last'])) {
+                if (!is_array($recArr['prev'] ?? false) && is_array($recArr['prevsection_last'] ?? false)) {
                     $recArr['prev'] = $recArr['prevsection_last'];
                 }
-                if (!is_array($recArr['next']) && is_array($recArr['nextsection'])) {
+                if (!is_array($recArr['next'] ?? false) && is_array($recArr['nextsection'] ?? false)) {
                     $recArr['next'] = $recArr['nextsection'];
                 }
             }
