@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,6 +85,9 @@ class TreeController
 
         $items = [];
         foreach ($foundFolders as $folder) {
+            if (!$folder instanceof Folder) {
+                continue;
+            }
             $storage = $folder->getStorage();
             $itemsInRootLine = [];
 
@@ -98,7 +102,11 @@ class TreeController
                     ]
                 );
                 $isParent = true;
-                $nextFolder = $nextFolder->getParentFolder();
+                try {
+                    $nextFolder = $nextFolder->getParentFolder();
+                } catch (InsufficientFolderAccessPermissionsException) {
+                    $nextFolder = null;
+                }
             } while ($nextFolder instanceof Folder && $nextFolder->getIdentifier() !== '/');
             // Add the storage / sys_filemount itself
             $storageData = $this->treeProvider->prepareFolderInformation(
