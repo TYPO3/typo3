@@ -148,7 +148,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
             $contentElements = $queryBuilder
                 ->select('*')

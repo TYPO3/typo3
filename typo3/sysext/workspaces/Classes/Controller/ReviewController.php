@@ -93,15 +93,15 @@ class ReviewController
         }
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
         $customWorkspaceExists = $this->customWorkspaceExists($availableWorkspaces);
-        $activeWorkspace = (int)$backendUser->workspace;
-        $activeWorkspaceTitle = WorkspaceService::getWorkspaceTitle($activeWorkspace);
+        $activeWorkspace = $backendUser->workspace;
+        $activeWorkspaceTitle = $this->workspaceService->getWorkspaceTitle($activeWorkspace);
         $workspaceSwitched = '';
         if (isset($queryParams['workspace'])) {
             $switchWs = (int)$queryParams['workspace'];
             if (array_key_exists($switchWs, $availableWorkspaces) && $activeWorkspace !== $switchWs) {
                 $activeWorkspace = $switchWs;
                 $backendUser->setWorkspace($activeWorkspace);
-                $activeWorkspaceTitle = WorkspaceService::getWorkspaceTitle($activeWorkspace);
+                $activeWorkspaceTitle = $this->workspaceService->getWorkspaceTitle($activeWorkspace);
                 $workspaceSwitched = GeneralUtility::jsonEncodeForHtmlAttribute(['id' => $activeWorkspace, 'title' => $activeWorkspaceTitle]);
             }
         }

@@ -241,9 +241,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 if (isset($backendUser->user['uid'])) {
                     $userId = $backendUser->user['uid'];
                 }
-                if (isset($backendUser->workspace)) {
-                    $workspace = $backendUser->workspace;
-                }
+                $workspace = $backendUser->workspace;
                 if ($backUserId = $backendUser->getOriginalUserIdWhenInSwitchUserMode()) {
                     $data['originalUser'] = $backUserId;
                 }

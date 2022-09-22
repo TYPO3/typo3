@@ -58,10 +58,7 @@ class CommandMap
      */
     protected $commandMap = [];
 
-    /**
-     * @var int
-     */
-    protected $workspace;
+    protected int $workspace;
 
     /**
      * @var string
@@ -180,10 +177,8 @@ class CommandMap
 
     /**
      * Gets the current workspace.
-     *
-     * @return int
      */
-    public function getWorkspace()
+    public function getWorkspace(): int
     {
         return $this->workspace;
     }

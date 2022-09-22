@@ -34,7 +34,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
     protected array $availableWorkspaces;
 
     public function __construct(
-        WorkspaceService $workspaceService,
+        private readonly WorkspaceService $workspaceService,
         private readonly UriBuilder $uriBuilder,
         private readonly BackendViewFactory $backendViewFactory,
     ) {
@@ -64,7 +64,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
         }
         $currentWorkspace = $this->getBackendUser()->workspace;
         $view = $this->backendViewFactory->create($this->request, ['typo3/cms-workspaces']);
-        $view->assign('workspaceTitle', $currentWorkspace !== -99 ? WorkspaceService::getWorkspaceTitle($currentWorkspace) : '');
+        $view->assign('workspaceTitle', $currentWorkspace !== -99 ? $this->workspaceService->getWorkspaceTitle($currentWorkspace) : '');
         return $view->render('ToolbarItems/ToolbarItem');
     }
 
@@ -77,7 +77,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
         $additionalItems = [];
         $backendUser = $this->getBackendUser();
         $view = $this->backendViewFactory->create($this->request, ['typo3/cms-workspaces']);
-        $activeWorkspace = (int)$backendUser->workspace;
+        $activeWorkspace = $backendUser->workspace;
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;
             $item = [

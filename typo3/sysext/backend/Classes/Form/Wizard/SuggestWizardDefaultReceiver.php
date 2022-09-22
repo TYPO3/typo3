@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
 
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -119,10 +120,11 @@ class SuggestWizardDefaultReceiver
         if (isset($config['maxItemsInResultList'])) {
             $this->maxItems = $config['maxItemsInResultList'];
         }
-        $GLOBALS['BE_USER']->initializeWebmountsForElementBrowser();
+        $backendUser = $this->getBackendUser();
+        $backendUser->initializeWebmountsForElementBrowser();
         if ($this->table === 'pages') {
             $this->queryBuilder->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)),
+                QueryHelper::stripLogicalOperatorPrefix($backendUser->getPagePermsClause(Permission::PAGE_SHOW)),
                 $this->queryBuilder->expr()->eq('sys_language_uid', 0)
             );
         }
@@ -339,16 +341,17 @@ class SuggestWizardDefaultReceiver
      */
     protected function checkRecordAccess($row, $uid)
     {
+        $backendUser = $this->getBackendUser();
         $retValue = true;
         $table = $this->mmForeignTable ?: $this->table;
         if ($table === 'pages') {
-            if (!BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))) {
+            if (!BackendUtility::readPageAccess($uid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW))) {
                 $retValue = false;
             }
         } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['is_static']) && (bool)$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
             $retValue = true;
         } else {
-            if (!is_array(BackendUtility::readPageAccess($row['pid'], $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)))) {
+            if (!is_array(BackendUtility::readPageAccess($row['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)))) {
                 $retValue = false;
             }
         }
@@ -363,7 +366,7 @@ class SuggestWizardDefaultReceiver
     protected function makeWorkspaceOverlay(&$row)
     {
         // Check for workspace-versions
-        if ($GLOBALS['BE_USER']->workspace != 0 && BackendUtility::isTableWorkspaceEnabled($this->table)) {
+        if ($this->getBackendUser()->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($this->table)) {
             BackendUtility::workspaceOL($this->mmForeignTable ?: $this->table, $row);
         }
     }
@@ -430,6 +433,11 @@ class SuggestWizardDefaultReceiver
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    public function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     /**

@@ -539,7 +539,7 @@ class EditDocumentController
         }
         // If pages are being edited, we set an instruction about updating the page tree after this operation.
         if ($tce->pagetreeNeedsRefresh
-            && (isset($this->data['pages']) || $beUser->workspace != 0 && !empty($this->data))
+            && (isset($this->data['pages']) || $beUser->workspace !== 0 && !empty($this->data))
         ) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
@@ -2195,7 +2195,7 @@ class EditDocumentController
         $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid' . ($tableSupportsVersioning ? ',t3ver_oid' : ''));
         if (is_array($reqRecord)) {
             // If workspace is OFFLINE:
-            if ($this->getBackendUser()->workspace != 0) {
+            if ($this->getBackendUser()->workspace !== 0) {
                 // Check for versioning support of the table:
                 if ($tableSupportsVersioning) {
                     // If the record is already a version of "something" pass it by.

@@ -25,6 +25,9 @@ services:
     public: true
     shared: true
 
+  TYPO3\CMS\Workspaces\Controller\AjaxController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Workspaces\Controller\PreviewController:
     tags: ['backend.controller']
 

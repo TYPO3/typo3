@@ -480,7 +480,7 @@ class TreeController
 
         return GeneralUtility::makeInstance(
             PageTreeRepository::class,
-            (int)$backendUser->workspace,
+            $backendUser->workspace,
             [],
             $additionalQueryRestrictions
         );

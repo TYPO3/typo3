@@ -576,11 +576,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Domain/Repository/PageRepository.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\:\\:\\$workspace \\(int\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Error/ErrorHandler.php
-
-		-
 			message: "#^Result of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Hooks/TcaItemsProcessorFunctions.php

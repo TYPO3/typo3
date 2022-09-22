@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Workspaces\Service\Dependency;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Dependency;
@@ -63,7 +64,7 @@ class CollectionService implements SingletonInterface
         if (!isset($this->dependencyResolver)) {
             $this->dependencyResolver = GeneralUtility::makeInstance(DependencyResolver::class);
             $this->dependencyResolver->setOuterMostParentsRequireReferences(true);
-            $this->dependencyResolver->setWorkspace($this->getWorkspace());
+            $this->dependencyResolver->setWorkspace($this->getBackendUser()->workspace);
 
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_Construct,
@@ -110,19 +111,9 @@ class CollectionService implements SingletonInterface
     {
         if (!isset($this->elementEntityProcessor)) {
             $this->elementEntityProcessor = GeneralUtility::makeInstance(ElementEntityProcessor::class);
-            $this->elementEntityProcessor->setWorkspace($this->getWorkspace());
+            $this->elementEntityProcessor->setWorkspace($this->getBackendUser()->workspace);
         }
         return $this->elementEntityProcessor;
-    }
-
-    /**
-     * Gets the current workspace id.
-     *
-     * @return int
-     */
-    protected function getWorkspace()
-    {
-        return (int)$GLOBALS['BE_USER']->workspace;
     }
 
     /**
@@ -239,5 +230,10 @@ class CollectionService implements SingletonInterface
                 return isset($this->dataArray[$child->getElement()->__toString()]);
             })
         );
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

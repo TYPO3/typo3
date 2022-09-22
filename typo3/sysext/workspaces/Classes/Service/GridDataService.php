@@ -87,14 +87,10 @@ class GridDataService implements LoggerAwareInterface
      */
     protected $integrityService;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly WorkspaceService $workspaceService,
+    ) {
     }
 
     /**
@@ -208,7 +204,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
                     $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
                     $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
-                    $versionArray['workspace_Title'] = htmlspecialchars(WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
+                    $versionArray['workspace_Title'] = htmlspecialchars($this->workspaceService->getWorkspaceTitle((int)$versionRecord['t3ver_wsid']));
                     $versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
                     $versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
                     $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];

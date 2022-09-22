@@ -21,6 +21,7 @@ use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -326,14 +327,14 @@ class SlugService implements LoggerAwareInterface
 
     protected function getRecordHistoryStore(): RecordHistoryStore
     {
-        $backendUser = $GLOBALS['BE_USER'];
+        $backendUser = $this->getBackendUser();
         return GeneralUtility::makeInstance(
             RecordHistoryStore::class,
             RecordHistoryStore::USER_BACKEND,
             $backendUser->user['uid'],
             (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
             $this->context->getPropertyFromAspect('date', 'timestamp'),
-            $backendUser->workspace ?? 0
+            $backendUser->workspace
         );
     }
 
@@ -359,5 +360,10 @@ class SlugService implements LoggerAwareInterface
     protected function disableHook(): void
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects']);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

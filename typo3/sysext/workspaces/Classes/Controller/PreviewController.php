@@ -127,7 +127,7 @@ class PreviewController
                 unset($queryParameters['L']);
             }
             $parameters = $queryParameters;
-            if (!WorkspaceService::isNewPage($pageUid)) {
+            if (!$this->workspaceService->isNewPage($pageUid)) {
                 $parameters['ADMCMD_prev'] = 'LIVE';
                 $liveUrl = $this->generateUrl($site, $pageUid, $parameters);
             }

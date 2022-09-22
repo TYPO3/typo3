@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -33,6 +32,12 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class AjaxController
 {
+    public function __construct(
+        private readonly WorkspaceService $workspaceService,
+        private readonly ModuleProvider $moduleProvider,
+    ) {
+    }
+
     /**
      * Sets the TYPO3 Backend context to a certain workspace,
      * called by the Backend toolbar menu
@@ -74,7 +79,7 @@ class AjaxController
         }
 
         $ajaxResponse = [
-            'title'       => WorkspaceService::getWorkspaceTitle($workspaceId),
+            'title'       => $this->workspaceService->getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
             'pageModule'  => $this->getPageModuleName(),
@@ -91,11 +96,9 @@ class AjaxController
     protected function getPageModuleName(): string
     {
         $backendUser = $this->getBackendUser();
-        $moduleProvider = GeneralUtility::makeInstance(ModuleProvider::class);
         $pageModule = trim($backendUser->getTSConfig()['options.']['overridePageModule'] ?? '');
-        $pageModule = $moduleProvider->isModuleRegistered($pageModule) ? $pageModule : 'web_layout';
-
-        return $moduleProvider->accessGranted($pageModule, $backendUser) ? $pageModule : '';
+        $pageModule = $this->moduleProvider->isModuleRegistered($pageModule) ? $pageModule : 'web_layout';
+        return $this->moduleProvider->accessGranted($pageModule, $backendUser) ? $pageModule : '';
     }
 
     protected function getBackendUser(): BackendUserAuthentication

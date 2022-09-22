@@ -102,9 +102,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * -99 is ERROR (none available)
      * 0 is online
      * >0 is custom workspaces
-     * @var int
      */
-    public $workspace = -99;
+    public int $workspace = -99;
 
     /**
      * Custom workspace record if any
@@ -678,7 +677,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->workspace));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->workspace));
             $recordLocalizations = $queryBuilder->select('*')
                 ->from($table)
                 ->where(

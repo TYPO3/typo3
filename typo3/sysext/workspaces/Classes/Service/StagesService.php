@@ -60,10 +60,8 @@ class StagesService implements SingletonInterface
 
     /**
      * Getter for current workspace id
-     *
-     * @return int Current workspace id
      */
-    public function getWorkspaceId()
+    public function getWorkspaceId(): int
     {
         return $this->getBackendUser()->workspace;
     }

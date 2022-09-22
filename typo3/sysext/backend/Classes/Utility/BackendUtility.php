@@ -299,7 +299,7 @@ class BackendUtility
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace ?? 0));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace));
 
             $queryBuilder->select('*')
                 ->from($table)
@@ -2990,7 +2990,7 @@ class BackendUtility
         // Initialize workspace ID
         $wsid = (int)$wsid;
         if ($wsid === -99 && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
-            $wsid = (int)static::getBackendUserAuthentication()->workspace;
+            $wsid = static::getBackendUserAuthentication()->workspace;
         }
         if ($wsid === 0) {
             // Return early if in live workspace

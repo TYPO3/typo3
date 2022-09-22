@@ -48,7 +48,7 @@ class WorkspaceRestriction implements QueryRestrictionInterface
      */
     public function __construct(int $workspaceId = 0)
     {
-        $this->workspaceId = (int)$workspaceId;
+        $this->workspaceId = $workspaceId;
     }
 
     /**

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Workspaces\Hook;
 use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -39,7 +40,7 @@ class BackendUtilityHook
      */
     public function createPageUriForWorkspaceVersion(BeforePagePreviewUriGeneratedEvent $event): void
     {
-        if ($GLOBALS['BE_USER']->workspace === 0) {
+        if ($this->getBackendUser()->workspace === 0) {
             return;
         }
         $uri = GeneralUtility::makeInstance(PreviewUriBuilder::class)
@@ -64,7 +65,7 @@ class BackendUtilityHook
     public function displayEditingStagedElementInformation(ModifyEditFormUserAccessEvent $event): void
     {
         $tableName = $event->getTableName();
-        if ($GLOBALS['BE_USER']->workspace === 0 || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
+        if ($this->getBackendUser()->workspace === 0 || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
             return;
         }
 
@@ -90,5 +91,10 @@ class BackendUtilityHook
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
