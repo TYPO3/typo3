@@ -673,7 +673,7 @@ abstract class AbstractItemProvider
                             // is now an array containing uid + table + title + row.
                             // See TcaGroup data provider for details.
                             // Pick the first one (always on 0), and use uid only.
-                            $rowFieldValue = $rowFieldValue[0]['uid'] ?? $rowFieldValue[0];
+                            $rowFieldValue = $rowFieldValue[0]['uid'] ?? $rowFieldValue[0] ?? '';
                         }
                         if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubParts[1][0] === '\'') {
                             $whereClauseParts[0] = substr($whereClauseParts[0], 0, -1);
@@ -1005,9 +1005,9 @@ abstract class AbstractItemProvider
             ) {
                 $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex]);
             } else {
-                $label = $languageService->sL(trim($item[0]));
+                $label = $languageService->sL(trim($item[0] ?? ''));
             }
-            $value = strlen((string)$item[1]) > 0 ? $item[1] : '';
+            $value = strlen((string)($item[1] ?? '')) > 0 ? $item[1] : '';
             $icon = !empty($item[2]) ? $item[2] : null;
             $groupId = $item[3] ?? null;
             $helpText = null;
