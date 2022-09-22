@@ -488,7 +488,7 @@ class ProcessedFile extends AbstractFile
         if ($this->isUnchanged() && $key !== 'uid') {
             return $this->originalFile->getProperty($key);
         }
-        return $this->properties[$key];
+        return $this->properties[$key] ?? null;
     }
 
     /**
