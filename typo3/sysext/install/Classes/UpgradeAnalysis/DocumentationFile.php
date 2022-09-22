@@ -145,6 +145,7 @@ class DocumentationFile
             }
         }
         $entry['tagList'] = implode(',', $entry['tags']);
+        $entry['tagArray'] = $entry['tags'];
         $entry['content'] = (string)file_get_contents($file);
         $entry['parsedContent'] = $this->parseContent($entry['content']);
         $entry['file_hash'] = md5($entry['content']);

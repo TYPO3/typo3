@@ -27,7 +27,11 @@
         </h3>
     </div>
     <div id="collapse{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{id}">
-        <div class="rst-tags t3js-tags"></div>
+        <div class="rst-tags">
+            <f:for each="{fileArray.tags}" as="tag">
+                <span class="badge">{tag}</span>
+            </f:for>
+        </div>
         <div class="rst-links">
             <f:if condition="{fileArray.url.issue}">
                 <a href="{fileArray.url.issue}" target="_blank" rel="noreferrer" class="nowrap"><core:icon identifier="actions-window-open" /> Open issue</a>

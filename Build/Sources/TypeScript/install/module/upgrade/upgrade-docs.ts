@@ -36,20 +36,6 @@ class UpgradeDocs extends AbstractInteractableModule {
   private chosenField: JQuery;
   private fulltextSearchField: JQuery;
 
-  private static trimExplodeAndUnique(delimiter: string, string: string): Array<string> {
-    const result: Array<string> = [];
-    const items = string.split(delimiter);
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i].trim();
-      if (item.length > 0) {
-        if ($.inArray(item, result) === -1) {
-          result.push(item);
-        }
-      }
-    }
-    return result;
-  }
-
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     const isInIframe = (window.location !== window.parent.location);
@@ -81,9 +67,7 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private getContent(): void {
     const modalContent = this.getModalBody();
-    modalContent.on('show.bs.collapse', this.selectorUpgradeDoc, (e: JQueryEventObject): void => {
-      this.renderTags($(e.currentTarget));
-    });
+
     (new AjaxRequest(Router.getUrl('upgradeDocsGetContent')))
       .get({cache: 'no-cache'})
       .then(
@@ -104,7 +88,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   private loadChangelogs(): void {
-    const promises: Array<Promise<any>> = [];
+    const promises: Array<Promise<AjaxRequest>> = [];
     const modalContent = this.getModalBody();
     this.findInModal(this.selectorChangeLogsForVersionContainer).each((index: number, el: any): void => {
       const request = (new AjaxRequest(Router.getUrl('upgradeDocsGetChangelogForVersion')))
@@ -153,8 +137,6 @@ class UpgradeDocs extends AbstractInteractableModule {
     });
     searchInput.focus();
 
-    this.initializeChosenSelector();
-
     new DebounceEvent('keyup', (): void => {
       this.combinedFilterSearch();
     }).bindTo(searchInput);
@@ -181,59 +163,64 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   /**
-   * Appends tags to the chosen selector
+   * Appends tags to the chosen selector in multiple steps:
+   *
+   * 1. create a flat CSV of tags
+   * 2. create a Set() with those tags, automatically filtering duplicates
+   * 3. reduce remaining duplicates due to the case sensitivity behavior of Set(), while keeping the original case of
+   *    the first item of a set of dupes
+   * 4. sort tags
    */
   private appendItemsToChosenSelector(): void {
     let tagString = '';
     $(this.findInModal(this.selectorUpgradeDoc)).each((index: number, element: any): void => {
       tagString += $(element).data('item-tags') + ',';
     });
-    const tagArray = UpgradeDocs.trimExplodeAndUnique(',', tagString).sort((a: string, b: string): number => {
+    let tagSet = new Set(tagString.slice(0, -1).split(','));
+    const uniqueTags = [...tagSet.values()].reduce((tagList: string[], tag: string): string[] => {
+      const normalizedTag = tag.toLowerCase();
+      if (tagList.every(otherElement => otherElement.toLowerCase() !== normalizedTag)) {
+        tagList.push(tag);
+      }
+
+      return tagList;
+    }, []).sort((a: string, b: string): number => {
       // Sort case-insensitive by name
       return a.toLowerCase().localeCompare(b.toLowerCase());
     });
+
     this.chosenField.prop('disabled', false);
-    $.each(tagArray, (i: number, tag: any): void => {
+    for (let tag of uniqueTags) {
       this.chosenField.append($('<option>').text(tag));
-    });
+    }
     this.chosenField.trigger('chosen:updated');
   }
 
-  private combinedFilterSearch(): boolean {
+  private combinedFilterSearch(): void {
     const modalContent = this.getModalBody();
     const $items = modalContent.find(this.selectorUpgradeDoc);
     if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
-      this.currentModal.find('.panel-version .panel-collapse.show').collapse('hide');
-      $items.removeClass('hidden searchhit filterhit');
-      return false;
+      const $expandedPanels = this.currentModal.find('.panel-version .panel-collapse.show');
+      $expandedPanels.one('hidden.bs.collapse', (): void => {
+        if (this.currentModal.find('.panel-version .panel-collapse.collapsing').length === 0) {
+          // Bootstrap doesn't offer promises to check whether all panels are collapsed, so we need a helper to do
+          // something similar
+          $items.removeClass('searchhit filterhit');
+        }
+      });
+      $expandedPanels.collapse('hide');
+      return;
     }
-    $items.addClass('hidden').removeClass('searchhit filterhit');
+
+    $items.removeClass('searchhit filterhit');
 
     // apply tags
     if (this.chosenField.val().length > 0) {
       $items
         .addClass('hidden')
         .removeClass('filterhit');
-      const orTags: Array<string> = [];
-      const andTags: Array<string> = [];
-      $.each(this.chosenField.val(), (index: number, item: any): void => {
-        const tagFilter = '[data-item-tags*="' + item + '"]';
-        if (item.includes(':', 1)) {
-          orTags.push(tagFilter);
-        } else {
-          andTags.push(tagFilter);
-        }
-      });
-      const andString = andTags.join('');
-      const tags = [];
-      if (orTags.length) {
-        for (let orTag of orTags) {
-          tags.push(andString + orTag);
-        }
-      } else {
-        tags.push(andString);
-      }
-      const tagSelection = tags.join(',');
+
+      const tagSelection = this.chosenField.val().map((tag: string) => '[data-item-tags*="' + tag + '"]').join('');
       modalContent.find(tagSelection)
         .removeClass('hidden')
         .addClass('searchhit filterhit');
@@ -253,7 +240,12 @@ class UpgradeDocs extends AbstractInteractableModule {
       }
     });
 
-    modalContent.find('.searchhit').closest('.panel-collapse').collapse('show');
+    modalContent.find('.searchhit').closest('.panel-collapse').each((index: number, item: Element): void => {
+      // This is a workaround to improve the browser performance as the panels are not expanded at once
+      window.setTimeout((): void => {
+        $(item).collapse('show');
+      }, 20)
+    });
 
     // Check for empty panels
     modalContent.find('.panel-version').each((index: number, element: any): void => {
@@ -262,18 +254,6 @@ class UpgradeDocs extends AbstractInteractableModule {
         $element.find(' > .panel-collapse').collapse('hide');
       }
     });
-
-    return true;
-  }
-
-  private renderTags($upgradeDocumentContainer: any): void {
-    const $tagContainer = $upgradeDocumentContainer.find('.t3js-tags');
-    if ($tagContainer.children().length === 0) {
-      const tags = $upgradeDocumentContainer.data('item-tags').split(',');
-      tags.forEach((value: string): void => {
-        $tagContainer.append($('<span />', {'class': 'badge'}).text(value));
-      });
-    }
   }
 
   /**
