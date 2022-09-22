@@ -1419,7 +1419,8 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            // needs to be a subpath in order to validate ".." references
+            Environment::getPublicPath() . '/typo3/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         self::assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
@@ -1439,7 +1440,8 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            // needs to be a subpath in order to validate ".." references
+            Environment::getPublicPath() . '/typo3/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         self::assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
@@ -1490,7 +1492,8 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            // needs to be a subpath in order to validate ".." references
+            Environment::getPublicPath() . '/typo3/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = $host;
@@ -1512,7 +1515,8 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            // needs to be a subpath in order to validate ".." references
+            Environment::getPublicPath() . '/typo3/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = $host;
@@ -1553,7 +1557,7 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
+            Environment::getPublicPath() . '/typo3/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = 'localhost';

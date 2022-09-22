@@ -252,9 +252,11 @@ class Environment
     /**
      * Previously known as PATH_typo3
      * Please note that this might be gone at some point
+     * @deprecated you should not rely on this method, as the backend path might change.
      */
     public static function getBackendPath(): string
     {
+        trigger_error('Environment::getBackendPath() will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         return self::getPublicPath() . '/typo3';
     }
 

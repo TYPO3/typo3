@@ -1443,11 +1443,18 @@ return [
             'Deprecation-99579-BackendUtilityGetFuncCheck.rst',
         ],
     ],
-    'TYPO3\CMS\Backend\Utility\GeneralUtility::_GPmerged' => [
+    'TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-99615-GeneralUtilityGPMerged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Environment::getBackendPath' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99638-EnvironmentgetBackendPath.rst',
         ],
     ],
 ];
