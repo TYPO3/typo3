@@ -35,6 +35,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entity representing a single site with available languages
+ *
+ * @phpstan-type LanguageRef -1|0|positive-int
  */
 class Site implements SiteInterface
 {
@@ -64,7 +66,7 @@ class Site implements SiteInterface
     protected $configuration;
 
     /**
-     * @var SiteLanguage[]
+     * @var array<LanguageRef, SiteLanguage>
      */
     protected $languages;
 
@@ -208,7 +210,7 @@ class Site implements SiteInterface
     /**
      * Returns all available languages of this site
      *
-     * @return SiteLanguage[]
+     * @return array<LanguageRef, SiteLanguage>
      */
     public function getLanguages(): array
     {
@@ -224,7 +226,7 @@ class Site implements SiteInterface
     /**
      * Returns all available languages of this site, even the ones disabled for frontend usages
      *
-     * @return SiteLanguage[]
+     * @return array<LanguageRef, SiteLanguage>
      */
     public function getAllLanguages(): array
     {
@@ -254,6 +256,9 @@ class Site implements SiteInterface
         return reset($this->languages);
     }
 
+    /**
+     * @return array<LanguageRef, SiteLanguage>
+     */
     public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
     {
         $availableLanguages = [];

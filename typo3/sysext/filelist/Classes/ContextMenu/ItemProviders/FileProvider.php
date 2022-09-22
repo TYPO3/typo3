@@ -418,7 +418,7 @@ class FileProvider extends AbstractProvider
         if ($itemName === 'delete' && $this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
 
-            $recordInfo = GeneralUtility::fixed_lgd_cs($this->record->getName(), (int)$this->backendUser->uc['titleLen']);
+            $recordInfo = GeneralUtility::fixed_lgd_cs($this->record->getName(), (int)($this->backendUser->uc['titleLen'] ?? 0));
             if ($this->isFolder()) {
                 if ($this->backendUser->shallDisplayDebugInformation()) {
                     $recordInfo .= ' [' . $this->record->getIdentifier() . ']';

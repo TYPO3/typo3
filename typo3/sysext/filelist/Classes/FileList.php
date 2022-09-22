@@ -761,21 +761,24 @@ class FileList
      * Fetch the translations for a sys_file_metadata record
      *
      * @param array $metaDataRecord
-     * @return array keys are the site language ids, values are the $rows
+     * @return array<int, array<string, mixed>> keys are the site language ids, values are the $rows
      */
     protected function getTranslationsForMetaData($metaDataRecord)
     {
+        $languageField = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? '';
+        $languageParentField = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'] ?? '';
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_metadata');
         $queryBuilder->getRestrictions()->removeAll();
         $translationRecords = $queryBuilder->select('*')
             ->from('sys_file_metadata')
             ->where(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'],
+                    $languageParentField,
                     $queryBuilder->createNamedParameter($metaDataRecord['uid'] ?? 0, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
-                    $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'],
+                    $languageField,
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
@@ -784,7 +787,8 @@ class FileList
 
         $translations = [];
         foreach ($translationRecords as $record) {
-            $translations[$record[$GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField']]] = $record;
+            $languageId = $record[$languageField];
+            $translations[$languageId] = $record;
         }
         return $translations;
     }
@@ -1125,7 +1129,7 @@ class FileList
             if (empty($title)) {
                 preg_match('/aria-label="([^"]*)"/', $action, $title);
             }
-            if (!empty($title[1] ?? '')) {
+            if (!empty($title[1])) {
                 $action = str_replace(
                     [
                         '</a>',
@@ -1138,7 +1142,7 @@ class FileList
                 );
                 // In case we added the title as tag content, we can remove the attribute,
                 // since this is duplicated and would trigger a tooltip with the same content.
-                if (!empty($title[0] ?? '')) {
+                if (!empty($title[0])) {
                     $action = str_replace($title[0], '', $action);
                 }
                 $cellOutput .= '<li>' . $action . '</li>';
@@ -1267,12 +1271,13 @@ class FileList
                 // Set options for "create new" action of a new translation
                 $title = sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title']);
                 $actionType = 'new';
+                $metaDataRecordId = (int)($metaDataRecord['uid'] ?? 0);
                 $url = BackendUtility::getLinkToDataHandlerAction(
-                    '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
+                    '&cmd[sys_file_metadata][' . $metaDataRecordId . '][localize]=' . $languageId,
                     (string)$this->uriBuilder->buildUriFromRoute(
                         'record_edit',
                         [
-                            'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
+                            'justLocalized' => 'sys_file_metadata:' . $metaDataRecordId . ':' . $languageId,
                             'returnUrl' => $this->listURL(),
                         ]
                     )

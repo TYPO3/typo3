@@ -161,7 +161,7 @@ class EditFileController
         $view->assignMultiple([
             'moduleUrlTceFile' => (string)$this->uriBuilder->buildUriFromRoute('tce_file'),
             'fileName' => $file->getName(),
-            'form' => $formResultCompiler->addCssFiles() . $resultArray['html'] . $formResultCompiler->printNeededJSFunctions(),
+            'form' => $formResultCompiler->addCssFiles() . ($resultArray['html'] ?? '') . $formResultCompiler->printNeededJSFunctions(),
         ]);
         $content = $view->render('File/EditFile');
 
