@@ -106,7 +106,7 @@ class ViewModuleController
 
         $custom = $moduleData->get('States')['custom'] ?? [];
         $custom['width'] = MathUtility::forceIntegerInRange($custom['width'] ?? 320, 300);
-        $custom['height'] = MathUtility::forceIntegerInRange($current['custom'] ?? 480, 300);
+        $custom['height'] = MathUtility::forceIntegerInRange($custom['height'] ?? 480, 300);
 
         $view->assignMultiple([
             'current' => $current,

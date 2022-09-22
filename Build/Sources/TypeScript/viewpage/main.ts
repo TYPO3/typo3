@@ -21,7 +21,7 @@ enum Selectors {
   sizeIdentifier = '.t3js-viewpage-size',
   moduleBodySelector = '.t3js-module-body',
   customSelector = '.t3js-preset-custom',
-  customWidthSelector = '.t3js-preset-custom',
+  customWidthSelector = '.t3js-preset-custom-width',
   customHeightSelector = '.t3js-preset-custom-height',
   changeOrientationSelector = '.t3js-change-orientation',
   changePresetSelector = '.t3js-change-preset',
@@ -144,6 +144,7 @@ class ViewPage {
     $(Selectors.customSelector).data('height', data.height);
     $(Selectors.customWidthSelector).html(data.width);
     $(Selectors.customHeightSelector).html(data.height);
+    this.addToQueue(this.storagePrefix + 'current', data);
     this.addToQueue(this.storagePrefix + 'custom', data);
   }
 
