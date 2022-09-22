@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
-use TYPO3\CMS\Backend\Form\FormResultTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
@@ -35,65 +34,20 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 abstract class AbstractFormEngineAjaxController
 {
-    use FormResultTrait;
-
-    /**
-     * Gets result array from FormEngine and returns string with js modules
-     * that need to be loaded and evaluated by JavaScript.
-     *
-     * @param array $result
-     * @param bool $skipInstructions whether to skip `JavaScriptModuleInstruction`
-     * @return array
-     */
-    protected function createExecutableStringRepresentationOfRegisteredRequireJsModules(array $result, bool $skipInstructions = false): array
-    {
-        if (empty($result['requireJsModules'])) {
-            return [];
-        }
-        $requireJs = [];
-        foreach ($result['requireJsModules'] as $module) {
-            $moduleName = null;
-            $callback = null;
-            // @todo This is a temporary "solution" and shall be handled in JavaScript directly
-            if ($module instanceof JavaScriptModuleInstruction) {
-                if ($skipInstructions) {
-                    continue;
-                }
-                $moduleName = $module->getName();
-                $callbackRef = $module->getExportName() ? '__esModule' : 'subjectRef';
-                $inlineCode = $this->serializeJavaScriptModuleInstructionItems($module);
-                if ($inlineCode !== []) {
-                    $callback = sprintf('function(%s) { %s }', $callbackRef, implode(' ', $inlineCode));
-                }
-            } elseif (is_string($module)) {
-                // if $module is a string, no callback
-                $moduleName = $module;
-            } elseif (is_array($module)) {
-                // if $module is an array, callback is possible
-                $callback = reset($module);
-                $moduleName = key($module);
-            }
-            if ($moduleName === null) {
-                continue;
-            }
-            $inlineCodeKey = $moduleName;
-            $javaScriptCode = 'require(["' . $moduleName . '"]';
-            if ($callback !== null) {
-                $inlineCodeKey .= sha1($callback);
-                $javaScriptCode .= ', ' . $callback;
-            }
-            $javaScriptCode .= ');';
-            $requireJs[] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
-        }
-        return $requireJs;
-    }
-
     protected function addRegisteredRequireJsModulesToJavaScriptItems(array $result, JavaScriptItems $items): void
     {
         foreach ($result['requireJsModules'] ?? [] as $module) {
-            if ($module instanceof JavaScriptModuleInstruction) {
-                $items->addJavaScriptModuleInstruction($module);
+            if (!$module instanceof JavaScriptModuleInstruction) {
+                throw new \LogicException(
+                    sprintf(
+                        'Module must be a %s, type "%s" given',
+                        JavaScriptModuleInstruction::class,
+                        gettype($module)
+                    ),
+                    1663851377
+                );
             }
+            $items->addJavaScriptModuleInstruction($module);
         }
     }
 

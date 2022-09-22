@@ -345,8 +345,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
         $this->addRegisteredRequireJsModulesToJavaScriptItems($childResult, $scriptItems);
-        // @todo deprecate modules with arbitrary JavaScript callback function in TYPO3 v12.0
-        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($childResult, true);
 
         return $jsonResult;
     }

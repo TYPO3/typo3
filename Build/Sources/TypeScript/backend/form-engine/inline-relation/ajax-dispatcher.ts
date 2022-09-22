@@ -32,7 +32,6 @@ export interface AjaxDispatcherResponse {
   messages: Message[];
   stylesheetFiles: string[];
   inlineData: object;
-  requireJsModules: string[];
   scriptCall: string[];
   scriptItems?: any[];
 }
@@ -124,12 +123,6 @@ export class AjaxDispatcher {
       processor.processItems(json.scriptItems);
     }
 
-    // @todo deprecate or remove with TYPO3 v12.0
-    if (typeof json.requireJsModules === 'object') {
-      for (let requireJsModule of json.requireJsModules) {
-        new Function(requireJsModule)();
-      }
-    }
     // TODO: This is subject to be removed
     // @todo deprecate or remove with TYPO3 v12.0
     if (json.scriptCall && json.scriptCall.length > 0) {

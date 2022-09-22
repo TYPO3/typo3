@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FormResultCompiler
 {
-    use FormResultTrait;
-
     /**
      * @var array HTML of additional hidden fields rendered by sub containers
      */
