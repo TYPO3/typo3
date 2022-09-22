@@ -524,8 +524,8 @@ class NewRecordController
                             $groupName = 'system';
                         }
                     }
-                    $this->tRows[$groupName]['title'] = $groupTitles[$groupName] ?? $nameParts[1] ?? $title;
-                    $this->tRows[$groupName]['icon'] = $iconFile[$groupName] ?? $iconFile['system'] ?? '';
+                    $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $title;
+                    $this->tRows[$groupName]['icon'] = $this->tRows[$groupName]['icon'] ?? $iconFile[$groupName] ?? $iconFile['system'] ?? '';
                     $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
             }
         }
