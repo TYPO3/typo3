@@ -134,7 +134,7 @@ class FileStorageTreeProvider
      *
      * @param BackendUserAuthentication $user
      * @param string $search
-     * @return array
+     * @return FolderInterface[]
      * @throws \Exception
      */
     public function getFilteredTree(BackendUserAuthentication $user, string $search): array

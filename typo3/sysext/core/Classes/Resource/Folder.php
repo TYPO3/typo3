@@ -549,6 +549,7 @@ class Folder implements FolderInterface
      * The parent folder of the root folder is the root folder.
      *
      * @return FolderInterface
+     * @throws InsufficientFolderAccessPermissionsException
      */
     public function getParentFolder()
     {
