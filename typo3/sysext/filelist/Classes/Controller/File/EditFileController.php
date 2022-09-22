@@ -245,7 +245,7 @@ class EditFileController
             $formResultCompiler->mergeResult($resultArray);
 
             $form = $formResultCompiler->addCssFiles()
-                . $resultArray['html']
+                . ($resultArray['html'] ?? '')
                 . $formResultCompiler->printNeededJSFunctions();
 
             $assigns['form'] = $form;

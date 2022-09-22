@@ -416,7 +416,7 @@ class FileProvider extends AbstractProvider
             'data-callback-module' => 'TYPO3/CMS/Filelist/ContextMenuActions',
         ];
         if ($itemName === 'delete' && $this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-            $recordTitle = GeneralUtility::fixed_lgd_cs($this->record->getName(), $this->backendUser->uc['titleLen']);
+            $recordTitle = GeneralUtility::fixed_lgd_cs($this->record->getName(), (int)($this->backendUser->uc['titleLen'] ?? 0));
 
             $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
             $confirmMessage = sprintf(

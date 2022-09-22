@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Contains translation tools
  *
+ * @phpstan-type LanguageRef -1|0|positive-int
  * @internal The whole class is subject to be removed, fetch all language info from the current site object.
  */
 class TranslationConfigurationProvider
@@ -40,7 +41,7 @@ class TranslationConfigurationProvider
      * The property flagIcon returns a string <flags-xx>.
      *
      * @param int $pageId Page id (used to get TSconfig configuration setting flag and label for default language)
-     * @return array Array with languages (uid, title, ISOcode, flagIcon)
+     * @return array<LanguageRef, array{uid: int, title: string, ISOcode: string, flagIcon: string}> Array with languages
      */
     public function getSystemLanguages($pageId = 0)
     {

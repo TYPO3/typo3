@@ -141,10 +141,11 @@ class ReplaceFileController
         // rename the folder
         if ($this->fileOrFolderObject instanceof Folder) {
             $parsedUrl = parse_url($this->returnUrl);
-            $queryParts = GeneralUtility::explodeUrl2Array(urldecode($parsedUrl['query']));
-            if ($queryParts['id'] === $this->fileOrFolderObject->getCombinedIdentifier()) {
+            $queryParts = GeneralUtility::explodeUrl2Array(urldecode($parsedUrl['query'] ?? ''));
+            $queryPartsId = $queryParts['id'] ?? null;
+            if ($queryPartsId === $this->fileOrFolderObject->getCombinedIdentifier()) {
                 $this->returnUrl = str_replace(
-                    urlencode($queryParts['id']),
+                    urlencode($queryPartsId),
                     urlencode($this->fileOrFolderObject->getStorage()->getRootLevelFolder()->getCombinedIdentifier()),
                     $this->returnUrl
                 );
