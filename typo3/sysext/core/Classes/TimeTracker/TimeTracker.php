@@ -363,7 +363,8 @@ class TimeTracker implements SingletonInterface
             }
             // Key label:
             $keyLabel = '';
-            if (!$flag_tree && $data['stackPointer']) {
+            $stackPointer = $data['stackPointer'] ?? false;
+            if (!$flag_tree && $stackPointer) {
                 $temp = [];
                 foreach ($data['tsStack'] as $k => $v) {
                     $temp[] = GeneralUtility::fixed_lgd_cs(implode($k ? '.' : '/', $v), -$keyLgd);
@@ -382,19 +383,20 @@ class TimeTracker implements SingletonInterface
                 $theLabel = $data['key'];
             }
             $theLabel = GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
-            $theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
+            $theLabel = $stackPointer ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
             $keyLabel = $theLabel . $keyLabel;
             $item .= '<th scope="row" class="typo3-adminPanel-table-cell-key ' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</th>';
             // Key value:
             $keyValue = $data['value'];
             $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
+            $ownTime = (string)($data['owntime'] ?? '');
             if ($this->printConf['allTime']) {
                 $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['starttime']) . '</td>';
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['owntime']) . '</td>';
+                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($ownTime) . '</td>';
                 $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '+' . $data['subtime'] : '')) . '</td>';
                 $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '=' . $data['deltatime'] : '')) . '</td>';
             } else {
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['owntime']) . '</td>';
+                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($ownTime) . '</td>';
             }
             // Messages:
             $msgArr = [];
