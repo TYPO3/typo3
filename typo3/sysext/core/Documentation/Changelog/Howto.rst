@@ -204,8 +204,8 @@ FlexForm
     Changes affecting FlexForm functionality.
 
 LocalConfiguration
-    Changes that affect the :file:`LocalConfiguration.php or the subordinated
-    :file:`AdditionalConfiguration.php`.
+    Changes that affect the :file:`system/settings.php` or the subordinated
+    :file:`system/additional.php`.
 
 Fluid
     Changes that alter behavior of Fluid like introducing new tags or

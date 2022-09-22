@@ -37,7 +37,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->createSubjectWithMockedMethods(
             [
                 'getDefaultConfigurationFileLocation',
-                'getLocalConfigurationFileLocation',
+                'getSystemConfigurationFileLocation',
             ]
         );
     }
@@ -91,7 +91,7 @@ class ConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLocalConfigurationExecutesDefinedConfigurationFile(): void
+    public function getSystemConfigurationExecutesDefinedConfigurationFile(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -103,7 +103,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $this->subject
             ->expects(self::once())
-            ->method('getLocalConfigurationFileLocation')
+            ->method('getSystemConfigurationFileLocation')
             ->willReturn($configurationFile);
         $this->subject->getLocalConfiguration();
     }
@@ -389,8 +389,6 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable(): void
     {
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
-
         $directory = StringUtility::getUniqueId('test_');
         $absoluteDirectory = $this->getTestDirectory() . '/' . $directory;
         mkdir($absoluteDirectory);
@@ -398,11 +396,12 @@ class ConfigurationManagerTest extends UnitTestCase
         $file = StringUtility::getUniqueId('test_');
         $absoluteFile1 = $absoluteDirectory . '/' . $file;
         touch($absoluteFile1);
-        $subject->_set('localConfigurationFile', $absoluteFile1);
-
         clearstatcache();
+        $this->subject
+            ->method('getSystemConfigurationFileLocation')
+            ->willReturn($absoluteFile1);
 
-        $result = $subject->canWriteConfiguration();
+        $result = $this->subject->canWriteConfiguration();
 
         self::assertTrue($result);
     }
@@ -428,7 +427,7 @@ class ConfigurationManagerTest extends UnitTestCase
         }
 
         $this->subject
-            ->method('getLocalConfigurationFileLocation')
+            ->method('getSystemConfigurationFileLocation')
             ->willReturn($configurationFile);
 
         $pairs = [
@@ -453,14 +452,12 @@ class ConfigurationManagerTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getLocalConfigurationFileLocation']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getSystemConfigurationFileLocation']);
 
         $file = StringUtility::getUniqueId('test_');
         $absoluteFile = $this->getTestDirectory() . '/' . $file;
         touch($absoluteFile);
-        $subject->method('getLocalConfigurationFileLocation')->willReturn($absoluteFile);
-        $subject->_set('localConfigurationFile', $file);
-
+        $subject->method('getSystemConfigurationFileLocation')->willReturn($absoluteFile);
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
 
@@ -469,10 +466,9 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile(): void
     {
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getLocalConfigurationFileLocation', 'getFactoryConfigurationFileLocation']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getSystemConfigurationFileLocation', 'getFactoryConfigurationFileLocation']);
         $localConfigurationFile = '/tests/' . StringUtility::getUniqueId('dummy_');
-        $subject->_set('localConfigurationFile', $localConfigurationFile);
-        $subject->method('getLocalConfigurationFileLocation')->willReturn(Environment::getVarPath() . '/' . $localConfigurationFile);
+        $subject->method('getSystemConfigurationFileLocation')->willReturn(Environment::getVarPath() . '/' . $localConfigurationFile);
 
         $factoryConfigurationFile = StringUtility::getUniqueId('test_') . '.php';
         $factoryConfigurationAbsoluteFile = $this->getTestDirectory() . '/' . $factoryConfigurationFile;
@@ -502,11 +498,10 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile(): void
     {
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getLocalConfigurationFileLocation', 'getFactoryConfigurationFileLocation', 'getAdditionalFactoryConfigurationFileLocation']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getSystemConfigurationFileLocation', 'getFactoryConfigurationFileLocation', 'getAdditionalFactoryConfigurationFileLocation']);
         $testDirectory = $this->getTestDirectory() . '/';
         $localConfigurationFile = $testDirectory . StringUtility::getUniqueId('dummy_');
-        $subject->_set('localConfigurationFile', $localConfigurationFile);
-        $subject->method('getLocalConfigurationFileLocation')->willReturn($localConfigurationFile);
+        $subject->method('getSystemConfigurationFileLocation')->willReturn($localConfigurationFile);
 
         $factoryConfigurationFile =  StringUtility::getUniqueId('test_') . '.php';
         $factoryConfigurationAbsoluteFile = $testDirectory . $factoryConfigurationFile;
@@ -545,20 +540,20 @@ class ConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidLocalConfigurationPathAcceptsWhitelistedPath(): void
+    public function isValidLocalConfigurationPathAcceptsAllowedPath(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
-        $subject->_set('whiteListedLocalConfigurationPaths', ['foo/bar']);
+        $subject->_set('allowedSettingsPaths', ['foo/bar']);
         self::assertTrue($subject->_call('isValidLocalConfigurationPath', 'foo/bar/baz'));
     }
 
     /**
      * @test
      */
-    public function isValidLocalConfigurationPathDeniesNotWhitelistedPath(): void
+    public function isValidLocalConfigurationPathDeniesNotAllowedPath(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
-        $subject->_set('whiteListedLocalConfigurationPaths', ['foo/bar']);
+        $subject->_set('allowedSettingsPaths', ['foo/bar']);
         self::assertFalse($subject->_call('isValidLocalConfigurationPath', 'bar/baz'));
     }
 }

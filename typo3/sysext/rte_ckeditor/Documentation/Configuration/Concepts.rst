@@ -101,8 +101,8 @@ TYPO3 ships with three RTE presets, “default”, “minimal” and “full”.
 
 It is possible for extensions to ship their own preset like “news”, or “site_xyz”.
 
-Registration of a preset happens within :file:`LocalConfiguration.php`,
-:file:`AdditionalConfiguration.php` or within
+Registration of a preset happens within :file:`system/config.php`,
+:file:`system/additional.php` or within
 :file:`ext_localconf.php` of an extension:
 
 .. code-block:: php

@@ -1619,9 +1619,6 @@ tt_content.' . $key . $suffix . ' {
     /**
      * Loads given extension
      *
-     * Warning: This method only works if the upgrade wizard to transform
-     * localconf.php to LocalConfiguration.php was already run
-     *
      * @param string $extensionKey Extension key to load
      * @throws \RuntimeException
      */
@@ -1635,9 +1632,6 @@ tt_content.' . $key . $suffix . ' {
 
     /**
      * Unloads given extension
-     *
-     * Warning: This method only works if the upgrade wizard to transform
-     * localconf.php to LocalConfiguration.php was already run
      *
      * @throws \RuntimeException
      */

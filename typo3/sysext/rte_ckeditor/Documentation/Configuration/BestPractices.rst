@@ -34,7 +34,7 @@ RTE configurations need to be registered in your sitepackages
 
 .. note::
    It is possible but not recommended to define this setting in the projects
-   :file:`LocalConfiguration.php` or :file:`AdditionalConfiguration.php`
+   :file:`system/settings.php` or :file:`system/additional.php`
 
 .. _best-practice-boilerplate:
 

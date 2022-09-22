@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AbstractCest
 {
     public const ENABLE_INSTALL_TOOL_FILEPATH = 'typo3conf/ENABLE_INSTALL_TOOL';
-    public const ADDITIONAL_CONFIGURATION_FILEPATH = 'typo3conf/AdditionalConfiguration.php';
+    public const ADDITIONAL_CONFIGURATION_FILEPATH = 'typo3conf/system/additional.php';
     public const INSTALL_TOOL_PASSWORD = 'temporary password';
 
     public function _before(ApplicationTester $I): void

@@ -206,7 +206,7 @@ SYS:
                   required `Referer` header. As this is a potential security risk, it is recommended to enable this option.'
         availablePasswordHashAlgorithms:
             type: array
-            description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'
+            description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in system/settings.php.'
 EXT:
     type: container
     description: 'Extension Installation'
@@ -274,7 +274,7 @@ BE:
             '5 minutes': '5 minutes'
             '15 minutes': '15 minutes'
             '30 minutes': '30 minutes'
-          description: 'Allowed time interval for the configured rate limit. Individual values using PHP relative formats can be set in AdditionalConfiguration.php.'
+          description: 'Allowed time interval for the configured rate limit. Individual values using PHP relative formats can be set in system/additional.php.'
         loginRateLimitIpExcludeList:
           type: list
           description: 'IP-numbers (with *-wildcards) that are excluded from rate limiting. Syntax similar to [BE][IPmaskList]. An empty value disables the exclude list check.'
@@ -413,7 +413,7 @@ FE:
             '5 minutes': '5 minutes'
             '15 minutes': '15 minutes'
             '30 minutes': '30 minutes'
-          description: 'Allowed time interval for the configured rate limit. Individual values using PHP relative formats can be set in AdditionalConfiguration.php.'
+          description: 'Allowed time interval for the configured rate limit. Individual values using PHP relative formats can be set in system/additional.php.'
         loginRateLimitIpExcludeList:
           type: list
           description: 'IP-numbers (with *-wildcards) that are excluded from rate limiting. Syntax similar to [BE][IPmaskList]. An empty value disables the exclude list check.'
@@ -593,7 +593,7 @@ MAIL:
           type: mixed
           description: |
             <em>only with transport=smtp</em>: Sets the stream context options for the smtp stream<br />
-            The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Configuration/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
+            The configuration with an array must be made in the <code>system/additional.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Configuration/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
         transport_sendmail_command:
             type: text
             description: '<em>only with transport=sendmail</em>: The command to call to send a mail locally.'
@@ -636,7 +636,7 @@ HTTP:
             description: |
               Default single proxy server as &quot;proxy.example.org&quot;.<br />
               Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
-              The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
+              The configuration with an array must be made in the <code>system/additional.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
         ssl_key:
             type: mixed
             description: 'Mixed: Local certificate and an optional passphrase, see http://docs.guzzlephp.org/en/latest/request-options.html#ssl-key'

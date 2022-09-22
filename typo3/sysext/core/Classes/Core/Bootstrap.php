@@ -206,8 +206,8 @@ class Bootstrap
     }
 
     /**
-     * checks if LocalConfiguration.php or PackageStates.php is missing,
-     * used to see if a redirect to the install tool is needed
+     * checks if config/system/settings.php or PackageStates.php is missing,
+     * used to see if a redirect to the installer is needed
      *
      * @param ConfigurationManager $configurationManager
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
@@ -215,8 +215,22 @@ class Bootstrap
      */
     public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager): bool
     {
-        return file_exists($configurationManager->getLocalConfigurationFileLocation())
+        $properlyConfigured = file_exists($configurationManager->getSystemConfigurationFileLocation())
             && (Environment::isComposerMode() || file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php'));
+        if ($properlyConfigured) {
+            return true;
+        }
+        // Check if the previous filename "LocalConfiguration" exists. If so, let's move it to the new location
+        // Can be removed with TYPO3 v14.0
+        if (file_exists($configurationManager->getLocalConfigurationFileLocation())) {
+            mkdir(dirname($configurationManager->getSystemConfigurationFileLocation()), 02775, true);
+            rename($configurationManager->getLocalConfigurationFileLocation(), $configurationManager->getSystemConfigurationFileLocation());
+            if (file_exists(Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php')) {
+                rename(Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php', $configurationManager->getAdditionalConfigurationFileLocation());
+            }
+            return Environment::isComposerMode() || file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
+        }
+        return false;
     }
 
     /**

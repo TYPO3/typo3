@@ -177,7 +177,7 @@ class Router {
 
   /**
    * Extensions which come with new default settings in ext_conf_template.txt extension
-   * configuration files get their new defaults written to LocalConfiguration.
+   * configuration files get their new defaults written to system/settings.php
    */
   public executeSilentExtensionConfigurationSynchronization(): void {
     this.updateLoadingInfo('Executing silent extension configuration synchronization');
@@ -245,7 +245,7 @@ class Router {
         + '<p>The box below may additionally reveal further details on what went wrong depending on your debug settings.'
         + ' It may help to temporarily switch to debug mode using <b>Settings > Configuration Presets > Debug settings.</b></p>'
         + '<p>If this error happens at an early state and no full exception back trace is shown, it may also help'
-        + ' to manually increase debugging output in <strong>typo3conf/LocalConfiguration.php</strong>:'
+        + ' to manually increase debugging output in <strong>%config-dir%/system/settings.php</strong>:'
         + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, '
         + '<code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
         + '<code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'

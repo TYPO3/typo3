@@ -1,11 +1,11 @@
 /.env
 /composer.json
 /composer.lock
-/config
+/config/*
+!/config/system
+/config/system/*
+!/config/system/additional.php.dist
 /local
-/public/*
-!/public/typo3conf
-/public/typo3conf/*
-!/public/typo3conf/AdditionalConfiguration.php.dist
+/public
 /var
 /vendor

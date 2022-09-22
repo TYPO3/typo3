@@ -85,7 +85,7 @@ cannot be configured in the backend.
 
 You must either configure this in:
 
-#. The file :file:`typo3conf/AdditionalConfiguration.php`
+#. The file :file:`%config-dir%/system/additional.php`
 #. Or in an extension in the file :file:`EXT:<extkey>/ext_localconf.php`
 
 .. code-block:: php

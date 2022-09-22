@@ -127,7 +127,7 @@ class Installer implements MiddlewareInterface
     }
 
     /**
-     * First installation is in progress, if LocalConfiguration does not exist,
+     * First installation is in progress, if system/settings.php does not exist,
      * or if FIRST_INSTALL file exists.
      *
      * @param ServerRequestInterface $request
@@ -135,7 +135,7 @@ class Installer implements MiddlewareInterface
      */
     protected function canHandleRequest(ServerRequestInterface $request): bool
     {
-        $localConfigurationFileLocation = (new ConfigurationManager())->getLocalConfigurationFileLocation();
+        $localConfigurationFileLocation = (new ConfigurationManager())->getSystemConfigurationFileLocation();
         return !@is_file($localConfigurationFileLocation) || EnableFileService::isFirstInstallAllowed();
     }
 

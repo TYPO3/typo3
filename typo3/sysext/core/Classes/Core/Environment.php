@@ -231,9 +231,8 @@ class Environment
 
     /**
      * The folder where all global (= installation-wide) configuration like
-     * - LocalConfiguration.php,
-     * - AdditionalConfiguration.php, and
-     * - PackageStates.php
+     * - system/settings.php and
+     * - system/additional.php
      * is put.
      * This folder usually has to be writable for TYPO3 in order to work.
      *
@@ -311,6 +310,12 @@ class Environment
     /**
      * Previously known as PATH_typo3conf
      * Please note that this might be gone at some point
+     *
+     * The folder where global configuration like
+     * - legacy LocalConfiguration.php,
+     * - legacy AdditionalConfiguration.php, and
+     * - PackageStates.php
+     * is located.
      *
      * @return string
      */

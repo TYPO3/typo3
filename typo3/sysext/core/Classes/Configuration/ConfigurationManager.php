@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This class handles the access to the files
  * - EXT:core/Configuration/DefaultConfiguration.php (default TYPO3_CONF_VARS)
- * - typo3conf/LocalConfiguration.php (overrides of TYPO3_CONF_VARS)
- * - typo3conf/AdditionalConfiguration.php (optional additional local code blocks)
+ * - config/system/settings.php or typo3conf/system/settings.php - previously known as LocalConfiguration.php
+ * - config/system/additional.php or typo3conf/system/additional.php (optional additional code blocks) - previously known as typo3conf/AdditionalConfiguration.php
  *
  * IMPORTANT:
  *   This class is intended for internal core use ONLY.
  *   Extensions should usually use the resulting $GLOBALS['TYPO3_CONF_VARS'] array,
- *   do not try to modify settings in LocalConfiguration.php with an extension.
+ *   do not try to modify settings in the config/system/settings.php file with an extension.
  * @internal
  */
 class ConfigurationManager
@@ -47,16 +47,6 @@ class ConfigurationManager
      * @var string Path to description file for TYPO3_CONF_VARS, relative to the public web folder
      */
     protected $defaultConfigurationDescriptionFile = 'EXT:core/Configuration/DefaultConfigurationDescription.yaml';
-
-    /**
-     * @var string Path to local overload TYPO3_CONF_VARS file, relative to the public web folder
-     */
-    protected $localConfigurationFile = 'LocalConfiguration.php';
-
-    /**
-     * @var string Path to additional local file, relative to the public web folder
-     */
-    protected $additionalConfigurationFile = 'AdditionalConfiguration.php';
 
     /**
      * @var string Path to factory configuration file used during installation as LocalConfiguration boilerplate
@@ -74,7 +64,7 @@ class ConfigurationManager
      *
      * @var array
      */
-    protected $whiteListedLocalConfigurationPaths = [
+    protected array $allowedSettingsPaths = [
         'EXTCONF',
         'DB',
         'SYS/caching/cacheConfigurations',
@@ -117,12 +107,17 @@ class ConfigurationManager
     }
 
     /**
-     * Return local configuration array typo3conf/LocalConfiguration.php
+     * Return configuration array of typo3conf/system/settings.php or config/system/settings.php, falls back
+     * to typo3conf/LocalConfiguration.php
      *
      * @return array Content array of local configuration file
      */
     public function getLocalConfiguration(): array
     {
+        $settingsFile = $this->getSystemConfigurationFileLocation();
+        if (is_file($settingsFile)) {
+            return require $settingsFile;
+        }
         return require $this->getLocalConfigurationFileLocation();
     }
 
@@ -130,11 +125,35 @@ class ConfigurationManager
      * Get the file location of the local configuration file,
      * currently the path and filename.
      *
+     * Path to local overload TYPO3_CONF_VARS file.
+     *
      * @internal
      */
     public function getLocalConfigurationFileLocation(): string
     {
-        return Environment::getLegacyConfigPath() . '/' . $this->localConfigurationFile;
+        return Environment::getLegacyConfigPath() . '/LocalConfiguration.php';
+    }
+
+    /**
+     * Get the file location of the TYPO3-project specific settings file,
+     * currently the path and filename.
+     *
+     * Path to local overload TYPO3_CONF_VARS file.
+     *
+     * @internal
+     */
+    public function getSystemConfigurationFileLocation(bool $relativeToProjectRoot = false): string
+    {
+        // For composer-based installations, the file is in config/system/settings.php
+        if (Environment::getProjectPath() !== Environment::getPublicPath()) {
+            $path = Environment::getConfigPath() . '/system/settings.php';
+        } else {
+            $path = Environment::getLegacyConfigPath() . '/system/settings.php';
+        }
+        if ($relativeToProjectRoot) {
+            return substr($path, strlen(Environment::getProjectPath()) + 1);
+        }
+        return $path;
     }
 
     /**
@@ -158,7 +177,11 @@ class ConfigurationManager
      */
     public function getAdditionalConfigurationFileLocation()
     {
-        return Environment::getLegacyConfigPath() . '/' . $this->additionalConfigurationFile;
+        // For composer-based installations, the file is in config/system/additional.php
+        if (Environment::getProjectPath() !== Environment::getPublicPath()) {
+            return Environment::getConfigPath() . '/system/additional.php';
+        }
+        return Environment::getLegacyConfigPath() . '/system/additional.php';
     }
 
     /**
@@ -291,7 +314,7 @@ class ConfigurationManager
     }
 
     /**
-     * Enables a certain feature and writes the option to LocalConfiguration.php
+     * Enables a certain feature and writes the option to system/settings.php
      * Short-hand method
      * Warning: TO BE USED ONLY to enable a single feature.
      * NOT TO BE USED within iterations to enable multiple features.
@@ -306,7 +329,7 @@ class ConfigurationManager
     }
 
     /**
-     * Disables a feature and writes the option to LocalConfiguration.php
+     * Disables a feature and writes the option to system/settings.php
      * Short-hand method
      * Warning: TO BE USED ONLY to disable a single feature.
      * NOT TO BE USED within iterations to disable multiple features.
@@ -328,8 +351,8 @@ class ConfigurationManager
      */
     public function canWriteConfiguration()
     {
-        $fileLocation = $this->getLocalConfigurationFileLocation();
-        return @is_writable(file_exists($fileLocation) ? $fileLocation : Environment::getLegacyConfigPath() . '/');
+        $fileLocation = $this->getSystemConfigurationFileLocation();
+        return @is_writable(file_exists($fileLocation) ? $fileLocation : dirname($fileLocation));
     }
 
     /**
@@ -340,7 +363,7 @@ class ConfigurationManager
      */
     public function exportConfiguration(): void
     {
-        if (@is_file($this->getLocalConfigurationFileLocation())) {
+        if (@is_file($this->getSystemConfigurationFileLocation())) {
             $localConfiguration = $this->getLocalConfiguration();
             $defaultConfiguration = $this->getDefaultConfiguration();
             ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $localConfiguration);
@@ -357,7 +380,7 @@ class ConfigurationManager
     }
 
     /**
-     * Write local configuration array to typo3conf/LocalConfiguration.php
+     * Write configuration array to %config-dir%/system/settings.php
      *
      * @param array $configuration The local configuration to be written
      * @throws \RuntimeException
@@ -366,16 +389,16 @@ class ConfigurationManager
      */
     public function writeLocalConfiguration(array $configuration)
     {
-        $localConfigurationFile = $this->getLocalConfigurationFileLocation();
+        $systemSettingsFile = $this->getSystemConfigurationFileLocation();
         if (!$this->canWriteConfiguration()) {
             throw new \RuntimeException(
-                $localConfigurationFile . ' is not writable.',
+                $this->getSystemConfigurationFileLocation(true) . ' is not writable.',
                 1346323822
             );
         }
         $configuration = ArrayUtility::sortByKeyRecursive($configuration);
         $result = GeneralUtility::writeFile(
-            $localConfigurationFile,
+            $systemSettingsFile,
             "<?php\n" .
                 'return ' .
                     ArrayUtility::arrayExport($configuration) .
@@ -383,13 +406,13 @@ class ConfigurationManager
             true
         );
 
-        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($localConfigurationFile);
+        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($systemSettingsFile);
 
         return $result;
     }
 
     /**
-     * Write additional configuration array to typo3conf/AdditionalConfiguration.php
+     * Write additional configuration array to config/system/additional.php / typo3conf/system/additional.php
      *
      * @param array $additionalConfigurationLines The configuration lines to be written
      * @throws \RuntimeException
@@ -406,17 +429,17 @@ class ConfigurationManager
 
     /**
      * Uses FactoryConfiguration file and a possible AdditionalFactoryConfiguration
-     * file in typo3conf to create a basic LocalConfiguration.php. This is used
-     * by the install tool in an early step.
+     * file in typo3conf to create a basic config/system/settings.php. This is used
+     * by the installer in an early step.
      *
      * @throws \RuntimeException
      * @internal
      */
     public function createLocalConfigurationFromFactoryConfiguration()
     {
-        if (file_exists($this->getLocalConfigurationFileLocation())) {
+        if (file_exists($this->getSystemConfigurationFileLocation())) {
             throw new \RuntimeException(
-                'LocalConfiguration.php exists already',
+                basename($this->getSystemConfigurationFileLocation(true)) . ' already exists',
                 1364836026
             );
         }
@@ -441,11 +464,11 @@ class ConfigurationManager
      * @param string $path Path to search for
      * @return bool TRUE if access is allowed
      */
-    protected function isValidLocalConfigurationPath($path)
+    protected function isValidLocalConfigurationPath(string $path): bool
     {
         // Early return for white listed paths
-        foreach ($this->whiteListedLocalConfigurationPaths as $whiteListedPath) {
-            if (str_starts_with($path, $whiteListedPath)) {
+        foreach ($this->allowedSettingsPaths as $allowedSettingsPath) {
+            if (str_starts_with($path, $allowedSettingsPath)) {
                 return true;
             }
         }

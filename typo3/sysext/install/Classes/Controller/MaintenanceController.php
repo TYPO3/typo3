@@ -598,7 +598,7 @@ class MaintenanceController extends AbstractController
                     $newSystemMaintainersList = $existingSystemMaintainersList;
                     $newSystemMaintainersList[] = $newAdminUserUid;
 
-                    // Update the LocalConfiguration.php file with the new list
+                    // Update the system/settings.php file with the new list
                     $this->configurationManager->setLocalConfigurationValuesByPathValuePairs(
                         ['SYS/systemMaintainers' => $newSystemMaintainersList]
                     );

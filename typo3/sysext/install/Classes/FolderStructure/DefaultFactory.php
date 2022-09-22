@@ -119,6 +119,11 @@ class DefaultFactory
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                             ],
+                            [
+                                'name' => 'system',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
                         ],
                     ],
                     $this->getFileadminStructure(),
@@ -197,6 +202,11 @@ class DefaultFactory
                         'children' => [
                             [
                                 'name' => 'sites',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                            [
+                                'name' => 'system',
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                             ],

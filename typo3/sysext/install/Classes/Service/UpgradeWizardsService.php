@@ -429,7 +429,7 @@ class UpgradeWizardsService
 
     /**
      * Marks some wizard as being "seen" so that it not shown again.
-     * Writes the info in LocalConfiguration.php
+     * Writes the info in system/settings.php
      *
      * @param string $identifier
      * @throws \RuntimeException

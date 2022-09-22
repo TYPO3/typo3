@@ -216,7 +216,7 @@ class InstallerController
     public function checkEnvironmentAndFoldersAction(): ResponseInterface
     {
         return new JsonResponse([
-            'success' => @is_file($this->configurationManager->getLocalConfigurationFileLocation()),
+            'success' => @is_file($this->configurationManager->getSystemConfigurationFileLocation()),
         ]);
     }
 
@@ -1163,7 +1163,7 @@ For each website you need a TypoScript template on the main page of your website
     }
 
     /**
-     * Check LocalConfiguration.php for required database settings:
+     * Check system/settings.php for required database settings:
      * - 'username' and 'password' are mandatory, but may be empty
      * - if 'driver' is pdo_sqlite and 'path' is set, its ok, too
      *

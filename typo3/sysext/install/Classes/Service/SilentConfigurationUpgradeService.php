@@ -330,7 +330,7 @@ class SilentConfigurationUpgradeService
             if ($legacyStrictRedirects !== '' && (bool)$legacyStrictRedirects === true) {
                 $newParameters['HTTP/allow_redirects']['strict'] = true;
             }
-            // defaults are used, no need to set the option in LocalConfiguration.php
+            // defaults are used, no need to set the option in system/settings.php
             if (empty($newParameters['HTTP/allow_redirects'])) {
                 unset($newParameters['HTTP/allow_redirects']);
             }
@@ -665,7 +665,7 @@ class SilentConfigurationUpgradeService
     }
 
     /**
-     * Migrate the configuration setting BE/lockSSL to boolean if set in the LocalConfiguration.php file
+     * Migrate the configuration setting BE/lockSSL to boolean if set in the system/settings.php file
      *
      * @throws ConfigurationChangedException
      */
@@ -679,7 +679,7 @@ class SilentConfigurationUpgradeService
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 
@@ -848,7 +848,7 @@ class SilentConfigurationUpgradeService
     }
 
     /**
-     * Migrate the configuration setting BE/lang/debug if set in the LocalConfiguration.php file
+     * Migrate the configuration setting BE/lang/debug if set in the system/settings.php file
      *
      * @throws ConfigurationChangedException
      */
@@ -863,7 +863,7 @@ class SilentConfigurationUpgradeService
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 
@@ -944,7 +944,7 @@ class SilentConfigurationUpgradeService
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 
@@ -964,7 +964,7 @@ class SilentConfigurationUpgradeService
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 
@@ -1048,7 +1048,7 @@ class SilentConfigurationUpgradeService
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 
@@ -1068,7 +1068,7 @@ class SilentConfigurationUpgradeService
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 
@@ -1104,7 +1104,7 @@ class SilentConfigurationUpgradeService
                 }
             }
         } catch (MissingArrayPathException $e) {
-            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 }

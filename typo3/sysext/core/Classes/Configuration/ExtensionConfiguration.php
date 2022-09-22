@@ -138,7 +138,7 @@ class ExtensionConfiguration
      * - It is not possible to store 'null' as value, giving $value=null
      *   or no value at all will unset the path
      * - Setting a value and calling ->get() afterwards will still return the new value.
-     * - Warning on AdditionalConfiguration.php: If this file overwrites settings, it spoils the
+     * - Warning on system/additional.php: If this file overwrites settings, it spoils the
      *   ->set() call and values may not end up as expected.
      *
      * @param string $extension Extension name
@@ -167,7 +167,7 @@ class ExtensionConfiguration
     /**
      * Set new configuration of all extensions and reload TYPO3_CONF_VARS.
      * This is a "do all" variant of set() for all extensions that prevents
-     * writing and loading LocalConfiguration many times.
+     * writing and loading system/settings.php many times.
      *
      * @param array $configuration Configuration of all extensions
      * @param bool $skipWriteIfLocalConfiguationDoesNotExist
@@ -176,7 +176,7 @@ class ExtensionConfiguration
     public function setAll(array $configuration, bool $skipWriteIfLocalConfiguationDoesNotExist = false): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-        if ($skipWriteIfLocalConfiguationDoesNotExist === false || @file_exists($configurationManager->getLocalConfigurationFileLocation())) {
+        if ($skipWriteIfLocalConfiguationDoesNotExist === false || @file_exists($configurationManager->getSystemConfigurationFileLocation())) {
             $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS', $configuration);
         }
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] = $configuration;

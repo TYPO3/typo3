@@ -197,8 +197,8 @@ The hit counter can be activated via
 :ref:`Feature Toggle <t3coreapi:feature-toggles>`, either in the backend in
 :guilabel:`Settings` > :guilabel:`Feature Toggles` >
 :guilabel:`Redirects: hit count` or in the
-configuration file :file:`LocalConfiguration.php` or
-:file:`AdditionalConfiguration.php`.
+configuration file :file:`system/settings.php` or
+:file:`system/additional.php`.
 
 .. code-block:: php
 

@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * This class does not use any TYPO3 instance specific configuration, it only
  * sets up things based on the server environment and core code. Even with a
- * missing typo3conf/LocalConfiguration.php this script will be successful.
+ * missing system/settings.php this script will be successful.
  *
  * The script aborts execution with an error message if
  * some part fails or conditions are not met.
