@@ -110,11 +110,8 @@ class BackendUserRepository extends Repository
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%'),
             );
         }
-        if (count($constraints) === 1) {
-            $query->matching(reset($constraints));
-        } elseif (count($constraints) >= 2) {
-            $query->matching($query->logicalAnd(...$constraints));
-        }
+        $query->matching($query->logicalAnd(...$constraints));
+
         /** @var QueryResult $result */
         $result = $query->execute();
         return $result;

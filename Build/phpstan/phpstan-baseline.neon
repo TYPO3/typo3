@@ -261,11 +261,6 @@ parameters:
 			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserRepository.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 1 parameter, at least 2 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserRepository.php
-
-		-
 			message: "#^Offset 'tables_modify' on array\\{tables_select\\: array\\<string, mixed\\>, tables_modify\\: array\\<string, mixed\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/beuser/Classes/Service/UserInformationService.php

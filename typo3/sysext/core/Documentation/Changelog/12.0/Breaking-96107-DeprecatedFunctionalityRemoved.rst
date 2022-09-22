@@ -71,8 +71,8 @@ The following PHP interfaces changed:
 - :php:`\TYPO3\CMS\Core\Collection\CollectionInterface` (no longer extends \Serializable)
 - :php:`\TYPO3\CMS\Core\Resource\FolderInterface` (method :php:`getFile()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
-- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalAnd` (all three arguments are now type hinted as `ConstraintInterface`)
-- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalOr` (all three arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalAnd` (all arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalOr` (all arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface` (method :php:`setQuery()` added)
 - :php:`\TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` (method :php:`setFinisherIdentifier()` added)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface` (method :php:`setConfiguration()` added)
@@ -209,8 +209,8 @@ The following PHP class methods changed signature according to previous deprecat
 - :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->quote()` (second argument requires an integer)
 - :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->setTSlogMessage()` (second argument requires a string)
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
-- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalAnd()` (all three arguments are now type hinted as `ConstraintInterface`)
-- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalOr()` (all three arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalAnd()` (all arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalOr()` (all arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->linkUrlMail()` (all arguments are now type hinted as `string`)
 
 The following PHP class methods changed signature according to previous deprecations:

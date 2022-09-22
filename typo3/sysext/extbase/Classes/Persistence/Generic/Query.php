@@ -380,36 +380,52 @@ class Query implements QueryInterface
 
     /**
      * Performs a logical conjunction of the two given constraints. The method
-     * takes two or more constraints and concatenates them with a boolean AND.
+     * takes an arbitrary number of constraints and concatenates them with a boolean AND.
      *
-     * @param ConstraintInterface ...$furtherConstraints
+     * @param ConstraintInterface ...$constraints
      */
-    public function logicalAnd(ConstraintInterface $constraint1, ConstraintInterface $constraint2, ConstraintInterface ...$furtherConstraints): AndInterface
+    public function logicalAnd(ConstraintInterface ...$constraints): AndInterface
     {
-        $resultingConstraint = $this->qomFactory->_and($constraint1, $constraint2);
-        $furtherConstraints = array_filter($furtherConstraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
-
-        foreach ($furtherConstraints as $furtherConstraint) {
-            $resultingConstraint = $this->qomFactory->_and($resultingConstraint, $furtherConstraint);
+        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+        switch (count($constraints)) {
+            case 0:
+                $alwaysTrue = $this->greaterThan('uid', 0);
+                return $this->qomFactory->_and($alwaysTrue, $alwaysTrue);
+            case 1:
+                $alwaysTrue = $this->greaterThan('uid', 0);
+                return $this->qomFactory->_and(array_shift($constraints), $alwaysTrue);
+            default:
+                $resultingConstraint = $this->qomFactory->_and(array_shift($constraints), array_shift($constraints));
+                foreach ($constraints as $furtherConstraint) {
+                    $resultingConstraint = $this->qomFactory->_and($resultingConstraint, $furtherConstraint);
+                }
+                return $resultingConstraint;
         }
-        return $resultingConstraint;
     }
 
     /**
      * Performs a logical disjunction of the two given constraints. The method
-     * takes two or more constraints and concatenates them with a boolean OR.
+     * takes an arbitrary number of constraints and concatenates them with a boolean OR.
      *
-     * @param ConstraintInterface ...$furtherConstraints
+     * @param ConstraintInterface ...$constraints
      */
-    public function logicalOr(ConstraintInterface $constraint1, ConstraintInterface $constraint2, ConstraintInterface ...$furtherConstraints): OrInterface
+    public function logicalOr(ConstraintInterface ...$constraints): OrInterface
     {
-        $resultingConstraint = $this->qomFactory->_or($constraint1, $constraint2);
-        $furtherConstraints = array_filter($furtherConstraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
-
-        foreach ($furtherConstraints as $furtherConstraint) {
-            $resultingConstraint = $this->qomFactory->_or($resultingConstraint, $furtherConstraint);
+        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+        switch (count($constraints)) {
+            case 0:
+                $alwaysFalse = $this->equals('uid', 0);
+                return $this->qomFactory->_or($alwaysFalse, $alwaysFalse);
+            case 1:
+                $alwaysFalse = $this->equals('uid', 0);
+                return $this->qomFactory->_or(array_shift($constraints), $alwaysFalse);
+            default:
+                $resultingConstraint = $this->qomFactory->_or(array_shift($constraints), array_shift($constraints));
+                foreach ($constraints as $furtherConstraint) {
+                    $resultingConstraint = $this->qomFactory->_or($resultingConstraint, $furtherConstraint);
+                }
+                return $resultingConstraint;
         }
-        return $resultingConstraint;
     }
 
     /**

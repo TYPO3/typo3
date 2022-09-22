@@ -14,9 +14,7 @@ and :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface::logicalOr()` has change
 As a consequence the method signature of :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query::logicalAnd()`
 and :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query::logicalOr()` has changed as well.
 
-Both methods do no longer accept an array as first parameter. Furthermore both
-methods have two mandatory :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface`
-parameters to form a logical conjunction on.
+Both methods do no longer accept an array as first parameter.
 
 Both methods do indeed accept an infinite number of further constraints.
 
@@ -29,25 +27,12 @@ instance.
 Impact
 ======
 
-This change impacts all usages of said methods with
-
-- either just one array parameter containing all constraints
-- or passing just a single constraint
-
-An array is no longer accepted as first parameter because it does not
-guarantee the minimum number (2) of constraints is given.
-
-Just one constraint is no longer accepted because in that case, the
-incoming constraint would have simply been returned which is not compatible
-with returning either a :php:`AndInterface` or a :php:`OrInterface` but just
-a :php:`ConstraintInterface`.
-
+This change impacts all usages of said methods with just one array parameter containing all constraints.
 
 Affected Installations
 ======================
 
-All installations that passed all constraints as array or that passed just
-one constraint.
+All installations that passed all constraints as array.
 
 
 Migration
@@ -79,48 +64,5 @@ easy and quickly done. Simply don't use an array:
        $query->equals('propertyName2', 'value2'),
        $query->equals('propertyName3', 'value3'),
    ));
-
-Things become a little more tricky as soon as the number of constraints is below
-2 or unknown before runtime.
-
-**Example**:
-
-.. code-block:: php
-
-   $constraints = [];
-
-   if (...) {
-      $constraints[] = $query->equals('propertyName1', 'value1');
-   }
-
-   if (...) {
-      $constraints[] = $query->equals('propertyName2', 'value2');
-   }
-
-   $query = $this->createQuery();
-   $query->matching($query->logicalAnd($constraints));
-
-In this case there needs to be a distinction of number of constraints in the code base:
-
-.. code-block:: php
-
-   $constraints = [];
-
-   if (...) {
-      $constraints[] = $query->equals('propertyName1', 'value1');
-   }
-
-   if (...) {
-      $constraints[] = $query->equals('propertyName2', 'value2');
-   }
-
-   $query = $this->createQuery();
-
-   $numberOfConstraints = count($constraints);
-   if ($numberOfConstraints === 1) {
-       $query->matching(reset($constraints));
-   } elseif ($numberOfConstraints >= 2) {
-       $query->matching($query->logicalAnd(...$constraints));
-   }
 
 .. index:: PHP-API, FullyScanned, ext:extbase

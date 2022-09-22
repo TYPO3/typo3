@@ -289,11 +289,7 @@ class TranslationTest extends FunctionalTestCase
             $constraints[] = $query->equals('uid', $uid);
         }
 
-        if (count($constraints) === 1) {
-            $query->matching(reset($constraints));
-        } elseif (count($constraints) >= 2) {
-            $query->matching($query->logicalOr(...$constraints));
-        }
+        $query->matching($query->logicalOr(...$constraints));
 
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();

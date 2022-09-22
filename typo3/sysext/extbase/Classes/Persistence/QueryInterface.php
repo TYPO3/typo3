@@ -154,19 +154,19 @@ interface QueryInterface
 
     /**
      * Performs a logical conjunction of the two given constraints. The method
-     * takes two or more constraints and concatenates them with a boolean AND.
+     * takes an arbitrary number of constraints and concatenates them with a boolean AND.
      *
-     * @param ConstraintInterface ...$furtherConstraints
+     * @param ConstraintInterface ...$constraints
      */
-    public function logicalAnd(ConstraintInterface $constraint1, ConstraintInterface $constraint2, ConstraintInterface ...$furtherConstraints): AndInterface;
+    public function logicalAnd(ConstraintInterface ...$constraints): AndInterface;
 
     /**
      * Performs a logical disjunction of the two given constraints. The method
-     * takes two or more constraints and concatenates them with a boolean OR.
+     * takes an arbitrary number of constraints and concatenates them with a boolean OR.
      *
-     * @param ConstraintInterface ...$furtherConstraints
+     * @param ConstraintInterface ...$constraints
      */
-    public function logicalOr(ConstraintInterface $constraint1, ConstraintInterface $constraint2, ConstraintInterface ...$furtherConstraints): OrInterface;
+    public function logicalOr(ConstraintInterface ...$constraints): OrInterface;
 
     /**
      * Performs a logical negation of the given constraint
