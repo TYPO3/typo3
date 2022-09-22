@@ -243,7 +243,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     // Add RequireJS module. This is only needed, in case the element
                     // is not readOnly, since otherwise no checkbox changes take place.
-                    $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+                    $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
                         '@typo3/backend/form-engine/element/select-check-box-element.js'
                     )->instance($checkboxId);
                 }
@@ -267,7 +267,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tooltip.js');
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tooltip.js');
         return $resultArray;
     }
 

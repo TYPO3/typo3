@@ -88,7 +88,7 @@ class T3editorElement extends AbstractFormElement
     public function render(): array
     {
         $this->resultArray = $this->initializeResultArray();
-        $this->resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
+        $this->resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
 
         // Compile and register t3editor configuration
         GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();

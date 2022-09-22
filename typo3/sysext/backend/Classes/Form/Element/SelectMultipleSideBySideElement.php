@@ -98,6 +98,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
+            'javaScriptModules' => [],
+            // @deprecated will be removed in TYPO3 v13.0
             'requireJsModules' => [],
             'inlineData' => [],
             'html' => '',
@@ -391,7 +393,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/form-engine/element/select-multiple-side-by-side-element.js'
         )->instance($selectedOptionsFieldId, $availableOptionsFieldId);
 

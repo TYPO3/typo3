@@ -79,7 +79,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         // MFA can NOT be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger disabled".*disabled="disabled"/s', $result['html']);
         // JavaScript is NOT added
-        self::assertEmpty($result['requireJsModules']);
+        self::assertEmpty($result['javaScriptModules']);
     }
 
     /**
@@ -103,7 +103,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         // MFA can NOT be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger disabled".*disabled="disabled"/s', $result['html']);
         // JavaScript is NOT added
-        self::assertEmpty($result['requireJsModules']);
+        self::assertEmpty($result['javaScriptModules']);
     }
 
     /**
@@ -135,8 +135,8 @@ class MfaInfoElementTest extends FunctionalTestCase
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
-        self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['requireJsModules'][0]);
-        self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['requireJsModules'][0]->getName());
+        self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['javaScriptModules'][0]);
+        self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['javaScriptModules'][0]->getName());
     }
 
     /**
@@ -168,8 +168,8 @@ class MfaInfoElementTest extends FunctionalTestCase
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
-        self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['requireJsModules'][0]);
-        self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['requireJsModules'][0]->getName());
+        self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['javaScriptModules'][0]);
+        self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['javaScriptModules'][0]->getName());
     }
 
     /**
@@ -205,7 +205,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         // MFA deactivation button is not shown
         self::assertStringNotContainsString('t3js-deactivate-mfa-button', $result['html']);
         // JavaScript is NOT added
-        self::assertEmpty($result['requireJsModules']);
+        self::assertEmpty($result['javaScriptModules']);
     }
 
     protected function getFormElementResult(array $data): array

@@ -352,7 +352,7 @@ class GroupElement extends AbstractFormElement
         $html[] =   '<input ' . GeneralUtility::implodeAttributes($hiddenElementAttrs, true) . '>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/form-engine/element/group-element.js'
         )->instance($fieldId);
 

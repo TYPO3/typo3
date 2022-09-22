@@ -59,7 +59,7 @@ class FilesControlContainer extends AbstractContainer
     /**
      * @var array<int,JavaScriptModuleInstruction|string|array<string,string>>
      */
-    protected array $requireJsModules = [];
+    protected array $javaScriptModules = [];
 
     protected IconFactory $iconFactory;
     protected InlineStackProcessor $inlineStackProcessor;
@@ -295,8 +295,8 @@ class FilesControlContainer extends AbstractContainer
         }
 
         $resultArray['html'] = $view->render('Form/FilesControlContainer');
-        $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/container/files-control-container.js');
+        $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $this->javaScriptModules);
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/container/files-control-container.js');
 
         return $resultArray;
     }
@@ -370,7 +370,7 @@ class FilesControlContainer extends AbstractContainer
                             ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit')) . '
                         </button>';
 
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/drag-uploader.js');
+                    $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/drag-uploader.js');
                 }
                 if ($showByUrl) {
                     $buttonText = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button');
@@ -394,7 +394,7 @@ class FilesControlContainer extends AbstractContainer
 							' . htmlspecialchars($buttonText) . '
                         </button>';
 
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/online-media.js');
+                    $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/online-media.js');
                 }
             }
         }

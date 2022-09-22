@@ -45,7 +45,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            'requireJsModules' => [],
+            'javaScriptModules' => [],
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
@@ -102,7 +102,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            'requireJsModules' => [],
+            'javaScriptModules' => [],
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
@@ -163,7 +163,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            'requireJsModules' => [],
+            'javaScriptModules' => [],
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];

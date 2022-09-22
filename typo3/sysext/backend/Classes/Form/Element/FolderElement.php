@@ -257,7 +257,7 @@ class FolderElement extends AbstractFormElement
                 ' . implode(LF, $html) . '
             </typo3-formengine-element-category>';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/folder-element.js');
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/folder-element.js');
 
         return $resultArray;
     }

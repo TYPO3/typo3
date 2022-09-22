@@ -247,7 +247,7 @@ class InputSlugElement extends AbstractFormElement
             'parentPageId' => $parentPageId,
             'includeUidInValues' => $includeUidInValues,
         ];
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/form-engine/element/slug-element.js'
         )->instance('#' . $thisSlugId, $optionsForModule);
         return $resultArray;

@@ -57,9 +57,9 @@ class InlineControlContainer extends AbstractContainer
     protected $iconFactory;
 
     /**
-     * @var array<int,JavaScriptModuleInstruction|string|array<string,string>>
+     * @var array<int,JavaScriptModuleInstruction>
      */
-    protected $requireJsModules = [];
+    protected $javaScriptModules = [];
 
     /**
      * Default field information enabled for this element.
@@ -367,15 +367,15 @@ class InlineControlContainer extends AbstractContainer
                     'nameForm' => $nameForm,
                     'config' => $config,
                     'customControlConfig' => $customControlConfig,
-                    // Warning: By reference should be used with care here and exists mostly to allow additional $resultArray['requireJsModules']
+                    // Warning: By reference should be used with care here and exists mostly to allow additional $resultArray['javaScriptModules']
                     'resultArray' => &$resultArray,
                 ];
                 $html .= GeneralUtility::callUserFunction($customControlConfig['userFunc'], $parameters, $this);
             }
             $html .= '</div>';
         }
-        $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+        $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $this->javaScriptModules);
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/form-engine/container/inline-control-container.js'
         )->instance($nameObject);
 

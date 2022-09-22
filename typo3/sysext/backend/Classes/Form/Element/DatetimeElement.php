@@ -280,7 +280,7 @@ class DatetimeElement extends AbstractFormElement
                 </div>
             </typo3-formengine-element-datetime>';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/datetime-element.js');
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/datetime-element.js');
 
         return $resultArray;
     }

@@ -100,7 +100,7 @@ class ListModule extends AbstractNode
                 'id' => htmlspecialchars($id),
                 'href' => (string)$uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
             ],
-            'requireJsModules' => [
+            'javaScriptModules' => [
                 JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/list-module.js')->instance('#' . $id),
             ],
         ];

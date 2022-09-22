@@ -42,7 +42,7 @@ final class CustomFileControlsEvent
 
     /**
      * WARNING: Modifying the result array should be used with care. It mostly
-     * only exists to allow additional $resultArray['requireJsModules'].
+     * only exists to allow additional $resultArray['javaScriptModules'].
      */
     public function setResultArray(array $resultArray): void
     {

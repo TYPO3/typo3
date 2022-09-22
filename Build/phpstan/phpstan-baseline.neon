@@ -31,11 +31,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\AbstractNode\\:\\:initializeResultArray\\(\\) should return array\\{string\\: array\\<int, string\\>, requireJsModules\\: array\\<int, TYPO3\\\\CMS\\\\Core\\\\Page\\\\JavaScriptModuleInstruction\\>\\} but returns array\\{additionalJavaScriptPost\\: array\\{\\}, additionalHiddenFields\\: array\\{\\}, additionalInlineLanguageLabelFiles\\: array\\{\\}, stylesheetFiles\\: array\\{\\}, requireJsModules\\: array\\{\\}, inlineData\\: array\\{\\}, html\\: ''\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/AbstractNode.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\ReloadOnFieldChange\\:\\:toArray\\(\\) should return array\\{name\\: string, data\\?\\: string\\} but returns array\\{name\\: 'typo3\\-backend\\-form…', data\\: array\\{confirmation\\: bool\\}\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Behavior/ReloadOnFieldChange.php

@@ -314,7 +314,7 @@ abstract class AbstractFormElement extends AbstractNode
 
     /**
      * Handle custom javascript `eval` implementations. $evalObject is a hook object
-     * for custom eval's. It is transferred to JS as a requireJsModule if possible.
+     * for custom eval's. It is transferred to JS as a JavaScriptModuleInstruction if possible.
      * This is used by a couple of renderType's like various type="input", should
      * be used with care and is internal for now.
      *
@@ -334,13 +334,13 @@ abstract class AbstractFormElement extends AbstractNode
         if ($javaScriptEvaluation instanceof JavaScriptModuleInstruction) {
             if ($javaScriptEvaluation->shallLoadRequireJs()) {
                 // just use the module name and export-name
-                $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::forRequireJS(
                     $javaScriptEvaluation->getName(),
                     $javaScriptEvaluation->getExportName()
                 )->invoke('registerCustomEvaluation', $name);
             } else {
                 // just use the module name and export-name
-                $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+                $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
                     $javaScriptEvaluation->getName(),
                     $javaScriptEvaluation->getExportName()
                 )->invoke('registerCustomEvaluation', $name);

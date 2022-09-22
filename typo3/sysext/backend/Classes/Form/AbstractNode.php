@@ -89,11 +89,14 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
      * Initialize the array that is returned to parent after calling. This structure
      * is identical for *all* nodes. Parent will merge the return of a child with its
      * own stuff and in itself return an array of the same structure.
-     *
-     * @return array{string: list<string>, requireJsModules: list<\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction>}
      */
     protected function initializeResultArray(): array
     {
+        /** @var list<\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction> */
+        $javaScriptModules = [];
+        /** @deprecated will be removed in TYPO3 v13.0 */
+        /** @var list<\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction> */
+        $requireJsModules = [];
         return [
             // @todo deprecate inline JavaScript in TYPO3 v12.0
             'additionalJavaScriptPost' => [],
@@ -102,8 +105,9 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            // holds list of `JavaScriptModuleInstruction` instances
-            'requireJsModules' => [],
+            'javaScriptModules' => $javaScriptModules,
+            /** @deprecated will be removed in TYPO3 v13.0 */
+            'requireJsModules' => $requireJsModules,
             'inlineData' => [],
             'html' => '',
         ];
@@ -134,6 +138,10 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         foreach ($childReturn['stylesheetFiles'] ?? [] as $value) {
             $existing['stylesheetFiles'][] = $value;
         }
+        foreach ($childReturn['javaScriptModules'] ?? [] as $module) {
+            $existing['javaScriptModules'][] = $module;
+        }
+        /** @deprecated will be removed in TYPO3 v13.0 */
         foreach ($childReturn['requireJsModules'] ?? [] as $module) {
             $existing['requireJsModules'][] = $module;
         }

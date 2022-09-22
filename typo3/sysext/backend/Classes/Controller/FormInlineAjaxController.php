@@ -554,7 +554,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             }
             $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
-        $this->addRegisteredRequireJsModulesToJavaScriptItems($childResult, $scriptItems);
+        $this->addJavaScriptModulesToJavaScriptItems($childResult['javaScriptModules'] ?? [], $scriptItems);
+        /** @deprecated will be removed in TYPO3 v13.0 */
+        $this->addJavaScriptModulesToJavaScriptItems($childResult['requireJsModules'] ?? [], $scriptItems, true);
 
         return $jsonResult;
     }

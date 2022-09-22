@@ -431,7 +431,9 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             }
             $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
-        $this->addRegisteredRequireJsModulesToJavaScriptItems($fileReferenceData, $scriptItems);
+        $this->addJavaScriptModulesToJavaScriptItems($fileReferenceData['javaScriptModules'] ?? [], $scriptItems);
+        /** @deprecated will be removed in TYPO3 v13.0 */
+        $this->addJavaScriptModulesToJavaScriptItems($fileReferenceData['requireJsModules'] ?? [], $scriptItems, true);
 
         return $jsonResult;
     }

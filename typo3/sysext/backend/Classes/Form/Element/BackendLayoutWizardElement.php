@@ -96,7 +96,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
                     <textarea class="t3js-tsconfig-preview-area form-control"></textarea>
                 </typo3-t3editor-codemirror>';
 
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
         } else {
             $editor = '
                 <label>' . htmlspecialchars($lang->getLL('buttons.pageTsConfig')) . '</label>
@@ -181,7 +181,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
 
         $html = implode(LF, $html);
         $resultArray['html'] = $html;
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/grid-editor.js',
             'GridEditor'
         )->instance();

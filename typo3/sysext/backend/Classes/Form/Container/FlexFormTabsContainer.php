@@ -51,7 +51,7 @@ class FlexFormTabsContainer extends AbstractContainer
         $flexFormRowData = $this->data['flexFormRowData'];
 
         $resultArray = $this->initializeResultArray();
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tabs.js');
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tabs.js');
 
         $domIdPrefix = 'DTM-' . md5($this->data['parameterArray']['itemFormElName']);
         $tabCounter = 0;

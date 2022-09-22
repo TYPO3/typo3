@@ -34,9 +34,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 abstract class AbstractFormEngineAjaxController
 {
-    protected function addRegisteredRequireJsModulesToJavaScriptItems(array $result, JavaScriptItems $items): void
+    protected function addJavaScriptModulesToJavaScriptItems(array $modules, JavaScriptItems $items, bool $deprecated = false): void
     {
-        foreach ($result['requireJsModules'] ?? [] as $module) {
+        foreach ($modules as $module) {
             if (!$module instanceof JavaScriptModuleInstruction) {
                 throw new \LogicException(
                     sprintf(
@@ -46,6 +46,9 @@ abstract class AbstractFormEngineAjaxController
                     ),
                     1663851377
                 );
+            }
+            if ($deprecated) {
+                trigger_error('FormEngine $resultArray[\'requireJsModules\'] is deprecated, use $resultArray[\'javaScriptsModules\'] instead. Support for this array key will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
             }
             $items->addJavaScriptModuleInstruction($module);
         }

@@ -160,7 +160,7 @@ class CategoryElement extends AbstractFormElement
                 </div>
             </typo3-formengine-element-category>';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/category-element.js');
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/category-element.js');
 
         return $resultArray;
     }

@@ -71,10 +71,18 @@ class FormResultCompiler
     protected $additionalInlineLanguageLabelFiles = [];
 
     /**
+     * Array with instances of JavaScriptModuleInstruction.
+     *
+     * @var list<JavaScriptModuleInstruction>
+     */
+    protected $javaScriptModules = [];
+
+    /**
      * Array with requireJS modules, use module name as key, the value could be callback code.
      * Use NULL as value if no callback is used.
      *
      * @var list<JavaScriptModuleInstruction>
+     * @deprecated will be removed in TYPO3 v13.0. Use $javaScriptModules instead.
      */
     protected $requireJsModules = [];
 
@@ -96,6 +104,19 @@ class FormResultCompiler
         foreach ($resultArray['additionalJavaScriptPost'] as $element) {
             $this->additionalJavaScriptPost[] = $element;
         }
+        foreach ($resultArray['javaScriptModules'] ?? [] as $module) {
+            if (!$module instanceof JavaScriptModuleInstruction) {
+                throw new \LogicException(
+                    sprintf(
+                        'Module must be a %s, type "%s" given',
+                        JavaScriptModuleInstruction::class,
+                        gettype($module)
+                    ),
+                    1663860283
+                );
+            }
+            $this->javaScriptModules[] = $module;
+        }
         foreach ($resultArray['requireJsModules'] ?? [] as $module) {
             if (!$module instanceof JavaScriptModuleInstruction) {
                 throw new \LogicException(
@@ -107,6 +128,7 @@ class FormResultCompiler
                     1638264590
                 );
             }
+            trigger_error('FormEngine $resultArray[\'requireJsModules\'] is deprecated, use $resultArray[\'javaScriptModules\'] instead. Support for this array key will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
             $this->requireJsModules[] = $module;
         }
         foreach ($resultArray['additionalHiddenFields'] as $element) {
@@ -175,13 +197,17 @@ class FormResultCompiler
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
         // load the main module for FormEngine with all important JS functions
-        $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine.js')
+        $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine.js')
                 ->invoke(
                     'initialize',
                     (string)$uriBuilder->buildUriFromRoute('wizard_element_browser')
                 );
-        $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine-review.js');
+        $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine-review.js');
 
+        foreach ($this->javaScriptModules as $module) {
+            $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
+        }
+        /** @deprecated will be removed in TYPO3 v13.0 */
         foreach ($this->requireJsModules as $module) {
             $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
         }

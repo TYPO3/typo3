@@ -184,7 +184,9 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             }
             $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
-        $this->addRegisteredRequireJsModulesToJavaScriptItems($newContainerResult, $scriptItems);
+        $this->addJavaScriptModulesToJavaScriptItems($newContainerResult['javaScriptModules'] ?? [], $scriptItems);
+        /** @deprecated will be removed in TYPO3 v13.0 */
+        $this->addJavaScriptModulesToJavaScriptItems($newContainerResult['requireJsModules'] ?? [], $scriptItems, true);
 
         return new JsonResponse($jsonResult);
     }
