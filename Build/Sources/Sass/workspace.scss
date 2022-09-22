@@ -203,6 +203,7 @@ $workspace-topbar-logo-width: 22px;
             z-index: 100;
             width: 100%;
             height: calc(100vh - #{$workspace-topbar-height});
+            background-color: #fff;
         }
 
         #live-view {

@@ -59,7 +59,6 @@ class Preview extends Workspaces {
     $((): void => {
       this.getElements();
       this.resizeViews();
-      this.adjustPreviewModeSelectorWidth();
       this.registerEvents();
     });
   }
@@ -173,24 +172,6 @@ class Preview extends Workspaces {
         });
       }
     });
-  }
-
-  /**
-   * Adjusts the width of the preview mode selector to avoid jumping around due to different widths of the labels
-   */
-  private adjustPreviewModeSelectorWidth(): void {
-    const $dropDown = this.elements.$previewModeContainer.find('.dropdown-menu');
-    let maximumWidth = 0;
-
-    $dropDown.addClass('show');
-    this.elements.$previewModeContainer.find('li > a > span').each((_: number, el: Element): void => {
-      const width = $(el).width();
-      if (maximumWidth < width) {
-        maximumWidth = width;
-      }
-    });
-    $dropDown.removeClass('show');
-    this.elements.$activePreviewMode.width(maximumWidth);
   }
 
   /**
