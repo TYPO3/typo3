@@ -224,8 +224,8 @@ class ViewModuleController
         $current['height'] = (isset($current['height']) && (int)$current['height'] >= 300 ? (int)$current['height'] : 480);
 
         $custom = $backendUser->uc['moduleData']['web_view']['States']['custom'] ?? [];
-        $custom['width'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 320);
-        $custom['height'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 480);
+        $custom['width'] = (isset($custom['width']) && (int)$custom['width'] >= 300 ? (int)$custom['width'] : 320);
+        $custom['height'] = (isset($custom['height']) && (int)$custom['height'] >= 300 ? (int)$custom['height'] : 480);
 
         $this->view->assign('icons', $icons);
         $this->view->assign('current', $current);

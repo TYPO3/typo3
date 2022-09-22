@@ -141,6 +141,7 @@ $viewpage-topbar-height: 40px;
         border-bottom: 1px solid rgba($primary, 0.5);
         transition: all 0.5s ease-in-out;
         color: $viewpage-item-color;
+        color-scheme: dark;
 
         &:focus,
         &:hover {
