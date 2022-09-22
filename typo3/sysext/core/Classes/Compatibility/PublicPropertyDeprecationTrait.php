@@ -101,7 +101,7 @@ trait PublicPropertyDeprecationTrait
         if (isset($this->deprecatedPublicProperties[$propertyName])) {
             trigger_error($this->deprecatedPublicProperties[$propertyName], E_USER_DEPRECATED);
         }
-        return $this->$propertyName;
+        return property_exists($this, $propertyName) ? $this->$propertyName : null;
     }
 
     /**
