@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageColumnsSelectedForLocalizationEvent;
+use TYPO3\CMS\Backend\Controller\Event\AfterRecordSummaryForLocalizationEvent;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
@@ -176,9 +177,13 @@ class LocalizationController
             $flatRecords[] = $row;
         }
 
+        $columns = $this->getPageColumns($pageId, $flatRecords, $params);
+        $event = new AfterRecordSummaryForLocalizationEvent($records, $columns);
+        $this->eventDispatcher->dispatch($event);
+
         return new JsonResponse([
-            'records' => $records,
-            'columns' => $this->getPageColumns($pageId, $flatRecords, $params),
+            'records' => $event->getRecords(),
+            'columns' => $event->getColumns(),
         ]);
     }
 
@@ -288,7 +293,7 @@ class LocalizationController
             $columns[$columnPos] = $GLOBALS['LANG']->sL($columnLabel);
         }
 
-        $event = GeneralUtility::makeInstance(AfterPageColumnsSelectedForLocalizationEvent::class, $columns, array_values($backendLayout->getColumnPositionNumbers()), $backendLayout, $flatRecords, $params);
+        $event = new AfterPageColumnsSelectedForLocalizationEvent($columns, array_values($backendLayout->getColumnPositionNumbers()), $backendLayout, $flatRecords, $params);
         $this->eventDispatcher->dispatch($event);
 
         return [
