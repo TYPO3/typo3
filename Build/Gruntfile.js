@@ -589,6 +589,7 @@ module.exports = function (grunt) {
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'imagesloaded.js': 'imagesloaded/imagesloaded.js',
+          'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
           'jquery.autocomplete.js': 'devbridge-autocomplete/dist/jquery.autocomplete.min.js',
           'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',

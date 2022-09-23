@@ -19,6 +19,7 @@ return [
         'ev-emitter' => 'EXT:core/Resources/Public/JavaScript/Contrib/ev-emitter.js',
         'flatpickr/' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/',
         'imagesloaded' => 'EXT:core/Resources/Public/JavaScript/Contrib/imagesloaded.js',
+        'interactjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/interact.js',
         'jquery' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',
         'jquery/' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery/',
         'jquery/autocomplete.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.autocomplete.js',

@@ -11,14 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import 'jquery-ui/resizable';
+import interact from 'interactjs';
+import DocumentService from '@typo3/core/document-service';
 import PersistentStorage from '@typo3/backend/storage/persistent';
-import SecurityUtility from '@typo3/core/security-utility';
+import RegularEvent from '@typo3/core/event/regular-event';
+import DebounceEvent from '@typo3/core/event/debounce-event';
+import {ResizeEvent} from '@interactjs/actions/resize/plugin';
 
 enum Selectors {
   resizableContainerIdentifier = '.t3js-viewpage-resizeable',
-  sizeIdentifier = '.t3js-viewpage-size',
   moduleBodySelector = '.t3js-module-body',
   customSelector = '.t3js-preset-custom',
   customWidthSelector = '.t3js-preset-custom-width',
@@ -42,64 +43,53 @@ class ViewPage {
   private readonly minimalWidth: number = 300;
 
   private readonly storagePrefix: string = 'moduleData.web_ViewpageView.States.';
-  private $iframe: JQuery;
-  private $resizableContainer: JQuery;
-  private $sizeSelector: JQuery;
+  private iframe: HTMLIFrameElement;
+  private inputCustomWidth: HTMLInputElement;
+  private inputCustomHeight: HTMLInputElement;
+  private customPresetItem: HTMLElement;
+  private customPresetItemWidth: HTMLElement;
+  private customPresetItemHeight: HTMLElement;
+  private currentLabelElement: HTMLElement;
+  private resizableContainer: HTMLElement;
 
-
-  private readonly queue: Array<any> = [];
-  private queueIsRunning: boolean = false;
   private queueDelayTimer: any;
 
-  private static getCurrentWidth(): string {
-    return $(Selectors.inputWidthSelector).val();
-  }
-
-  private static getCurrentHeight(): string {
-    return $(Selectors.inputHeightSelector).val();
-  }
-
-  private static setLabel(label: string): void {
-    $(Selectors.currentLabelSelector).html((new SecurityUtility()).encodeHtml(label));
-  }
-
-  private static getCurrentLabel(): string {
-    return $(Selectors.currentLabelSelector).html().trim();
-  }
-
   constructor() {
-    $((): void => {
-      const $presetCustomLabel = $('.t3js-preset-custom-label');
+    DocumentService.ready().then((): void => {
+      const presetCustomLabel = document.querySelector('.t3js-preset-custom-label');
 
-      this.defaultLabel = $presetCustomLabel.length > 0 ? $presetCustomLabel.html().trim() : '';
-      this.$iframe = $('#tx_this_iframe');
-      this.$resizableContainer = $(Selectors.resizableContainerIdentifier);
-      this.$sizeSelector = $(Selectors.sizeIdentifier);
+      this.defaultLabel = presetCustomLabel?.textContent.trim() ?? '';
+      this.iframe = document.getElementById('tx_this_iframe') as HTMLIFrameElement;
+      this.inputCustomWidth = document.querySelector(Selectors.inputWidthSelector) as HTMLInputElement;
+      this.inputCustomHeight = document.querySelector(Selectors.inputHeightSelector) as HTMLInputElement;
+      this.customPresetItem = document.querySelector(Selectors.customSelector) as HTMLElement;
+      this.customPresetItemWidth = document.querySelector(Selectors.customWidthSelector) as HTMLElement;
+      this.customPresetItemHeight = document.querySelector(Selectors.customHeightSelector) as HTMLElement;
+      this.currentLabelElement = document.querySelector(Selectors.currentLabelSelector) as HTMLElement;
+      this.resizableContainer = document.querySelector(Selectors.resizableContainerIdentifier);
 
       this.initialize();
     });
   }
 
-  private persistQueue(): void {
-    if (this.queueIsRunning === false && this.queue.length >= 1) {
-      this.queueIsRunning = true;
-      let item = this.queue.shift();
-      PersistentStorage.set(item.storageIdentifier, item.data).then((): void => {
-        this.queueIsRunning = false;
-        this.persistQueue();
-      });
-    }
+  private getCurrentWidth(): number {
+    return this.inputCustomWidth.valueAsNumber;
   }
 
-  private addToQueue(storageIdentifier: string, data: any): void {
-    const item = {
-      storageIdentifier: storageIdentifier,
-      data: data,
-    };
-    this.queue.push(item);
-    if (this.queue.length >= 1) {
-      this.persistQueue();
-    }
+  private getCurrentHeight(): number {
+    return this.inputCustomHeight.valueAsNumber;
+  }
+
+  private setLabel(label: string): void {
+    this.currentLabelElement.textContent = label;
+  }
+
+  private getCurrentLabel(): string {
+    return this.currentLabelElement.textContent;
+  }
+
+  private persistChanges(storageIdentifier: string, data: any): void {
+    PersistentStorage.set(storageIdentifier, data);
   }
 
   private setSize(width: number, height: number): void {
@@ -116,36 +106,36 @@ class ViewPage {
       width = this.minimalWidth;
     }
 
-    $(Selectors.inputWidthSelector).val(width);
-    $(Selectors.inputHeightSelector).val(height);
+    this.inputCustomWidth.valueAsNumber = width;
+    this.inputCustomHeight.valueAsNumber = height;
 
-    this.$resizableContainer.css({
-      width: width,
-      height: height,
-      left: 0,
-    });
+    this.resizableContainer.style.width = `${width}px`;
+    this.resizableContainer.style.height = `${height}px`;
+    this.resizableContainer.style.left = '0';
   }
 
   private persistCurrentPreset(): void {
     let data = {
-      width: ViewPage.getCurrentWidth(),
-      height: ViewPage.getCurrentHeight(),
-      label: ViewPage.getCurrentLabel(),
+      width: this.getCurrentWidth(),
+      height: this.getCurrentHeight(),
+      label: this.getCurrentLabel(),
     };
-    this.addToQueue(this.storagePrefix + 'current', data);
+    this.persistChanges(this.storagePrefix + 'current', data);
   }
 
   private persistCustomPreset(): void {
     let data = {
-      width: ViewPage.getCurrentWidth(),
-      height: ViewPage.getCurrentHeight(),
+      width: this.getCurrentWidth(),
+      height: this.getCurrentHeight(),
     };
-    $(Selectors.customSelector).data('width', data.width);
-    $(Selectors.customSelector).data('height', data.height);
-    $(Selectors.customWidthSelector).html(data.width);
-    $(Selectors.customHeightSelector).html(data.height);
-    this.addToQueue(this.storagePrefix + 'current', data);
-    this.addToQueue(this.storagePrefix + 'custom', data);
+
+    this.customPresetItem.dataset.width = data.width.toString(10);
+    this.customPresetItem.dataset.height = data.height.toString(10);
+    this.customPresetItemWidth.textContent = data.width.toString(10);
+    this.customPresetItemHeight.textContent = data.height.toString(10);
+
+    this.persistChanges(this.storagePrefix + 'current', data);
+    this.persistChanges(this.storagePrefix + 'custom', data);
   }
 
   private persistCustomPresetAfterChange(): void {
@@ -158,94 +148,94 @@ class ViewPage {
    */
   private initialize (): void {
     // Change orientation
-    $(document).on('click', Selectors.changeOrientationSelector, (): void => {
-      const width = $(Selectors.inputHeightSelector).val();
-      const height = $(Selectors.inputWidthSelector).val();
-      this.setSize(width, height);
+    new RegularEvent('click', (): void => {
+      this.setSize(this.getCurrentWidth(), this.getCurrentHeight());
       this.persistCurrentPreset();
-    });
+    }).bindTo(document.querySelector(Selectors.changeOrientationSelector));
 
     // On change
-    $(document).on('change', Selectors.inputWidthSelector, (): void => {
-      const width = $(Selectors.inputWidthSelector).val();
-      const height = $(Selectors.inputHeightSelector).val();
-      this.setSize(width, height);
-      ViewPage.setLabel(this.defaultLabel);
-      this.persistCustomPresetAfterChange();
-    });
-    $(document).on('change', Selectors.inputHeightSelector, (): void => {
-      const width = $(Selectors.inputWidthSelector).val();
-      const height = $(Selectors.inputHeightSelector).val();
-      this.setSize(width, height);
-      ViewPage.setLabel(this.defaultLabel);
-      this.persistCustomPresetAfterChange();
+    [this.inputCustomWidth, this.inputCustomHeight].forEach((customDimensionControl: HTMLInputElement): void => {
+      new DebounceEvent('change', (): void => {
+        this.setSize(this.getCurrentWidth(), this.getCurrentHeight());
+        this.setLabel(this.defaultLabel);
+        this.persistCustomPresetAfterChange();
+      }, 50).bindTo(customDimensionControl);
     });
 
     // Add event to width selector so the container is resized
-    $(document).on('click', Selectors.changePresetSelector, (evt: JQueryEventObject): void => {
-      const data = $(evt.currentTarget).data();
-      this.setSize(parseInt(data.width, 10), parseInt(data.height, 10));
-      ViewPage.setLabel(data.label);
+    new RegularEvent('click', (e: Event, selectedElement: HTMLElement): void => {
+      this.setSize(parseInt(selectedElement.dataset.width, 10), parseInt(selectedElement.dataset.height, 10));
+      this.setLabel(selectedElement.dataset.label);
       this.persistCurrentPreset();
-    });
+    }).delegateTo(document, Selectors.changePresetSelector);
 
     // Add event for refresh button click
-    $(document).on('click', Selectors.refreshSelector, (): void =>  {
-      let iframe = <HTMLIFrameElement>document.getElementById('tx_viewpage_iframe');
-      iframe.contentWindow.location.reload();
-    });
+    new RegularEvent('click', (): void => {
+      this.iframe.contentWindow.location.reload();
+    }).bindTo(document.querySelector(Selectors.refreshSelector));
 
-    // Initialize the jQuery UI Resizable plugin
-    this.$resizableContainer.resizable({
-      handles: 'w, sw, s, se, e',
-    });
-
-    this.$resizableContainer.on('resizestart', (evt: JQueryEventObject): void => {
+    interact(this.resizableContainer).on('resizestart', (e: ResizeEvent): void => {
       // Add iframe overlay to prevent losing the mouse focus to the iframe while resizing fast
-      $(evt.currentTarget)
-        .append('<div id="viewpage-iframe-cover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
-    });
-
-    this.$resizableContainer.on('resize', (evt: JQueryEventObject, ui: JQueryUI.ResizableUIParams): void => {
-      ui.size.width = ui.originalSize.width + ((ui.size.width - ui.originalSize.width) * 2);
-      if (ui.size.height < this.minimalHeight) {
-        ui.size.height = this.minimalHeight;
-      }
-      if (ui.size.width < this.minimalWidth) {
-        ui.size.width = this.minimalWidth;
-      }
-      $(Selectors.inputWidthSelector).val(ui.size.width);
-      $(Selectors.inputHeightSelector).val(ui.size.height);
-      this.$resizableContainer.css({
-        left: 0,
-      });
-      ViewPage.setLabel(this.defaultLabel);
-    });
-
-    this.$resizableContainer.on('resizestop', (): void => {
-      $('#viewpage-iframe-cover').remove();
-      this.persistCurrentPreset();
+      const iframeCover = document.createElement('div');
+      iframeCover.id = 'viewpage-iframe-cover';
+      iframeCover.setAttribute('style', 'z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;');
+      e.target.appendChild(iframeCover);
+    }).on('resizeend', (): void => {
+      document.getElementById('viewpage-iframe-cover').remove();
       this.persistCustomPreset();
+    }).resizable({
+      origin: 'self',
+      edges: {
+        top: false,
+        left: true,
+        bottom: true,
+        right: true,
+      },
+      listeners: {
+        move: (event: ResizeEvent): void => {
+          Object.assign(event.target.style, {
+            width: `${event.rect.width}px`,
+            height: `${event.rect.height}px`,
+          })
+
+          this.inputCustomWidth.valueAsNumber = event.rect.width;
+          this.inputCustomHeight.valueAsNumber = event.rect.height;
+
+          this.setLabel(this.defaultLabel);
+        }
+      },
+      modifiers: [
+        interact.modifiers.restrictSize({
+          min: {
+            width: this.minimalWidth,
+            height: this.minimalHeight
+          }
+        })
+      ]
     });
   }
 
   private calculateContainerMaxHeight(): number {
-    this.$resizableContainer.hide();
-    let $moduleBody = $(Selectors.moduleBodySelector);
-    let padding = $moduleBody.outerHeight() - $moduleBody.height(),
-      documentHeight = $(document).height(),
-      topbarHeight = $(Selectors.topbarContainerSelector).outerHeight();
-    this.$resizableContainer.show();
+    this.resizableContainer.hidden = true;
+
+    const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
+    const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-top')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-bottom'));
+    const documentHeight: number = document.body.getBoundingClientRect().height;
+    const topbarHeight = (document.querySelector(Selectors.topbarContainerSelector) as HTMLElement).getBoundingClientRect().height;
+
+    this.resizableContainer.hidden = false;
     return documentHeight - padding - topbarHeight - 8;
   }
 
   private calculateContainerMaxWidth(): number {
-    this.$resizableContainer.hide();
-    let $moduleBody: JQuery = $(Selectors.moduleBodySelector);
-    let padding: number = $moduleBody.outerWidth() - $moduleBody.width();
-    let documentWidth: number = $(document).width();
-    this.$resizableContainer.show();
-    return parseInt((documentWidth - padding) + '', 10);
+    this.resizableContainer.hidden = true;
+
+    const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
+    const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-left')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-right'));
+    const documentWidth: number = document.body.getBoundingClientRect().width;
+
+    this.resizableContainer.hidden = false;
+    return documentWidth - padding;
   }
 }
 

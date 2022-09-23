@@ -30,37 +30,31 @@ $viewpage-topbar-height: 40px;
         }
     }
 
-    .ui-resizable-w {
+    .resizable-w,
+    .resizable-s,
+    .resizable-e {
+        position: absolute;
+        z-index: 90;
+    }
+
+    .resizable-w {
+        top: 0;
         left: -$viewpage-resizable-size;
         height: 100%;
         width: $viewpage-resizable-size;
     }
 
-    .ui-resizable-s {
+    .resizable-s {
         bottom: -$viewpage-resizable-size;
         height: $viewpage-resizable-size;
+        width: 100%;
     }
 
-    .ui-resizable-e {
+    .resizable-e {
+        top: 0;
         right: -$viewpage-resizable-size;
         height: 100%;
         width: $viewpage-resizable-size;
-    }
-
-    .ui-resizable-se,
-    .ui-resizable-sw {
-        height: $viewpage-resizable-size;
-        width: $viewpage-resizable-size;
-        background-image: none;
-        bottom: -$viewpage-resizable-size;
-    }
-
-    .ui-resizable-sw {
-        left: -$viewpage-resizable-size;
-    }
-
-    .ui-resizable-se {
-        right: -$viewpage-resizable-size;
     }
 }
 
