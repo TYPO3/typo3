@@ -1662,7 +1662,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->createUrl([
             'parameter' => $parameter,
-            'addQueryString' => true,
+            'addQueryString' => 'untrusted',
             'addQueryString.' => ['exclude' => 'id,type'],
             'forceAbsoluteUrl' => true,
         ]);

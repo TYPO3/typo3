@@ -4673,9 +4673,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $conf Configuration
      * @return string The URL query part (starting with a &)
+     * @deprecated will be removed in TYPO3 v13.0
      */
     public function getQueryArguments($conf)
     {
+        trigger_error('Calling ContentObjectRenderer->getQueryArguments() will be removed in TYPO3 v13.0. Use LinkFactory directly to create links', E_USER_DEPRECATED);
         $currentQueryArray = $this->getRequest()->getQueryParams();
         if ($conf['exclude'] ?? false) {
             $excludeString = str_replace(',', '&', $conf['exclude']);

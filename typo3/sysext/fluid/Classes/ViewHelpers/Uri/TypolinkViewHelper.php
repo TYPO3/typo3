@@ -67,7 +67,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
-        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
+        $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
         $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
     }
@@ -101,7 +101,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         if (isset($arguments['language']) && $arguments['language'] !== null) {
             $instructions['language'] = $arguments['language'];
         }
-        if ($addQueryString) {
+        if ($addQueryString && $addQueryString !== 'false') {
             $instructions['addQueryString'] = $addQueryString;
             $instructions['addQueryString.'] = [
                 'exclude' => $addQueryStringExclude,

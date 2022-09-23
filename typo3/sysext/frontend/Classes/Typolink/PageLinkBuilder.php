@@ -33,13 +33,16 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -219,7 +222,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         $queryParameters = [];
-        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
+        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->getQueryArguments($conf['addQueryString'], $conf['addQueryString.'] ?? []) : '';
         $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf));
         if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';
@@ -716,6 +719,42 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $this->populateMountPointMapForPageRecursively($mountPointMap, $pSet[0], $pSet[1], $level + 1);
             }
         }
+    }
+
+    /**
+     * Gets the query arguments and assembles them for URLs.
+     * By default, only the resolved query arguments from the route are used, using "untrusted" as $queryInformation
+     * allows to also include ANY query parameter - use with care.
+     *
+     * Arguments may be removed or set, depending on configuration.
+     *
+     * @param bool|string|int $queryInformation is set to "1", "true", "0", "false" or "untrusted"
+     * @param array $configuration Configuration
+     * @return string The URL query part (starting with a &) or empty
+     */
+    protected function getQueryArguments(bool|string|int $queryInformation, array $configuration): string
+    {
+        if (!$queryInformation || $queryInformation === 'false') {
+            return '';
+        }
+        $request = $this->contentObjectRenderer->getRequest();
+        $pageArguments = $request->getAttribute('routing');
+        if (!$pageArguments instanceof PageArguments) {
+            return '';
+        }
+        $currentQueryArray = $pageArguments->getRouteArguments();
+        if ($queryInformation === 'untrusted') {
+            $currentQueryArray = array_replace_recursive($pageArguments->getQueryArguments(), $currentQueryArray);
+        }
+        if ($configuration['exclude'] ?? false) {
+            $excludeString = str_replace(',', '&', $configuration['exclude']);
+            $excludedQueryParts = [];
+            parse_str($excludeString, $excludedQueryParts);
+            $newQueryArray = ArrayUtility::arrayDiffKeyRecursive($currentQueryArray, $excludedQueryParts);
+        } else {
+            $newQueryArray = $currentQueryArray;
+        }
+        return HttpUtility::buildQueryString($newQueryArray, '&');
     }
 
     /**

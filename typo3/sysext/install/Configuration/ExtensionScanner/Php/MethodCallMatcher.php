@@ -5358,4 +5358,11 @@ return [
             'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-98488-ContentObjectRenderer-getQueryArguments.rst',
+        ],
+    ],
 ];

@@ -54,11 +54,11 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 '/en/',
             ],
             'uri: with add query string' => [
-                '<f:uri.typolink parameter="1" addQueryString="true" />',
+                '<f:uri.typolink parameter="1" addQueryString="untrusted" />',
                 '/en/?foo=bar&amp;temp=test&amp;cHash=286759dfcd3f566fa21091a0d77e9831',
             ],
             'uri: with add query string and exclude' => [
-                '<f:uri.typolink parameter="1" addQueryString="true" addQueryStringExclude="temp" />',
+                '<f:uri.typolink parameter="1" addQueryString="untrusted" addQueryStringExclude="temp" />',
                 '/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d',
             ],
             't3://url uri: default' => [
@@ -66,11 +66,11 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 'https://example.org?param=1',
             ],
             't3://url uri: with add query string' => [
-                '<f:uri.typolink parameter="t3://url?url=https://example.org?param=1&other=dude" addQueryString="true" />',
+                '<f:uri.typolink parameter="t3://url?url=https://example.org?param=1&other=dude" addQueryString="untrusted" />',
                 'https://example.org?param=1',
             ],
             't3://url uri: with add query string and exclude' => [
-                '<f:uri.typolink parameter="t3://url?url=https://example.org?param=1&other=dude" addQueryString="true" addQueryStringExclude="temp" />',
+                '<f:uri.typolink parameter="t3://url?url=https://example.org?param=1&other=dude" addQueryString="untrusted" addQueryStringExclude="temp" />',
                 'https://example.org?param=1',
             ],
             'mailto: uri: default' => [
@@ -78,11 +78,11 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 'mailto:foo@typo3.org',
             ],
             'mailto: uri: with add query string' => [
-                '<f:uri.typolink parameter="mailto:foo@typo3.org" addQueryString="true" />',
+                '<f:uri.typolink parameter="mailto:foo@typo3.org" addQueryString="untrusted" />',
                 'mailto:foo@typo3.org',
             ],
             'mailto: uri: with add query string and exclude' => [
-                '<f:uri.typolink parameter="mailto:foo@typo3.org" addQueryString="true" addQueryStringExclude="temp" />',
+                '<f:uri.typolink parameter="mailto:foo@typo3.org" addQueryString="untrusted" addQueryStringExclude="temp" />',
                 'mailto:foo@typo3.org',
             ],
             'http://: uri: default' => [
@@ -90,11 +90,11 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 'http://typo3.org/foo/?foo=bar',
             ],
             'http://: uri: with add query string' => [
-                '<f:uri.typolink parameter="http://typo3.org/foo/?foo=bar" addQueryString="true" />',
+                '<f:uri.typolink parameter="http://typo3.org/foo/?foo=bar" addQueryString="untrusted" />',
                 'http://typo3.org/foo/?foo=bar',
             ],
             'http://: uri: with add query string and exclude' => [
-                '<f:uri.typolink parameter="http://typo3.org/foo/?foo=bar" addQueryString="true" addQueryStringExclude="temp" />',
+                '<f:uri.typolink parameter="http://typo3.org/foo/?foo=bar" addQueryString="untrusted" addQueryStringExclude="temp" />',
                 'http://typo3.org/foo/?foo=bar',
             ],
         ];

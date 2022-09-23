@@ -332,50 +332,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertNull($object);
     }
 
-    /////////////////////////////////////////
-    // Tests concerning getQueryArguments()
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function getQueryArgumentsExcludesParameters(): void
-    {
-        $queryParameters = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => [
-                'key31' => 'value31',
-                'key32' => [
-                    'key321' => 'value321',
-                    'key322' => 'value322',
-                ],
-            ],
-        ];
-        $request = new ServerRequest('https://example.com');
-        $request = $request->withQueryParams($queryParameters);
-        $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['exclude'] = [];
-        $getQueryArgumentsConfiguration['exclude'][] = 'key1';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
-        $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
-        $this->subject->setRequest($request);
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * Encodes square brackets in URL.
-     *
-     * @param string $string
-     * @return string
-     */
-    private function rawUrlEncodeSquareBracketsInUrl(string $string): string
-    {
-        return str_replace(['[', ']'], ['%5B', '%5D'], $string);
-    }
-
     //////////////////////////
     // Tests concerning crop
     //////////////////////////
