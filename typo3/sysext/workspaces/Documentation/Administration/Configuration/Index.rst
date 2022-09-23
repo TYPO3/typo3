@@ -198,56 +198,13 @@ Default
   48
 
 
-.. _usertsconfig-options-workspaces-swapmode:
-
-swapMode
-********
-
-Data type
-  String
-
-Description
-  Possible values are:
-
-  "any" - if page or element (meaning any record on the page) is
-  published, all content elements on the page and page itself will be
-  published regardless of the current editing stage.
-
-  "page" - if page is published, all content elements on the page will
-  be published as well. If element is published, its publishing does not
-  affect other elements or page.
-
-
-.. _usertsconfig-options-workspaces-changestagemode:
-
-changeStageMode
-***************
-
-Data type
-  String
-
-Description
-  Possible values are:
-
-  "any" - if page or element (meaning any record on the page) stage is
-  changed (for example, from "editing" to "review"), all content
-  elements on the page and page will change to that new stage as well
-  (possibly bypassing intermediate stages).
-
-  "page" - if page stage is changed (for example, from "editing" to
-  "review"), all content elements on the page will change stage as well
-  (possibly bypassing intermediate stages). If stage is changed for
-  element, all other elements on the page and page itself remain in the
-  previous stage.
-
-
 .. _usertsconfig-options-workspaces-considerreferences:
 
 allowed\_languages
 ******************
 
-   Property
-         workspaces.allowed\_languages.[workspaceId]
+Property
+  workspaces.allowed\_languages.[workspaceId]
 
 Data type
   *(list of sys\_language ids)*

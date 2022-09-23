@@ -3506,11 +3506,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
 
 		-
-			message: "#^Offset 0 does not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#"
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
-
-		-
 			message: "#^Parameter \\#1 \\$tag of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:flushByTag\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php

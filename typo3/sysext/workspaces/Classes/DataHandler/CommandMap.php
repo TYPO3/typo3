@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Workspaces\DataHandler;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -24,7 +22,6 @@ use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
 use TYPO3\CMS\Workspaces\Dependency\EventCallback;
-use TYPO3\CMS\Workspaces\Hook\DataHandlerHook;
 
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
@@ -44,31 +41,11 @@ class CommandMap
     const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
 
     /**
-     * @var DataHandlerHook
-     */
-    protected $parent;
-
-    /**
-     * @var DataHandler
-     */
-    protected $tceMain;
-
-    /**
      * @var array
      */
     protected $commandMap = [];
 
     protected int $workspace;
-
-    /**
-     * @var string
-     */
-    protected $workspacesSwapMode;
-
-    /**
-     * @var string
-     */
-    protected $workspacesChangeStageMode;
 
     /**
      * @var array
@@ -83,19 +60,13 @@ class CommandMap
     /**
      * Creates this object.
      *
-     * @param DataHandlerHook $parent
-     * @param DataHandler $tceMain
      * @param array $commandMap
      * @param int $workspace
      */
-    public function __construct(DataHandlerHook $parent, DataHandler $tceMain, array $commandMap, $workspace)
+    public function __construct(array $commandMap, $workspace)
     {
-        $this->setParent($parent);
-        $this->setTceMain($tceMain);
         $this->set($commandMap);
         $this->setWorkspace($workspace);
-        $this->setWorkspacesSwapMode($this->getTceMain()->BE_USER->getTSConfig()['options.']['workspaces.']['swapMode'] ?? '');
-        $this->setWorkspacesChangeStageMode($this->getTceMain()->BE_USER->getTSConfig()['options.']['workspaces.']['changeStageMode'] ?? '');
         $this->constructScopes();
     }
 
@@ -122,50 +93,6 @@ class CommandMap
     }
 
     /**
-     * Gets the parent object.
-     *
-     * @return DataHandlerHook
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * Sets the parent object.
-     *
-     * @param DataHandlerHook $parent
-     * @return CommandMap
-     */
-    public function setParent(DataHandlerHook $parent)
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
-     * Gets the parent object.
-     *
-     * @return DataHandler
-     */
-    public function getTceMain()
-    {
-        return $this->tceMain;
-    }
-
-    /**
-     * Sets the parent object.
-     *
-     * @param DataHandler $tceMain
-     * @return CommandMap
-     */
-    public function setTceMain(DataHandler $tceMain)
-    {
-        $this->tceMain = $tceMain;
-        return $this;
-    }
-
-    /**
      * Sets the current workspace.
      *
      * @param int $workspace
@@ -181,32 +108,6 @@ class CommandMap
     public function getWorkspace(): int
     {
         return $this->workspace;
-    }
-
-    /**
-     * Sets the workspaces swap mode
-     * (see options.workspaces.swapMode).
-     *
-     * @param string $workspacesSwapMode
-     * @return CommandMap
-     */
-    public function setWorkspacesSwapMode($workspacesSwapMode)
-    {
-        $this->workspacesSwapMode = (string)$workspacesSwapMode;
-        return $this;
-    }
-
-    /**
-     * Sets the workspaces change stage mode
-     * see options.workspaces.changeStageMode)
-     *
-     * @param string $workspacesChangeStageMode
-     * @return CommandMap
-     */
-    public function setWorkspacesChangeStageMode($workspacesChangeStageMode)
-    {
-        $this->workspacesChangeStageMode = (string)$workspacesChangeStageMode;
-        return $this;
     }
 
     /**
@@ -237,28 +138,6 @@ class CommandMap
     }
 
     /**
-     * Invokes all items for swapping/publishing with a callback method.
-     *
-     * @param string $callbackMethod
-     * @param array $arguments Optional leading arguments for the callback method
-     */
-    protected function invokeWorkspacesSwapItems($callbackMethod, array $arguments = [])
-    {
-        // Traverses the cmd[] array and fetches the accordant actions:
-        foreach ($this->commandMap as $table => $liveIdCollection) {
-            foreach ($liveIdCollection as $liveId => $commandCollection) {
-                foreach ($commandCollection as $command => $properties) {
-                    if ($command === 'version' && isset($properties['action']) && in_array($properties['action'], ['publish', 'swap'], true)) {
-                        if (isset($properties['swapWith']) && MathUtility::canBeInterpretedAsInteger($properties['swapWith'])) {
-                            $this->$callbackMethod(...array_merge($arguments, [$table, $liveId, $properties]));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Resolves workspaces related dependencies for swapping/publishing of the command map.
      * Workspaces records that have children or (relative) parents which are versionized
      * but not published with this request, are removed from the command map. Otherwise
@@ -268,37 +147,19 @@ class CommandMap
     {
         $scope = self::SCOPE_WorkspacesSwap;
         $dependency = $this->getDependencyUtility($scope);
-        if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages') {
-            $this->invokeWorkspacesSwapItems('applyWorkspacesSwapBehaviour');
-        }
-        $this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', [$dependency]);
-        $this->applyWorkspacesDependencies($dependency, $scope);
-    }
-
-    /**
-     * Applies workspaces behaviour for swapping/publishing and takes care of the swapMode.
-     *
-     * @param string $table
-     * @param int $liveId
-     * @param array $properties
-     */
-    protected function applyWorkspacesSwapBehaviour($table, $liveId, array $properties)
-    {
-        $extendedCommandMap = [];
-        $elementList = [];
-        // Fetch accordant elements if the swapMode is 'any' or 'pages':
-        if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages' && $table === 'pages') {
-            $elementList = $this->getParent()->findPageElementsForVersionSwap($table, $liveId, $properties['swapWith']);
-        }
-        foreach ($elementList as $elementTable => $elementIdArray) {
-            foreach ($elementIdArray as $elementIds) {
-                $extendedCommandMap[$elementTable][$elementIds[0]]['version'] = array_merge($properties, ['swapWith' => $elementIds[1]]);
+        $arguments = [$dependency];
+        foreach ($this->commandMap as $table => $liveIdCollection) {
+            foreach ($liveIdCollection as $liveId => $commandCollection) {
+                foreach ($commandCollection as $command => $properties) {
+                    if ($command === 'version' && isset($properties['action']) && in_array($properties['action'], ['publish', 'swap'], true)) {
+                        if (isset($properties['swapWith']) && MathUtility::canBeInterpretedAsInteger($properties['swapWith'])) {
+                            $this->addWorkspacesSwapElements(...array_merge($arguments, [$table, $liveId, $properties]));
+                        }
+                    }
+                }
             }
         }
-        if (!empty($elementList)) {
-            $this->remove($table, (string)$liveId, 'version');
-            $this->mergeToBottom($extendedCommandMap);
-        }
+        $this->applyWorkspacesDependencies($dependency, $scope);
     }
 
     /**
@@ -311,19 +172,7 @@ class CommandMap
      */
     protected function addWorkspacesSwapElements(DependencyResolver $dependency, $table, $liveId, array $properties)
     {
-        $elementList = [];
-        // Fetch accordant elements if the swapMode is 'any' or 'pages':
-        if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages' && $table === 'pages') {
-            $elementList = $this->getParent()->findPageElementsForVersionSwap($table, $liveId, $properties['swapWith']);
-        }
-        foreach ($elementList as $elementTable => $elementIdArray) {
-            foreach ($elementIdArray as $elementIds) {
-                $dependency->addElement($elementTable, $elementIds[1], ['liveId' => $elementIds[0], 'properties' => array_merge($properties, ['swapWith' => $elementIds[1]])]);
-            }
-        }
-        if (empty($elementList)) {
-            $dependency->addElement($table, $properties['swapWith'], ['liveId' => $liveId, 'properties' => $properties]);
-        }
+        $dependency->addElement($table, $properties['swapWith'], ['liveId' => $liveId, 'properties' => $properties]);
     }
 
     /**
@@ -357,56 +206,9 @@ class CommandMap
     {
         $scope = self::SCOPE_WorkspacesSetStage;
         $dependency = $this->getDependencyUtility($scope);
-        if ($this->workspacesChangeStageMode === 'any' || $this->workspacesChangeStageMode === 'pages') {
-            $this->invokeWorkspacesSetStageItems('applyWorkspacesSetStageBehaviour');
-        }
         $this->invokeWorkspacesSetStageItems('explodeSetStage');
         $this->invokeWorkspacesSetStageItems('addWorkspacesSetStageElements', [$dependency]);
         $this->applyWorkspacesDependencies($dependency, $scope);
-    }
-
-    /**
-     * Applies workspaces behaviour for staging and takes care of the changeStageMode.
-     *
-     * @param string $table
-     * @param string $versionIdList
-     * @param array $properties
-     */
-    protected function applyWorkspacesSetStageBehaviour($table, $versionIdList, array $properties)
-    {
-        $extendedCommandMap = [];
-        $versionIds = GeneralUtility::trimExplode(',', $versionIdList, true);
-        $elementList = [$table => $versionIds];
-        if ($this->workspacesChangeStageMode === 'any' || $this->workspacesChangeStageMode === 'pages') {
-            if (count($versionIds) === 1) {
-                $uid = (int)$versionIds[0];
-                $workspaceRecord = BackendUtility::getRecord($table, $uid, 't3ver_wsid');
-                $workspaceId = $workspaceRecord['t3ver_wsid'];
-            } else {
-                $workspaceId = $this->getWorkspace();
-            }
-            if ($table === 'pages') {
-                // Find all elements from the same ws to change stage
-                $livePageIds = $versionIds;
-                $this->getParent()->findRealPageIds($livePageIds);
-                $this->getParent()->findPageElementsForVersionStageChange($livePageIds, $workspaceId, $elementList);
-            } elseif ($this->workspacesChangeStageMode === 'any') {
-                // Find page to change stage:
-                $pageIdList = [];
-                $this->getParent()->findPageIdsForVersionStateChange($table, $versionIds, $workspaceId, $pageIdList, $elementList);
-                // Find other elements from the same ws to change stage:
-                $this->getParent()->findPageElementsForVersionStageChange($pageIdList, $workspaceId, $elementList);
-            }
-        }
-        foreach ($elementList as $elementTable => $elementIds) {
-            foreach ($elementIds as $elementId) {
-                $extendedCommandMap[$elementTable][$elementId]['version'] = $properties;
-            }
-        }
-        foreach ($versionIds as $versionId) {
-            $this->remove($table, $versionId, 'version');
-        }
-        $this->mergeToBottom($extendedCommandMap);
     }
 
     /**
@@ -681,9 +483,8 @@ class CommandMap
      * Gets an instance of the dependency resolver utility.
      *
      * @param string $scope Scope identifier
-     * @return DependencyResolver
      */
-    protected function getDependencyUtility($scope)
+    protected function getDependencyUtility(string $scope): DependencyResolver
     {
         $dependency = GeneralUtility::makeInstance(DependencyResolver::class);
         $dependency->setWorkspace($this->getWorkspace());
