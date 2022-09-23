@@ -484,6 +484,26 @@ class DefaultTcaSchema
                     }
                 }
             }
+
+            // Add slug fields for all tables, defining slug columns (TCA type=slug)
+            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
+                foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                    if ((string)($fieldConfig['config']['type'] ?? '') !== 'slug'
+                        || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                    ) {
+                        continue;
+                    }
+
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        'string',
+                        [
+                            'length' => 2048,
+                            'notnull' => false,
+                        ]
+                    );
+                }
+            }
         }
 
         return $tables;

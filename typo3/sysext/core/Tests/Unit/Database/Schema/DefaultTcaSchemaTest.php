@@ -925,4 +925,28 @@ class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertEquals($expectedMmTable, $result[1]);
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSlug(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['slug'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'slug',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`slug`',
+            Type::getType('string'),
+            [
+                'default' => 0,
+                'notnull' => false,
+                'length' => 2048,
+            ]
+        );
+        self::assertEquals($expectedColumn, $result[0]->getColumn('slug'));
+    }
 }
