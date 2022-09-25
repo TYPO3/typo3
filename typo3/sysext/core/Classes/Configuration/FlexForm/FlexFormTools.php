@@ -589,10 +589,11 @@ class FlexFormTools
 
         // Resolve FILE: prefix pointing to a DS in a file
         if (str_starts_with(trim($dataStructure), 'FILE:')) {
-            $file = GeneralUtility::getFileAbsFileName(substr(trim($dataStructure), 5));
+            $fileName = substr(trim($dataStructure), 5);
+            $file = GeneralUtility::getFileAbsFileName($fileName);
             if (empty($file) || !is_file($file)) {
                 throw new \RuntimeException(
-                    'Data structure file ' . $file . ' could not be resolved to an existing file',
+                    'Data structure file "' . $fileName . '" could not be resolved to an existing file',
                     1478105826
                 );
             }
