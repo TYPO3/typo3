@@ -52,7 +52,6 @@ class ApplicationEnvironment extends BackendEnvironment
             'install',
             'impexp',
             'frontend',
-            'recordlist',
             'redirects',
             'reports',
             'sys_note',

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import LinkBrowser from '@typo3/recordlist/link-browser';
+import LinkBrowser from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 

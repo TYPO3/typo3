@@ -99,12 +99,6 @@
 			<trans-unit id="file_newfolder.php.submit" resname="file_newfolder.php.submit">
 				<source>Create folders</source>
 			</trans-unit>
-			<trans-unit id="create_folder.title" resname="create_folder.title">
-				<source>Create new folder</source>
-			</trans-unit>
-			<trans-unit id="create_folder.submit" resname="create_folder.submit">
-				<source>Create folder</source>
-			</trans-unit>
 			<trans-unit id="file_newfolder.php.folders" resname="file_newfolder.php.folders">
 				<source>folders</source>
 			</trans-unit>

@@ -86,6 +86,26 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\FileLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, mixed\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/LinkHandler/FileLinkHandler.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\PageLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/LinkHandler/PageLinkHandler.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\RecordLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/LinkHandler/RecordLinkHandler.php
+
+		-
+			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\) but returns object\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Routing/PreviewUriBuilder.php
@@ -3444,26 +3464,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\FileLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, mixed\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/FileLinkHandler.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\PageLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/PageLinkHandler.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\RecordLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/RecordLinkHandler.php
-
-		-
-			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"

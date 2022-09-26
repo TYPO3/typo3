@@ -9,7 +9,7 @@ See :issue:`97188`
 Description
 ===========
 
-The system extension `recordlist` provides different `element browsers`,
+The system extension `backend` provides different `element browsers`,
 such as the "File browser" or the "Database browser" to select files
 and records in e.g. FormEngine fields. Extension authors are able to
 register their own browsers. This was previously done using global
@@ -25,7 +25,7 @@ one can manually tag a custom `element browser` with the
 
 Due to the autoconfiguration, the identifier has to be provided by the
 class directly, using the now required :php:`getIdentifier()` method.
-When extending :php:`\TYPO3\CMS\Recordlist\Browser\AbstractElementBrowser`
+When extending :php:`\TYPO3\CMS\Backend\Browser\AbstractElementBrowser`
 it's sufficient to set the `$identifier` class property.
 
 Impact
@@ -34,4 +34,4 @@ Impact
 `element browsers` are now automatically registered through the service
 configuration, based on the implemented interface.
 
-.. index:: Backend, LocalConfiguration, PHP-API, ext:recordlist
+.. index:: Backend, LocalConfiguration, PHP-API, ext:backend

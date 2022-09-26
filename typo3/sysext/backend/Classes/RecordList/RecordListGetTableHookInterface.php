@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Backend\RecordList;
 
 /**
- * Interface for classes which hook into \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+ * Interface for classes which hook into \TYPO3\CMS\Backend\RecordList\DatabaseRecordList
  * and do additional getTable processing
  */
 interface RecordListGetTableHookInterface
@@ -28,7 +28,7 @@ interface RecordListGetTableHookInterface
      * @param int $pageId The record's page ID
      * @param string $additionalWhereClause An additional WHERE clause
      * @param string $selectedFieldsList Comma separated list of selected fields
-     * @param \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $parentObject Parent \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList object
+     * @param DatabaseRecordList $parentObject
      */
     public function getDBlistQuery($table, $pageId, &$additionalWhereClause, &$selectedFieldsList, &$parentObject);
 }

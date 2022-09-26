@@ -20,8 +20,7 @@
 	},
 	"require": {
 		"psr/event-dispatcher": "^1.0",
-		"typo3/cms-core": "12.0.*@dev",
-		"typo3/cms-recordlist": "12.0.*@dev"
+		"typo3/cms-core": "12.0.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-install": "To generate url to install tool in environment toolbar"
@@ -34,6 +33,7 @@
 		"typo3/cms-context-help": "*",
 		"typo3/cms-cshmanual": "*",
 		"typo3/cms-func-wizards": "*",
+		"typo3/cms-recordlist": "*",
 		"typo3/cms-wizard-crpages": "*",
 		"typo3/cms-wizard-sortpages": "*"
 	},

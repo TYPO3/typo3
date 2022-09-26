@@ -9,7 +9,7 @@ See :issue:`97188`
 Description
 ===========
 
-The `element browsers` in EXT:recordlist are now registered via service
+The `element browsers` in EXT:backend are now registered via service
 configuration, see the :doc:`feature changelog <Feature-97188-NewRegistrationForElementBrowsers>`.
 Therefore the registration via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']`
@@ -21,7 +21,7 @@ identifier has to be provided by the service directly using the
 :php:`ElementBrowserInterface`.
 
 In case a custom `element browser` extends
-:php:`\TYPO3\CMS\Recordlist\Browser\AbstractElementBrowser`,
+:php:`\TYPO3\CMS\Backend\Browser\AbstractElementBrowser`,
 only the class property `$identifier` has to be set, e.g.
 :php:`protected string $identifier = 'my_browser';`.
 
@@ -63,4 +63,4 @@ Additionally, make sure to either implement
 :php:`public function getIdentifier(): string` or, in case your `element browser`
 extends :php:`AbstractElementBrowser`, to set the `$identifier` class property.
 
-.. index:: Backend, LocalConfiguration, PHP-API, FullyScanned, ext:recordlist
+.. index:: Backend, LocalConfiguration, PHP-API, FullyScanned, ext:backend

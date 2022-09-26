@@ -45,7 +45,6 @@
 							<id>2</id>
 							<table>tx_testirreforeignfield_hotel</table>
 						</element>
-
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -138,173 +137,6 @@
 					<pid>1</pid>
 					<title>Price 1.1.1 (csv)</title>
 					<relations index="rels" type="array"></relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
-			<table index="tx_testirremm_hotel" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>Hotel 1 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremm_offer:1" type="array">
-							<id>1</id>
-							<table>tx_testirremm_offer</table>
-						</element>
-						<element index="tx_testirremm_offer:2" type="array">
-							<id>2</id>
-							<table>tx_testirremm_offer</table>
-						</element>
-					</relations>
-					<softrefs type="array"/>
-				</rec>
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>Hotel 2 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremm_offer:3" type="array">
-							<id>3</id>
-							<table>tx_testirremm_offer</table>
-						</element>
-					</relations>
-					<softrefs type="array"/>
-				</rec>
-			</table>
-			<table index="tx_testirremm_offer" type="array">
-				<rec index="3" type="array">
-					<uid>3</uid>
-					<pid>1</pid>
-					<title>Offer 2.1 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremm_price:3" type="array">
-							<id>3</id>
-							<table>tx_testirremm_price</table>
-						</element>
-					</relations>
-					<softrefs type="array"/>
-				</rec>
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>Offer 1.2 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremm_price:2" type="array">
-							<id>2</id>
-							<table>tx_testirremm_price</table>
-						</element>
-					</relations>
-					<softrefs type="array"/>
-				</rec>
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>Offer 1.1 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremm_price:1" type="array">
-							<id>1</id>
-							<table>tx_testirremm_price</table>
-						</element>
-					</relations>
-					<softrefs type="array"/>
-				</rec>
-			</table>
-			<table index="tx_testirremm_price" type="array">
-				<rec index="3" type="array">
-					<uid>3</uid>
-					<pid>1</pid>
-					<title>Price (m:n (MM) ASym)</title>
-					<relations index="rels" type="array"/>
-					<softrefs type="array"/>
-				</rec>
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>Price 1.2.2 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array"/>
-					<softrefs type="array"/>
-				</rec>
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>Price 1.1.1 (m:n (MM) ASym)</title>
-					<relations index="rels" type="array"/>
-					<softrefs type="array"/>
-				</rec>
-			</table>
-			<table index="tx_testirremnsymmetric_hotel" type="array">
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>Hotel Branch 1.1 (mm sym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremnsymmetric_hotel_rel:1" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-				<rec index="3" type="array">
-					<uid>3</uid>
-					<pid>1</pid>
-					<title>Hotel branch 1.2 (mm sym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremnsymmetric_hotel_rel:2" type="array">
-							<id>2</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>Hotel 1 (mm sym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremnsymmetric_hotel_rel:1" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-						<element index="tx_testirremnsymmetric_hotel_rel:2" type="array">
-							<id>2</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
-			<table index="tx_testirremnsymmetric_hotel_rel" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>1</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremnsymmetric_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-						<element index="tx_testirremnsymmetric_hotel:2" type="array">
-							<id>2</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>2</title>
-					<relations index="rels" type="array">
-						<element index="tx_testirremnsymmetric_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-						<element index="tx_testirremnsymmetric_hotel:3" type="array">
-							<id>3</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
@@ -406,6 +238,97 @@
 					<uid>4</uid>
 					<pid>1</pid>
 					<title>Price 2.1.1 (nff)</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+			<table index="tx_testirremm_hotel" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>Hotel 1 (m:n (MM) ASym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremm_offer:1" type="array">
+							<id>1</id>
+							<table>tx_testirremm_offer</table>
+						</element>
+						<element index="tx_testirremm_offer:2" type="array">
+							<id>2</id>
+							<table>tx_testirremm_offer</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>Hotel 2 (m:n (MM) ASym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremm_offer:3" type="array">
+							<id>3</id>
+							<table>tx_testirremm_offer</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+			<table index="tx_testirremm_offer" type="array">
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>1</pid>
+					<title>Offer 2.1 (m:n (MM) ASym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremm_price:3" type="array">
+							<id>3</id>
+							<table>tx_testirremm_price</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>Offer 1.2 (m:n (MM) ASym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremm_price:2" type="array">
+							<id>2</id>
+							<table>tx_testirremm_price</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>Offer 1.1 (m:n (MM) ASym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremm_price:1" type="array">
+							<id>1</id>
+							<table>tx_testirremm_price</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+			<table index="tx_testirremm_price" type="array">
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>1</pid>
+					<title>Price (m:n (MM) ASym)</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>Price 1.2.2 (m:n (MM) ASym)</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>Price 1.1.1 (m:n (MM) ASym)</title>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -598,6 +521,82 @@
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
+			<table index="tx_testirremnsymmetric_hotel" type="array">
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>Hotel Branch 1.1 (mm sym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel_rel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>1</pid>
+					<title>Hotel branch 1.2 (mm sym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel_rel:2" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>Hotel 1 (mm sym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel_rel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+						<element index="tx_testirremnsymmetric_hotel_rel:2" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+			<table index="tx_testirremnsymmetric_hotel_rel" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>1</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+						<element index="tx_testirremnsymmetric_hotel:2" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>2</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+						<element index="tx_testirremnsymmetric_hotel:3" type="array">
+							<id>3</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
 		</records>
 		<pid_lookup type="array">
 			<page_contents index="0" type="array">
@@ -623,29 +622,6 @@
 					<item index="2">1</item>
 					<item index="1">1</item>
 				</table>
-				<table index="tx_testirremm_hotel" type="array">
-					<item index="1">1</item>
-					<item index="2">1</item>
-				</table>
-				<table index="tx_testirremm_offer" type="array">
-					<item index="3">1</item>
-					<item index="2">1</item>
-					<item index="1">1</item>
-				</table>
-				<table index="tx_testirremm_price" type="array">
-					<item index="3">1</item>
-					<item index="2">1</item>
-					<item index="1">1</item>
-				</table>
-				<table index="tx_testirremnsymmetric_hotel" type="array">
-					<item index="2">1</item>
-					<item index="3">1</item>
-					<item index="1">1</item>
-				</table>
-				<table index="tx_testirremnsymmetric_hotel_rel" type="array">
-					<item index="1">1</item>
-					<item index="2">1</item>
-				</table>
 				<table index="tx_testirreforeignfield_hotel" type="array">
 					<item index="1">1</item>
 					<item index="2">1</item>
@@ -660,6 +636,20 @@
 					<item index="2">1</item>
 					<item index="3">1</item>
 					<item index="4">1</item>
+				</table>
+				<table index="tx_testirremm_hotel" type="array">
+					<item index="1">1</item>
+					<item index="2">1</item>
+				</table>
+				<table index="tx_testirremm_offer" type="array">
+					<item index="3">1</item>
+					<item index="2">1</item>
+					<item index="1">1</item>
+				</table>
+				<table index="tx_testirremm_price" type="array">
+					<item index="3">1</item>
+					<item index="2">1</item>
+					<item index="1">1</item>
 				</table>
 				<table index="tx_testirremnattributeinline_hotel" type="array">
 					<item index="1">1</item>
@@ -685,6 +675,15 @@
 					<item index="2">1</item>
 				</table>
 				<table index="tx_testirremnattributesimple_offer" type="array">
+					<item index="1">1</item>
+					<item index="2">1</item>
+				</table>
+				<table index="tx_testirremnsymmetric_hotel" type="array">
+					<item index="2">1</item>
+					<item index="3">1</item>
+					<item index="1">1</item>
+				</table>
+				<table index="tx_testirremnsymmetric_hotel_rel" type="array">
 					<item index="1">1</item>
 					<item index="2">1</item>
 				</table>
@@ -911,322 +910,6 @@
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_testirremm_hotel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">256</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel 1 (m:n (MM) ASym)</field>
-				<field index="offers" type="integer">2</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="offers" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_testirremm_offer</table>
-						</element>
-						<element index="1" type="array">
-							<id>2</id>
-							<table>tx_testirremm_offer</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremm_hotel:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">512</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel 2 (m:n (MM) ASym)</field>
-				<field index="offers" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="offers" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>3</id>
-							<table>tx_testirremm_offer</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremm_offer:3" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">3</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">64</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Offer 2.1 (m:n (MM) ASym)</field>
-				<field index="hotels" type="integer">0</field>
-				<field index="prices" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="prices" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>3</id>
-							<table>tx_testirremm_price</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremm_offer:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">128</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Offer 1.2 (m:n (MM) ASym)</field>
-				<field index="hotels" type="integer">0</field>
-				<field index="prices" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="prices" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>2</id>
-							<table>tx_testirremm_price</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremm_offer:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">256</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Offer 1.1 (m:n (MM) ASym)</field>
-				<field index="hotels" type="integer">0</field>
-				<field index="prices" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="prices" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_testirremm_price</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremm_price:3" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">3</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">64</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Price (m:n (MM) ASym)</field>
-				<field index="price">223.00</field>
-				<field index="offers" type="integer">0</field>
-			</fieldlist>
-			<related index="rels" type="array"/>
-		</tablerow>
-		<tablerow index="tx_testirremm_price:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">128</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Price 1.2.2 (m:n (MM) ASym)</field>
-				<field index="price">567.00</field>
-				<field index="offers" type="integer">0</field>
-			</fieldlist>
-			<related index="rels" type="array"/>
-		</tablerow>
-		<tablerow index="tx_testirremm_price:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">256</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Price 1.1.1 (m:n (MM) ASym)</field>
-				<field index="price">567.00</field>
-				<field index="offers" type="integer">0</field>
-			</fieldlist>
-			<related index="rels" type="array"/>
-		</tablerow>
-		<tablerow index="tx_testirremnsymmetric_hotel:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">128</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel Branch 1.1 (mm sym)</field>
-				<field index="branches" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="branches" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremnsymmetric_hotel:3" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">3</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">192</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel branch 1.2 (mm sym)</field>
-				<field index="branches" type="integer">0</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="branches" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>2</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremnsymmetric_hotel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">256</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel 1 (mm sym)</field>
-				<field index="branches" type="integer">2</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="branches" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-						<element index="1" type="array">
-							<id>2</id>
-							<table>tx_testirremnsymmetric_hotel_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremnsymmetric_hotel_rel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="hotelid" type="integer">1</field>
-				<field index="branchid" type="integer">2</field>
-				<field index="hotelsort" type="integer">1</field>
-				<field index="branchsort" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="hotelid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-					</relations>
-				</field>
-				<field index="branchid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>2</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_testirremnsymmetric_hotel_rel:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="hotelid" type="integer">1</field>
-				<field index="branchid" type="integer">3</field>
-				<field index="hotelsort" type="integer">2</field>
-				<field index="branchsort" type="integer">0</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="hotelid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-					</relations>
-				</field>
-				<field index="branchid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>3</id>
-							<table>tx_testirremnsymmetric_hotel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
 		<tablerow index="tx_testirreforeignfield_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
@@ -1435,6 +1118,178 @@
 				<field index="parentidentifier"></field>
 				<field index="title">Price 2.1.1 (nff)</field>
 				<field index="price">5467567.00</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="tx_testirremm_hotel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">256</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel 1 (m:n (MM) ASym)</field>
+				<field index="offers" type="integer">2</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="offers" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremm_offer</table>
+						</element>
+						<element index="1" type="array">
+							<id>2</id>
+							<table>tx_testirremm_offer</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremm_hotel:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">512</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel 2 (m:n (MM) ASym)</field>
+				<field index="offers" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="offers" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>3</id>
+							<table>tx_testirremm_offer</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremm_offer:3" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">3</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">64</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Offer 2.1 (m:n (MM) ASym)</field>
+				<field index="hotels" type="integer">0</field>
+				<field index="prices" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="prices" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>3</id>
+							<table>tx_testirremm_price</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremm_offer:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">128</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Offer 1.2 (m:n (MM) ASym)</field>
+				<field index="hotels" type="integer">0</field>
+				<field index="prices" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="prices" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2</id>
+							<table>tx_testirremm_price</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremm_offer:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">256</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Offer 1.1 (m:n (MM) ASym)</field>
+				<field index="hotels" type="integer">0</field>
+				<field index="prices" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="prices" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremm_price</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremm_price:3" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">3</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">64</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Price (m:n (MM) ASym)</field>
+				<field index="price">223.00</field>
+				<field index="offers" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="tx_testirremm_price:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">128</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Price 1.2.2 (m:n (MM) ASym)</field>
+				<field index="price">567.00</field>
+				<field index="offers" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="tx_testirremm_price:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">256</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Price 1.1.1 (m:n (MM) ASym)</field>
+				<field index="price">567.00</field>
+				<field index="offers" type="integer">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -1795,6 +1650,150 @@
 						<element index="0" type="array">
 							<id>2</id>
 							<table>tx_testirremnattributesimple_hotel_offer_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">128</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel Branch 1.1 (mm sym)</field>
+				<field index="branches" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="branches" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel:3" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">3</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">192</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel branch 1.2 (mm sym)</field>
+				<field index="branches" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="branches" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">256</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel 1 (mm sym)</field>
+				<field index="branches" type="integer">2</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="branches" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+						<element index="1" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel_rel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="hotelid" type="integer">1</field>
+				<field index="branchid" type="integer">2</field>
+				<field index="hotelsort" type="integer">1</field>
+				<field index="branchsort" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="hotelid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+				<field index="branchid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel_rel:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="hotelid" type="integer">1</field>
+				<field index="branchid" type="integer">3</field>
+				<field index="hotelsort" type="integer">2</field>
+				<field index="branchsort" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="hotelid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+				<field index="branchid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>3</id>
+							<table>tx_testirremnsymmetric_hotel</table>
 						</element>
 					</relations>
 				</field>

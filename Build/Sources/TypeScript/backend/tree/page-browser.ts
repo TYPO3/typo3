@@ -20,8 +20,8 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {TreeNode} from './tree-node';
 import {TreeNodeSelection, Toolbar} from '../svg-tree';
-import ElementBrowser from '@typo3/recordlist/element-browser';
-import LinkBrowser from '@typo3/recordlist/link-browser';
+import ElementBrowser from '@typo3/backend/element-browser';
+import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
 import Persistent from '@typo3/backend/storage/persistent';
 

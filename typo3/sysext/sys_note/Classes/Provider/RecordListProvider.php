@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Provider;
 
-use TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent;
+use TYPO3\CMS\Backend\Controller\Event\RenderAdditionalContentToRecordListEvent;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
 

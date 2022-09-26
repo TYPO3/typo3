@@ -2,6 +2,7 @@
 
 use TYPO3\CMS\Backend\Controller\AboutController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
+use TYPO3\CMS\Backend\Controller\RecordListController;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 
 /**
@@ -24,6 +25,23 @@ return [
             'function' => 1,
             'language' => 0,
             'showHidden' => true,
+        ],
+    ],
+    'web_list' => [
+        'parent' => 'web',
+        'position' => ['after' => 'web_ViewpageView'],
+        'access' => 'user',
+        'path' => '/module/web/list',
+        'iconIdentifier' => 'module-list',
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf',
+        'routes' => [
+            '_default' => [
+                'target' => RecordListController::class . '::mainAction',
+            ],
+        ],
+        'moduleData' => [
+            'clipBoard' => true,
+            'collapsedTables' => [],
         ],
     ],
     'site_configuration' => [

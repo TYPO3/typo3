@@ -325,4 +325,16 @@ return [
         'path' => '/show/columns/selector',
         'target' => \TYPO3\CMS\Backend\Controller\ColumnSelectorController::class . '::showColumnsSelectorAction',
     ],
+
+    // Clear page cache in list module
+    'web_list_clearpagecache' => [
+        'path' => '/web/list/clearpagecache',
+        'target' => \TYPO3\CMS\Backend\Controller\ClearPageCacheController::class . '::mainAction',
+    ],
+
+    // Record download in list module
+    'record_download_settings' => [
+        'path' => '/record/download/settings',
+        'target' => \TYPO3\CMS\Backend\Controller\RecordListDownloadController::class . '::downloadSettingsAction',
+    ],
 ];

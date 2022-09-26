@@ -11,8 +11,8 @@ See :issue:`97454`
 Description
 ===========
 
-Two new PSR-14 events :php:`\TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent` and
-:php:`\TYPO3\CMS\Recordlist\Event\ModifyAllowedItemsEvent` have been introduced which
+Two new PSR-14 events :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent` and
+:php:`\TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent` have been introduced which
 serve as a direct replacement for the now removed
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']`
 :doc:`hooks <../12.0/Breaking-97454-RemoveLinkBrowserHooks>`.
@@ -49,7 +49,7 @@ The corresponding event listener class:
 
 .. code-block:: php
 
-    use TYPO3\CMS\Recordlist\Event\ModifyLinkHandlersEvent;
+    use TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent;
 
     final class MyEventListener
     {

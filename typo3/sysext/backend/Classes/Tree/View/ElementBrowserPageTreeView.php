@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Imaging\IconProvider\AbstractSvgIconProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
  * Class which generates the selectable page tree

@@ -3,7 +3,6 @@
 return [
     'dependencies' => [
         'backend',
-        'recordlist',
     ],
     'imports' => [
         '@typo3/rte-ckeditor/' => [

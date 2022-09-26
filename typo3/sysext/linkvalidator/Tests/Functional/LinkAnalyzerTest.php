@@ -24,6 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class LinkAnalyzerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
+        'info',
         'seo',
         'linkvalidator',
     ];

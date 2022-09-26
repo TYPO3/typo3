@@ -15,7 +15,7 @@
  * Module: @typo3/backend/form-engine-link-browser-adapter
  * LinkBrowser communication with parent window
  */
-import LinkBrowser from '@typo3/recordlist/link-browser'
+import LinkBrowser from '@typo3/backend/link-browser'
 import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';

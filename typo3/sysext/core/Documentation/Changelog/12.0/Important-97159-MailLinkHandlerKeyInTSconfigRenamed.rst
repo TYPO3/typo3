@@ -18,4 +18,4 @@ as well as the value of the :php:`LinkService::TYPE_EMAIL` constant.
 
 Update any usage of this key in your extension code.
 
-.. index:: TSConfig, ext:recordlist
+.. index:: TSConfig, ext:backend

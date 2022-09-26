@@ -1,0 +1,39 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="LinkBrowser" />
+
+<f:section name="Navigation">
+    <typo3-backend-component-filestorage-browser
+        class="scaffold-content-navigation-component"
+        active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
+    >
+    </typo3-backend-component-filestorage-browser>
+</f:section>
+
+<f:section name="Content">
+    <f:if condition="{selectedFolder}">
+        <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
+        <div class="list-group list-group-flush mb-3">
+            <div class="list-group-item" title="{selectedFolder.identifier}">
+                {selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
+            </div>
+            <f:if condition="{itemsInSelectedFolder}">
+                <div class="list-group list-group-flush ms-3">
+                    <f:for each="{itemsInSelectedFolder}" as="file">
+                        <a href="{file.url}" class="t3js-fileLink  list-group-item list-group-item-action{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' active')}" title="{file.name}">
+                            <span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
+                            {file.title}
+                        </a>
+                    </f:for>
+                </div>
+            </f:if>
+        </div>
+    </f:if>
+    {uploadFileForm -> f:format.raw()}
+    {createFolderForm -> f:format.raw()}
+</f:section>
+
+</html>

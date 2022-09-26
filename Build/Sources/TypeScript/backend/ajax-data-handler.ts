@@ -104,7 +104,7 @@ class AjaxDataHandler {
     });
   }
 
-  // TODO: Many extensions rely on this behavior but it's misplaced in AjaxDataHandler. Move into Recordlist.ts and deprecate in v11.
+  // @todo: Many extensions rely on this behavior but it's misplaced in AjaxDataHandler. Move into recordlist.ts and deprecate in v11.
   private initialize(): void {
     // HIDE/UNHIDE: click events for all action icons to hide/unhide
     $(document).on('click', Identifiers.hide, (e: JQueryEventObject): void => {

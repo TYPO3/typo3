@@ -1,20 +1,85 @@
-# dummy placeholders for item groups
-mod.wizards.newContentElement.wizardItems {
-  common.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common
-  menu.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu
-  special.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special
-  forms.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms
-  plugins.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins
-  plugins.elements {
-    general {
-      iconIdentifier = content-plugin
-      title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_title
-      description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_description
-      tt_content_defValues.CType = list
-    }
+# Register default link handlers
+TCEMAIN.linkHandler {
+  page {
+    handler = TYPO3\CMS\Backend\LinkHandler\PageLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:page
   }
-  plugins.show = *
+  file {
+    handler = TYPO3\CMS\Backend\LinkHandler\FileLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:file
+    displayAfter = page
+    scanAfter = page
+  }
+  folder {
+    handler = TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:folder
+    displayAfter = page,file
+    scanAfter = page,file
+  }
+  url {
+    handler = TYPO3\CMS\Backend\LinkHandler\UrlLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:extUrl
+    displayAfter = page,file,folder
+    scanAfter = telephone
+  }
+  email {
+    handler = TYPO3\CMS\Backend\LinkHandler\MailLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email
+    displayAfter = page,file,folder,url
+    scanBefore = url
+  }
+  telephone {
+    handler = TYPO3\CMS\Backend\LinkHandler\TelephoneLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:telephone
+    displayAfter = page,file,folder,url,mail
+    scanBefore = url
+  }
 }
-mod.wizards.newRecord.pages.show.pageInside = 1
-mod.wizards.newRecord.pages.show.pageAfter = 1
-mod.wizards.newRecord.pages.show.pageSelectPosition = 1
+
+mod.web_list {
+  enableClipBoard = selectable
+  tableDisplayOrder {
+    be_users.after = be_groups
+    sys_filemounts.after = be_users
+    sys_file_storage.after = sys_filemounts
+    fe_users.after = fe_groups
+    fe_users.before = pages
+    sys_template.after = pages
+    backend_layout.after = pages
+    tt_content.after = pages,backend_layout,sys_template
+    sys_category.after = tt_content
+  }
+  searchLevel.items {
+    -1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
+    0 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
+    1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
+    2 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
+    3 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
+    4 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
+  }
+}
+
+# dummy placeholders for item groups
+mod.wizards {
+  newContentElement.wizardItems {
+    common.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common
+    menu.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu
+    special.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special
+    forms.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms
+    plugins.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins
+    plugins.elements {
+      general {
+        iconIdentifier = content-plugin
+        title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_title
+        description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_description
+        tt_content_defValues.CType = list
+      }
+    }
+    plugins.show = *
+  }
+  newRecord.pages.show {
+    pageInside = 1
+    pageAfter = 1
+    pageSelectPosition = 1
+  }
+}

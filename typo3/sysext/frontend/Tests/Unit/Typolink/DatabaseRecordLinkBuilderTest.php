@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
-use TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**

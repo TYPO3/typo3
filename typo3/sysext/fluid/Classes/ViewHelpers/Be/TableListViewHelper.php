@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleData;
+use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -26,7 +27,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * ViewHelper which renders a record list as known from the TYPO3 list module.
@@ -103,7 +103,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+     * @see \TYPO3\CMS\Backend\RecordList\DatabaseRecordList
      */
     public function render(): string
     {
@@ -132,8 +132,8 @@ final class TableListViewHelper extends AbstractBackendViewHelper
             return '';
         }
 
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/recordlist/recordlist.js');
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/recordlist/record-download-button.js');
+        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/recordlist.js');
+        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/record-download-button.js');
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
         if ($enableControlPanels === true) {
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');

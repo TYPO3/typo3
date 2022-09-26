@@ -108,6 +108,12 @@ return [
         'target' => Controller\Wizard\EditController::class . '::mainAction',
     ],
 
+    // Register wizard element browser
+    'wizard_element_browser' => [
+        'path' => '/wizard/record/browse',
+        'target' => Controller\ElementBrowserController::class . '::mainAction',
+    ],
+
     // Register link wizard
     'wizard_link' => [
         'path' => '/wizard/link/browse',
@@ -123,6 +129,13 @@ return [
     ],
 
     /** DB Records-related routes */
+    // Record download in list module
+    'record_download' => [
+        'path' => '/record/download',
+        'methods' => ['POST'],
+        'target' => Controller\RecordListDownloadController::class . '::handleDownloadRequest',
+    ],
+
     // Register record history module
     'record_history' => [
         'path' => '/record/history',

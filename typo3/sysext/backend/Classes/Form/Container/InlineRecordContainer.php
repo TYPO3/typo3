@@ -417,7 +417,7 @@ class InlineRecordContainer extends AbstractContainer
 
     /**
      * Render the control-icons for a record header (create new, sorting, delete, disable/enable).
-     * Most of the parts are copy&paste from TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList and
+     * Most of the parts are copy&paste from TYPO3\CMS\Backend\RecordList\DatabaseRecordList and
      * modified for the JavaScript calls here
      *
      * @param array $data Current data

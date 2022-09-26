@@ -25,10 +25,12 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 class PluginsTest extends AbstractTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta',
+    ];
+
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta';
-
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Scenarios/pages_with_plugins_seo_meta.csv');
 

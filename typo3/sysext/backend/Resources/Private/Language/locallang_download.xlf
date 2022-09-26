@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_download.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist">
+		<header/>
+		<body>
+			<trans-unit id="downloadRecord" resname="downloadRecord">
+				<source>Download %d record</source>
+			</trans-unit>
+			<trans-unit id="downloadRecords" resname="downloadRecords">
+				<source>Download %d records</source>
+			</trans-unit>
+			<trans-unit id="download" resname="download">
+				<source>Download</source>
+			</trans-unit>
+			<trans-unit id="downloadRecordSettings" resname="downloadRecordSettings">
+				<source>Download %s: %d Record</source>
+			</trans-unit>
+			<trans-unit id="downloadRecordsSettings" resname="downloadRecordsSettings">
+				<source>Download %s: %d Records</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.generalSettings" resname="downloadSettings.generalSettings">
+				<source>General settings</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.columnsToDownload" resname="downloadSettings.columnsToDownload">
+				<source>Columns to download</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.selectedColumns" resname="downloadSettings.selectedColumns">
+				<source>Selected columns</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.allColumns" resname="downloadSettings.allColumns">
+				<source>All columns</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.valueFormat" resname="downloadSettings.valueFormat">
+				<source>Format of values</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.rawValues" resname="downloadSettings.rawValues">
+				<source>Raw values</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.processedValues" resname="downloadSettings.processedValues">
+				<source>Processed values</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.default" resname="downloadSettings.default">
+				<source>Default: %s</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.filename" resname="downloadSettings.filename">
+				<source>Filename</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.filename.placeholder" resname="downloadSettings.filename.placeholder">
+				<source>e.g. %s_ddmmyy-hhmm</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.format" resname="downloadSettings.format">
+				<source>Format</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.format.csv" resname="downloadSettings.format.csv">
+				<source>CSV</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.format.json" resname="downloadSettings.format.json">
+				<source>JSON</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv" resname="downloadSettings.formatOptions.csv">
+				<source>CSV options</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.delimiter" resname="downloadSettings.formatOptions.csv.delimiter">
+				<source>Delimiter</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.delimiter.comma" resname="downloadSettings.formatOptions.csv.delimiter.comma">
+				<source>comma</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.delimiter.semicolon" resname="downloadSettings.formatOptions.csv.delimiter.semicolon">
+				<source>semicolon</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.delimiter.pipe" resname="downloadSettings.formatOptions.csv.delimiter.pipe">
+				<source>pipe</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.delimiter.custom" resname="downloadSettings.formatOptions.csv.delimiter.custom">
+				<source>user defined</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.quote" resname="downloadSettings.formatOptions.csv.quote">
+				<source>Quote character</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.quote.doublequote" resname="downloadSettings.formatOptions.csv.quote.doublequote">
+				<source>double quote</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.quote.singlequote" resname="downloadSettings.formatOptions.csv.quote.singlequote">
+				<source>single qoute</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.quote.space" resname="downloadSettings.formatOptions.csv.quote.space">
+				<source>space</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.csv.quote.custom" resname="downloadSettings.formatOptions.csv.quote.custom">
+				<source>user defined</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.json" resname="downloadSettings.formatOptions.json">
+				<source>JSON options</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.json.meta" resname="downloadSettings.formatOptions.json.meta">
+				<source>Meta information</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.json.meta.full" resname="downloadSettings.formatOptions.json.meta.full">
+				<source>Add all relevant information to the download</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.json.meta.prefix" resname="downloadSettings.formatOptions.json.meta.prefix">
+				<source>Prefix the download with table name and page id</source>
+			</trans-unit>
+			<trans-unit id="downloadSettings.formatOptions.json.meta.none" resname="downloadSettings.formatOptions.json.meta.none">
+				<source>No information, only download records</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
