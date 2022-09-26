@@ -66,7 +66,7 @@ class InstalledExtensionsCest
     public function checkIfUploadFormAppears(ApplicationTester $I): void
     {
         $I->cantSeeElement('.module-body .extension-upload-form');
-        $I->click('a[title="Upload Extension .t3x/.zip"]', '.module-docheader');
+        $I->click('a[title="Upload Extension"]', '.module-docheader');
         $I->seeElement('.module-body .extension-upload-form');
     }
 

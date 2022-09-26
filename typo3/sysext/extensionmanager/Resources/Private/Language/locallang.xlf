@@ -79,7 +79,7 @@
 				<source>Download as zip</source>
 			</trans-unit>
 			<trans-unit id="extensionList.uploadExtension" resname="extensionList.uploadExtension">
-				<source>Upload Extension .t3x/.zip</source>
+				<source>Upload Extension</source>
 			</trans-unit>
 			<trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension">
 				<source>Overwrite</source>
