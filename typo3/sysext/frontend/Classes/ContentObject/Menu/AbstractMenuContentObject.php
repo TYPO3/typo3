@@ -1186,12 +1186,11 @@ abstract class AbstractMenuContentObject
 
     /**
      * Creates the URL, target and data-window-* attributes for the menu item link. Returns them in an array as key/value pairs for <A>-tag attributes
-     * This function doesn't care about the url, because if we let the url be redirected, it will be logged in the stat!!!
      *
      * @param int $key Pointer to a key in the $this->menuArr array where the value for that key represents the menu item we are linking to (page record)
      * @param string $altTarget Alternative target
      * @param string $typeOverride Alternative type
-     * @return array Returns an array with A-tag attributes as key/value pairs ('href', 'target' and data-window-* attrs)
+     * @return LinkResultInterface|null
      */
     protected function link($key, $altTarget, $typeOverride)
     {
@@ -1238,14 +1237,10 @@ abstract class AbstractMenuContentObject
                     $linkResult = $linkResult->withAttribute('target', $this->menuArr[$key]['_OVERRIDE_TARGET']);
                 }
             }
-            $attrs = $linkResult->getAttributes();
         } catch (UnableToLinkException $e) {
-            $attrs = [
-                'href' => '',
-                'target' => '',
-            ];
+            $linkResult = null;
         }
-        $runtimeCache->set($cacheId, $attrs);
+        $runtimeCache->set($cacheId, $linkResult);
 
         // End showAccessRestrictedPages
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
@@ -1253,7 +1248,7 @@ abstract class AbstractMenuContentObject
             $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] = $SAVED_link_to_restricted_pages_additional_params;
         }
 
-        return $attrs;
+        return $linkResult;
     }
 
     /**
@@ -1525,12 +1520,12 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Creates the <A> tag parts for the current item (in $this->I, [A1] and [A2]) based on other information in this array (like $this->I['linkHREF'])
+     * Creates the <A> tag parts for the current item (in $this->I, [A1] and [A2]) based on the given link result
      */
-    protected function setATagParts()
+    protected function setATagParts(?LinkResultInterface $linkResult)
     {
-        $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], true) . '>';
-        $this->I['A2'] = '</a>';
+        $this->I['A1'] = $linkResult ? '<a ' . GeneralUtility::implodeAttributes($linkResult->getAttributes(), true) . '>' : '';
+        $this->I['A2'] = $linkResult ? '</a>' : '';
     }
 
     /**

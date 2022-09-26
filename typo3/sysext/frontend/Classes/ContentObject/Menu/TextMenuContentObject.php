@@ -61,20 +61,20 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'] ?? false;
             // Make link tag
             $this->I['val']['additionalParams'] = $cObjectForCurrentMenu->stdWrapValue('additionalParams', $this->I['val']);
-            $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
-            if (empty($this->I['linkHREF'])) {
+            $linkResult = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
+            if ($linkResult === null) {
                 $this->I['val']['doNotLinkIt'] = 1;
             }
             // Title attribute of links
             $titleAttrValue = $cObjectForCurrentMenu->stdWrapValue('ATagTitle', $this->I['val']);
-            if ($titleAttrValue !== '') {
-                $this->I['linkHREF']['title'] = $titleAttrValue;
+            if ($linkResult && $titleAttrValue !== '') {
+                $linkResult = $linkResult->withAttribute('title', $titleAttrValue);
             }
-
+            $this->I['linkHREF'] = $linkResult;
             $this->I['val']['doNotLinkIt'] = (bool)$cObjectForCurrentMenu->stdWrapValue('doNotLinkIt', $this->I['val']);
             // Compile link tag
             if (!$this->I['spacer'] && !$this->I['val']['doNotLinkIt']) {
-                $this->setATagParts();
+                $this->setATagParts($linkResult);
             } else {
                 $this->I['A1'] = '';
                 $this->I['A2'] = '';

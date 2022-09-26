@@ -23,6 +23,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 
 /**
@@ -438,7 +439,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
      */
     public function replacePlaceholderInRenderedMenuItem(array $menuItem): array
     {
-        $link = $this->jsonEncode($menuItem['linkHREF']['href']);
+        $link = $this->jsonEncode($menuItem['linkHREF'] instanceof LinkResultInterface ? $menuItem['linkHREF']->getUrl() : '');
 
         $menuItem['parts']['title'] = str_replace(self::LINK_PLACEHOLDER, $link, $menuItem['parts']['title']);
 
