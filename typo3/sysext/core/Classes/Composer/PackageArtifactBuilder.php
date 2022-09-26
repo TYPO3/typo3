@@ -21,6 +21,7 @@ use Composer\Package\PackageInterface;
 use Composer\Repository\PlatformRepository;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
+use Composer\Util\Platform;
 use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -160,6 +162,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             function (array $packageAndPath) use ($rootPackage, &$usedExtensionKeys) {
                 [$composerPackage, $packagePath] = $packageAndPath;
                 $packageName = $composerPackage->getName();
+                $packagePath = GeneralUtility::fixWindowsFilePath($packagePath);
                 try {
                     $extensionKey = ExtensionKeyResolver::resolve($composerPackage);
                 } catch (\Throwable $e) {
@@ -268,7 +271,9 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             [$relativePrefix] = explode('Resources/Public', $relativePath);
             $publicResourcesPath = $fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
             $fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
-            if (!$fileSystem->isSymlinkedDirectory($publicResourcesPath)) {
+            if (Platform::isWindows() && !$fileSystem->isJunction($publicResourcesPath)) {
+                $fileSystem->junction($fileSystemResourcesPath, $publicResourcesPath);
+            } elseif (!$fileSystem->isSymlinkedDirectory($publicResourcesPath)) {
                 $fileSystem->relativeSymlink($fileSystemResourcesPath, $publicResourcesPath);
             }
         }
