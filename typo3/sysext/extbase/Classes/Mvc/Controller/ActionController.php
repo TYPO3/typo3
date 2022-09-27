@@ -1089,7 +1089,7 @@ abstract class ActionController implements ControllerInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
-            ->withBody($this->streamFactory->createStream($html ?? $this->view->render()));
+            ->withBody($this->streamFactory->createStream((string)($html ?? $this->view->render())));
     }
 
     /**
@@ -1103,6 +1103,6 @@ abstract class ActionController implements ControllerInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/json; charset=utf-8')
-            ->withBody($this->streamFactory->createStream($json ?? $this->view->render()));
+            ->withBody($this->streamFactory->createStream((string)($json ?? $this->view->render())));
     }
 }
