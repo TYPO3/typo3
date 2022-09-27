@@ -1691,19 +1691,6 @@ class DatabaseRecordList
             }
         }
 
-        /*
-         * hook: recStatInfoHooks: Allows to insert HTML before record icons on various places
-         */
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] ?? [];
-        if (!empty($hooks)) {
-            $stat = '';
-            $_params = [$table, $row['uid']];
-            foreach ($hooks as $_funcRef) {
-                $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-            $this->addActionToCellGroup($cells, $stat, 'stat');
-        }
-
         // Add clipboard related actions
         $this->makeClip($table, $row, $cells);
 

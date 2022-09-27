@@ -178,11 +178,6 @@ class GridColumnItem extends AbstractGridObject
             $icons[] = '<a href="#" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">'
                 . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '</a>';
         }
-
-        $_params = ['tt_content', $row['uid'], &$row];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] ?? [] as $_funcRef) {
-            $icons[] = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
         return implode(' ', $icons);
     }
 

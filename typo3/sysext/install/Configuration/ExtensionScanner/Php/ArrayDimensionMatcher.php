@@ -917,4 +917,9 @@ return [
             'Feature-98304-PSR-14EventForModifyingEditFormUserAccess.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'GLOBAL\'][\'recStatInfoHooks\']' => [
+        'restFiles' => [
+            'Breaking-98441-HookRecStatInfoHooksRemoved.rst',
+        ],
+    ],
 ];
