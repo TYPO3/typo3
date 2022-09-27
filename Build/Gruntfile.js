@@ -116,6 +116,11 @@ module.exports = function (grunt) {
           "<%= paths.adminpanel %>Public/Css/adminpanel.css": "<%= paths.sass %>adminpanel.scss"
         }
       },
+      webfonts: {
+        files: {
+          "<%= paths.backend %>Public/Css/webfonts.css": "<%= paths.sass %>webfonts.scss"
+        }
+      },
       workspaces: {
         files: {
           "<%= paths.workspaces %>Public/Css/preview.css": "<%= paths.sass %>workspace.scss"
@@ -306,8 +311,8 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= paths.node_modules %>source-sans',
-            src: ['WOFF/OTF/**', 'WOFF2/TTF/**'],
+            cwd: '<%= paths.node_modules %>source-sans/WOFF2/VAR/',
+            src: ['*.otf.woff2'],
             dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/SourceSans'
           }
         ]
