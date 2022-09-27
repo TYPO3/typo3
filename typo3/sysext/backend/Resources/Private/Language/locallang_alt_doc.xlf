@@ -153,6 +153,12 @@
 			<trans-unit id="notification.record_saved.message" resname="notification.record_saved.message">
 				<source>Record "%s" has been successfully saved.</source>
 			</trans-unit>
+			<trans-unit id="search.find_record" resname="search.find_record">
+				<source>Find records</source>
+			</trans-unit>
+			<trans-unit id="search.no_records_found" resname="search.no_records_found">
+				<source>No records found</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

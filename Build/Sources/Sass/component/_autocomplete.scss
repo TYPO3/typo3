@@ -2,64 +2,64 @@
 // Autocomplete
 // ============
 //
-
-//
-// Variables
-//
-$autocomplete-border: #ddd;
-$autocomplete-border-radius: 2px;
-$autocomplete-results-bg: #fff;
 $autocomplete-zindex: $zindex-dropdown;
-$autocomplete-suggestion-link-hover-bg: #fafafa;
 
-//
-// Component
-//
-.autocomplete {
-    position: relative;
-}
-
-.autocomplete-results {
-    z-index: $autocomplete-zindex;
+typo3-backend-formengine-suggest-result-container {
     position: absolute;
-    margin: 5px 0;
-    top: 100%;
-    margin-left: 3.5em;
     left: 0;
-    border: 1px solid $autocomplete-border;
-    border-radius: $autocomplete-border-radius;
-    background-color: $autocomplete-results-bg;
-    overflow: hidden;
-    box-shadow: 0 1px 0 0 rgba(0, 0, 0, .25);
+    z-index: $autocomplete-zindex;
+    max-width: calc(100vw - 20px);
 }
 
-.autocomplete-suggestion {
-    border-top: 1px solid $autocomplete-border;
+typo3-backend-formengine-suggest-result-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background-color: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    border-radius: var(--typo3-component-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+    font-size: var(--typo3-component-font-size);
+    line-height: var(--typo3-component-line-height);
+}
 
-    &:first-child {
-        border-top: none;
+typo3-backend-formengine-suggest-result-item {
+    display: flex;
+    gap: .5em;
+    font-size: var(--typo3-component-font-size);
+    line-height: var(--typo3-component-line-height);
+    padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+    border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
+    color: #{$body-color};
+    background-color: #{$white};
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        z-index: 1;
+        outline-offset: -1px;
     }
-}
 
-.autocomplete-suggestion-link {
-    padding: 5px 13px 5px 28px;
-    display: block;
-    text-decoration: none;
-}
-
-.autocomplete-info {
-    padding: 5px 15px;
-}
-
-.autocomplete-suggestion {
     &:hover {
-        background-color: $autocomplete-suggestion-link-hover-bg;
-        text-decoration: none;
+        background-color: tint-color($primary, 95%);
+        outline: 1px solid tint-color($primary, 85%);
     }
 
-    &:not(:disabled):focus,
-    &:not(:disabled):hover,
-    &.autocomplete-selected {
-        background-color: rgba(255, 255, 255, .2);
+    &:focus {
+        background-color: tint-color($primary, 95%);
+        outline: 1px solid tint-color($primary, 20%);
+    }
+
+    .formengine-suggest-result-item-icon {
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .formengine-suggest-result-item-label {
+        flex-grow: 1;
+
+        small {
+            opacity: .5;
+        }
     }
 }

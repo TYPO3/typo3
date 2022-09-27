@@ -562,10 +562,6 @@ module.exports = function (grunt) {
             process: (source, srcpath) => {
               let imports = [], prefix = '';
 
-              if (srcpath === 'node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js') {
-                imports.push('jquery');
-              }
-
               if (srcpath === 'node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js') {
                 imports.push('jquery');
               }
@@ -591,7 +587,6 @@ module.exports = function (grunt) {
           'imagesloaded.js': 'imagesloaded/imagesloaded.js',
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
-          'jquery.autocomplete.js': 'devbridge-autocomplete/dist/jquery.autocomplete.min.js',
           'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           'moment.js': 'moment/min/moment-with-locales.min.js',
           'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',

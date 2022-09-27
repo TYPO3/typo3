@@ -252,7 +252,7 @@ class GroupElement extends AbstractFormElement
             $html[] =                   $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render();
             $html[] =               '</span>';
             $html[] =               '<input type="search" class="t3-form-suggest form-control"';
-            $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.findRecord') . '"';
+            $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:search.find_record') . '"';
             $html[] =                   ' data-fieldname="' . htmlspecialchars($fieldName) . '"';
             $html[] =                   ' data-tablename="' . htmlspecialchars($table) . '"';
             $html[] =                   ' data-field="' . htmlspecialchars($elementName) . '"';

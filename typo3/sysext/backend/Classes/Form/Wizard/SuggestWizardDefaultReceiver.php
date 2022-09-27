@@ -177,31 +177,19 @@ class SuggestWizardDefaultReceiver
                 if (!$this->checkRecordAccess($row, $row['uid'])) {
                     continue;
                 }
-                $spriteIcon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
                 $uid = ($row['t3ver_oid'] ?? 0) > 0 ? $row['t3ver_oid'] : $row['uid'];
                 $path = $this->getRecordPath($row, $uid);
-                if (mb_strlen($path, 'utf-8') > 30) {
-                    $croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
-                        htmlspecialchars(
-                            mb_substr($path, 0, 10, 'utf-8')
-                                . '...'
-                                . mb_substr($path, -20, null, 'utf-8')
-                        ) .
-                        '</abbr>';
-                } else {
-                    $croppedPath = htmlspecialchars($path);
-                }
                 $label = $this->getLabel($row);
                 $entry = [
-                    'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
-								<span class="suggest-path">' . $croppedPath . '</span>',
                     'table' => $this->mmForeignTable ?: $this->table,
                     'label' => strip_tags($label),
                     'path' => $path,
                     'uid' => $uid,
-                    'style' => '',
-                    'class' => $this->config['cssClass'] ?? '',
-                    'sprite' => $spriteIcon,
+                    'icon' => [
+                        'identifier' => $icon->getIdentifier(),
+                        'overlay' => $icon->getOverlayIcon()?->getIdentifier(),
+                    ],
                 ];
                 $rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
             }
@@ -409,7 +397,7 @@ class SuggestWizardDefaultReceiver
     /**
      * Calls a user function for rendering the page.
      *
-     * This user function should manipulate $entry, especially $entry['text'].
+     * This user function should manipulate $entry
      *
      * @param array $row The row
      * @param array $entry The entry to render

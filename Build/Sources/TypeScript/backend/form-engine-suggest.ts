@@ -11,127 +11,119 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import 'jquery/autocomplete';
+import './form-engine/element/suggest/result-container';
+import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
-
-// data structure returned by SuggestWizardDefaultReceiver::queryTable()
-interface SuggestEntry {
-  table: string;
-  uid: number;
-
-  label: string;
-  // The HTML content for the suggest option
-  text: string;
-  // The record path
-  path: string;
-
-  style: string;
-  class: string;
-  // the icon
-  sprite: string;
-}
-
-interface TransformedSuggestEntry {
-  value: string;
-  data: SuggestEntry;
-}
+import RegularEvent from '@typo3/core/event/regular-event';
+import DebounceEvent from '@typo3/core/event/debounce-event';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 
 class FormEngineSuggest {
-  constructor(element: HTMLElement) {
-    $((): void => {
+  private readonly element: HTMLInputElement;
+  private resultContainer: HTMLElement;
+  private currentRequest: AjaxRequest|null = null;
+
+  constructor(element: HTMLInputElement) {
+    this.element = element;
+
+    DocumentService.ready().then((): void => {
       this.initialize(element);
+      this.registerEvents();
     });
   }
 
   private initialize(searchField: HTMLElement): void {
     const containerElement: Element = searchField.closest('.t3-form-suggest-container');
-    const tableName: string = searchField.dataset.tablename;
-    const fieldName: string = searchField.dataset.fieldname;
-    const formEl: string = searchField.dataset.field;
-    const uid: number = parseInt(searchField.dataset.uid, 10);
-    const pid: number = parseInt(searchField.dataset.pid, 10);
-    const dataStructureIdentifier: string = searchField.dataset.datastructureidentifier;
-    const flexFormSheetName: string = searchField.dataset.flexformsheetname;
-    const flexFormFieldName: string = searchField.dataset.flexformfieldname;
-    const flexFormContainerName: string = searchField.dataset.flexformcontainername;
-    const flexFormContainerFieldName: string = searchField.dataset.flexformcontainerfieldname;
-    const minimumCharacters: number = parseInt(searchField.dataset.minchars, 10);
-    const url: string = TYPO3.settings.ajaxUrls.record_suggest;
-    const params = {
-      tableName,
-      fieldName,
-      uid,
-      pid,
-      dataStructureIdentifier,
-      flexFormSheetName,
-      flexFormFieldName,
-      flexFormContainerName,
-      flexFormContainerFieldName,
-    };
 
-    function insertValue(element: HTMLElement): void {
+    this.resultContainer = document.createElement('typo3-backend-formengine-suggest-result-container');
+    this.resultContainer.hidden = true;
+    containerElement.append(this.resultContainer);
+  }
+
+  private registerEvents(): void {
+    new RegularEvent('typo3:formengine:suggest-item-chosen', (e: CustomEvent): void => {
       let insertData: string = '';
-      if (searchField.dataset.fieldtype === 'select') {
-        insertData = element.dataset.uid;
+      if (this.element.dataset.fieldtype === 'select') {
+        insertData = e.detail.element.uid;
       } else {
-        insertData = element.dataset.table + '_' + element.dataset.uid;
+        insertData = e.detail.element.table + '_' + e.detail.element.uid;
       }
-      FormEngine.setSelectOptionFromExternalSource(formEl, insertData, element.dataset.label, element.dataset.label);
-      FormEngine.Validation.markFieldAsChanged($(document.querySelector('input[name="' + formEl + '"]')));
+      FormEngine.setSelectOptionFromExternalSource(this.element.dataset.field, insertData, e.detail.element.label, e.detail.element.label);
+      FormEngine.Validation.markFieldAsChanged(document.querySelector('input[name="' + this.element.dataset.field + '"]') as HTMLInputElement);
+      this.resultContainer.hidden = true;
+    }).bindTo(this.resultContainer);
+
+    new RegularEvent('focus', (): void => {
+      const results = JSON.parse(this.resultContainer.getAttribute('results'));
+      if (results?.length > 0) {
+        this.resultContainer.hidden = false;
+      }
+    }).bindTo(this.element);
+
+    new RegularEvent('blur', (e: FocusEvent): void => {
+      if ((e.relatedTarget as HTMLElement)?.tagName.toLowerCase() === 'typo3-backend-formengine-suggest-result-item') {
+        // don't to anything if focus switches to a result item
+        return;
+      }
+
+      this.resultContainer.hidden = true;
+    }).bindTo(this.element);
+
+    new DebounceEvent('input', (e: InputEvent): void => {
+      if (this.currentRequest instanceof AjaxRequest) {
+        this.currentRequest.abort();
+      }
+
+      const target = e.target as HTMLInputElement;
+
+      if (target.value.length < parseInt(target.dataset.minchars, 10)) {
+        return;
+      }
+
+      this.currentRequest = new AjaxRequest(TYPO3.settings.ajaxUrls.record_suggest);
+      this.currentRequest.post({
+        value: target.value,
+        tableName: target.dataset.tablename,
+        fieldName: target.dataset.fieldname,
+        uid: parseInt(target.dataset.uid, 10),
+        pid: parseInt(target.dataset.pid, 10),
+        dataStructureIdentifier: target.dataset.datastructureidentifier,
+        flexFormSheetName: target.dataset.flexformsheetname,
+        flexFormFieldName: target.dataset.flexformfieldname,
+        flexFormContainerName: target.dataset.flexformcontainername,
+        flexFormContainerFieldName: target.dataset.flexformcontainerfieldname,
+      }).then(async (response: AjaxResponse): Promise<void> => {
+        const resultSet = await response.raw().text();
+        this.resultContainer.setAttribute('results', resultSet);
+        this.resultContainer.hidden = false;
+      });
+    }).bindTo(this.element);
+
+    new RegularEvent('keydown', this.handleKeyDown).bindTo(this.element);
+  }
+
+  private handleKeyDown = (e: KeyboardEvent): void => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+
+      const results = JSON.parse(this.resultContainer.getAttribute('results'));
+      if (results?.length > 0) {
+        this.resultContainer.hidden = false;
+      }
+
+      // Select first available result item
+      const firstSearchResultItem = this.resultContainer.querySelector('typo3-backend-formengine-suggest-result-item') as HTMLElement|null;
+      firstSearchResultItem?.focus();
+
+      return;
     }
 
-    $(searchField).autocomplete({
-      // ajax options
-      serviceUrl: url,
-      params: params,
-      type: 'POST',
-      paramName: 'value',
-      dataType: 'json',
-      minChars: minimumCharacters,
-      groupBy: 'typeLabel',
-      containerClass: 'autocomplete-results',
-      appendTo: containerElement,
-      forceFixPosition: false,
-      preserveInput: true,
-      showNoSuggestionNotice: true,
-      noSuggestionNotice: '<div class="autocomplete-info">No results</div>',
-      minLength: minimumCharacters,
-      preventBadQueries: false,
-      // put the AJAX results in the right format
-      transformResult: (response: Array<SuggestEntry>): {suggestions: Array<TransformedSuggestEntry>} => {
-        return {
-          suggestions: response.map((dataItem: SuggestEntry): {value: string, data: SuggestEntry} => {
-            return {value: dataItem.text, data: dataItem};
-          }),
-        };
-      },
-      // Rendering of each item
-      formatResult: (suggestion: {data: SuggestEntry}): string => {
-        return $('<div>').append(
-          $('<a class="autocomplete-suggestion-link" href="#">' +
-            suggestion.data.sprite + suggestion.data.text +
-            '</a></div>').attr({
-            'data-label': suggestion.data.label,
-            'data-table': suggestion.data.table,
-            'data-uid': suggestion.data.uid,
-          })).html();
-      },
-      onSearchComplete: function(): void {
-        containerElement.classList.add('open');
-      },
-      beforeRender: function(container: JQuery): void {
-        // Unset height, width and z-index again, should be fixed by the plugin at a later point
-        container.attr('style', '');
-        containerElement.classList.add('open');
-      },
-      onHide: function(): void {
-        containerElement.classList.remove('open');
-      },
-      onSelect: function(): void {
-        insertValue(<HTMLElement>(containerElement.querySelector('.autocomplete-selected a')));
-      },
-    });
+    if (e.key === 'Escape') {
+      e.preventDefault();
+
+      this.resultContainer.hidden = true;
+    }
   }
 }
 

@@ -448,12 +448,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.count" resname="labels.count">
 				<source>Quantity</source>
 			</trans-unit>
-			<trans-unit id="labels.findRecord" resname="labels.findRecord">
-				<source>Find records</source>
-			</trans-unit>
-			<trans-unit id="labels.noRecordFound" resname="labels.noRecordFound">
-				<source>No record found</source>
-			</trans-unit>
 			<trans-unit id="labels.title.searchIcon" resname="labels.title.searchIcon">
 				<source>Toggle search toolbar</source>
 			</trans-unit>
