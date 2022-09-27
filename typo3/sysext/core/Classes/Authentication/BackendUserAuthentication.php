@@ -1166,7 +1166,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $this->groupData['webmounts'] .= ',' . $groupInfo['db_mountpoints'];
                 }
                 // Mount group file-mounts
-                if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
+                if ($mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
                     $this->groupData['filemounts'] .= ',' . $groupInfo['file_mountpoints'];
                 }
                 // Gather permission detail fields
