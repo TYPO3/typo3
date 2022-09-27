@@ -186,7 +186,7 @@ return [
                 'size' => 1,
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, alias, url',
+                        'additionalSearchFields' => 'nav_title, url',
                         'addWhere' => 'AND pages.doktype = 1',
                     ],
                 ],
