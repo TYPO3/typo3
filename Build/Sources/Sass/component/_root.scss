@@ -1,0 +1,62 @@
+//
+// Global CSS Variables
+//
+:root {
+    // Header
+    --typo3-header-font-family: "Source Sans 3", sans-serif;
+
+    // General
+    --typo3-spacing: 1rem;
+
+    // Component
+    --typo3-component-bg: #{$white};
+    --typo3-component-color: #{$body-color};
+    --typo3-component-font-size: #{$font-size-base};
+    --typo3-component-line-height: #{$line-height-base};
+    --typo3-component-border-radius: 4px;
+    --typo3-component-border-width: 1px;
+    --typo3-component-border-color: #{$gray-300};
+    --typo3-component-box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+    --typo3-component-hover-color: var(--typo3-component-color);
+    --typo3-component-hover-bg: #{tint-color($primary, 95%)};
+    --typo3-component-hover-border-color: #{tint-color($primary, 85%)};
+    --typo3-component-focus-color: var(--typo3-component-color);
+    --typo3-component-focus-bg: #{tint-color($primary, 95%)};
+    --typo3-component-focus-border-color: #{tint-color($primary, 20%)};
+    --typo3-component-active-color: #{$white};
+    --typo3-component-active-bg: #{tint-color($primary, 20%)};
+    --typo3-component-active-border-color: #{tint-color($primary, 20%)};
+    --typo3-component-disabled-color: #{$gray-600};
+    --typo3-component-disabled-bg: transparent;
+    --typo3-component-disabled-border-color: transparent;
+
+    // List
+    --typo3-list-item-padding-y: .5rem;
+    --typo3-list-item-padding-x: .75rem;
+    --typo3-list-item-hover-color: var(--typo3-component-hover-color);
+    --typo3-list-item-hover-bg: var(--typo3-component-hover-bg);
+    --typo3-list-item-hover-border-color: var(--typo3-component-hover-border-color);
+    --typo3-list-item-focus-color: var(--typo3-component-focus-color);
+    --typo3-list-item-focus-bg: var(--typo3-component-focus-bg);
+    --typo3-list-item-focus-border-color: var(--typo3-component-focus-border-color);
+    --typo3-list-item-active-color: var(--typo3-list-item-focus-color);
+    --typo3-list-item-active-bg: var(--typo3-list-item-focus-bg);
+    --typo3-list-item-active-border-color: var(--typo3-list-item-focus-border-color);
+    --typo3-list-item-disabled-color: var(--typo3-component-disabled-color);
+    --typo3-list-item-disabled-bg: var(--typo3-component-disabled-bg);
+    --typo3-list-item-disabled-border-color: var(--typo3-component-disabled-border-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --typo3-component-bg: #{$gray-900};
+        --typo3-component-color: #{$white};
+        --typo3-component-border-color: #{$gray-800};
+        --typo3-component-hover-bg: #{$gray-800};
+        --typo3-component-hover-border-color: #{$gray-700};
+        --typo3-component-focus-bg: #{shade-color($primary, 50%)};
+        --typo3-component-focus-border-color: #{shade-color($primary, 40%)};
+        --typo3-component-active-bg: #{shade-color($primary, 20%)};
+        --typo3-component-active-border-color: #{shade-color($primary, 20%)};
+    }
+}
