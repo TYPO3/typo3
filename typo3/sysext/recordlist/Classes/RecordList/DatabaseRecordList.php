@@ -2295,10 +2295,11 @@ class DatabaseRecordList
     {
         if ($editPermission && !$this->getBackendUserAuthentication()->isAdmin()) {
             // If no $row is submitted we only check for general edit lock of current page (except for table "pages")
+            $pageHasEditLock = !empty($this->pageRow['editlock']);
             if (empty($row)) {
-                return ($table === 'pages') || !($this->pageRow['editlock'] ?? false);
+                return ($table === 'pages') || !$pageHasEditLock;
             }
-            if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $this->pageRow['editlock'])) {
+            if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $pageHasEditLock)) {
                 $editPermission = false;
             } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['editlock']) && $row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
                 $editPermission = false;
