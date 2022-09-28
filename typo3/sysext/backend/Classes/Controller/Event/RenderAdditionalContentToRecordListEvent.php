@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Backend\Controller\Event;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Class AddToRecordListEvent
- *
  * Add content above or below the main content of the record list
  */
 final class RenderAdditionalContentToRecordListEvent
