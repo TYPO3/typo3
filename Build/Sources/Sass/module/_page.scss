@@ -124,6 +124,7 @@ html {
 // Content elements
 //
 .t3-page-ce {
+    position: relative;
     margin: var(--pagemodule-grid-spacing) var(--pagemodule-grid-inner-spacing);
 
     &.active-drag {
@@ -203,9 +204,7 @@ html {
 // Dropzone
 //
 .t3-page-ce-dropzone {
-    position: absolute;
-    left: 0;
-    right: 0;
+    position: relative;
     bottom: -8px;
     z-index: 297;
     border-radius: var(--pagemodule-element-border-radius);
@@ -213,8 +212,10 @@ html {
     transition: height .3s ease-in-out, background-color .3s ease-in-out, left .3s ease-in-out, right .3s ease-in-out, bottom .3s ease-in-out;
 
     &.active {
+        position: absolute;
         border: 1px dashed rgba(0, 0, 0, .15);
         height: 40px;
+        width: 100%;
 
         &.t3-page-ce-dropzone-possible {
             background-color: var(--pagemodule-dropzone-possible-bg);
@@ -311,21 +312,23 @@ html {
     .t3-page-ce-header-draggable:hover {
         cursor: move;
     }
-
-    &.dragitem-shadow {
-        opacity: .5;
-        box-shadow: 0 1px 24px rgba(0, 0, 0, .5);
-    }
 }
 
-.ui-draggable-dragging {
+.draggable-dragging {
+    position: absolute;
     z-index: 299 !important;
+    opacity: .5;
+    box-shadow: 0 1px 24px rgba(0, 0, 0, .5);
 
     .t3-page-ce-actions {
-        visibility: hidden;
+        display: none;
     }
 
-    .ui-draggable-copy-message {
+    .t3-page-ce-element {
+        margin-bottom: 0;
+    }
+
+    .draggable-copy-message {
         font-size: $font-size-sm;
         position: absolute;
         top: -1.25rem;
