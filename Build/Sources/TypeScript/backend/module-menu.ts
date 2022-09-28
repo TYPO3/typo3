@@ -140,17 +140,35 @@ class ModuleMenu {
   }
 
   /**
-   * @param {string} module
+   * @param {string} identifier
    */
-  private static highlightModuleMenuItem(module: string): void {
-    document.querySelectorAll('.modulemenu-action.modulemenu-action-active').forEach((element: Element) => {
+  private static highlightModuleMenuItem(identifier: string): void {
+    document.querySelectorAll('[data-modulename].modulemenu-action-active, [data-modulename].active').forEach((element: Element) => {
+      element.classList.remove('active');
       element.classList.remove('modulemenu-action-active');
       element.removeAttribute('aria-current');
     });
-    const moduleElement = document.getElementById(module);
+    const module = getRecordFromName(identifier);
+    this.highlightModule(module);
+  }
+
+  /**
+   * @param {Module} module
+   * @param {boolean} current
+   */
+  private static highlightModule(module: Module, current: boolean = true): void {
+    const moduleElement = document.getElementById(module.name);
     if (moduleElement) {
-      moduleElement.classList.add('modulemenu-action-active');
-      moduleElement.setAttribute('aria-current', 'location');
+      const activeClass = moduleElement.classList.contains('modulemenu-action') ? 'modulemenu-action-active' : 'active';
+      moduleElement.classList.add(activeClass);
+      if (current) {
+        moduleElement.setAttribute('aria-current', 'location');
+        current = false;
+      }
+    }
+
+    if (module.parent !== '') {
+      this.highlightModule(getRecordFromName(module.parent), current);
     }
   }
 

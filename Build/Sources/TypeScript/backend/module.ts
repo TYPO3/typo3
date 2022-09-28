@@ -28,6 +28,7 @@ export interface Module {
   name: string;
   component: string;
   navigationComponentId: string;
+  parent: string;
   link: string;
 }
 
@@ -45,6 +46,7 @@ export function getRecordFromName(name: string): Module {
       name: name,
       component: '',
       navigationComponentId: '',
+      parent: '',
       link: ''
     };
   }
@@ -52,6 +54,7 @@ export function getRecordFromName(name: string): Module {
     name: name,
     component: parsedRecord.component || '',
     navigationComponentId: parsedRecord.navigationComponentId || '',
+    parent: parsedRecord.parent || '',
     link: parsedRecord.link || '',
   };
 }

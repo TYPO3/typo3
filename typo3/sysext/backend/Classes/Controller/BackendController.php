@@ -296,6 +296,7 @@ class BackendController
                 'name' => $identifier,
                 'component' => $menuModule->getComponent(),
                 'navigationComponentId' => $menuModule->getNavigationComponent(),
+                'parent' => $menuModule->hasParentModule() ? $menuModule->getParentIdentifier() : '',
                 'link' => $menuModule->getShouldBeLinked() ? (string)$this->uriBuilder->buildUriFromRoute($module->getIdentifier()) : '',
             ];
         }
