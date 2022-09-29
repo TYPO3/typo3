@@ -90,12 +90,8 @@ class DefaultTcaSchema
                 $options = [
                     'default' => 0,
                     'notnull' => true,
-                    'unsigned' => false,
+                    'unsigned' => true,
                 ];
-                if (empty($tableDefinition['ctrl']['versioningWS'])) {
-                    // We need negative pid's (-1) if table is workspace aware
-                    $options['unsigned'] = true;
-                }
                 $tables[$tablePosition]->addColumn($this->quote('pid'), 'integer', $options);
                 $pidColumnAdded = true;
             }

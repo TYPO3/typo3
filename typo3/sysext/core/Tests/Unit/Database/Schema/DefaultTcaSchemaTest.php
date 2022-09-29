@@ -164,27 +164,6 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsSignedPidWithEnabledWorkspace(): void
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
-        $result = $this->subject->enrich([$this->defaultTable]);
-        $expectedPidColumn = new Column(
-            '`pid`',
-            Type::getType('integer'),
-            [
-                'default' => 0,
-                'notnull' => true,
-                'unsigned' => false,
-            ]
-        );
-        self::assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
-    }
-
-    /**
-     * @test
-     */
     public function enrichAddsTstamp(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
