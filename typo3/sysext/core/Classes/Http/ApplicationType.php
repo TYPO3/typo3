@@ -50,7 +50,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  */
 final class ApplicationType
 {
-    private int $type = 0;
+    private int $type;
 
     /**
      * Create an ApplicationType object from a given PSR-7 request.
