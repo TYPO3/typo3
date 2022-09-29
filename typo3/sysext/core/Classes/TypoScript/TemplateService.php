@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -580,10 +579,7 @@ class TemplateService
                 ->setMaxResults(1)
                 ->executeQuery();
             if ($row = $queryResult->fetchAssociative()) {
-                $this->versionOL($row);
-                if (is_array($row)) {
-                    $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
-                }
+                $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
             }
             $this->rootLine[] = $this->absoluteRootLine[$a];
         }
@@ -691,7 +687,6 @@ class TemplateService
                 // Traversing list again to ensure the sorting of the templates
                 foreach ($basedOnIds as $id) {
                     if (is_array($subTemplates[$id] ?? false)) {
-                        $this->versionOL($subTemplates[$id]);
                         $this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
                     }
                 }
@@ -906,19 +901,6 @@ class TemplateService
             $subrow['constants'] .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.']['defaultContentRendering'] ?? '';
         }
         return $subrow;
-    }
-
-    /**
-     * Creating versioning overlay of a sys_template record.
-     *
-     * @param array $row Row to overlay (passed by reference)
-     */
-    protected function versionOL(&$row)
-    {
-        if ($this->context->getPropertyFromAspect('workspace', 'isOffline')) {
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-            $pageRepository->versionOL('sys_template', $row);
-        }
     }
 
     /*******************************************************************

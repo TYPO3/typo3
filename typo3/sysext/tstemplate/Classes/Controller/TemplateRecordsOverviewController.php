@@ -22,10 +22,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Overview of all sys_template records from site root
@@ -45,7 +43,6 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
         $pageId = (int)($request->getQueryParams()['id'] ?? 0);
-        $workspaceId = $backendUser->workspace;
         $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
 
         $moduleData = $request->getAttribute('moduleData');
@@ -55,20 +52,15 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
         $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $result = $queryBuilder
-            ->select('uid', 'pid', 'title', 'root', 'hidden', 'starttime', 'endtime', 't3ver_oid', 't3ver_wsid', 't3ver_state')
+            ->select('uid', 'pid', 'title', 'root', 'hidden', 'starttime', 'endtime')
             ->from('sys_template')
             ->orderBy('sys_template.pid')
             ->addOrderBy('sys_template.sorting')
             ->executeQuery();
         $pagesWithTemplates = [];
         while ($record = $result->fetchAssociative()) {
-            BackendUtility::workspaceOL('sys_template', $record, $workspaceId, true);
-            if (empty($record) || VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                continue;
-            }
             $additionalFieldsForRootline = ['sorting', 'shortcut'];
             $rootline = array_reverse(BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline));
             $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, $record);

@@ -13,6 +13,7 @@ use TYPO3\CMS\Install\Updates\SvgFilesSanitization;
 use TYPO3\CMS\Install\Updates\SysFileMountIdentifierMigration;
 use TYPO3\CMS\Install\Updates\SysLogChannel;
 use TYPO3\CMS\Install\Updates\SysLogSerializationUpdate;
+use TYPO3\CMS\Install\Updates\SysTemplateNoWorkspaceMigration;
 
 defined('TYPO3') or die();
 
@@ -32,3 +33,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogSerial
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendGroupsExplicitAllowDenyMigration'] = BackendGroupsExplicitAllowDenyMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysFileMountIdentifierMigration'] = SysFileMountIdentifierMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendModulePermission'] = BackendModulePermissionMigration::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysTemplateNoWorkspaceMigration'] = SysTemplateNoWorkspaceMigration::class;

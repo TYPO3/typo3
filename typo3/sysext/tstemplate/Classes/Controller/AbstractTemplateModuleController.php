@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -190,10 +189,7 @@ abstract class AbstractTemplateModuleController
         $result = $this->getTemplateQueryBuilder($pageId)->executeQuery();
         $templateRows = [];
         while ($row = $result->fetchAssociative()) {
-            BackendUtility::workspaceOL('sys_template', $row);
-            if (is_array($row)) {
-                $templateRows[] = $row;
-            }
+            $templateRows[] = $row;
         }
         return $templateRows;
     }
@@ -218,9 +214,7 @@ abstract class AbstractTemplateModuleController
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
             );
         }
-        $row = $queryBuilder->executeQuery()->fetchAssociative();
-        BackendUtility::workspaceOL('sys_template', $row);
-        return $row;
+        return $queryBuilder->executeQuery()->fetchAssociative();
     }
 
     /**
@@ -228,12 +222,10 @@ abstract class AbstractTemplateModuleController
      */
     protected function getTemplateQueryBuilder(int $pid): QueryBuilder
     {
-        $backendUser = $this->getBackendUser();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
         $queryBuilder->getRestrictions()
             ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder->select('*')
             ->from('sys_template')
             ->where(

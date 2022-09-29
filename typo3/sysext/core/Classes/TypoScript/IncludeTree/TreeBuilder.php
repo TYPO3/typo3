@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -603,8 +602,7 @@ final class TreeBuilder
      * one query per page. To handle the capabilities mentioned above, the query is a bit nifty, but
      * the implementation should scale nearly O(1) instead of O(n) with the rootline depth.
      *
-     * @todo: It's potentially possible to further optimize using a recursive CTE. This could
-     *        implement the workspace overlay that is currently done separately in one go. Benefit
+     * @todo: It's potentially possible to further optimize using a recursive CTE. Benefit
      *        won't be *that* huge though, and there are much more important CTE targets first.
      */
     private function getRootlineSysTemplateRowsFromDatabase(array $rootline, int $templateUidOnDeepestRootline): array
@@ -657,16 +655,13 @@ final class TreeBuilder
         $lastPid = null;
         $queryResult = $queryBuilder->executeQuery();
         while ($sysTemplateRow = $queryResult->fetchAssociative()) {
-            $sysTemplateRow = $this->sysTemplateWorkspaceOverlay($sysTemplateRow);
-            if ($sysTemplateRow) {
-                // We're retrieving *all* templates per pid, but need the first one only. The
-                // order restriction above at least takes care they're after-each-other per pid.
-                if ($lastPid === (int)$sysTemplateRow['pid']) {
-                    continue;
-                }
-                $lastPid = (int)$sysTemplateRow['pid'];
-                $sysTemplateRows[] = $sysTemplateRow;
+            // We're retrieving *all* templates per pid, but need the first one only. The
+            // order restriction above at least takes care they're after-each-other per pid.
+            if ($lastPid === (int)$sysTemplateRow['pid']) {
+                continue;
             }
+            $lastPid = (int)$sysTemplateRow['pid'];
+            $sysTemplateRows[] = $sysTemplateRow;
         }
         return $sysTemplateRows;
     }
@@ -692,11 +687,7 @@ final class TreeBuilder
             )
             ->executeQuery()
             ->fetchAllAssociative();
-        $basedOnTemplateRows = array_combine(array_column($basedOnTemplateRows, 'uid'), $basedOnTemplateRows);
-        foreach ($basedOnTemplateRows as $uid => $sysTemplateRow) {
-            $basedOnTemplateRows[$uid] = $this->sysTemplateWorkspaceOverlay($sysTemplateRow);
-        }
-        return $basedOnTemplateRows;
+        return array_combine(array_column($basedOnTemplateRows, 'uid'), $basedOnTemplateRows);
     }
 
     /**
@@ -729,26 +720,8 @@ final class TreeBuilder
     }
 
     /**
-     * Workspace aware sys_template records.
-     */
-    private function sysTemplateWorkspaceOverlay(array $row): ?array
-    {
-        if ($this->context->getPropertyFromAspect('workspace', 'isOffline')) {
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-            /** @var $row array|null */
-            $pageRepository->versionOL('sys_template', $row);
-            if ($row === false) {
-                $row = null;
-            }
-        }
-        return $row;
-    }
-
-    /**
      * Get sys_template record query builder restrictions.
      * Allows hidden records if enabled in context.
-     *
-     * @todo: This looks as if there is no workspace restriction?
      */
     private function getSysTemplateQueryRestrictionContainer(): DefaultRestrictionContainer
     {
