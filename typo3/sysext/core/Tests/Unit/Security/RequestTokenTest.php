@@ -18,8 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Security;
 
 use TYPO3\CMS\Core\Security\Nonce;
+use TYPO3\CMS\Core\Security\NoncePool;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Security\RequestTokenException;
+use TYPO3\CMS\Core\Security\SigningSecretInterface;
+use TYPO3\CMS\Core\Security\SigningSecretResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RequestTokenTest extends UnitTestCase
@@ -77,18 +80,27 @@ class RequestTokenTest extends UnitTestCase
         self::assertSame(array_merge_recursive($token->params, $params), $modifiedToken->params);
     }
 
+    public static function isEncodedAndDecodedDataProvider(): \Generator
+    {
+        $nonce = Nonce::create();
+        $pool = new NoncePool([$nonce->getSigningIdentifier()->name => $nonce]);
+
+        yield 'nonce secret' => [$nonce, $nonce];
+        yield 'secret to be resolved' => [$nonce, new SigningSecretResolver(['nonce' => $pool])];
+    }
+
     /**
      * @test
+     * @dataProvider isEncodedAndDecodedDataProvider
      */
-    public function isEncodedAndDecoded(): void
+    public function isEncodedAndDecoded(Nonce $nonce, SigningSecretInterface|SigningSecretResolver $secret): void
     {
         $scope = $this->createRandomString();
         $time = $this->createRandomTime();
         $params = ['value' => bin2hex(random_bytes(4))];
         $token = new RequestToken($scope, $time, $params);
 
-        $nonce = Nonce::create();
-        $recodedToken = RequestToken::fromHashSignedJwt($token->toHashSignedJwt($nonce), $nonce);
+        $recodedToken = RequestToken::fromHashSignedJwt($token->toHashSignedJwt($nonce), $secret);
         self::assertSame($recodedToken->scope, $token->scope);
         self::assertEquals($recodedToken->time, $token->time);
         self::assertSame($recodedToken->params, $token->params);
@@ -96,15 +108,28 @@ class RequestTokenTest extends UnitTestCase
         self::assertEquals($nonce->getSigningIdentifier(), $recodedToken->getSigningSecretIdentifier());
     }
 
-    /**
-     * @test
-     */
-    public function invalidJwtThrowsException(): void
+    public static function invalidJwtThrowsExceptionDataProvider(): \Generator
     {
         $nonce = Nonce::create();
+        $pool = new NoncePool([$nonce->getSigningIdentifier()->name => $nonce]);
+
+        yield 'nonce secret (plain)' => ['no-jwt-at-all', $nonce, 1651771352];
+        yield 'use resolver (plain)' => ['no-jwt-at-all', new SigningSecretResolver(['nonce' => $pool]), 1664202134];
+        yield 'nonce secret (JWT-like)' => ['eyJuIjowfQ.eyJuIjowfQ.eyJuIjowfQ', $nonce, 1651771352];
+        yield 'use resolver (JWT-like)' => ['eyJuIjowfQ.eyJuIjowfQ.eyJuIjowfQ', new SigningSecretResolver(['nonce' => $pool]), 1664202134];
+        yield 'nonce secret (bogus)' => ['no.jwt.value', $nonce, 1651771352];
+        yield 'use resolver (bogus)' => ['no.jwt.value', new SigningSecretResolver(['nonce' => $pool]), 1664202134];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidJwtThrowsExceptionDataProvider
+     */
+    public function invalidJwtThrowsException(string $jwt, SigningSecretInterface|SigningSecretResolver $secret, int $exceptionCode): void
+    {
         $this->expectException(RequestTokenException::class);
-        $this->expectExceptionCode(1651771352);
-        RequestToken::fromHashSignedJwt('no-jwt-at-all', $nonce);
+        $this->expectExceptionCode($exceptionCode);
+        RequestToken::fromHashSignedJwt($jwt, $secret);
     }
 
     private function createRandomString(): string

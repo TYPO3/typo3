@@ -51,8 +51,8 @@ class RequestToken
         // invokes resolver to retrieve corresponding secret
         // a hint was stored in the `kid` (keyId) property of the JWT header
         if ($secret instanceof SigningSecretResolver) {
-            $kid = (string)self::decodeJwtHeader($jwt, 'kid');
             try {
+                $kid = (string)self::decodeJwtHeader($jwt, 'kid');
                 $identifier = SecretIdentifier::fromJson($kid);
                 $secret = $secret->findByIdentifier($identifier);
             } catch (\Throwable $t) {

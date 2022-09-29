@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SecurityAspect implements AspectInterface
 {
     /**
-     * `null` in case no request taken was received
+     * `null` in case no request token was received
      * `false` in case a request token was received, which was invalid
      */
     protected RequestToken|false|null $receivedRequestToken = null;
