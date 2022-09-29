@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\RecordList;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -90,6 +91,17 @@ class ElementBrowserRecordList extends DatabaseRecordList
                     if (empty($valueArray)) {
                         $returnValue = false;
                     }
+                }
+            }
+            if (($tcaFieldConfig['type'] ?? '') === 'file') {
+                $valueArray = GeneralUtility::makeInstance(FileExtensionFilter::class)->filter(
+                    [$table . '_' . $row['uid']],
+                    (string)($tcaFieldConfig['allowed'] ?? ''),
+                    (string)($tcaFieldConfig['disallowed'] ?? ''),
+                    $this
+                );
+                if (empty($valueArray)) {
+                    $returnValue = false;
                 }
             }
         }

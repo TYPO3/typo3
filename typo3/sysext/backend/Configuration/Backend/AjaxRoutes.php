@@ -23,6 +23,33 @@ return [
         'target' => Controller\File\FileController::class . '::fileExistsInFolderAction',
     ],
 
+    // Get details of a file reference in FormEngine
+    'file_reference_details' => [
+        'path' => '/file/reference/details',
+        'target' => Controller\FormFilesAjaxController::class . '::detailsAction',
+    ],
+
+    // Create a new file reference in FormEngine
+    'file_reference_create' => [
+        'path' => '/file/reference/create',
+        'methods' => ['POST'],
+        'target' => Controller\FormFilesAjaxController::class . '::createAction',
+    ],
+
+    // Synchronize localization of a file reference in FormEngine
+    'file_reference_synchronizelocalize' => [
+        'path' => '/file/reference/synchronizelocalize',
+        'methods' => ['POST'],
+        'target' => Controller\FormFilesAjaxController::class . '::synchronizeLocalizeAction',
+    ],
+
+    // Expand / Collapse a file reference in FormEngine
+    'file_reference_expandcollapse' => [
+        'path' => '/file/reference/expandcollapse',
+        'methods' => ['POST'],
+        'target' => Controller\FormFilesAjaxController::class . '::expandOrCollapseAction',
+    ],
+
     // Get record details of a child record in IRRE
     'record_inline_details' => [
         'path' => '/record/inline/details',

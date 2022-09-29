@@ -165,7 +165,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'tablenames',
                     'fieldname',
                     'sorting_foreign',
-                    'table_local',
                     'title',
                     'description',
                     'alternative',

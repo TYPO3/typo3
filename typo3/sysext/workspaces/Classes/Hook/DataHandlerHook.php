@@ -431,36 +431,34 @@ class DataHandlerHook
      */
     protected function moveRecord_processFieldValue(DataHandler $dataHandler, $resolvedPageId, $table, $uid, $value, array $configuration): void
     {
-        $inlineFieldType = $dataHandler->getInlineFieldType($configuration);
-        $inlineProcessing = (
-            ($inlineFieldType === 'list' || $inlineFieldType === 'field')
-            && BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])
-            && (!isset($configuration['behaviour']['disableMovingChildrenWithParent']) || !$configuration['behaviour']['disableMovingChildrenWithParent'])
-        );
+        if (($configuration['behaviour']['disableMovingChildrenWithParent'] ?? false)
+            || !in_array($dataHandler->getRelationFieldType($configuration), ['list', 'field'], true)
+            || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])
+        ) {
+            return;
+        }
 
-        if ($inlineProcessing) {
-            if ($table === 'pages') {
-                // If the inline elements are related to a page record,
-                // make sure they reside at that page and not at its parent
-                $resolvedPageId = $uid;
+        if ($table === 'pages') {
+            // If the inline elements are related to a page record,
+            // make sure they reside at that page and not at its parent
+            $resolvedPageId = $uid;
+        }
+
+        $dbAnalysis = $this->createRelationHandlerInstance();
+        $dbAnalysis->start($value, $configuration['foreign_table'], '', $uid, $table, $configuration);
+
+        // Moving records to a positive destination will insert each
+        // record at the beginning, thus the order is reversed here:
+        foreach ($dbAnalysis->itemArray as $item) {
+            $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $item['table'], $item['id'], 'uid,t3ver_state');
+            if (empty($versionedRecord)) {
+                continue;
             }
-
-            $dbAnalysis = $this->createRelationHandlerInstance();
-            $dbAnalysis->start($value, $configuration['foreign_table'], '', $uid, $table, $configuration);
-
-            // Moving records to a positive destination will insert each
-            // record at the beginning, thus the order is reversed here:
-            foreach ($dbAnalysis->itemArray as $item) {
-                $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $item['table'], $item['id'], 'uid,t3ver_state');
-                if (empty($versionedRecord)) {
-                    continue;
-                }
-                $versionState = VersionState::cast($versionedRecord['t3ver_state']);
-                if ($versionState->indicatesPlaceholder()) {
-                    continue;
-                }
-                $dataHandler->moveRecord($item['table'], $item['id'], $resolvedPageId);
+            $versionState = VersionState::cast($versionedRecord['t3ver_state']);
+            if ($versionState->indicatesPlaceholder()) {
+                continue;
             }
+            $dataHandler->moveRecord($item['table'], $item['id'], $resolvedPageId);
         }
     }
 
@@ -895,8 +893,7 @@ class DataHandlerHook
      */
     protected function version_swap_processFields($tableName, array $configuration, array $liveData, array $versionData, DataHandler $dataHandler)
     {
-        $inlineType = $dataHandler->getInlineFieldType($configuration);
-        if ($inlineType !== 'field') {
+        if ($dataHandler->getRelationFieldType($configuration) !== 'field') {
             return;
         }
         $foreignTable = $configuration['foreign_table'];

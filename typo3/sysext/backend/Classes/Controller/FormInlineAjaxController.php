@@ -365,7 +365,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                         $transOrigPointerFieldValue = $transOrigPointerFieldValue[0];
                         if (is_array($transOrigPointerFieldValue) && ($transOrigPointerFieldValue['uid'] ?? false)) {
                             // With nested inline containers (eg. fal sys_file_reference), row[l10n_parent][0] is sometimes
-                            // a table / row combination again. See tx_styleguide_inline_fal inline_5. If this happens we
+                            // a table / row combination again. See tx_styleguide_file file_5. If this happens we
                             // pick the uid field from the array ... Basically, we need the uid of the 'default language' record,
                             // since this is used in JS to locate and remove the 'shadowed' container.
                             // @todo: Find out if this is really necessary that sometimes ['databaseRow']['l10n_parent'][0]
@@ -577,25 +577,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         }
         unset($value);
         return $itemArray;
-    }
-
-    /**
-     * Return expand / collapse state array for a given table / uid combination
-     *
-     * @param string $table Handled table
-     * @param int $uid Handled uid
-     * @return array
-     */
-    protected function getInlineExpandCollapseStateArrayForTableUid($table, $uid)
-    {
-        $inlineView = $this->getInlineExpandCollapseStateArray();
-        $result = [];
-        if (MathUtility::canBeInterpretedAsInteger($uid)) {
-            if (!empty($inlineView[$table][$uid])) {
-                $result = $inlineView[$table][$uid];
-            }
-        }
-        return $result;
     }
 
     /**

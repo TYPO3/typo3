@@ -263,7 +263,6 @@
 				<field index="tablenames">tt_content</field>
 				<field index="fieldname">image</field>
 				<field index="sorting_foreign">0</field>
-				<field index="table_local">sys_file</field>
 				<field index="title" type="NULL"></field>
 				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>
@@ -290,7 +289,6 @@
 				<field index="tablenames">tt_content</field>
 				<field index="fieldname">image</field>
 				<field index="sorting_foreign">0</field>
-				<field index="table_local">sys_file</field>
 				<field index="title" type="NULL"></field>
 				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>
@@ -317,7 +315,6 @@
 				<field index="tablenames">tt_content</field>
 				<field index="fieldname">image</field>
 				<field index="sorting_foreign">0</field>
-				<field index="table_local">sys_file</field>
 				<field index="title" type="NULL"></field>
 				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form;
 
+use TYPO3\CMS\Backend\Form\Container\FilesControlContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -58,8 +59,10 @@ class NodeFactory
         'flexFormTabsContainer' => Container\FlexFormTabsContainer::class,
         'fullRecordContainer' => Container\FullRecordContainer::class,
         'inline' => Container\InlineControlContainer::class,
-        'siteLanguage' => Container\SiteLanguageContainer::class,
         'inlineRecordContainer' => Container\InlineRecordContainer::class,
+        FilesControlContainer::NODE_TYPE_IDENTIFIER => Container\FilesControlContainer::class,
+        Container\FileReferenceContainer::NODE_TYPE_IDENTIFIER => Container\FileReferenceContainer::class,
+        'siteLanguage' => Container\SiteLanguageContainer::class,
         'listOfFieldsContainer' => Container\ListOfFieldsContainer::class,
         'noTabsContainer' => Container\NoTabsContainer::class,
         'outerWrapContainer' => Container\OuterWrapContainer::class,

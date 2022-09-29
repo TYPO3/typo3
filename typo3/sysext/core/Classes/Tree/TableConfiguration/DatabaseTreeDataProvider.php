@@ -380,7 +380,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getChildrenUidsFromParentRelation(array $row): array
     {
         $uid = $row['uid'];
-        if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline'], true)) {
+        if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline', 'file'], true)) {
             if ($this->columnConfiguration['MM'] ?? null) {
                 $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                 // Dummy field for setting "look from other site"
@@ -409,6 +409,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $value = (string)$row[$this->getLookupField()];
         switch ((string)$this->columnConfiguration['type']) {
             case 'inline':
+            case 'file':
                 // Intentional fall-through
             case 'select':
             case 'category':

@@ -53,6 +53,7 @@ class DefaultLanguageDifferences extends AbstractNode
             || GeneralUtility::inList($l10nDisplay, 'defaultAsReadonly')
             || !isset($defaultLanguageDiffRow[$fieldName])
             || $fieldConfig['config']['type'] === 'inline'
+            || $fieldConfig['config']['type'] === 'file'
             || $fieldConfig['config']['type'] === 'flex'
         ) {
             // Early return if there is no diff row or if display is disabled

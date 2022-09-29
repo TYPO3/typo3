@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,9 +17,10 @@
 
 namespace TYPO3\CMS\Core\Resource\Filter;
 
+use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,56 +32,78 @@ class FileExtensionFilter
     /**
      * Allowed file extensions. If NULL, all extensions are allowed.
      *
-     * @var array
+     * @var string[]|null
      */
-    protected $allowedFileExtensions;
+    protected ?array $allowedFileExtensions = null;
 
     /**
      * Disallowed file extensions. If NULL, no extension is disallowed (i.e. all are allowed).
      *
-     * @var array
+     * @var string[]|null
      */
-    protected $disallowedFileExtensions;
+    protected ?array $disallowedFileExtensions = null;
+
+    public function filter(
+        array $references,
+        string $allowedFileExtensions,
+        string $disallowedFileExtensions,
+        DataHandler|DatabaseRecordList $dataHandler
+    ): array {
+        if ($allowedFileExtensions !== '') {
+            $this->setAllowedFileExtensions($allowedFileExtensions);
+        }
+        if ($disallowedFileExtensions !== '') {
+            $this->setDisallowedFileExtensions($disallowedFileExtensions);
+        }
+
+        $cleanReferences = [];
+        foreach ($references as $reference) {
+            if (empty($reference)) {
+                continue;
+            }
+            $parts = GeneralUtility::revExplode('_', (string)$reference, 2);
+            $fileReferenceUid = $parts[count($parts) - 1];
+            try {
+                $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($fileReferenceUid);
+                $file = $fileReference->getOriginalFile();
+                if ($this->isAllowed($file->getExtension())) {
+                    $cleanReferences[] = $reference;
+                } else {
+                    // Remove the erroneously created reference record again
+                    $dataHandler->deleteAction('sys_file_reference', $fileReferenceUid);
+                }
+            } catch (ResourceDoesNotExistException $e) {
+                // do nothing
+            }
+        }
+        return $cleanReferences;
+    }
 
     /**
      * Entry method for use as DataHandler "inline" field filter
      *
      * @param array $parameters
-     * @param DataHandler $dataHandler
+     * @param DataHandler|DatabaseRecordList $dataHandler
      * @return array
+     * @deprecated Will be removed in TYPO3 v13. Use filterFileReferences() directly instead.
      */
-    public function filterInlineChildren(array $parameters, DataHandler $dataHandler)
+    public function filterInlineChildren(array $parameters, DataHandler|DatabaseRecordList $dataHandler): array
     {
-        $values = $parameters['values'];
-        if ($parameters['allowedFileExtensions'] ?? false) {
-            $this->setAllowedFileExtensions($parameters['allowedFileExtensions']);
+        trigger_error(
+            'FileExtensionFilter->filterInlineChildren() will be removed in TYPO3 v13.0. Use FileExtensionFilter->filter() instead.',
+            E_USER_DEPRECATED
+        );
+
+        $references = $parameters['values'] ?? [];
+        if (!is_array($references)) {
+            $references = [];
         }
-        if ($parameters['disallowedFileExtensions'] ?? false) {
-            $this->setDisallowedFileExtensions($parameters['disallowedFileExtensions']);
-        }
-        $cleanValues = [];
-        if (is_array($values)) {
-            foreach ($values as $value) {
-                if (empty($value)) {
-                    continue;
-                }
-                $parts = GeneralUtility::revExplode('_', (string)$value, 2);
-                $fileReferenceUid = $parts[count($parts) - 1];
-                try {
-                    $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($fileReferenceUid);
-                    $file = $fileReference->getOriginalFile();
-                    if ($this->isAllowed($file->getExtension())) {
-                        $cleanValues[] = $value;
-                    } else {
-                        // Remove the erroneously created reference record again
-                        $dataHandler->deleteAction('sys_file_reference', $fileReferenceUid);
-                    }
-                } catch (FileDoesNotExistException $e) {
-                    // do nothing
-                }
-            }
-        }
-        return $cleanValues;
+        return $this->filter(
+            $references,
+            (string)($parameters['allowedFileExtensions'] ?? ''),
+            (string)($parameters['disallowedFileExtensions'] ?? ''),
+            $dataHandler
+        );
     }
 
     /**
@@ -108,7 +133,7 @@ class FileExtensionFilter
             } catch (\InvalidArgumentException $e) {
                 $fileInfo = [];
             }
-            if (!$this->isAllowed($fileInfo['extension'] ?? '')) {
+            if (!$this->isAllowed((string)($fileInfo['extension'] ?? ''))) {
                 $returnCode = -1;
             }
         }
@@ -118,20 +143,18 @@ class FileExtensionFilter
     /**
      * Checks whether a file is allowed according to the criteria defined in the class variables ($this->allowedFileExtensions etc.)
      *
-     * @param string $fileExt
-     * @return bool
      * @internal this is used internally for TYPO3 core only
      */
-    public function isAllowed($fileExt)
+    public function isAllowed(string $fileExtension): bool
     {
-        $fileExt = strtolower($fileExt);
+        $fileExtension = strtolower($fileExtension);
         $result = true;
         // Check allowed file extensions
-        if ($this->allowedFileExtensions !== null && !empty($this->allowedFileExtensions) && !in_array($fileExt, $this->allowedFileExtensions)) {
+        if (!empty($this->allowedFileExtensions) && !in_array($fileExtension, $this->allowedFileExtensions, true)) {
             $result = false;
         }
         // Check disallowed file extensions
-        if ($this->disallowedFileExtensions !== null && !empty($this->disallowedFileExtensions) && in_array($fileExt, $this->disallowedFileExtensions)) {
+        if (!empty($this->disallowedFileExtensions) && in_array($fileExtension, $this->disallowedFileExtensions, true)) {
             $result = false;
         }
         return $result;
@@ -140,9 +163,9 @@ class FileExtensionFilter
     /**
      * Set allowed file extensions
      *
-     * @param mixed $allowedFileExtensions  Comma-separated list or array, of allowed file extensions
+     * @param mixed $allowedFileExtensions Comma-separated list or array, of allowed file extensions
      */
-    public function setAllowedFileExtensions($allowedFileExtensions)
+    public function setAllowedFileExtensions(mixed $allowedFileExtensions): void
     {
         $this->allowedFileExtensions = $this->convertToLowercaseArray($allowedFileExtensions);
     }
@@ -150,9 +173,9 @@ class FileExtensionFilter
     /**
      * Set disallowed file extensions
      *
-     * @param mixed $disallowedFileExtensions  Comma-separated list or array, of allowed file extensions
+     * @param mixed $disallowedFileExtensions Comma-separated list or array, of allowed file extensions
      */
-    public function setDisallowedFileExtensions($disallowedFileExtensions)
+    public function setDisallowedFileExtensions(mixed $disallowedFileExtensions): void
     {
         $this->disallowedFileExtensions = $this->convertToLowercaseArray($disallowedFileExtensions);
     }
@@ -161,11 +184,8 @@ class FileExtensionFilter
      * Converts mixed (string or array) input arguments into an array, NULL if empty.
      *
      * All array values will be converted to lower case.
-     *
-     * @param mixed $inputArgument Comma-separated list or array.
-     * @return array
      */
-    protected function convertToLowercaseArray($inputArgument)
+    protected function convertToLowercaseArray(mixed $inputArgument): ?array
     {
         $returnValue = null;
         if (is_array($inputArgument)) {

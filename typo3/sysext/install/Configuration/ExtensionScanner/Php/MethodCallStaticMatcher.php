@@ -1392,4 +1392,11 @@ return [
             'Deprecation-97544-PreviewURIGenerationRelatedFunctionalityInBackendUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
+        ],
+    ],
 ];

@@ -2182,4 +2182,9 @@ return [
             'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Service\UserFileInlineLabelService' => [
+        'restFiles' => [
+            'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
+        ],
+    ],
 ];

@@ -150,11 +150,11 @@ class RemoteServer
             // check for exclude fields
             if ($this->getBackendUser()->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0 || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
                 // call diff class only if there is a difference
-                if ($configuration['type'] === 'inline' && $configuration['foreign_table'] === 'sys_file_reference') {
+                if ($configuration['type'] === 'file') {
                     $useThumbnails = false;
-                    if (!empty($configuration['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed']) && !empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) {
+                    if (!empty($configuration['allowed']) && !empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) {
                         $fileExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], true);
-                        $allowedExtensions = GeneralUtility::trimExplode(',', $configuration['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed'], true);
+                        $allowedExtensions = GeneralUtility::trimExplode(',', $configuration['allowed'], true);
                         $differentExtensions = array_diff($allowedExtensions, $fileExtensions);
                         $useThumbnails = empty($differentExtensions);
                     }

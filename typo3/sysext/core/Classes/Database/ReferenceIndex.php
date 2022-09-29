@@ -581,7 +581,7 @@ class ReferenceIndex implements LoggerAwareInterface
         if (empty($conf)) {
             return false;
         }
-        if ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
+        if (($conf['type'] === 'inline' || $conf['type'] === 'file') && !empty($conf['foreign_table']) && empty($conf['MM'])) {
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
             $dbAnalysis->setUseLiveReferenceIds(false);
             $dbAnalysis->setWorkspaceId($this->getWorkspaceId());
@@ -860,7 +860,7 @@ class ReferenceIndex implements LoggerAwareInterface
         return
             $configuration['type'] === 'group'
             || (
-                in_array($configuration['type'], ['select', 'category', 'inline'], true)
+                in_array($configuration['type'], ['select', 'category', 'inline', 'file'], true)
                 && !empty($configuration['foreign_table'])
             );
     }

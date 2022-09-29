@@ -49,6 +49,7 @@ final class TableColumnType extends Enumeration
     const DATETIME = 'DATETIME';
     const COLOR = 'COLOR';
     const NUMBER = 'NUMBER';
+    const FILE = 'FILE';
 
     /**
      * @param mixed $type

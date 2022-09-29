@@ -552,7 +552,7 @@ export default (function() {
     $(sectionElement).find(FormEngineValidation.rulesSelector).each((index: number, field: HTMLElement) => {
       const $field = $(field);
 
-      if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted').length) {
+      if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted').length) {
         let modified = false;
         const currentValue = $field.val();
         const newValue = FormEngineValidation.validateField($field, currentValue);

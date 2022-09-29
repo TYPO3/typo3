@@ -23,11 +23,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Inline element entry container.
@@ -122,9 +119,9 @@ class InlineControlContainer extends AbstractContainer
         $foreign_table = $config['foreign_table'];
         $isReadOnly = isset($config['readOnly']) && $config['readOnly'];
         $language = 0;
-        $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
         if (BackendUtility::isTableLocalizable($table)) {
-            $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)$row[$languageFieldName];
+            $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+            $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)($row[$languageFieldName] ?? 0);
         }
 
         // Add the current inline job to the structure stack
@@ -279,8 +276,6 @@ class InlineControlContainer extends AbstractContainer
         // Define how to show the "Create new record" button - if there are more than maxitems, hide it
         if ($isReadOnly || $numberOfFullLocalizedChildren >= ($config['maxitems'] ?? 0) || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
-            $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
-            $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
         }
 
         // Render the "new record" level button:
@@ -475,136 +470,47 @@ class InlineControlContainer extends AbstractContainer
      * @param array $inlineConfiguration TCA inline configuration of the parent(!) field
      * @return string A HTML button that opens an element browser in a new window
      */
-    protected function renderPossibleRecordsSelectorTypeGroupDB(array $inlineConfiguration)
+    protected function renderPossibleRecordsSelectorTypeGroupDB(array $inlineConfiguration): string
     {
-        $backendUser = $this->getBackendUserAuthentication();
         $languageService = $this->getLanguageService();
-
         $groupFieldConfiguration = $inlineConfiguration['selectorOrUniqueConfiguration']['config'];
-
-        $foreign_table = $inlineConfiguration['foreign_table'];
-        $allowed = $groupFieldConfiguration['allowed'];
-        $currentStructureDomObjectIdPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-        $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . $foreign_table;
-        $mode = 'db';
-        $showUpload = false;
-        $showByUrl = false;
+        $objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $inlineConfiguration['foreign_table'];
         $elementBrowserEnabled = true;
-        if (!empty($inlineConfiguration['appearance']['createNewRelationLinkTitle'])) {
-            $createNewRelationText = htmlspecialchars($languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle']));
-        } else {
-            $createNewRelationText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation'));
-        }
-        if (is_array($groupFieldConfiguration['appearance'] ?? null)) {
-            if (isset($groupFieldConfiguration['appearance']['elementBrowserType'])) {
-                $mode = $groupFieldConfiguration['appearance']['elementBrowserType'];
-            }
-            if ($mode === 'file') {
-                $showUpload = true;
-                $showByUrl = true;
-            }
-            if (isset($inlineConfiguration['appearance']['fileUploadAllowed'])) {
-                $showUpload = (bool)$inlineConfiguration['appearance']['fileUploadAllowed'];
-            }
-            if (isset($inlineConfiguration['appearance']['fileByUrlAllowed'])) {
-                $showByUrl = (bool)$inlineConfiguration['appearance']['fileByUrlAllowed'];
-            }
-            if (isset($groupFieldConfiguration['appearance']['elementBrowserAllowed'])) {
-                $allowed = $groupFieldConfiguration['appearance']['elementBrowserAllowed'];
-            }
-            if (isset($inlineConfiguration['appearance']['elementBrowserEnabled'])) {
-                $elementBrowserEnabled = (bool)$inlineConfiguration['appearance']['elementBrowserEnabled'];
-            }
+        if (is_array($groupFieldConfiguration['appearance'] ?? null)
+            && isset($inlineConfiguration['appearance']['elementBrowserEnabled'])
+        ) {
+            $elementBrowserEnabled = (bool)$inlineConfiguration['appearance']['elementBrowserEnabled'];
         }
         // Remove any white-spaces from the allowed extension lists
-        $allowed = implode(',', GeneralUtility::trimExplode(',', $allowed, true));
-        $browserParams = '|||' . $allowed . '|' . $objectPrefix;
+        $allowed = GeneralUtility::trimExplode(',', (string)($groupFieldConfiguration['allowed'] ?? ''), true);
         $buttonStyle = '';
         if (isset($inlineConfiguration['inline']['inlineNewRelationButtonStyle'])) {
             $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineNewRelationButtonStyle'] . '"';
         }
         $item = '';
         if ($elementBrowserEnabled) {
-            $item .= '
-			<button type="button" class="btn btn-default t3js-element-browser" data-mode="' . htmlspecialchars($mode) . '" data-params="' . htmlspecialchars($browserParams) . '"
-				' . $buttonStyle . ' title="' . $createNewRelationText . '">
-				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
-				' . $createNewRelationText . '
-			</button>';
-        }
-
-        $isDirectFileUploadEnabled = (bool)$backendUser->uc['edit_docModuleUpload'];
-        $allowedArray = GeneralUtility::trimExplode(',', $allowed, true);
-        $onlineMediaAllowed = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
-        if (!empty($allowedArray)) {
-            $onlineMediaAllowed = array_intersect($allowedArray, $onlineMediaAllowed);
-        }
-        if (($showUpload || $showByUrl) && $isDirectFileUploadEnabled) {
-            $folder = $backendUser->getDefaultUploadFolder(
-                $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),
-                $this->data['tableName'],
-                $this->data['fieldName']
-            );
-            if (
-                $folder instanceof Folder
-                && $folder->getStorage()->checkUserActionPermission('add', 'File')
-            ) {
-                if ($showUpload) {
-                    $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-                    $item .= ' <button type="button" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton"
-					' . $buttonStyle . '
-					data-dropzone-target="#' . htmlspecialchars(StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix)) . '"
-					data-insert-dropzone-before="1"
-					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
-					data-file-allowed="' . htmlspecialchars($allowed) . '"
-					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
-					data-max-file-size="' . htmlspecialchars((string)$maxFileSize) . '"
-					>';
-                    $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
-                    $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
-                    $item .= '</button>';
-
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/drag-uploader.js');
-                }
-                if (!empty($onlineMediaAllowed) && $showByUrl) {
-                    $buttonStyle = '';
-                    if (isset($inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'])) {
-                        $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'] . '"';
-                    }
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/online-media.js');
-                    $buttonText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button'));
-                    $placeholder = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder'));
-                    $buttonSubmit = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit'));
-                    $allowedMediaUrl = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowEmbedSources'));
-                    $item .= '
-						<button type="button" class="btn btn-default t3js-online-media-add-btn"
-							' . $buttonStyle . '
-							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
-							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
-							data-online-media-allowed-help-text="' . $allowedMediaUrl . '"
-							data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
-							title="' . $buttonText . '"
-							data-btn-submit="' . $buttonSubmit . '"
-							data-placeholder="' . $placeholder . '"
-							>
-							' . $this->iconFactory->getIcon('actions-online-media-add', Icon::SIZE_SMALL)->render() . '
-							' . $buttonText . '</button>';
-                }
+            if (!empty($inlineConfiguration['appearance']['createNewRelationLinkTitle'])) {
+                $createNewRelationText = htmlspecialchars($languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle']));
+            } else {
+                $createNewRelationText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation'));
             }
+            $item .= '
+                <button type="button" class="btn btn-default t3js-element-browser" data-mode="db" data-params="' . htmlspecialchars('|||' . implode(',', $allowed) . '|' . $objectPrefix) . '"
+                    ' . $buttonStyle . ' title="' . $createNewRelationText . '">
+                    ' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
+                    ' . $createNewRelationText . '
+                </button>';
         }
-
         $item = '<div class="form-control-wrap t3js-inline-controls">' . $item . '</div>';
-        $allowedList = '';
-        $allowedLabelKey = ($mode === 'file') ? 'allowedFileExtensions' : 'allowedRelations';
-        $allowedLabel = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . $allowedLabelKey));
-        foreach ($allowedArray as $allowedItem) {
-            $allowedList .= '<span class="badge badge-success">' . strtoupper($allowedItem) . '</span> ';
+        if (!empty($allowed)) {
+            $item .= '
+                <div class="help-block">
+                    ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedRelations')) . '
+                    <br>
+                    ' . implode(' ', array_map(static fn ($item) => '<span class="badge badge-success">' . strtoupper($item) . '</span>', $allowed)) . '
+                </div>';
         }
-        if (!empty($allowedList)) {
-            $item .= '<div class="help-block">' . $allowedLabel . '<br>' . $allowedList . '</div>';
-        }
-        $item = '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
-        return $item;
+        return '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
     }
 
     /**

@@ -5351,5 +5351,11 @@ return [
             'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
         ],
     ],
-
+    'TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter->filterInlineChildren' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
+        ],
+    ],
 ];

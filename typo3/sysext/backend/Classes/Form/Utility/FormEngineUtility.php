@@ -57,6 +57,7 @@ class FormEngineUtility
         'group' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'elementBrowserEntryPoints'],
         'folder' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'elementBrowserEntryPoints'],
         'inline' => ['appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'],
+        'file' => ['appearance', 'behaviour', 'maxitems', 'minitems', 'readOnly'],
         'imageManipulation' => ['ratios', 'cropVariants'],
     ];
 

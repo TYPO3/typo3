@@ -99,13 +99,23 @@ class TcaFlexProcess implements FormDataProviderInterface
                             if (isset($containerConfiguration['el']) && is_array($containerConfiguration['el'])) {
                                 foreach ($containerConfiguration['el'] as $singleFieldName => $singleFieldConfiguration) {
                                     // Nesting type=inline in container sections is not supported. Throw an exception if configured.
-                                    if (isset($singleFieldConfiguration['config']['type']) && $singleFieldConfiguration['config']['type'] === 'inline') {
-                                        throw new \UnexpectedValueException(
-                                            'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                            . ' in section container "' . $containerName . '": Nesting inline elements in flex form'
-                                            . ' sections is not allowed.',
-                                            1458745468
-                                        );
+                                    if (isset($singleFieldConfiguration['config']['type'])) {
+                                        if ($singleFieldConfiguration['config']['type'] === 'inline') {
+                                            throw new \UnexpectedValueException(
+                                                'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
+                                                . ' in section container "' . $containerName . '": Nesting inline elements in flex form'
+                                                . ' sections is not allowed.',
+                                                1458745468
+                                            );
+                                        }
+                                        if ($singleFieldConfiguration['config']['type'] === 'file') {
+                                            throw new \UnexpectedValueException(
+                                                'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
+                                                . ' in section container "' . $containerName . '": Nesting file elements in flex form'
+                                                . ' sections is not allowed.',
+                                                1664473929
+                                            );
+                                        }
                                     }
 
                                     // Nesting sections is not supported. Throw an exception if configured.

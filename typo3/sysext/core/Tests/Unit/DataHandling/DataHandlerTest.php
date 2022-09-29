@@ -1079,8 +1079,8 @@ class DataHandlerTest extends UnitTestCase
             '1' => ['table' => StringUtility::getUniqueId('bar_'), 'id' => 67],
         ];
 
-        $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
-        $mockDataHandler->expects(self::once())->method('getInlineFieldType')->willReturn('field');
+        $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getRelationFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
+        $mockDataHandler->expects(self::once())->method('getRelationFieldType')->willReturn('field');
         $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);
         $mockDataHandler->expects(self::never())->method('deleteAction');
         $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'bar', $conf);

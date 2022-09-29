@@ -22,15 +22,15 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
- * Tests for inline fal
+ * Tests for type=file (FAL)
  */
-class InlineFalCest
+class FileCest
 {
     protected static string $filenameSelector = '.form-irre-header-body > span > dl.row:first-child > dd.col';
     protected static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
 
     /**
-     * Open styleguide inline fal page in list module
+     * Open styleguide file page in list module
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -38,11 +38,11 @@ class InlineFalCest
 
         $I->click('List');
         $I->waitForElement('svg .nodes .node');
-        $pageTree->openPath(['styleguide TCA demo', 'inline fal']);
+        $pageTree->openPath(['styleguide TCA demo', 'file']);
         $I->switchToContentFrame();
 
-        $I->waitForText('inline fal', 20);
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_fal a[aria-label="Edit record"]';
+        $I->waitForText('file', 20);
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_file a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
     }
@@ -70,7 +70,7 @@ class InlineFalCest
 
     public function deleteFalRelation(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $deleteButtonSelector = '.tab-content .t3js-editform-delete-inline-record';
+        $deleteButtonSelector = '.tab-content .t3js-editform-delete-file-reference';
         $filename = $I->grabTextFrom(self::$filenameSelector);
 
         $I->click($deleteButtonSelector);

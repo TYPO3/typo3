@@ -48,6 +48,7 @@ class OtherLanguageContent extends AbstractNode
             || GeneralUtility::inList($l10nDisplay, 'hideDiff')
             || GeneralUtility::inList($l10nDisplay, 'defaultAsReadonly')
             || $fieldType === 'inline'
+            || $fieldType === 'file'
             || $fieldType === 'flex'
             || (in_array($fieldType, ['select', 'category', 'group'], true) && isset($fieldConfig['config']['MM']))
         ) {

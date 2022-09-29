@@ -302,18 +302,15 @@ abstract class AbstractItemProvider
                 // If the foreign table sets selicon_field, this field can contain an image
                 // that represents this specific row.
                 $iconFieldName = '';
-                $isReferenceField = false;
+                $isFileReference = false;
                 if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'])) {
                     $iconFieldName = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'];
-                    if (isset($GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'])
-                        && $GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'] === 'inline'
-                        && $GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['foreign_table'] === 'sys_file_reference'
-                    ) {
-                        $isReferenceField = true;
+                    if (($GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'] ?? '') === 'file') {
+                        $isFileReference = true;
                     }
                 }
                 $icon = '';
-                if ($isReferenceField) {
+                if ($isFileReference) {
                     $references = $fileRepository->findByRelation($foreignTable, $iconFieldName, $foreignRow['uid']);
                     if (is_array($references) && !empty($references)) {
                         $icon = reset($references);

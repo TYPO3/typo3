@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
-use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 
 /**
  * Extension Management functions
@@ -534,57 +533,19 @@ class ExtensionManagementUtility
      * @param string $disallowedFileExtensions Comma-separated list of disallowed file extensions (e.g. "doc,docx")
      *
      * @return array
+     * @deprecated since TYPO3 v12.0. Use the TCA type "file" directly
      */
     public static function getFileFieldTCAConfig(string $fieldName, array $customSettingOverride = [], string $allowedFileExtensions = '', string $disallowedFileExtensions = ''): array
     {
-        $fileFieldTCAConfig = [
-            'type' => 'inline',
-            'foreign_table' => 'sys_file_reference',
-            'foreign_field' => 'uid_foreign',
-            'foreign_sortby' => 'sorting_foreign',
-            'foreign_table_field' => 'tablenames',
-            'foreign_match_fields' => [
-                'fieldname' => $fieldName,
-            ],
-            'foreign_label' => 'uid_local',
-            'foreign_selector' => 'uid_local',
-            'overrideChildTca' => [
-                'columns' => [
-                    'uid_local' => [
-                        'config' => [
-                            'appearance' => [
-                                'elementBrowserType' => 'file',
-                                'elementBrowserAllowed' => $allowedFileExtensions,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'filter' => [
-                [
-                    'userFunc' => FileExtensionFilter::class . '->filterInlineChildren',
-                    'parameters' => [
-                        'allowedFileExtensions' => $allowedFileExtensions,
-                        'disallowedFileExtensions' => $disallowedFileExtensions,
-                    ],
-                ],
-            ],
-            'appearance' => [
-                'useSortable' => true,
-                'headerThumbnail' => [
-                    'field' => 'uid_local',
-                    'height' => '45m',
-                ],
+        trigger_error(
+            'ExtensionManagementUtility::getFileFieldTCAConfig() will be removed in TYPO3 v13.0. Use TCA type "file" directly instead.',
+            E_USER_DEPRECATED
+        );
 
-                'enabledControls' => [
-                    'info' => true,
-                    'new' => false,
-                    'dragdrop' => true,
-                    'sort' => false,
-                    'hide' => true,
-                    'delete' => true,
-                ],
-            ],
+        $fileFieldTCAConfig = [
+            'type' => 'file',
+            'allowed' => $allowedFileExtensions,
+            'disallowed'=> $disallowedFileExtensions,
         ];
         ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
         return $fileFieldTCAConfig;

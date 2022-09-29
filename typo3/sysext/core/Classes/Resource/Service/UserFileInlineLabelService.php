@@ -24,9 +24,19 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * User file inline label service
+ *
+ * @deprecated since v12, will be removed in v13.
  */
 class UserFileInlineLabelService
 {
+    public function __construct()
+    {
+        trigger_error(
+            'Class ' . __CLASS__ . ' has been deprecated in v12 and will be removed with v13.',
+            E_USER_DEPRECATED
+        );
+    }
+
     /**
      * Get the user function label for the file_reference table
      *

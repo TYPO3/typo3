@@ -85,10 +85,6 @@ class DefaultAvatarProvider implements AvatarProviderInterface
                     $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
-                    'table_local',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
                     'uid_foreign',
                     $queryBuilder->createNamedParameter((int)$backendUserId, \PDO::PARAM_INT)
                 )

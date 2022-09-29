@@ -15,7 +15,7 @@
 ,2,0,1,2,"/user_upload/used-1.jpg","a0d28ab6398a25c7a0c24f6ace6a3b43d773115e","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","used-1.jpg","da9acdf1e105784a57bbffec9520969578287797",7958
 ,3,0,1,2,"/user_upload/used-2.jpg","5fd92415f6154c29349bbfb214b9e2d9dbb3d89a","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","used-2.jpg","c3511df85d21bc578faf71c6a19eeb3ff44af370",7425
 "sys_file_reference",,,,,,,,,,,,
-,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","table_local","title","description","alternative","link",
-,1,1,3,1,"tt_content","image","sys_file",\NULL,\NULL,\NULL,,
-,2,1,3,2,"tt_content","image","sys_file",\NULL,\NULL,\NULL,,
-,3,1,2,3,"tt_content","image","sys_file",\NULL,\NULL,\NULL,,
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","title","description","alternative","link",
+,1,1,3,1,"tt_content","image",\NULL,\NULL,\NULL,,
+,2,1,3,2,"tt_content","image",\NULL,\NULL,\NULL,,
+,3,1,2,3,"tt_content","image",\NULL,\NULL,\NULL,,

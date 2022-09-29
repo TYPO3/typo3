@@ -42,7 +42,9 @@ class ElementBrowser extends AbstractNode
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
         $type = $config['type'];
-        $allowed = $config['allowed'] ?? '';
+
+        // Remove any white-spaces from the allowed extension lists
+        $allowed = implode(',', GeneralUtility::trimExplode(',', (string)($config['allowed'] ?? ''), true));
 
         if (isset($config['readOnly']) && $config['readOnly']) {
             return [];
@@ -67,23 +69,24 @@ class ElementBrowser extends AbstractNode
         ) {
             $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
         }
-        $elementBrowserType = $type === 'group' ? 'db' : 'folder';
-        if (is_array($config['appearance'] ?? null)) {
-            if (isset($config['appearance']['elementBrowserType'])) {
-                $elementBrowserType = $config['appearance']['elementBrowserType'];
+
+        if ($type === 'group') {
+            if (($this->data['inlineParentConfig']['type'] ?? '') === 'file') {
+                $elementBrowserType = 'file';
+                // Remove any white-spaces from the allowed extension lists
+                $allowed = implode(',', GeneralUtility::trimExplode(',', (string)($this->data['inlineParentConfig']['allowed'] ?? ''), true));
+            } else {
+                $elementBrowserType = 'db';
             }
-            if (isset($config['appearance']['elementBrowserAllowed'])) {
-                $allowed = $config['appearance']['elementBrowserAllowed'];
-            }
+        } else {
+            $elementBrowserType = 'folder';
         }
-        // Remove any white-spaces from the allowed extension lists
-        $elementBrowserAllowed = implode(',', GeneralUtility::trimExplode(',', $allowed, true));
 
         // Initialize link attributes
         $linkAttributes = [
             'class' => 't3js-element-browser',
             'data-mode' => htmlspecialchars($elementBrowserType),
-            'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $objectPrefix),
+            'data-params' => htmlspecialchars($elementName . '|||' . $allowed . '|' . $objectPrefix),
         ];
 
         // Add the default entry point - if found

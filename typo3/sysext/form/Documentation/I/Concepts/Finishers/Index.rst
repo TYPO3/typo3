@@ -207,8 +207,6 @@ Here is an example for adding uploads to ext:news (fal_related_files and fal_med
             mapOnDatabaseColumn: uid_local
             skipIfValueIsEmpty: true
         databaseColumnMappings:
-          table_local:
-            value: sys_file
           tablenames:
             value: tx_news_domain_model_news
           fieldname:
@@ -229,8 +227,6 @@ Here is an example for adding uploads to ext:news (fal_related_files and fal_med
             mapOnDatabaseColumn: uid_local
             skipIfValueIsEmpty: true
         databaseColumnMappings:
-          table_local:
-            value: sys_file
           tablenames:
             value: tx_news_domain_model_news
           fieldname:

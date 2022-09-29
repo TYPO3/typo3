@@ -153,6 +153,11 @@ class TcaFlexPrepare implements FormDataProviderInterface
     /**
      * Recursively migrate flex form TCA
      *
+     * @todo This is already partially done in FlexFormTools and should be harmonized. Therefore,
+     *       all migration / preparation should go into FlexFormTools, because DataHandler also
+     *       needs the migrated / prepared config and does not call this FormEngine specific
+     *       FormDataProvider.
+     *
      * @param array $structure Given hierarchy
      * @param string $table
      * @param string $fieldName

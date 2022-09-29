@@ -72,7 +72,6 @@ final class FileDeletionAspect
                     'sys_file_reference',
                     [
                         'uid_local' => (int)$fileObject->getUid(),
-                        'table_local' => 'sys_file',
                     ]
                 );
         } elseif ($fileObject instanceof ProcessedFile) {

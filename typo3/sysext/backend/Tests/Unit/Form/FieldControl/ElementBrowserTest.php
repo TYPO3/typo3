@@ -56,7 +56,7 @@ class ElementBrowserTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderTrimsAllowedValuesFromAppearanceSection(): void
+    public function renderTrimsAllowedValues(): void
     {
         $nodeFactory = $this->prophesize(NodeFactory::class);
         $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
@@ -68,16 +68,14 @@ class ElementBrowserTest extends UnitTestCase
                 'itemFormElName' => '',
                 'fieldConf' => [
                     'config' => [
-                        'type' => 'group',
-                        'appearance' => [
-                            'elementBrowserAllowed' => 'be_users, be_groups',
-                        ],
+                        'type' => 'file',
+                        'allowed' => 'jpg, png',
                     ],
                 ],
             ],
         ]);
         $result = $elementBrowser->render();
-        self::assertSame($result['linkAttributes']['data-params'], '|||be_users,be_groups|');
+        self::assertSame($result['linkAttributes']['data-params'], '|||jpg,png|');
     }
 
     /**

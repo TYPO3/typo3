@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\ElementBrowser;
 /**
  * Element browsers are modals rendered when records are attached to FormEngine elements.
  * Core usages:
- * * Managing TCA inline FAL file relations of some record
+ * * Managing TCA type=file relations
  * * Managing FAL folder relations a TCA type=folder
  * * Managing various target relations of a TCA type=group
  */

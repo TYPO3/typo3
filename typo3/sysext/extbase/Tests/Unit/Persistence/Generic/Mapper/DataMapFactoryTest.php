@@ -471,6 +471,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'datetime'], TableColumnType::DATETIME],
             [['type' => 'color'], TableColumnType::COLOR],
             [['type' => 'number'], TableColumnType::NUMBER],
+            [['type' => 'file'], TableColumnType::FILE],
         ];
     }
 

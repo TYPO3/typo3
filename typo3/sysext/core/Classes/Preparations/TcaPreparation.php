@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Preparations;
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Prepare TCA. Used in bootstrap and Flex Form Data Structures.
  *
@@ -41,6 +43,7 @@ class TcaPreparation
     public function prepare(array $tca): array
     {
         $tca = $this->configureCategoryRelations($tca);
+        $tca = $this->configureFileReferences($tca);
         return $tca;
     }
 
@@ -164,5 +167,74 @@ class TcaPreparation
         }
 
         return $tca;
+    }
+
+    protected function configureFileReferences(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'file') {
+                    continue;
+                }
+
+                // Set static values for this type. Most of them are not needed due to the
+                // dedicated TCA type. However a lot of underlying code in DataHandler and
+                // friends relies on those keys, especially "foreign_table" and "foreign_selector".
+                // @todo Check which of those values can be removed since only used by FormEngine
+                $fieldConfig['config'] = array_replace_recursive(
+                    $fieldConfig['config'],
+                    [
+                        'foreign_table' => 'sys_file_reference',
+                        'foreign_field' => 'uid_foreign',
+                        'foreign_sortby' => 'sorting_foreign',
+                        'foreign_table_field' => 'tablenames',
+                        'foreign_match_fields' => [
+                            'fieldname' => $fieldName,
+                        ],
+                        'foreign_label' => 'uid_local',
+                        'foreign_selector' => 'uid_local',
+                    ]
+                );
+
+                if (!empty(($allowed = ($fieldConfig['config']['allowed'] ?? null)))) {
+                    $fieldConfig['config']['allowed'] = self::prepareFileExtensions($allowed);
+                }
+                if (!empty(($disallowed = ($fieldConfig['config']['disallowed'] ?? null)))) {
+                    $fieldConfig['config']['disallowed'] = self::prepareFileExtensions($disallowed);
+                }
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Ensures format, replaces placeholders and remove duplicates
+     *
+     * @todo Does not need to be static, once FlexFormTools calls configureFileReferences() directly
+     */
+    public static function prepareFileExtensions(mixed $fileExtensions): string
+    {
+        if (is_array($fileExtensions)) {
+            $fileExtensions = implode(',', $fileExtensions);
+        } else {
+            $fileExtensions = (string)$fileExtensions;
+        }
+
+        // Replace placeholders with the corresponding $GLOBALS value for now
+        if (preg_match_all('/common-(image|text|media)-types/', $fileExtensions, $matches)) {
+            foreach ($matches[1] as $key => $type) {
+                $fileExtensions = str_replace(
+                    $matches[0][$key],
+                    $GLOBALS['TYPO3_CONF_VARS'][$type === 'image' ? 'GFX' : 'SYS'][$type . 'file_ext'] ?? '',
+                    $fileExtensions
+                );
+            }
+        }
+
+        return StringUtility::uniqueList($fileExtensions);
     }
 }

@@ -572,8 +572,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                                             'aGivenSetting' => 'aOverrideValue',
                                             'aNewSetting' => 'aNewSetting',
                                             'appearance' => [
-                                                'elementBrowserType' => 'file',
-                                                'elementBrowserAllowed' => 'jpg,png',
+                                                'useSortable' => true,
                                             ],
                                         ],
                                     ],
@@ -602,8 +601,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 'aGivenSetting' => 'aOverrideValue',
                 'aNewSetting' => 'aNewSetting',
                 'appearance' => [
-                    'elementBrowserType' => 'file',
-                    'elementBrowserAllowed' => 'jpg,png',
+                    'useSortable' => true,
                 ],
             ],
         ];
@@ -619,8 +617,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 'aGivenSetting' => 'aOverrideValue',
                 'aNewSetting' => 'aNewSetting',
                 'appearance' => [
-                    'elementBrowserType' => 'file',
-                    'elementBrowserAllowed' => 'jpg,png',
+                    'useSortable' => true,
                 ],
             ],
             'foreignTable' => 'anotherForeignTableName',

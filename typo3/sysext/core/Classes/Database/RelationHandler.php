@@ -405,7 +405,7 @@ class RelationHandler
             }
 
             // Skip if not dealing with IRRE in a CSV list on a workspace
-            if (!isset($configuration['type']) || $configuration['type'] !== 'inline'
+            if (!isset($configuration['type']) || ($configuration['type'] !== 'inline' && $configuration['type'] !== 'file')
                 || empty($configuration['foreign_table']) || !empty($configuration['foreign_field'])
                 || !empty($configuration['MM']) || count($this->tableArray) !== 1 || empty($this->tableArray[$configuration['foreign_table']])
                 || $this->getWorkspaceId() === 0 || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])

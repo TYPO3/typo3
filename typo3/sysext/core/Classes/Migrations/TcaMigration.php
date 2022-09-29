@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Migrations;
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -81,7 +82,10 @@ class TcaMigration
         $tca = $this->migrateRenderTypeColorpickerToTypeColor($tca);
         $tca = $this->migrateEvalIntAndDouble2ToTypeNumber($tca);
         $tca = $this->removeAlwaysDescription($tca);
+        $tca = $this->migrateFalHandlingInInlineToTypeFile($tca);
         $tca = $this->removeCtrlCruserId($tca);
+        $tca = $this->removeFalRelatedElementBrowserOptions($tca);
+        $tca = $this->removeFalRelatedOptionsFromTypeInline($tca);
 
         return $tca;
     }
@@ -957,7 +961,7 @@ class TcaMigration
                     continue;
                 }
 
-                // Set the TCA type to "link"
+                // Set the TCA type to "color"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'color';
 
                 // Unset "renderType", "max" and "eval"
@@ -1147,6 +1151,226 @@ class TcaMigration
             $this->messages[] = 'The TCA property [\'ctrl\'][\'cruser_id\'] of table \'' . $table
                 . '\'  is not evaluated anymore and has therefore been removed. Please adjust your TCA accordingly.';
         }
+        return $tca;
+    }
+
+    /**
+     * Migrates type='inline' with foreign_table='sys_file_reference' to type='file'.
+     * Removes table relation related options.
+     * Removes no longer available appearance options.
+     * Detects usage of "customControls" hook.
+     * Migrates renamed appearance options.
+     * Migrates allowed file extensions.
+     */
+    protected function migrateFalHandlingInInlineToTypeFile(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'inline'
+                    || ($fieldConfig['config']['foreign_table'] ?? '') !== 'sys_file_reference'
+                ) {
+                    // Early return in case column is not of type=inline with foreign_table=sys_file_reference
+                    continue;
+                }
+
+                // Place to add additional information, which will later be appended to the deprecation message
+                $additionalInformation = '';
+
+                // Set the TCA type to "file"
+                $fieldConfig['config']['type'] = 'file';
+
+                // Remove table relation related options, since they are
+                // either not needed anymore or set by TcaPreperation automatically.
+                unset(
+                    $fieldConfig['config']['foreign_table'],
+                    $fieldConfig['config']['foreign_field'],
+                    $fieldConfig['config']['foreign_sortby'],
+                    $fieldConfig['config']['foreign_table_field'],
+                    $fieldConfig['config']['foreign_match_fields'],
+                    $fieldConfig['config']['foreign_label'],
+                    $fieldConfig['config']['foreign_selector'],
+                    $fieldConfig['config']['foreign_unique'],
+                );
+
+                // "new" control is not supported for this type so remove it altogether for cleaner TCA
+                unset($fieldConfig['config']['appearance']['enabledControls']['new']);
+
+                // [appearance][headerThumbnail][field] is not needed anymore
+                unset($fieldConfig['config']['appearance']['headerThumbnail']['field']);
+
+                // A couple of further appearance options are not supported by type "file", unset them as well
+                unset(
+                    $fieldConfig['config']['appearance']['showNewRecordLink'],
+                    $fieldConfig['config']['appearance']['newRecordLinkAddTitle'],
+                    $fieldConfig['config']['appearance']['newRecordLinkTitle'],
+                    $fieldConfig['config']['appearance']['levelLinksPosition'],
+                    $fieldConfig['config']['appearance']['useCombination'],
+                    $fieldConfig['config']['appearance']['suppressCombinationWarning']
+                );
+
+                // Migrate [appearance][showPossibleRecordsSelector] to [appearance][showFileSelectors]
+                if (isset($fieldConfig['config']['appearance']['showPossibleRecordsSelector'])) {
+                    $fieldConfig['config']['appearance']['showFileSelectors'] = $fieldConfig['config']['appearance']['showPossibleRecordsSelector'];
+                    unset($fieldConfig['config']['appearance']['showPossibleRecordsSelector']);
+                }
+
+                // "customControls" hook has been replaced by the CustomFileControlsEvent
+                if (isset($fieldConfig['config']['customControls'])) {
+                    $additionalInformation .= ' The \'customControls\' option is not evaluated anymore and has '
+                        . 'to be replaced with the PSR-14 \'CustomFileControlsEvent\'.';
+                    unset($fieldConfig['config']['customControls']);
+                }
+
+                // Migrate element browser related settings
+                if (!empty($fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance'])) {
+                    if (!empty($fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed'])) {
+                        // Migrate "allowed" file extensions from appearance
+                        $fieldConfig['config']['allowed'] = $fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed'];
+                    }
+                    unset(
+                        $fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserType'],
+                        $fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed']
+                    );
+                    if (empty($fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance'])) {
+                        unset($fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']['appearance']);
+                        if (empty($fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config'])) {
+                            unset($fieldConfig['config']['overrideChildTca']['columns']['uid_local']['config']);
+                            if (empty($fieldConfig['config']['overrideChildTca']['columns']['uid_local'])) {
+                                unset($fieldConfig['config']['overrideChildTca']['columns']['uid_local']);
+                                if (empty($fieldConfig['config']['overrideChildTca']['columns'])) {
+                                    unset($fieldConfig['config']['overrideChildTca']['columns']);
+                                    if (empty($fieldConfig['config']['overrideChildTca'])) {
+                                        unset($fieldConfig['config']['overrideChildTca']);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Migrate file extension filter
+                if (!empty($fieldConfig['config']['filter'])) {
+                    foreach ($fieldConfig['config']['filter'] as $key => $filter) {
+                        if (($filter['userFunc'] ?? '') === (FileExtensionFilter::class . '->filterInlineChildren')) {
+                            $allowedFileExtensions = (string)($filter['parameters']['allowedFileExtensions'] ?? '');
+                            // Note: Allowed file extensions in the filter take precedence over possible
+                            // extensions defined for the element browser. This is due to filters are evaluated
+                            // by the DataHandler while element browser is only applied in FormEngine UI.
+                            if ($allowedFileExtensions !== '') {
+                                $fieldConfig['config']['allowed'] = $allowedFileExtensions;
+                            }
+                            $disallowedFileExtensions = (string)($filter['parameters']['disallowedFileExtensions'] ?? '');
+                            if ($disallowedFileExtensions !== '') {
+                                $fieldConfig['config']['disallowed'] = $disallowedFileExtensions;
+                            }
+                            unset($fieldConfig['config']['filter'][$key]);
+                        }
+                    }
+                    // Remove filter if it got empty
+                    if (empty($fieldConfig['config']['filter'])) {
+                        unset($fieldConfig['config']['filter']);
+                    }
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . 'type="inline" with foreign_table=sys_file_reference. The field has therefore been '
+                    . 'migrated to the dedicated TCA type \'file\'. This includes corresponding migration of '
+                    . 'the table mapping fields and filters, which were usually added to the field using the '
+                    . 'ExtensionManagementUtility::getFileFieldTCAConfig().' . $additionalInformation . ' '
+                    . 'Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Removes the [appearance][elementBrowserType] and [appearance][elementBrowserAllowed]
+     * options from TCA type "group" fields.
+     */
+    protected function removeFalRelatedElementBrowserOptions(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'group'
+                    || (
+                        !isset($fieldConfig['config']['appearance']['elementBrowserType'])
+                        && !isset($fieldConfig['config']['appearance']['elementBrowserAllowed'])
+                    )
+                ) {
+                    // Early return in case column is not of type=group or does not define the options in question
+                    continue;
+                }
+
+                unset(
+                    $fieldConfig['config']['appearance']['elementBrowserType'],
+                    $fieldConfig['config']['appearance']['elementBrowserAllowed']
+                );
+
+                // Also unset "appearance" if empty
+                if (empty($fieldConfig['config']['appearance'])) {
+                    unset($fieldConfig['config']['appearance']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . 'fal related element browser options, which are no longer needed and therefore removed. '
+                    . 'Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Removes the following options from TCA type "inline" fields:
+     * - [appearance][headerThumbnail]
+     * - [appearance][fileUploadAllowed]
+     * - [appearance][fileByUrlAllowed]
+     */
+    protected function removeFalRelatedOptionsFromTypeInline(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'inline'
+                    || (
+                        !isset($fieldConfig['config']['appearance']['headerThumbnail'])
+                        && !isset($fieldConfig['config']['appearance']['fileUploadAllowed'])
+                        && !isset($fieldConfig['config']['appearance']['fileByUrlAllowed'])
+                    )
+                ) {
+                    // Early return in case column is not of type=inline or does not define the options in question
+                    continue;
+                }
+
+                unset(
+                    $fieldConfig['config']['appearance']['headerThumbnail'],
+                    $fieldConfig['config']['appearance']['fileUploadAllowed'],
+                    $fieldConfig['config']['appearance']['fileByUrlAllowed']
+                );
+
+                // Also unset "appearance" if empty
+                if (empty($fieldConfig['config']['appearance'])) {
+                    unset($fieldConfig['config']['appearance']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . 'fal related appearance options, which are no longer evaluated and therefore removed. '
+                    . 'Please adjust your TCA accordingly.';
+            }
+        }
+
         return $tca;
     }
 }

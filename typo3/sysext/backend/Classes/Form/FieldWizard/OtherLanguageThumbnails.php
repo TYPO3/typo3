@@ -66,7 +66,7 @@ class OtherLanguageThumbnails extends AbstractNode
             $file = null;
             $fileUid = (int)($languageRow['uid_local'] ?? 0);
 
-            if (!$fileUid || $languageRow['table_local'] !== 'sys_file') {
+            if (!$fileUid) {
                 continue;
             }
 

@@ -54,6 +54,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -1497,6 +1498,7 @@ class DataHandler implements LoggerAwareInterface
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
             'inline' => $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
+            'file' => $this->checkValueForFile($res, (string)$value, $tcaFieldConf, $table, $id, $field, $additionalData),
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
             'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id, $checkField),
@@ -2615,6 +2617,36 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
+     * Evaluates 'file' type values.
+     */
+    public function checkValueForFile(
+        array $res,
+        string $value,
+        array $tcaFieldConf,
+        string $table,
+        int|string $id,
+        string $field,
+        ?array $additionalData = null
+    ): array {
+        $valueArray = array_unique(GeneralUtility::trimExplode(',', $value));
+        if ($value !== '' && (str_contains($value, 'NEW') || !MathUtility::canBeInterpretedAsInteger($id))) {
+            $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
+            $this->addNewValuesToRemapStackChildIds($valueArray);
+            $this->remapStack[] = [
+                'func' => 'checkValue_file_processDBdata',
+                'args' => [$valueArray, $tcaFieldConf, $id, $table],
+                'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 3],
+                'additionalData' => $additionalData,
+                'field' => $field,
+            ];
+            unset($res['value']);
+        } elseif ($value !== '' || MathUtility::canBeInterpretedAsInteger($id)) {
+            $res['value'] = $this->checkValue_file_processDBdata($valueArray, $tcaFieldConf, $id, $table);
+        }
+        return $res;
+    }
+
+    /**
      * Checks if a fields has more items than defined via TCA in maxitems.
      * If there are more items than allowed, the item list is truncated to the defined number.
      *
@@ -3247,7 +3279,7 @@ class DataHandler implements LoggerAwareInterface
             // update record in intermediate table (sorting & pointer uid to parent record)
             $dbAnalysis->writeForeignField($tcaFieldConf, $id, 0);
             $newValue = $dbAnalysis->countItems(false);
-        } elseif ($this->getInlineFieldType($tcaFieldConf) === 'mm') {
+        } elseif ($this->getRelationFieldType($tcaFieldConf) === 'mm') {
             // In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
             $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
             $newValue = $valueArray[0];
@@ -3258,6 +3290,24 @@ class DataHandler implements LoggerAwareInterface
             $newValue = $this->castReferenceValue(implode(',', $valueArray), $tcaFieldConf);
         }
         return $newValue;
+    }
+
+    /**
+     * Returns data for file fields.
+     */
+    protected function checkValue_file_processDBdata($valueArray, $tcaFieldConf, $id, $table): mixed
+    {
+        $valueArray = GeneralUtility::makeInstance(FileExtensionFilter::class)->filter(
+            $valueArray,
+            (string)($tcaFieldConf['allowed'] ?? ''),
+            (string)($tcaFieldConf['disallowed'] ?? ''),
+            $this
+        );
+
+        $dbAnalysis = $this->createRelationHandlerInstance();
+        $dbAnalysis->start(implode(',', $valueArray), $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
+        $dbAnalysis->writeForeignField($tcaFieldConf, $id);
+        return $dbAnalysis->countItems(false);
     }
 
     /*********************************************
@@ -3910,13 +3960,13 @@ class DataHandler implements LoggerAwareInterface
      */
     public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = [])
     {
-        $inlineSubType = $this->getInlineFieldType($conf);
+        $relationFieldType = $this->getRelationFieldType($conf);
         // Get the localization mode for the current (parent) record (keep|select):
         // Register if there are references to take care of or MM is used on an inline field (no change to value):
-        if ($this->isReferenceField($conf) || $inlineSubType === 'mm') {
+        if ($this->isReferenceField($conf) || $relationFieldType === 'mm') {
             $value = $this->copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language);
-        } elseif ($inlineSubType !== false) {
-            $value = $this->copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions);
+        } elseif ($relationFieldType !== false) {
+            $value = $this->copyRecord_processRelation($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions);
         }
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
         if (isset($conf['type']) && $conf['type'] === 'flex') {
@@ -4001,7 +4051,7 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Processes child records in an inline (IRRE) element when the parent record is copied.
+     * Processes relations in an inline (IRRE) or file element when the parent record is copied.
      *
      * @param string $table
      * @param int $uid
@@ -4014,7 +4064,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $workspaceOptions
      * @return string
      */
-    protected function copyRecord_processInline(
+    protected function copyRecord_processRelation(
         $table,
         $uid,
         $field,
@@ -4110,7 +4160,7 @@ class DataHandler implements LoggerAwareInterface
         // Extract parameters:
         [$table, $uid, $field, $realDestPid] = $pParams;
         // If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
-        if (($this->isReferenceField($dsConf) || $this->getInlineFieldType($dsConf) !== false) && (string)$dataValue !== '') {
+        if (($this->isReferenceField($dsConf) || $this->getRelationFieldType($dsConf) !== false) && (string)$dataValue !== '') {
             $dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, [], $dsConf, $realDestPid, 0, $workspaceOptions);
             $this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
         }
@@ -4531,32 +4581,26 @@ class DataHandler implements LoggerAwareInterface
      * @param array $conf TCA configuration of current field
      * @internal should only be used from within DataHandler
      */
-    public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $value, $conf)
+    public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $value, $conf): void
     {
-        $dbAnalysis = null;
-        if (!empty($conf['type']) && $conf['type'] === 'inline') {
-            $foreign_table = $conf['foreign_table'];
-            $moveChildrenWithParent = !isset($conf['behaviour']['disableMovingChildrenWithParent']) || !$conf['behaviour']['disableMovingChildrenWithParent'];
-            if ($foreign_table && $moveChildrenWithParent) {
-                $inlineType = $this->getInlineFieldType($conf);
-                if ($inlineType === 'list' || $inlineType === 'field') {
-                    if ($table === 'pages') {
-                        // If the inline elements are related to a page record,
-                        // make sure they reside at that page and not at its parent
-                        $destPid = $uid;
-                    }
-                    $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
-                }
-            }
+        if (($conf['behaviour']['disableMovingChildrenWithParent'] ?? false)
+            || !in_array($this->getRelationFieldType($conf), ['list', 'field'], true)
+        ) {
+            return;
         }
-        // Move the records
-        if (isset($dbAnalysis)) {
-            // Moving records to a positive destination will insert each
-            // record at the beginning, thus the order is reversed here:
-            foreach (array_reverse($dbAnalysis->itemArray) as $v) {
-                $this->moveRecord($v['table'], $v['id'], $destPid);
-            }
+
+        if ($table === 'pages') {
+            // If the relations are related to a page record, make sure they reside at that page and not at its parent
+            $destPid = $uid;
+        }
+
+        $dbAnalysis = $this->createRelationHandlerInstance();
+        $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+
+        // Moving records to a positive destination will insert each
+        // record at the beginning, thus the order is reversed here:
+        foreach (array_reverse($dbAnalysis->itemArray) as $item) {
+            $this->moveRecord($item['table'], $item['id'], $destPid);
         }
     }
 
@@ -4872,15 +4916,15 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
-        $inlineSubType = $this->getInlineFieldType($config);
-        if ($inlineSubType === false) {
+        $relationFieldType = $this->getRelationFieldType($config);
+        if ($relationFieldType === false) {
             return;
         }
 
         $transOrigRecord = BackendUtility::getRecordWSOL($table, $transOrigPointer);
 
         $removeArray = [];
-        $mmTable = $inlineSubType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
+        $mmTable = $relationFieldType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
         // Fetch children from original language parent:
         $dbAnalysisOriginal = $this->createRelationHandlerInstance();
         $dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
@@ -4948,12 +4992,12 @@ class DataHandler implements LoggerAwareInterface
         }
         $updateFields = [];
         // Handle, reorder and store relations:
-        if ($inlineSubType === 'list') {
+        if ($relationFieldType === 'list') {
             $updateFields = [$field => $value];
-        } elseif ($inlineSubType === 'field') {
+        } elseif ($relationFieldType === 'field') {
             $dbAnalysisCurrent->writeForeignField($config, $id);
             $updateFields = [$field => $dbAnalysisCurrent->countItems(false)];
-        } elseif ($inlineSubType === 'mm') {
+        } elseif ($relationFieldType === 'mm') {
             $dbAnalysisCurrent->writeMM($config['MM'], $id);
             $updateFields = [$field => $dbAnalysisCurrent->countItems(false)];
         }
@@ -5492,26 +5536,20 @@ class DataHandler implements LoggerAwareInterface
         if (!isset($conf['type'])) {
             return;
         }
-        if ($conf['type'] === 'inline') {
-            $foreign_table = $conf['foreign_table'];
-            if ($foreign_table) {
-                $inlineType = $this->getInlineFieldType($conf);
-                if ($inlineType === 'list' || $inlineType === 'field') {
-                    $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
-                    $dbAnalysis->undeleteRecord = true;
 
-                    $enableCascadingDelete = true;
-                    // non type save comparison is intended!
-                    if (isset($conf['behaviour']['enableCascadingDelete']) && $conf['behaviour']['enableCascadingDelete'] == false) {
-                        $enableCascadingDelete = false;
-                    }
+        if ($conf['type'] === 'inline' || $conf['type'] === 'file') {
+            if (in_array($this->getRelationFieldType($conf), ['list', 'field'], true)) {
+                $dbAnalysis = $this->createRelationHandlerInstance();
+                $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+                $dbAnalysis->undeleteRecord = true;
 
+                // non type save comparison is intended!
+                if (!isset($conf['behaviour']['enableCascadingDelete'])
+                    || $conf['behaviour']['enableCascadingDelete'] != false
+                ) {
                     // Walk through the items and remove them
                     foreach ($dbAnalysis->itemArray as $v) {
-                        if ($enableCascadingDelete) {
-                            $this->deleteAction($v['table'], $v['id']);
-                        }
+                        $this->deleteAction($v['table'], $v['id']);
                     }
                 }
             }
@@ -5715,11 +5753,9 @@ class DataHandler implements LoggerAwareInterface
                 continue;
             }
             $foreignTable = (string)($fieldConfig['foreign_table'] ?? '');
-            if ($fieldType === 'inline') {
+            if ($fieldType === 'inline' || $fieldType === 'file') {
                 // @todo: Inline MM not handled here, and what about group / select?
-                if ($foreignTable === ''
-                    || !in_array($this->getInlineFieldType($fieldConfig), ['list', 'field'], true)
-                ) {
+                if (!in_array($this->getRelationFieldType($fieldConfig), ['list', 'field'], true)) {
                     continue;
                 }
                 $relationHandler = $this->createRelationHandlerInstance();
@@ -5928,16 +5964,15 @@ class DataHandler implements LoggerAwareInterface
             if (!isset($fieldConfig['type'])) {
                 continue;
             }
-            if ($fieldConfig['type'] === 'inline') {
-                $foreignTable = $fieldConfig['foreign_table'] ?? null;
-                if (!$foreignTable
+            if ($fieldConfig['type'] === 'inline' || $fieldConfig['type'] === 'file') {
+                $foreignTable = (string)($fieldConfig['foreign_table'] ?? '');
+                if ($foreignTable === ''
                      || (isset($fieldConfig['behaviour']['enableCascadingDelete'])
                         && (bool)$fieldConfig['behaviour']['enableCascadingDelete'] === false)
                 ) {
                     continue;
                 }
-                $inlineType = $this->getInlineFieldType($fieldConfig);
-                if ($inlineType === 'list' || $inlineType === 'field') {
+                if (in_array($this->getRelationFieldType($fieldConfig), ['list', 'field'], true)) {
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     $dbAnalysis->start($value, $fieldConfig['foreign_table'], '', (int)$record['uid'], $table, $fieldConfig);
                     $dbAnalysis->undeleteRecord = true;
@@ -6413,6 +6448,9 @@ class DataHandler implements LoggerAwareInterface
                             case 'inline':
                                 $this->remapListedDBRecords_procInline($conf, $value, $uid, $table);
                                 break;
+                            case 'file':
+                                $this->remapListedDBRecords_procFile($conf, $value, $uid, $table);
+                                break;
                             default:
                                 $this->logger->debug('Field type should not appear here: {type}', ['type' => $conf['type']]);
                         }
@@ -6534,10 +6572,10 @@ class DataHandler implements LoggerAwareInterface
     {
         $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid] ?? null;
         if ($conf['foreign_table']) {
-            $inlineType = $this->getInlineFieldType($conf);
-            if ($inlineType === 'mm') {
+            $relationFieldType = $this->getRelationFieldType($conf);
+            if ($relationFieldType === 'mm') {
                 $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
-            } elseif ($inlineType !== false) {
+            } elseif ($relationFieldType !== false) {
                 $dbAnalysis = $this->createRelationHandlerInstance();
                 $dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
 
@@ -6553,7 +6591,7 @@ class DataHandler implements LoggerAwareInterface
                 }
 
                 // Update child records if using pointer fields ('foreign_field'):
-                if ($inlineType === 'field') {
+                if ($relationFieldType === 'field') {
                     $dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
                 }
                 $thePidToUpdate = null;
@@ -6577,7 +6615,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                     $updateValues = ['pid' => $thePidToUpdate];
                     foreach ($updatePidForRecords as $tableName => $uids) {
-                        if (empty($tableName) || empty($uids)) {
+                        if (empty($tableName)) {
                             continue;
                         }
                         $conn = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -6586,6 +6624,58 @@ class DataHandler implements LoggerAwareInterface
                             $conn->update($tableName, $updateValues, ['uid' => $updateUid]);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * Performs remapping of old UID values to NEW uid values for an file field.
+     *
+     * @internal should only be used from within DataHandler
+     */
+    public function remapListedDBRecords_procFile($conf, $value, $uid, $table)
+    {
+        $thePidToUpdate = null;
+        $updatePidForRecords = [];
+        $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid] ?? null;
+
+        $dbAnalysis = $this->createRelationHandlerInstance();
+        $dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
+
+        foreach ($dbAnalysis->itemArray as &$item) {
+            $updatePidForRecords[$item['table']][] = $item['id'];
+            $versionedId = $this->getAutoVersionId($item['table'], $item['id']);
+            if ($versionedId !== null) {
+                $updatePidForRecords[$item['table']][] = $versionedId;
+                $item['id'] = $versionedId;
+            }
+        }
+        unset($item);
+
+        $dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
+
+        if ($table === 'pages') {
+            $thePidToUpdate = $theUidToUpdate;
+        } elseif (isset($this->registerDBPids[$table][$uid])) {
+            $thePidToUpdate = $this->registerDBPids[$table][$uid];
+            $thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
+        }
+
+        if ($thePidToUpdate && $updatePidForRecords !== []) {
+            $thePidToUpdate = $this->getDefaultLanguagePageId($thePidToUpdate);
+            $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
+            if ($liveId !== null) {
+                $thePidToUpdate = $liveId;
+            }
+            $updateValues = ['pid' => $thePidToUpdate];
+            foreach ($updatePidForRecords as $tableName => $uids) {
+                if (empty($tableName)) {
+                    continue;
+                }
+                $conn = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+                foreach ($uids as $updateUid) {
+                    $conn->update($tableName, $updateValues, ['uid' => $updateUid]);
                 }
             }
         }
@@ -8658,16 +8748,20 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Returns the subtype as a string of an inline field.
-     * If it's not an inline field at all, it returns FALSE.
+     * Returns the subtype as a string of a relation (inline / file) field.
+     * If it's not a relation field at all, it returns FALSE.
      *
      * @param array $conf Config array for TCA/columns field
      * @return string|bool string Inline subtype (field|mm|list), boolean: FALSE
      * @internal should only be used from within DataHandler
      */
-    public function getInlineFieldType($conf)
+    public function getRelationFieldType($conf): bool|string
     {
-        if (empty($conf['type']) || $conf['type'] !== 'inline' || empty($conf['foreign_table'])) {
+        if (
+            empty($conf['foreign_table'])
+            || !in_array($conf['type'] ?? '', ['inline', 'file'], true)
+            || ($conf['type'] === 'file' && !($conf['foreign_field'] ?? false))
+        ) {
             return false;
         }
         if ($conf['foreign_field'] ?? false) {
@@ -9294,7 +9388,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($fieldArray as $field => $value) {
             if (!MathUtility::canBeInterpretedAsInteger($value)
                 && isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'])
-                && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'inline'
+                && in_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'], ['inline', 'file'], true)
                 && ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field'] ?? false)
             ) {
                 $result[$field] = count(GeneralUtility::trimExplode(',', $value, true));

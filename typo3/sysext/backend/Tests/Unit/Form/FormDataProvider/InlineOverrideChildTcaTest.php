@@ -119,8 +119,8 @@ class InlineOverrideChildTcaTest extends UnitTestCase
                                 'aGivenSetting' => 'overrideValue',
                                 'aNewSetting' => 'anotherNewValue',
                                 'appearance' => [
-                                    'elementBrowserType' => 'file',
-                                    'elementBrowserAllowed' => 'jpg,png',
+                                    'useSortable' => true,
+                                    'showPossibleLocalizationRecords' => false,
                                 ],
                             ],
                         ],
@@ -135,7 +135,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
                             'aGivenSetting' => 'aValue',
                             'doNotChangeMe' => 'doNotChangeMe',
                             'appearance' => [
-                                'elementBrowserType' => 'db',
+                                'useSortable' => false,
                             ],
                         ],
                     ],
@@ -150,8 +150,8 @@ class InlineOverrideChildTcaTest extends UnitTestCase
                 'aGivenSetting' => 'overrideValue',
                 'doNotChangeMe' => 'doNotChangeMe',
                 'appearance' => [
-                    'elementBrowserType' => 'file',
-                    'elementBrowserAllowed' => 'jpg,png',
+                    'useSortable' => true,
+                    'showPossibleLocalizationRecords' => false,
                 ],
                 'aNewSetting' => 'anotherNewValue',
             ],

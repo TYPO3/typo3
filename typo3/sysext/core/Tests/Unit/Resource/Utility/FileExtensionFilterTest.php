@@ -41,37 +41,16 @@ class FileExtensionFilterTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function invalidInlineChildrenFilterParametersDataProvider(): array
-    {
-        return [
-            [null, null, null],
-            ['', '', [0, '', null, false]],
-            [null, null, [0, '', null, false]],
-        ];
-    }
-
-    /**
-     * @param array|string $allowed
-     * @param array|string $disallowed
-     * @param array|string $values
      * @test
-     * @dataProvider invalidInlineChildrenFilterParametersDataProvider
      */
-    public function areInlineChildrenFilteredWithInvalidParameters($allowed, $disallowed, $values): void
+    public function areInlineChildrenFilteredWithInvalidParameters(): void
     {
-        $parameters = [
-            'allowedFileExtensions' => $allowed,
-            'disallowedFileExtensions' => $disallowed,
-            'values' => $values,
-        ];
         $dataHandlerProphecy = $this->prophesize(DataHandler::class);
         $dataHandlerProphecy->deleteAction()->shouldNotBeCalled();
         $resourceFactoryProphecy = $this->prophesize(ResourceFactory::class);
         $resourceFactoryProphecy->getFileReferenceObject()->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryProphecy->reveal());
-        (new FileExtensionFilter())->filterInlineChildren($parameters, $dataHandlerProphecy->reveal());
+        (new FileExtensionFilter())->filter([0, '', null, false], '', '', $dataHandlerProphecy->reveal());
     }
 
     /**

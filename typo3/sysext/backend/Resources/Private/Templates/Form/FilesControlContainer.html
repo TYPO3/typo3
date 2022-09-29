@@ -1,0 +1,52 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<typo3-formengine-container-files identifier="{formFieldIdentifier}">
+    <div {formGroupAttributes -> f:format.raw()}>
+        <f:format.raw>{fieldInformation}</f:format.raw>
+        <div class="form-group t3js-formengine-validation-marker">
+            <div class="form-control-wrap t3js-file-controls">
+                <f:for each="{fileSelectors}" as="fileSelector">
+                    {fileSelector -> f:format.raw()}
+                </f:for>
+            </div>
+            <f:if condition="{allowedFileTypes}">
+                <div class="help-block">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions"/><br>
+                    <f:for each="{allowedFileTypes}" as="allowedFileType">
+                        <span class="badge badge-success">{allowedFileType}</span>
+                    </f:for>
+                </div>
+            </f:if>
+        </div>
+        <f:if condition="{showAllLocalizationLink}">
+            <div class="typo3-localizationLink" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords')}">
+                <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="localize">
+                    <core:icon identifier="actions-document-localize" size="small" />
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords" />
+                </button>
+            </div>
+        </f:if>
+        <f:if condition="{showSynchronizationLink}">
+            <div class="typo3-synchronizationLink" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage')}">
+                <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="synchronize">
+                    <core:icon identifier="actions-document-synchronize" size="small" />
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage" />
+                </button>
+            </div>
+        </f:if>
+        <div class="panel-group panel-hover {f:if(condition: '{showAllLocalizationLink} || {showSynchronizationLink}', then: 'mt-3')}" id="{fileReferences.id}" data-title="{fileReferences.title}">
+            <f:format.raw>{fileReferences.records}</f:format.raw>
+        </div>
+        <f:format.raw>{fieldWizard}</f:format.raw>
+        <f:if condition="{customControls}">
+            <div id="{customControls.id}">
+                <f:format.raw>{customControls.controls}</f:format.raw>
+            </div>
+        </f:if>
+        <input type="hidden" class="inlineRecord" name="{formFieldName}" value="{sortableRecordUids}" data-formengine-validation-rules="{validationRules}" />
+    </div>
+</typo3-formengine-container-files>
+</html>

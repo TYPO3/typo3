@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldExc
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -716,7 +717,9 @@ class FlexFormTools
                 $dataStructure = $this->removeElementTceFormsRecursive($dataStructure);
 
                 if (is_array($dataStructure['sheets'][$sheetName])) {
+                    // @todo Use TcaMigration and TcaPreparation instead of duplicating the code
                     $dataStructure['sheets'][$sheetName] = $this->prepareCategoryFields($dataStructure['sheets'][$sheetName]);
+                    $dataStructure['sheets'][$sheetName] = $this->prepareFileFields($dataStructure['sheets'][$sheetName]);
                 }
             }
         }
@@ -992,6 +995,57 @@ class FlexFormTools
                     && $fieldConfig['config']['relationship'] !== 'oneToMany'
                 ) {
                     $fieldConfig['config']['default'] = 0;
+                }
+            }
+        }
+
+        return $dataStructurSheets;
+    }
+
+    /**
+     * Prepare type=file fields if given.
+     *
+     * @param array $dataStructurSheets
+     * @return array The processed $dataStructureSheets
+     */
+    protected function prepareFileFields(array $dataStructurSheets): array
+    {
+        if ($dataStructurSheets === []) {
+            // Early return in case the no sheets are given
+            return $dataStructurSheets;
+        }
+
+        foreach ($dataStructurSheets as &$structure) {
+            if (!is_array($structure['el'] ?? false) || $structure['el'] === []) {
+                // Skip if no elements (fields) are defined
+                continue;
+            }
+            foreach ($structure['el'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'file') {
+                    // Skip if type is not "file"
+                    continue;
+                }
+
+                $fieldConfig['config'] = array_replace_recursive(
+                    $fieldConfig['config'],
+                    [
+                        'foreign_table' => 'sys_file_reference',
+                        'foreign_field' => 'uid_foreign',
+                        'foreign_sortby' => 'sorting_foreign',
+                        'foreign_table_field' => 'tablenames',
+                        'foreign_match_fields' => [
+                            'fieldname' => $fieldName,
+                        ],
+                        'foreign_label' => 'uid_local',
+                        'foreign_selector' => 'uid_local',
+                    ]
+                );
+
+                if (!empty(($allowed = ($fieldConfig['config']['allowed'] ?? null)))) {
+                    $fieldConfig['config']['allowed'] = TcaPreparation::prepareFileExtensions($allowed);
+                }
+                if (!empty(($disallowed = ($fieldConfig['config']['disallowed'] ?? null)))) {
+                    $fieldConfig['config']['disallowed'] = TcaPreparation::prepareFileExtensions($disallowed);
                 }
             }
         }

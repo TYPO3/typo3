@@ -95,6 +95,9 @@ services:
   TYPO3\CMS\Backend\Controller\ElementBrowserController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\FormFilesAjaxController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Controller\FormSlugAjaxController:
     tags: ['backend.controller']
 

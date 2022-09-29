@@ -665,6 +665,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFiles::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
@@ -890,6 +895,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFiles::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class,
@@ -974,6 +984,11 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFiles::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
                         ],
                     ],
                 ],

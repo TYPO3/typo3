@@ -725,10 +725,6 @@ class SetupModuleController
                     $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
-                    'table_local',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
                     'uid_foreign',
                     $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
                 )
@@ -772,10 +768,6 @@ class SetupModuleController
                     $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
-                    'table_local',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
                     'uid_foreign',
                     $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
                 )
@@ -811,7 +803,6 @@ class SetupModuleController
                     'tablenames' => 'be_users',
                     'fieldname' => 'avatar',
                     'pid' => 0,
-                    'table_local' => 'sys_file',
                 ];
                 $storeRec['be_users'][(int)$beUserId]['avatar'] = 'NEW1234';
             }

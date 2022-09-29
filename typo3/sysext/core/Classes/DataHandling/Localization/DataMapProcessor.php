@@ -448,12 +448,12 @@ class DataMapProcessor
                 $item->getId(),
                 [$fieldName => $fromValue]
             );
-        } elseif (!$this->isInlineRelationField($item->getTableName(), $fieldName)) {
+        } elseif (!$this->isReferenceField($item->getTableName(), $fieldName)) {
             // direct relational values
             $this->synchronizeDirectRelations($item, $fieldName, $fromRecord);
         } else {
-            // inline relational values
-            $this->synchronizeInlineRelations($item, $fieldName, $fromRecord, $forRecord);
+            // reference values
+            $this->synchronizeReferences($item, $fieldName, $fromRecord, $forRecord);
         }
     }
 
@@ -518,10 +518,11 @@ class DataMapProcessor
     }
 
     /**
-     * Handle synchronization of inline relations.
-     * Inline Relational Record Editing ("IRRE") always is modelled as 1:n composite relation - which means that
-     * direct(!) children cannot exist without their parent. Removing a relative parent results in cascaded removal
-     * of all direct(!) children as well.
+     * Handle synchronization of references (inline or file).
+     * References are always modelled as 1:n composite relation - which
+     * means that direct(!) children cannot exist without their parent.
+     * Removing a relative parent results in cascaded removal of all direct(!)
+     * children as well.
      *
      * @param DataMapItem $item
      * @param string $fieldName
@@ -529,7 +530,7 @@ class DataMapProcessor
      * @param array $forRecord
      * @throws \RuntimeException
      */
-    protected function synchronizeInlineRelations(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
+    protected function synchronizeReferences(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
     {
         $configuration = $GLOBALS['TCA'][$item->getTableName()]['columns'][$fieldName];
         $isLocalizationModeExclude = ($configuration['l10n_mode'] ?? null) === 'exclude';
@@ -1509,18 +1510,18 @@ class DataMapProcessor
                 && !empty($configuration['foreign_table'])
                 && !empty($GLOBALS['TCA'][$configuration['foreign_table']])
             )
-            || $this->isInlineRelationField($tableName, $fieldName)
+            || $this->isReferenceField($tableName, $fieldName)
         ;
     }
 
     /**
-     * True if we're dealing with an inline field
+     * True if we're dealing with a reference field (either "inline" or "file")
      *
      * @param string $tableName
      * @param string $fieldName
      * @return bool TRUE if field is of type inline with foreign_table set
      */
-    protected function isInlineRelationField(string $tableName, string $fieldName): bool
+    protected function isReferenceField(string $tableName, string $fieldName): bool
     {
         if (empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['type'])) {
             return false;
@@ -1529,7 +1530,7 @@ class DataMapProcessor
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 
         return
-            $configuration['type'] === 'inline'
+            ($configuration['type'] === 'inline' || $configuration['type'] === 'file')
             && !empty($configuration['foreign_table'])
             && !empty($GLOBALS['TCA'][$configuration['foreign_table']])
         ;

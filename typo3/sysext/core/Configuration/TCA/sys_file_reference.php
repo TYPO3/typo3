@@ -4,13 +4,6 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference',
         'label' => 'uid_local',
-        'formattedLabel_userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Service\\UserFileInlineLabelService->getInlineLabel',
-        'formattedLabel_userFunc_options' => [
-            'sys_file' => [
-                'title',
-                'name',
-            ],
-        ],
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'type' => 'uid_local:type',
@@ -102,14 +95,6 @@ return [
                 'type' => 'number',
                 'size' => 4,
                 'default' => 0,
-            ],
-        ],
-        'table_local' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.table_local',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'default' => 'sys_file',
             ],
         ],
         'title' => [

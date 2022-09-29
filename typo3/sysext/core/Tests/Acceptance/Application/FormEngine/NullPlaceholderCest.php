@@ -43,11 +43,11 @@ class NullPlaceholderCest
     {
         $I->amGoingTo('Check if deactivating null checkboxes marks as "changed"');
 
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_fal a[aria-label="Edit record"]';
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_file a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
 
         $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->waitForText('Edit Form engine - inline fal "1" on page "inline fal"');
+        $I->waitForText('Edit Form engine - file "1" on page "file"');
         $I->click('typical fal');
         $I->click('.form-irre-header');
         $I->waitForElementNotVisible('.nprogress-custom-parent');
@@ -73,8 +73,8 @@ class NullPlaceholderCest
         $I->switchToMainFrame();
         $I->click('List');
         $I->waitForElement('svg .nodes .node');
-        $pageTree->openPath(['styleguide TCA demo', 'inline fal']);
+        $pageTree->openPath(['styleguide TCA demo', 'file']);
         $I->switchToContentFrame();
-        $I->waitForText('inline fal');
+        $I->waitForText('file');
     }
 }

@@ -127,6 +127,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
                 $foreignTableName = $this->getAllowedTableForGroupField($fieldConfig);
                 break;
             case 'inline':
+            case 'file':
                 $possibleUids = array_filter(GeneralUtility::trimExplode(',', $value, true));
                 $foreignTableName = $fieldConfig['foreign_table'];
                 break;

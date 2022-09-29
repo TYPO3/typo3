@@ -457,7 +457,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             $parentUid = $this->getLiveDefaultId($parentTableName, $parentUid);
         }
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-        $relationHandler->registerNonTableValues = (bool)($parentConfig['allowedIdValues'] ?? false);
         $relationHandler->start($parentFieldValue, $parentConfig['foreign_table'] ?? '', $parentConfig['MM'] ?? '', $parentUid, $parentTableName, $parentConfig);
         $foreignRecordUids = $relationHandler->getValueArray();
         $resolvedForeignRecordUids = [];

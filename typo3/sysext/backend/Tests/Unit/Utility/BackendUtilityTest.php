@@ -1201,14 +1201,14 @@ class BackendUtilityTest extends UnitTestCase
             '',
             42,
             $tableName,
-            ['type' => 'inline', 'foreign_table' => 'sys_file_reference']
+            ['type' => 'file', 'foreign_table' => 'sys_file_reference']
         )->shouldBeCalled();
         $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
         $relationHandler = $relationHandlerProphecy->reveal();
         $relationHandler->tableArray = ['sys_file_reference' => []];
         GeneralUtility::addInstance(RelationHandler::class, $relationHandler);
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
-            'type' => 'inline',
+            'type' => 'file',
             'foreign_table' => 'sys_file_reference',
         ];
         $elementData = [

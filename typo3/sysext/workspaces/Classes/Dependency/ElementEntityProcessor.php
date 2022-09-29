@@ -99,7 +99,7 @@ class ElementEntityProcessor
             return ElementEntity::RESPONSE_Skip;
         }
         $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($caller->getTable(), $callerArguments['field']);
-        $inlineFieldType = $this->getDataHandler()->getInlineFieldType($fieldConfiguration);
+        $inlineFieldType = $this->getDataHandler()->getRelationFieldType($fieldConfiguration);
         if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
             return ElementEntity::RESPONSE_Skip;
         }
@@ -118,7 +118,7 @@ class ElementEntityProcessor
     public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
         $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($callerArguments['table'], $callerArguments['field']);
-        $inlineFieldType = $this->getDataHandler()->getInlineFieldType($fieldConfiguration);
+        $inlineFieldType = $this->getDataHandler()->getRelationFieldType($fieldConfiguration);
         if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
             return ElementEntity::RESPONSE_Skip;
         }

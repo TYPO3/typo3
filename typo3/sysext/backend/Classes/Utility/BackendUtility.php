@@ -914,9 +914,7 @@ class BackendUtility
             return null;
         }
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-        if (empty($configuration['type']) || $configuration['type'] !== 'inline'
-            || empty($configuration['foreign_table']) || $configuration['foreign_table'] !== 'sys_file_reference'
-        ) {
+        if (($configuration['type'] ?? '') !== 'file') {
             return null;
         }
 
@@ -1554,6 +1552,7 @@ class BackendUtility
                 $l = $lang->sL($l);
                 break;
             case 'inline':
+            case 'file':
                 if ($uid) {
                     $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
                     $l = implode(', ', $finalValues);

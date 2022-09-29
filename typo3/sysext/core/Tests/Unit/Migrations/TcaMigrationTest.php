@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Migrations;
 
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -3103,6 +3104,383 @@ class TcaMigrationTest extends UnitTestCase
         $expected = [
             'aTable' => [
                 'ctrl' => [
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
+
+    private function falHandlingInTypeInlineIsMigratedToTypeFileDataProvider(): iterable
+    {
+        yield 'Full example of type=inline with foreign_table=sys_file_reference migrated to type=file' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'inline',
+                                'minitems' => 1,
+                                'maxitems' => 2,
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_label' => 'uid_local',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'aColumn',
+                                ],
+                                'foreign_selector' => 'uid_local',
+                                'foreign_unique' => 'uid_local',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_table_field' => 'tablenames',
+                                'appearance' => [
+                                    'createNewRelationLinkTitle' => 'Add file',
+                                    'enabledControls' => [
+                                        'delete' => true,
+                                        'dragdrop' => true,
+                                        'sort' => false,
+                                        'hide' => true,
+                                        'info' => true,
+                                        'new' => false,
+                                    ],
+                                    'headerThumbnail' => [
+                                        'field' => 'uid_local',
+                                        'height' => '45m',
+                                    ],
+                                    'showPossibleLocalizationRecords' => true,
+                                    'useSortable' => true,
+                                    'showNewRecordLink' => true,
+                                    'newRecordLinkAddTitle' => true,
+                                    'newRecordLinkTitle' => true,
+                                    'levelLinksPosition' => 'both',
+                                    'useCombination' => true,
+                                    'suppressCombinationWarning' => true,
+                                ],
+                                'filter' => [
+                                    [
+                                        'userFunc' => FileExtensionFilter::class . '->filterInlineChildren',
+                                        'parameters' => [
+                                            'allowedFileExtensions' => 'jpg,png',
+                                            'disallowedFileExtensions' => '',
+                                        ],
+                                    ],
+                                ],
+                                'overrideChildTca' => [
+                                    'columns' => [
+                                        'uid_local' => [
+                                            'config' => [
+                                                'appearance' => [
+                                                    'elementBrowserAllowed' => 'jpg,png',
+                                                    'elementBrowserType' => 'file',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    'types' => [
+                                        '0' => [
+                                            'showitem' => '--palette--;;somePalette',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'file',
+                                'minitems' => 1,
+                                'maxitems' => 2,
+                                'appearance' => [
+                                    'createNewRelationLinkTitle' => 'Add file',
+                                    'enabledControls' => [
+                                        'delete' => true,
+                                        'dragdrop' => true,
+                                        'sort' => false,
+                                        'hide' => true,
+                                        'info' => true,
+                                    ],
+                                    'headerThumbnail' => [
+                                        'height' => '45m',
+                                    ],
+                                    'showPossibleLocalizationRecords' => true,
+                                    'useSortable' => true,
+                                ],
+                                'overrideChildTca' => [
+                                    'types' => [
+                                        '0' => [
+                                            'showitem' => '--palette--;;somePalette',
+                                        ],
+                                    ],
+                                ],
+                                'allowed' => 'jpg,png',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Allowed and disallowed list is migrated from unused filter' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'inline',
+                                'foreign_table' => 'sys_file_reference',
+                                'filter' => [
+                                    [
+                                        'userFunc' => FileExtensionFilter::class . '->filterInlineChildren',
+                                        'parameters' => [
+                                            'allowedFileExtensions' => 'jpg,png',
+                                            'disallowedFileExtensions' => 'pdf,pages',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'file',
+                                'allowed' => 'jpg,png',
+                                'disallowed' => 'pdf,pages',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Allowed list from filter takes precedence over element browser related option' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'inline',
+                                'foreign_table' => 'sys_file_reference',
+                                'overrideChildTca' => [
+                                    'columns' => [
+                                        'uid_local' => [
+                                            'config' => [
+                                                'appearance' => [
+                                                    'elementBrowserAllowed' => 'jpg,png',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'filter' => [
+                                    [
+                                        'userFunc' => FileExtensionFilter::class . '->filterInlineChildren',
+                                        'parameters' => [
+                                            'allowedFileExtensions' => 'pdf,docx',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'file',
+                                'allowed' => 'pdf,docx',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'customControls hook is removed' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'inline',
+                                'foreign_table' => 'sys_file_reference',
+                                'customControls' => [
+                                    'userFunc' => '->someFunc()',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'file',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'The \'customControls\' option is not evaluated anymore',
+        ];
+        yield 'renamed appearance options are migrated' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'inline',
+                                'foreign_table' => 'sys_file_reference',
+                                'appearance' => [
+                                    'showPossibleRecordsSelector' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'file',
+                                'appearance' => [
+                                    'showFileSelectors' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Usage of sys_file_reference as foreign_table without type=inline is still possible' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'foreign_table' => 'sys_file_reference',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'foreign_table' => 'sys_file_reference',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider falHandlingInTypeInlineIsMigratedToTypeFileDataProvider
+     * @test
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $expected
+     * @param string $expectedMessagePart
+     */
+    public function falHandlingInTypeInlineIsMigratedToTypeFile(array $input, array $expected, $expectedMessagePart = ''): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+        if ($expectedMessagePart !== '') {
+            $messageFound = false;
+            foreach ($subject->getMessages() as $message) {
+                if (str_contains($message, $expectedMessagePart)) {
+                    $messageFound = true;
+                    break;
+                }
+            }
+            self::assertTrue($messageFound);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function falRelatedElementBrowserOptionsAreRemovedFromTypeGroup(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumns' => [
+                        'config' => [
+                            'type' => 'group',
+                            'appearance' => [
+                                'elementBrowserAllowed' => 'jpg,png',
+                                'elementBrowserType' => 'file',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumns' => [
+                        'config' => [
+                            'type' => 'group',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function falRelatedOptionsAreRemovedFromTypeInline(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumns' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'headerThumbnail' => [
+                                    'height' => '45c',
+                                ],
+                                'fileUploadAllowed' => true,
+                                'fileByUrlAllowed' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumns' => [
+                        'config' => [
+                            'type' => 'inline',
+                        ],
+                    ],
                 ],
             ],
         ];
