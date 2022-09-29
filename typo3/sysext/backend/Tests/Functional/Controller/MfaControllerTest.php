@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -72,6 +73,12 @@ class MfaControllerTest extends FunctionalTestCase
 
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+    }
+
+    protected function tearDown(): void
+    {
+        FormProtectionFactory::purgeInstances();
+        parent::tearDown();
     }
 
     /**

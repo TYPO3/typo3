@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -63,6 +64,12 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->normalizedParams = new NormalizedParams([], [], '', '');
+    }
+
+    protected function tearDown(): void
+    {
+        FormProtectionFactory::purgeInstances();
+        parent::tearDown();
     }
 
     /**

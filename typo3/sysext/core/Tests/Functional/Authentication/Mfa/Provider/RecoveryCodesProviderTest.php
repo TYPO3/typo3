@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -58,6 +59,12 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
         $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('recovery-codes');
+    }
+
+    protected function tearDown(): void
+    {
+        FormProtectionFactory::purgeInstances();
+        parent::tearDown();
     }
 
     /**
