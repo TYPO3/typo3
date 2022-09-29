@@ -214,50 +214,44 @@ return [
                                 <sDb>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>group</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>group</sheetTitle>
                                         <el>
                                             <group_db_1>
-                                                <TCEforms>
-                                                    <label>group_db_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>group</type>
-                                                        <allowed>tx_styleguide_staticdata</allowed>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>group_db_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>group</type>
+                                                    <allowed>tx_styleguide_staticdata</allowed>
+                                                </config>
                                             </group_db_1>
                                             <group_db_2>
-                                                <TCEforms>
-                                                    <label>group_db_2 suggest, order by uid DESC</label>
-                                                    <config>
-                                                        <type>group</type>
-                                                        <allowed>tx_styleguide_staticdata</allowed>
-                                                        <suggestOptions>
-                                                            <default>
-                                                                <orderBy>uid DESC</orderBy>
-                                                            </default>
-                                                        </suggestOptions>
-                                                        <fieldControl>
-                                                            <editPopup>
-                                                                <renderType>editPopup</renderType>
-                                                                <disabled>0</disabled>
-                                                            </editPopup>
-                                                            <addRecord>
-                                                                <renderType>addRecord</renderType>
-                                                                <disabled>0</disabled>
-                                                                <options>
-                                                                    <setValue>prepend</setValue>
-                                                                </options>
-                                                            </addRecord>
-                                                            <listModule>
-                                                                <renderType>listModule</renderType>
-                                                                <disabled>0</disabled>
-                                                            </listModule>
-                                                        </fieldControl>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>group_db_2 suggest, order by uid DESC</label>
+                                                <config>
+                                                    <type>group</type>
+                                                    <allowed>tx_styleguide_staticdata</allowed>
+                                                    <suggestOptions>
+                                                        <default>
+                                                            <orderBy>uid DESC</orderBy>
+                                                        </default>
+                                                    </suggestOptions>
+                                                    <fieldControl>
+                                                        <editPopup>
+                                                            <renderType>editPopup</renderType>
+                                                            <disabled>0</disabled>
+                                                        </editPopup>
+                                                        <addRecord>
+                                                            <renderType>addRecord</renderType>
+                                                            <disabled>0</disabled>
+                                                            <options>
+                                                                <setValue>prepend</setValue>
+                                                            </options>
+                                                        </addRecord>
+                                                        <listModule>
+                                                            <renderType>listModule</renderType>
+                                                            <disabled>0</disabled>
+                                                        </listModule>
+                                                    </fieldControl>
+                                                </config>
                                             </group_db_2>
                                         </el>
                                     </ROOT>
@@ -266,9 +260,7 @@ return [
                                 <sSection>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <el>
                                             <section_1>
                                                 <title>section_1</title>
@@ -280,14 +272,12 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <group_db_1>
-                                                                <TCEforms>
-                                                                    <label>group_db_1</label>
-                                                                    <config>
-                                                                        <type>group</type>
-                                                                        <allowed>pages</allowed>
-                                                                        <size>5</size>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>group_db_1</label>
+                                                                <config>
+                                                                    <type>group</type>
+                                                                    <allowed>pages</allowed>
+                                                                    <size>5</size>
+                                                                </config>
                                                             </group_db_1>
                                                         </el>
                                                     </container_1>

@@ -281,13 +281,11 @@ return [
                                 <type>array</type>
                                 <el>
                                     <text_1>
-                                        <TCEforms>
-                                            <label>text required</label>
-                                            <config>
-                                                <type>text</type>
-                                                <eval>required</eval>
-                                            </config>
-                                        </TCEforms>
+                                        <label>text required</label>
+                                        <config>
+                                            <type>text</type>
+                                            <eval>required</eval>
+                                        </config>
                                     </text_1>
                                 </el>
                             </ROOT>
@@ -306,28 +304,22 @@ return [
                             <sheets>
                                 <sGeneral>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>tab</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>tab</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <input_1>
-                                                <TCEforms>
-                                                    <label>input_1, eval=required</label>
-                                                    <config>
-                                                        <type>input</type>
-                                                        <eval>required</eval>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>input_1, eval=required</label>
+                                                <config>
+                                                    <type>input</type>
+                                                    <eval>required</eval>
+                                                </config>
                                             </input_1>
                                         </el>
                                     </ROOT>
                                 </sGeneral>
                                 <sSections>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <section_1>
@@ -340,13 +332,11 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <input_1>
-                                                                <TCEforms>
-                                                                    <label>input_1, eval=required</label>
-                                                                    <config>
-                                                                        <type>input</type>
-                                                                        <eval>required</eval>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>input_1, eval=required</label>
+                                                                <config>
+                                                                    <type>input</type>
+                                                                    <eval>required</eval>
+                                                                </config>
                                                             </input_1>
                                                         </el>
                                                     </container_1>
@@ -357,21 +347,17 @@ return [
                                 </sSections>
                                 <sInline>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>inline</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>inline</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <inline_1>
-                                                <TCEforms>
-                                                    <label>inline_1 required field in inline child</label>
-                                                    <config>
-                                                        <type>inline</type>
-                                                        <foreign_table>tx_styleguide_required_flex_2_inline_1_child</foreign_table>
-                                                        <foreign_field>parentid</foreign_field>
-                                                        <foreign_table_field>parenttable</foreign_table_field>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inline_1 required field in inline child</label>
+                                                <config>
+                                                    <type>inline</type>
+                                                    <foreign_table>tx_styleguide_required_flex_2_inline_1_child</foreign_table>
+                                                    <foreign_field>parentid</foreign_field>
+                                                    <foreign_table_field>parenttable</foreign_table_field>
+                                                </config>
                                             </inline_1>
                                         </el>
                                     </ROOT>

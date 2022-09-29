@@ -100,79 +100,67 @@ return [
                                 <type>array</type>
                                 <el>
                                     <input_1>
-                                        <TCEforms>
-                                            <label>input_1</label>
-                                            <config>
-                                                <type>input</type>
-                                            </config>
-                                        </TCEforms>
+                                        <label>input_1</label>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
                                     </input_1>
                                     <input_2>
-                                        <TCEforms>
-                                            <label>input_2, default value</label>
-                                            <config>
-                                                <type>input</type>
-                                                <default>foo</default>
-                                            </config>
-                                        </TCEforms>
+                                        <label>input_2, default value</label>
+                                        <config>
+                                            <type>input</type>
+                                            <default>foo</default>
+                                        </config>
                                     </input_2>
                                     <passthrough_1>
-                                        <TCEforms>
-                                            <label>passthrough_1</label>
-                                            <config>
-                                                <type>passthrough</type>
-                                            </config>
-                                        </TCEforms>
+                                        <label>passthrough_1</label>
+                                        <config>
+                                            <type>passthrough</type>
+                                        </config>
                                     </passthrough_1>
                                     <passthrough_2>
-                                        <TCEforms>
-                                            <label>passthrough_2 with default value</label>
-                                            <config>
-                                                <type>passthrough</type>
-                                                <default>passthrough default</default>
-                                            </config>
-                                        </TCEforms>
+                                        <label>passthrough_2 with default value</label>
+                                        <config>
+                                            <type>passthrough</type>
+                                            <default>passthrough default</default>
+                                        </config>
                                     </passthrough_2>
                                     <checkbox_1>
-                                       <TCEforms>
-                                           <label>checkbox_1 one checkbox with label</label>
-                                           <config>
-                                               <type>check</type>
-                                               <items type="array">
-                                                   <numIndex index="0" type="array">
-                                                       <numIndex index="0">foo</numIndex>
-                                                       <numIndex index="1"></numIndex>
-                                                   </numIndex>
-                                               </items>
-                                           </config>
-                                       </TCEforms>
+                                       <label>checkbox_1 one checkbox with label</label>
+                                       <config>
+                                           <type>check</type>
+                                           <items type="array">
+                                               <numIndex index="0" type="array">
+                                                   <numIndex index="0">foo</numIndex>
+                                                   <numIndex index="1"></numIndex>
+                                               </numIndex>
+                                           </items>
+                                       </config>
                                     </checkbox_1>
                                     <checkbox_2>
-                                       <TCEforms>
-                                           <label>checkbox_2 cols=3</label>
-                                           <config>
-                                               <type>check</type>
-                                               <items type="array">
-                                                   <numIndex index="0" type="array">
-                                                       <numIndex index="0">foo1</numIndex>
-                                                       <numIndex index="1"></numIndex>
-                                                   </numIndex>
-                                                   <numIndex index="1" type="array">
-                                                       <numIndex index="0">foo2</numIndex>
-                                                       <numIndex index="1"></numIndex>
-                                                   </numIndex>
-                                                   <numIndex index="2" type="array">
-                                                       <numIndex index="0">foo3</numIndex>
-                                                       <numIndex index="1"></numIndex>
-                                                   </numIndex>
-                                                   <numIndex index="3" type="array">
-                                                       <numIndex index="0">foo4</numIndex>
-                                                       <numIndex index="1"></numIndex>
-                                                   </numIndex>
-                                               </items>
-                                               <cols>3</cols>
-                                           </config>
-                                       </TCEforms>
+                                       <label>checkbox_2 cols=3</label>
+                                       <config>
+                                           <type>check</type>
+                                           <items type="array">
+                                               <numIndex index="0" type="array">
+                                                   <numIndex index="0">foo1</numIndex>
+                                                   <numIndex index="1"></numIndex>
+                                               </numIndex>
+                                               <numIndex index="1" type="array">
+                                                   <numIndex index="0">foo2</numIndex>
+                                                   <numIndex index="1"></numIndex>
+                                               </numIndex>
+                                               <numIndex index="2" type="array">
+                                                   <numIndex index="0">foo3</numIndex>
+                                                   <numIndex index="1"></numIndex>
+                                               </numIndex>
+                                               <numIndex index="3" type="array">
+                                                   <numIndex index="0">foo4</numIndex>
+                                                   <numIndex index="1"></numIndex>
+                                               </numIndex>
+                                           </items>
+                                           <cols>3</cols>
+                                       </config>
                                     </checkbox_2>
                                 </el>
                             </ROOT>
@@ -193,61 +181,53 @@ return [
                             <sheets>
                                 <sSheetdescription_1>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>sheet description 1</sheetTitle>
-                                            <sheetDescription>
-                                                sheetDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                Nam id ante ornare, iaculis elit a, malesuada augue. Etiam neque odio,
-                                                condimentum sed dolor vitae, sollicitudin varius lacus. Pellentesque sit amet aliquam arcu.
-                                                Phasellus ut euismod felis. Fusce at tempor turpis.
+                                        <sheetTitle>sheet description 1</sheetTitle>
+                                        <sheetDescription>
+                                            sheetDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            Nam id ante ornare, iaculis elit a, malesuada augue. Etiam neque odio,
+                                            condimentum sed dolor vitae, sollicitudin varius lacus. Pellentesque sit amet aliquam arcu.
+                                            Phasellus ut euismod felis. Fusce at tempor turpis.
 
-                                                Nam eu arcu id lorem vestibulum tristique vel in erat. Phasellus maximus, arcu nec
-                                                condimentum venenatis, mauris nisl venenatis tellus, eget suscipit arcu nunc et purus.
-                                                Nunc luctus congue vulputate. Donec placerat, lorem vitae rhoncus euismod, ipsum ligula
-                                                tempor sapien, ac sodales metus mauris et lacus. Donec in ante a lectus semper rutrum nec
-                                                ut orci. Quisque id mi ultrices lacus fermentum consequat quis sed odio. Sed quis turpis
-                                                rutrum, convallis sem vitae, cursus enim. Maecenas sit amet sem nisi.
-                                            </sheetDescription>
-                                            <sheetShortDescr>
-                                                sheetShortDescr: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                Nam id ante ornare, iaculis elit a, malesuada augue. Etiam neque odio,
-                                                condimentum sed dolor vitae, sollicitudin varius lacus. Pellentesque sit amet aliquam arcu.
-                                                Phasellus ut euismod felis. Fusce at tempor turpis.
-                                            </sheetShortDescr>
-                                        </TCEforms>
+                                            Nam eu arcu id lorem vestibulum tristique vel in erat. Phasellus maximus, arcu nec
+                                            condimentum venenatis, mauris nisl venenatis tellus, eget suscipit arcu nunc et purus.
+                                            Nunc luctus congue vulputate. Donec placerat, lorem vitae rhoncus euismod, ipsum ligula
+                                            tempor sapien, ac sodales metus mauris et lacus. Donec in ante a lectus semper rutrum nec
+                                            ut orci. Quisque id mi ultrices lacus fermentum consequat quis sed odio. Sed quis turpis
+                                            rutrum, convallis sem vitae, cursus enim. Maecenas sit amet sem nisi.
+                                        </sheetDescription>
+                                        <sheetShortDescr>
+                                            sheetShortDescr: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            Nam id ante ornare, iaculis elit a, malesuada augue. Etiam neque odio,
+                                            condimentum sed dolor vitae, sollicitudin varius lacus. Pellentesque sit amet aliquam arcu.
+                                            Phasellus ut euismod felis. Fusce at tempor turpis.
+                                        </sheetShortDescr>
                                         <type>array</type>
                                         <el>
                                             <input_1>
-                                                <TCEforms>
-                                                    <label>input_1</label>
-                                                    <config>
-                                                        <type>input</type>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>input_1</label>
+                                                <config>
+                                                    <type>input</type>
+                                                </config>
                                             </input_1>
                                         </el>
                                     </ROOT>
                                 </sSheetdescription_1>
                                 <sSheetdescription_2>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>sheet description 2</sheetTitle>
-                                            <sheetDescription>
-                                                foo
-                                            </sheetDescription>
-                                            <sheetShortDescr>
-                                                bar
-                                           </sheetShortDescr>
-                                        </TCEforms>
+                                        <sheetTitle>sheet description 2</sheetTitle>
+                                        <sheetDescription>
+                                            foo
+                                        </sheetDescription>
+                                        <sheetShortDescr>
+                                            bar
+                                       </sheetShortDescr>
                                         <type>array</type>
                                         <el>
                                             <input_2>
-                                                <TCEforms>
-                                                    <label>input_2</label>
-                                                    <config>
-                                                        <type>input</type>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>input_2</label>
+                                                <config>
+                                                    <type>input</type>
+                                                </config>
                                             </input_2>
                                         </el>
                                     </ROOT>
@@ -269,9 +249,7 @@ return [
                             <sheets>
                                 <sSection>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <section_1>
@@ -284,22 +262,18 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <input_1>
-                                                                <TCEforms>
-                                                                    <label>input_1 description</label>
-                                                                    <description>field description</description>
-                                                                    <config>
-                                                                        <type>input</type>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>input_1 description</label>
+                                                                <description>field description</description>
+                                                                <config>
+                                                                    <type>input</type>
+                                                                </config>
                                                             </input_1>
                                                             <color_1>
-                                                                <TCEforms>
-                                                                    <label>color_1</label>
-                                                                    <config>
-                                                                        <type>color</type>
-                                                                        <size>10</size>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>color_1</label>
+                                                                <config>
+                                                                    <type>color</type>
+                                                                    <size>10</size>
+                                                                </config>
                                                             </color_1>
                                                         </el>
                                                     </container_1>
@@ -308,13 +282,11 @@ return [
                                                         <title>container_2</title>
                                                         <el>
                                                             <text_1>
-                                                                <TCEforms>
-                                                                    <label>text_1 default "foo"</label>
-                                                                    <config>
-                                                                        <type>text</type>
-                                                                        <default>foo</default>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>text_1 default "foo"</label>
+                                                                <config>
+                                                                    <type>text</type>
+                                                                    <default>foo</default>
+                                                                </config>
                                                             </text_1>
                                                         </el>
                                                     </container_2>
@@ -340,21 +312,17 @@ return [
                             <sheets>
                                 <sInline>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>inline</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>inline</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <inline_1>
-                                                <TCEforms>
-                                                    <label>inline_1</label>
-                                                    <config>
-                                                        <type>inline</type>
-                                                        <foreign_table>tx_styleguide_flex_flex_3_inline_1_child</foreign_table>
-                                                        <foreign_field>parentid</foreign_field>
-                                                        <foreign_table_field>parenttable</foreign_table_field>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inline_1</label>
+                                                <config>
+                                                    <type>inline</type>
+                                                    <foreign_table>tx_styleguide_flex_flex_3_inline_1_child</foreign_table>
+                                                    <foreign_field>parentid</foreign_field>
+                                                    <foreign_table_field>parenttable</foreign_table_field>
+                                                </config>
                                             </inline_1>
                                         </el>
                                     </ROOT>

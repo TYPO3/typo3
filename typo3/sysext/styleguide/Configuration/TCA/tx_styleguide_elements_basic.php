@@ -1353,51 +1353,43 @@ backend_layout {
                                 <sInput>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>input</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>input</sheetTitle>
                                         <el>
                                             <input_1>
-                                                <TCEforms>
-                                                    <label>input_1</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>input</type>
-                                                        <eval>trim</eval>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>input_1</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>input</type>
+                                                    <eval>trim</eval>
+                                                </config>
                                             </input_1>
                                             <input_2>
-                                                <TCEforms>
-                                                    <label>input_2 renderyType textTable</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>text</type>
-                                                        <renderType>textTable</renderType>
-                                                        <cols>30</cols>
-                                                        <rows>5</rows>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>input_2 renderyType textTable</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>text</type>
+                                                    <renderType>textTable</renderType>
+                                                    <cols>30</cols>
+                                                    <rows>5</rows>
+                                                </config>
                                             </input_2>
                                             <input_3>
-                                                <TCEforms>
-                                                    <label>input_3 valuePicker</label>
-                                                    <config>
-                                                        <type>input</type>
-                                                        <valuePicker>
-                                                            <items>
-                                                                <numIndex index="0">
-                                                                    <numIndex index="0">Foo</numIndex>
-                                                                    <numIndex index="1">foo</numIndex>
-                                                                </numIndex>
-                                                                <numIndex index="1">
-                                                                    <numIndex index="0">Bar</numIndex>
-                                                                    <numIndex index="1">bar</numIndex>
-                                                                </numIndex>
-                                                            </items>
-                                                        </valuePicker>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>input_3 valuePicker</label>
+                                                <config>
+                                                    <type>input</type>
+                                                    <valuePicker>
+                                                        <items>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0">Foo</numIndex>
+                                                                <numIndex index="1">foo</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">Bar</numIndex>
+                                                                <numIndex index="1">bar</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                    </valuePicker>
+                                                </config>
                                             </input_3>
                                         </el>
                                     </ROOT>
@@ -1406,65 +1398,51 @@ backend_layout {
                                 <sInputDateTime>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>inputDateTime</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>inputDateTime</sheetTitle>
                                         <el>
                                             <inputDateTime_1>
-                                                <TCEforms>
-                                                    <label>inputDateTime_1 format=date description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>datetime</type>
-                                                        <format>date</format>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inputDateTime_1 format=date description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>date</format>
+                                                </config>
                                             </inputDateTime_1>
                                             <inputDateTime_2>
-                                                <TCEforms>
-                                                    <label>inputDateTime_2 dbType=date format=date</label>
-                                                    <config>
-                                                        <type>datetime</type>
-                                                        <format>date</format>
-                                                        <dbType>date</dbType>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inputDateTime_2 dbType=date format=date</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>date</format>
+                                                    <dbType>date</dbType>
+                                                </config>
                                             </inputDateTime_2>
                                             <inputDateTime_3>
-                                                <TCEforms>
-                                                    <label>inputDateTime_3 type=datetime</label>
-                                                    <config>
-                                                        <type>datetime</type>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inputDateTime_3 type=datetime</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                </config>
                                             </inputDateTime_3>
                                             <inputDateTime_4>
-                                                <TCEforms>
-                                                    <label>inputDateTime_4 dbType=datetime format=date</label>
-                                                    <config>
-                                                        <type>datetime</type>
-                                                        <format>date</format>
-                                                        <dbType>datetime</dbType>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inputDateTime_4 dbType=datetime format=date</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>date</format>
+                                                    <dbType>datetime</dbType>
+                                                </config>
                                             </inputDateTime_4>
                                             <inputDateTime_5>
-                                                <TCEforms>
-                                                    <label>inputDateTime_5 format=time</label>
-                                                    <config>
-                                                        <type>datetime</type>
-                                                        <format>time</format>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inputDateTime_5 format=time</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>time</format>
+                                                </config>
                                             </inputDateTime_5>
                                             <inputDateTime_6>
-                                                <TCEforms>
-                                                    <label>inputDateTime_6 format=timesec</label>
-                                                    <config>
-                                                        <type>datetime</type>
-                                                        <format>timesec</format>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inputDateTime_6 format=timesec</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>timesec</format>
+                                                </config>
                                             </inputDateTime_6>
                                         </el>
                                     </ROOT>
@@ -1473,20 +1451,16 @@ backend_layout {
                                 <sText>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>text</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>text</sheetTitle>
                                         <el>
                                             <text_1>
-                                                <TCEforms>
-                                                    <label>text_1 cols=20, rows=4 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>text</type>
-                                                        <cols>20</cols>
-                                                        <rows>4</rows>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>text_1 cols=20, rows=4 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>text</type>
+                                                    <cols>20</cols>
+                                                    <rows>4</rows>
+                                                </config>
                                             </text_1>
                                         </el>
                                     </ROOT>
@@ -1495,28 +1469,24 @@ backend_layout {
                                 <sLink>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>link</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>link</sheetTitle>
                                         <el>
                                             <link_1>
-                                                <TCEforms>
-                                                    <label>link_1</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>link</type>
-                                                        <allowedTypes>
-                                                            <numIndex index="0">page</numIndex>
-                                                            <numIndex index="1">file</numIndex>
-                                                            <numIndex index="2">url</numIndex>
-                                                            <numIndex index="3">record</numIndex>
-                                                            <numIndex index="4">telephone</numIndex>
-                                                        </allowedTypes>
-                                                        <appearance>
-                                                            <browserTitle>Link</browserTitle>
-                                                        </appearance>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>link_1</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>link</type>
+                                                    <allowedTypes>
+                                                        <numIndex index="0">page</numIndex>
+                                                        <numIndex index="1">file</numIndex>
+                                                        <numIndex index="2">url</numIndex>
+                                                        <numIndex index="3">record</numIndex>
+                                                        <numIndex index="4">telephone</numIndex>
+                                                    </allowedTypes>
+                                                    <appearance>
+                                                        <browserTitle>Link</browserTitle>
+                                                    </appearance>
+                                                </config>
                                             </link_1>
                                         </el>
                                     </ROOT>
@@ -1525,51 +1495,45 @@ backend_layout {
                                 <sCheck>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>check</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>check</sheetTitle>
                                         <el>
                                             <check_1>
-                                                <TCEforms>
-                                                    <label>check_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>check</type>
-                                                        <items>
-                                                            <numIndex index="0">
-                                                                <numIndex index="0">Foo</numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <numIndex index="0">Bar</numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="2">
-                                                                <numIndex index="0">FooBar</numIndex>
-                                                            </numIndex>
-                                                        </items>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>check_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>check</type>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <numIndex index="0">Foo</numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <numIndex index="0">Bar</numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="2">
+                                                            <numIndex index="0">FooBar</numIndex>
+                                                        </numIndex>
+                                                    </items>
+                                                </config>
                                             </check_1>
                                             <check_2>
-                                                <TCEforms>
-                                                    <label>check_2 invertStateDisplay</label>
-                                                    <config>
-                                                        <type>check</type>
-                                                        <items>
-                                                            <numIndex index="0">
-                                                                <numIndex index="0">Foo</numIndex>
-                                                                <invertStateDisplay>1</invertStateDisplay>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <numIndex index="0">Bar</numIndex>
-                                                                <invertStateDisplay>1</invertStateDisplay>
-                                                            </numIndex>
-                                                            <numIndex index="2">
-                                                                <numIndex index="0">FooBar</numIndex>
-                                                                <invertStateDisplay>1</invertStateDisplay>
-                                                            </numIndex>
-                                                        </items>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>check_2 invertStateDisplay</label>
+                                                <config>
+                                                    <type>check</type>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <numIndex index="0">Foo</numIndex>
+                                                            <invertStateDisplay>1</invertStateDisplay>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <numIndex index="0">Bar</numIndex>
+                                                            <invertStateDisplay>1</invertStateDisplay>
+                                                        </numIndex>
+                                                        <numIndex index="2">
+                                                            <numIndex index="0">FooBar</numIndex>
+                                                            <invertStateDisplay>1</invertStateDisplay>
+                                                        </numIndex>
+                                                    </items>
+                                                </config>
                                             </check_2>
                                         </el>
                                     </ROOT>
@@ -1578,28 +1542,24 @@ backend_layout {
                                 <sRadio>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>radio</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>radio</sheetTitle>
                                         <el>
                                             <radio_1>
-                                                <TCEforms>
-                                                    <label>radio_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>radio</type>
-                                                        <items>
-                                                            <numIndex index="0">
-                                                                <numIndex index="0">Foo</numIndex>
-                                                                <numIndex index="1">1</numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <numIndex index="0">Bar</numIndex>
-                                                                <numIndex index="1">2</numIndex>
-                                                            </numIndex>
-                                                        </items>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>radio_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>radio</type>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <numIndex index="0">Foo</numIndex>
+                                                            <numIndex index="1">1</numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <numIndex index="0">Bar</numIndex>
+                                                            <numIndex index="1">2</numIndex>
+                                                        </numIndex>
+                                                    </items>
+                                                </config>
                                             </radio_1>
                                         </el>
                                     </ROOT>
@@ -1608,18 +1568,14 @@ backend_layout {
                                 <sPassthrough>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>passthrough</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>passthrough</sheetTitle>
                                         <el>
                                             <passthrough_1>
-                                                <TCEforms>
-                                                    <label>passthrough_1</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>passthrough</type>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>passthrough_1</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>passthrough</type>
+                                                </config>
                                             </passthrough_1>
                                         </el>
                                     </ROOT>

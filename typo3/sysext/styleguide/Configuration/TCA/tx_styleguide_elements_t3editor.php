@@ -134,30 +134,24 @@ return [
                             <sheets>
                                 <sGeneral>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>tab</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>tab</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <t3editor_1>
-                                                <TCEforms>
-                                                    <label>t3editor_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>text</type>
-                                                        <renderType>t3editor</renderType>
-                                                        <format>html</format>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>t3editor_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>text</type>
+                                                    <renderType>t3editor</renderType>
+                                                    <format>html</format>
+                                                </config>
                                             </t3editor_1>
                                         </el>
                                     </ROOT>
                                 </sGeneral>
                                 <sSection>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <section_1>
@@ -170,15 +164,13 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <t3editor_1>
-                                                                <TCEforms>
-                                                                    <label>t3editor_1 description</label>
-                                                                    <description>field description</description>
-                                                                    <config>
-                                                                        <type>text</type>
-                                                                        <renderType>t3editor</renderType>
-                                                                        <format>html</format>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>t3editor_1 description</label>
+                                                                <description>field description</description>
+                                                                <config>
+                                                                    <type>text</type>
+                                                                    <renderType>t3editor</renderType>
+                                                                    <format>html</format>
+                                                                </config>
                                                             </t3editor_1>
                                                         </el>
                                                     </container_1>
@@ -189,21 +181,17 @@ return [
                                 </sSection>
                                 <sInline>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>inline</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>inline</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <inline_1>
-                                                <TCEforms>
-                                                    <label>inline_1</label>
-                                                    <config>
-                                                        <type>inline</type>
-                                                        <foreign_table>tx_styleguide_elements_t3editor_flex_1_inline_1_child</foreign_table>
-                                                        <foreign_field>parentid</foreign_field>
-                                                        <foreign_table_field>parenttable</foreign_table_field>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inline_1</label>
+                                                <config>
+                                                    <type>inline</type>
+                                                    <foreign_table>tx_styleguide_elements_t3editor_flex_1_inline_1_child</foreign_table>
+                                                    <foreign_field>parentid</foreign_field>
+                                                    <foreign_table_field>parenttable</foreign_table_field>
+                                                </config>
                                             </inline_1>
                                         </el>
                                     </ROOT>

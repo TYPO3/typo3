@@ -106,18 +106,14 @@ return [
                                 <sDb>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>folder</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>folder</sheetTitle>
                                         <el>
                                             <folder_1>
-                                                <TCEforms>
-                                                    <label>folder_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>folder</type>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>folder_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>folder</type>
+                                                </config>
                                             </folder_1>
                                         </el>
                                     </ROOT>
@@ -126,9 +122,7 @@ return [
                                 <sSection>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <el>
                                             <section_1>
                                                 <title>section_1</title>
@@ -140,13 +134,11 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <folder_1>
-                                                                <TCEforms>
-                                                                    <label>folder_1</label>
-                                                                    <config>
-                                                                        <type>folder</type>
-                                                                        <size>5</size>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>folder_1</label>
+                                                                <config>
+                                                                    <type>folder</type>
+                                                                    <size>5</size>
+                                                                </config>
                                                             </folder_1>
                                                         </el>
                                                     </container_1>

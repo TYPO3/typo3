@@ -2,18 +2,14 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>Sheet Title</sheetTitle>
-                </TCEforms>
+                <sheetTitle>Sheet Title</sheetTitle>
                 <type>array</type>
                 <el>
                     <input_1>
-                        <TCEforms>
-                            <label>input_1</label>
-                            <config>
-                                <type>input</type>
-                            </config>
-                        </TCEforms>
+                        <label>input_1</label>
+                        <config>
+                            <type>input</type>
+                        </config>
                     </input_1>
                 </el>
             </ROOT>

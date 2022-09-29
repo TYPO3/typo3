@@ -556,18 +556,14 @@ return [
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>Sheet Title</sheetTitle>
-                </TCEforms>
+                <sheetTitle>Sheet Title</sheetTitle>
                 <type>array</type>
                 <el>
                     <input>
-                        <TCEforms>
-                            <label>input</label>
-                            <config>
-                                <type>input</type>
-                            </config>
-                        </TCEforms>
+                        <label>input</label>
+                        <config>
+                            <type>input</type>
+                        </config>
                     </input>
                 </el>
             </ROOT>

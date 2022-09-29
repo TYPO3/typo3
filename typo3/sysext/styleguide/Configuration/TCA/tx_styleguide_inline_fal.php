@@ -174,99 +174,95 @@ return [
                         <sheets>
                             <sInline>
                                 <ROOT>
-                                    <TCEforms>
-                                        <sheetTitle>Inline</sheetTitle>
-                                    </TCEforms>
+                                    <sheetTitle>Inline</sheetTitle>
                                     <type>array</type>
                                     <el>
                                         <fal>
-                                            <TCEforms>
-                                                <label>inline_flex_1</label>
-                                                <config>
-                                                    <type>inline</type>
-                                                    <foreign_table>sys_file_reference</foreign_table>
-                                                    <foreign_field>uid_foreign</foreign_field>
-                                                    <foreign_sortby>sorting_foreign</foreign_sortby>
-                                                    <foreign_table_field>tablenames</foreign_table_field>
-                                                    <foreign_match_fields>
-                                                        <fieldname>fal</fieldname>
-                                                    </foreign_match_fields>
-                                                    <foreign_label>uid_local</foreign_label>
-                                                    <foreign_selector>uid_local</foreign_selector>
-                                                    <filter>
-                                                        <userFunc>TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren</userFunc>
-                                                        <parameters type="array">
-                                                            <allowedFileExtensions>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</allowedFileExtensions>
-                                                            <disallowedFileExtensions>ai</disallowedFileExtensions>
-                                                        </parameters>
-                                                    </filter>
-                                                    <appearance>
-                                                        <useSortable>1</useSortable>
-                                                        <headerThumbnail>
-                                                            <field>uid_local</field>
-                                                            <width>45</width>
-                                                            <height>45c</height>
-                                                        </headerThumbnail>
-                                                        <showPossibleLocalizationRecords>0</showPossibleLocalizationRecords>
-                                                        <showSynchronizationLink>0</showSynchronizationLink>
-                                                        <showAllLocalizationLink>0</showAllLocalizationLink>
-                                                        <enabledControls>
-                                                            <info>1</info>
-                                                            <new>0</new>
-                                                            <dragdrop>1</dragdrop>
-                                                            <sort>0</sort>
-                                                            <hide>1</hide>
-                                                            <delete>1</delete>
-                                                            <localize>1</localize>
-                                                        </enabledControls>
-                                                        <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
-                                                    </appearance>
-                                                    <overrideChildTca>
-                                                        <types type="array">
-                                                            <numIndex index="0">
-                                                                <showitem>
-                                                                    --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                                </showitem>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <showitem>
-                                                                    --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                                </showitem>
-                                                            </numIndex>
-                                                            <numIndex index="2">
-                                                                <showitem>
-                                                                    --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                                </showitem>
-                                                            </numIndex>
-                                                            <numIndex index="3">
-                                                                <showitem>
-                                                                    --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                                </showitem>
-                                                            </numIndex>
-                                                            <numIndex index="4">
-                                                                <showitem>
-                                                                    --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                                </showitem>
-                                                            </numIndex>
-                                                            <numIndex index="5">
-                                                                <showitem>
-                                                                    --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                                </showitem>
-                                                            </numIndex>
-                                                        </types>
-                                                        <columns type="array">
-                                                            <uid_local type="array">
-                                                                <config type="array">
-                                                                    <appearance type="array">
-                                                                        <elementBrowserType>file</elementBrowserType>
-                                                                        <elementBrowserAllowed>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</elementBrowserAllowed>
-                                                                    </appearance>
-                                                                </config>
-                                                            </uid_local>
-                                                        </columns>
-                                                    </overrideChildTca>
-                                                </config>
-                                            </TCEforms>
+                                            <label>inline_flex_1</label>
+                                            <config>
+                                                <type>inline</type>
+                                                <foreign_table>sys_file_reference</foreign_table>
+                                                <foreign_field>uid_foreign</foreign_field>
+                                                <foreign_sortby>sorting_foreign</foreign_sortby>
+                                                <foreign_table_field>tablenames</foreign_table_field>
+                                                <foreign_match_fields>
+                                                    <fieldname>fal</fieldname>
+                                                </foreign_match_fields>
+                                                <foreign_label>uid_local</foreign_label>
+                                                <foreign_selector>uid_local</foreign_selector>
+                                                <filter>
+                                                    <userFunc>TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren</userFunc>
+                                                    <parameters type="array">
+                                                        <allowedFileExtensions>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</allowedFileExtensions>
+                                                        <disallowedFileExtensions>ai</disallowedFileExtensions>
+                                                    </parameters>
+                                                </filter>
+                                                <appearance>
+                                                    <useSortable>1</useSortable>
+                                                    <headerThumbnail>
+                                                        <field>uid_local</field>
+                                                        <width>45</width>
+                                                        <height>45c</height>
+                                                    </headerThumbnail>
+                                                    <showPossibleLocalizationRecords>0</showPossibleLocalizationRecords>
+                                                    <showSynchronizationLink>0</showSynchronizationLink>
+                                                    <showAllLocalizationLink>0</showAllLocalizationLink>
+                                                    <enabledControls>
+                                                        <info>1</info>
+                                                        <new>0</new>
+                                                        <dragdrop>1</dragdrop>
+                                                        <sort>0</sort>
+                                                        <hide>1</hide>
+                                                        <delete>1</delete>
+                                                        <localize>1</localize>
+                                                    </enabledControls>
+                                                    <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
+                                                </appearance>
+                                                <overrideChildTca>
+                                                    <types type="array">
+                                                        <numIndex index="0">
+                                                            <showitem>
+                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                                            </showitem>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <showitem>
+                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                                            </showitem>
+                                                        </numIndex>
+                                                        <numIndex index="2">
+                                                            <showitem>
+                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                                            </showitem>
+                                                        </numIndex>
+                                                        <numIndex index="3">
+                                                            <showitem>
+                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                                            </showitem>
+                                                        </numIndex>
+                                                        <numIndex index="4">
+                                                            <showitem>
+                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                                            </showitem>
+                                                        </numIndex>
+                                                        <numIndex index="5">
+                                                            <showitem>
+                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                                            </showitem>
+                                                        </numIndex>
+                                                    </types>
+                                                    <columns type="array">
+                                                        <uid_local type="array">
+                                                            <config type="array">
+                                                                <appearance type="array">
+                                                                    <elementBrowserType>file</elementBrowserType>
+                                                                    <elementBrowserAllowed>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</elementBrowserAllowed>
+                                                                </appearance>
+                                                            </config>
+                                                        </uid_local>
+                                                    </columns>
+                                                </overrideChildTca>
+                                            </config>
                                         </fal>
                                     </el>
                                 </ROOT>

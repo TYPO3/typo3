@@ -819,29 +819,25 @@ return [
                                 <sSingle>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>selectSingle</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>selectSingle</sheetTitle>
                                         <el>
                                             <select_single_1>
-                                                <TCEforms>
-                                                    <label>select_single_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectSingle</renderType>
-                                                        <items>
-                                                            <numIndex index="0">
-                                                                <numIndex index="0">foo1</numIndex>
-                                                                <numIndex index="1">foo1</numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <numIndex index="0">foo2</numIndex>
-                                                                <numIndex index="1">foo2</numIndex>
-                                                            </numIndex>
-                                                        </items>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>select_single_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>select</type>
+                                                    <renderType>selectSingle</renderType>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <numIndex index="0">foo1</numIndex>
+                                                            <numIndex index="1">foo1</numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <numIndex index="0">foo2</numIndex>
+                                                            <numIndex index="1">foo2</numIndex>
+                                                        </numIndex>
+                                                    </items>
+                                                </config>
                                             </select_single_1>
                                         </el>
                                     </ROOT>
@@ -850,29 +846,25 @@ return [
                                 <sCheckbox>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>selectCheckBox</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>selectCheckBox</sheetTitle>
                                         <el>
                                             <select_checkxox_1>
-                                                <TCEforms>
-                                                    <label>select_checkxox_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectCheckBox</renderType>
-                                                        <items>
-                                                            <numIndex index="0">
-                                                                <numIndex index="0">foo1</numIndex>
-                                                                <numIndex index="1">1</numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <numIndex index="0">foo 2</numIndex>
-                                                                <numIndex index="1">2</numIndex>
-                                                            </numIndex>
-                                                        </items>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>select_checkxox_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>select</type>
+                                                    <renderType>selectCheckBox</renderType>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <numIndex index="0">foo1</numIndex>
+                                                            <numIndex index="1">1</numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <numIndex index="0">foo 2</numIndex>
+                                                            <numIndex index="1">2</numIndex>
+                                                        </numIndex>
+                                                    </items>
+                                                </config>
                                             </select_checkxox_1>
                                         </el>
                                     </ROOT>
@@ -881,29 +873,25 @@ return [
                                 <sTree>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>selectTree</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>selectTree</sheetTitle>
                                         <el>
                                             <select_tree_1>
-                                                <TCEforms>
-                                                    <label>select_tree_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectTree</renderType>
-                                                        <foreign_table>pages</foreign_table>
-                                                        <size>20</size>
-                                                        <maxitems>4</maxitems>
-                                                        <treeConfig>
-                                                            <expandAll>1</expandAll>
-                                                            <parentField>pid</parentField>
-                                                            <appearance>
-                                                                <showHeader>1</showHeader>
-                                                            </appearance>
-                                                        </treeConfig>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>select_tree_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>select</type>
+                                                    <renderType>selectTree</renderType>
+                                                    <foreign_table>pages</foreign_table>
+                                                    <size>20</size>
+                                                    <maxitems>4</maxitems>
+                                                    <treeConfig>
+                                                        <expandAll>1</expandAll>
+                                                        <parentField>pid</parentField>
+                                                        <appearance>
+                                                            <showHeader>1</showHeader>
+                                                        </appearance>
+                                                    </treeConfig>
+                                                </config>
                                             </select_tree_1>
                                         </el>
                                     </ROOT>
@@ -912,68 +900,62 @@ return [
                                 <sMultiplesidebyside>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>selectMultipleSideBySide</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>selectMultipleSideBySide</sheetTitle>
                                         <el>
                                             <select_multiplesidebyside_1>
-                                                <TCEforms>
-                                                    <label>select_multiplesidebyside_1 description</label>
-                                                    <description>field description</description>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectMultipleSideBySide</renderType>
-                                                        <foreign_table>tx_styleguide_staticdata</foreign_table>
-                                                        <size>5</size>
-                                                        <autoSizeMax>5</autoSizeMax>
-                                                        <minitems>0</minitems>
-                                                        <multiSelectFilterItems>
-                                                            <numIndex index="0">
-                                                                <numIndex index="0"></numIndex>
-                                                                <numIndex index="1"></numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="1">
-                                                                <numIndex index="0">foo</numIndex>
-                                                                <numIndex index="1">foo</numIndex>
-                                                            </numIndex>
-                                                            <numIndex index="2">
-                                                                <numIndex index="0">bar</numIndex>
-                                                                <numIndex index="1">bar</numIndex>
-                                                            </numIndex>
-                                                        </multiSelectFilterItems>
-                                                        <fieldControl>
-                                                            <editPopup>
-                                                                <renderType>editPopup</renderType>
-                                                                <disabled>0</disabled>
-                                                            </editPopup>
-                                                            <addRecord>
-                                                                <renderType>addRecord</renderType>
-                                                                <disabled>0</disabled>
-                                                                <options>
-                                                                    <setValue>prepend</setValue>
-                                                                </options>
-                                                            </addRecord>
-                                                            <listModule>
-                                                                <renderType>listModule</renderType>
-                                                                <disabled>0</disabled>
-                                                            </listModule>
-                                                        </fieldControl>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>select_multiplesidebyside_1 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>select</type>
+                                                    <renderType>selectMultipleSideBySide</renderType>
+                                                    <foreign_table>tx_styleguide_staticdata</foreign_table>
+                                                    <size>5</size>
+                                                    <autoSizeMax>5</autoSizeMax>
+                                                    <minitems>0</minitems>
+                                                    <multiSelectFilterItems>
+                                                        <numIndex index="0">
+                                                            <numIndex index="0"></numIndex>
+                                                            <numIndex index="1"></numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <numIndex index="0">foo</numIndex>
+                                                            <numIndex index="1">foo</numIndex>
+                                                        </numIndex>
+                                                        <numIndex index="2">
+                                                            <numIndex index="0">bar</numIndex>
+                                                            <numIndex index="1">bar</numIndex>
+                                                        </numIndex>
+                                                    </multiSelectFilterItems>
+                                                    <fieldControl>
+                                                        <editPopup>
+                                                            <renderType>editPopup</renderType>
+                                                            <disabled>0</disabled>
+                                                        </editPopup>
+                                                        <addRecord>
+                                                            <renderType>addRecord</renderType>
+                                                            <disabled>0</disabled>
+                                                            <options>
+                                                                <setValue>prepend</setValue>
+                                                            </options>
+                                                        </addRecord>
+                                                        <listModule>
+                                                            <renderType>listModule</renderType>
+                                                            <disabled>0</disabled>
+                                                        </listModule>
+                                                    </fieldControl>
+                                                </config>
                                             </select_multiplesidebyside_1>
                                             <select_multiplesidebyside_2>
-                                                <TCEforms>
-                                                    <label>select_multiplesidebyside_2</label>
-                                                    <description>select_multiplesidebyside_2 foreign_table MM</description>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectMultipleSideBySide</renderType>
-                                                        <foreign_table>tx_styleguide_staticdata</foreign_table>
-                                                        <MM>tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm</MM>
-                                                        <size>5</size>
-                                                        <autoSizeMax>5</autoSizeMax>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>select_multiplesidebyside_2</label>
+                                                <description>select_multiplesidebyside_2 foreign_table MM</description>
+                                                <config>
+                                                    <type>select</type>
+                                                    <renderType>selectMultipleSideBySide</renderType>
+                                                    <foreign_table>tx_styleguide_staticdata</foreign_table>
+                                                    <MM>tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm</MM>
+                                                    <size>5</size>
+                                                    <autoSizeMax>5</autoSizeMax>
+                                                </config>
                                             </select_multiplesidebyside_2>
                                         </el>
                                     </ROOT>
@@ -982,9 +964,7 @@ return [
                                 <sSection>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <el>
                                             <section_1>
                                                 <title>section_1</title>
@@ -996,66 +976,62 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <select_tree_1>
-                                                                <TCEforms>
-                                                                    <label>select_tree_1 pages description</label>
-                                                                    <description>field description</description>
-                                                                    <config>
-                                                                        <type>select</type>
-                                                                        <renderType>selectTree</renderType>
-                                                                        <foreign_table>pages</foreign_table>
-                                                                        <foreign_table_where>ORDER BY pages.sorting</foreign_table_where>
-                                                                        <size>20</size>
-                                                                        <treeConfig>
-                                                                            <parentField>pid</parentField>
-                                                                            <appearance>
-                                                                                <expandAll>true</expandAll>
-                                                                                <showHeader>true</showHeader>
-                                                                            </appearance>
-                                                                        </treeConfig>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>select_tree_1 pages description</label>
+                                                                <description>field description</description>
+                                                                <config>
+                                                                    <type>select</type>
+                                                                    <renderType>selectTree</renderType>
+                                                                    <foreign_table>pages</foreign_table>
+                                                                    <foreign_table_where>ORDER BY pages.sorting</foreign_table_where>
+                                                                    <size>20</size>
+                                                                    <treeConfig>
+                                                                        <parentField>pid</parentField>
+                                                                        <appearance>
+                                                                            <expandAll>true</expandAll>
+                                                                            <showHeader>true</showHeader>
+                                                                        </appearance>
+                                                                    </treeConfig>
+                                                                </config>
                                                             </select_tree_1>
                                                             <select_multiplesidebyside_1>
-                                                                <TCEforms>
-                                                                    <label>select_multiplesidebyside_1 description</label>
-                                                                    <description>field description</description>
-                                                                    <config>
-                                                                        <type>select</type>
-                                                                        <renderType>selectMultipleSideBySide</renderType>
-                                                                        <foreign_table>tx_styleguide_staticdata</foreign_table>
-                                                                        <size>5</size>
-                                                                        <autoSizeMax>5</autoSizeMax>
-                                                                        <minitems>0</minitems>
-                                                                        <multiSelectFilterItems>
-                                                                            <numIndex index="0">
-                                                                                <numIndex index="0"></numIndex>
-                                                                                <numIndex index="1"></numIndex>
-                                                                            </numIndex>
-                                                                            <numIndex index="1">
-                                                                                <numIndex index="0">foo</numIndex>
-                                                                                <numIndex index="1">foo</numIndex>
-                                                                            </numIndex>
-                                                                            <numIndex index="2">
-                                                                                <numIndex index="0">bar</numIndex>
-                                                                                <numIndex index="1">bar</numIndex>
-                                                                            </numIndex>
-                                                                        </multiSelectFilterItems>
-                                                                        <fieldControl>
-                                                                            <editPopup>
-                                                                                <renderType>editPopup</renderType>
-                                                                                <disabled>0</disabled>
-                                                                            </editPopup>
-                                                                            <addRecord>
-                                                                                <renderType>addRecord</renderType>
-                                                                                <disabled>0</disabled>
-                                                                            </addRecord>
-                                                                            <listModule>
-                                                                                <renderType>listModule</renderType>
-                                                                                <disabled>0</disabled>
-                                                                            </listModule>
-                                                                        </fieldControl>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>select_multiplesidebyside_1 description</label>
+                                                                <description>field description</description>
+                                                                <config>
+                                                                    <type>select</type>
+                                                                    <renderType>selectMultipleSideBySide</renderType>
+                                                                    <foreign_table>tx_styleguide_staticdata</foreign_table>
+                                                                    <size>5</size>
+                                                                    <autoSizeMax>5</autoSizeMax>
+                                                                    <minitems>0</minitems>
+                                                                    <multiSelectFilterItems>
+                                                                        <numIndex index="0">
+                                                                            <numIndex index="0"></numIndex>
+                                                                            <numIndex index="1"></numIndex>
+                                                                        </numIndex>
+                                                                        <numIndex index="1">
+                                                                            <numIndex index="0">foo</numIndex>
+                                                                            <numIndex index="1">foo</numIndex>
+                                                                        </numIndex>
+                                                                        <numIndex index="2">
+                                                                            <numIndex index="0">bar</numIndex>
+                                                                            <numIndex index="1">bar</numIndex>
+                                                                        </numIndex>
+                                                                    </multiSelectFilterItems>
+                                                                    <fieldControl>
+                                                                        <editPopup>
+                                                                            <renderType>editPopup</renderType>
+                                                                            <disabled>0</disabled>
+                                                                        </editPopup>
+                                                                        <addRecord>
+                                                                            <renderType>addRecord</renderType>
+                                                                            <disabled>0</disabled>
+                                                                        </addRecord>
+                                                                        <listModule>
+                                                                            <renderType>listModule</renderType>
+                                                                            <disabled>0</disabled>
+                                                                        </listModule>
+                                                                    </fieldControl>
+                                                                </config>
                                                             </select_multiplesidebyside_1>
                                                         </el>
                                                     </container_1>

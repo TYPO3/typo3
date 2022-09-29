@@ -138,37 +138,29 @@ return [
                             <sheets>
                                 <sGeneral>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>tab</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>tab</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <rte_1>
-                                                <TCEforms>
-                                                    <label>rte_1</label>
-                                                    <config>
-                                                        <type>text</type>
-                                                        <enableRichtext>1</enableRichtext>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>rte_1</label>
+                                                <config>
+                                                    <type>text</type>
+                                                    <enableRichtext>1</enableRichtext>
+                                                </config>
                                             </rte_1>
                                             <rte.2>
-                                                <TCEforms>
-                                                    <label>rte.2</label>
-                                                    <config>
-                                                        <type>text</type>
-                                                        <enableRichtext>1</enableRichtext>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>rte.2</label>
+                                                <config>
+                                                    <type>text</type>
+                                                    <enableRichtext>1</enableRichtext>
+                                                </config>
                                             </rte.2>
                                         </el>
                                     </ROOT>
                                 </sGeneral>
                                 <sSections>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <section_1>
@@ -181,13 +173,11 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <rte_1>
-                                                                <TCEforms>
-                                                                    <label>rte_1</label>
-                                                                    <config>
-                                                                        <type>text</type>
-                                                                        <enableRichtext>1</enableRichtext>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>rte_1</label>
+                                                                <config>
+                                                                    <type>text</type>
+                                                                    <enableRichtext>1</enableRichtext>
+                                                                </config>
                                                             </rte_1>
                                                         </el>
                                                     </container_1>
@@ -198,21 +188,17 @@ return [
                                 </sSections>
                                 <sInline>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>inline</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>inline</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <inline_1>
-                                                <TCEforms>
-                                                    <label>inline_1</label>
-                                                    <config>
-                                                        <type>inline</type>
-                                                        <foreign_table>tx_styleguide_elements_rte_flex_1_inline_1_child</foreign_table>
-                                                        <foreign_field>parentid</foreign_field>
-                                                        <foreign_table_field>parenttable</foreign_table_field>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>inline_1</label>
+                                                <config>
+                                                    <type>inline</type>
+                                                    <foreign_table>tx_styleguide_elements_rte_flex_1_inline_1_child</foreign_table>
+                                                    <foreign_field>parentid</foreign_field>
+                                                    <foreign_table_field>parenttable</foreign_table_field>
+                                                </config>
                                             </inline_1>
                                         </el>
                                     </ROOT>
