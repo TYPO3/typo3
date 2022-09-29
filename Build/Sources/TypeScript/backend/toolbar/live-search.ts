@@ -19,7 +19,7 @@ import '@typo3/backend/element/icon-element';
 import '@typo3/backend/input/clearable';
 import '../live-search/element/result-container';
 import '../live-search/element/show-all';
-import '../live-search/double-shift-trigger';
+import '../live-search/live-search-shortcut';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -41,7 +41,7 @@ class LiveSearch {
   private hints: string[] = [
     lll('liveSearch_helpDescriptionPages'),
     lll('liveSearch_helpDescriptionContent'),
-    lll('liveSearch_help.doubleShift'),
+    lll('liveSearch_help.shortcutOpen'),
   ];
 
   constructor() {
@@ -62,19 +62,13 @@ class LiveSearch {
       e.detail.callback();
     }).bindTo(document);
 
-    /**
-     * live-search:trigger-open is triggered by pressing SHIFT twice in the "outer" frame
-     * typo3:live-search:trigger-open is triggered via a Broadcast Message by pressing SHIFT twice in the "inner" frames
-     */
-    ['live-search:trigger-open', 'typo3:live-search:trigger-open'].forEach((eventName: string): void => {
-      new RegularEvent(eventName, (): void => {
-        if (Modal.currentModal) {
-          return;
-        }
+    new RegularEvent('typo3:live-search:trigger-open', (): void => {
+      if (Modal.currentModal) {
+        return;
+      }
 
-        this.openSearchModal();
-      }).bindTo(document);
-    })
+      this.openSearchModal();
+    }).bindTo(document);
   }
 
   private openSearchModal(): void {
