@@ -60,6 +60,9 @@ nbproject
 # Ignore common TYPO3 CMS files/directories
 /typo3temp/*
 /typo3conf/*
+!/typo3conf/ext
+/typo3conf/ext/*
+!/typo3conf/ext/styleguide
 /fileadmin/*
 /uploads/*
 /FIRST_INSTALL

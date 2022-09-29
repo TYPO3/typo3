@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2f2f173c9b9b8c7168c220e20812786",
+    "content-hash": "d9dd354d14f95c849bb8a7b63a808c82",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4155,31 +4155,28 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "v3.1.2",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "1483e434946cf68b6589cdd61c760b19d0988d62"
+                "reference": "71356484e6ccadf45acdde6489823c7af925b144"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/1483e434946cf68b6589cdd61c760b19d0988d62",
-                "reference": "1483e434946cf68b6589cdd61c760b19d0988d62",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/71356484e6ccadf45acdde6489823c7af925b144",
+                "reference": "71356484e6ccadf45acdde6489823c7af925b144",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0.0 || ^2.0.0",
-                "php": "^7.2 || ^8.0"
-            },
-            "conflict": {
-                "composer/installers": "<2.0.0"
+                "composer-plugin-api": "^2.1.0",
+                "php": "^8.1"
             },
             "replace": {
                 "lw/typo3cms-installers": "*",
                 "netresearch/composer-installers": "*"
             },
             "require-dev": {
-                "composer/composer": "1.2.*@dev || 2.0.*@dev",
+                "composer/composer": "^2.1",
                 "friendsofphp/php-cs-fixer": "^2.18",
                 "overtrue/phplint": "^2.0",
                 "phpunit/phpunit": "^8.5"
@@ -4188,7 +4185,7 @@
             "extra": {
                 "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
                 "branch-alias": {
-                    "dev-master": "3.1.x-dev"
+                    "dev-main": "5.0.x-dev"
                 }
             },
             "autoload": {
@@ -4224,9 +4221,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/CmsComposerInstallers/issues",
-                "source": "https://github.com/TYPO3/CmsComposerInstallers/tree/v3.1.2"
+                "source": "https://github.com/TYPO3/CmsComposerInstallers/tree/v5.0.0"
             },
-            "time": "2021-07-26T22:16:58+00:00"
+            "time": "2022-09-30T14:36:05+00:00"
         },
         {
             "name": "typo3/html-sanitizer",

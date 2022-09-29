@@ -8,6 +8,7 @@
 /rector.yml export-ignore
 /typo3/sysext/*/Resources/Private/TypeScript/ export-ignore
 /typo3/sysext/*/Tests/ export-ignore
+/typo3conf/ext/styleguide export-ignore
 /components/testing_framework/ export-ignore
 
 # Enforce checkout with linux lf consistent over all platforms
