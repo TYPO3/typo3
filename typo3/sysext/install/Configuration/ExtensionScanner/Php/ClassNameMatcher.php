@@ -2177,4 +2177,9 @@ return [
             'Breaking-98443-ExtensionRecordlistMergedIntoBackend.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\RecordListGetTableHookInterface' => [
+        'restFiles' => [
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
 ];

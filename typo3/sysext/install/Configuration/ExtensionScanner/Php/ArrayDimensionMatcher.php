@@ -927,4 +927,22 @@ return [
             'Breaking-98489-RemovalOfSleepTaskAndTestTask.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/class.db_list_extra.inc\'][\'getTable\']' => [
+        'restFiles' => [
+            'Feature-98490-PSR-14EventToAlterTheRecordsRenderedInRecordListings.rst',
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList\'][\'modifyQuery\']' => [
+        'restFiles' => [
+            'Feature-98490-PSR-14EventToAlterTheRecordsRenderedInRecordListings.rst',
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList\'][\'makeSearchStringConstraints\']' => [
+        'restFiles' => [
+            'Feature-98490-PSR-14EventToAlterTheRecordsRenderedInRecordListings.rst',
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
 ];

@@ -143,7 +143,6 @@ class RecordListDownloadController
         $headerRow = $downloader->getHeaderRow($columnsToRender);
         $records = $downloader->getRecords(
             $this->table,
-            $this->id,
             $columnsToRender,
             $this->getBackendUserAuthentication(),
             $hideTranslations,

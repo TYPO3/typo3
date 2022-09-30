@@ -423,4 +423,16 @@ return [
             'Breaking-97265-SimplifiedAccessModeSystem.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->getTable' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->getQueryBuilder' => [
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
 ];

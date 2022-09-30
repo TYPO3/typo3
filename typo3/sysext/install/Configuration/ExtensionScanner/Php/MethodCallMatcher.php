@@ -5344,4 +5344,12 @@ return [
             'Breaking-98308-LegacyHTMLAttributesBorderAndLongdescRemovedFromFrontendRendering.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->makeSearchString' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
+        ],
+    ],
+
 ];

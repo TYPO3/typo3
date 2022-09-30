@@ -171,7 +171,7 @@ class RecordListController
         $pageTranslationsHtml = '';
         if ($this->id && !$search_field && !$cmd && !$singleTable && $this->showPageTranslations()) {
             // Show page translation table if there are any and display is allowed.
-            $pageTranslationsHtml = $this->renderPageTranslations($dbList, $siteLanguages, $this->id);
+            $pageTranslationsHtml = $this->renderPageTranslations($dbList, $siteLanguages);
         }
         $searchBoxHtml = '';
         if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableListHtml || !empty($search_field))) {
@@ -567,16 +567,17 @@ class RecordListController
             && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
 
-    protected function renderPageTranslations(DatabaseRecordList $dbList, array $siteLanguages, int $pageId): string
+    protected function renderPageTranslations(DatabaseRecordList $dbList, array $siteLanguages): string
     {
         $pageTranslationsDatabaseRecordList = clone $dbList;
+        $pageTranslationsDatabaseRecordList->id = $this->id;
         $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
         $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
         $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
         $pageTranslationsDatabaseRecordList->hideTranslations = '';
         $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($siteLanguages);
         $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
-        return $pageTranslationsDatabaseRecordList->getTable('pages', $pageId);
+        return $pageTranslationsDatabaseRecordList->getTable('pages');
     }
 
     public function renderToggleClipboardHtml(int $pageId, string $singleTable, bool $checked): string

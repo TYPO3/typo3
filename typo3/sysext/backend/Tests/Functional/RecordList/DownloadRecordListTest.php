@@ -52,7 +52,7 @@ class DownloadRecordListTest extends FunctionalTestCase
         ];
         $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
-        $contentRows = $subject->getRecords('be_users', 0, $recordList->setFields['be_users'], $this->user);
+        $contentRows = $subject->getRecords('be_users', $recordList->setFields['be_users'], $this->user);
         $result = array_merge([$headerRow], $contentRows);
         self::assertEquals([
             [
@@ -89,7 +89,7 @@ class DownloadRecordListTest extends FunctionalTestCase
         $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['pages']);
         // Get records with raw values
-        $contentRows = $subject->getRecords('pages', 1, $recordList->setFields['pages'], $this->user, false, true);
+        $contentRows = $subject->getRecords('pages', $recordList->setFields['pages'], $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
         self::assertEquals([
             [
@@ -132,7 +132,7 @@ class DownloadRecordListTest extends FunctionalTestCase
 
         // Fetch the records again but now ensure translations are omitted
         $headerRow = $subject->getHeaderRow($recordList->setFields['pages']);
-        $contentRows = $subject->getRecords('pages', 1, $recordList->setFields['pages'], $this->user, true);
+        $contentRows = $subject->getRecords('pages', $recordList->setFields['pages'], $this->user, true);
         $result = array_merge([$headerRow], $contentRows);
         self::assertEquals([
            [
@@ -178,7 +178,7 @@ class DownloadRecordListTest extends FunctionalTestCase
         ];
         $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
-        $contentRows = $subject->getRecords('be_users', 0, $recordList->setFields['be_users'], $this->user, false, true);
+        $contentRows = $subject->getRecords('be_users', $recordList->setFields['be_users'], $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
         self::assertEquals([
             [

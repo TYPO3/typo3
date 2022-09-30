@@ -18,6 +18,10 @@ namespace TYPO3\CMS\Backend\RecordList;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Backend\RecordList\DatabaseRecordList
  * and do additional getTable processing
+ *
+ * @deprecated not in use since TYPO3 v12.0. will be removed in TYPO3 v13.0 and kept for backwards-compatibility
+ * for extensions using the hook and the new PSR-14 event "ModifyDatabaseQueryForRecordListingEvent" which
+ * should be used instead.
  */
 interface RecordListGetTableHookInterface
 {

@@ -68,7 +68,6 @@ class DownloadRecordList
      * DatabaseRecordList and returns the prepared records ready to be rendered.
      *
      * @param string $table the TCA table
-     * @param int $pageId the page ID to select records from
      * @param string[] $columnsToRender
      * @param BackendUserAuthentication $backendUser the current backend user needed to check for permissions
      * @param bool $hideTranslations
@@ -77,7 +76,6 @@ class DownloadRecordList
      */
     public function getRecords(
         string $table,
-        int $pageId,
         array $columnsToRender,
         BackendUserAuthentication $backendUser,
         bool $hideTranslations = false,
@@ -85,7 +83,7 @@ class DownloadRecordList
     ): array {
         // Creating the list of fields to include in the SQL query
         $selectFields = $this->recordList->getFieldsToSelect($table, $columnsToRender);
-        $queryResult = $this->recordList->getQueryBuilder($table, $pageId, [], $selectFields, true, 0, 0)->executeQuery();
+        $queryResult = $this->recordList->getQueryBuilder($table, $selectFields)->executeQuery();
         $l10nEnabled = BackendUtility::isTableLocalizable($table);
         $result = [];
         // Render items
@@ -95,7 +93,7 @@ class DownloadRecordList
             if (!is_array($row)) {
                 continue;
             }
-            $result[] = $this->prepareRow($table, $row, $columnsToRender, $pageId, $rawValues);
+            $result[] = $this->prepareRow($table, $row, $columnsToRender, $this->recordList->id, $rawValues);
             if (!$l10nEnabled) {
                 continue;
             }
@@ -112,7 +110,7 @@ class DownloadRecordList
                 // In offline workspace, look for alternative record
                 BackendUtility::workspaceOL($table, $translationRow, $backendUser->workspace, true);
                 if (is_array($translationRow) && $backendUser->checkLanguageAccess($languageId)) {
-                    $result[] = $this->prepareRow($table, $translationRow, $columnsToRender, $pageId, $rawValues);
+                    $result[] = $this->prepareRow($table, $translationRow, $columnsToRender, $this->recordList->id, $rawValues);
                 }
             }
         }
@@ -135,7 +133,7 @@ class DownloadRecordList
         foreach ($columnsToRender as $columnName) {
             if (!$rawValues) {
                 if ($columnName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
-                    $row[$columnName] = BackendUtility::getRecordTitle($table, $row, false, true);
+                    $row[$columnName] = BackendUtility::getRecordTitle($table, $row);
                 } elseif ($columnName !== 'pid') {
                     $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid']);
                 }
