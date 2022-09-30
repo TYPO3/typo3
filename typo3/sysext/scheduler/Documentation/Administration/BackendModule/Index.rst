@@ -84,10 +84,8 @@ following:
 - The second column simply displays the id of the task.
 
 - The third column contains the name of the task, the extension it is
-  coming from and any additional information specific to the task (for
-  example, the e-mail to which the "test" task will send a message or
-  the sleep duration of the "sleep" task). It also show a summary of the
-  task's status with an icon.
+  coming from and any additional information specific to the task. It also shows
+  a summary of the task's status with an icon.
 
 - The fourth column shows whether the task is recurring or will run only
   a single time.

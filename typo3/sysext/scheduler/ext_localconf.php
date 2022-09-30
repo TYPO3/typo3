@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Scheduler\Example\SleepTask;
-use TYPO3\CMS\Scheduler\Example\SleepTaskAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Example\TestTask;
-use TYPO3\CMS\Scheduler\Example\TestTaskAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
@@ -26,28 +20,6 @@ use TYPO3\CMS\Scheduler\Task\TableGarbageCollectionAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask;
 
 defined('TYPO3') or die();
-
-// Get the extensions's configuration
-$showSampleTasks = (bool)GeneralUtility::makeInstance(
-    ExtensionConfiguration::class
-)->get('scheduler', 'showSampleTasks');
-// If sample tasks should be shown,
-// register information for the test and sleep tasks
-if ($showSampleTasks) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TestTask::class] = [
-        'extension' => 'scheduler',
-        'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:testTask.name',
-        'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:testTask.description',
-        'additionalFields' => TestTaskAdditionalFieldProvider::class,
-    ];
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][SleepTask::class] = [
-        'extension' => 'scheduler',
-        'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:sleepTask.name',
-        'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:sleepTask.description',
-        'additionalFields' => SleepTaskAdditionalFieldProvider::class,
-    ];
-}
-unset($showSampleTasks);
 
 // Add caching framework garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][CachingFrameworkGarbageCollectionTask::class] = [

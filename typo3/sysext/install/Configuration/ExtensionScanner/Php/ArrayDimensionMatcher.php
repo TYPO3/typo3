@@ -922,4 +922,9 @@ return [
             'Breaking-98441-HookRecStatInfoHooksRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTENSIONS\'][\'scheduler\'][\'showSampleTasks\']' => [
+        'restFiles' => [
+            'Breaking-98489-RemovalOfSleepTaskAndTestTask.rst',
+        ],
+    ],
 ];

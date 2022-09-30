@@ -417,18 +417,6 @@
 			<trans-unit id="action.run_task_cron" resname="action.run_task_cron">
 				<source>Run task on next cron job</source>
 			</trans-unit>
-			<trans-unit id="testTask.name" resname="testTask.name">
-				<source>Scheduler test task</source>
-			</trans-unit>
-			<trans-unit id="testTask.description" resname="testTask.description">
-				<source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
-			</trans-unit>
-			<trans-unit id="sleepTask.name" resname="sleepTask.name">
-				<source>Scheduler sleep task</source>
-			</trans-unit>
-			<trans-unit id="sleepTask.description" resname="sleepTask.description">
-				<source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
-			</trans-unit>
 			<trans-unit id="cachingFrameworkGarbageCollection.name" resname="cachingFrameworkGarbageCollection.name">
 				<source>Caching framework garbage collection</source>
 			</trans-unit>

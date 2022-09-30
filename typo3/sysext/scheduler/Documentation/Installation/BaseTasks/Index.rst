@@ -86,22 +86,6 @@ Other tasks
 More tasks are provided by system extensions, such as the Extension
 Manager, which defines one for updating the available extensions list.
 
-The Scheduler also comes with two sample tasks. As explained at the
-beginning of this chapter, they can be turned off from the extension's
-configuration options.
-
-The "test" task just sends a mail to a given e-mail address. The
-"sleep" task goes to sleep for a given number of seconds. They are not
-very useful in the everyday running of a web site, but they are nice
-to have when testing stuff. If you want to make sure that your
-Scheduler installation is complete, register an instance of the "test"
-task and wait for the mail to arrive (if it doesn't arrive, check in
-the Log if the task has indeed run).
-
-The "sleep" task is mostly useful for testing parallel executions (by
-creating an instance of the task that goes to sleep for a longer time
-than the frequency).
-
 The base tasks are also there to serve as examples for task developers
-(see "Developer's Guide" below).
+(see :ref:`developer-guide`).
 

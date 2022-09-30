@@ -1,5 +1,2 @@
 # cat=basic//; type=string; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.maxLifetime
 maxLifetime = 1440
-
-# cat=basic//; type=boolean; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.showSampleTasks
-showSampleTasks = 1

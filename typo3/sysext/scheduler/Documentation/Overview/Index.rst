@@ -96,9 +96,10 @@ A few terms need to be defined more precisely:
   in order to execute that piece of code at a precise time, recurrently
   or not.
 
-- **Task class** : this is the type of task. The "test" task is one
-  particular task class. Its function is to send an email. The "sleep"
-  task is another task class.
+- **Task class** : this is the type of task. The "IP Anonymization" task is one
+  particular task class. Its function is to anonymize IP addresses to enforce
+  the privacy of the persisted data. The "Optimize MySQL database tables"
+  executes "OPTIMIZE TABLE" statements on the selected database tables.
 
 - **Registered task** : an instance of a task class that has been
   registered with the Scheduler. A given task class may be registered
