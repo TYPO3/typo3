@@ -201,6 +201,14 @@ class PageViewHelperTest extends FunctionalTestCase
                 '<f:link.page pageUid="3">linkMe</f:link.page>',
                 '<a href="/dummy-1-2/dummy-1-2-3">linkMe</a>',
             ],
+            'additional parameters one level' => [
+                '<f:link.page pageUid="3" additionalParams="{tx_examples_haiku: \'foo\'}">haiku title</f:link.page>',
+                '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku=foo&amp;cHash=3ed8716f46e97ba37335fa4b28ce2d8a">haiku title</a>',
+            ],
+            'additional parameters two levels' => [
+                '<f:link.page pageUid="3" additionalParams="{tx_examples_haiku: {action: \'show\', haiku: 42}}">haiku title</f:link.page>',
+                '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=1e0eb1e54d6bacf0138a50107c6ae29a">haiku title</a>',
+            ],
         ];
     }
 

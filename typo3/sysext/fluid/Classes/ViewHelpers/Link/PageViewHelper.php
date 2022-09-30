@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
@@ -166,7 +167,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             $typolinkConfiguration['linkAccessRestrictedPages'] = 1;
         }
         if ($additionalParams) {
-            $typolinkConfiguration['additionalParams'] = $additionalParams;
+            $typolinkConfiguration['additionalParams'] = HttpUtility::buildQueryString($additionalParams, '&');
         }
         if ($absolute) {
             $typolinkConfiguration['forceAbsoluteUrl'] = true;
