@@ -41,18 +41,6 @@ class DbCheckModuleCest
     }
 
     /**
-     * @param ApplicationTester $I
-     */
-    public function seeOverview(ApplicationTester $I): void
-    {
-        $I->see('Database integrity check', 'h1');
-        $I->see('Records Statistics', 'a');
-        $I->see('Relations', 'a');
-        $I->see('Search', 'a');
-        $I->see('Check and update global reference index', 'a');
-    }
-
-    /**
      * @dataProvider recordStatisticsDataProvider
      * @param ApplicationTester $I
      * @param Example $testData

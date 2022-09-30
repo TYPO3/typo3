@@ -85,12 +85,9 @@ class DatabaseIntegrityController
             case 'relations':
                 $moduleTemplate->setTitle($title, $languageService->getLL('databaseRelations'));
                 return $this->relationsAction($moduleTemplate);
-            case 'refindex':
+            default:
                 $moduleTemplate->setTitle($title, $languageService->getLL('manageRefIndex'));
                 return $this->referenceIndexAction($moduleTemplate, $request);
-            default:
-                $moduleTemplate->setTitle($title, $languageService->getLL('menuTitle'));
-                return $this->overviewAction($moduleTemplate);
         }
     }
 
@@ -109,11 +106,10 @@ class DatabaseIntegrityController
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = [
             'function' => [
-                0 => htmlspecialchars($lang->getLL('menuTitle')),
+                'refindex' => htmlspecialchars($lang->getLL('manageRefIndex')),
                 'records' => htmlspecialchars($lang->getLL('recordStatistics')),
                 'relations' => htmlspecialchars($lang->getLL('databaseRelations')),
                 'search' => htmlspecialchars($lang->getLL('fullSearch')),
-                'refindex' => htmlspecialchars($lang->getLL('manageRefIndex')),
             ],
             'search' => [
                 'raw' => htmlspecialchars($lang->getLL('rawSearch')),
@@ -226,23 +222,6 @@ class DatabaseIntegrityController
             $menu->addMenuItem($item);
         }
         $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    /**
-     * Creates the overview menu.
-     */
-    protected function overviewAction(ModuleTemplate $view): ResponseInterface
-    {
-        $view->assign(
-            'availableFunctions',
-            [
-                'records' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'records']]),
-                'relations' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'relations']]),
-                'search' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'search']]),
-                'refindex' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'refindex']]),
-            ]
-        );
-        return $view->renderResponse('IntegrityOverview');
     }
 
     /**

@@ -87,9 +87,6 @@
 			<trans-unit id="writeMessageFailed" resname="writeMessageFailed">
 				<source>Write to configuration file failed (%s)!</source>
 			</trans-unit>
-			<trans-unit id="menuTitle" resname="menuTitle">
-				<source>Overview</source>
-			</trans-unit>
 			<trans-unit id="recordStatistics" resname="recordStatistics">
 				<source>Record Statistics</source>
 			</trans-unit>
@@ -305,9 +302,6 @@
 			</trans-unit>
 			<trans-unit id="refindex_ok" resname="refindex_ok">
 				<source>Index integrity was perfect!</source>
-			</trans-unit>
-			<trans-unit id="title" resname="title">
-				<source>Database integrity check</source>
 			</trans-unit>
 		</body>
 	</file>
