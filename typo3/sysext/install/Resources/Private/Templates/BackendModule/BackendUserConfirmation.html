@@ -28,7 +28,7 @@
                             <f:translate key="{languageFileReference}:sudoPasswordInvalid" />
                         </div>
                     </f:if>
-                    <f:form id="confirm-sudo" class="form" method="post" actionUri="{verifyUri}" absolute="true">
+                    <f:form id="confirm-sudo" class="form" method="post" actionUri="{verifyUri}" absolute="true" additionalAttributes="{spellcheck: 'false'}">
                         <div class="form-group">
                             <div class="form-control-holder">
                                 <label for="confirmationPassword">

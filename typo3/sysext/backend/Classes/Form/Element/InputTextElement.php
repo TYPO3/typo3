@@ -253,6 +253,9 @@ class InputTextElement extends AbstractFormElement
                 $attributes['max'] = (string)(int)$config['range']['upper'];
             }
         }
+        if (in_array('password', $evalList, true)) {
+            $attributes['spellcheck'] = 'false';
+        }
 
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';

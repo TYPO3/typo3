@@ -15,12 +15,12 @@
 </f:if>
 <f:if condition="{onSubmit}">
     <f:then>
-        <f:form target="_top" fieldNamePrefix="" action="login" onsubmit="{onSubmit}">
+        <f:form target="_top" fieldNamePrefix="" action="login" onsubmit="{onSubmit}" additionalAttributes="{spellcheck: 'false'}">
             <f:render section="content" arguments="{_all}"/>
         </f:form>
     </f:then>
     <f:else>
-        <f:form target="_top" fieldNamePrefix="" action="login">
+        <f:form target="_top" fieldNamePrefix="" action="login" additionalAttributes="{spellcheck: 'false'}">
             <f:render section="content" arguments="{_all}"/>
         </f:form>
     </f:else>

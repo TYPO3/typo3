@@ -25,7 +25,7 @@
                     </f:for>
                 </ul>
 
-                <form action="#" name="configurationform" autocomplete="off" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
+                <form action="#" name="configurationform" autocomplete="off" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}" spellcheck="false">
                     <div class="tab-content">
                         <f:for each="{extensionData.configuration}" as="subcategories" key="categoryName" iteration="iteration">
                             <div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
