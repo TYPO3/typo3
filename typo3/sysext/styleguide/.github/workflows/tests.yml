@@ -58,18 +58,28 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d sqlite -s functional
 
       - name: Acceptance Tests mariadb and mysqli
+        # @todo: Remove this constraint after firebase/php-jwt core dependency has solved PHP8.2 deprecation issue
+        if: ${{ matrix.php <= '8.1' }}
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mariadb -a mysqli
 
       - name: Acceptance Tests mariadb and pdo_mysql
+        # @todo: Remove this constraint after firebase/php-jwt core dependency has solved PHP8.2 deprecation issue
+        if: ${{ matrix.php <= '8.1' }}      
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mariadb -a pdo_mysql
 
       - name: Acceptance Tests mysql and mysqli
+        # @todo: Remove this constraint after firebase/php-jwt core dependency has solved PHP8.2 deprecation issue
+        if: ${{ matrix.php <= '8.1' }}      
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mysql -a mysqli
 
       - name: Acceptance Tests mysql and pdo_mysql
+        # @todo: Remove this constraint after firebase/php-jwt core dependency has solved PHP8.2 deprecation issue
+        if: ${{ matrix.php <= '8.1' }}      
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mysql -a pdo_mysql
 
       - name: Acceptance Tests postgres
+        # @todo: Remove this constraint after firebase/php-jwt core dependency has solved PHP8.2 deprecation issue
+        if: ${{ matrix.php <= '8.1' }}      
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d postgres
 
       - name: Build CSS
