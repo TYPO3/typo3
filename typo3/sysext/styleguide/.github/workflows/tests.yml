@@ -11,6 +11,9 @@ jobs:
     name: all tests
     runs-on: ubuntu-20.04
     strategy:
+      # This prevents cancellation of matrix job runs, if one or more already failed
+      # and let the remaining matrix jobs be be executed anyway.
+      fail-fast: false    
       matrix:
         php: [ '8.1', '8.2' ]
     steps:
