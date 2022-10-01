@@ -88,6 +88,7 @@ class PasswordElement extends AbstractFormElement
         $attributes = [
             'value' => '',
             'id' => $fieldId,
+            'spellcheck' => 'false',
             'class' => implode(' ', [
                 'form-control',
                 't3js-clearable',

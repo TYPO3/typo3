@@ -20,7 +20,7 @@
         </f:form>
     </f:then>
     <f:else>
-        <f:form target="_top" fieldNamePrefix="" action="login" requestToken="{requestToken}">
+        <f:form target="_top" fieldNamePrefix="" action="login" requestToken="{requestToken}" additionalAttributes="{spellcheck: 'false'}">
             <f:render section="content" arguments="{_all}"/>
         </f:form>
     </f:else>
@@ -46,7 +46,7 @@
         <div>
             <label>
                 <f:translate key="password"/>
-                <f:form.password name="pass" additionalAttributes="{required: 'required', autocomplete: 'current-password'}"/>
+                <f:form.password name="pass" additionalAttributes="{required: 'required', autocomplete: 'current-password'} "/>
             </label>
         </div>
 
