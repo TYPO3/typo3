@@ -429,7 +429,7 @@ CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
     parenttable text,
 
     input_1 text,
-    inline_fal_1 int(11) DEFAULT '0' NOT NULL,
+    file_1 int(11) DEFAULT '0' NOT NULL,
     rte_1 text,
     select_tree_1 text,
     t3editor_1 text
@@ -479,7 +479,7 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
     parenttable text,
 
     dummy_1 text,
-    inline_fal_1 int(11) DEFAULT '0' NOT NULL,
+    file_1 int(11) DEFAULT '0' NOT NULL,
     rte_1 text,
     select_tree_1 text,
     t3editor_1 text
@@ -498,14 +498,13 @@ CREATE TABLE tx_styleguide_inline_expandsingle_child (
     input_1 text
 );
 
-
-CREATE TABLE tx_styleguide_inline_fal (
-    inline_1 int(11) DEFAULT '0' NOT NULL,
-    inline_2 int(11) DEFAULT '0' NOT NULL,
-    inline_3 int(11) DEFAULT '0' NOT NULL,
-    inline_4 int(11) DEFAULT '0' NOT NULL,
-    inline_5 int(11) DEFAULT '0' NOT NULL,
-    inline_flex_1 text
+CREATE TABLE tx_styleguide_file (
+    file_1 int(11) DEFAULT '0' NOT NULL,
+    file_2 int(11) DEFAULT '0' NOT NULL,
+    file_3 int(11) DEFAULT '0' NOT NULL,
+    file_4 int(11) DEFAULT '0' NOT NULL,
+    file_5 int(11) DEFAULT '0' NOT NULL,
+    file_flex_1 text
 );
 
 
@@ -519,14 +518,6 @@ CREATE TABLE tx_styleguide_inline_foreignrecorddefaults_child (
     parenttable text,
 
     input_1 text
-);
-
-#
-# Table structure for table 'tx_styleguide_inline_parentnosoftdelete'
-#
-CREATE TABLE tx_styleguide_inline_parentnosoftdelete (
-    inline_1 int(11) DEFAULT '0' NOT NULL,
-    text_1 text
 );
 
 
@@ -828,6 +819,6 @@ CREATE TABLE tx_styleguide_l10nreadonly_inline_child (
 # Table structure for table 'tx_styleguide_inline_parentnosoftdelete'
 #
 CREATE TABLE tx_styleguide_inline_parentnosoftdelete (
-    inline_1 int(11) DEFAULT '0' NOT NULL,
+    file_1 int(11) DEFAULT '0' NOT NULL,
     text_1 text
 );

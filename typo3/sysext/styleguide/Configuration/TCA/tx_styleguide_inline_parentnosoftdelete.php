@@ -3,7 +3,7 @@
 return [
     'ctrl' => [
         'title' => 'Form engine - inline parent no soft delete',
-        'label' => 'inline_1',
+        'label' => 'file_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
@@ -80,31 +80,11 @@ return [
             ],
         ],
 
-        'inline_1' => [
-            'label' => 'inline_1',
+        'file_1' => [
+            'label' => 'file_1',
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'sys_file_reference',
-                'foreign_field' => 'uid_foreign',
-                'foreign_sortby' => 'sorting_foreign',
-                'foreign_table_field' => 'tablenames',
-                'foreign_match_fields' => [
-                    'fieldname' => 'inline_1',
-                ],
-                'foreign_label' => 'uid_local',
-                'foreign_selector' => 'uid_local',
-                'overrideChildTca' => [
-                    'columns' => [
-                        'uid_local' => [
-                            'config' => [
-                                'appearance' => [
-                                    'elementBrowserType' => 'file',
-                                    'elementBrowserAllowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
+                'type' => 'file',
+                'allowed' => 'common-image-types',
             ],
         ],
 
@@ -113,7 +93,7 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                sys_language_uid, l10n_parent, l10n_diffsource, hidden, text_1, inline_1
+                sys_language_uid, l10n_parent, l10n_diffsource, hidden, text_1, file_1
             ',
         ],
     ],

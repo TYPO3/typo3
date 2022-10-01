@@ -23,21 +23,17 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
- * Generate data for type=inline fields
+ * Generate data for type=file fields
  */
-class TypeInlineFal extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeFile extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=inline
+     * @var array General match if type=file
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'sys_file_reference',
-                'foreign_field' => 'uid_foreign',
-                'foreign_label' => 'uid_local',
-                'foreign_table_field' => 'tablenames',
+                'type' => 'file',
             ],
         ],
     ];

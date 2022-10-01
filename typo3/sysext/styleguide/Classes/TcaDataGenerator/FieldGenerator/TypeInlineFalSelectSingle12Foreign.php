@@ -45,11 +45,7 @@ class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implemen
         'fieldConfig' => [
             'label' => 'fal_1 selicon_field',
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'sys_file_reference',
-                'foreign_field' => 'uid_foreign',
-                'foreign_label' => 'uid_local',
-                'foreign_table_field' => 'tablenames',
+                'type' => 'file',
                 'maxitems' => 1,
             ],
         ],

@@ -72,13 +72,11 @@ return [
 
         'fal_1' => [
             'label' => 'fal_1 selicon_field',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-                'fal_1',
-                [
-                    'maxitems' => 1,
-                ],
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
-            ),
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-media-types',
+                'maxitems' => 1,
+            ],
         ],
 
     ],

@@ -119,9 +119,11 @@ class FieldGeneratorResolver
         FieldGenerator\TypeSelect::class,
 
         FieldGenerator\TypeInlineFalSelectSingle12Foreign::class,
-        FieldGenerator\TypeInlineFal::class,
         FieldGenerator\TypeInlineExpandsingle::class,
         FieldGenerator\TypeInlineUsecombination::class,
+
+        // type=file
+        FieldGenerator\TypeFile::class,
 
         // type=imageManipulation
         FieldGenerator\TypeImageManipulation::class,

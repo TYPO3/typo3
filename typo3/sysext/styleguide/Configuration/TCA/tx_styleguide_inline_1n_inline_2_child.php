@@ -87,58 +87,19 @@ return [
             ],
         ],
 
-        'inline_fal_1' => [
-            'label' => 'inline_fal_1',
+        'file_1' => [
+            'label' => 'file_1',
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'sys_file_reference',
-                'foreign_field' => 'uid_foreign',
-                'foreign_sortby' => 'sorting_foreign',
-                'foreign_table_field' => 'tablenames',
-                'foreign_match_fields' => [
-                    'fieldname' => 'image',
-                ],
-                'foreign_label' => 'uid_local',
-                'foreign_selector' => 'uid_local',
-                'filter' => [
-                    'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren',
-                    'parameters' => [
-                        'allowedFileExtensions' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
-                        'disallowedFileExtensions' => '',
-                    ],
-                ],
+                'type' => 'file',
+                'allowed' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
                 'appearance' => [
-                    'useSortable' => true,
                     'headerThumbnail' => [
-                        'field' => 'uid_local',
                         'width' => '45',
                         'height' => '45c',
-                    ],
-                    'showPossibleLocalizationRecords' => false,
-                    'showSynchronizationLink' => false,
-                    'showAllLocalizationLink' => false,
-                    'enabledControls' => [
-                        'info' => true,
-                        'new' => false,
-                        'dragdrop' => true,
-                        'sort' => false,
-                        'hide' => true,
-                        'delete' => true,
-                        'localize' => true,
                     ],
                     'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                 ],
                 'overrideChildTca' => [
-                    'columns' => [
-                        'uid_local' => [
-                            'config' => [
-                                'appearance' => [
-                                    'elementBrowserType' => 'file',
-                                    'elementBrowserAllowed' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
-                                ],
-                            ],
-                        ],
-                    ],
                     'types' => [
                         0 => [
                             'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
@@ -202,7 +163,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;fields,
-                    input_1, inline_fal_1, rte_1, select_tree_1, t3editor_1
+                    input_1, file_1, rte_1, select_tree_1, t3editor_1
             ',
         ],
 

@@ -266,14 +266,14 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInlineExpandsingle.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInlineFal\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFile\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInlineFal.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFile.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInlineFal\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFile\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInlineFal.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFile.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInlineFalSelectSingle12Foreign\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
