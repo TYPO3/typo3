@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -168,7 +171,7 @@ final class TranslateViewHelper extends AbstractViewHelper
                 }
                 $id = 'LLL:EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf:' . $id;
             }
-            $value = self::getLanguageService()->sL($id);
+            $value = self::getLanguageService($request)->sL($id);
             if (empty($value) || (!str_starts_with($id, 'LLL:EXT:') && $value === $id)) {
                 // In case $value is empty (LLL: could not be resolved) or $value
                 // is the same as $id and is no "LLL:", fall back to the default.
@@ -202,8 +205,18 @@ final class TranslateViewHelper extends AbstractViewHelper
         return $value;
     }
 
-    protected static function getLanguageService(): LanguageService
+    protected static function getLanguageService(ServerRequestInterface $request = null): LanguageService
     {
+        if (isset($GLOBALS['LANG'])) {
+            return $GLOBALS['LANG'];
+        }
+        $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+        if ($request !== null && ApplicationType::fromRequest($request)->isFrontend()) {
+            $GLOBALS['LANG'] = $languageServiceFactory->createFromSiteLanguage($request->getAttribute('language')
+                ?? $request->getAttribute('site')->getDefaultLanguage());
+            return $GLOBALS['LANG'];
+        }
+        $GLOBALS['LANG'] = $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         return $GLOBALS['LANG'];
     }
 }
