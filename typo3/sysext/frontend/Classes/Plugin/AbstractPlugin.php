@@ -1355,10 +1355,10 @@ class AbstractPlugin
                         $c++;
                     }
                 }
-            } else {
+            } elseif (isset($tempArr[$v])) {
                 $tempArr = $tempArr[$v];
             }
         }
-        return $tempArr[$value];
+        return $tempArr[$value] ?? '';
     }
 }
