@@ -206,6 +206,7 @@ The following PHP static class methods changed signature according to previous d
 
 The following PHP class methods changed signature according to previous deprecations in v11 and are now type hinted:
 
+- :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->literal()` (second argument requires an integer)
 - :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->quote()` (second argument requires an integer)
 - :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->setTSlogMessage()` (second argument requires a string)
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)

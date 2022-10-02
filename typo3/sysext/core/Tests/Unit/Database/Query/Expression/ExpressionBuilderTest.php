@@ -777,10 +777,10 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function literalQuotesValue(): void
     {
-        $this->connectionProphecy->quote('aField', 'Doctrine\DBAL\Types\StringType')
+        $this->connectionProphecy->quote('aField', \PDO::PARAM_STR)
             ->shouldBeCalled()
             ->willReturn('"aField"');
-        $result = $this->subject->literal('aField', 'Doctrine\DBAL\Types\StringType');
+        $result = $this->subject->literal('aField');
 
         self::assertSame('"aField"', $result);
     }
