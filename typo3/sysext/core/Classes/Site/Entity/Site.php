@@ -291,7 +291,7 @@ class Site implements SiteInterface
      */
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface
     {
-        $errorHandlerConfiguration = $this->errorHandlers[$statusCode] ?? null;
+        $errorHandlerConfiguration = $this->errorHandlers[$statusCode] ?? $this->errorHandlers[0] ?? null;
         switch ($errorHandlerConfiguration['errorHandler'] ?? null) {
             case self::ERRORHANDLER_TYPE_FLUID:
                 return GeneralUtility::makeInstance(FluidPageErrorHandler::class, $statusCode, $errorHandlerConfiguration);
