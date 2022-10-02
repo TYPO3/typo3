@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97187:
+
 ==============================================================
 Breaking: #97187 - Removed hook for modifying link explanation
 ==============================================================

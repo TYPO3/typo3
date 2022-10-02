@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96733:
+
 ===========================================================================
 Breaking: #96733 - Removed support for module handling based on TBE_MODULES
 ===========================================================================
@@ -44,7 +46,7 @@ global array
 :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']`
 which has been merged with the Module Registry API and has been removed as well.
 
-Because the registration of modules is now done in extensions'
+Because the registration of modules is now done in the extension's
 :file:`Configuration/Backend/Modules.php` file, the following
 API methods do no longer have any effect and will be removed in
 TYPO3 v13.0:
@@ -53,7 +55,6 @@ TYPO3 v13.0:
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent()`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent()`
 - :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()`
-
 
 The User TSconfig :typoscript:`options.hideModules.[moduleGroup]` has been
 removed. All modules are registered with a unique identifier. Therefore, the
@@ -71,7 +72,6 @@ Referencing any of the removed PHP classes will result in a PHP fatal error.
 
 Using one of the mentioned API methods won't have any effect.
 
-
 Affected Installations
 ======================
 
@@ -80,7 +80,6 @@ manipulating the global array `$TBE_MODULES` or accessing any of the removed
 PHP classes / methods by third-party extensions.
 
 Any occurrences can be detected via the Extension Scanner.
-
 
 Migration
 =========

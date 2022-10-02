@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96444:
+
 =====================================================================
 Deprecation: #96444 - authMode select items keywords moved to index 5
 =====================================================================
@@ -25,21 +27,19 @@ For backwards compatibility reasons, a TCA migration is in place, which will
 check for these special keywords and move them one index up. This will log a
 "TCA migration done" message in the admin tools upgrade module.
 
-
 Affected Installations
 ======================
 
 All installations, which use TCA type `select` with `authMode=individual`, while
 defining the keywords `EXPL_ALLOW` or `EXPL_DENY` in the items array at index 4.
 
-
 Migration
 =========
 
 Before:
 
-.. code-block:: php
-   :emphasize-lines: 12
+..  code-block:: php
+    :emphasize-lines: 12
 
     'columns' => [
         'aColumn' => [
@@ -61,8 +61,8 @@ Before:
 
 After:
 
-.. code-block:: php
-   :emphasize-lines: 12,13
+..  code-block:: php
+    :emphasize-lines: 12,13
 
     'columns' => [
         'aColumn' => [

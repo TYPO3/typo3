@@ -15,18 +15,15 @@ The field :php:`resizeTextareas_MaxHeight` with the label *Maximum height of tex
 
 The impact of the field is low and its removal simplifies the user settings module.
 
-
 Impact
 ======
 
 The height of textareas is the same for every user.
 
-
 Affected installations
 ======================
 
 Every TYPO3 installation.
-
 
 Migration
 =========

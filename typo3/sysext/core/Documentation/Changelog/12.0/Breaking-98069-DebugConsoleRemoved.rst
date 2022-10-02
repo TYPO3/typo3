@@ -16,7 +16,6 @@ failed to give a developer its response, including the stacktrace. Nowadays,
 browsers offer a console allowing to investigate requests. Also, PHP debuggers
 (e.g. xdebug) are commonly known and used, which makes the DebugConsole obsolete.
 
-
 Impact
 ======
 
@@ -27,12 +26,10 @@ debug output to the client.
 The 3rd argument :php:`$group` of the method
 :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debug()` is removed.
 
-
 Affected installations
 ======================
 
 All installations are affected.
-
 
 Migration
 =========

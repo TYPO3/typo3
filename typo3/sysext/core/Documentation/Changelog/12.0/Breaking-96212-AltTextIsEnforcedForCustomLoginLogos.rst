@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96212:
+
 ==============================================================
 Breaking: #96212 - Alt text is enforced for custom login logos
 ==============================================================
@@ -26,13 +28,11 @@ Impact
 
 The :html:`alt` attribute is now enforced for the login logo.
 
-
 Affected Installations
 ======================
 
 All installations using a custom login logo, while not defining a
 corresponding "alt" text.
-
 
 Migration
 =========

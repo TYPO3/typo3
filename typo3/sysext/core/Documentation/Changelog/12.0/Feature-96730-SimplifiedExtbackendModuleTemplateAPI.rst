@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96730:
+
 ===========================================================
 Feature: #96730 - Simplified ext:backend ModuleTemplate API
 ===========================================================
@@ -17,14 +19,13 @@ instantiate an own view anymore.
 The default document header of :php:`ModuleTemplate` can be rendered
 using a new Fluid layout named `Module`.
 
-
 Impact
 ======
 
 The standard code within backend module related controllers
 looked like this until now:
 
-.. code-block:: php
+..  code-block:: php
 
     $moduleTemplate = $this->moduleTemplateFactory->create($request);
     $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -41,7 +42,7 @@ are configured automatically, calling :php:`renderResponse('SomeController/SomeA
 overridden by other extensions using page TSconfig, see :doc:`this changelog entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`
 for details on this.
 
-.. code-block:: php
+..  code-block:: php
 
     $moduleTemplate = $this->moduleTemplateFactory->create($request);
     $moduleTemplate->assign('aVariable', 'aValue');
@@ -49,7 +50,7 @@ for details on this.
 
 The HTML template should then reference the ModuleTemplate layout:
 
-.. code-block:: html
+..  code-block:: html
 
     <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:layout name="Module" />

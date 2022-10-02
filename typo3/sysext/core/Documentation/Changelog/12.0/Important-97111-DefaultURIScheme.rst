@@ -11,7 +11,7 @@ See :issue:`97111`
 Description
 ===========
 
-Several places in the TYPO3 core fall back to using `http` as a protocol for
+Several places in the TYPO3 Core fall back to using `http` as a protocol for
 links in case none was given. In order to adjust this behavior the new
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme']` setting has been
 introduced, which uses `http` as default.

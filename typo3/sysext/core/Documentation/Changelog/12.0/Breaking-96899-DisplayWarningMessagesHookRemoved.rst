@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96899:
+
 ========================================================
 Breaking: #96899 - "displayWarningMessages" hook removed
 ========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97201:
+
 =============================================================================
 Feature: #97201 - PSR-14 event for modifying new content element wizard items
 =============================================================================
@@ -11,7 +13,8 @@ Description
 
 A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent`
 has been introduced which serves as a more powerful and flexible alternative
-for the now removed hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook']`.
+for the now removed hook
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook']`.
 
 The event is called after TYPO3 has already prepared the wizard items,
 defined in TSconfig (:typoscript:`mod.wizards.newContentElement.wizardItems`).
@@ -61,24 +64,26 @@ Following methods are available:
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Frontend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-wizard-items'
+    MyVendor\MyPackage\Frontend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-wizard-items'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 
     class MyEventListener {
 
-        public function __invoke(ModifyNewContentElementWizardItemsEvent $event): void
+        public function __invoke(
+            ModifyNewContentElementWizardItemsEvent $event
+        ): void
         {
             // Add a new wizard item after "textpic"
             $event->setWizardItem(

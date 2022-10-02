@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97027:
+
 ==========================================================
 Deprecation: #97027 - ContentObjectRenderer->getTreeList()
 ==========================================================
@@ -16,19 +18,16 @@ The method signature has had various side-effects and too many options and
 was used in different places across TYPO3 Core, where
 :php:`ContentObjectRenderer` was not in use primarily.
 
-
 Impact
 ======
 
 Calling the method directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
-
 
 Affected Installations
 ======================
 
 TYPO3 installations with third-party extensions accessing this method. This can
 be checked via the Extension Scanner in the Install Tool.
-
 
 Migration
 =========

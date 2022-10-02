@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96998:
+
 ======================================================
 Breaking: #96998 - Extbase validator interface changed
 ======================================================
@@ -46,28 +48,28 @@ Those just have to adjust their :php:`isValid()` method signature to :php:`isVal
 keep TYPO3 v11 & v12 compatibility. Read on for rare cases where this is not sufficient.
 
 First, it is no longer allowed to extend specific validators of EXT:extbase and EXT:form.
-Those are "leaf" classes, and extensions should not extend them, giving the core more
+Those are "leaf" classes, and extensions should not extend them, giving the Core more
 freedom to change those classes if needed. Extensions should instead extend the provided
 abstract classes like :php:`AbstractValidator` to implement own validators.
 
 Since most custom validators inherit :php:`AbstractValidator`, the most important change
 for these validator is a return type change of :php:`isValid()`:
 
-.. code-block:: php
+..  code-block:: php
 
     public function isValid(mixed $value): void
 
 Extensions that need to stay compatible with v11 (PHP 7.4) and v12, will thus typically
 use a signature like below: Set the return type constraint, but omit the 'mixed' argument type:
 
-.. code-block:: php
+..  code-block:: php
 
     public function isValid($value): void
 
 With a closer look at the :php:`ValidatorInterface`, the v11 version
 effectively looks like this:
 
-.. code-block:: php
+..  code-block:: php
 
     interface ValidatorInterface
     {
@@ -77,7 +79,7 @@ effectively looks like this:
 
 This has been changed in v12 to this:
 
-.. code-block:: php
+..  code-block:: php
 
     interface ValidatorInterface
     {
@@ -99,7 +101,7 @@ younger interfaces.
 A v11 & v12 compatible method signature looks like this (avoiding the :php:`mixed` keyword
 on :php:`validate`):
 
-.. code-block:: php
+..  code-block:: php
 
     class MyValidator implements ValidatorInterface
     {

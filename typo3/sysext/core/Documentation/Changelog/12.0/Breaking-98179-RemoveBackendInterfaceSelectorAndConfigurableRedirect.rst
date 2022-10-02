@@ -25,7 +25,6 @@ multiple site roots was overseen and a user may get redirected to the wrong
 frontend. Also, if EXT:adminpanel is not installed, there is no one-click
 solution to access the TYPO3 backend.
 
-
 Impact
 ======
 
@@ -33,12 +32,10 @@ The configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']`
 is removed, therefore an authenticated user always gets redirected to the
 backend.
 
-
 Affected installations
 ======================
 
 All TYPO3 installations relying on this feature are affected.
-
 
 Migration
 =========

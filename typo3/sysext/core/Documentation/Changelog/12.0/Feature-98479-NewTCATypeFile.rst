@@ -23,16 +23,22 @@ reduce internal cross dependencies between TCA type `inline` and FAL.
 
 The new TCA type :php:`file` features the following column configuration:
 
-- :php:`allowed`
-- :php:`appearance`: :php:`collapseAll`, :php:`expandSingle`, :php:`createNewRelationLinkTitle`, :php:`useSortable`, :php:`enabledControls`, :php:`headerThumbnail`, :php:`fileUploadAllowed`, :php:`fileByUrlAllowed`, :php:`elementBrowserEnabled`, :php:`showPossibleLocalizationRecords`, :php:`showAllLocalizationLink`, :php:`showSynchronizationLink`, :php:`showFileSelectors`
-- :php:`behaviour`: :php:`allowLanguageSynchronization`, :php:`disableMovingChildrenWithParent`, :php:`enableCascadingDelete`
-- :php:`disallowed`
-- :php:`fieldInformation`
-- :php:`fieldWizard`
-- :php:`maxitems`
-- :php:`minitems`
-- :php:`overrideChildTca`
-- :php:`readOnly`
+*   :php:`allowed`
+*   :php:`appearance`: :php:`collapseAll`, :php:`expandSingle`,
+    :php:`createNewRelationLinkTitle`, :php:`useSortable`, :php:`enabledControls`,
+    :php:`headerThumbnail`, :php:`fileUploadAllowed`, :php:`fileByUrlAllowed`,
+    :php:`elementBrowserEnabled`, :php:`showPossibleLocalizationRecords`,
+    :php:`showAllLocalizationLink`, :php:`showSynchronizationLink`,
+    :php:`showFileSelectors`
+*   :php:`behaviour`: :php:`allowLanguageSynchronization`,
+    :php:`disableMovingChildrenWithParent`, :php:`enableCascadingDelete`
+*   :php:`disallowed`
+*   :php:`fieldInformation`
+*   :php:`fieldWizard`
+*   :php:`maxitems`
+*   :php:`minitems`
+*   :php:`overrideChildTca`
+*   :php:`readOnly`
 
 .. note::
 
@@ -51,7 +57,7 @@ The following column configuration can be overwritten by Page TSconfig:
 
 A possible migration using the API method therefore looks like the following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
     'columns' => [
@@ -89,7 +95,7 @@ extensions as `array`.
 
 Another example without usage of the API method would therefore look like this:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
     'columns' => [
@@ -133,7 +139,7 @@ Another example without usage of the API method would therefore look like this:
         ],
     ],
 
-Together with the new TCA type, three new PSR-14 Events have been introduced:
+Together with the new TCA type, three new PSR-14 events have been introduced:
 
 * :php:`TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent`
 * :php:`TYPO3\CMS\Backend\Form\Event\ModifyFileReferenceControlsEvent`
@@ -142,24 +148,27 @@ Together with the new TCA type, three new PSR-14 Events have been introduced:
 CustomFileControlsEvent
 =======================
 
-Listeners to this Event will be able to add custom controls to a TCA type
+Listeners to this event will be able to add custom controls to a TCA type
 :php:`file` field in FormEngine. This replaces the :php:`customControls`
 hook option, which is only available for TCA type :php:`inline`.
 
 The new event provides the following methods:
 
-- :php:`getResultArray()`: Returns the whole result array
-- :php:`setResultArray(array $resultArray)`: Allows to overwrite the result array, e.g. to add additional JS modules
-- :php:`getControls()`: Returns all configured custom controls
-- :php:`setControls()`: Overwrites the custom controls
-- :php:`addControl()`: Adds a custom control. It's recommended to set the optional :php:`$identifier` argument.
-- :php:`removeControl()`: Removes a custom control. This only works in case the custom control was added with an identifier.
-- :php:`getTableName()`: Returns the table name in question
-- :php:`getFieldName()`: Returns the field name in question
-- :php:`getDatabaseRow()`: Returns the database row of the record in question
-- :php:`getFieldConfig()`: Returns the fields' TCA configuration
-- :php:`getFormFieldIdentifier()`: Returns the form elements' identifier
-- :php:`getFormFieldName()`: Returns the form elements' name
+*   :php:`getResultArray()`: Returns the whole result array
+*   :php:`setResultArray(array $resultArray)`: Allows to overwrite the result
+    array, e.g. to add additional JS modules
+*   :php:`getControls()`: Returns all configured custom controls
+*   :php:`setControls()`: Overwrites the custom controls
+*   :php:`addControl()`: Adds a custom control. It's recommended to set the
+    optional :php:`$identifier` argument.
+*   :php:`removeControl()`: Removes a custom control. This only works in case
+    the custom control was added with an identifier.
+*   :php:`getTableName()`: Returns the table name in question
+*   :php:`getFieldName()`: Returns the field name in question
+*   :php:`getDatabaseRow()`: Returns the database row of the record in question
+*   :php:`getFieldConfig()`: Returns the fields' TCA configuration
+*   :php:`getFormFieldIdentifier()`: Returns the form elements' identifier
+*   :php:`getFormFieldName()`: Returns the form elements' name
 
 .. note::
 
@@ -172,7 +181,7 @@ The new event provides the following methods:
 ModifyFileReferenceControlsEvent
 ================================
 
-Listeners to this Event will be able to modify the controls of a single
+Listeners to this event will be able to modify the controls of a single
 file reference of a TCA type `file` field. This event is similar to the
 :php:`ModifyInlineElementControlsEvent`, which is only available for TCA
 type `inline`. See corresponding PHP class or the other
@@ -182,7 +191,7 @@ for more information about available methods and their usage.
 ModifyFileReferenceEnabledControlsEvent
 =======================================
 
-Listeners to this Event will be able to modify the state (enabled or disabled)
+Listeners to this event will be able to modify the state (enabled or disabled)
 for the controls of a single file reference of a TCA type `file` field. This
 event is similar to the :php:`ModifyInlineElementEnabledControlsEvent`, which
 is only available for TCA type `inline`. See corresponding PHP class or the
@@ -193,7 +202,7 @@ Impact
 ======
 
 It's now possible to simplify the TCA configuration for file reference
-fields, using the new TCA type `file`. Three new PSR-14 Events allow to
+fields, using the new TCA type `file`. Three new PSR-14 events allow to
 modify available controls of the TCA field as well as the related file
 references.
 

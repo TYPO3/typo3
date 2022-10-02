@@ -12,20 +12,17 @@ Description
 ===========
 
 The constant :php:`TODAYS_SPECIAL` in :php:`\TYPO3\CMS\Core\SysLog\Error` has never been
-used in TYPO3 core and is therefore removed without replacement.
-
+used in TYPO3 Core and is therefore removed without replacement.
 
 Impact
 ======
 
-3rd party extensions using the extension will fail with a PHP error.
-
+Third-party extensions using the extension will fail with a PHP error.
 
 Affected installations
 ======================
 
 3rd party extensions who use the :php:`TODAYS_SPECIAL` constant.
-
 
 Migration
 =========

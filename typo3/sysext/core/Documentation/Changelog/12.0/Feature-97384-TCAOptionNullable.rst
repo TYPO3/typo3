@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97384:
+
 =======================================
 Feature: #97384 - TCA option "nullable"
 =======================================
@@ -14,7 +16,7 @@ been extracted into its own option: :php:`nullable`, which is a `boolean` value.
 
 Example:
 
-.. code-block:: php
+..  code-block:: php
 
     'columns' => [
        'nullable_column' => [
@@ -25,7 +27,6 @@ Example:
            ],
        ],
     ],
-
 
 Impact
 ======

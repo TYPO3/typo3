@@ -14,7 +14,6 @@ Description
 Loading JavaScript modules via :php:`$resultArray['requireJsModules']` has been
 deprecated in favor of a new generic key named :php:`'javaScriptModules'`.
 
-
 The ability for custom :php:`FormEngine` components to load JavaScript modules
 via instances of :php:`TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` is now
 streamlined to use a new, generic :php:`$resultArray` key named
@@ -37,7 +36,6 @@ but also newer, native ECMAScript v6 JavaScript modules.
 
 The :php:`'requireJsModules'` key is deprecated.
 
-
 Impact
 ======
 
@@ -46,12 +44,10 @@ These modules will be loaded after modules registered via `'javaScriptModules'`.
 Extensions that use :php:`'requireJsModules` will work as before but trigger a
 PHP :php:`E_USER_DEPRECATED` error.
 
-
 Affected installations
 ======================
 
 Installations that register custom FormEngine components with JavaScript modules.
-
 
 Migration
 =========
@@ -59,7 +55,7 @@ Migration
 Use the key :php:`'javaScriptModules'` and assign an instance of
 :php:`TYPO3\CMS\Core\Page\JavaScriptModuleInstruction`:
 
-.. code-block:: php
+..  code-block:: php
 
     // use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
     $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(

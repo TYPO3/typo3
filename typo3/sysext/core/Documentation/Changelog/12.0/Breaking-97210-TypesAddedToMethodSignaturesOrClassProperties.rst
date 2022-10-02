@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97210:
+
 =======================================================================
 Breaking: #97210 - Types added to method signatures or class properties
 =======================================================================
@@ -55,7 +57,6 @@ Impact
 Calling any of these methods with incompatible types now throws a :php:`\TypeError`,
 especially if the calling code is within :php:`declare(strict_types=1);` context.
 Before the result of such method calls was undefined or inconsistent.
-
 
 Affected Installations
 ======================

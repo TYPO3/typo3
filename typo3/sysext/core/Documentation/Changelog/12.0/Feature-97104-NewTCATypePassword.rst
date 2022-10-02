@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97104:
+
 =========================================
 Feature: #97104 - New TCA type "password"
 =========================================
@@ -62,7 +64,7 @@ plaintext to the database.
 The migration from :php:`eval='password'` and :php:`eval='saltedPassword'` to
 :php:`type=password` is done like following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 

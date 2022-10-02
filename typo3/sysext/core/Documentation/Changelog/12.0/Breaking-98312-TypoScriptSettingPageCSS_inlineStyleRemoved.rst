@@ -14,18 +14,15 @@ Description
 The TypoScript setting :typoscript:`page.CSS_inlineStyle` which was used to
 inject a inline CSS string into the TYPO3 Frontend has been removed.
 
-
 Impact
 ======
 
 Using this setting has no effect anymore since TYPO3 v12.
 
-
 Affected installations
 ======================
 
 TYPO3 installations having this option set in their TypoScript setup.
-
 
 Migration
 =========
@@ -38,7 +35,7 @@ The superior setting :typoscript:`page.cssInline` allows to use
 
 Example for migration:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page.CSS_inlineStyle = a { color: red; }
 

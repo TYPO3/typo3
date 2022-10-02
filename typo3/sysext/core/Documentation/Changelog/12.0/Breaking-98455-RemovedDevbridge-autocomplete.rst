@@ -14,19 +14,16 @@ Description
 The jQuery library :js:`devbridge-autocomplete` used to provide an auto-suggest
 feature has been removed from TYPO3 along with its CSS.
 
-
 Impact
 ======
 
 Importing the module :js:`jquery/autocomplete` and calling `.autocomplete()` on
 a jQuery object will lead to JavaScript errors.
 
-
 Affected installations
 ======================
 
 All extensions relying on :js:`devbridge-autocomplete` are affected.
-
 
 Migration
 =========

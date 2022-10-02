@@ -11,11 +11,11 @@ See :issue:`98488`
 Description
 ===========
 
-The Typolink option :typoscript:`typolink.addQueryString` now also accepts the value `untrusted` to be used to retrieve all GET parameters of the current request.
+The Typolink option :typoscript:`typolink.addQueryString` now also accepts
+the value `untrusted` to be used to retrieve all GET parameters of the current request.
 
-This value can also used under the hood for the  Fluid ViewHelpers
+This value can also used in the Fluid ViewHelpers
 :html:`<f:link.typolink>` and :html:`<f:uri.typolink>`.
-
 
 Impact
 ======

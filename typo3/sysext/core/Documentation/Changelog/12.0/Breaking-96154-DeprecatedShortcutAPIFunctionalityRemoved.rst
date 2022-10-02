@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96154:
+
 ================================================================
 Breaking: #96154 - Deprecated Shortcut API functionality removed
 ================================================================

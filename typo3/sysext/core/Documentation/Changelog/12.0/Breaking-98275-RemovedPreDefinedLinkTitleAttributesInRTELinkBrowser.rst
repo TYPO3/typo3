@@ -26,7 +26,6 @@ For those reasons, the possibilities to
 
 have been removed without substitution.
 
-
 Impact
 ======
 
@@ -34,14 +33,12 @@ Pre-configuring a link title based on the applied CSS class is not possible
 anymore. Also, configuring the link title field to be read-only is not possible
 anymore.
 
-
 Affected installations
 ======================
 
 All installations configuring :yaml:`classesAnchor.*.linkText` or
 :yaml:`buttons.link.properties.title.readOnly` in an RTE configuration file are
 affected.
-
 
 Migration
 =========

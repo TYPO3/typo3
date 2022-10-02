@@ -11,16 +11,15 @@ See :issue:`98443`
 Description
 ===========
 
-The TYPO3 core extension "recordlist" has been integrated into the core
+The TYPO3 Core extension "recordlist" has been integrated into the Core
 extension "backend". Extension "recordlist" does not exist anymore, all
 existing functionality like the "List module" is available within the "backend"
 extension.
 
-
 Impact
 ======
 
-When upgrading to TYPO3 core v12, extension "backend" replaces extension "recordlist"
+When upgrading to TYPO3 Core v12, extension "backend" replaces extension "recordlist"
 automatically.
 
 The following classes have been renamed:
@@ -56,12 +55,11 @@ The following classes have been renamed:
 * :php:`\TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent` to :php:`\TYPO3\CMS\Backend\View\RecordSearchBoxComponent`
 * :php:`\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer` to :php:`\TYPO3\CMS\Backend\View\FolderUtilityRenderer`
 
-
 Affected installations
 ======================
 
 Extension "recordlist" was a hard dependency of a working TYPO3 instance and always
-installed. When upgrading to TYPO3 core v12, the TYPO3 Package Manager will simply
+installed. When upgrading to TYPO3 Core v12, the TYPO3 Package Manager will simply
 ignore the extension now.
 
 Extension extending PHP classes or implementing interfaces
@@ -70,20 +68,18 @@ established as aliases. Extensions should update their dependencies in case they
 extending or implementing specific "recordlist" functionality, the extension scanner
 will find possible usages.
 
-
 Migration
 =========
 
-The "typo3/cms-recordlist" dependency can be safely removed as composer dependency:
+The "typo3/cms-recordlist" dependency can be safely removed as Composer dependency:
 
-.. code-block:: shell
+..  code-block:: shell
 
     composer rem typo3/cms-recordlist
 
 Extensions using classes of extension "recordlist" should use the new classes instead.
 Extensions supporting both TYPO3 v11 and v12 can continue to use the old class names
 since they have been established as aliases to the new class names. These aliases will
-be removed with TYPO3 core v13.
-
+be removed with TYPO3 Core v13.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:recordlist

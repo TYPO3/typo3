@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96149:
+
 ================================================================
 Breaking: #96149 - EXT:form EmailFinisher always uses FluidEmail
 ================================================================
@@ -27,7 +29,6 @@ a fallback kicks in, sending the emails with the default EXT:form
 Also the :yaml:`useFluidEmail` configuration option, previously used to
 allow a smooth migration path is now obsolete and can safely be removed
 from any form finisher configuration.
-
 
 Affected Installations
 ======================

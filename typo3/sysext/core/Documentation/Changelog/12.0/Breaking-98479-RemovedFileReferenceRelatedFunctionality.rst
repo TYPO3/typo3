@@ -54,7 +54,7 @@ Migration
 
 Migrate corresponding user functions for the :php:`customControls` option to
 a PSR-14 event listeners of the
-:doc:`CustomFileControlsEvent <../12.0/Feature-98479-NewTCATypeFile.rst>`.
+:ref:`CustomFileControlsEvent <feature-98479-1664537749>`.
 
 Remove any usage of the :sql:`table_local` field of
 table :sql:`sys_file_reference` in custom extension code.

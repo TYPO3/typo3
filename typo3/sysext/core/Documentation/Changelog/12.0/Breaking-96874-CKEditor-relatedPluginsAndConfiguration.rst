@@ -18,7 +18,6 @@ Any kind of plugin, which was written for CKEditor4 is not compatible anymore.
 
 In addition, since CKEditor 5 does not grant HTML input the same way as before.
 
-
 Impact
 ======
 
@@ -27,14 +26,12 @@ Any plugin in CKEditor will not be loaded anymore in TYPO3 v12.
 It might be possible to have data loss when editing and saving data,
 especially since some configuration formats have been changed.
 
-
 Affected installations
 ======================
 
 TYPO3 installations with custom extensions extending CKEditor with plugins,
 or relying on a specific logic to save data with specific contents
 (such as additional allowed HTML tags).
-
 
 Migration
 =========
@@ -48,6 +45,8 @@ using the CKEditor5 plugin system [https://ckeditor.com/docs/ckeditor5/latest/in
 
 Example - A timestamp plugin which adds a toolbar item to add the current timestamp
 into the editor.
+
+..  code-block:: javascript
 
     import {Core, UI} from '@typo3/ckeditor5-bundle';
 
@@ -89,6 +88,8 @@ into the editor.
     }
 
 In the RTE configuration, this then needs to be added like this:
+
+..  code-block:: yaml
 
     editor:
        importModules:

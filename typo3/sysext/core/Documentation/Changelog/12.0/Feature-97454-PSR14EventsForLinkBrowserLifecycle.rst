@@ -26,19 +26,18 @@ The :php:`ModifyAllowedItemsEvent` can be used to dynamically modify the
 allowed link types. It is the direct replacement for the method :php:`modifyAllowedItems()`
 in the LinkBrowser hook.
 
-.. seealso::
+..  seealso::
     *   :ref:`breaking-97454-1657327622`
     *   :ref:`t3coreapi:modifyLinkHandlers`
     *   :ref:`t3coreapi:ModifyLinkHandlersEvent`
     *   :ref:`t3coreapi:ModifyAllowedItemsEvent`
-
 
 Example
 =======
 
 Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     MyVendor\MyPackage\MyEventListener:
       tags:
@@ -47,7 +46,7 @@ Registration of the event in your extension's :file:`Services.yaml`:
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent;
 

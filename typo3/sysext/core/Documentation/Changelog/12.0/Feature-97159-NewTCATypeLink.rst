@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97159:
+
 =====================================
 Feature: #97159 - New TCA type "link"
 =====================================
@@ -20,43 +22,42 @@ cases, the TCA type :php:`link` has been introduced. It replaces the
 
 The TCA type :php:`link` features the following column configuration:
 
-- :php:`allowedTypes`
-- :php:`appearance`: :php:`enableBrowser`, :php:`browserTitle`, :php:`allowedOptions`, :php:`allowedFileExtensions`
-- :php:`autocomplete`
-- :php:`behaviour`: :php:`allowLanguageSynchronization`
-- :php:`default`
-- :php:`fieldControl`
-- :php:`fieldInformation`
-- :php:`fieldWizard`
-- :php:`mode`
-- :php:`nullable`
-- :php:`placeholder`
-- :php:`readOnly`
-- :php:`required`
-- :php:`search`
-- :php:`size`
-- :php:`valuePicker`
+-   :php:`allowedTypes`
+-   :php:`appearance`: :php:`enableBrowser`, :php:`browserTitle`,
+    :php:`allowedOptions`, :php:`allowedFileExtensions`
+-   :php:`autocomplete`
+-   :php:`behaviour`: :php:`allowLanguageSynchronization`
+-   :php:`default`
+-   :php:`fieldControl`
+-   :php:`fieldInformation`
+-   :php:`fieldWizard`
+-   :php:`mode`
+-   :php:`nullable`
+-   :php:`placeholder`
+-   :php:`readOnly`
+-   :php:`required`
+-   :php:`search`
+-   :php:`size`
+-   :php:`valuePicker`
 
-.. note::
-
+..  note::
     The soft reference definition :php:`softref=typolink` is automatically applied
     to all TCA type :php:`link` columns.
 
-.. note::
+..  note::
+    The value of TCA type :php:`link` columns is automatically trimmed before
+    being stored in the database. Therefore, the :php:`eval=trim` option is no
+    longer needed and should be removed from the TCA configuration.
 
-   The value of TCA type :php:`link` columns is automatically trimmed before
-   being stored in the database. Therefore, the :php:`eval=trim` option is no
-   longer needed and should be removed from the TCA configuration.
+The following column configurations can be overwritten by page TSconfig:
 
-The following column configuration can be overwritten by page TSconfig:
-
-- :typoscript:`readOnly`
-- :typoscript:`size`
+*   :typoscript:`readOnly`
+*   :typoscript:`size`
 
 The previously configured :php:`linkPopup` field control is now integrated
 into the new TCA type directly. Additionally, instead of exclude lists
 (:php:`[blindLink[Fields|Options]`) the new type now use include lists.
-Those lists are furthermore no longer comma-separated, but PHP :php:`array`s,
+Those lists are furthermore no longer comma-separated, but PHP arrays,
 with each option as a separate value.
 
 The replacement for the previously used :php:`blindLinkOptions` option is the
@@ -87,7 +88,7 @@ has to be set to :php:`false`.
 A complete migration from :php:`renderType=inputLink` to :php:`type=link`
 looks like the following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 
@@ -139,14 +140,12 @@ An automatic TCA migration is performed on the fly, migrating all occurrences
 to the new TCA type and triggering a PHP :php:`E_USER_DEPRECATED` error
 where code adoption has to take place.
 
-
 .. note::
 
     The corresponding FormEngine class has been renamed from :php:`InputLinkElement`
     to :php:`LinkElement`. An entry in the "ClassAliasMap" has been added for
     extensions calling this class directly, which is rather unlikely. The
     extension scanner will report any usage, which should then be migrated.
-
 
 Allowed type "record"
 =====================
@@ -164,14 +163,13 @@ automatically in the :php:`link` element, depending on the context.
 To limit this in TCA already, replace the :php:`record` value with the
 desired record identifiers.
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
     'allowedTypes' => ['page', 'url', 'record'],
 
     // After
     'allowedTypes' => ['page', 'url', 'tx_news', 'tt_address'],
-
 
 Impact
 ======

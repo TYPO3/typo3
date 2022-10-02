@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97231:
+
 ==============================================================
 Deprecation: #97231 - Unused Interface for inline element hook
 ==============================================================

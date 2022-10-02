@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92508:
+
 =========================================================
 Breaking: #92508 - Removed hook for filtering HMENU items
 =========================================================
@@ -21,12 +23,10 @@ Impact
 Any hook implementation registered is not executed anymore
 in TYPO3 v12.0+.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations with custom menus using this hook.
-
 
 Migration
 =========

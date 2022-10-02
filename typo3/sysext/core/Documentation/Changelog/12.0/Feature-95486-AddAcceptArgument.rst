@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-95486:
+
 ==========================================================
 Feature: #95486 - Add accept argument for UploadViewHelper
 ==========================================================
@@ -18,8 +20,8 @@ to prevent unwanted file formats.
 Example
 =======
 
-.. code-block:: html
+..  code-block:: html
 
-   <f:form.upload accept=".jpg,.png" />
+    <f:form.upload accept=".jpg,.png" />
 
 .. index:: Fluid, ext:fluid

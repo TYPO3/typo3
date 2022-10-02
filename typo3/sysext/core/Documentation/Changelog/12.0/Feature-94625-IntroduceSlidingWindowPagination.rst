@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94625:
+
 =====================================================
 Feature: #94625 - Introduce sliding window pagination
 =====================================================
@@ -28,31 +30,34 @@ Just replace the usage of :php:`SimplePagination` with
 :php:`\TYPO3\CMS\Core\Pagination\SlidingWindowPagination` and you are done.
 Set the 2nd argument to the maximum number of links which should be rendered.
 
-.. code-block:: php
+..  code-block:: php
 
-   $currentPage = $this->request->hasArgument('currentPage')
-      ? (int)$this->request->getArgument('currentPage')
-      : 1;
-   $itemsPerPage = 10;
-   $maximumLinks = 15;
+    use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+    use TYPO3\CMS\Core\Pagination\SlidingWindowPagination
 
-   $paginator = new \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator(
-      $allItems,
-      $currentPage,
-      $itemsPerPage
-   );
-   $pagination = new \TYPO3\CMS\Core\Pagination\SlidingWindowPagination(
-      $paginator,
-      $maximumLinks
-   );
+    $currentPage = $this->request->hasArgument('currentPage')
+       ? (int)$this->request->getArgument('currentPage')
+       : 1;
+    $itemsPerPage = 10;
+    $maximumLinks = 15;
 
-   $this->view->assign(
-      'pagination',
-      [
-         'pagination' => $pagination,
-         'paginator' => $paginator
-      ]
-   );
+    $paginator = new QueryResultPaginator(
+       $allItems,
+       $currentPage,
+       $itemsPerPage
+    );
+    $pagination = new SlidingWindowPagination(
+       $paginator,
+       $maximumLinks
+    );
+
+    $this->view->assign(
+       'pagination',
+       [
+          'pagination' => $pagination,
+          'paginator' => $paginator
+       ]
+    );
 
 Credits
 =======

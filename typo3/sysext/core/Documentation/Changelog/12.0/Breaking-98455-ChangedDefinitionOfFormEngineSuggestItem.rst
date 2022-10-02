@@ -25,7 +25,7 @@ icon and optionally an `overlay` identifier.
 
 Example:
 
-.. code-block:: php
+..  code-block:: php
 
     $icon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
     $entry = [
@@ -36,7 +36,6 @@ Example:
         ],
     ];
 
-
 Impact
 ======
 
@@ -46,13 +45,11 @@ still supplied by custom suggest wizards. Also, the `icon` property must be prov
 The removed property `text` also affects potential :php:`renderFunc` callbacks
 configured in the field's TCA.
 
-
 Affected installations
 ======================
 
 All extensions having a custom suggest wizard or providing a  :php:`renderFunc`
 are affected.
-
 
 Migration
 =========

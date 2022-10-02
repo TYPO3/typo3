@@ -16,7 +16,6 @@ This event serves as a successor for the
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout']`
 hook.
 
-
 Impact
 ======
 
@@ -25,15 +24,15 @@ frontend call should be stored in the "pages" cache.
 
 Common registration and usage for a listener:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   services:
-     MyCompany\MyPackage\EventListener\ChangeCacheTimeout:
-       tags:
-         - name: event.listener
-           identifier: 'mycompany/mypackage/cache-timeout'
+    services:
+      MyCompany\MyPackage\EventListener\ChangeCacheTimeout:
+        tags:
+          - name: event.listener
+            identifier: 'mycompany/mypackage/cache-timeout'
 
-.. code-block:: php
+..  code-block:: php
 
     <?php
 

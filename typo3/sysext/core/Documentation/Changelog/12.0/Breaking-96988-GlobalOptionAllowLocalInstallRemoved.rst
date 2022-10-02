@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96988:
+
 ============================================================
 Breaking: #96988 - Global Option "allowLocalInstall" removed
 ============================================================
@@ -23,7 +25,6 @@ protected with access for only "System Maintainers", only giving special users
 the power to modify the extension installation process, making TYPO3 more
 flexible than 15 years ago.
 
-
 Impact
 ======
 
@@ -32,13 +33,11 @@ now always possible to install an extension available in :file:`typo3conf/ext/`
 for system maintainers with the Extension Manager module for Non-Composer Mode
 TYPO3 installations.
 
-
 Affected Installations
 ======================
 
 TYPO3 Installations in Non-Composer Mode having this option turned off, which
 is very rare.
-
 
 Migration
 =========

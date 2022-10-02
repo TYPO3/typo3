@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96500:
+
 ======================================================
 Deprecation: #96500 - ContentObjectRenderer->getMailTo
 ======================================================

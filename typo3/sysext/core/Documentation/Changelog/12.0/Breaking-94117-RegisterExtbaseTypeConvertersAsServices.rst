@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-94117:
+
 ===============================================================
 Breaking: #94117 - Register Extbase type converters as services
 ===============================================================
@@ -12,7 +14,7 @@ Description
 Extbase type converters are used to convert from a simple type to an
 object or another simple type. The registration of those type converters
 is no longer done via :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter()`,
-but via container services in the extensions' :file:`Services.yaml` file.
+but via container services in the extension's :file:`Services.yaml` file.
 
 As a side effect, the type converter configuration such as `sourceType` or
 `targetType` has been moved from the :php:`TypeConverterInterface` to the
@@ -31,7 +33,6 @@ related methods:
 - :php:`getSupportedTargetType()`
 - :php:`getPriority()`
 - :php:`canConvertFrom()`
-
 
 Affected Installations
 ======================

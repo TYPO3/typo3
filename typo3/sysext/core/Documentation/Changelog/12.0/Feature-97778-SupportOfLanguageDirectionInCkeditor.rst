@@ -18,7 +18,6 @@ language of the current element.
 As fallback the page TSconfig configuration :typoscript:`RTE.config.contentsLanguageDirection = rtl`
 can be used.
 
-
 Impact
 ======
 

@@ -29,7 +29,6 @@ mitigate `Login CSRF <https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_
 Custom implementations for login templates or client-side authentication
 handling have to be adjusted to submit the required request-token.
 
-
 Affected installations
 ======================
 
@@ -40,11 +39,9 @@ Migration
 
 The :php:`\TYPO3\CMS\Core\Security\RequestToken` signed with a :php:`\TYPO3\CMS\Core\Security\Nonce`
 needs to be sent as JSON Web Token (JWT) to the server-side application handling of
-the core user authentication process. The scope needs to be :php:`core/user-auth/be`
+the Core user authentication process. The scope needs to be :php:`core/user-auth/be`
 or :php:`core/user-auth/fe` - depending on whether authentication is applied in
 the website's backend or frontend context.
-
-
 
 Example for overridden backend login HTML template (`ext:backend`)
 ------------------------------------------------------------------
@@ -69,6 +66,5 @@ Example for overridden frontend login HTML template (`ext:felogin`)
 
 More details are explained in corresponding documentation on
 :ref:`Feature #87616: Introduce CSRF-like request-token handling <feature-97305-1664099950>`.
-
 
 .. index:: Backend, Fluid, Frontend, NotScanned, ext:core

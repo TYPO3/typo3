@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97201:
+
 ==============================================================
 Breaking: #97201 - Removed hook for new content element wizard
 ==============================================================

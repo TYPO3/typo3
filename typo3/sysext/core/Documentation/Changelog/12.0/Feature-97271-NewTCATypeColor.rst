@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97271:
+
 ======================================
 Feature: #97271 - New TCA type "color"
 ======================================
@@ -35,13 +37,11 @@ The TCA type :php:`color` features the following column configuration:
 - :php:`valuePicker`: :php:`items`
 
 .. note::
-
    The value of TCA type :php:`color` columns is automatically trimmed before
    being stored in the database. Therefore, the :php:`eval=trim` option is no
    longer needed and should be removed from the TCA configuration.
 
 .. note::
-
    The :php:`valuePicker` allows to define default color codes via :php:`items`
    for a TCA type :php:`color` field.
 
@@ -53,7 +53,7 @@ The following column configuration can be overwritten by page TSconfig:
 A complete migration from :php:`renderType=colorpicker` to :php:`type=color`
 looks like the following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 
@@ -95,7 +95,6 @@ to the new TCA type and triggering a PHP :php:`E_USER_DEPRECATED` error
 where code adoption has to take place.
 
 .. note::
-
     The corresponding FormEngine class has been renamed from
     :php:`InputColorPickerElement` to :php:`ColorElement`. An entry in
     the "ClassAliasMap" has been added for extensions calling this class

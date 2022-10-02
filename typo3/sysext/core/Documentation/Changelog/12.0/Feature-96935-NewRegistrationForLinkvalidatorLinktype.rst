@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96935:
+
 =============================================================
 Feature: #96935 - New registration for linkvalidator linktype
 =============================================================

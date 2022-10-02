@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-97517:
+
 ==================================================================================
 Important: #97517 - Remove the superfluous namespace within the form configuration
 ==================================================================================
@@ -20,7 +22,7 @@ Migration
 
 This is how the legacy configuration with vendor namespace looks like:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     TYPO3:
       CMS:
@@ -33,7 +35,7 @@ This is how the legacy configuration with vendor namespace looks like:
 
 This is how the new (preferred) configuration without vendor namespace looks like:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     prototypes:
       standard:

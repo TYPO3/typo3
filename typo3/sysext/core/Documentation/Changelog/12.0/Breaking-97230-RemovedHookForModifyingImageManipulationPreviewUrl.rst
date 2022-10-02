@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97230:
+
 ============================================================================
 Breaking: #97230 - Removed hook for modifying image manipulation preview URL
 ============================================================================

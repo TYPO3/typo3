@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97451:
+
 =======================================================
 Breaking: #97451 - Removed BackendController page hooks
 =======================================================

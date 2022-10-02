@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82809:
+
 =======================================================================================
 Feature: #82809 - Make ExtensionUtility::registerPlugin method return plugin signature.
 =======================================================================================
@@ -21,7 +23,7 @@ method therefore now returns the generated plugin signature as :php:`string`.
 Example
 ^^^^^^^
 
-.. code-block:: php
+..  code-block:: php
 
     $pluginSignature = ExtensionUtility::registerPlugin(
         'indexed_search',
@@ -32,7 +34,7 @@ Example
 The above call returns the plugin signature: `indexedsearch_pi2`. This could
 then be used for, e.g., adding a FlexForm:
 
-.. code-block:: php
+..  code-block:: php
 
     ExtensionManagementUtility::addPiFlexFormValue(
         $pluginSignature,

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96205:
+
 ==================================================================
 Breaking: #96205 - Removal of last relativeToCurrentScript remains
 ==================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96982:
+
 ========================================================
 Breaking: #96982 - Removed support for global extensions
 ========================================================
@@ -24,7 +26,6 @@ a proper way.
 
 This functionality including the feature toggle have been removed in TYPO3 v12.0.
 
-
 Impact
 ======
 
@@ -35,13 +36,11 @@ The global option to enable this feature will be removed from
 :file:`LocalConfiguration.php` automatically once the Install Tool / Maintenance module
 is loaded the next time, if the option is activated.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations having the global option enabled, and have loaded extensions
 in :file:`typo3/ext/`, which is unlikely in 2022.
-
 
 Migration
 =========

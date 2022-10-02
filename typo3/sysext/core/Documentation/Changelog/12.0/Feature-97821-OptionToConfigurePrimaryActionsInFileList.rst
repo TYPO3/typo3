@@ -21,7 +21,6 @@ Example:
 
     options.file_list.primaryActions = view,metadata,copy,cut,delete
 
-
 Impact
 ======
 

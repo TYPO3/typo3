@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-97145:
+
 ================================================================================
 Important: #97145 - Serialized log_data in sys_log migrated to JSON-encoded data
 ================================================================================

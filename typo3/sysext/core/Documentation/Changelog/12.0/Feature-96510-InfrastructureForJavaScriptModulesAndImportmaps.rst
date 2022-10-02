@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96510:
+
 ======================================================================
 Feature: #96510 - Infrastructure for JavaScript modules and importmaps
 ======================================================================
@@ -14,7 +16,7 @@ and frontend context. JavaScript node-js style path resolutions are managed by
 `importmaps`_, which allow web pages to control the behavior of JavaScript imports.
 
 By the time of writing importmaps are supported natively by Google Chrome,
-a polyfill is available for Firefox and Safari and included by TYPO3 core
+a polyfill is available for Firefox and Safari and included by TYPO3 Core
 and applied whenever an importmap is emitted.
 
 RequireJS is shimmed to prefer ES6 modules if available, allowing any extension
@@ -42,9 +44,9 @@ Configuration
 A simple configuration example for an extension that maps
 the `Public/JavaScript` folder to an import prefix `@vendor/my-extensions`:
 
-.. code-block:: php
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/JavaScriptModules.php
 
-    # Configuration/JavaScriptModules.php
     <?php
 
     return [
@@ -52,19 +54,18 @@ the `Public/JavaScript` folder to an import prefix `@vendor/my-extensions`:
         // in case a module imports from another package
         'dependencies' => ['backend'],
         'imports' => [
-            // recursive definiton, all *.js files in this folder are import-mapped
+            // recursive definition, all *.js files in this folder are import-mapped
             // trailing slash is required per importmap-specification
             '@vendor/my-extension/' => 'EXT:my_extension/Resources/Public/JavaScript/',
         ],
     ];
 
-
 Complex configuration example containing recursive-lookup exclusions,
 third-party library definitions and overwrites:
 
-.. code-block:: php
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/JavaScriptModules.php
 
-    # Configuration/JavaScriptModules.php
     <?php
 
     return [
@@ -78,14 +79,13 @@ third-party library definitions and overwrites:
                     'EXT:my_extension/Resources/Public/JavaScript/Overrides/',
                 ],
             ],
-            # Adding a third party package
+            # Adding a third-party package
             'thirdpartypkg' => 'EXT:my_extension/Resources/Public/JavaScript/Contrib/thidpartypkg/index.js',
             'thidpartypkg/' => 'EXT:my_extension/Resources/Public/JavaScript/Contrib/thirdpartypkg/',
             # Overriding a file from another package
             'TYPO3/CMS/Backend/Modal.js' => 'EXT:my_extension/Resources/Public/JavaScript/Overrides/BackendModal.js',
         ],
     ];
-
 
 Usage
 -----
@@ -94,7 +94,7 @@ A module can be added to the current page response either via
 :php:`PageRenderer` or as :php:`JavaScriptModuleInstruction` via
 :php:`JavaScriptRenderer`:
 
-.. code-block:: php
+..  code-block:: php
 
     // via PageRenderer
     $this->packageRenderer->loadJavaScriptModule('@vendor/my-extension/example.js');
@@ -104,18 +104,16 @@ A module can be added to the current page response either via
         JavaScriptModuleInstruction::create('@vendor/my-extension/example.js')
     );
 
-
 In Fluid template the `includeJavaScriptModules` property of the
 :html:`<f:be.pageRenderer>` ViewHelper may be used:
 
-.. code-block:: xml
+..  code-block:: xml
 
-   <f:be.pageRenderer
-      includeJavaScriptModules="{
-         0: '@vendor/my-extension/example.js'
-      }"
-   />
-
+    <f:be.pageRenderer
+       includeJavaScriptModules="{
+          0: '@vendor/my-extension/example.js'
+       }"
+    />
 
 .. _`importmaps`: https://wicg.github.io/import-maps/
 

@@ -11,14 +11,13 @@ See :issue:`97926`
 Description
 ===========
 
-Extbase's Persistence functionality allows to configure the ORM queries via QuerySettings.
+Extbase's persistence functionality allows to configure the ORM queries via QuerySettings.
 
 QuerySettings now accept to use a custom LanguageAspect (known from the Context API)
 to define the language ID and the overlay behaviour.
 
 This is more consistent to other places within TYPO3 Core to define translation behaviour when
 querying records.
-
 
 Impact
 ======
@@ -28,9 +27,11 @@ in any Repository class:
 
 Example to use the fallback to the default language when working with overlays:
 
-.. code-block:: php
+..  code-block:: php
 
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
+    $query = $this->createQuery();
+    $query->getQuerySettings()->setLanguageAspect(
+        new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED)
+    );
 
 .. index:: PHP-API, ext:extbase

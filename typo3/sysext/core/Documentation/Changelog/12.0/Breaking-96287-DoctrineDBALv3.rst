@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96287:
+
 ===================================
 Breaking: #96287 - Doctrine DBAL v3
 ===================================
@@ -11,7 +13,6 @@ Description
 
 TYPO3 v12.0 has updated its Database Abstraction package based on Doctrine
 DBAL to the next major version Doctrine DBAL v3.
-
 
 Impact
 ======
@@ -27,15 +28,12 @@ In addition, most database APIs which TYPO3 provides as wrappers around
 the existing functionality is already available in TYPO3 v11 and
 continue to work in TYPO3 v12.
 
-
-
 Affected Installations
 ======================
 
 TYPO3 installations with custom third-party extensions using TYPO3's
 Database Abstraction functionality, or extensions using
 the Doctrine DBAL API directly.
-
 
 Migration
 =========
@@ -48,7 +46,7 @@ now have more explicit APIs when querying the database.
 
 Examples:
 
-.. code-block:: php
+..  code-block:: php
 
     $result = $queryBuilder
       ->select(...)

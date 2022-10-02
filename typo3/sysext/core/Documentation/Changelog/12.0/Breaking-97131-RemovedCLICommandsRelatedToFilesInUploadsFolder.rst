@@ -21,20 +21,17 @@ removed as they do not serve any use anymore:
 * cleanup:lostfiles
 * cleanup:missingfiles
 
-
 Impact
 ======
 
 Calling the CLI commands will result in an CLI exit code > 0,
 as they have been removed.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations still having CLI tools using the CLI commands,
 which serve no purpose anymore.
-
 
 Migration
 =========

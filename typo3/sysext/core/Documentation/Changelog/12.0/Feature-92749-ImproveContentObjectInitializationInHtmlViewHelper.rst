@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92749:
+
 =========================================================================
 Feature: #92749 - Improve content object initialization in HtmlViewHelper
 =========================================================================
@@ -30,11 +32,16 @@ Example
 
 Access a news record title with `CURRENT:1` and resolve a marker:
 
-.. code-block:: html
+..  code-block:: html
 
-    <f:format.html parseFuncTSPath="lib.news" data="{uid: 1, title: \'Great news\'}" currentValueKey="title">###PROJECT### news:</f:format.html>
+    <f:format.html
+            parseFuncTSPath="lib.news"
+            data="{uid: 1, title: \'Great news\'}"
+            currentValueKey="title">
+        ###PROJECT### news:
+    </f:format.html>
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     constants.PROJECT = TYPO3
     lib.news {
@@ -46,7 +53,7 @@ Access a news record title with `CURRENT:1` and resolve a marker:
 
 This will result in:
 
-.. code-block:: html
+..  code-block:: html
 
     TYPO3 news: Great news
 

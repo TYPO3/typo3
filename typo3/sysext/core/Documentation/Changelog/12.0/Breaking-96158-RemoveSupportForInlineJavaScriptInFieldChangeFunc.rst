@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96158:
+
 ==========================================================================
 Breaking: #96158 - Remove support for inline JavaScript in fieldChangeFunc
 ==========================================================================
@@ -17,7 +19,6 @@ not supported anymore - values assigned to `fieldChangeFunc` items have to
 implement :php:`\TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface`
 which allows to declare the behavior in a structured way.
 
-
 Impact
 ======
 
@@ -25,19 +26,17 @@ Assigning scalar values to `fieldChangeFunc` items - without using
 :php:`\TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface` - is not
 supported anymore and will lead to PHP type errors.
 
-
 Affected Installations
 ======================
 
 Installations implementing custom :php:`FormEngine` components (wizards, nodes,
 render-types, ...) that provide inline JavaScript using `fieldChangeFunc`.
 
-.. code-block:: php
+..  code-block:: php
 
     // examples
     $this->data['parameterArray']['fieldChangeFunc']['example'] = "alert('demo');";
     $parameterArray['fieldChangeFunc']['example'] = "alert('demo');";
-
 
 Migration
 =========
@@ -53,7 +52,7 @@ would inline JavaScript as a fallback in TYPO3 v11.
 
 Thus, basically scalar assignments like...
 
-.. code-block:: php
+..  code-block:: php
 
     // examples
     $this->data['parameterArray']['fieldChangeFunc']['example'] = "alert('demo');";
@@ -61,11 +60,10 @@ Thus, basically scalar assignments like...
 
 ... have to be replaced by custom :php:`OnFieldChangeInterface` instances...
 
-.. code-block:: php
+..  code-block:: php
 
     // examples
     $this->data['parameterArray']['fieldChangeFunc']['example'] = new AlertOnFieldChange('demo');
     $parameterArray['fieldChangeFunc']['example'] = new AlertOnFieldChange('demo');
-
 
 .. index:: Backend, JavaScript, TCA, NotScanned, ext:backend

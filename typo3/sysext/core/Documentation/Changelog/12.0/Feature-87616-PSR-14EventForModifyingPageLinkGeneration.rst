@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87616:
+
 =================================================================
 Feature: #87616 - PSR-14 event for modifying Page Link Generation
 =================================================================
@@ -22,18 +24,18 @@ The page to be linked to can also be modified, for example to link to a differen
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Frontend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/frontend/modify-page-link-configuration'
+    MyVendor\MyPackage\Frontend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/frontend/modify-page-link-configuration'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent;
 

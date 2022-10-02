@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97231:
+
 ========================================================================
 Breaking: #97231 - Removed hook for manipulating inline element controls
 ========================================================================

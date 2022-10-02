@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96688:
+
 ====================================================
 Feature: #96688 - Attributes for Extbase Annotations
 ====================================================
@@ -15,13 +17,12 @@ For more info on attributes see https://stitcher.io/blog/attributes-in-php-8 and
 
 Extbase annotations are already nearly 1:1 translatable to attributes.
 
-
 Impact
 ======
 
 In addition to their usage as annotations, the following Extbase annotations have been enriched for usage as attributes:
 
-.. code-block:: php
+..  code-block:: php
 
     @Extbase\ORM\Transient
     @Extbase\ORM\Cascade

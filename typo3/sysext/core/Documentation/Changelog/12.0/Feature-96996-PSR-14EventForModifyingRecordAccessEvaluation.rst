@@ -24,27 +24,28 @@ evaluation.
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/set-access-granted'
+    MyVendor\MyPackage\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/set-access-granted'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Domain\Access\RecordAccessGrantedEvent;
 
-    class MyEventListener {
-
+    class MyEventListener
+    {
         public function __invoke(RecordAccessGrantedEvent $event): void
         {
             // Manually set access granted
-            if ($event->getTable() === 'my_table' && ($event->getRecord()['custom_access_field'] ?? false)) {
+            if ($event->getTable() === 'my_table'
+                && ($event->getRecord()['custom_access_field'] ?? false)) {
                 $event->setAccessGranted(true);
             }
 

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97217:
+
 ============================================================
 Deprecation: #97217 - Moved TypoLinkCodecService to EXT:core
 ============================================================

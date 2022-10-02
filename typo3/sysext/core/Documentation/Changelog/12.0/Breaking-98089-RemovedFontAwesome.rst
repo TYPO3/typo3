@@ -24,12 +24,10 @@ Impact
 Using the aforementioned icon provider to register icons is not possible
 anymore. Also, any direct usage of :css:`fa-*` classes will not work anymore.
 
-
 Affected installations
 ======================
 
 All installations relying on FontAwesome are affected.
-
 
 Migration
 =========

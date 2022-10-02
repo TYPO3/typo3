@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96222:
+
 ======================================================
 Breaking: #96222 - Add getOptions() to WidgetInterface
 ======================================================
@@ -29,13 +31,12 @@ Affected Installations
 
 All installations using custom dashboard widgets.
 
-
 Migration
 =========
 
 Add the :php:`getOptions()` method to all of your custom widget classes.
 
-.. code-block:: php
+..  code-block:: php
 
     public function getOptions(): array
     {

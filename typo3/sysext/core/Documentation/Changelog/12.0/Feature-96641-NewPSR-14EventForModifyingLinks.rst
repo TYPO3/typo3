@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96641:
+
 ======================================================
 Feature: #96641 - New PSR-14 event for modifying links
 ======================================================
@@ -28,7 +30,6 @@ to add additional attributes (see example below) to links.
 
 All mentioned hooks have been :doc:`removed <../12.0/Breaking-96641-TypoLinkRelatedHooksRemoved>`.
 
-
 Impact
 ======
 
@@ -43,7 +44,7 @@ replacement functionality for adding, changing or removing attributes.
 To register an event listener to the new event, use the following code in your
 :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     services:
       MyCompany\MyPackage\TypoLink\LinkModifier:
@@ -51,10 +52,9 @@ To register an event listener to the new event, use the following code in your
           - name: event.listener
             identifier: 'myLoadedListener'
 
-
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent;
 

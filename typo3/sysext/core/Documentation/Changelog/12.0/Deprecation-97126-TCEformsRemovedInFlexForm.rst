@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97126:
+
 ==================================================
 Deprecation: #97126 - TCEforms removed in FlexForm
 ==================================================
@@ -13,14 +15,12 @@ The `<TCEforms>` tag is no longer necessary (and allowed) in FlexForm
 definitions. It was used to wrap TCA configuration and sheet
 titles / descriptions. This wrapping must be omitted now.
 
-
 Impact
 ======
 
 Not omitting `TCEforms` will trigger a deprecation warning and log a message in
 the deprecation log. An automatic migration is in place, which will eventually
 be removed in upcoming TYPO3 versions.
-
 
 Affected Installations
 ======================
@@ -30,7 +30,6 @@ Affected Installations
 
 *  Extensions, which extend the YAML configuration for forms with new fields.
 
-
 Migration
 =========
 
@@ -39,7 +38,7 @@ configuration moves one level up.
 
 Before:
 
-.. code-block:: xml
+..  code-block:: xml
 
     <T3DataStructure>
         <ROOT>
@@ -68,7 +67,7 @@ Before:
 
 After:
 
-.. code-block:: xml
+..  code-block:: xml
 
     <T3DataStructure>
         <ROOT>
@@ -95,7 +94,7 @@ Migration for form YAML configuration:
 
 Before:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     TYPO3:
       CMS:
@@ -118,7 +117,7 @@ Before:
 
 After:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     TYPO3:
       CMS:
@@ -137,6 +136,5 @@ After:
                                 label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                                 config:
                                   type: input
-
 
 .. index:: FlexForm, TCA, NotScanned, ext:core

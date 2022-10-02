@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96806:
+
 ========================================================
 Breaking: #96806 - Removed hook for modifying button bar
 ========================================================
@@ -18,12 +20,10 @@ Impact
 Any hook implementation registered is not executed anymore in
 TYPO3 v12.0+. The extension scanner will report possible usages.
 
-
 Affected Installations
 ======================
 
 All TYPO3 installations using this hook in custom extension code.
-
 
 Migration
 =========

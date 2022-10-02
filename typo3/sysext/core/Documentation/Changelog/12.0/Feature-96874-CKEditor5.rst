@@ -26,7 +26,6 @@ CKEditor 5:
 
 https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html
 
-
 Impact
 ======
 
@@ -53,134 +52,143 @@ Configuration Options
 
 Some options have been adapted, which are rarely used, but now documented here:
 
-* editor.config.defaultContentLanguage is migrated to editor.config.language.content
-* editor.config.defaultLanguage is migrated to editor.config.language.ui
+*    editor.config.defaultContentLanguage is migrated to editor.config.language.content
+*    editor.config.defaultLanguage is migrated to editor.config.language.ui
 
 The following options are not needed anymore in CKEditor 5:
 
-* editor.config.uiColor
-* editor.config.removeDialogTabs
-* editor.config.entities_latin
-* editor.config.entities
-* editor.config.extraAllowedContent (covered via GeneralHTMLSupport plugin)
+*    editor.config.uiColor
+*    editor.config.removeDialogTabs
+*    editor.config.entities_latin
+*    editor.config.entities
+*    editor.config.extraAllowedContent (covered via GeneralHTMLSupport plugin)
 
-More migration options can be found here: https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html
+More migration options can be found here:
+https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html
 
 Custom configuration to the WordCount plugin is automatically migrated
 from `editor.config.wordcount` to `editor.config.wordCount`:
 
-* `editor.config.justifyClasses` was used to add classes to the alignment types,
-  which is migrated to `editor.config.alignment`. Example:
+*   `editor.config.justifyClasses` was used to add classes to the alignment types,
+    which is migrated to `editor.config.alignment`. Example:
 
-    alignment:
-      options:
-        - { name: 'left', className: 'text-left' }
-        - { name: 'center', className: 'text-center' }
-        - { name: 'right', className: 'text-right' }
-        - { name: 'justify', className: 'text-justify' }
+    ..  code-block:: yaml
 
-  in addition, the extraPlugins `justify` is not needed anymore. The new
-  plugin called `Alignment` is always active.
+        alignment:
+          options:
+            - { name: 'left', className: 'text-left' }
+            - { name: 'center', className: 'text-center' }
+            - { name: 'right', className: 'text-right' }
+            - { name: 'justify', className: 'text-justify' }
 
-* `editor.config.format_tags` was used to populate various block-level elements
-  with a syntax like `p;h1;h2;h3;h4;h5;pre`. This is now moved to `editor.config.heading`:
+   in addition, the extraPlugins `justify` is not needed anymore. The new
+   plugin called `Alignment` is always active.
 
-    heading:
-      options:
-        - { model: 'paragraph', title: 'Paragraph' }
-        - { model: 'heading2', view: 'h2', title: 'Heading 2' }
-        - { model: 'heading3', view: 'h3', title: 'Heading 3' }
-        - { model: 'formatted', view: 'pre', title: 'My Pre-Formatted Text' }
+*   `editor.config.format_tags` was used to populate various block-level elements
+    with a syntax like `p;h1;h2;h3;h4;h5;pre`. This is now moved to `editor.config.heading`:
 
-* `editor.config.removeButtons` items have a different naming now, and
-  are moved to `editor.config.toolbar.removeItems`. This is however not needed
-  anymore since toolbarGroups are removed and each button can now be declared
-  properly.
+    ..  code-block:: yaml
 
-* `editor.config.stylesSet` which is used for the dropdown of custom
-  style elements, is moved to `config.editor.config.style.definitions`
-  with a similar syntax.
+        heading:
+          options:
+            - { model: 'paragraph', title: 'Paragraph' }
+            - { model: 'heading2', view: 'h2', title: 'Heading 2' }
+            - { model: 'heading3', view: 'h3', title: 'Heading 3' }
+            - { model: 'formatted', view: 'pre', title: 'My Pre-Formatted Text' }
 
-    style:
-      definitions:
-        # block level styles
-        - { name: "Lead", element: "p", classes: ['lead'] }
-        - { name: "Small", element: "small", classes: [] }
-        # Inline styles
-        - { name: "Muted", element: "span", classes: ['text-muted'] }
+*   `editor.config.removeButtons` items have a different naming now, and
+    are moved to `editor.config.toolbar.removeItems`. This is however not needed
+    anymore since toolbarGroups are removed and each button can now be declared
+    properly.
 
-  Please note that as of today, the "classes" attribute must be used,
-  and custom "style" attribute does not work.
+*   `editor.config.stylesSet` which is used for the dropdown of custom
+    style elements, is moved to `config.editor.config.style.definitions`
+    with a similar syntax.
 
-* `editor.config.toolbarGroups` was previously used to create the buttons in the
-  toolbar. This was used in conjunction with `editor.config.removeButtons`.
-  Grouping is no longer available, but instead all buttons are listed
-  separately with minor naming changes.
-  The new option is now named `editor.config.toolbar` with `items` and
-  `removeItems` as possible lists of buttons to show or hide.
+    ..  code-block:: yaml
 
-  Functionality like "Cut/Copy/Paste" is now implicitly built-in without the
-  need of cluttering the toolbar.
+        style:
+          definitions:
+            # block level styles
+            - { name: "Lead", element: "p", classes: ['lead'] }
+            - { name: "Small", element: "small", classes: [] }
+            # Inline styles
+            - { name: "Muted", element: "span", classes: ['text-muted'] }
 
-  Example from TYPO3's "Full" RTE configuration Yaml file:
+    Please note that as of today, the "classes" attribute must be used,
+    and custom "style" attribute does not work.
 
-    toolbar:
-      items:
-        - clipboard
-        - undo
-        - redo
-        # grouping separator
-        - '|'
-        - find
-        - selectAll
-        - '|'
-        - Link
-        - SoftHyphen
-        - insertTable
-        - tableColumn
-        - tableRow
-        - mergeTableCells
-        - '|'
-        - sourceEditing
-        - horizontalLine
-        # line break
-        - '-'
-        - bold
-        - italic
-        - underline
-        - strikethrough
-        - subscript
-        - superscript
-        - alignment
-        - removeFormat
-        - '|'
-        - bulletedList
-        - numberedList
-        - blockQuote
-        - indent
-        - outdent
-        - '|'
-        - specialCharacters
-        - '-'
-        - style
-        - heading
+*   `editor.config.toolbarGroups` was previously used to create the buttons in the
+    toolbar. This was used in conjunction with `editor.config.removeButtons`.
+    Grouping is no longer available, but instead all buttons are listed
+    separately with minor naming changes.
+    The new option is now named `editor.config.toolbar` with `items` and
+    `removeItems` as possible lists of buttons to show or hide.
 
+    Functionality like "Cut/Copy/Paste" is now implicitly built-in without the
+    need of cluttering the toolbar.
 
-  Removal of single buttons via `editor.config.removeButtons` is now of limited
-  need, however a list of `editor.config.toolbar.removeItems` can be given.
+    Example from TYPO3's "Full" RTE configuration Yaml file:
 
-* `editor.config.stylesSet` which is used for the dropdown of custom
-  style elements, is moved to `config.editor.config.style.definitions`
-  with a similar syntax.
+    ..  code-block:: yaml
 
-    style:
-      definitions:
-        # block level styles
-        - { name: "Lead", element: "p", classes: ['lead'] }
-        - { name: "Small", element: "small", classes: [] }
-        # Inline styles
-        - { name: "Muted", element: "span", classes: ['text-muted'] }
+        toolbar:
+          items:
+            - clipboard
+            - undo
+            - redo
+            # grouping separator
+            - '|'
+            - find
+            - selectAll
+            - '|'
+            - Link
+            - SoftHyphen
+            - insertTable
+            - tableColumn
+            - tableRow
+            - mergeTableCells
+            - '|'
+            - sourceEditing
+            - horizontalLine
+            # line break
+            - '-'
+            - bold
+            - italic
+            - underline
+            - strikethrough
+            - subscript
+            - superscript
+            - alignment
+            - removeFormat
+            - '|'
+            - bulletedList
+            - numberedList
+            - blockQuote
+            - indent
+            - outdent
+            - '|'
+            - specialCharacters
+            - '-'
+            - style
+            - heading
 
+    Removal of single buttons via `editor.config.removeButtons` is now of limited
+    need, however a list of `editor.config.toolbar.removeItems` can be given.
+
+*   `editor.config.stylesSet` which is used for the dropdown of custom
+    style elements, is moved to `config.editor.config.style.definitions`
+    with a similar syntax.
+
+    ..  code-block:: yaml
+
+        style:
+          definitions:
+            # block level styles
+            - { name: "Lead", element: "p", classes: ['lead'] }
+            - { name: "Small", element: "small", classes: [] }
+            # Inline styles
+            - { name: "Muted", element: "span", classes: ['text-muted'] }
 
 CKEditor 5 integration is still experimental and subject to change to adapt
 to further needs until TYPO3 v12 LTS.

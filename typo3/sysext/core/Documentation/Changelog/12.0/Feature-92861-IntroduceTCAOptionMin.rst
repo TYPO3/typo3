@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92861:
+
 ============================================
 Feature: #92861 - Introduce TCA option "min"
 ============================================

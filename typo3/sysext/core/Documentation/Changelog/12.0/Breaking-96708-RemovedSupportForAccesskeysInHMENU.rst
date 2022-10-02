@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96708:
+
 ==========================================================
 Breaking: #96708 - Removed support for accesskeys in HMENU
 ==========================================================
@@ -26,7 +28,6 @@ TypoScript property :typoscript:`HMENU.accessKey = 1` was set.
 Along with the accessKey functionality, the public property
 :php:`TypoScriptFrontendController->accessKey` has been removed.
 
-
 Impact
 ======
 
@@ -34,7 +35,6 @@ Setting the TypoScript option has no effect anymore.
 
 Accessing the removed public property will trigger a PHP warning. The
 extension scanner will detect usages as weak match.
-
 
 Affected Installations
 ======================
@@ -44,7 +44,6 @@ accessing the :php:`accessKey` property of :php:`TypoScriptFrontendController`.
 
 TYPO3 installations using the global :html:`accesskey` HTML attribute in
 their own code will still work as before.
-
 
 Migration
 =========

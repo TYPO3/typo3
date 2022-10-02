@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97451:
+
 ==================================================================
 Feature: #97451 - PSR-14 events for modifying backend page content
 ==================================================================
@@ -8,6 +10,7 @@ See :issue:`97451`
 
 Description
 ===========
+
 A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent` has
 been introduced which serves as a direct replacement for the now removed
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructorPostProcess']`,
@@ -23,7 +26,7 @@ Example
 
 Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     MyVendor\MyPackage\MyEventListener:
       tags:
@@ -32,7 +35,7 @@ Registration of the event in your extension's :file:`Services.yaml`:
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 

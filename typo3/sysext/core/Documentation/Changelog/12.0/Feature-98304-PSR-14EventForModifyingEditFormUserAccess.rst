@@ -16,42 +16,43 @@ hook.
 
 In contrast to the removed hook, the new event provides the full
 database row of the record in question next to the exception, which
-might have been set by the core. Additionally, the event allows to
+might have been set by the Core. Additionally, the event allows to
 modify the user access decision in an object-oriented way, using
 convenience methods.
 
 To modify the user access, the following methods are available:
 
-- :php:`allowUserAccess()`: Allows user access to the editing form
-- :php:`setLinkExplanation()`: Denies user access to the editing form
-- :php:`doesUserHaveAccess()`: Returns the current user access state
-- :php:`getAccessDeniedException()`: If core's DataProvider previously denied access, this returns the corresponding exception, :php:`null` otherwise
+*   :php:`allowUserAccess()`: Allows user access to the editing form
+*   :php:`setLinkExplanation()`: Denies user access to the editing form
+*   :php:`doesUserHaveAccess()`: Returns the current user access state
+*   :php:`getAccessDeniedException()`: If Core's DataProvider previously denied
+    access, this returns the corresponding exception, :php:`null` otherwise
 
 The following additional methods can be used for further context:
 
-- :php:`getTableName()`: Returns the table name of the record in question
-- :php:`getCommand()`: Returns the requested command, either `new` or `edit`
-- :php:`getDatabaseRow()`: Returns the record's database row
+*   :php:`getTableName()`: Returns the table name of the record in question
+*   :php:`getCommand()`: Returns the requested command, either `new` or `edit`
+*   :php:`getDatabaseRow()`: Returns the record's database row
 
 In case any listener to the new event denies user access, while it was initially
-allowed by core, the :php:`TYPO3\CMS\Backend\Form\Exception\AccessDeniedListenerException`
+allowed by Core, the :php:`TYPO3\CMS\Backend\Form\Exception\AccessDeniedListenerException`
 will be thrown.
 
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\Form\ModifyEditFormUserAccessEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-edit-form-user-access'
+    MyVendor\MyPackage\Backend\Form\ModifyEditFormUserAccessEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-edit-form-user-access'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 

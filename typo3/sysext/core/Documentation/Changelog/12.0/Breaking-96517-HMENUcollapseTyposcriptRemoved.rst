@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96517:
+
 ====================================================
 Breaking: #96517 - HMENU.collapse Typoscript removed
 ====================================================
@@ -16,19 +18,16 @@ When set, active :typoscript:`HMENU` items previously linked to their parent pag
 which was primarily a use-case for :typoscript:`GMENU_LAYERS`, which was
 removed in TYPO3 6.0.
 
-
 Impact
 ======
 
 Setting this TypoScript option has no effect anymore.
-
 
 Affected Installations
 ======================
 
 TYPO3 installations with :typoscript:`HMENU` definitions having this option
 set which is highly unlikely.
-
 
 Migration
 =========

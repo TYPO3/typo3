@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96733:
+
 =====================================================
 Feature: #96733 - New backend module registration API
 =====================================================
@@ -24,12 +26,12 @@ means the state is fixed and can't be changed at runtime. This approach
 follows the general Core strategy (see e.g. :doc:`Icons.php <../11.4/Feature-94692-RegisteringIconsViaServiceContainer>`),
 since it highly improves the loading speed of every request as the
 registration can be handled at once and cached during warmup of the
-core caches. Besides caching, this will also allow additional features
+Core caches. Besides caching, this will also allow additional features
 in the future, which were blocked due to the loose state.
 
 Previous configuration in :file:`ext_tables.php`:
 
-.. code-block:: php
+..  code-block:: php
 
     ExtensionManagementUtility::addModule(
         'web',
@@ -66,7 +68,7 @@ Previous configuration in :file:`ext_tables.php`:
 
 Will now be registered in :file:`Configuration/Backend/Modules.php`:
 
-.. code-block:: php
+..  code-block:: php
 
     return [
         'web_module' => [
@@ -109,7 +111,6 @@ Will now be registered in :file:`Configuration/Backend/Modules.php`:
     use the `mainModule_subModule` pattern, since a possible parent
     will be defined with the `parent` option.
 
-
 Module configuration options
 ============================
 
@@ -124,7 +125,7 @@ Module configuration options
 |                                                          | `/module/<mainModule>/<subModule>` pattern, if not set.          |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | standalone (:php:`bool`)                                 | Whether the module is a standalone module (parent without        |
-|                                                          | submodules).                                                    |
+|                                                          | submodules).                                                     |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | access (:php:`string`)                                   | Can be `user` (editor permissions), `admin`, or                  |
 |                                                          | `systemMaintainer`.                                              |
@@ -237,16 +238,16 @@ register the module.
 
 Registration of an event listener in the :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\ModifyModuleIcon:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-module-icon'
+    MyVendor\MyPackage\Backend\ModifyModuleIcon:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-module-icon'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Module\BeforeModuleCreationEvent;
 
@@ -282,7 +283,6 @@ BeforeModuleCreationEvent methods
 | setConfigurationValue() | :php:`$key`           | Updates the configuration :php:`$key` with the     |
 |                         | :php:`$value`         | given :php:`value`.                                |
 +-------------------------+-----------------------+----------------------------------------------------+
-
 
 New ModuleProvider API
 =======================
@@ -420,7 +420,7 @@ relation handling (main modules and submodules).
 Impact
 ======
 
-Registration of backend modules is now done in extensions'
+Registration of backend modules is now done in extension's
 :file:`Configuration/Backend/Modules.php` file. This allows
 to have all modules registered at build-time.
 

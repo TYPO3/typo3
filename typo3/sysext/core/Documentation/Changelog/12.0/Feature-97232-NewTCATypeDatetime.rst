@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97232:
+
 =========================================
 Feature: #97232 - New TCA type "datetime"
 =========================================
@@ -57,7 +59,7 @@ The following column configuration can be overwritten by page TSconfig:
 A complete migration from :php:`renderType=inputDateTime` to :php:`type=datetime`
 looks like the following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 
@@ -99,10 +101,10 @@ where code adoption has to take place.
     extension scanner will report any usage, which should then be migrated.
 
 Automatic database fields
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 TYPO3 automatically creates database fields for TCA type :php:`datetime`
-columns, if they have not already been defined in an extensions'
+columns, if they have not already been defined in an extension's
 :file:`ext_tables.sql` file. This also supports columns, having a
 native database type (:php:`dbType`) defined. Fields without a native
 type always define :sql:`default 0` and are always signed (to allow

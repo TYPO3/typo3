@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96351:
+
 ============================================================================
 Breaking: #96351 - Unused TemplateService->updateRootlineData method removed
 ============================================================================
@@ -19,12 +21,10 @@ then the page translations were loaded accordingly.
 Since TYPO3 v11 the language is resolved earlier, at the same
 time as the page ID, and the mechanism became obsolete.
 
-
 Impact
 ======
 
 Calling the method in PHP will throw a fatal PHP error, as the method does not exist anymore.
-
 
 Affected Installations
 ======================
@@ -32,7 +32,6 @@ Affected Installations
 TYPO3 installations, mainly legacy installations with legacy
 extensions using this method to boot up their own TypoScript
 parsing.
-
 
 Migration
 =========

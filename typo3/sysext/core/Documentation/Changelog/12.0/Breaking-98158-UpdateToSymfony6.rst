@@ -14,22 +14,20 @@ Description
 TYPO3 Core now ships with Symfony 6.1. Previously TYPO3 v11 used Symfony Components
 in version 5.4.
 
-
 Impact
 ======
 
-Some PHP code now might need to consider other types, especially regarding PHP classes which might be extended or used directly, where types for arguments are used.
+Some PHP code now might need to consider other types, especially regarding PHP
+classes which might be extended or used directly, where types for arguments are used.
 
 One example is that all CLI Commands (used in custom extensions) now need to define
-an "int" as return type of the :php:`execute()` method, otherwise the CLI
+an :php:`int` as return type of the :php:`execute()` method, otherwise the CLI
 command will not be executed anymore.
-
 
 Affected installations
 ======================
 
 TYPO3 Installations with extensions making heavy use of Symfony components directly.
-
 
 Migration
 =========

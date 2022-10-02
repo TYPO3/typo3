@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96935:
+
 =============================================================================
 Breaking: #96935 - Register linkvalidator linktypes via service configuration
 =============================================================================
@@ -34,7 +36,6 @@ is not evaluated anymore.
 The :php:`LinktypeInterface` is extended for
 :php:`public function getIdentifier(): string`.
 
-
 Affected Installations
 ======================
 
@@ -52,7 +53,7 @@ from your :file:`ext_localconf.php` file.
 If :yaml:`autoconfigure` is not enabled in your :file:`Configuration/Services.(yaml|php)`,
 add the tag :yaml:`linkvalidator.linktype` manually to your `linktype` service.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     Vendor\Extension\Linktype\MyCustomLinktype:
       tags:

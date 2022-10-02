@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96526:
+
 ==================================================================
 Breaking: #96526 - Removed hooks for modifying page module content
 ==================================================================

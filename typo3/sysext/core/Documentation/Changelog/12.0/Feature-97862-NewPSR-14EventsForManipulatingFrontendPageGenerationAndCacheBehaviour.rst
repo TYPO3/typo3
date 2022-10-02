@@ -29,18 +29,18 @@ generated in the TYPO3 Frontend.
 Example
 =======
 
-Registration of the `AfterCacheableContentIsGeneratedEvent` in your extensions' :file:`Services.yaml`:
+Registration of the `AfterCacheableContentIsGeneratedEvent` in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/content-modifier'
+    MyVendor\MyPackage\Backend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/content-modifier'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96107:
+
 ===================================================
 Breaking: #96107 - Deprecated functionality removed
 ===================================================
@@ -352,7 +354,7 @@ The following features are now always enabled:
 The following features have been removed:
 
 - Extbase switchable controller actions
-- Upgrade wizard "Migrate felogin plugins to use prefixed flexform keys"
+- Upgrade wizard "Migrate felogin plugins to use prefixed FlexForm keys"
 - Upgrade wizard "Migrate felogin plugins to use Extbase CType"
 - Upgrade wizard "Install extension 'feedit' from TER"
 - Upgrade wizard "Install extension 'sys_action' from TER"
@@ -364,14 +366,14 @@ The following fallbacks have been removed:
 - Usage of the :html:`t3js-toggle-new-content-element-wizard` class to trigger the new content element wizard
 - Usage of the :php:`DataHandler->inlineLocalizeSynchronize()` functionality without an array as input argument
 - The :php:`route` parameter is no longer added to backend URLs
-- Extensions, which are located in `typo3conf/ext`, but not installed by Composer, are no longer evaluated for installations in "composer mode"
+- Extensions, which are located in `typo3conf/ext`, but not installed by Composer, are no longer evaluated for installations in "Composer mode"
 - Extbase no longer accepts :php:`MyVendor.` prefixed :php:`MyExtensionName` as first argument in
   :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin()`, :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()`
   and :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` and controller class names must be registered
   with their fully qualified name.
 - Extbase no longer determines types from doc block annotations for dependency injection methods and actions with validators,
   defined types in method signatures must be used.
-- Accessing core related caches with :php:`cache_` prefix has been removed.
+- Accessing Core related caches with :php:`cache_` prefix has been removed.
 - Accessing :php:`\TYPO3\CMS\Frontend\Typolink\LinkResult` properties as arrays - ArrayAccess functionality removed
 
 The following database tables have been removed:

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96659:
+
 ======================================================================
 Feature: #96659 - ContentObject Registration via service configuration
 ======================================================================
@@ -15,17 +17,16 @@ Frontend via TypoScript are now registered via the service configuration.
 This way registration is done during build-time and not on every TYPO3 request
 and dependency injection can be used in ContentObjects.
 
-The registration was previously done in an extensions' :file:`ext_localconf.php`
+The registration was previously done in an extension's :file:`ext_localconf.php`
 via :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']`.
-
 
 Impact
 ======
 
-Registering a custom ContentObject is now done in an extensions'
+Registering a custom ContentObject is now done in an extension's
 :file:`Configuration/Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     MyCompany\MyPackage\ContentObject\CustomContentObject:
         tags:

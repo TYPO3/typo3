@@ -19,7 +19,7 @@ hooks.
 
 The new PSR-14 events allow listeners to modify corresponding information,
 before and after TYPO3 tries to overlay a language version of any kind of
-record. "Language Overlaying" is a core concept of TYPO3 to find a suitable
+record. "Language Overlaying" is a Core concept of TYPO3 to find a suitable
 translation for a record and merged together with the base record.
 
 * :php:`\TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent`

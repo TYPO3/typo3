@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96996:
+
 ===============================================================================
 Deprecation: #96996 - Deprecate TypoScriptFrontendController->checkEnableFields
 ===============================================================================

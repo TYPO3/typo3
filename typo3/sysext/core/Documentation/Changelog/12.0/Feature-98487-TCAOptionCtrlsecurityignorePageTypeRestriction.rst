@@ -16,10 +16,8 @@ A new TCA ctrl option :php:`$GLOBALS['TCA'][$table]['ctrl']['security']['ignoreP
 given page type (custom or defined), unless specified differently via the
 :php:`PageDoktypeRegistry` API class for a specified doktype.
 
-
 Impact
 ======
-
 
 This is a replacement for the previous PHP API call
 :php:`ExtensionManagementUtility::allowTableOnStandardPages` which was found

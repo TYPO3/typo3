@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97435:
+
 =======================================================================================
 Deprecation: #97435 - Usage of SiteLanguageAwareTrait to denote site language awareness
 =======================================================================================
@@ -38,7 +40,7 @@ class.
 
 Example before the migration:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 
@@ -49,7 +51,7 @@ Example before the migration:
 
 Example after the migration:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
     use TYPO3\CMS\Core\Site\Entity\SiteLanguage;

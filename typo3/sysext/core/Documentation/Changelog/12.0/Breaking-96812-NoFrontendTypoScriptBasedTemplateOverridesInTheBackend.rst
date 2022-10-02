@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96812:
+
 =================================================================================
 Breaking: #96812 - No Frontend TypoScript based template overrides in the backend
 =================================================================================
@@ -9,13 +11,13 @@ See :issue:`96812`
 Description
 ===========
 
-A couple of core extensions with backend module controllers allowed overriding Fluid
+A couple of Core extensions with backend module controllers allowed overriding Fluid
 templates using frontend TypoScript. The two documented extensions are EXT:dashboard
 and the backend page module. The Extbase based backend extensions EXT:belog, EXT:beuser
 and EXT:extensionmanager allowed this implicitly too, but this detail has never
 been directly documented.
 
-This functionality has been removed: All core extensions, and in general all extensions
+This functionality has been removed: All Core extensions, and in general all extensions
 that switch to the :doc:`simplified backend templating <Feature-96730-SimplifiedExtbackendModuleTemplateAPI>`
 no longer use the frontend TypoScript based override approach. This has been superseded
 by a general override strategy based on TSconfig, as described in :doc:`this changelog
@@ -57,7 +59,6 @@ Instances with extensions that configure own EXT:dashboard widgets or override t
 of existing dashboard widgets using Frontend TypoScript are affected, as well as instances
 that override page module templates as described in :doc:`this changelog entry <../10.3/Feature-90348-NewFluid-basedReplacementForPageLayoutView>`.
 
-
 Migration
 =========
 
@@ -66,7 +67,7 @@ Page module template overrides
 
 An instance sets frontend TypoScript like this:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     module.tx_backend.view.templateRootPaths.1644483508 = EXT:myext/Resources/Private/Templates/
     module.tx_backend.view.partialRootPaths.1644483508 = EXT:myext/Resources/Private/Partials/
@@ -75,11 +76,11 @@ If extension "myext" now delivered a template file such as :file:`Resources/Priv
 that template file was used for rendering the page module instead of the default template.
 
 As described in this :doc:`changelog <Feature-96812-OverrideBackendTemplatesWithTSconfig>`,
-the new definition is now done using TSconfig. The extension "myext" with composer name "myvendor/myext" can
+the new definition is now done using TSconfig. The extension "myext" with Composer name "myvendor/myext" can
 deliver a :file:`Configuration/page.tsconfig` file (see :doc:`changelog <Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions>`)
 with the below content to substitute the old definition and keep overriding template files at the current position:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     # Pattern: templates."composer-name"."something-unique" = "overriding-extension-composer-name":"entry-path"
     templates.typo3/cms-backend.1644483508 = myvendor/myext:Resources/Private
@@ -95,7 +96,7 @@ Templating
 
 An extension delivers this TypoScript:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     module.tx_dashboard {
         view {
@@ -106,18 +107,18 @@ An extension delivers this TypoScript:
     }
 
 This instructed the dashboard widget renderer to look up widget templates in this
-path, too. The new registration for extension "myext" with composer name "myvendor/myext"
+path, too. The new registration for extension "myext" with Composer name "myvendor/myext"
 using file :file:`Configuration/page.tsconfig`
 (see :doc:`changelog <Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions>`)
 could look like this:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     # Pattern: templates.typo3/cms-dashboard."something-unique" = "overriding-extension-composer-name":"entry-path"
     templates.typo3/cms-dashboard.1644485473 = myvendor/myext:Resources/Private
 
 A widget template is then put to :file:`Resources/Private/Templates/Dashboard/Widgets/MyExtensionWidget.html`.
-Extensions that want to stay compatible with both TYPO3 core v11 and v12 should simply define both the
+Extensions that want to stay compatible with both TYPO3 Core v11 and v12 should simply define both the
 old way and the new way.
 
 Widget registration using Services.yaml
@@ -147,7 +148,7 @@ dependency injection configuration.
 
 Let's say a widget has been registered like this:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
   # This is defined in EXT:dashboard Services.yaml already, extensions
   # must not define this in their Services.yaml files again.
@@ -169,12 +170,12 @@ Let's say a widget has been registered like this:
 The important line is :yaml:`$view: '@dashboard.views.widget'`: This instructs the DI
 to inject an instance of :php:`StandaloneView` using the EXT:dashboard :php:`Factory::widgetTemplate()`
 method for argument :php:`$view`. The :yaml:`dashboard.views.widget` is deprecated since
-TYPO3 core v12 and should not be used anymore. It logs a deprecation message upon use
+TYPO3 Core v12 and should not be used anymore. It logs a deprecation message upon use
 during build-time and will be removed in v13 together with the :php:`Factory`.
 
 The new registration should be adapted to this, simply removing the :php:`$view` argument:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
   # This is your custom widget registration in your extensions Services.yaml
   dashboard.widget.sysLogErrors:
@@ -188,7 +189,7 @@ The new registration should be adapted to this, simply removing the :php:`$view`
 Now the PHP implementation. The above example references the :php:`BarChartWidget` class
 to take care of rendering. The class looked like this before (shortened):
 
-.. code-block:: php
+..  code-block:: php
 
     class BarChartWidget implements WidgetInterface
     {
@@ -216,7 +217,7 @@ object. To get this, widgets should now implement :php:`RequestAwareWidgetInterf
 the EXT:dashboard framework will then :php:`setRequest()` the current request to the widget
 immediately after widget instantiation. The new code thus looks like this:
 
-.. code-block:: php
+..  code-block:: php
 
     class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface
     {
@@ -238,7 +239,7 @@ immediately after widget instantiation. The new code thus looks like this:
 
         public function renderWidgetContent(): string
         {
-            // The second argument is the composer 'name' of the extension that adds the widget.
+            // The second argument is the Composer 'name' of the extension that adds the widget.
             // It is needed to instruct BackendViewFactory to look up templates in this package
             // next to the default location 'typo3/cms-dashboard', too.
             $view = $this->backendViewFactory->create($this->request, ['myVendor/myPackage']);
@@ -248,8 +249,8 @@ immediately after widget instantiation. The new code thus looks like this:
     }
 
 The actual implementation in TYPO3 v12 is still slightly different to keep
-compatibility with extensions that re-use core widgets and need v11 and v12
-compatibility at the same time. Those core classes will be adapted in v13
+compatibility with extensions that re-use Core widgets and need v11 and v12
+compatibility at the same time. Those Core classes will be adapted in v13
 to the above outline version, though.
 
 .. index:: Backend, TSConfig, TypoScript, NotScanned, ext:backend

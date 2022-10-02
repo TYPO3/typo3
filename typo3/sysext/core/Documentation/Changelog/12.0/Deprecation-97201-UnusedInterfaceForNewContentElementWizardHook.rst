@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97201:
+
 ==========================================================================
 Deprecation: #97201 - Unused Interface for new content element wizard hook
 ==========================================================================

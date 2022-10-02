@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97126:
+
 ========================================================
 Breaking: #97126 - Remove TCEforms array key in FlexForm
 ========================================================
@@ -48,7 +50,7 @@ Real world example from EXT:news:
 
 Before:
 
-.. code-block:: php
+..  code-block:: php
 
     if (!empty($categoryRestriction) && isset($structure['sheets']['sDEF']['ROOT']['el']['settings.categories'])) {
         $structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['TCEforms']['config']['foreign_table_where'] = $categoryRestriction . $structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['TCEforms']['config']['foreign_table_where'];
@@ -56,7 +58,7 @@ Before:
 
 After:
 
-.. code-block:: php
+..  code-block:: php
 
     if (!empty($categoryRestriction) && isset($structure['sheets']['sDEF']['ROOT']['el']['settings.categories'])) {
         $structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['config']['foreign_table_where'] = $categoryRestriction . $structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['config']['foreign_table_where'];
@@ -64,7 +66,7 @@ After:
 
 Supporting both TYPO3 v11 and v12+:
 
-.. code-block:: php
+..  code-block:: php
 
     if (!empty($categoryRestriction) && isset($structure['sheets']['sDEF']['ROOT']['el']['settings.categories'])) {
         if (isset($structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['TCEforms'])) {
@@ -73,6 +75,5 @@ Supporting both TYPO3 v11 and v12+:
             $structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['config']['foreign_table_where'] = $categoryRestriction . $structure['sheets']['sDEF']['ROOT']['el']['settings.categories']['config']['foreign_table_where'];
         }
     }
-
 
 .. index:: FlexForm, TCA, NotScanned, ext:core

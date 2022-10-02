@@ -23,7 +23,6 @@ This affects the following methods:
 * :js:`addToList()`
 * :js:`unset()`
 
-
 Impact
 ======
 
@@ -31,13 +30,11 @@ Using callbacks of jQuery-based promises (:js:`done`, :js:`fail` or :js:`always`
 will trigger JavaScript errors, as native :js:`Promise` objects don't know these
 callbacks.
 
-
 Affected installations
 ======================
 
 All extensions using any of the aforementioned methods and relying on the
 returned objects are affected.
-
 
 Migration
 =========

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97449:
+
 ==============================================================
 Feature: #97449 - PSR-14 events for modifying FlexForm parsing
 ==============================================================
@@ -23,28 +25,28 @@ should be used.
 Example
 =======
 
-Registration of the events in your extensions' :file:`Services.yaml`:
+Registration of the events in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\FlexFormParsingModifyEventListener:
-    tags:
-        - name: event.listener
-          identifier: 'form-framework/set-data-structure'
-          method: 'setDataStructure'
-        - name: event.listener
-          identifier: 'form-framework/modify-data-structure'
-          method: 'modifyDataStructure'
-        - name: event.listener
-          identifier: 'form-framework/set-data-structure-identifier'
-          method: 'setDataStructureIdentifier'
-        - name: event.listener
-          identifier: 'form-framework/modify-data-structure-identifier'
-          method: 'modifyDataStructureIdentifier'
+    MyVendor\MyPackage\Backend\FlexFormParsingModifyEventListener:
+      tags:
+          - name: event.listener
+            identifier: 'form-framework/set-data-structure'
+            method: 'setDataStructure'
+          - name: event.listener
+            identifier: 'form-framework/modify-data-structure'
+            method: 'modifyDataStructure'
+          - name: event.listener
+            identifier: 'form-framework/set-data-structure-identifier'
+            method: 'setDataStructureIdentifier'
+          - name: event.listener
+            identifier: 'form-framework/modify-data-structure-identifier'
+            method: 'modifyDataStructureIdentifier'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
     use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;

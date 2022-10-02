@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97188:
+
 =======================================================
 Feature: #97188 - New registration for element browsers
 =======================================================

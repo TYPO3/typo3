@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97193:
+
 =======================================
 Feature: #97193 - New TCA type "number"
 =======================================
@@ -67,14 +69,13 @@ which can be set to :php:`decimal` or :php:`integer`, which is the default.
     The options :php:`range`, :php:`slider` as well as :php:`eval=double2`
     are no longer evaluated for TCA type :php:`input`.
 
-
 Migration
 ---------
 
 The migration from :php:`eval='int'` to :php:`type=number`
 is done like following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 
@@ -98,7 +99,7 @@ is done like following:
 The migration from :php:`eval=double2` to :php:`type=number`
 is done like following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 

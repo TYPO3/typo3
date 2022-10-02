@@ -11,9 +11,8 @@ See :issue:`97576`
 Description
 ===========
 
-The class :php:`TYPO3\CMS\Core\Utility\ResourceUtility` has no usage in the core
+The class :php:`TYPO3\CMS\Core\Utility\ResourceUtility` has no usage in the Core
 and is therefore marked as deprecated.
-
 
 Impact
 ======
@@ -21,13 +20,11 @@ Impact
 Calling any method of the class :php:`TYPO3\CMS\Core\Utility\ResourceUtility`
 will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
-
 Affected installations
 ======================
 
 All installations using any method of :php:`TYPO3\CMS\Core\Utility\ResourceUtility`
 in their own code.
-
 
 Migration
 =========

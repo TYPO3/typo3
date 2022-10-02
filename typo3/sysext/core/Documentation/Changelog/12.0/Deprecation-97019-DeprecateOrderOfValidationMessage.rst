@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97019:
+
 ===========================================================
 Deprecation: #97019 - Deprecate order of validation message
 ===========================================================
@@ -20,7 +22,6 @@ Since the order can only be adjusted by changing the key within the form
 configuration, this patch adds according comments to the form configuration.
 The breaking change will be done with TYPO3 v13.0.
 
-
 Impact
 ======
 
@@ -31,7 +32,7 @@ framework. Furthermore, the new key has been reserved.
 
 Current configuration in TYPO3 v12 (simplified):
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     TYPO3:
       CMS:
@@ -60,7 +61,7 @@ Current configuration in TYPO3 v12 (simplified):
 
 New configuration in TYPO3 v13 (simplified):
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     TYPO3:
       CMS:
@@ -85,11 +86,9 @@ New configuration in TYPO3 v13 (simplified):
                               identifier: validationErrorMessage
                               # ...
 
-
 As you can see the key :yaml:`200` is not in use anymore. Instead, a new key
 :yaml:`400` has been introduced. The new configuration is commented in TYPO3 v12
 and will be enabled in TYPO3 v13.
-
 
 Affected Installations
 ======================
@@ -98,7 +97,6 @@ All TYPO3 installations are affected as soon as the form configuration of the
 "DateRange" validator of the "date" form element has been adapted. In detail,
 installations where the above mentioned keys have been set or unset need to
 be migrated to the new configuration.
-
 
 Migration
 =========

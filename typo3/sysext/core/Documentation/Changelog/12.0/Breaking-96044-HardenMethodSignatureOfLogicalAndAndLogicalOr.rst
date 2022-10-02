@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96044:
+
 ==========================================================================
 Breaking: #96044 - Harden method signature of logicalAnd() and logicalOr()
 ==========================================================================
@@ -23,7 +25,6 @@ The :php:`logicalAnd()` method does now reliably return an instance of
 while the :php:`logicalOr()` method returns a :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface`
 instance.
 
-
 Impact
 ======
 
@@ -34,7 +35,6 @@ Affected Installations
 
 All installations that passed all constraints as array.
 
-
 Migration
 =========
 
@@ -44,25 +44,25 @@ migration for a :php:`logicalAnd()` call.
 
 **Example**:
 
-.. code-block:: php
+..  code-block:: php
 
-   $query = $this->createQuery();
-   $query->matching($query->logicalAnd([
-       $query->equals('propertyName1', 'value1'),
-       $query->equals('propertyName2', 'value2'),
-       $query->equals('propertyName3', 'value3'),
-   ]));
+    $query = $this->createQuery();
+    $query->matching($query->logicalAnd([
+        $query->equals('propertyName1', 'value1'),
+        $query->equals('propertyName2', 'value2'),
+        $query->equals('propertyName3', 'value3'),
+    ]));
 
 In this case an array is used as one and only method argument. The migration is
 easy and quickly done. Simply don't use an array:
 
-.. code-block:: php
+..  code-block:: php
 
-   $query = $this->createQuery();
-   $query->matching($query->logicalAnd(
-       $query->equals('propertyName1', 'value1'),
-       $query->equals('propertyName2', 'value2'),
-       $query->equals('propertyName3', 'value3'),
-   ));
+    $query = $this->createQuery();
+    $query->matching($query->logicalAnd(
+        $query->equals('propertyName1', 'value1'),
+        $query->equals('propertyName2', 'value2'),
+        $query->equals('propertyName3', 'value3'),
+    ));
 
 .. index:: PHP-API, FullyScanned, ext:extbase

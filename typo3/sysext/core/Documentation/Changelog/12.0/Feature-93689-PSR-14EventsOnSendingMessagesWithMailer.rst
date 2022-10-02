@@ -31,22 +31,22 @@ on the implementation - usually :php:`TYPO3\CMS\Core\Mail\Mailer` -
 contains the :php:`SentMessage` object that can be retrieved using
 the :php:`getSentMessage()` method.
 
-Registration of the event listeners in your extensions' :file:`Services.yaml`:
+Registration of the event listeners in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\EventListener\MailerSentMessageEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/modify-message'
-        method: 'modifyMessage'
-      - name: event.listener
-        identifier: 'my-package/process-sent-message'
-        method: 'processSentMessage'
+    MyVendor\MyPackage\EventListener\MailerSentMessageEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/modify-message'
+          method: 'modifyMessage'
+        - name: event.listener
+          identifier: 'my-package/process-sent-message'
+          method: 'processSentMessage'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use Psr\Log\LoggerInterface;
     use Symfony\Component\Mime\Address;

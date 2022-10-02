@@ -16,7 +16,6 @@ in version 5.4. New features are available with the latest versions of Symfony C
 
 https://symfony.com/blog/category/living-on-the-edge/6.1
 
-
 Impact
 ======
 

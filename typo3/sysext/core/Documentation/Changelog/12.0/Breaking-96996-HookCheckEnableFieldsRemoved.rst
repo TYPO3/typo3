@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96996:
+
 ===================================================
 Breaking: #96996 - Hook "checkEnableFields" removed
 ===================================================
@@ -29,7 +31,7 @@ Migration
 =========
 
 Register a new PSR-14 event listener for :ref:`RecordAccessGrantedEvent <feature-96996-1663513388>`
-in the extensions' :file:`Services.yaml` to keep TYPO3 v12+ compatibility.
+in the extension's :file:`Services.yaml` to keep TYPO3 v12+ compatibility.
 
 Extensions can then provide compatibility with TYPO3 v11 and TYPO3 v12 at
 the same time.

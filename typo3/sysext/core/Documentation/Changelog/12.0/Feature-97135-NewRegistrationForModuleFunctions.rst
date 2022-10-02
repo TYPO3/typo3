@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97135:
+
 =======================================================
 Feature: #97135 - New Registration for module functions
 =======================================================
@@ -14,8 +16,9 @@ Previously, module functions could be added to modules such as
 now removed global :php:`TBE_MODULES_EXT` array.
 
 Since those functions are actually additional - "third-level" - modules,
-they are now registered as such via the :doc:`new Module Registration API <Feature-96733-NewBackendModuleRegistrationAPI>`,
-in an extensions' :file:`Configuration/Backend/Modules.php` file.
+they are now registered as such via the
+:doc:`new Module Registration API <Feature-96733-NewBackendModuleRegistrationAPI>`,
+in an extension's :file:`Configuration/Backend/Modules.php` file.
 
 Next to the additional configuration options, e.g. for defining the position,
 this also allows administrators to define access permissions via the module
@@ -31,7 +34,7 @@ Registration of an additional - "third-level" - module for
 :guilabel:`Web > Template` in the :file:`Configuration/Backend/Modules.php`
 file of an extension:
 
-.. code-block:: php
+..  code-block:: php
 
     'web_ts_customts' => [
         'parent' => 'web_ts',
@@ -51,12 +54,11 @@ file of an extension:
         ],
     ],
 
-
 Impact
 ======
 
 Additional - "third-level" - modules are now registered in the
-extensions' :file:`Configuration/Backend/Modules.php` file, the
+extension's :file:`Configuration/Backend/Modules.php` file, the
 same way as main and submodules. This therefore allows those
 modules to benefit from the same functionality.
 

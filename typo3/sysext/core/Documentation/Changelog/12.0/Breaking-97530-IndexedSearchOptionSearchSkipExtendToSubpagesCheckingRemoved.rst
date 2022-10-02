@@ -19,7 +19,6 @@ related to TYPO3's :php:`extendToSubpages` Core feature. However, since the
 :php:`extendToSubpages` functionality has now been optimized via an alternative
 to :php:`getTreeList()`, the option is removed.
 
-
 Impact
 ======
 
@@ -30,12 +29,10 @@ has no effect anymore.
 All search requests within indexed search will now respect the
 :php:`extendToSubpages` flag.
 
-
 Affected installations
 ======================
 
 TYPO3 installations using Indexed Search having this option set.
-
 
 Migration
 =========

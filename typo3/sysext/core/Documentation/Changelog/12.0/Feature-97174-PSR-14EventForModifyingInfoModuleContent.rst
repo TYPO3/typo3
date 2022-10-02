@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97174:
+
 ================================================================
 Feature: #97174 - PSR-14 event for modifying info module content
 ================================================================
@@ -11,7 +13,8 @@ Description
 
 A new PSR-14 event :php:`\TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent`
 has been introduced which serves as a more powerful and flexible alternative
-for the now removed :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook']`
+for the now removed
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook']`
 hook.
 
 While the removed hook effectively only allowed to add content
@@ -43,18 +46,18 @@ content.
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/content-to-info-module'
+    MyVendor\MyPackage\Backend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/content-to-info-module'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent;
 

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96983:
+
 =====================================
 Breaking: #96983 - TableColumnSubType
 =====================================
@@ -14,20 +16,17 @@ removed. It has no use anymore, since TCA option `internal_type` is not
 evaluated. It was set for the Extbase class :php:`ColumnMap`, but even there it
 had no direct usage.
 
-
 Impact
 ======
 
 In the rare case, that the class :php:`TableColumnSubType` is used in
 custom code, it will result in a PHP fatal error.
 
-
 Affected Installations
 ======================
 
 All installations that use :php:`TableColumnSubType` directly in their custom
 code.
-
 
 Migration
 =========

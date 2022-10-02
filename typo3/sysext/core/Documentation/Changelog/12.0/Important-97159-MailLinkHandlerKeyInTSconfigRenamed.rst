@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-97159:
+
 =============================================================
 Important: #97159 - MailLinkHandler key in TSconfig renamed
 =============================================================

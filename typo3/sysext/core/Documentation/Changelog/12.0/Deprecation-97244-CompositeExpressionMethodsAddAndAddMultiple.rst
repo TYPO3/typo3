@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97244-2:
+
 =============================================================================
 Deprecation: #97244 - CompositeExpression methods 'add()' and 'addMultiple()'
 =============================================================================
@@ -11,7 +13,7 @@ Description
 
 `doctrine/dbal` `deprecated`_ multiple :php:`CompositeExpression` methods
 :php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`.
-Therefore, those methods have also been deprecated in the core facade class
+Therefore, those methods have also been deprecated in the Core facade class
 (:php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`),
 to avoid shifting too far away.
 
@@ -41,7 +43,7 @@ can be replaced by using the new method :php:`CompositeExpression->with()`.
 
     The replacement method :php:`CompositeExpression->with()` has already been
     added in a forward-compatible way in TYPO3 v11. Thus giving extension developers
-    the ability to adopt new methods and still being able to support multiple core
+    the ability to adopt new methods and still being able to support multiple Core
     versions without workarounds.
 
 For example, the following code:
@@ -168,7 +170,6 @@ or
     // note, you have to assign the return of with() to the
     // variable, otherwise added elements are lost.
     $compositeExpression = $compositeExpression->with(...$expressions);
-
 
 Instead of using :php:`with()` when collecting expressions in an array,
 it can be used when instantiating the composite expression after the

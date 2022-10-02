@@ -26,7 +26,6 @@ the new capabilities.
 Also see :ref:`breaking-97816-1656350406`
 for an overview of breaking syntax changes.
 
-
 Impact
 ======
 
@@ -45,27 +44,27 @@ section has been removed.
 
 A couple of examples to clarify:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  foo # This is a comment to an invalid line
+    foo # This is a comment to an invalid line
 
-  foo < bar // This is a comment
-  foo < bar /* This is a valid comment, too */
+    foo < bar // This is a comment
+    foo < bar /* This is a valid comment, too */
 
-  foo > # Another valid comment
+    foo > # Another valid comment
 
-  foo := addToList(1) # Yes, a comment
+    foo := addToList(1) # Yes, a comment
 
-  [foo = bar] # Much comment. Much wow.
+    [foo = bar] # Much comment. Much wow.
 
-  <INCLUDE_TYPOSCRIPT: source="..."> /* A comment */
+    <INCLUDE_TYPOSCRIPT: source="..."> /* A comment */
 
-  foo (
-    # This is NOT a comment but part of the value assignment!
-    bar = barValue
-  ) # This is a comment
+    foo (
+      # This is NOT a comment but part of the value assignment!
+      bar = barValue
+    ) # This is a comment
 
-  foo = bar // This is NOT a comment but part of the value assignment!
+    foo = bar // This is NOT a comment but part of the value assignment!
 
 @import in conditions
 ---------------------
@@ -74,13 +73,13 @@ Placing an :typoscript:`@import` keyword within a condition is now supported,
 the example below works. Note that this obsoletes the clumsy :typoscript:`<INCLUDE_TYPOSCRIPT:`
 syntax, and integrators are encouraged to fully switch to :typoscript:`@import`.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  [loginUser('*')]
-    @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
-  [ELSE]
-    @import 'EXT:my_extension/Configuration/TypoScript/NotLoggedInUser.typoscript
-  [END]
+    [loginUser('*')]
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
+    [ELSE]
+      @import 'EXT:my_extension/Configuration/TypoScript/NotLoggedInUser.typoscript
+    [END]
 
 Scope restriction to file / snipped level
 -----------------------------------------
@@ -100,13 +99,13 @@ Nesting conditions is partially possible with the new TypoScript parser, **if** 
 conditions are in different files. As example, let's first sort what happens when
 two conditions follow directly in one snippet:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  [loginUser('*')]
-    @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
-  [applicationContext == "Development"]
-    @import 'EXT:my_extension/Configuration/TypoScript/Development.typoscript
-  [END]
+    [loginUser('*')]
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
+    [applicationContext == "Development"]
+      @import 'EXT:my_extension/Configuration/TypoScript/Development.typoscript
+    [END]
 
 This always worked and did not change with the new parser: Opening a new condition
 automatically closes the preceding one. In the example above, both conditions are
@@ -117,16 +116,16 @@ But, and this in new, nesting conditions within different files is possible now.
 In the example below, file :file:`LoggedInUserDevelopment.typoscript` is only
 included if a user is logged in *and* the application is in development context.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  [loginUser('*')]
-    @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
-  [END]
+    [loginUser('*')]
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
+    [END]
 
-  File LoggedInUser.typoscript:
-  [applicationContext == "Development"]
-    @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUserDevelopment.typoscript
-  [END]
+    # File LoggedInUser.typoscript:
+    [applicationContext == "Development"]
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUserDevelopment.typoscript
+    [END]
 
 Irrelevant order of <INCLUDE_TYPOSCRIPT: tokens
 -----------------------------------------------
@@ -155,14 +154,14 @@ Further clarifications
   This shouldn't have huge impact in real life usage and is documented for completeness. Consider this
   example:
 
-  .. code-block::
+  ..  code-block:: typoscript
 
-    lib.viewConfig {
-      baz = bazValue
-    }
+      lib.viewConfig {
+        baz = bazValue
+      }
 
-    first = FLUIDTEMPLATE
-    first < lib.viewConfig
+      first = FLUIDTEMPLATE
+      first < lib.viewConfig
 
   The situation is there that :typoscript:`lib.viewConfig` has no assigned value (just children). The
   target :typoscript:`first` however has value :typoscript:`FLUIDTEMPLATE`. The old TypoScript parser

@@ -10,7 +10,6 @@
    :local:
    :depth: 1
 
-
 Breaking Changes
 ================
 
@@ -40,7 +39,6 @@ Deprecation
    :glob:
 
    Deprecation-*
-
 
 Important
 =========

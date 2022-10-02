@@ -23,20 +23,17 @@ This affects the following methods:
 * :js:`destroy()`
 * :js:`toggle()`
 
-
 Impact
 ======
 
 Calling any of the aforementioned methods with passing a jQuery-based object is
 undefined and will lead to JavaScript errors.
 
-
 Affected installations
 ======================
 
 All 3rd party extensions using the API of the :js:`@typo3/backend/popover` module
 are affected.
-
 
 Migration
 =========
@@ -49,7 +46,7 @@ Any other method accepts objects of type :js:`HTMLElement` only.
 
 Example:
 
-.. code-block:: js
+..  code-block:: js
 
     // Before
     Popover.popover($('button.popover'));

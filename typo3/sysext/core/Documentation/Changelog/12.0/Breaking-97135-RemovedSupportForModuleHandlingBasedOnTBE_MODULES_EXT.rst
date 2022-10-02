@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97135:
+
 ===============================================================================
 Breaking: #97135 - Removed support for module handling based on TBE_MODULES_EXT
 ===============================================================================
@@ -35,7 +37,6 @@ does no longer exist:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController']['newStandardTemplateView']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController']['newStandardTemplateHandler']`
 
-
 Impact
 ======
 
@@ -48,7 +49,6 @@ and :typoscript:`mod.web_ts.menu.function` are no longer evaluated.
 
 Using one of mentioned, :php:`TypoScriptTemplateModuleController` related
 hooks does no longer have any effect.
-
 
 Affected Installations
 ======================
@@ -63,12 +63,12 @@ of the removed hooks.
 Migration
 =========
 
-Register your "third-level" module in our extensions'
+Register your "third-level" module in our extension's
 :file:`Configuration/Backend/Modules.php` file.
 
 Previous configuration in :file:`ext_tables.php`:
 
-.. code-block:: php
+..  code-block:: php
 
     ExtensionManagementUtility::insertModuleFunction(
         'web_info',
@@ -79,7 +79,7 @@ Previous configuration in :file:`ext_tables.php`:
 
 Will now be registered in :file:`Configuration/Backend/Modules.php`:
 
-.. code-block:: php
+..  code-block:: php
 
     'web_info_additional' => [
         'parent' => 'web_info',
@@ -99,7 +99,7 @@ Will now be registered in :file:`Configuration/Backend/Modules.php`:
 To hide a "third-level" module in the doc header menu, use the
 :typoscript:`options.hideModules` option:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     # before
     mod.web_info.menu.function.TYPO3\CMS\Info\Controller\TranslationStatusController = 0

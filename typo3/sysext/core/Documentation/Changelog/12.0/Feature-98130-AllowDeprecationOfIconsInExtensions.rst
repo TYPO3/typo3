@@ -19,7 +19,6 @@ data:
 * :php:`until` - when will the icon be removed
 * :php:`replacement` - if given, an alternative icon is offered
 
-
 Impact
 ======
 
@@ -28,7 +27,7 @@ as deprecated properly with logging to the TYPO3 deprecation log.
 
 Example:
 
-.. code-block:: php
+..  code-block:: php
 
     // Configuration/Icons.php
     return [

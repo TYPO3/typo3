@@ -36,7 +36,6 @@ Submitting request-token value to application:
 * HTTP body, e.g. in `<form>` via parameter `__request_token`
 * HTTP header, e.g. in XHR via header `X-TYPO3-Request-Token`
 
-
 The sequence looks like the following:
 
 1. Retrieve nonce and request-token values
@@ -47,32 +46,39 @@ a corresponding form that shall be protected. The `RequestToken` and `Nonce`
 objects (later created implicitly in this example) are organized in new
 :php:`\TYPO3\CMS\Core\Context\SecurityAspect`.
 
-.. code-block:: php
+..  code-block:: php
+
+    use \TYPO3\CMS\Core\Context\Context;
+    use \TYPO3\CMS\Core\Security\RequestToken;
+    use \TYPO3\CMS\Fluid\View\StandaloneView;
 
     class MyController
     {
-        protected \TYPO3\CMS\Fluid\View\StandaloneView $view;
-        protected \TYPO3\CMS\Core\Context\Context $context;
+        protected StandaloneView $view;
+        protected Context $context;
 
         public function showFormAction()
         {
-            // creating new request-token with scope 'my/process' and hand over to view
-            $requestToken = \TYPO3\CMS\Core\Security\RequestToken::create('my/process');
+            // creating new request-token with scope
+            // 'my/process' and hand over to view
+            $requestToken = RequestToken::create('my/process');
             $this->view->assign('requestToken', $requestToken)
-            // ...
-        }
+                // ...
+            }
 
-        public function processAction() {}
+        public function processAction()
+        {
+        }
     }
 
-.. code-block:: html
+..  code-block:: html
 
     <!-- in ShowForm.html template: assign request-token object for view-helper -->
     <f:form action="process" requestToken="{requestToken}>...</f:form>
 
 The HTTP response on calling the shown controller-action above will be like this:
 
-.. code-block:: text
+..  code-block:: text
 
     HTTP/1.1 200 OK
     Content-Type: text/html; charset=utf-8
@@ -99,7 +105,7 @@ of providing received nonce and received request-token values in
 :php:`\TYPO3\CMS\Core\Context\SecurityAspect`. The handling controller-action
 needs to verify that the request-token has the expected `'my/process'` scope.
 
-.. code-block:: php
+..  code-block:: php
 
     class MyController
     {
@@ -136,7 +142,6 @@ needs to verify that the request-token has the expected `'my/process'` scope.
         }
     }
 
-
 Impact
 ======
 
@@ -150,6 +155,5 @@ session cookie in users' browser) might be overridden.
 The current concept uses a :php:`\TYPO3\CMS\Core\Security\NoncePool` which
 supports five different nonces in the same request. The pool purges nonces
 15 minutes (900 seconds) after they have been issued.
-
 
 .. index:: Backend, Fluid, Frontend, PHP-API, ext:core

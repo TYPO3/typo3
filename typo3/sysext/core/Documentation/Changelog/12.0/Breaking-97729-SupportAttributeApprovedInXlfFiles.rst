@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _breaking-97729-1654627167
+.. _breaking-97729-1654627167:
 
 ==========================================================
 Breaking: #97729 - Respect attribute approved in XLF files
@@ -16,7 +16,6 @@ controls whether only approved translations are taken into account when parsing 
 
 This option is enabled by default for new and existing TYPO3 installations.
 
-
 Impact
 ======
 
@@ -30,12 +29,10 @@ Any non-approved translation will be ignored.
       <target>Ceci est le libellé no. 2</target>
     </trans-unit>
 
-
 Affected installations
 ======================
 
 All TYPO3 translations using translations from XLF files.
-
 
 Migration
 =========

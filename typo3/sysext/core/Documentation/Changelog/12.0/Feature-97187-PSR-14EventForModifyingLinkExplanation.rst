@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97187:
+
 =============================================================
 Feature: #97187 - PSR-14 event for modifying link explanation
 =============================================================
@@ -43,18 +45,18 @@ The current context can be evaluated using the following methods:
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\ModifyLinkExplanationEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-link-explanation'
+    MyVendor\MyPackage\Backend\ModifyLinkExplanationEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-link-explanation'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Form\Event\ModifyLinkExplanationEvent;
     use TYPO3\CMS\Core\Imaging\Icon;
@@ -62,15 +64,21 @@ The corresponding event listener class:
 
     final class ModifyLinkExplanationEventListener
     {
-        public function __construct(protected readonly IconFactory $iconFactory)
-        {
+        public function __construct(
+            protected readonly IconFactory $iconFactory
+        ) {
         }
 
-        public function __invoke(ModifyLinkExplanationEvent $event): void
-        {
+        public function __invoke(
+            ModifyLinkExplanationEvent $event
+        ): void {
             // Use a custom icon for a custom link type
             if ($event->getLinkData()['type'] === 'myCustomLinkType') {
-                $event->setLinkExplanationValue('icon', $this->iconFactory->getIcon('my-custom-link-icon', Icon::SIZE_SMALL)->render());
+                $icon = $this->iconFactory->getIcon(
+                    'my-custom-link-icon',
+                    Icon::SIZE_SMALL
+                )->render()
+                $event->setLinkExplanationValue('icon', $icon);
             }
         }
     }

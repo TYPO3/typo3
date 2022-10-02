@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97265:
+
 ================================================
 Breaking: #97265 - Simplified access mode system
 ================================================
@@ -32,7 +34,6 @@ have been streamlined and simplified:
 * The fourth argument on :php:`BackendUserAuthentication->checkAuthMode()` has
   been removed.
 
-
 Impact
 ======
 
@@ -41,7 +42,6 @@ Using :php:`explicitDeny` and :php:`individual` as value for TCA config option
 :php:`authMode` is no longer supported by the system and may need manual
 adaptions. Accessing :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode']`
 may lead to a PHP warning level error.
-
 
 Affected Installations
 ======================
@@ -59,14 +59,13 @@ Affected Installations
 
 * Instances manually dealing with the :sql:`explicit_allowdeny` of table :sql:`be_groups`
   may be affected if they expect the fourth field being set to :sql:`ALLOW` or :sql:`DENY`.
-  This is unlikely since the core provides an API for this field using
+  This is unlikely since the Core provides an API for this field using
   :php:`BackendUserAuthentication->checkAuthMode()`.
 
 * Instances calling :php:`BackendUserAuthentication->checkAuthMode()` with four instead of
   three arguments. The extension scanner will find usages as weak match.
 
 * Instances using :php:`authMode_enforce` for :php:`'type' => 'select'` fields.
-
 
 Migration
 =========
@@ -81,7 +80,7 @@ Accessing explicitADmode
 
 The handling of :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode']` has been changed as
 if it is always set to :php:`explicitAllow`. Extensions should not assume this global array
-key being set anymore since TYPO3 core v12. Extensions that need to stay compatible with v11
+key being set anymore since TYPO3 Core v12. Extensions that need to stay compatible with v11
 and v12 should fall back: :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] ?? 'explicitAllow'`.
 
 Using authMode_enforce='strict'
@@ -111,9 +110,8 @@ Using authMode='individual'
 ---------------------------
 
 Handling of :php:`authMode` being set to :php:`individual` has been fully dropped. There is
-no core-provided alternative. This has been an obscure setting since ever and there is no
+no Core-provided alternative. This has been an obscure setting since ever and there is no
 direct migration. Extension that rely on this handling need to find a substitution based on
-core hooks, core events or other existing core API functionality.
-
+Core hooks, Core events or other existing Core API functionality.
 
 .. index:: Backend, Database, LocalConfiguration, PHP-API, TCA, PartiallyScanned, ext:core

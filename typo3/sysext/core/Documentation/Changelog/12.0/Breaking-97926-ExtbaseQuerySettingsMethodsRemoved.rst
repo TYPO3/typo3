@@ -35,20 +35,17 @@ All adaptions have been made to the default implementation in
 :php:`Typo3QuerySettings`, however the removed methods from the interface are kept
 within the implementation to avoid fatal PHP errors.
 
-
 Impact
 ======
 
 Any custom implementation of :php:`QuerySettingsInterface` needs to implement
 the newly defined methods of the interface.
 
-
 Affected installations
 ======================
 
 TYPO3 installations with custom Extbase extensions dealing with QuerySettings
 that are adjusted with the methods used above.
-
 
 Migration
 =========

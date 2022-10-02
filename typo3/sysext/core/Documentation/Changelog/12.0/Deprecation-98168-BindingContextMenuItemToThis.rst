@@ -17,25 +17,22 @@ is adapted to pass the :js:`dataset` as the 3rd argument.
 
 Binding the context menu item to :js:`this` in the callback is now marked as deprecated.
 
-
 Impact
 ======
 
 Using :js:`this` in a context menu item callback will trigger a deprecated log entry in the browser's console.
-
 
 Affected installations
 ======================
 
 All extensions providing custom context menu actions are affected.
 
-
 Migration
 =========
 
 To access data attributes, use the :js:`dataset` argument passed as the 3rd argument in the context menu callback action.
 
-.. code-block:: js
+..  code-block:: js
 
     // Before
     ContextMenuActions.renameFile(table, uid): void {

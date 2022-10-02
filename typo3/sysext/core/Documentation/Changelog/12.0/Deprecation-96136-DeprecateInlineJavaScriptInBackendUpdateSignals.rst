@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96136:
+
 ===========================================================================
 Deprecation: #96136 - Deprecate inline JavaScript in backend update signals
 ===========================================================================
@@ -16,7 +18,6 @@ document header bar.
 Using inline JavaScript for handing custom signals is deprecated and will be
 ignored in TYPO3 v13.0.
 
-
 Impact
 ======
 
@@ -25,12 +26,10 @@ or having custom signal callbacks defined in :php:`$GLOBALS['TYPO3_CONF_VARS']['
 which provide `JScode` are deprecated and will trigger a corresponding PHP
 error message.
 
-
 Affected Installations
 ======================
 
 see impact
-
 
 Migration
 =========
@@ -48,7 +47,7 @@ Custom signal callbacks
 
 Usually those custom signal hooks are declared like this:
 
-.. code-block:: php
+..  code-block:: php
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']
         ['updateSignalHook']['OpendocsController::updateNumber'] =
@@ -57,7 +56,7 @@ Usually those custom signal hooks are declared like this:
 Existing implementation using `JScode`
 ......................................
 
-.. code-block:: php
+..  code-block:: php
 
     class OpendocsToolbarItem
     {
@@ -91,7 +90,7 @@ allow to dispatch actions, without actually using inline JavaScript.
 **Side-note**: Just using markup like :html:`<script>alert(1)</script>`
 is **not** considered a good solution as it still contains inline JavaScript.
 
-.. code-block:: php
+..  code-block:: php
 
     class OpendocsToolbarItem
     {
@@ -108,7 +107,7 @@ is **not** considered a good solution as it still contains inline JavaScript.
 :php:`ImmediateActionElement` is utilized to trigger a custom event in JavaScript,
 which is handled by a custom JavaScript module in that particular case.
 
-.. code-block:: typescript
+..  code-block:: typescript
 
     class OpendocsMenu {
       constructor() {
@@ -117,6 +116,5 @@ which is handled by a custom JavaScript module in that particular case.
           (evt: CustomEvent) => this.updateMenu(),
         );
       }
-
 
 .. index:: Backend, JavaScript, FullyScanned, ext:backend

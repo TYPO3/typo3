@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96726:
+
 ==================================================================
 Breaking: #96726 - RequestHandler functionality of Extbase removed
 ==================================================================
@@ -39,7 +41,6 @@ Impact
 
 Registration of custom RequestHandlers will not have any effect anymore.
 
-
 Affected Installations
 ======================
 
@@ -48,7 +49,6 @@ This can be checked if an extension provides a
 :file:`Configuration/Extbase/RequestHandlers.php` file or using the
 extension scanner, which will report any usage of the now removed
 :php:`\TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface`.
-
 
 Migration
 =========

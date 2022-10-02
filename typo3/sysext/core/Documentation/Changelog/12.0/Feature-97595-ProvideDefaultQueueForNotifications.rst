@@ -23,10 +23,12 @@ automatically gain advantage of this feature.
 Example
 =======
 
-.. code-block:: php
+..  code-block:: php
 
     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-    $notificationQueue = $flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
+    $notificationQueue = $flashMessageService->getMessageQueueByIdentifier(
+        FlashMessageQueue::NOTIFICATION_QUEUE
+    );
     $flashMessage = GeneralUtility::makeInstance(
         FlashMessage::class,
         'I\'m a message rendered as notification',
@@ -34,7 +36,6 @@ Example
         FlashMessage::OK
     );
     $notificationQueue->enqueue($flashMessage);
-
 
 Impact
 ======

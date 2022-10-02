@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96983:
+
 ===================================
 Feature: #96983 - TCA type "folder"
 ===================================
@@ -16,7 +18,7 @@ this type.
 
 Example usage:
 
-.. code-block:: php
+..  code-block:: php
 
     'columns' => [
         'aColumn' => [
@@ -25,7 +27,6 @@ Example usage:
             ],
         ],
     ],
-
 
 Impact
 ======

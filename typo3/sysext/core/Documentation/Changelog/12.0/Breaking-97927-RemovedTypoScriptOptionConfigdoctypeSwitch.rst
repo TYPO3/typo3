@@ -22,19 +22,16 @@ Internet Explorer to be standards-compliant with XHTML. Otherwise IE's
 Nowadays, usages for both Internet Explorer (which is not supported anymore) and
 XHTML have been low, which is why the option is now removed from TYPO3 Core.
 
-
 Impact
 ======
 
 Setting the option :typoscript:`config.doctypeSwitch` has no effect anymore, the
 XML declaration and doctype statement are kept as is.
 
-
 Affected installations
 ======================
 
 TYPO3 installations with old templates having this TypoScript option set.
-
 
 Migration
 =========

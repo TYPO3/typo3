@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96152:
+
 ========================================================================
 Feature: #96152 - Backend Toolbar items overview in configuration module
 ========================================================================

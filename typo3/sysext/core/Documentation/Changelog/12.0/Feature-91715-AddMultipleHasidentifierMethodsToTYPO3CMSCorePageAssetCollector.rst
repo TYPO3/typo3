@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91715:
+
 ===================================================================================================
 Feature: #91715 - Add multiple has($identifier) methods to \\TYPO3\\CMS\\Core\\Page\\AssetCollector
 ===================================================================================================
@@ -20,7 +22,7 @@ To accomplish this, new methods has been added to :php:`\TYPO3\CMS\Core\Page\Ass
 - :php:`hasInlineStyleSheet(string $identifier): bool`
 - :php:`hasMedia(string $identifier): bool`
 
-.. code-block:: php
+..  code-block:: php
 
     //use TYPO3\CMS\Core\Page\AssetCollector;
     //use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +40,6 @@ To accomplish this, new methods has been added to :php:`\TYPO3\CMS\Core\Page\Ass
     $result3 = $assetsCollector->hasStyleSheet($identifier);
     $result4 = $assetsCollector->hasInlineStyleSheet($identifier);
     $result5 = $assetsCollector->hasMedia($identifier);
-
 
 Impact
 ======

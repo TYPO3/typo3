@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92508:
+
 ===============================================================
 Deprecation: #92508 - Unused Interface for filterMenuPages hook
 ===============================================================
@@ -21,12 +23,10 @@ Impact
 The extension scanner will now notify any extension, which might
 still use the PHP interface.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations using the PHP interface in custom extension code.
-
 
 Migration
 =========

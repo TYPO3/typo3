@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96641:
+
 =================================================
 Breaking: #96641 - TypoLink related hooks removed
 =================================================
@@ -27,12 +29,10 @@ had been used.
 This architectural design flaw had been solved by introducing
 a unified Link Generation API ("LinkFactory").
 
-
 Impact
 ======
 
 Using these hooks in extensions has no effect anymore in TYPO3 v12+.
-
 
 Affected Installations
 ======================
@@ -40,7 +40,6 @@ Affected Installations
 TYPO3 installations with custom extensions using these hooks for
 modifying links. The extension scanner in the Upgrade module / Install
 tool will show affected occurrences.
-
 
 Migration
 =========

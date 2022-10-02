@@ -20,18 +20,15 @@ TYPO3 follows the de-facto standard for compressed assets,
 as ".gz" is much more widespread than ".gzip" file extensions
 (see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types).
 
-
 Impact
 ======
 
 Compressed resources are now generated and served via ".gz".
 
-
 Affected installations
 ======================
 
 TYPO3 installations setting the global configuration option.
-
 
 Migration
 =========

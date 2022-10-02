@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96975:
+
 ==================================================================
 Feature: #96975 - New PSR-14 events for SiteConfiguration Handling
 ==================================================================
@@ -14,7 +16,6 @@ SiteConfiguration before it is cached and before the configuration is written to
 
 - :php:`\TYPO3\CMS\Core\Configuration\Event\SiteConfigurationBeforeWriteEvent`
 - :php:`\TYPO3\CMS\Core\Configuration\Event\SiteConfigurationLoadedEvent`
-
 
 Impact
 ======
@@ -34,7 +35,7 @@ before writing the configuration to disk.
 To register an event listener for the new events, use the following code in your
 :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     services:
       MyCompany\MyPackage\EventListener\SiteConfigurationLoadedListener:

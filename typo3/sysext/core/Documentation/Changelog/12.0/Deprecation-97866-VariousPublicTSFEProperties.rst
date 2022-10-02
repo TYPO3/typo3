@@ -21,19 +21,16 @@ The following properties within TypoScriptFrontendController have been deprecate
 
 All of these properties can be accessed through TypoScript's config array.
 
-
 Impact
 ======
 
 Accessing these properties via TypoScript `getData` or via PHP will trigger a PHP :php:`E_USER_DEPRECATED` error.
-
 
 Affected installations
 ======================
 
 TYPO3 installations with TypoScript options such as :typoscript:`.data = TSFE:fileTarget` or
 TYPO3 installations with third-party extensions accessing the properties via PHP.
-
 
 Migration
 =========

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96094:
+
 =======================================
 Breaking: #96094 - Module icons removed
 =======================================

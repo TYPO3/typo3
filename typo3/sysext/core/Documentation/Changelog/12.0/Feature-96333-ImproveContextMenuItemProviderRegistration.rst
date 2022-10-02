@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96333:
+
 ================================================================
 Feature: #96333 - Improve ContextMenu item provider registration
 ================================================================

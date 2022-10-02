@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97531:
+
 =================================================================================
 Deprecation: #97531 - Context-related methods within TypoScriptFrontendController
 =================================================================================
@@ -24,12 +26,10 @@ For this reason, the related methods have been marked as deprecated:
 * :php:`doWorkspacePreview()`
 * :php:`whichWorkspace()`
 
-
 Impact
 ======
 
 Calling the methods directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
-
 
 Affected Installations
 ======================
@@ -37,13 +37,12 @@ Affected Installations
 TYPO3 installations with custom extensions using one of the methods.
 The extension scanner will report any usage as weak match.
 
-
 Migration
 =========
 
 Migrate towards the Context API instead:
 
-.. code-block:: php
+..  code-block:: php
 
     // Is this request within a Workspace currently
     $context->getPropertyFromAspect('workspace', 'isOffline', false);

@@ -19,7 +19,6 @@ The TypoScript property :typoscript`plugin.tx_myextension_pi1._DEFAULT_PI_VARS`
 has only been used in the class :php:`AbstractPlugin`. It is therefore not public
 API anymore.
 
-
 Impact
 ======
 
@@ -30,13 +29,11 @@ code displayed in most IDEs.
 :typoscript:`_DEFAULT_PI_VARS` has been removed from syntax highlighting as it is
 not public API anymore.
 
-
 Affected installations
 ======================
 
 All extensions having classes that extend
 :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin` are affected.
-
 
 Migration
 =========
@@ -54,13 +51,20 @@ Class before migration:
 
     class RandomContent extends AbstractPlugin
     {
-        public function main(string $content, array $conf) : string
+        public function main(string $content, array $conf): string
         {
             $this->conf = $conf;
 
-            $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
-            if ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'which_pages', 'sDEF')) {
-                $this->conf['pages'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'which_pages', 'sDEF');
+            // Init FlexForm configuration for plugin
+            $this->pi_initPIflexForm();
+            if ($this->pi_getFFvalue(
+                $this->cObj->data['pi_flexform'],
+                'which_pages', 'sDEF')
+            ) {
+                $this->conf['pages'] = $this->pi_getFFvalue(
+                    $this->cObj->data['pi_flexform'],
+                    'which_pages', 'sDEF'
+                );
             }
             // ...
         }
@@ -89,19 +93,24 @@ Class after migration:
             $this->cObj = $cObj;
         }
 
-        public function main(string $content, array $conf) : string
+        public function main(string $content, array $conf): string
         {
-             $this->conf = $conf;
+            $this->conf = $conf;
 
             $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
-            if ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'which_pages', 'sDEF')) {
-                $this->conf['pages'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'which_pages', 'sDEF');
+            if ($this->pi_getFFvalue($this->cObj->data['pi_flexform'],
+                'which_pages', 'sDEF')) {
+                $this->conf['pages'] = $this->pi_getFFvalue(
+                    $this->cObj->data['pi_flexform'],
+                    'which_pages',
+                    'sDEF'
+                );
             }
             // ...
         }
 
         /**
-         * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
+         * Converts $this->cObj->data['pi_flexform'] from XML string to FlexForm array.
          *
          * @param string $field Field name to convert
          */
@@ -110,11 +119,15 @@ Class after migration:
             // ...
         }
 
-        public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF')
-        {
+        public function pi_getFFvalue(
+            $T3FlexForm_array,
+            $fieldName,
+            $sheet = 'sDEF',
+            $lang = 'lDEF',
+            $value = 'vDEF'
+        ) {
             // ...
         }
-
     }
 
 It is also possible to migrate to an Extbase plugin using a controller.

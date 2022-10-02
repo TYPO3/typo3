@@ -45,7 +45,7 @@ Migration
 If non-admin users should be able to use the export tool, set the
 following user TSconfig:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
     :caption: EXT:my_sitepackage/Configuration/TSconfig/allusers.tsconfig
 
     options.impexp.enableExportForNonAdminUser = 1

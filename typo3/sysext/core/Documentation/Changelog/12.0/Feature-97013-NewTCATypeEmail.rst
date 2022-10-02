@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97013:
+
 ======================================
 Feature: #97013 - New TCA type "email"
 ======================================
@@ -47,7 +49,7 @@ The following column configuration can be overwritten by page TSconfig:
 
 The migration from :php:`eval='email'` to :php:`type=email` is done like following:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96333:
+
 ===================================================================
 Breaking: #96333 - Auto configuration of ContextMenu item providers
 ===================================================================
@@ -15,7 +17,7 @@ tag, if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`. The new
 :php:`\TYPO3\CMS\Backend\ContextMenu\ItemProviders\ItemProvidersRegistry` then
 automatically receives those services and registers them.
 
-All core item providers extend the :php:`AbstractProvider` class, which is
+All Core item providers extend the :php:`AbstractProvider` class, which is
 usually also used by extensions. Due to the auto configuration, the context
 information (table, record identifier and context) is no longer passed to the
 :php:`__construct()`, but instead to the new :php:`setContext()` method.
@@ -55,7 +57,7 @@ manually configure your item providers with the
 If your item providers extend :php:`AbstractProvider` and overwrite the
 :php:`__construct()` method, adjust the signature like shown below:
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 
@@ -85,7 +87,7 @@ In case you rely on the arguments, previously passed to :php:`__construct()`,
 you can override the new :php:`setContext()` method, which is executed
 prior to any other action like :php:`canHandle()`.
 
-.. code-block:: php
+..  code-block:: php
 
     // Before
 

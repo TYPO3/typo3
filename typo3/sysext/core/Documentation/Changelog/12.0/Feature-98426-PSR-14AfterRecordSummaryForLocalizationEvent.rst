@@ -24,9 +24,9 @@ The event features the following methods:
 - :php:`setColumns()`: Sets the current :php:`$columns` array
 - :php:`setRecords()`: Sets the current :php:`$records` array
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     MyVendor\MyPackage\EventListener\AfterRecordSummaryForLocalizationEventListener:
       tags:
@@ -35,7 +35,7 @@ Registration of the event in your extensions' :file:`Services.yaml`:
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Controller\Event\AfterRecordSummaryForLocalizationEvent;
 

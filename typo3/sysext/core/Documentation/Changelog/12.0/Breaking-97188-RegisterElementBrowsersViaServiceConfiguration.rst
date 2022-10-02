@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97188:
+
 ======================================================================
 Breaking: #97188 - Register element browsers via service configuration
 ======================================================================
@@ -35,7 +37,6 @@ is not evaluated anymore.
 The :php:`ElementBrowserInterface` is extended for
 :php:`public function getIdentifier(): string`.
 
-
 Affected Installations
 ======================
 
@@ -53,7 +54,7 @@ from your :file:`ext_localconf.php` file.
 If :yaml:`autoconfigure` is not enabled in your :file:`Configuration/Services.(yaml|php)`,
 add the tag :yaml:`recordlist.elementbrowser` manually to your `element browser` service.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     Vendor\Extension\Recordlist\MyBrowser:
       tags:

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96524:
+
 ==============================================================
 Deprecation: #96524 - Deprecate inline JavaScript in Dashboard
 ==============================================================
@@ -13,12 +15,10 @@ Using inline JavaScript when initializing RequireJS modules in individual
 dashboard widgets has been deprecated. Widget implementations have to be
 adjusted accordingly.
 
-
 Impact
 ======
 
 Usages will trigger PHP :php:`E_USER_DEPRECATED` errors.
-
 
 Affected Installations
 ======================
@@ -28,7 +28,6 @@ Installations having individual widget implementations which are
 * implementing :php:`\TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface`
 * invoking :php:`\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules`
 
-
 Migration
 =========
 
@@ -37,7 +36,7 @@ instead of deprecated :php:`\TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterfac
 Instead of using inline JavaScript for initializing RequireJS modules,
 :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` have to be declared.
 
-.. code-block:: php
+..  code-block:: php
 
     class ExampleChartWidget implements RequireJsModuleInterface
     {
@@ -54,7 +53,7 @@ Instead of using inline JavaScript for initializing RequireJS modules,
 Deprecated example widget above would look like the following when using
 `JavaScriptInterface` and `JavaScriptModuleInstruction`:
 
-.. code-block:: php
+..  code-block:: php
 
     class ExampleChartWidget implements JavaScriptInterface
     {
@@ -68,6 +67,5 @@ Deprecated example widget above would look like the following when using
             ];
         }
     }
-
 
 .. index:: Frontend, TypoScript, FullyScanned, ext:core

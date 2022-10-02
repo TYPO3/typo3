@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97945:
+
 ========================================================
 Feature: #97945 - PSR-14 AfterPageTreeItemsPreparedEvent
 ========================================================
@@ -24,18 +26,18 @@ record in the special :php:`_page` key.
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml` file:
+Registration of the event in your extension's :file:`Services.yaml` file:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Workspaces\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/workspaces/modify-page-tree-items'
+    MyVendor\MyPackage\Workspaces\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/workspaces/modify-page-tree-items'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 
@@ -57,7 +59,7 @@ The corresponding event listener class:
 Impact
 ======
 
-It's now possible to modify the prepared page tree items before they are
+It is now possible to modify the prepared page tree items before they are
 returned by the :php:`TreeController`, using the new PSR-14 event
 :php:`AfterPageTreeItemsPreparedEvent`.
 

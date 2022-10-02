@@ -27,7 +27,7 @@ Impact
 ======
 
 The "Template Analyzer" is now based on the
-:doc:`new TypoScript Parser <Breaking-97816-TypoScriptSyntaxImprovements.rst>`
+:ref:`new TypoScript Parser <breaking-97816-1656350406>`
 and gives more information to integrators and administrators.
 
 .. index:: Backend, TypoScript, ext:tstemplate

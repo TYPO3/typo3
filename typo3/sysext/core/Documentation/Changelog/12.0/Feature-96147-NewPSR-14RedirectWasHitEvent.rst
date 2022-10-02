@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96147:
+
 ================================================
 Feature: #96147 - New PSR-14 RedirectWasHitEvent
 ================================================
@@ -32,19 +34,19 @@ can either implement your own listener with the same identifier
 (:yaml:`redirects-increment-hit-count`) or add your custom listener
 before and dynamically set the records :php:`disable_hitcount` flag.
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Redirects\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/redirects/validate-hit-count'
-        before: 'redirects-increment-hit-count'
+    MyVendor\MyPackage\Redirects\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/redirects/validate-hit-count'
+          before: 'redirects-increment-hit-count'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 
@@ -77,6 +79,6 @@ Impact
 
 This event can be used to further process the matched redirect
 and to adjust the PSR-7 Response. It furthermore allows to
-influence core functionality, e.g. the hit count increment.
+influence Core functionality, e.g. the hit count increment.
 
 .. index:: PHP-API, ext:redirects

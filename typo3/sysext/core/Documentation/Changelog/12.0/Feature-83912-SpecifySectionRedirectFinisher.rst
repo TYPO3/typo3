@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83912:
+
 =======================================================
 Feature: #83912 - Specify Section in Redirect Finisher
 =======================================================
@@ -21,7 +23,7 @@ In the example below, :yaml:`fragment: '9'` refers to the content element
 with `uid` 9. There is no need to add the :html:`#` character. It is also
 possible to configure a custom section, e.g. :yaml:`fragment: 'foo'`.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     finishers:
       -

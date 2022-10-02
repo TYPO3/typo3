@@ -19,19 +19,16 @@ changed to a different Content Type.
 Along with this the option :typoscript:`mod.newContentElementWizard.override` has
 been removed, as it served a similar purpose to override the route name itself.
 
-
 Impact
 ======
 
 Both TSconfig options have no effect anymore. TYPO3 behaves as if the options
 were never set.
 
-
 Affected installations
 ======================
 
 TYPO3 installations having one of these options explicitly enabled.
-
 
 Migration
 =========

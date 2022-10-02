@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96501:
+
 ==================================================================
 Breaking: #96501 - prefixLocalAnchors option in HTMLParser removed
 ==================================================================
@@ -20,19 +22,16 @@ The option has many side-effects such as relying on the request
 when parsing HTML (which behaves differently in TYPO3 Backend
 and in Frontend).
 
-
 Impact
 ======
 
 Setting this TypoScript option has no effect anymore.
-
 
 Affected Installations
 ======================
 
 TYPO3 installation having TypoScript configured with this
 option activated.
-
 
 Migration
 =========

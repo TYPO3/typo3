@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96831:
+
 ===================================================================
 Breaking: #96831 - Enforce HTML sanitizer during frontend rendering
 ===================================================================
@@ -26,14 +28,12 @@ Impact
 Rich-text content processed with TypoScript :typoscript:`stdWrap.parseFunc` is HTML sanitized per default.
 Feature flag `security.frontend.htmlSanitizeParseFuncDefault` does not have any effect anymore.
 
-
 Affected Installations
 ======================
 
 All scenarios that use TypoScript :typoscript:`stdWrap.parseFunc`, a direct invocation via PHP of
 :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc()` or Fluid
 view-helper :html:`<f:format.html>`.
-
 
 Migration
 =========
@@ -42,6 +42,5 @@ The following documents already tackled and described the scenario and implicati
 
 * :doc:`9.5.x: Important: #94484 - Introduce HTML Sanitizer <../9.5.x/Important-94484-IntroduceHTMLSanitizer>`
 * :doc:`12.0: Breaking: #96520 - Enforce non-empty configuration in cObj::parseFunc <Breaking-96520-EnforceNon-emptyConfigurationInCObjparseFunc>`
-
 
 .. index:: Frontend, TypoScript, NotScanned, ext:frontend

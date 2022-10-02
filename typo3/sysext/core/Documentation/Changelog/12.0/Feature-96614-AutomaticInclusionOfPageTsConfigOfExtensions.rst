@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96614:
+
 ====================================================================
 Feature: #96614 - Automatic inclusion of page TSconfig of extensions
 ====================================================================
@@ -19,12 +21,11 @@ more performant than the existing solution to use
 :file:`ext_localconf.php`, which is added to
 :php:`$TYPO3_CONF_VARS[SYS][defaultPageTSconfig]` during runtime.
 
-
 Impact
 ======
 
 When a file is created, the page TSconfig is loaded automatically without a
-custom registration anymore, and cached within the core caches, and more
+custom registration anymore, and cached within the Core caches, and more
 performant than the existing registration format.
 
 .. index:: TSConfig, ext:core

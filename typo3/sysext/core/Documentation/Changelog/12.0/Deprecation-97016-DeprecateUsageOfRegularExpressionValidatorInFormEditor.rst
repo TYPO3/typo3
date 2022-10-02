@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97016:
+
 ==================================================================================
 Deprecation: #97016 - Deprecate usage of RegularExpressionValidator in form editor
 ==================================================================================
@@ -18,7 +20,6 @@ main target group, which are editors.
 An according comment has been added to the configuration files of the form
 framework.
 
-
 Impact
 ======
 
@@ -27,13 +28,11 @@ The validator will be removed from the UI in TYPO3 v13 with an according breakin
 change. The impact itself is quite low, since the validator can
 easily be re-added.
 
-
 Affected Installations
 ======================
 
 All TYPO3 installations with default form configurations (which is mostly the
 case).
-
 
 Migration
 =========
@@ -45,9 +44,9 @@ form configurations.
 The following example adds the validator to the form element `Text`. The path
 :yaml:`TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.Text.formEditor.editors.900`
 contains the definition for validators. We are adding the validator with the key
-`200` to not interfere with keys already taken by the core.
+`200` to not interfere with keys already taken by the Core.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     TYPO3:
       CMS:

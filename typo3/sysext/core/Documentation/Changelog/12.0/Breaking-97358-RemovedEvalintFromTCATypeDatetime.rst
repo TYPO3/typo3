@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97358:
+
 ============================================================
 Breaking: #97358 - Removed eval=int from TCA type "datetime"
 ============================================================
@@ -24,7 +26,7 @@ This means, the :sql:`unsigned` definition must be omitted.
 
     TYPO3 automatically creates database fields for all TCA type
     :php:`datetime` columns, if those are not already manually
-    defined in the corresponding extensions' :file:`ext_tables.sql` file.
+    defined in the corresponding extension's :file:`ext_tables.sql` file.
 
 Impact
 ======
@@ -62,7 +64,7 @@ to :php:`int` (e.g. `''` to `0`).
 
 Migrate corresponding database fields to :sql:`integer` where applicable.
 
-.. code-block:: sql
+..  code-block:: sql
 
     # Before
     CREATE TABLE tx_ext_my_table (

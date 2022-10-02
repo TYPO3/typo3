@@ -14,19 +14,16 @@ Description
 The global array :php:`PAGES_TYPES` has been removed in favor of a new registry
 class containing the shared state.
 
-
 Impact
 ======
 
 Accessing or modifying :php:`$GLOBALS['PAGES_TYPES']` will have no effect anymore.
-
 
 Affected installations
 ======================
 
 TYPO3 installations with custom extensions creating custom TCA records or custom
 Page Doktypes.
-
 
 Migration
 =========

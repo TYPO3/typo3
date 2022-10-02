@@ -27,7 +27,6 @@ Impact
 
 Extensions that hook into these places are not executing the PHP-code anymore.
 
-
 Affected installations
 ======================
 
@@ -36,7 +35,6 @@ TYPO3 installations with extensions using one of the hooks.
 Check the "Configuration" module to see if your TYPO3 installation is using
 one of the hooks by browsing :php:`$TYPO3_CONF_VARS[SC_OPTIONS]` or using the
 Extension Scanner.
-
 
 Migration
 =========

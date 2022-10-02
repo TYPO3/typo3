@@ -33,13 +33,11 @@ Impact
 
 Registering one of the hooks above in TYPO3 v12+ has no effect anymore.
 
-
 Affected installations
 ======================
 
 TYPO3 installations with modifications to the page module in third-party
 extensions via one of the hooks.
-
 
 Migration
 =========

@@ -33,12 +33,10 @@ Impact
 Using one of the constructs below stops working in v12 and needs
 TypoScript adaptions.
 
-
 Affected installations
 ======================
 
 Instances using TypoScript as outlined below.
-
 
 Migration
 =========
@@ -62,16 +60,16 @@ some details:
   access a constant within another constant. Instances using a construct like the below one
   need to untie constants.
 
-  .. code-block:: typoscript
+  ..  code-block:: typoscript
 
-    constants:
-    foo = fooValue
-    # This does not resolve to "fooValue" but is kept as string literal "{$foo}"
-    bar = {$foo}
+      constants:
+      foo = fooValue
+      # This does not resolve to "fooValue" but is kept as string literal "{$foo}"
+      bar = {$foo}
 
-    setup:
-    # This does NOT resolve to "fooValue", but to the string literal "{$foo}"
-    myValue = {$bar}
+      setup:
+      # This does NOT resolve to "fooValue", but to the string literal "{$foo}"
+      myValue = {$bar}
 
 * Constants are now restricted to "assignments" and "conditions". Using a constant to
   substitute an "identifier" / "object path" is no longer allowed. This has never been
@@ -80,32 +78,31 @@ some details:
 
   This is supported:
 
-  .. code-block:: typoscript
+  ..  code-block:: typoscript
 
-    # Simple constant usage as assignment value:
-    foo = {$bar}
-    # Compiling a value with string literals and constants:
-    foo = I am {$bar}
-    # Using a constant in a condition:
-    [ myValue = {$bar} ]
-    # Using constant(s) in multiline assginments:
-    foo (
-       I am {$bar} and {$baz}
-    )
+      # Simple constant usage as assignment value:
+      foo = {$bar}
+      # Compiling a value with string literals and constants:
+      foo = I am {$bar}
+      # Using a constant in a condition:
+      [ myValue = {$bar} ]
+      # Using constant(s) in multiline assignments:
+      foo (
+          I am {$bar} and {$baz}
+      )
 
   These constructs are *not* supported:
 
-  .. code-block:: typoscript
+  ..  code-block:: typoscript
 
-    # Using a constant as object path specification
-    {$bar} = myValue
-    # This is an object path specification, too, and not supported:
-    foo < {$bar}
+      # Using a constant as object path specification
+      {$bar} = myValue
+      # This is an object path specification, too, and not supported:
+      foo < {$bar}
 
 * TSconfig *does* support constant substitution: Site constants can be used
   in TSconfig. This has been introduced with TYPO3 v10, see
   :ref:`feature-91080-1657827157` for details.
-
 
 UTF-8 BOM in TypoScript files
 -----------------------------
@@ -118,13 +115,12 @@ add an UTF-8 BOM anymore.
 
 Instances can check if they use UTF-8 BOM with a Unix shell command:
 
-.. code-block:: bash
+..  code-block:: bash
 
     # find affected files
     find . -type f -print0 | xargs -0 -n1 file {} | grep 'UTF-8 Unicode (with BOM)'
     # remove UTF-8 BOM from a single file
     sed -i '1s/^\xEF\xBB\xBF//' affectedFile.typoscript
-
 
 Support for \\n and \\r\\n linebreaks only
 ------------------------------------------
@@ -134,6 +130,5 @@ or "\\r\\n" (Windows ending: Carriage return, LineFeed). Ancient Mac, prior to M
 used "\\r" as single linebreak character. This old linebreak type is no longer detected
 when parsing TypoScript and may lead to funny results, but chances are very low any
 instance is affected by this.
-
 
 .. index:: Backend, Frontend, TSConfig, TypoScript, NotScanned, ext:core

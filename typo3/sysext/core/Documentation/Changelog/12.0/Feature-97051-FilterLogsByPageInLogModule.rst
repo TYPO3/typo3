@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97051:
+
 ===================================================
 Feature: #97051 - Filter logs by page in Log module
 ===================================================
@@ -18,7 +20,6 @@ the result can be extended to further subpages.
 
 Additionally, administrators are now able to define access permissions via
 the module access logic for the :guilabel:`System > Log` module.
-
 
 Impact
 ======

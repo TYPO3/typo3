@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91077:
+
 =================================================================================
 Feature: #91077 - Element browser entry points for TCA types "group" and "folder"
 =================================================================================
@@ -39,7 +41,7 @@ This means, each `table => id` pair can be overridden via page TSconfig.
 
 Let's see a simple example for a group field with one allowed table:
 
-.. code-block:: php
+..  code-block:: php
 
     'simple_group' => [
         'label' => 'Simple group field',
@@ -54,7 +56,7 @@ Let's see a simple example for a group field with one allowed table:
 
 This could then be overridden via page TSconfig:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     TCEFORM.my_table.simple_group.config.elementBrowserEntryPoints.tt_content = 321
 
@@ -62,7 +64,7 @@ Since only one table is allowed, the defined entry point is also automatically
 used for the general element browser button. In case the group field allows
 more than one table the `_default` key has to be set:
 
-.. code-block:: php
+..  code-block:: php
 
     'extended_group' => [
         'label' => 'Extended group field',
@@ -79,13 +81,13 @@ more than one table the `_default` key has to be set:
 
 Of course, the `_default` key can also be overridden via page TSconfig:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     TCEFORM.my_table.extended_group.config.elementBrowserEntryPoints._default = 122
 
 For TCA type "folder" one can also define an entry point with the `_default` key:
 
-.. code-block:: php
+..  code-block:: php
 
     'folder_group' => [
         'label' => 'Folder group field',
@@ -99,7 +101,7 @@ For TCA type "folder" one can also define an entry point with the `_default` key
 
 It's also possible to use a special TSconfig key:
 
-.. code-block:: php
+..  code-block:: php
 
     'folder_group' => [
         'label' => 'Folder group field',
@@ -113,7 +115,7 @@ It's also possible to use a special TSconfig key:
 
 This key has then to be defined on field level:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     TCEFORM.my_table.folder_group.PAGE_TSCONFIG_ID = 1:/styleguide/subfolder
 

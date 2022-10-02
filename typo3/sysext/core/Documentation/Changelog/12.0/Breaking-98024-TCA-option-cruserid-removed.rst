@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-98024:
+
 =================================================
 Breaking: #98024 - TCA option `cruser_id` removed
 =================================================
@@ -25,7 +27,6 @@ Several drawbacks came with this feature, which is why it was removed entirely:
 Information about a record ("Info Popup" or within Workspaces) is now fetched
 through TYPO3's History functionality.
 
-
 Impact
 ======
 
@@ -36,13 +37,11 @@ Also, when upgrading to TYPO3 v12, the database field is prepared to be removed.
 The option :php:`$GLOBALS['TCA'][$tableName]['ctrl']['cruser_id']` is also
 automatically removed during cache warmup from the final TCA listing.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations actively using this field for querying or filling, not using
 TYPO3 API, and accessing the database directly.
-
 
 Migration
 =========

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-98304:
+
 ===================================================================
 Breaking: #98304 - Removed hook for modifying edit form user access
 ===================================================================
@@ -10,7 +12,8 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck']`
-has been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent`.
+has been removed in favor of a new PSR-14 event
+:php:`\TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent`.
 
 Additionally, the corresponding :php:`TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException`,
 which had been thrown in case a hook denied the user access has been replaced

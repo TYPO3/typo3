@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96616:
+
 =======================================================
 Breaking: #96616 - Remove Frontend Login Mode for pages
 =======================================================
@@ -27,7 +29,6 @@ the following public methods have been removed:
 Additionally, the following TypoScript configuration has no effect anymore:
 
 - :typoscript:`config.sendCacheHeaders_onlyWhenLoginDeniedInBranch`
-
 
 Impact
 ======

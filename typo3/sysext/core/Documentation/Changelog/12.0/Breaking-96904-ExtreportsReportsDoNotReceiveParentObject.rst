@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96904:
+
 ===================================================================
 Breaking: #96904 - ext:reports reports do not receive parent object
 ===================================================================
@@ -18,7 +20,6 @@ was pretty much useless since all state in :php:`ReportController`
 is :php:`protected`. Not having this constructor argument has the advantage
 that reports can now use dependency injection.
 
-
 Impact
 ======
 
@@ -26,12 +27,10 @@ Extensions that register own reports to the EXT:reports extension and type hint
 :php:`ReportController` as constructor argument will trigger a fatal PHP error
 since that argument is no longer provided by the API.
 
-
 Affected Installations
 ======================
 
 Instances with extensions that add own reports to EXT:reports may be affected.
-
 
 Migration
 =========
@@ -39,7 +38,7 @@ Migration
 Do not expect to retrieve an instance of :php:`ReportController` as constructor
 argument anymore. Code before:
 
-.. code-block:: php
+..  code-block:: php
 
     class MyClass implements ReportInterface
     {
@@ -49,7 +48,7 @@ argument anymore. Code before:
         }
     }
 
-.. code-block:: php
+..  code-block:: php
 
     class MyClass implements ReportInterface
     {

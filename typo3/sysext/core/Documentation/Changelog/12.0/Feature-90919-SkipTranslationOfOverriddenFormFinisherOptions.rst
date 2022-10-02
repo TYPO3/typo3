@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90919:
+
 ======================================================================
 Feature: #90919 - Skip translation of overridden form finisher options
 ======================================================================
@@ -24,21 +26,20 @@ That way, the options can only be overridden within a FlexForm but not by
 FlexForm overrides are in place. The following syntax is only documented for
 completeness. Nonetheless, it can also be written manually into a form definition.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   finishers:
-     -
-       options:
-         identifier: EmailToSender
-         subject: 'Email to sender'
-         recipients:
-           recipient@sender.de: 'recipient@sender name'
-         translation:
-           propertiesExcludedFromTranslation:
-             - subject
-             - recipients
-             - format
-
+    finishers:
+      -
+        options:
+          identifier: EmailToSender
+          subject: 'Email to sender'
+          recipients:
+            recipient@sender.de: 'recipient@sender name'
+          translation:
+            propertiesExcludedFromTranslation:
+              - subject
+              - recipients
+              - format
 
 Impact
 ======

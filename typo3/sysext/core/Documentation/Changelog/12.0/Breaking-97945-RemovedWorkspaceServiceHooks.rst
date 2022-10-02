@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97945:
+
 =================================================
 Breaking: #97945 - Removed WorkspaceService hooks
 =================================================

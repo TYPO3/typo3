@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94117:
+
 =============================================================
 Feature: #94117 - Improve Extbase type converter registration
 =============================================================
@@ -19,7 +21,7 @@ file and adding the configuration, such as the `sourceType`, the `targetType`
 or the `priority` as class properties, accessible via public methods.
 
 This has now been improved. Type converters are now registered as container
-services in the extensions' :file:`Services.yaml` file by tagging the service
+services in the extension's :file:`Services.yaml` file by tagging the service
 with :yaml:`extbase.type_converter` and adding the configuration as tag
 attributes.
 
@@ -33,15 +35,15 @@ Impact
 
 Registration is now done in your :file:`Services.yaml` like the following:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   services:
-     Vendor\Extension\Property\TypeConverter\MyBooleanConverter:
-       tag:
-         - name: extbase.type_converter
-           priority: 10
-           target: boolean
-           sources: boolean,string
+    services:
+      Vendor\Extension\Property\TypeConverter\MyBooleanConverter:
+        tag:
+          - name: extbase.type_converter
+            priority: 10
+            target: boolean
+            sources: boolean,string
 
 .. tip::
 

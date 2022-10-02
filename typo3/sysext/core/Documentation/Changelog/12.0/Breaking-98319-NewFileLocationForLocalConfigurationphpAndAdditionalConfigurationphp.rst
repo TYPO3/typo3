@@ -17,7 +17,7 @@ This file contains system-wide configuration options such as database credential
 or paths to image processing details.
 
 Historically, the very original name was `typo3conf/localconf.php` (this is also
-where the extensions' file name `ext_localconf.php` comes from).
+where the extension's file name `ext_localconf.php` comes from).
 
 This file was renamed in TYPO3 v6.0 to :php:`LocalConfiguration.php`  and since
 then returns a PHP array with settings then available in :php:`$TYPO3_CONF_VARS`.
@@ -34,7 +34,7 @@ could be shared with multiple TYPO3 installations.
 
 TYPO3 v12 has a strong support for Composer and TYPO3's own code base has
 progressed since 2012, when TYPO3 v6.0 was released. TYPO3 Core itself now
-only consists of extensions which are available as native composer packages.
+only consists of extensions which are available as native Composer packages.
 The concept of global extensions has been phased out over the past versions.
 
 Instead, TYPO3 installations now distinguish between "dependencies" such as
@@ -47,10 +47,12 @@ Newcomers or users from other PHP projects might understand the concept of a fil
 with certain settings much better, so the file locations and the file names
 have been changed.
 
-For non-composer-based installations the file names are:
+For non-Composer-based installations the file names are:
 
-* :file:`typo3conf/LocalConfiguration.php` is now available in :file:`typo3conf/system/settings.php`
-* :file:`typo3conf/AdditionalConfiguration.php` is now available in :file:`typo3conf/system/additional.php`
+*   :file:`typo3conf/LocalConfiguration.php` is now available in
+    :file:`typo3conf/system/settings.php`
+*   :file:`typo3conf/AdditionalConfiguration.php` is now available in
+    :file:`typo3conf/system/additional.php`
 
 Composer-based TYPO3 projects by default have the possibility to place certain
 files from outside the document root, and using the document root such as :file:`public/`
@@ -61,8 +63,10 @@ TYPO3 in its Composer Mode already creates a folder named :file:`config/` on the
 project root level, where e.g. site configuration is stored. Within the
 :file:`config/` folder, the new location is placed.
 
-* :file:`typo3conf/LocalConfiguration.php` is now available in :file:`config/system/settings.php`
-* :file:`typo3conf/AdditionalConfiguration.php` is now available in :file:`config/system/additional.php`
+*   :file:`typo3conf/LocalConfiguration.php` is now available in
+    :file:`config/system/settings.php`
+*   :file:`typo3conf/AdditionalConfiguration.php` is now available in
+    :file:`config/system/additional.php`
 
 Impact
 ======
@@ -72,12 +76,10 @@ TYPO3 automatically moves :file:`typo3conf/LocalConfiguration.php` and
 the first PHP request. The old file is not evaluated anymore, as soon as the file
 in the new location is available.
 
-
 Affected installations
 ======================
 
 All TYPO3 installations prior to TYPO3 v12.
-
 
 Migration
 =========
@@ -85,7 +87,7 @@ Migration
 The configuration files are automatically moved with TYPO3 v12.0 to their new
 locations, so no manual process is needed.
 
-Projects working with a Versioning Control System such as Git might need to adapt
+Projects working with a version control system such as Git might need to adapt
 their :file:`.gitignore` file or their deployment strategies.
 
 In addition, TYPO3 projects relying on the file locations and their structures

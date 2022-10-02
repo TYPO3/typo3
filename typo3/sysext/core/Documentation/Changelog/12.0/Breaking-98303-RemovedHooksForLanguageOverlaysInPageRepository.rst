@@ -19,7 +19,7 @@ The hooks
 have been removed in favor of new PSR-14 events.
 
 In addition, the method :php:`PageRepository->getRecordOverlay()` has been
-marked as protected as the new Events take place at a slightly different
+marked as protected as the new events take place at a slightly different
 piece of code.
 
 Impact
@@ -34,7 +34,6 @@ Affected installations
 ======================
 
 TYPO3 installations with custom extensions using these hooks.
-
 
 Migration
 =========

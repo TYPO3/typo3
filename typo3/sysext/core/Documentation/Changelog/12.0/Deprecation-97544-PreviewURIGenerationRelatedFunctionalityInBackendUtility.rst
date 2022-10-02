@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97544:
+
 ====================================================================================
 Deprecation: #97544 - Preview URI Generation related functionality in BackendUtility
 ====================================================================================
@@ -23,12 +25,10 @@ Impact
 Using the utility method or registering hooks will trigger a PHP :php:`E_USER_DEPRECATED` error.
 The extension scanner will detect usages.
 
-
 Affected installations
 ======================
 
 All installations using the utility method or the hook in custom extensions.
-
 
 Migration
 =========

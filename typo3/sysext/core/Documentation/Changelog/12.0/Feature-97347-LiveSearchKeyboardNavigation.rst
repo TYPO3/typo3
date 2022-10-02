@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97347:
+
 ==========================================================
 Feature: #97347 - Allow keyboard navigation in live search
 ==========================================================

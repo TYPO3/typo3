@@ -13,20 +13,17 @@ Description
 
 The PHP Constant :php:`TYPO3_mainDir` which is defined as :file:`typo3/` has been marked as deprecated.
 
-
 Impact
 ======
 
 Accessing the constant will stop working in TYPO3 v13. No deprecation warning is thrown,
 but the Extension Scanner will detect any usage in your installation.
 
-
 Affected installations
 ======================
 
 TYPO3 installations with custom third-party extensions using the constant directly, which is
 highly unlikely.
-
 
 Migration
 =========

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-90044:
+
 ===============================================================================
 Breaking: #90044 - config.spamProtectEmailAddresses with option "ascii" removed
 ===============================================================================
@@ -17,7 +19,6 @@ to point to the ASCII-encoded equivalent. Since all browsers (and most bots/craw
 do this automatically and instantly this feature has no spam-protection
 relevance anymore.
 
-
 Impact
 ======
 
@@ -25,12 +26,10 @@ Setting the option to `ascii` has no effect anymore, which is the same as not
 setting the option at all. However, in case the option is set to `ascii` a
 PHP :php:`E_USER_DEPRECATED` error is raised.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations having this option set in their TypoScript setup.
-
 
 Migration
 =========

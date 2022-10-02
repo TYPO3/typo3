@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97271:
+
 ========================================================
 Deprecation: #97271 - Global Color Picker initialization
 ========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96641-1:
+
 ===============================================================
 Deprecation: #96641 - Unused Hook related UrlProcessorInterface
 ===============================================================
@@ -15,19 +17,16 @@ required hook implementations to implement :php:`UrlProcessorInterface`.
 Since the mentioned hook is :doc:`removed <../12.0/Breaking-96641-TypoLinkRelatedHooksRemoved>`,
 the interface is not in use anymore and has been marked as deprecated.
 
-
 Impact
 ======
 
 The extension scanner will now notify any extension, which might still use
 the PHP interface.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations using the PHP interface in custom extension code.
-
 
 Migration
 =========

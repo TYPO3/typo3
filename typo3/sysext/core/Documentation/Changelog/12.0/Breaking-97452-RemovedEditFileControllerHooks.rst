@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97452:
+
 ===================================================
 Breaking: #97452 - Removed EditFileController hooks
 ===================================================
@@ -13,20 +15,17 @@ The hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook']` have been removed.
 The same behavior may be achieved using template overrides.
 
-
 Impact
 ======
 
 Any hook implementation registered is not executed anymore in TYPO3 v12.0+.
 The extension scanner will report possible usages.
 
-
 Affected Installations
 ======================
 
 All TYPO3 installations using these hook in custom extension code. This is pretty
 unlikely, since both hooks were of limited use.
-
 
 Migration
 =========

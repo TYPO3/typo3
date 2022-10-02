@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96041:
+
 ======================================================
 Feature: #96041 - Improve Backend toolbar registration
 ======================================================

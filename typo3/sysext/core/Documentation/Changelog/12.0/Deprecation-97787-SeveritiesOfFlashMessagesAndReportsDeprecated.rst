@@ -15,7 +15,6 @@ With the introduction of :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`,
 the existing severity constants of :php:`\TYPO3\CMS\Core\Messaging\FlashMessage`
 and :php:`\TYPO3\CMS\Reports\Status` have been marked as deprecated.
 
-
 Impact
 ======
 
@@ -37,13 +36,11 @@ Passing the constants as listed below to the constructor of
 * :php:`\TYPO3\CMS\Reports\Status::WARNING`
 * :php:`\TYPO3\CMS\Reports\Status::ERROR`
 
-
 Affected installations
 ======================
 
 All installations with 3rd party plugins using the aforementioned constants are
 affected.
-
 
 Migration
 =========

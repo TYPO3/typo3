@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97231:
+
 =====================================================================
 Feature: #97231 - PSR-14 events for modifying inline element controls
 =====================================================================
@@ -12,7 +14,8 @@ Description
 The new PSR-14 events :php:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent`
 and :php:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent`
 have been introduced, which serve as a more powerful and flexible replacement
-for the now removed hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook']`.
+for the now removed hook
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook']`.
 
 The :php:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent`
 is called before any control markup is generated. It can be used to
@@ -36,22 +39,22 @@ or to completely remove a control.
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Frontend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-enabled-controls'
-        method: 'modifyEnabledControls'
-      - name: event.listener
-        identifier: 'my-package/backend/modify-controls'
-        method: 'modifyControls'
+    MyVendor\MyPackage\Frontend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-enabled-controls'
+          method: 'modifyEnabledControls'
+        - name: event.listener
+          identifier: 'my-package/backend/modify-controls'
+          method: 'modifyControls'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent;
     use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent;
@@ -59,28 +62,36 @@ The corresponding event listener class:
     use TYPO3\CMS\Core\Imaging\IconFactory;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-    class MyEventListener {
+    class MyEventListener
+    {
 
-        public function modifyEnabledControls(ModifyInlineElementEnabledControlsEvent $event): void
-        {
+        public function modifyEnabledControls(
+            ModifyInlineElementEnabledControlsEvent $event
+        ): void {
             // Enable a control depending on the foreign table
-            if ($event->getForeignTable() === 'sys_file_reference' && $event->isControlEnabled('sort')) {
+            if ($event->getForeignTable() === 'sys_file_reference'
+                && $event->isControlEnabled('sort')) {
                 $event->enableControl('sort');
             }
         }
 
-        public function modifyControls(ModifyInlineElementControlsEvent $event): void
-        {
+        public function modifyControls(
+            ModifyInlineElementControlsEvent $event
+        ): void {
             // Add a custom control depending on the parent table
             if ($event->getElementData()['inlineParentTableName'] === 'tt_content') {
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+                $iconCode = $iconFactory->getIcon(
+                    'my-icon-identifier',
+                    Icon::SIZE_SMALL
+                )->render();
                 $event->setControl(
                     'tx_my_control',
-                    '<a href="/some/url" class="btn btn-default t3js-modal-trigger">' . $iconFactory->getIcon('my-icon-identifier', Icon::SIZE_SMALL)->render() . '</a>'
+                    '<a href="/some/url" class="btn btn-default t3js-modal-trigger">'
+                    . $iconCode . '</a>'
                 );
             }
         }
-
     }
 
 Available Methods

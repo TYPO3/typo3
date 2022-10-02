@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96465:
+
 ==========================================
 Feature: #96465 - New Linkvalidator module
 ==========================================

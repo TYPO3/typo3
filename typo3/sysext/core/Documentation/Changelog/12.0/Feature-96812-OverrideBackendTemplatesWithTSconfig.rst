@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-96812:
+
 ==========================================================
 Feature: #96812 - Override backend templates with TSconfig
 ==========================================================
@@ -16,7 +18,7 @@ All Fluid templates rendered by backend controllers can be overridden with
 own templates on a per-file basis.
 
 This can be configured using TSconfig: Both page TSconfig and user TSconfig are
-observed. The feature is available for basically all core backend modules, as
+observed. The feature is available for basically all Core backend modules, as
 well as the backend main frame templates. Exceptions are email templates and
 templates of the install tool.
 
@@ -30,35 +32,34 @@ solution need an adaption. Please find details in the
 .. note::
 
     While this feature is powerful and allows overriding nearly any backend
-    template, it *should be used with care*: Fluid templates of the core
-    extensions are *not* considered API. The core development needs the
+    template, it *should be used with care*: Fluid templates of the Core
+    extensions are *not* considered API. The Core development needs the
     freedom to add, change and delete Fluid templates any time, even for
     bugfix releases. Template overrides are similar to an :php:`XCLASS` in
-    PHP - the core can not guarantee integrity on this level across versions.
-
+    PHP - the Core can not guarantee integrity on this level across versions.
 
 Basic syntax
 ------------
 
 The various combinations are best explained by example: The linkvalidator
-extension (its composer name is "typo3/cms-linkvalidator") comes with a backend
+extension (its Composer name is "typo3/cms-linkvalidator") comes with a backend
 module in the :guilabel:`Web` main section. The page tree is displayed for this module and
 linkvalidator has two main views and templates: :file:`Resources/Private/Templates/Backend/Report.html`
 for the "Report" view and another one for the "Check link" view. To override
 the :file:`Backend/Report.html` with an own template, this definition can
-be added to an extensions' :file:`Configuration/page.tsconfig` file
+be added to an extension's :file:`Configuration/page.tsconfig` file
 (see :doc:`changelog <Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions>`):
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     # Pattern: templates."composer-name"."something-unique" = "overriding-extension-composer-name":"entry-path"
     templates.typo3/cms-linkvalidator.1643293191 = my-vendor/my-extension:Resources/Private/TemplateOverrides
 
-When the target extension identified by its composer name "my-vendor/my-extension" provides the file
+When the target extension identified by its Composer name "my-vendor/my-extension" provides the file
 :file:`Resources/Private/TemplateOverrides/Templates/Backend/Report.html`, **this** file will
 be used instead of the default template file from the linkvalidator extension.
 
-All core extensions stick to the general templates, layouts and partial file and directory position structure.
+All Core extensions stick to the general templates, layouts and partial file and directory position structure.
 When an extension needs to override a partial that is located in :file:`Resources/Private/Partials/SomeName/SomePartial.html`,
 and an override has been specified like above to :typoscript:`my-vendor/my-extension:Resources/Private/TemplateOverrides`, the
 system will look for file :file:`Resources/Private/TemplateOverrides/Partials/SomeName/SomePartial.html`. Similar for layouts.
@@ -66,7 +67,7 @@ system will look for file :file:`Resources/Private/TemplateOverrides/Partials/So
 The path part of the override definition can be set to whatever an integrator prefers,
 :file:`Resources/Private/TemplateOverrides` is just an idea here and hopefully not a bad one,
 further details rely on additional needs. For instance, it is probably a good idea to include
-the composer or extension name of the source extension in the path (linkvalidator in our example),
+the Composer or extension name of the source extension in the path (linkvalidator in our example),
 or when using overrides based on page IDs or group IDs, to include those in the path. The source
 extension sub-path is automatically added by the system when looking for override files, when
 a layout file is located at :file:`Resources/Private/Layouts/ExtraLarge/Main.html`, and an
@@ -82,7 +83,7 @@ extension can override a dedicated partial only.
 When multiple override paths are defined and more than one of them have overrides for a specific
 template, the override definition with the highest numerical value wins:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     templates.typo3/cms-linkvalidator.23 = other-vendor/other-extension:Resources/Private/TemplateOverrides/Linkvalidator
     templates.typo3/cms-linkvalidator.2300 = my-vendor/my-extension:Resources/Private/MyOverrideIsBigger
@@ -100,7 +101,6 @@ various combinations are possible:
   in user TSconfig. So a user TSconfig template override starts with :typoscript:`page.templates.`
   instead of :typoscript:`templates.`.
 
-
 Usage in own modules
 --------------------
 
@@ -109,21 +109,19 @@ template API <Feature-96730-SimplifiedExtbackendModuleTemplateAPI>` automaticall
 enable the general backend template override feature. Extension authors do not
 need to further prepare their extensions to allow template overrides by other extensions.
 
-
 Impact
 ======
 
-Third party or custom extensions like a site extension can now change backend
+Third-party or custom extensions like a site extension can now change backend
 templates if needed. This can be handy, for instance, to give editors custom
 hints in certain areas without custom PHP code, or to do some other quick solutions.
 
-Some core extensions like the dashboard also use this feature when third-party extensions
+Some Core extensions like the dashboard also use this feature when third-party extensions
 supply additional widgets with templates to register those templates into the dashboard
 namespace. See the dashboard extension documentation and :doc:`this changelog <Breaking-96812-NoFrontendTypoScriptBasedTemplateOverridesInTheBackend>`
 for more details.
 
-This feature needs to be used with care since the core does not
+This feature needs to be used with care since the Core does not
 consider templates as API and a template override may thus break anytime.
-
 
 .. index:: Backend, TSConfig, ext:backend

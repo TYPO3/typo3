@@ -22,7 +22,6 @@ not wanted context switch.
 Not having an Extbase Request within StandaloneView anymore can have impact on
 behavior of some Fluid ViewHelpers.
 
-
 Impact
 ======
 
@@ -41,14 +40,12 @@ Most notably, all :html:`f:form` ViewHelpers are affected of this, plus
 eventually custom ViewHelpers that access Extbase specific :php:`Request`
 methods.
 
-
 Affected installations
 ======================
 
 Instances with extensions using StandaloneView in their code may need attention,
 and frontend rendering using :typoscript:`FLUIDTEMPLATE` content objects may need
 adaptions if Extbase-only ViewHelpers like :html:`f:form` are used.
-
 
 Migration
 =========
@@ -87,6 +84,5 @@ Possible solutions:
 * Avoid using Extbase specific methods within the ViewHelper by fetching data from
   the given :php:`Psr\Http\Message\ServerRequestInterface` Request, or it's attached
   core attributes.
-
 
 .. index:: Fluid, PHP-API, NotScanned, ext:fluid

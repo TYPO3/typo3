@@ -21,7 +21,6 @@ Since then, both GIF and TIFF have had reduced impact on the web we know today.
 For this reason, the value is removed. If GIF compression via LZW is wanted,
 it should be pointing to the main `processor_path` setting.
 
-
 Impact
 ======
 
@@ -32,14 +31,12 @@ The GFX setting `processor_path_lzw` is not used anymore, and can safely be
 removed. When accessing the Install Tool, the setting is automatically removed
 from :file:`LocalConfiguration.php`.
 
-
 Affected installations
 ======================
 
 TYPO3 installations actively using GIF compression or GIF thumbnails over PNG
 thumbnails (if `GFX/thumbnails_png` is set to false), which might result in
 GIF files with a larger file size.
-
 
 Migration
 =========

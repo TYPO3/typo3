@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89917:
+
 =======================================================
 Feature: #89917 - Copy page access settings from parent
 =======================================================
@@ -48,13 +50,13 @@ Let's say we have a TYPO3 instance with multiple sites. There is still a "page o
 plus various other groups for backend user mount points to single sites. A basic
 site extension now sets this in an :file:`ext_tables.php` file:
 
-.. code-block:: php
+..  code-block:: php
 
-   $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= '
-       TCEMAIN.permissions.groupid = copyFromParent
-       TCEMAIN.permissions.group = 31
-       TCEMAIN.permissions.everybody = 0
-   ';
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= '
+        TCEMAIN.permissions.groupid = copyFromParent
+        TCEMAIN.permissions.group = 31
+        TCEMAIN.permissions.everybody = 0
+    ';
 
 This configures a default 'New pages are set to the owner of the parent page and members
 of this group can do "everything"'. When an administrator now creates a new site, it would
@@ -70,12 +72,12 @@ directory and inherit it to new subdirectories.
 Example
 =======
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   TCEMAIN.permissions.userid = copyFromParent
-   TCEMAIN.permissions.groupid = copyFromParent
-   TCEMAIN.permissions.user = copyFromParent
-   TCEMAIN.permissions.group = copyFromParent
-   TCEMAIN.permissions.everybody = copyFromParent
+    TCEMAIN.permissions.userid = copyFromParent
+    TCEMAIN.permissions.groupid = copyFromParent
+    TCEMAIN.permissions.user = copyFromParent
+    TCEMAIN.permissions.group = copyFromParent
+    TCEMAIN.permissions.everybody = copyFromParent
 
 .. index:: Backend, ext:core

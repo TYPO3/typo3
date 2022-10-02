@@ -23,7 +23,6 @@ Using :php:`'javaScriptModules'` is now the suggested to be used over
 :php:`'requireJsModules'`, as this latter is deprecated from now on
 and will be removed in TYPO3 v13.
 
-
 Impact
 ======
 
@@ -33,12 +32,11 @@ to be passed as value.
 
 Example JavaScript module registration:
 
-.. code-block:: php
+..  code-block:: php
 
     // use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
     $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
         '@my/extension/my-element.js'
     );
-
 
 .. index:: Backend, JavaScript, ext:backend

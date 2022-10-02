@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97174:
+
 ========================================================================
 Breaking: #97174 - Removed hook for modifying info module footer content
 ========================================================================

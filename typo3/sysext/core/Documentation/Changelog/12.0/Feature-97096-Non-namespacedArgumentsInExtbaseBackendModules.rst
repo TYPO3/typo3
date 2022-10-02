@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97096:
+
 =====================================================================
 Feature: #97096 - Non-namespaced arguments in Extbase backend modules
 =====================================================================
@@ -35,7 +37,7 @@ A link may look like this:
 If a module explicitly wants to keep using the namespaced version of the arguments,
 the feature flag can be set:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
     :caption: EXT:my_extension/ext_typoscript_setup.typoscript
 
     module.tx_myextension_somemodule {

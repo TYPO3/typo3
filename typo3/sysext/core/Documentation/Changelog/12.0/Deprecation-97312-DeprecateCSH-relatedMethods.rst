@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97312:
+
 ===================================================
 Deprecation: #97312 - Deprecate CSH-related methods
 ===================================================
@@ -26,7 +28,6 @@ Also, the following Fluid view helpers are marked as deprecated:
 * `f:be.buttons.csh` (:php:`TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\CshViewHelper`)
 * `f:be.labels.csh` (:php:`TYPO3\CMS\Fluid\ViewHelpers\Be\Labels\CshViewHelper`)
 
-
 Impact
 ======
 
@@ -34,12 +35,10 @@ Using any of the deprecated classes and methods will trigger a PHP :php:`E_USER_
 with an exception of :php:`ExtensionManagementUtility::addLLrefForTCAdescr()`
 for being a low-level method. The extension scanner will report any usage.
 
-
 Affected Installations
 ======================
 
 All extensions using any of the deprecated classes and methods are affected.
-
 
 Migration
 =========

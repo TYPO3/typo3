@@ -61,13 +61,11 @@ Furthermore the following changes have been applied:
 * :js:`Modal.currentModal.trigger('modal-dismiss')` has been removed.
   Use :js:`ModalElement.hideModal()` instead.
 
-
 Impact
 ======
 
 Using jQuery API on :js:`ModalElement` will lead to JavaScript errors as
 no jQuery interop is provided.
-
 
 Affected installations
 ======================
@@ -75,7 +73,6 @@ Affected installations
 All 3rd party extensions using the API of the :js:`@typo3/backend/modal.js`
 module are affected, if they use the return type of the methods to attach
 to events or to customize the modal after creations.
-
 
 Migration
 =========
@@ -86,52 +83,51 @@ from :js:`JQuery` to :js:`ModalElement` usage.
 
 Existing code:
 
-.. code-block:: javascript
+..  code-block:: javascript
 
-   var configuration = {
-      buttons: [
-         {
-            text: 'Save changes',
-            name: 'save',
-            icon: 'actions-document-save',
-            active: true,
-            btnClass: 'btn-primary',
-            dataAttributes: {
-               action: 'save'
-            },
-            trigger: function() {
-               Modal.currentModal.trigger('modal-dismiss');
-            }
-         }
-      ]
-   };
-   Modal
-     .advanced(configuration)
-     .on('hidden.bs.modal', function() {
-       // do something
-     });
-
+    var configuration = {
+       buttons: [
+          {
+             text: 'Save changes',
+             name: 'save',
+             icon: 'actions-document-save',
+             active: true,
+             btnClass: 'btn-primary',
+             dataAttributes: {
+                action: 'save'
+             },
+             trigger: function() {
+                Modal.currentModal.trigger('modal-dismiss');
+             }
+          }
+       ]
+    };
+    Modal
+      .advanced(configuration)
+      .on('hidden.bs.modal', function() {
+        // do something
+    });
 
 Should be adapted to:
 
-.. code-block:: javascript
+..  code-block:: javascript
 
-   const modal = Modal.advanced({
-      buttons: [
-         {
-            text: 'Save changes',
-            name: 'save',
-            icon: 'actions-document-save',
-            active: true,
-            btnClass: 'btn-primary',
-            trigger: function(event, modal) {
-              modal.hideModal();
-            }
-         }
-      ]
-   });
-   modal.addEventListener('typo3-modal-hidden', function() {
-     // do something
-   });
+    const modal = Modal.advanced({
+       buttons: [
+          {
+             text: 'Save changes',
+             name: 'save',
+             icon: 'actions-document-save',
+             active: true,
+             btnClass: 'btn-primary',
+             trigger: function(event, modal) {
+               modal.hideModal();
+             }
+          }
+       ]
+    });
+    modal.addEventListener('typo3-modal-hidden', function() {
+      // do something
+    });
 
 .. index:: Backend, JavaScript, NotScanned, ext:backend

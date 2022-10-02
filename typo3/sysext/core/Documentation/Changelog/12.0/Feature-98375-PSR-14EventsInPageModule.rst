@@ -11,7 +11,7 @@ See :issue:`98375`
 Description
 ===========
 
-Three new PSR-14 events have been added to TYPO3's Page Module to modify
+Three new PSR-14 events have been added to TYPO3's page module to modify
 the preparation and rendering of content elements:
 
 * :php:`TYPO3\CMS\Backend\View\Event\IsContentUsedOnPageLayoutEvent`
@@ -23,7 +23,6 @@ They are drop-in replacement to the removed hooks:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['record_is_used']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageLayoutView::class]['modifyQuery']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']`
-
 
 Impact
 ======

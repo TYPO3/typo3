@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97230:
+
 ===========================================================================
 Feature: #97230 - PSR-14 event for modifying image manipulation preview URL
 ===========================================================================
@@ -37,18 +39,18 @@ PSR-14 event feature the following methods:
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-imagemanipulation-previewurl'
+    MyVendor\MyPackage\Backend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-imagemanipulation-previewurl'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent;
 

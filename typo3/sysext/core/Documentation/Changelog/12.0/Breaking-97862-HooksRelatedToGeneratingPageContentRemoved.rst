@@ -51,7 +51,8 @@ extension scanner will detect usages as weak match.
 Migration
 =========
 
-Use one of the two newly introduced :doc:`PSR-14 events <../12.0/Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour>`:
+Use one of the two newly introduced
+:doc:`PSR-14 events <../12.0/Feature-97862-NewPSR-14EventsForManipulatingFrontendPageGenerationAndCacheBehaviour>`:
 
 * :php:`TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent`
 * :php:`TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent`

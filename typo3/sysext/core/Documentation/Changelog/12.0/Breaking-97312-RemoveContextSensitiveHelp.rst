@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97312:
+
 ================================================
 Breaking: #97312 - Remove context sensitive help
 ================================================
@@ -36,7 +38,7 @@ The arguments for removing context sensitive help were:
   and most arguments against removal can be solved using the `description`
   or by linking to the official documentation
 * Removal of CSH also removed a lot of outdated files (and results in
-  smaller footprint of the TYPO3 core package)
+  smaller footprint of the TYPO3 Core package)
 
 The route `help_cshmanual_popup` has been removed.
 
@@ -58,19 +60,16 @@ The backend display related TCA option
 :php:`$GLOBALS['TCA'][my_table]['interface']['always_description']`
 is not evaluated anymore.
 
-
 Impact
 ======
 
 The context sensitive help is removed completely and only loading help
 items for SelectCheckboxElements is still supported.
 
-
 Affected Installations
 ======================
 
 All installations that use CSH for own fields.
-
 
 Migration
 =========
@@ -83,6 +82,5 @@ An example for a TCA description is the :php:`protected` column in the
 
 The TCA option :php:`['interface']['always_description']` can be removed from
 any TCA definition.
-
 
 .. index:: Backend, NotScanned, ext:core

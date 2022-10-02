@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97450:
+
 ================================================================
 Feature: #97450 - PSR-14 event for modifying version differences
 ================================================================
@@ -31,14 +33,12 @@ Furthermore does the event provide the following methods
 - :php:`getLiveRecordData()`: Returns the records live data (used to create the version difference)
 - :php:`getParameters()`: Returns meta information like current stage and current workspace
 
-.. note::
-
+..  note::
     The removed hook allowed to update the live record data. This however had
     no effect since those data are not further used by TYPO3. Therefore, the
     new event does no longer provide a setter for the live record data.
 
-.. note::
-
+..  note::
     The removed hook contained an instance of :php:`DiffUtility`, which can
     be used to generate the differences :php:`string`. Since PSR-14 events
     are usually pure data objects, without dependencies to any service, the
@@ -48,18 +48,18 @@ Furthermore does the event provide the following methods
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Workspaces\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/workspaces/modify-version-differences'
+    MyVendor\MyPackage\Workspaces\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/workspaces/modify-version-differences'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Utility\DiffUtility;
     use TYPO3\CMS\Workspaces\Event\ModifyVersionDifferencesEvent;

@@ -35,7 +35,7 @@ reference them.
 Example for a new module identifier within
 :file:`Configuration/Backend/Modules.php`:
 
-.. code-block:: php
+..  code-block:: php
 
     return [
         'workspaces_admin' => [
@@ -49,7 +49,7 @@ Example for a new module identifier within
 Example for a route alias identifier within
 :file:`Configuration/Backend/Routes.php`:
 
-.. code-block:: php
+..  code-block:: php
 
     return [
         'file_editcontent' => [

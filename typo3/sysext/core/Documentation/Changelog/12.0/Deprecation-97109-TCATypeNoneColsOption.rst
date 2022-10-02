@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97109:
+
 =================================================
 Deprecation: #97109 - TCA type none "cols" option
 =================================================
@@ -13,7 +15,6 @@ The TCA type `none` had two option keys for the same functionality: `cols` and
 `size`. In order to simplify the available configuration, `cols` has been
 dropped in favour of `size`.
 
-
 Impact
 ======
 
@@ -21,12 +22,10 @@ Defining the option `cols` for the TCA type `none` will trigger a PHP :php:`E_US
 An automatic migration is in place, which will be displayed in the TCA
 Migrations view of the Upgrade module.
 
-
 Affected Installations
 ======================
 
 All installations using the `cols` option for the TCA type `none`.
-
 
 Migration
 =========
@@ -35,7 +34,7 @@ Rename the option `cols` to `size`.
 
 Before:
 
-.. code-block:: php
+..  code-block:: php
 
     'columns' => [
         'aColumn' => [
@@ -48,7 +47,7 @@ Before:
 
 After:
 
-.. code-block:: php
+..  code-block:: php
 
     'columns' => [
         'aColumn' => [

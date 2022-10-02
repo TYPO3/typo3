@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96641-2:
+
 =========================================================================
 Deprecation: #96641 - Link-related functionality in ContentObjectRenderer
 =========================================================================
@@ -22,12 +24,10 @@ and have been marked as deprecated in favor of the new LinkFactory
 API, and the existing :php:`$cObj->typoLink()` and :php:`$cObj->typoLink_URL()`
 methods.
 
-
 Impact
 ======
 
 Calling these methods in your own PHP code will trigger PHP :php:`E_USER_DEPRECATED` errors.
-
 
 Affected Installations
 ======================
@@ -35,7 +35,6 @@ Affected Installations
 TYPO3 installations with custom extensions using these methods for
 generating links. The extension scanner in the Upgrade module / Install tool
 will show affected occurrences.
-
 
 Migration
 =========

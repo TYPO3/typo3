@@ -31,12 +31,10 @@ anymore, however they are kept for extensions which aim to be compatible
 with TYPO3 v11 and TYPO3 v12+ at the same time. No deprecation notice
 is triggered while using in TYPO3 v12+.
 
-
 Affected installations
 ======================
 
 TYPO3 installations with custom extensions using these hooks and their interface.
-
 
 Migration
 =========

@@ -54,6 +54,6 @@ Replace any usage of :php:`FileExtensionFilter->filterInlineChildren()` with
 extension code should usually not be necessary.
 
 Replace any usage of :php:`ExtensionManagementUtility::getFileFieldTCAConfig()`
-by directly using the new TCA type :doc:`file <../12.0/Feature-98479-NewTCATypeFile.rst>`.
+by directly using the new TCA type :ref:`file <feature-98479-1664537749>`.
 
 .. index:: Backend, Database, FAL, PHP-API, TCA, PartiallyScanned, ext:backend

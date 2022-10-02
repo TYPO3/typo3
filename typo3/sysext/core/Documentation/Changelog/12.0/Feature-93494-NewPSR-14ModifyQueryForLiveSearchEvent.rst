@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93494:
+
 ==========================================================
 Feature: #93494 - New PSR-14 ModifyQueryForLiveSearchEvent
 ==========================================================
@@ -20,18 +22,18 @@ The event features the following methods:
 - :php:`getQueryBuilder()`: Returns the current :php:`QueryBuilder` instance
 - :php:`getTableName()`: Returns the table, for which the query will be executed
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\EventListener\ModifyQueryForLiveSearchEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/modify-query-for-live-search-event-listener'
+    MyVendor\MyPackage\EventListener\ModifyQueryForLiveSearchEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/modify-query-for-live-search-event-listener'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
 

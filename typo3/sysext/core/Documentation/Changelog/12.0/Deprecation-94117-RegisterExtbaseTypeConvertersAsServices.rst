@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94117:
+
 ==================================================================
 Deprecation: #94117 - Register extbase type converters as services
 ==================================================================

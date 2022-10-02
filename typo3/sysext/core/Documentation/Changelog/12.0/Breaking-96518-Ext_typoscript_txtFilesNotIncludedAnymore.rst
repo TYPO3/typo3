@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-96518:
+
 ==================================================================
 Breaking: #96518 - ext_typoscript_*.txt files not included anymore
 ==================================================================
@@ -10,7 +12,7 @@ Description
 ===========
 
 In previous TYPO3 versions, files named :file:`ext_typoscript_setup.txt` and
-:file:`ext_typoscript_constants.txt` which could be placed into an extensions'
+:file:`ext_typoscript_constants.txt` which could be placed into an extension's
 root folder, were automatically included for all TypoScript evaluations.
 
 This functionality stopped working, as the file ending `.typoscript`
@@ -21,12 +23,10 @@ Impact
 
 Contents of these files are not evaluated for TypoScript anymore.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations with custom extensions including such files.
-
 
 Migration
 =========

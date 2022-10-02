@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94544:
+
 =====================================================
 Feature: #94544 - Add new SMTP configuration settings
 =====================================================
@@ -31,7 +33,7 @@ It is now also possible to define an array with SMTP stream options in the
 
 Configuration Example:
 
-.. code-block:: php
+..  code-block:: php
 
     return [
         //....
@@ -47,7 +49,6 @@ Configuration Example:
         ],
         //....
     ];
-
 
 Impact
 ======

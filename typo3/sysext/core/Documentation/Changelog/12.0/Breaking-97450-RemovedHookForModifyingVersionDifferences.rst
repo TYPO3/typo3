@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97450:
+
 =================================================================
 Breaking: #97450 - Removed hook for modifying version differences
 =================================================================

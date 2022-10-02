@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87616:
+
 =======================================================
 Breaking: #87616 - Removed hook for altering page links
 =======================================================
@@ -22,12 +24,10 @@ Impact
 Any hook implementation registered is not executed anymore
 in TYPO3 v12.0+.
 
-
 Affected Installations
 ======================
 
 TYPO3 installations with custom extensions using this hook.
-
 
 Migration
 =========

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-97244-1:
+
 =================================================================
 Deprecation: #97244 - Direct instantiation of CompositeExpression
 =================================================================
@@ -11,7 +13,7 @@ Description
 
 `doctrine/dbal` `deprecated`_ direct instantiation of :php:`CompositeExpression`
 in favour of moving forward to an immutable class implementation. Therefore, this
-has also been deprecated in the core facade class (:php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`),
+has also been deprecated in the Core facade class (:php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`),
 to avoid shifting too far away.
 
 .. _`deprecated`: https://github.com/doctrine/dbal/commit/7bcd6ebcc2d30ba96cf00d3dca2345d6ae779cf9
@@ -44,11 +46,11 @@ static methods :php:`and(...)` and :php:`or(...)` have to be used.
     and :php:`CompositeExpression::or()` have already been added in
     a forward-compatible way in TYPO3 v11. Thus giving extension developers
     the ability to adopt new methods and still being able to support
-    multiple core versions without workarounds.
+    multiple Core versions without workarounds.
 
 For example, following code:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 
@@ -68,7 +70,7 @@ For example, following code:
 
 should be replaced with:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 

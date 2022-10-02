@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97544:
+
 ==========================================================
 Feature: #97544 - PSR-14 events for modifying preview URIs
 ==========================================================
@@ -67,22 +69,22 @@ Methods of :php:`AfterPagePreviewUriGeneratedEvent`:
 Example
 =======
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  MyVendor\MyPackage\Backend\MyEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'my-package/backend/modify-parameters'
-        method: 'modifyParameters'
-      - name: event.listener
-        identifier: 'my-package/backend/modify-preview-uri'
-        method: 'modifyPreviewUri'
+    MyVendor\MyPackage\Backend\MyEventListener:
+      tags:
+        - name: event.listener
+          identifier: 'my-package/backend/modify-parameters'
+          method: 'modifyParameters'
+        - name: event.listener
+          identifier: 'my-package/backend/modify-preview-uri'
+          method: 'modifyPreviewUri'
 
 The corresponding event listener class:
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent;
     use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;

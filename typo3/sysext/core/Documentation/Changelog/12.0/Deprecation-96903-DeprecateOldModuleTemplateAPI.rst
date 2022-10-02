@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96903:
+
 ======================================================
 Deprecation: #96903 - Deprecate old ModuleTemplate API
 ======================================================
@@ -28,7 +30,7 @@ The following methods should not be used anymore:
   data sink. It should not be abused to carry data around that is later retrieved again. Controllers that
   need these methods should be refactored slightly to carry the information around themselves.
 - :php:`ModuleTemplate->registerModuleMenu()`: This was a helper method for "third level" menu
-  registration of (especially) the info module. It is unused in core since at least TYPO3 v7. Extensions
+  registration of (especially) the info module. It is unused in Core since at least TYPO3 v7. Extensions
   most likely don't use it.
 - :php:`ModuleTemplate->getDynamicTabMenu()`: This is a helper to render a "tabbed" view of
   item titles and item content. Using the methods leads to strange controller code that relies
@@ -50,12 +52,10 @@ All methods will trigger a PHP :php:`E_USER_DEPRECATED` error when called. One e
 which is always used in combination with :php:`renderContent()` to be useful, so only one deprecation
 log entry is created when using both methods.
 
-
 Affected Installations
 ======================
 
 In general, instances with extensions that add custom backend modules may be affected.
-
 
 Migration
 =========

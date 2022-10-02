@@ -35,7 +35,6 @@ Affected installations
 3rd party extensions implementing :php:`RecoveryService` and
 :php:`RecoveryServiceInterface`.
 
-
 Migration
 =========
 

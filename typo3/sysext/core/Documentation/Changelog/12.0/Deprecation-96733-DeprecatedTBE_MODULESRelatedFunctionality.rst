@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-96733:
+
 ==================================================================
 Deprecation: #96733 - Deprecated TBE_MODULES related functionality
 ==================================================================
@@ -16,19 +18,16 @@ the following related methods have been deprecated:
 - :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES()`
 
-
 Impact
 ======
 
 Calling mentioned methods will trigger a PHP :php:`E_USER_DEPRECATED` error.
 The extension scanner will report usages.
 
-
 Affected Installations
 ======================
 
 All installations calling mentioned methods in custom extension code.
-
 
 Migration
 =========

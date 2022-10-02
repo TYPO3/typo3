@@ -18,7 +18,6 @@ the method is changed to return an instance of :php:`\TYPO3\CMS\Core\Type\Contex
 
 As this method isn't supposed to be used publicly, it is declared `internal` now.
 
-
 Impact
 ======
 
@@ -32,13 +31,11 @@ There is no negative impact in the following cases:
 
 In these cases, the enum's value is automatically used.
 
-
 Affected installations
 ======================
 
 All extensions using :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->getSeverity()`
 in PHP are affected, if the integer type is expected.
-
 
 Migration
 =========
@@ -46,7 +43,7 @@ Migration
 If the integer type of :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->getSeverity()`
 is expected, use the :php:`value` property of the :php:`ContextualFeedbackSeverity` enum:
 
-.. code-block:: php
+..  code-block:: php
 
     $flashMessage = new \TYPO3\CMS\Core\Messaging\FlashMessage('This is a message');
     $severityAsInt = $flashMessage->getSeverity()->value;
@@ -54,7 +51,7 @@ is expected, use the :php:`value` property of the :php:`ContextualFeedbackSeveri
 The same applies to Fluid template, where the severity is used within another
 structure, e.g. as an array key:
 
-.. code-block:: html
+..  code-block:: html
 
     <div class="x" class="{severityClassMapping.{status.severity.value}}">
         <!-- stuff happens here -->
