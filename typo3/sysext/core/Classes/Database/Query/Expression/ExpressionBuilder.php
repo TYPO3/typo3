@@ -626,7 +626,7 @@ class ExpressionBuilder
      * Quotes a given input parameter.
      *
      * @param mixed $input The parameter to be quoted.
-     * @param \PDO::PARAM_*|Connection::PARAM_*|int $type The type of the parameter.
+     * @param Connection::PARAM_* $type The type of the parameter.
      * @return mixed Often string, but also int or float or similar depending on $input and platform
      */
     public function literal($input, int $type = Connection::PARAM_STR)
