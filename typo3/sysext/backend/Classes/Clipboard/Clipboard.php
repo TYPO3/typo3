@@ -589,7 +589,7 @@ class Clipboard
                 $selectedItem = reset($selectedElements);
                 $selectedRecordTitle = PathUtility::basename($selectedItem);
             } else {
-                $selectedRecordTitle = count($selectedElements);
+                $selectedRecordTitle = (string)count($selectedElements);
             }
         } else {
             $recordTitle = $table !== 'pages' && is_array($reference)
@@ -599,7 +599,7 @@ class Clipboard
                 $selectedItem = $this->getSelectedRecord();
                 $selectedRecordTitle = $selectedItem['_RECORD_TITLE'];
             } else {
-                $selectedRecordTitle = count($selectedElements);
+                $selectedRecordTitle = (string)count($selectedElements);
             }
         }
         // @TODO
