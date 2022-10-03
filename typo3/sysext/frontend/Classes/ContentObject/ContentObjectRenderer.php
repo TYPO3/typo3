@@ -3452,6 +3452,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $parts[$k - 1] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $parts[$k - 1]);
                 }
                 if (($cfg['stripNLnext'] ?? false) || ($cfg['stripNL'] ?? false)) {
+                    if (!isset($parts[$k + 1])) {
+                        $parts[$k + 1] = '';
+                    }
                     $parts[$k + 1] = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $parts[$k + 1]);
                 }
             }

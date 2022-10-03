@@ -470,6 +470,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         $blockSplit[$k] = $tag . $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>';
                         break;
                 }
+                if (!isset($blockSplit[$k + 1])) {
+                    $blockSplit[$k + 1] = '';
+                }
                 $blockSplit[$k + 1] = preg_replace('/^[ ]*' . LF . '/', '', $blockSplit[$k + 1]);
             } else {
                 // NON-block:
