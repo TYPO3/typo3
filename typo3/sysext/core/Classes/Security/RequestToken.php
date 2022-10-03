@@ -64,7 +64,7 @@ class RequestToken
         }
 
         try {
-            $payload = self::decodeJwt($jwt, self::createSigningSecret($secret), true);
+            $payload = self::decodeJwt($jwt, self::createSigningSecret($secret, RequestToken::class), true);
             $subject = GeneralUtility::makeInstance(
                 self::class,
                 $payload['scope'] ?? '',
@@ -98,7 +98,7 @@ class RequestToken
         ];
         return self::encodeHashSignedJwt(
             $payload,
-            self::createSigningSecret($secret),
+            self::createSigningSecret($secret, RequestToken::class),
             $secret->getSigningIdentifier()
         );
     }

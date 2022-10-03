@@ -42,7 +42,7 @@ class Nonce implements SigningSecretInterface
     public static function fromHashSignedJwt(string $jwt): self
     {
         try {
-            $payload = self::decodeJwt($jwt, self::createSigningKeyFromEncryptionKey(), true);
+            $payload = self::decodeJwt($jwt, self::createSigningKeyFromEncryptionKey(Nonce::class), true);
             return GeneralUtility::makeInstance(
                 self::class,
                 StringUtility::base64urlDecode($payload['nonce'] ?? ''),
@@ -85,6 +85,6 @@ class Nonce implements SigningSecretInterface
             'nonce' => $this->b64,
             'time' => $this->time->format(\DateTimeImmutable::RFC3339),
         ];
-        return self::encodeHashSignedJwt($payload, self::createSigningKeyFromEncryptionKey());
+        return self::encodeHashSignedJwt($payload, self::createSigningKeyFromEncryptionKey(Nonce::class));
     }
 }
