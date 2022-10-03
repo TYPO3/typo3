@@ -15,7 +15,7 @@
 </f:if>
 <f:if condition="{onSubmit}">
     <f:then>
-        <f:form target="_top" fieldNamePrefix="" action="login" onsubmit="{onSubmit}" requestToken="{requestToken}">
+        <f:form target="_top" fieldNamePrefix="" action="login" onsubmit="{onSubmit}" requestToken="{requestToken}" additionalAttributes="{spellcheck: 'false'}">
             <f:render section="content" arguments="{_all}"/>
         </f:form>
     </f:then>
