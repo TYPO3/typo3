@@ -36,7 +36,8 @@
         "allow-plugins": {
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true,
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true
         }
     },
     "require-dev": {
@@ -45,6 +46,7 @@
         "codeception/module-cli": "^2.0",
         "codeception/module-webdriver": "^3.1",
         "phpstan/phpstan": "^1.4.8",
+        "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1",
         "typo3/cms-core": "~12.0@dev",
         "typo3/cms-frontend": "~12.0@dev",
         "typo3/cms-install": "~12.0@dev",
