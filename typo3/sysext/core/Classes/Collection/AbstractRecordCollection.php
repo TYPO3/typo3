@@ -139,8 +139,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
 
     /**
      * Rewind the Iterator to the first element
-     *
-     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
     public function rewind(): void
     {
