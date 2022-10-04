@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb0f42bb310a3768a94330af9b2fa169",
+    "content-hash": "3a381f5cd81943807bf440d661c13397",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8497,6 +8497,7 @@
                 "codeception/module-cli": "^2.0",
                 "codeception/module-webdriver": "^3.1",
                 "phpstan/phpstan": "^1.4.8",
+                "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1",
                 "typo3/cms-core": "~12.0@dev",
                 "typo3/cms-frontend": "~12.0@dev",
                 "typo3/cms-install": "~12.0@dev",

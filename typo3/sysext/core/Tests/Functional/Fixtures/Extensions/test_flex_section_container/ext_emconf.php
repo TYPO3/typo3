@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Testing test_flex_section_container',
     'description' => 'DataHandler Testing test_test_flex_section_container',
     'category' => 'example',
-    'version' => '12.0.0',
+    'version' => '12.1.0',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.0.0',
+            'typo3' => '12.1.0',
         ],
         'conflicts' => [],
         'suggests' => [],

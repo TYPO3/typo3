@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Impexp test extension',
     'description' => '',
     'category' => '',
-    'version' => '12.0.0',
+    'version' => '12.1.0',
     'state' => 'beta',
     'clearCacheOnLoad' => 1,
     'author' => 'Marc Bastian Heinrichs',
@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.0.0',
+            'typo3' => '12.1.0',
         ],
         'conflicts' => [],
         'suggests' => [],
