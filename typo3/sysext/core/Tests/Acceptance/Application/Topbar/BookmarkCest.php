@@ -110,9 +110,9 @@ class BookmarkCest
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $firstShortcutSelector = self::$topBarModuleSelector . ' .t3js-topbar-shortcut';
         $I->click('.t3js-shortcut-edit', $firstShortcutSelector);
-        $secondShortcutSelector = self::$topBarModuleSelector . ' form.shortcut-form';
+        $secondShortcutSelector = self::$topBarModuleSelector . ' form.t3js-shortcut-form';
         $I->fillField($secondShortcutSelector . ' input[name="shortcut-title"]', 'Scheduled tasks renamed');
-        $I->click('.shortcut-form-save', $secondShortcutSelector);
+        $I->click('.t3js-shortcut-form-save', $secondShortcutSelector);
 
         // searching in a specific context fails with an "Stale Element Reference Exception"
         // see http://docs.seleniumhq.org/exceptions/stale_element_reference.jsp

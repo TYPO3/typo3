@@ -33,9 +33,9 @@ enum Identifiers {
 
   shortcutFormTitleSelector = 'input[name="shortcut-title"]',
   shortcutFormGroupSelector = 'select[name="shortcut-group"]',
-  shortcutFormSaveSelector = '.shortcut-form-save',
-  shortcutFormCancelSelector = '.shortcut-form-cancel',
-  shortcutFormSelector = '.shortcut-form',
+  shortcutFormSaveSelector = '.t3js-shortcut-form-save',
+  shortcutFormCancelSelector = '.t3js-shortcut-form-cancel',
+  shortcutFormSelector = '.t3js-shortcut-form',
 }
 
 /**
