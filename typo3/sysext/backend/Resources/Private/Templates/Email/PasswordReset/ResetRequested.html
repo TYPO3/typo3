@@ -4,6 +4,7 @@
 <f:section name="Main">
     <p>
         Follow the link below to reset your backend user password at &quot;{typo3.sitename}&quot; (this link expires in 2 hours).
+        <f:if condition="{username}">Your username is: <strong>{username}</strong></f:if>
     </p>
     <p>
         <a href="{resetLink}">Reset password</a>

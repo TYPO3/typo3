@@ -186,10 +186,12 @@ class PasswordReset implements LoggerAwareInterface
             ->assign('email', $user['email'])
             ->assign('language', $user['lang'] ?: 'default')
             ->assign('resetLink', $resetLink)
+            ->assign('username', $user['username'])
             ->setTemplate('PasswordReset/ResetRequested');
 
         // TODO: DI should be used to inject the MailerInterface
         GeneralUtility::makeInstance(MailerInterface::class)->send($emailObject);
+
         $this->logger->info('Sent password reset email to email address {email} for user {username}', [
             'email' => $emailAddress,
             'username' => $user['username'],
