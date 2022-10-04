@@ -19,9 +19,9 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "12.0.*@dev",
-		"typo3/cms-frontend": "12.0.*@dev",
-		"typo3/cms-extbase": "12.0.*@dev"
+		"typo3/cms-core": "12.0.0",
+		"typo3/cms-frontend": "12.0.0",
+		"typo3/cms-extbase": "12.0.0"
 	},
 	"conflict": {
 		"typo3/cms": "*"
