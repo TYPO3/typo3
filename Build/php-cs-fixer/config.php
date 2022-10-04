@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -11,31 +14,23 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This file represents the configuration for Code Sniffing PSR-2-related
- * automatic checks of coding guidelines
- * Install @fabpot's great php-cs-fixer tool via
+ * automatic checks of coding guidelines.
  *
- *  $ composer global require friendsofphp/php-cs-fixer
+ * Run it using runTests.sh, see 'runTests.sh -h' for more options.
  *
- * And then simply run
+ * Fix entire core:
+ * > Build/Scripts/runTests.sh -s cgl
  *
- *  $ ./bin/php-cs-fixer fix --config ./Build/php-cs-fixer.php
- *
- * inside the TYPO3 directory. Warning: This may take up to 10 minutes.
- *
- * For more information read:
- * 	 https://www.php-fig.org/psr/psr-2/
- * 	 https://cs.sensiolabs.org
+ * Fix your current patch:
+ * > Build/Scripts/runTests.sh -s cglGit
  */
 if (PHP_SAPI !== 'cli') {
     die('This script supports command line usage only. Please check your command.');
 }
-// Define in which folders to search and which folders to exclude
-// Exclude all files and directories from .gitignore
-$finder = (new PhpCsFixer\Finder())
-    ->ignoreVCSIgnored(true)
-    ->in(realpath(__DIR__ . '/../'));
+
 // Return a Code Sniffing configuration using
 // all sniffers needed for PSR-2
 // and additionally:
@@ -46,6 +41,11 @@ $finder = (new PhpCsFixer\Finder())
 //  - Ensure Concatenation to have at least one whitespace around
 //  - Remove trailing whitespace at the end of blank lines.
 return (new \PhpCsFixer\Config())
+    ->setFinder(
+        (new PhpCsFixer\Finder())
+            ->ignoreVCSIgnored(true)
+            ->in(realpath(__DIR__ . '/../../'))
+    )
     ->setRiskyAllowed(true)
     ->setRules([
         '@DoctrineAnnotation' => true,
@@ -100,5 +100,4 @@ return (new \PhpCsFixer\Config())
         'trailing_comma_in_multiline' => ['elements' => ['arrays']],
         'whitespace_after_comma_in_array' => true,
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
-    ])
-    ->setFinder($finder);
+    ]);

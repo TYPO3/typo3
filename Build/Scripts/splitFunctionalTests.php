@@ -227,7 +227,7 @@ class FunctionalTestCaseVisitor extends NodeVisitorAbstract
                     ];
                     foreach ($matches['annotations'] as $possibleDataProvider) {
                         // See if this test has a data provider attached
-                        if (strpos($possibleDataProvider, 'dataProvider') === 0) {
+                        if (str_starts_with($possibleDataProvider, 'dataProvider')) {
                             $test['dataProvider'] = trim(ltrim($possibleDataProvider, 'dataProvider'));
                         }
                     }
