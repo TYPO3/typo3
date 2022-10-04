@@ -143,9 +143,17 @@ class MySql extends AbstractPlatform
     {
         $platformLabel = $this->getPlatformLabel($connection);
         $minimumVersion = $this->getMinimumVersion($connection);
-        preg_match('/MySQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getServerVersion(), $match);
-        $currentMysqlVersion = $match[1];
-        if (version_compare($currentMysqlVersion, $minimumVersion, '<')) {
+        $serverVersion = $connection->getServerVersion();
+        preg_match('/MySQL (5\.5\.5-|)((\d+\.)*(\d+\.)*\d+)/', $serverVersion, $match);
+        $currentMysqlVersion = $match[2] ?? null;
+        if ($currentMysqlVersion === null) {
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Your ' . $platformLabel . ' version could not be determined. Verify manually to have at least '
+                . $platformLabel . ' ' . $minimumVersion . ' installed. Version value: ' . $serverVersion,
+                $platformLabel . ' version invalid',
+                ContextualFeedbackSeverity::ERROR
+            ));
+        } elseif (version_compare($currentMysqlVersion, $minimumVersion, '<')) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'Your ' . $platformLabel . ' version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run'
                     . ' with this version. Update to at least ' . $platformLabel . ' ' . $minimumVersion,
@@ -155,7 +163,7 @@ class MySql extends AbstractPlatform
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 '',
-                $platformLabel . ' version is fine'
+                $platformLabel . ' version ' . $currentMysqlVersion . ' is fine'
             ));
         }
     }
