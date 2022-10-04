@@ -139,7 +139,7 @@ exist_php_executable
 php_no_xdebug ./bin/php-cs-fixer fix \
     -v ${DRYRUN} \
     --path-mode intersection \
-    --config=Build/php-cs-fixer.php \
+    --config=Build/php-cs-fixer/config.php \
     `echo ${DETECTED_FILES} | xargs ls -d 2>/dev/null`
 
 exit $?
