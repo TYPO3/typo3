@@ -149,7 +149,7 @@ class ViewPage {
   private initialize (): void {
     // Change orientation
     new RegularEvent('click', (): void => {
-      this.setSize(this.getCurrentWidth(), this.getCurrentHeight());
+      this.setSize(this.getCurrentHeight(), this.getCurrentWidth());
       this.persistCurrentPreset();
     }).bindTo(document.querySelector(Selectors.changeOrientationSelector));
 
