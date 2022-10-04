@@ -191,4 +191,17 @@ class DebuggerUtilityTest extends UnitTestCase
         $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
         self::assertStringContainsString('function ($typeless)', $result);
     }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsUninitializedVariable(): void
+    {
+        $class = new class() {
+            protected \stdClass $test;
+        };
+
+        $result = DebuggerUtility::var_dump($class, null, 8, true, false, true);
+        self::assertStringContainsString('test => protected uninitialized', $result);
+    }
 }
