@@ -28,7 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteProcessorTest extends UnitTestCase
 {
-
     /**
      * @test
      */

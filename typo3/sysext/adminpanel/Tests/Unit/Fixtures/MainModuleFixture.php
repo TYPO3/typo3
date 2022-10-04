@@ -37,7 +37,6 @@ class MainModuleFixture implements
     OnSubmitActorInterface,
     ConfigurableInterface
 {
-
     /**
      * Identifier for this module,
      * for example "preview" or "cache"

@@ -60,7 +60,6 @@ class FlexFormProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-
         // The field name to process
         $fieldName = $cObj->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform');
 

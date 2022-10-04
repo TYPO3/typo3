@@ -214,7 +214,6 @@ class ConnectionTest extends UnitTestCase
      */
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
-
         // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
         if (method_exists(Connection::class, 'executeStatement')) {
             $this->connection->expects(self::once())

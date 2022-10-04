@@ -28,7 +28,6 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\ArrayProcessorException;
  */
 class ArrayProcessor
 {
-
     /**
      * @var array
      */

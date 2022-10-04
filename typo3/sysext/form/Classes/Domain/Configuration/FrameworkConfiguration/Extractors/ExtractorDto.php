@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors;
  */
 class ExtractorDto
 {
-
     /**
      * @var array
      */

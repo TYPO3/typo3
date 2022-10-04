@@ -152,7 +152,6 @@ class ImageContentObject extends AbstractContentObject
                 || isset($conf['layout.'][$layoutKey . '.']['source.']) && $conf['layout.'][$layoutKey . '.']['source.']
             )
         ) {
-
             // find active sourceCollection
             $activeSourceCollections = [];
             foreach ($conf['sourceCollection.'] as $sourceCollectionKey => $sourceCollectionConfiguration) {

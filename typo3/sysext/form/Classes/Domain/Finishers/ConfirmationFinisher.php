@@ -48,7 +48,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class ConfirmationFinisher extends AbstractFinisher
 {
-
     /**
      * @var array
      */

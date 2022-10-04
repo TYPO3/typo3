@@ -22,7 +22,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DependencyTest extends UnitTestCase
 {
-
     /**
      * @test
      */

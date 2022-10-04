@@ -25,7 +25,6 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
  */
 class CreatableFormElementPropertiesValidator extends ElementBasedValidator
 {
-
     /**
      * Checks if the form element property is defined within the form editor setup
      * or if the property is defined within the "predefinedDefaults" in the form editor setup

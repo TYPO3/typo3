@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors;
  */
 interface ExtractorInterface
 {
-
     /**
      * @param ExtractorDto $extractorDto
      */

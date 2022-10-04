@@ -194,7 +194,7 @@ class DownloadController extends AbstractController
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
             return (new ForwardResponse('distributions'))->withControllerName('List');
         }
-        [$result, ] = $this->installFromTer($extension);
+        [$result] = $this->installFromTer($extension);
         if (!$result) {
             return $this->redirect(
                 'unresolvedDependencies',

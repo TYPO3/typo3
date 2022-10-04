@@ -272,8 +272,8 @@ class Lexer extends AbstractLexer
                 return self::T_CLOSE_CURLY_BRACE;
                 // Default
             default:
-            // Do nothing
-            }
+                // Do nothing
+        }
 
         return $type;
     }

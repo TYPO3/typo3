@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class PagePermissionAssembler
 {
-
     /**
      * Can be overridden from $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']
      *

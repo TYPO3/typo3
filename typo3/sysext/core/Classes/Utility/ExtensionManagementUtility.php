@@ -271,8 +271,8 @@ class ExtensionManagementUtility
                                     }
                                     break;
                                 default:
-                                // Intentionally left blank
-                                }
+                                    // Intentionally left blank
+                            }
                         }
                     }
                 }

@@ -62,7 +62,6 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
  */
 class InheritancesResolverService
 {
-
     /**
      * The operator which is used to declare inheritances
      */

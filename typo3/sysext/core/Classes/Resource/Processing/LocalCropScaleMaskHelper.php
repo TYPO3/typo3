@@ -78,7 +78,6 @@ class LocalCropScaleMaskHelper
 
         $croppedImage = null;
         if (!empty($configuration['crop'])) {
-
             // check if it is a json object
             $cropData = json_decode($configuration['crop']);
             if ($cropData) {

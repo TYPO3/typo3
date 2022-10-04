@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CommandLineUserAuthentication extends BackendUserAuthentication
 {
-
     /**
      * The username of the CLI user (there is only one)
      * @var string

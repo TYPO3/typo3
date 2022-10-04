@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class RemoveHmacDataConverter extends AbstractConverter
 {
-
     /**
      * Remove the hmac data ("_orig_<propertyName>") for the corresponding property.
      *

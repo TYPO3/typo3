@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DefaultDataProvider implements DataProviderInterface
 {
-
     /**
      * @var string
      * Table name for backend_layouts

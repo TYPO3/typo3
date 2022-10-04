@@ -223,7 +223,6 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  */
 class FormDefinition extends AbstractCompositeRenderable implements VariableRenderableInterface
 {
-
     /**
      * The Form's pages
      *

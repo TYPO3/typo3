@@ -3,7 +3,6 @@
 defined('TYPO3') or die();
 
 call_user_func(static function () {
-
     // Adds the redirect field to the fe_groups table
     $additionalColumns = [
         'felogin_redirectPid' => [

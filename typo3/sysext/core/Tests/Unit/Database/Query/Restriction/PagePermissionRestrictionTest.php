@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
 {
-
     /**
      * Builds a shell for the user aspect object which returns the checked values in the Restriction.
      *

@@ -125,7 +125,6 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 class FluidFormRenderer extends AbstractElementRenderer
 {
-
     /**
      * Renders the FormDefinition.
      *

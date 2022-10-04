@@ -2795,7 +2795,6 @@ class BackendUtility
     public static function referenceCount($table, $ref, $msg = '', $count = null)
     {
         if ($count === null) {
-
             // Build base query
             $queryBuilder = static::getQueryBuilderForTable('sys_refindex');
             $queryBuilder
@@ -3058,7 +3057,6 @@ class BackendUtility
     {
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
             if ($workspace !== 0 && self::isTableWorkspaceEnabled($table)) {
-
                 // Select workspace version of record:
                 $queryBuilder = static::getQueryBuilderForTable($table);
                 $queryBuilder->getRestrictions()

@@ -25,7 +25,6 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Abstra
  */
 class MultiValuePropertiesExtractor extends AbstractExtractor
 {
-
     /**
      * @param string $_
      * @param mixed $value

@@ -34,7 +34,6 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
  */
 class ProcessingRule
 {
-
     /**
      * The target data type the data should be converted to
      *

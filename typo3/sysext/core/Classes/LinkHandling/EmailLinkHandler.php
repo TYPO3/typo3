@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Core\LinkHandling;
  */
 class EmailLinkHandler implements LinkHandlingInterface
 {
-
     /**
      * Returns the link to an email as a string
      *

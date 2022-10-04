@@ -163,7 +163,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
             $blogController = $this->get(BlogController::class);
             $response = $blogController->processRequest($request);
             if ($response instanceof ForwardResponse) {
-
                 /** @var Result $validationResult */
                 $validationResult = $response->getArgumentsValidationResult();
 

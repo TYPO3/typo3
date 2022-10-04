@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LocalConfigurationValueService
 {
-
     /**
      * Get up configuration data. Prepares main TYPO3_CONF_VARS
      * array to be displayed and merges is with the description file

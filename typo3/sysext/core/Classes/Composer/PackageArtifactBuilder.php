@@ -201,7 +201,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 $autoLoadGenerator->buildPackageMap($composer->getInstallationManager(), $rootPackage, $localRepo->getCanonicalPackages()),
                 function (array $packageAndPath) {
                     /** @var PackageInterface $composerPackage */
-                    [$composerPackage,] = $packageAndPath;
+                    [$composerPackage] = $packageAndPath;
                     // Filter all Composer packages without typo3/cms definition, but keep all
                     // package names, to be able to ignore Composer only dependencies when ordering the packages
                     $this->availableComposerPackageKeys[$composerPackage->getName()] = true;
@@ -272,7 +272,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 continue;
             }
             $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
-            [$relativePrefix,] = explode('Resources/Public', $relativePath);
+            [$relativePrefix] = explode('Resources/Public', $relativePath);
             $publicResourcesPath = $fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
             $fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
             if (!$fileSystem->isSymlinkedDirectory($publicResourcesPath)) {

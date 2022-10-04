@@ -25,7 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EmConfUtilityTest extends UnitTestCase
 {
-
     /**
      * @test
      */

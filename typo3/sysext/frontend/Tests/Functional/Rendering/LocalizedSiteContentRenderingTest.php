@@ -699,7 +699,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
 
     public function contentOnPartiallyTranslatedPageDataProvider(): array
     {
-
         //Expected behaviour:
         //Setting sys_language_mode to different values doesn't influence the result as the requested page is translated to Polish,
         //Page title is always [PL]Page, and both languageId/contentId are always 3

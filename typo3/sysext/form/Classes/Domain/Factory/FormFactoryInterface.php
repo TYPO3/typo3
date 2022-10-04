@@ -35,7 +35,6 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  */
 interface FormFactoryInterface
 {
-
     /**
      * Build a form definition, depending on some configuration.
      *

@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters;
  */
 interface ConverterInterface
 {
-
     /**
      * @param ConverterDto $converterDto
      * @param string $sessionToken

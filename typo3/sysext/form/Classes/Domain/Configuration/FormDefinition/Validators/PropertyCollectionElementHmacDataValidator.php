@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators;
  */
 class PropertyCollectionElementHmacDataValidator extends CollectionBasedValidator
 {
-
     /**
      * Checks if the property collection element values matches to its hmac hash.
      *

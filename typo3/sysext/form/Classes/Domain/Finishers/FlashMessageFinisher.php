@@ -53,7 +53,6 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
  */
 class FlashMessageFinisher extends AbstractFinisher
 {
-
     /**
      * @var array
      */

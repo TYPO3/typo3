@@ -922,7 +922,6 @@ class PageRepository implements LoggerAwareInterface
 
         // There is a valid mount point in overlay mode.
         if (is_array($mountPointInfo) && $mountPointInfo['overlay']) {
-
             // Using "getPage" is OK since we need the check for enableFields AND for type 2
             // of mount pids we DO require a doktype < 200!
             $mountPointPage = $this->getPage($mountPointInfo['mount_pid']);

@@ -469,7 +469,6 @@ class Message implements MessageInterface
         }
 
         foreach (unpack('C*', $value) as $ascii) {
-
             // Non-visible, non-whitespace characters
             // 9 === horizontal tab
             // 32-126, 128-254 === visible

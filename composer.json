@@ -106,7 +106,7 @@
 		"codeception/module-webdriver": "^3.1.2",
 		"composer/composer": "^2.3.0",
 		"composer/package-versions-deprecated": "^1.11.99.4",
-		"friendsofphp/php-cs-fixer": "^3.9.5",
+		"friendsofphp/php-cs-fixer": "^3.11.0",
 		"friendsoftypo3/phpstan-typo3": "^0.9.0",
 		"jangregor/phpstan-prophecy": "^1.0",
 		"mikey179/vfsstream": "^1.6.11",

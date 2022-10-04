@@ -26,7 +26,6 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  */
 class FileUpload extends AbstractFormElement
 {
-
     /**
      * Initializes the Form Element by setting the data type to an Extbase File Reference
      * @internal

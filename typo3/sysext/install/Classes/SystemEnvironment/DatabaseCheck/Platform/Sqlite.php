@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Sqlite extends AbstractPlatform
 {
-
     /**
      * Get all status information as array with status objects
      *

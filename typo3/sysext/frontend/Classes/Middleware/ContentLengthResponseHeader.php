@@ -34,7 +34,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ContentLengthResponseHeader implements MiddlewareInterface
 {
-
     /**
      * Adds the content length
      *

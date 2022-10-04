@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RedirectFinisher extends AbstractFinisher
 {
-
     /**
      * @var array
      */

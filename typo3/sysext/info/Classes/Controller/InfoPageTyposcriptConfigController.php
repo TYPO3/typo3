@@ -165,8 +165,8 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
                     $pageTsConfig = $pageTsConfig['user.'] ?? [];
                     break;
                 default:
-                // Entire array
-                }
+                    // Entire array
+            }
             $this->view->assign('tree', $this->renderTree($pageTsConfig, '', '', (bool)$moduleData->get('tsconf_alphaSort')));
         }
         $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));

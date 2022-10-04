@@ -173,7 +173,6 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
  */
 class SaveToDatabaseFinisher extends AbstractFinisher
 {
-
     /**
      * @var array
      */

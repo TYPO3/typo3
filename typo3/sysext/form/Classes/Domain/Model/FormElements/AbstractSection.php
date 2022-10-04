@@ -41,7 +41,6 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
  */
 abstract class AbstractSection extends AbstractCompositeRenderable
 {
-
     /**
      * Constructor. Needs the identifier and type of this element
      *

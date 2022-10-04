@@ -27,7 +27,6 @@ use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
  */
 class RenderableVariant implements RenderableVariantInterface
 {
-
     /**
      * @var string
      */

@@ -801,7 +801,7 @@ class TypoScriptParser
                     $filePointerPathParts = explode('/', substr($filename, 4));
 
                     // remove file part, determine whether to load setup or constants
-                    [$includeType, ] = explode('.', (string)array_pop($filePointerPathParts));
+                    [$includeType] = explode('.', (string)array_pop($filePointerPathParts));
 
                     if (in_array($includeType, ['setup', 'constants'])) {
                         // adapt extension key to required format (no underscores)

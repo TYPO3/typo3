@@ -244,7 +244,7 @@ class Locales implements SingletonInterface
                 break;
             }
             // Strip the country code from the end
-            [$preferredLanguage, ] = explode('-', $preferredLanguage);
+            [$preferredLanguage] = explode('-', $preferredLanguage);
             if (isset($allLanguageCodesFromLocales[$preferredLanguage])) {
                 $selectedLanguage = $allLanguageCodesFromLocales[$preferredLanguage];
                 break;

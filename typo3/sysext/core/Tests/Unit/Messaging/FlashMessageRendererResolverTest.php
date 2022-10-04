@@ -27,7 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FlashMessageRendererResolverTest extends UnitTestCase
 {
-
     /**
      * @test
      */

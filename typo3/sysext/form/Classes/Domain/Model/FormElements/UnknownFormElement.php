@@ -32,7 +32,6 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
  */
 class UnknownFormElement extends AbstractRenderable implements FormElementInterface
 {
-
     /**
      * Constructor. Needs this FormElement's identifier and the FormElement type
      *

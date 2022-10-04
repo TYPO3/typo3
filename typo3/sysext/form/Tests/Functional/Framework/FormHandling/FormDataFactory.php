@@ -47,7 +47,7 @@ final class FormDataFactory
             parse_str($actionQuery, $queryArray);
             $data['actionQueryData'] = $queryArray;
 
-            [$actionUrl, ] = explode('?', $action);
+            [$actionUrl] = explode('?', $action);
             $data['actionUrl'] = $actionUrl;
 
             break;

@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 interface FormPersistenceManagerInterface
 {
-
     /**
      * Load the array form representation identified by $persistenceIdentifier, and return it
      *

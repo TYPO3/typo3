@@ -34,7 +34,6 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class SiteProcessor implements DataProcessorInterface
 {
-
     /**
      * @param ContentObjectRenderer $cObj The data of the content element or page
      * @param array $contentObjectConfiguration The configuration of Content Object

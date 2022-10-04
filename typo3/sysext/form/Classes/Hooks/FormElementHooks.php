@@ -28,7 +28,6 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class FormElementHooks
 {
-
     /**
      * This hook is invoked by the FormRuntime for each form element
      * **after** a form page was submitted but **before** values are

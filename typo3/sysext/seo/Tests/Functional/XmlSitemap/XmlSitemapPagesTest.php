@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
  */
 class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
 {
-
     /**
      * @param string $urlPattern
      * @test

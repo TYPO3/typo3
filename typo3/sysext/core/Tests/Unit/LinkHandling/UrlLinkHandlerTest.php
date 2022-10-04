@@ -23,7 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UrlLinkHandlerTest extends UnitTestCase
 {
-
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      *

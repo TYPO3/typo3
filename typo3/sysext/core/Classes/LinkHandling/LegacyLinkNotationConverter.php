@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class LegacyLinkNotationConverter
 {
-
     /**
      * @var ResourceFactory
      */

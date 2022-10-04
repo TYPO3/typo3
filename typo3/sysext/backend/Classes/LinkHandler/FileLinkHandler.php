@@ -123,7 +123,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         // Build the file upload and folder creation form
         if ($selectedFolder) {
-
             // If a folder is found, store it in the session to continue where the editor left off the last time
             if ($selectedFolder->checkActionPermission('read')) {
                 $moduleSessionData = $this->getBackendUser()->getModuleData('browse_links.php', 'ses') ?: [];

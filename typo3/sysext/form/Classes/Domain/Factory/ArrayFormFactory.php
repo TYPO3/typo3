@@ -37,7 +37,6 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
  */
 class ArrayFormFactory extends AbstractFormFactory
 {
-
     /**
      * Build a form definition, depending on some configuration.
      *

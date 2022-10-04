@@ -42,7 +42,6 @@ use TYPO3\CMS\Form\Exception as FormException;
  */
 class Page extends AbstractSection
 {
-
     /**
      * Constructor. Needs this Page's identifier
      *

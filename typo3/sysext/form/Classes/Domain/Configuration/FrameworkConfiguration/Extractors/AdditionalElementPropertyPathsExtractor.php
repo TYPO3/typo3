@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors;
  */
 class AdditionalElementPropertyPathsExtractor extends AbstractExtractor
 {
-
     /**
      * @param string $_
      * @param mixed $value

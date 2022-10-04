@@ -108,8 +108,8 @@ class SecurityStatusReport implements StatusProviderInterface
                 EnableFileService::removeInstallToolEnableFile();
                 break;
             default:
-            // Do nothing
-            }
+                // Do nothing
+        }
     }
 
     protected function getLanguageService(): ?LanguageService

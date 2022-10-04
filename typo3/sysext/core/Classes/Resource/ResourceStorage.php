@@ -2333,7 +2333,6 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function renameFolder($folderObject, $newName)
     {
-
         // Renaming the folder should check if the parent folder is writable
         // We cannot do this however because we cannot extract the parent folder from a folder currently
         if (!$this->checkFolderActionPermission('rename', $folderObject)) {

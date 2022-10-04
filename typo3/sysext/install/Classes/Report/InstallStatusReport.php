@@ -152,7 +152,7 @@ class InstallStatusReport implements StatusProviderInterface
                             $severity = ContextualFeedbackSeverity::ERROR;
                             break;
                         default:
-                        }
+                    }
                 }
             }
         }

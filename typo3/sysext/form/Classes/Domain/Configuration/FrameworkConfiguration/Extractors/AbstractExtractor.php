@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors;
  */
 abstract class AbstractExtractor implements ExtractorInterface
 {
-
     /**
      * @var ExtractorDto
      */

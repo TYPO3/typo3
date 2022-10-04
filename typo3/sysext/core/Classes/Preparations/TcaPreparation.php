@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class TcaPreparation
 {
-
     /**
      * Prepare TCA
      *

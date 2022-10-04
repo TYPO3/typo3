@@ -66,7 +66,6 @@ class FalStatus implements StatusProviderInterface
         $storages = [];
 
         foreach ($storageObjects as $storageObject) {
-
             // We only check missing files for storages that are online
             if ($storageObject->isOnline()) {
                 $storages[$storageObject->getUid()] = $storageObject;

@@ -25,7 +25,6 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
  */
 abstract class ElementBasedValidator extends AbstractValidator
 {
-
     /**
      * Throws an exception if value from a form element property
      * does not match its hmac hash or if there is no hmac hash

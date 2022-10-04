@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors;
  */
 interface ProcessorInterface
 {
-
     /**
      * @param ProcessorDto $converterDto
      */

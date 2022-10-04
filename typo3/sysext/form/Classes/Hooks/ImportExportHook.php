@@ -23,7 +23,6 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  */
 class ImportExportHook
 {
-
     /**
      * @param array $params
      */

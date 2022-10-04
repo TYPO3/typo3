@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  */
 interface RenderableInterface extends RootRenderableInterface
 {
-
     /**
      * Return the parent renderable
      *

@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators;
  */
 interface ValidatorInterface
 {
-
     /**
      * @param array $currentElement
      * @param string $sessionToken

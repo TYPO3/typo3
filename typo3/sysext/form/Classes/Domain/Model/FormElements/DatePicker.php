@@ -28,7 +28,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  */
 class DatePicker extends AbstractFormElement implements StringableFormElementInterface
 {
-
     /**
      * Initializes the Form Element by setting the data type to "DateTime"
      * @internal

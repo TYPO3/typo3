@@ -22,7 +22,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class EmailLinkHandlerTest extends UnitTestCase
 {
-
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      */

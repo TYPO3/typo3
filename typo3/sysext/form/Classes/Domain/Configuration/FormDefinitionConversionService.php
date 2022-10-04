@@ -33,7 +33,6 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\RemoveHmacData
  */
 class FormDefinitionConversionService implements SingletonInterface
 {
-
     /**
      * Add a new value "_orig_<propertyName>" for each scalar property value
      * within the form definition as a sibling of the property key.
