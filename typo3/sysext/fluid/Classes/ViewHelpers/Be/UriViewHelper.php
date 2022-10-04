@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UriViewHelper extends AbstractBackendViewHelper
 {
-
     /**
      * Arguments initialization
      *

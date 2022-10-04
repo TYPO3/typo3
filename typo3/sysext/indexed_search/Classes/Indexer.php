@@ -37,7 +37,6 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
  */
 class Indexer
 {
-
     /**
      * @var array
      */

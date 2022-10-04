@@ -347,7 +347,6 @@ class GalleryProcessor implements DataProcessorInterface
      */
     protected function calculateRowsAndColumns()
     {
-
         // If no columns defined, set it to 1
         $columns = max((int)$this->numberOfColumns, 1);
 

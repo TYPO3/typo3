@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
  */
 class ProcessingRule
 {
-
     /**
      * The target data type the data should be converted to
      *

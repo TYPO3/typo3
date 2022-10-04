@@ -180,7 +180,6 @@ class RecordsContentObject extends AbstractContentObject
 
         // Loop on all selected tables
         foreach ($tables as $table) {
-
             // Get the records for each selected category
             $tableRecords = [];
             $categoriesPerRecord = [];

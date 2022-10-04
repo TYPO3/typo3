@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  */
 class TypoScriptAspect implements AspectInterface
 {
-
     /**
      * @var bool
      */

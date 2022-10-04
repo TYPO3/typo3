@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractModule implements ModuleInterface, ConfigurableInterface, SubmoduleProviderInterface
 {
-
     /**
      * @var ModuleInterface[]
      */

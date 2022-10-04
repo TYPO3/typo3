@@ -40,7 +40,6 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  */
 class FormFrontendController extends ActionController
 {
-
     /**
      * @var \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface
      */

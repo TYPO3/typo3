@@ -149,7 +149,7 @@ class InstallStatusReport implements StatusProviderInterface
                             $severity = Status::ERROR;
                             break;
                         default:
-                        }
+                    }
                 }
             }
         }

@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Extensionmanager\Event;
  */
 final class AfterExtensionSiteFilesHaveBeenImportedEvent
 {
-
     /**
      * @var string
      *

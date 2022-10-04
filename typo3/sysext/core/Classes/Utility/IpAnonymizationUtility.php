@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Core\Utility;
  */
 class IpAnonymizationUtility
 {
-
     /**
      * IPv4 netmask used to anonymize IPv4 address.
      *

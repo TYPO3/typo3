@@ -55,7 +55,6 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
  */
 class SchedulerModuleController
 {
-
     /**
      * Array containing submitted data when editing or adding a task
      *

@@ -36,7 +36,6 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 class FinisherContext
 {
-
     /**
      * If TRUE further finishers won't be invoked
      *

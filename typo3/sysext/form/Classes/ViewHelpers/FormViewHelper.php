@@ -33,7 +33,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 class FormViewHelper extends FluidFormViewHelper
 {
-
     /**
      * Renders hidden form fields for referrer information about
      * the current request.

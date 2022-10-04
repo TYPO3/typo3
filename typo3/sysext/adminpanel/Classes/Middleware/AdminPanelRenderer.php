@@ -34,7 +34,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class AdminPanelRenderer implements MiddlewareInterface
 {
-
     /**
      * Render the admin panel if activated
      * @param ServerRequestInterface $request

@@ -33,7 +33,6 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 interface RendererInterface
 {
-
     /**
      * Set the controller context which should be used
      *

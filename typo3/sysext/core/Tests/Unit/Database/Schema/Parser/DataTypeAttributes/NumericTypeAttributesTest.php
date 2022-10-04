@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
  */
 class NumericTypeAttributesTest extends AbstractDataTypeBaseTestCase
 {
-
     /**
      * Data provider for canParseNumericDataTypeAttributes()
      *

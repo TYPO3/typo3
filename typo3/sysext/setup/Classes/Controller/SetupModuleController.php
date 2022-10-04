@@ -55,7 +55,6 @@ use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
  */
 class SetupModuleController
 {
-
     /**
      * Flag if password has not been updated
      */
@@ -940,7 +939,6 @@ class SetupModuleController
      */
     protected function setAvatarFileUid($beUserId, $fileUid, array &$storeRec)
     {
-
         // Update is only needed when new fileUid is set
         if ((int)$fileUid === $this->getAvatarFileUid($beUserId)) {
             return;
@@ -996,7 +994,6 @@ class SetupModuleController
 
             // Check if extension is allowed
             if ($file && $file->isImage()) {
-
                 // Create new file reference
                 $storeRec['sys_file_reference']['NEW1234'] = [
                     'uid_local' => (int)$fileUid,

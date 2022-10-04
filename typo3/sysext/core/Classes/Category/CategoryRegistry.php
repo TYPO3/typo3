@@ -274,7 +274,6 @@ class CategoryRegistry implements SingletonInterface
      */
     protected function addToAllTCAtypes($tableName, $fieldName, array $options)
     {
-
         // Makes sure to add more TCA to an existing structure
         if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
             if (empty($options['fieldList'])) {

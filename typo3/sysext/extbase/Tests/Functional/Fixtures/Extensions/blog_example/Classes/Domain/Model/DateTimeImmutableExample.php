@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class DateTimeImmutableExample extends AbstractEntity
 {
-
     /**
      * Static value which is not part of an "entity".
      * (this property has to be ignored by Extbase when persisting this entity)

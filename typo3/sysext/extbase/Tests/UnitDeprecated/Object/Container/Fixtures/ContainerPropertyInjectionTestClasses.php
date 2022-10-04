@@ -34,7 +34,6 @@ class ArgumentTestClassForPublicPropertyInjection
 
 class ProtectedPropertyInjectClass
 {
-
     /**
      * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection

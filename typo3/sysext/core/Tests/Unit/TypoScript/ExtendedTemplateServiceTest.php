@@ -27,7 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtendedTemplateServiceTest extends UnitTestCase
 {
-
     /**
      * @var ExtendedTemplateService|MockObject|AccessibleObjectInterface
      */

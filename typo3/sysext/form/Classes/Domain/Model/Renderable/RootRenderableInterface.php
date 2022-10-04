@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  */
 interface RootRenderableInterface
 {
-
     /**
      * Abstract "type" of this Renderable. Is used during the rendering process
      * to determine the template file or the View PHP class being used to render

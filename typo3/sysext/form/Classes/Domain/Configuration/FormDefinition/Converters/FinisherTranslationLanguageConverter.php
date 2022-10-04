@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class FinisherTranslationLanguageConverter extends AbstractConverter
 {
-
     /**
      * If "finishers.x.options.translation.language" is empty then set the value to "default" and remove
      * the hmac.

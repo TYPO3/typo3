@@ -24,7 +24,6 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Abstra
  */
 class PredefinedDefaultsExtractor extends AbstractExtractor
 {
-
     /**
      * @param string $_
      * @param mixed $value

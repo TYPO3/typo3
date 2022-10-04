@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AddHmacDataToPropertyCollectionElementConverter extends AbstractConverter
 {
-
     /**
      * @param string $key
      * @param mixed $value

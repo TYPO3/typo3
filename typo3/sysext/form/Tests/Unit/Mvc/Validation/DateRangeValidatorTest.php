@@ -26,7 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DateRangeValidatorTest extends UnitTestCase
 {
-
     /**
      * @test
      */

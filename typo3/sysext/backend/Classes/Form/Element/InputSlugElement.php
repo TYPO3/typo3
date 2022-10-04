@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class InputSlugElement extends AbstractFormElement
 {
-
     /**
      * Default field information enabled for this element.
      *

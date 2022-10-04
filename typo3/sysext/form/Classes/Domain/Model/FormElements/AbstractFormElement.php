@@ -48,7 +48,6 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
  */
 abstract class AbstractFormElement extends AbstractRenderable implements FormElementInterface
 {
-
     /**
      * @var array
      */

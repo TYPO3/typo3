@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
  */
 class RedirectFinisher extends AbstractFinisher
 {
-
     /**
      * @var array
      */

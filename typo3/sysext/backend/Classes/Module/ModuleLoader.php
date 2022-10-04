@@ -193,7 +193,7 @@ class ModuleLoader
         // Check if this is a submodule
         $mainModule = '';
         if (str_contains($name, '_')) {
-            [$mainModule, ] = explode('_', $name, 2);
+            [$mainModule] = explode('_', $name, 2);
         }
 
         // check if there is a navigation component (like the pagetree)
@@ -202,7 +202,6 @@ class ModuleLoader
         } elseif ($mainModule
             && is_array($this->navigationComponents[$mainModule] ?? false)
             && ($setupInformation['configuration']['inheritNavigationComponentFromMainModule'] ?? null) !== false) {
-
             // navigation component can be overridden by the main module component
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
         }

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  */
 class PreviewAspect implements AspectInterface
 {
-
     /**
      * @var bool
      */

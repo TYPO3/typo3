@@ -38,7 +38,6 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 class DatePickerViewHelper extends AbstractFormFieldViewHelper
 {
-
     /**
      * @var string
      */

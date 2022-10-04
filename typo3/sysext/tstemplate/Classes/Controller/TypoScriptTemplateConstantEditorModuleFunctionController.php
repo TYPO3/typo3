@@ -31,7 +31,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class TypoScriptTemplateConstantEditorModuleFunctionController
 {
-
     /**
      * @var TypoScriptTemplateModuleController
      */

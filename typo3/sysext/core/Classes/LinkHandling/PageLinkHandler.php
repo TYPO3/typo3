@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Core\LinkHandling;
  */
 class PageLinkHandler implements LinkHandlingInterface
 {
-
     /**
      * The Base URN for this link handling to act on
      * @var string

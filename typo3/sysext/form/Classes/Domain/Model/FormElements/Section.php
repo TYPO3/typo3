@@ -37,7 +37,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
  */
 class Section extends AbstractSection implements FormElementInterface
 {
-
     /**
      * @var array
      */

@@ -25,7 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatePickerViewHelperTest extends UnitTestCase
 {
-
     /**
      * @var \TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper
      */

@@ -25,7 +25,6 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
  */
 abstract class CollectionBasedValidator extends AbstractValidator
 {
-
     /**
      * Throws an exception if value from a property collection property
      * does not match its hmac hash or if there is no hmac hash

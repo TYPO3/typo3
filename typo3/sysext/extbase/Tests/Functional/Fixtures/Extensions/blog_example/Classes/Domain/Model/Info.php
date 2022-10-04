@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Info extends AbstractEntity
 {
-
     /**
      * @var string
      */

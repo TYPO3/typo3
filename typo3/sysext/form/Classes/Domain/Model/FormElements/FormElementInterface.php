@@ -38,7 +38,6 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
  */
 interface FormElementInterface extends RenderableInterface
 {
-
     /**
      * Will be called as soon as the element is (tried to be) added to a form
      * @see registerInFormIfPossible()

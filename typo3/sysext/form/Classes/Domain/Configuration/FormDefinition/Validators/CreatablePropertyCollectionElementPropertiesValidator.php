@@ -25,7 +25,6 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
  */
 class CreatablePropertyCollectionElementPropertiesValidator extends CollectionBasedValidator
 {
-
     /**
      * Checks if the property collection element property is defined
      * within the form editor setup or if the property is defined within

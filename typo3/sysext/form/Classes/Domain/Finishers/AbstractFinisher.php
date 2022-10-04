@@ -40,7 +40,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 abstract class AbstractFinisher implements FinisherInterface
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      * @deprecated since v11, will be removed in v12. Drop together with inject method and ObjectManager removal.

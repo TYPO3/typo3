@@ -1557,8 +1557,8 @@ class DataHandler implements LoggerAwareInterface
                 }
                 break;
             default:
-            // Do nothing
-            }
+                // Do nothing
+        }
         $res = $this->checkValueForInternalReferences($res, $value, $tcaFieldConf, $table, $id, $field);
         return $res;
     }

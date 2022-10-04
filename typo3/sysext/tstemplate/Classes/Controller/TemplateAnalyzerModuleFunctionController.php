@@ -29,7 +29,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class TemplateAnalyzerModuleFunctionController
 {
-
     /**
      * @var TypoScriptTemplateModuleController
      */

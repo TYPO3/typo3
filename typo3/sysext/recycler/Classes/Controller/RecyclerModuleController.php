@@ -39,7 +39,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class RecyclerModuleController
 {
-
     /**
      * @var array
      */

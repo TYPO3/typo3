@@ -65,7 +65,6 @@ class RenderRenderableViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-
         /** @var FormRuntime $formRuntime */
         $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()

@@ -35,7 +35,6 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
  */
 class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
-
     /**
      * This hook is called for each form element after the class
      * TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory has built the entire form.

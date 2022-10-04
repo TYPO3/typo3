@@ -254,8 +254,8 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
                 $this->target = (string)$value;
                 break;
             default:
-            // do nothing
-            }
+                // do nothing
+        }
     }
 
     // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
@@ -276,7 +276,7 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
                 $this->target = '';
                 break;
             default:
-            // do nothing
-            }
+                // do nothing
+        }
     }
 }

@@ -286,7 +286,6 @@ class ExportController extends ImportExportController
 
         // Perform export:
         if (($inData['download_export'] ?? null) || ($inData['save_export'] ?? null)) {
-
             // Export by download:
             if ($inData['download_export'] ?? null) {
                 $fileName = $this->export->getOrGenerateExportFileNameWithFileExtension();

@@ -216,7 +216,6 @@ If you want to get more detailed information, use the --verbose option.')
 
         // Traverse files and for each, look up if its found in the reference index.
         foreach ($files as $key => $value) {
-
             // First, allow "index.html", ".htaccess" files since they are often used for good reasons
             if (substr($value, -11) === '/index.html' || substr($value, -10) === '/.htaccess') {
                 continue;

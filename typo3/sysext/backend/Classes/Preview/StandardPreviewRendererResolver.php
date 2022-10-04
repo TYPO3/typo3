@@ -68,7 +68,6 @@ class StandardPreviewRendererResolver implements PreviewRendererResolverInterfac
         }
 
         if (!$previewRendererClassName) {
-
             // Table either has no type field or no custom preview renderer was defined for the type.
             // Use table's standard renderer if any is defined.
             $previewRendererClassName = $tca['ctrl']['previewRenderer'] ?? null;

@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseService
 {
-
     /**
      * Returns an array with all sys_refindex database rows which be
      * connected to a formDefinition identified by $persistenceIdentifier

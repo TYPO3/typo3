@@ -149,7 +149,6 @@ class FilesContentObject extends AbstractContentObject
      */
     protected function addFileReferences(array $configuration, array $element, FileCollector $fileCollector)
     {
-
         // It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
         $referencesFieldName = $this->cObj->stdWrapValue('fieldName', $configuration['references.'] ?? []);
 

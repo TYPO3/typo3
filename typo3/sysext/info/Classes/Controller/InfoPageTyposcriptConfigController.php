@@ -210,8 +210,8 @@ class InfoPageTyposcriptConfigController
                         $pageTsConfig = $pageTsConfig['user.'] ?? [];
                         break;
                     default:
-                    // Entire array
-                    }
+                        // Entire array
+                }
 
                 $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
                 $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? '0'));

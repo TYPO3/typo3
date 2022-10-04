@@ -56,7 +56,6 @@ final class CategoryPermissionsAspect
         $treeData = $event->getTreeData();
 
         if (!$GLOBALS['BE_USER']->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
-
             // Get User permissions related to category
             $categoryMountPoints = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
@@ -116,7 +115,6 @@ final class CategoryPermissionsAspect
 
         // If any User permission, recursively traverse the tree and set tree part as mount point
         foreach ($treeNodeCollection as $treeNode) {
-
             /** @var TreeNode $treeNode */
             if ((int)$treeNode->getId() === $categoryMountPoint) {
                 $result = $treeNode;
@@ -124,7 +122,6 @@ final class CategoryPermissionsAspect
             }
 
             if ($treeNode->hasChildNodes()) {
-
                 /** @var TreeNode $node */
                 $node = $this->lookUpCategoryMountPointInTreeNodes($categoryMountPoint, $treeNode->getChildNodes());
                 if ($node !== null) {

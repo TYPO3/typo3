@@ -25,7 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ClassNamingUtilityTest extends UnitTestCase
 {
-
     /**
      * DataProvider for translateModelNameToRepositoryName
      * and translateRepositoryNameToModelName

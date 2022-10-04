@@ -28,7 +28,6 @@ use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
  */
 class PageHook
 {
-
     /**
      * Add sys_notes as additional content to the header of the page module
      *

@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageProvider extends RecordProvider
 {
-
     /**
      * @var string
      */

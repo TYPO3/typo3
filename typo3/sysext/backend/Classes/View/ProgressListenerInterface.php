@@ -29,7 +29,6 @@ use Psr\Log\LogLevel;
  */
 interface ProgressListenerInterface
 {
-
     /**
      * Start a progress by using the maximum items, and an additional header message.
      *

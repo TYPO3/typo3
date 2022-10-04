@@ -31,7 +31,6 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  */
 abstract class AbstractBackendController extends ActionController
 {
-
     /**
      * @var array
      */

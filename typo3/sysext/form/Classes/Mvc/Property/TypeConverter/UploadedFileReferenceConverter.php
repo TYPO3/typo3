@@ -46,7 +46,6 @@ use TYPO3\CMS\Form\Slot\ResourcePublicationSlot;
  */
 class UploadedFileReferenceConverter extends AbstractTypeConverter
 {
-
     /**
      * Folder where the file upload should go to (including storage).
      */

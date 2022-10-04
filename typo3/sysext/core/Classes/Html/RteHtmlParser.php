@@ -198,8 +198,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         $value = $this->TS_transform_rte($value);
                         break;
                     default:
-                    // Do nothing
-                    }
+                        // Do nothing
+                }
             }
         }
         // If an exit HTML cleaner was configured, pass the content through the HTMLcleaner
@@ -253,8 +253,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         $value = $this->TS_transform_db($value);
                         break;
                     default:
-                    // Do nothing
-                    }
+                        // Do nothing
+                }
             }
         }
         // process markup with HTML Sanitizer

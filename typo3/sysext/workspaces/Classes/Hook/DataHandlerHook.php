@@ -132,8 +132,8 @@ class DataHandlerHook
                 }
                 break;
             default:
-            // Do nothing
-            }
+                // Do nothing
+        }
     }
 
     /**

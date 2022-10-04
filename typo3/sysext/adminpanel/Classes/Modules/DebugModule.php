@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
  */
 class DebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
-
     /**
      * @inheritdoc
      */

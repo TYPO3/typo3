@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  */
 interface CompositeRenderableInterface extends RenderableInterface
 {
-
     /**
      * Returns all RenderableInterface instances of this composite renderable recursively
      *

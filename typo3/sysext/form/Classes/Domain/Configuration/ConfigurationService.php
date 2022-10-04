@@ -48,7 +48,6 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class ConfigurationService implements SingletonInterface
 {
-
     /**
      * @var array
      */

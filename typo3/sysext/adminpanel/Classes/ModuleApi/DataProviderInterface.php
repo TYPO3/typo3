@@ -28,7 +28,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface DataProviderInterface
 {
-
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData

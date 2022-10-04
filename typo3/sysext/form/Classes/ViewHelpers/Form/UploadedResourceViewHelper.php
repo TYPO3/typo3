@@ -32,7 +32,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper;
  */
 class UploadedResourceViewHelper extends UploadViewHelper
 {
-
     /**
      * @var HashService
      */

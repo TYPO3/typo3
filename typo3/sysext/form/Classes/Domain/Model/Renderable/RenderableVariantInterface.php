@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
  */
 interface RenderableVariantInterface
 {
-
     /**
      * @return string
      */

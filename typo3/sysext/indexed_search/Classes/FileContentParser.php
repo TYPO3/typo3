@@ -415,8 +415,8 @@ class FileContentParser
                 // PHP strip-tags()
                 return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.XML'), $extension);
             default:
-            // Do nothing
-            }
+                // Do nothing
+        }
         return '';
     }
 
@@ -777,7 +777,7 @@ class FileContentParser
                 $this->setLocaleForServerFileSystem(true);
                 break;
             default:
-            }
+        }
         return $cParts;
     }
 

@@ -26,7 +26,6 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  */
 class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 {
-
     /**
      * @return ExpressionFunction[] An array of Function instances
      */

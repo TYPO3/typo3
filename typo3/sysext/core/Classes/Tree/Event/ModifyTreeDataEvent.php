@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\AbstractTableConfigurationTreeDataPro
  */
 final class ModifyTreeDataEvent
 {
-
     /**
      * @var TreeNode
      */

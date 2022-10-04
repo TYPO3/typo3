@@ -90,7 +90,6 @@ class Request extends Message implements RequestInterface
      */
     public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = [])
     {
-
         // Build a streamable object for the body
         if ($body !== null && !is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {
             throw new \InvalidArgumentException('Body must be a string stream resource identifier, a stream resource, or a StreamInterface instance', 1436717271);

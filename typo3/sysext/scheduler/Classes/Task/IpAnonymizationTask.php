@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
  */
 class IpAnonymizationTask extends AbstractTask
 {
-
     /**
      * @var int Number of days
      */

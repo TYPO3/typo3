@@ -422,8 +422,8 @@ class GridDataService implements LoggerAwareInterface
                     uasort($this->dataArray, [$this, 'stringSort']);
                     break;
                 default:
-                // Do nothing
-                }
+                    // Do nothing
+            }
         } else {
             $this->logger->critical('Trying to sort by {field} in "{class}::{method}" but $this->dataArray is empty! This might be the bug #26422 which could not be reproduced yet.', [
                 'field' => $this->sort,

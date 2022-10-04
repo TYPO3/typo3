@@ -33,7 +33,6 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 class TimePickerViewHelper extends AbstractFormFieldViewHelper
 {
-
     /**
      * @var string
      */

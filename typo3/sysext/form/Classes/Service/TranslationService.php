@@ -43,7 +43,6 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 class TranslationService implements SingletonInterface
 {
-
     /**
      * Local Language content
      *

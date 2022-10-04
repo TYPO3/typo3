@@ -32,7 +32,6 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 abstract class AbstractElementRenderer implements RendererInterface
 {
-
     /**
      * The assigned controller context which might be needed by the renderer.
      *

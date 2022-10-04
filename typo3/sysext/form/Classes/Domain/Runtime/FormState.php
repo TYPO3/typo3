@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
  */
 class FormState
 {
-
     /**
      * Constant which means that we are currently not on any page; i.e. the form
      * has never rendered before.

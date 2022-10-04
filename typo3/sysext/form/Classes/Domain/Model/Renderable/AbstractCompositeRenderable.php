@@ -32,7 +32,6 @@ use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
  */
 abstract class AbstractCompositeRenderable extends AbstractRenderable implements CompositeRenderableInterface
 {
-
     /**
      * array of child renderables
      *

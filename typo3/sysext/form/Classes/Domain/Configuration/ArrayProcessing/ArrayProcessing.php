@@ -25,7 +25,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing;
  */
 class ArrayProcessing
 {
-
     /**
      * @var string
      */

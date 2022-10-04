@@ -39,7 +39,6 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  */
 abstract class AbstractRenderable implements RenderableInterface, VariableRenderableInterface
 {
-
     /**
      * Abstract "type" of this Renderable. Is used during the rendering process
      * to determine the template file or the View PHP class being used to render

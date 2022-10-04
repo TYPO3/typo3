@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractProvider implements ProviderInterface
 {
-
     /**
      * Language Service property. Used to access localized labels
      *

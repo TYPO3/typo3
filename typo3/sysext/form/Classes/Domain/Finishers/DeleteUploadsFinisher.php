@@ -30,7 +30,6 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
  */
 class DeleteUploadsFinisher extends AbstractFinisher
 {
-
     /**
      * Executes this finisher
      * @see AbstractFinisher::execute()

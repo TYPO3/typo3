@@ -39,7 +39,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PageInfoViewHelper extends AbstractBackendViewHelper
 {
-
     /**
      * This ViewHelper renders HTML, thus output must not be escaped
      *

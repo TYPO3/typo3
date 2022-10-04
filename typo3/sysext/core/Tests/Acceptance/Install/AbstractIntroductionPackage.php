@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 
 class AbstractIntroductionPackage
 {
-
     /**
      * @param InstallTester $I
      */

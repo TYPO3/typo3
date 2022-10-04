@@ -49,7 +49,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
  */
 class TypoScriptTemplateModuleController
 {
-
     /**
      * @var string
      */

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\LinkHandling;
  */
 class UrlLinkHandler implements LinkHandlingInterface
 {
-
     /**
      * Returns the URL as given
      *

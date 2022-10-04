@@ -3,7 +3,6 @@
 defined('TYPO3') or die();
 
 call_user_func(static function () {
-
     // Adds the redirect field and the forgotHash field to the fe_users-table
     $additionalColumns = [
         'felogin_redirectPid' => [

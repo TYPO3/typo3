@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ModuleLoader
 {
-
     /**
      * Validates, sorts and initiates the registered modules
      *

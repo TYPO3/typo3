@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Core\LinkHandling;
  */
 class TelephoneLinkHandler implements LinkHandlingInterface
 {
-
     /**
      * Returns the link to a telephone number as a string
      *

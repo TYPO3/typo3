@@ -33,7 +33,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * @var string
      */

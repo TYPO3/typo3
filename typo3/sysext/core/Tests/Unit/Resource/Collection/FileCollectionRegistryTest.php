@@ -166,7 +166,6 @@ class FileCollectionRegistryTest extends BaseTestCase
      */
     public function addNewTypeToTCA(): void
     {
-
         // Create a TCA fixture for sys_file_collection
         $GLOBALS['TCA']['sys_file_collection'] = [
             'types' => [

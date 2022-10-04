@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TcaPreparation
 {
-
     /**
      * Prepare TCA
      *

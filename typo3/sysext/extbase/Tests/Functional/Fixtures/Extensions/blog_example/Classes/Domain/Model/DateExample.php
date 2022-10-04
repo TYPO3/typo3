@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class DateExample extends AbstractEntity
 {
-
     /**
      * A datetime stored in a text field
      *
