@@ -11,9 +11,11 @@ See :issue:`97452`
 Description
 ===========
 
-The hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook']` and
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook']` have been removed.
-The same behavior may be achieved using template overrides.
+The hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook']`
+and :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook']`
+have been removed, since adjusting the generated content can be achieved using template overrides
+and modifing the form data, used to generate the edit file form, can be done
+using the PSR-14 :php:`TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent`.
 
 Impact
 ======
@@ -24,14 +26,14 @@ The extension scanner will report possible usages.
 Affected Installations
 ======================
 
-All TYPO3 installations using these hook in custom extension code. This is pretty
-unlikely, since both hooks were of limited use.
+All TYPO3 installations using these hook in custom extension code. This is
+pretty unlikely, since both hooks were of limited use.
 
 Migration
 =========
 
-The content preparation allowed by :php:`preOutputProcessingHook` can be achieved with
-:ref:`FormEngine data providers <t3coreapi:FormEngine-DataCompiling>`.
+The form data modification, allowed by :php:`preOutputProcessingHook`, can be
+achieved with the new :doc:`PSR-14 ModifyEditFileFormDataEvent <Feature-98521-PSR-14EventToModifyFormDataForEditFileForm>`.
 
 The content manipulation :php:`postOutputProcessingHook` hook can be substituted with a template override
 as outlined in :doc:`this changelog entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`.

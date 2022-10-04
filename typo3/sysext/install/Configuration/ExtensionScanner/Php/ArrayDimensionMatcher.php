@@ -904,6 +904,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/file_edit.php\'][\'preOutputProcessingHook\']' => [
         'restFiles' => [
             'Breaking-97452-RemovedEditFileControllerHooks.rst',
+            'Feature-98521-PSR-14EventToModifyFormDataForEditFileForm.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/file_edit.php\'][\'postOutputProcessingHook\']' => [

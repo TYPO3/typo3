@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\Controller\File;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent;
 
 /**
  * Edit text files via FormEngine. Reachable via FileList module "Edit content".
@@ -98,6 +100,7 @@ class EditFileController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResponseFactory $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -145,6 +148,10 @@ class EditFileController
         $formData['databaseRow']['target'] = $file->getUid();
         $formData['databaseRow']['redirect'] = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $combinedIdentifier]);
         $formData['processedTca']['columns']['data'] = $dataColumnDefinition;
+
+        $formData = $this->eventDispatcher->dispatch(
+            new ModifyEditFileFormDataEvent($formData, $file, $request)
+        )->getFormData();
 
         $resultArray = GeneralUtility::makeInstance(NodeFactory::class)->create($formData)->render();
         $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
