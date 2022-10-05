@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 
 /**
@@ -28,7 +29,7 @@ final class AfterTemplatesHaveBeenDeterminedEvent
 {
     public function __construct(
         private readonly array $rootline,
-        private readonly SiteInterface $site,
+        private readonly ?ServerRequestInterface $request,
         private array $templateRows,
     ) {
     }
@@ -38,9 +39,17 @@ final class AfterTemplatesHaveBeenDeterminedEvent
         return $this->rootline;
     }
 
-    public function getSite(): SiteInterface
+    public function getRequest(): ?ServerRequestInterface
     {
-        return $this->site;
+        return $this->request;
+    }
+
+    /**
+     * Convenience method to directly retrieve the Site. May be null though!
+     */
+    public function getSite(): ?SiteInterface
+    {
+        return $this->request?->getAttribute('site');
     }
 
     public function getTemplateRows(): array

@@ -17,7 +17,7 @@ has been removed.
 
 The new event :php:`AfterTemplatesHaveBeenDeterminedEvent` can be used
 to manipulate sys_template rows. The event receives the list of resolved
-sys_template rows and the :php:`SiteInterface` and allows manipulating the
+sys_template rows and the :php:`ServerRequestInterface` and allows manipulating the
 sys_template rows array.
 
 

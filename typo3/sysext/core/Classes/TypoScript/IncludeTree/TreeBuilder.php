@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeStaticFileFileInclu
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -187,32 +186,6 @@ final class TreeBuilder
             $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type);
             $this->cache?->set($identifier, $this->prepareNodeForCache($includeNode));
             $includeTree->addChild($includeNode);
-        }
-
-        // @todo: b/w compat hook hack tailored for testing-framework TyposcriptInstruction runThroughTemplatesPostProcessing hook.
-        //        This hook has already been marked as removed in v12. We should drop it without further notice in v12
-        //        stabilization phase and make TF cope with it, probably by switching to AfterTemplatesHaveBeenDeterminedEvent.
-        // @deprecated hook runThroughTemplatesPostProcessing, will vanish in v12.
-        $hookParameters = [];
-        $templateService = new TemplateService();
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'] ?? [] as $listener) {
-            GeneralUtility::callUserFunction($listener, $hookParameters, $templateService);
-            if (!empty($templateService->constants)) {
-                // @todo: Aehm, we should check $this->type here, shouldn't we?
-                $node = new DefaultTypoScriptInclude();
-                $node->setIdentifier('hook-constants');
-                $node->setName('Hook constants');
-                $node->setLineStream($this->tokenizer->tokenize(implode(LF, $templateService->constants)));
-                $includeTree->addChild($node);
-            }
-            if (!empty($templateService->config)) {
-                // @todo: Aehm, we should check $this->type here, shouldn't we?
-                $node = new DefaultTypoScriptInclude();
-                $node->setIdentifier('hook-setup');
-                $node->setName('Hook setup');
-                $node->setLineStream($this->tokenizer->tokenize(implode(LF, $templateService->config)));
-                $includeTree->addChild($node);
-            }
         }
 
         if ($this->forceProcessExtensionStatics && !$this->extensionStaticsProcessed) {

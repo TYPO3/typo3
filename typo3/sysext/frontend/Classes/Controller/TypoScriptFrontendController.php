@@ -1149,7 +1149,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         //        in TypoScriptFrontendInitialization. This could be done when getPageAndRootline()
         //        switches to a CTE query instead of using RootlineUtility.
         $sysTemplateRepository = GeneralUtility::makeInstance(SysTemplateRepository::class);
-        $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($this->rootLine, $this->getSite());
+        $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($this->rootLine, $request);
 
         // Early exception if there is no sys_template at all.
         if (empty($sysTemplateRows)) {
@@ -1354,6 +1354,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
             }
             // Processing for the config_array:
+            // @todo: This is broken - it should be the "restricted" rootline that starts at sys_template['root'] = 1
+            //        Fix this and add a functional test to make sure this does not break again!
             $this->config['rootLine'] = array_reverse($this->rootLine);
 
             // b/w compat, especially for bootstrap_package which does a lot of magic with constants

@@ -8641,12 +8641,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "08df9867ecd9dbae94db9e4169da1826d1f7ff4b"
+                "reference": "2f2a44f7935f5596e6e47aab52119aea60c2cac6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/08df9867ecd9dbae94db9e4169da1826d1f7ff4b",
-                "reference": "08df9867ecd9dbae94db9e4169da1826d1f7ff4b",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/2f2a44f7935f5596e6e47aab52119aea60c2cac6",
+                "reference": "2f2a44f7935f5596e6e47aab52119aea60c2cac6",
                 "shasum": ""
             },
             "require": {
@@ -8672,6 +8672,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "TYPO3\\JsonResponse\\": "Resources/Core/Functional/Extensions/json_response/Classes/",
                     "TYPO3\\PrivateContainer\\": "Resources/Core/Functional/Extensions/private_container/Classes/",
                     "TYPO3\\TestingFramework\\": "Classes/"
                 }
@@ -8704,7 +8705,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-10-04T13:41:16+00:00"
+            "time": "2022-10-07T20:44:54+00:00"
         }
     ],
     "aliases": [],

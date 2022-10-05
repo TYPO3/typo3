@@ -140,11 +140,11 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         $displayComments = $moduleData->get('displayComments');
         $searchValue = $moduleData->get('searchValue');
 
-        /** @var SiteInterface|null $site */
-        $site = $request->getAttribute('site');
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $site, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
@@ -322,7 +322,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
 
         /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $site, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Get current value of to-edit object path
         // Build the constant include tree

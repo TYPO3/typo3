@@ -19,11 +19,11 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -47,14 +47,17 @@ final class SysTemplateRepository
      * To calculate the TS include tree, we have to find sys_template rows attached to all rootline pages.
      * When there are multiple active sys_template rows on a page, we pick the one with the lower sorting
      * value.
+     *
      * The query implementation below does that with *one* query for all rootline pages at once, not
      * one query per page. To handle the capabilities mentioned above, the query is a bit nifty, but
      * the implementation should scale nearly O(1) instead of O(n) with the rootline depth.
      *
+     * @param ServerRequestInterface|null $request Nullable since Request is not a hard dependency ond just convenient for the Event
+     *
      * @todo: It's potentially possible to get rid of this method in the frontend by joining sys_template
      *        into the Page rootline resolving as soon as it uses a CTE.
      */
-    public function getSysTemplateRowsByRootline(array $rootline, SiteInterface $site): array
+    public function getSysTemplateRowsByRootline(array $rootline, ?ServerRequestInterface $request = null): array
     {
         // Site-root node first!
         $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
@@ -100,7 +103,7 @@ final class SysTemplateRepository
             $lastPid = (int)$sysTemplateRow['pid'];
             $sysTemplateRows[] = $sysTemplateRow;
         }
-        $event = new AfterTemplatesHaveBeenDeterminedEvent($rootline, $site, $sysTemplateRows);
+        $event = new AfterTemplatesHaveBeenDeterminedEvent($rootline, $request, $sysTemplateRows);
         $this->eventDispatcher->dispatch($event);
         return $event->getTemplateRows();
     }
@@ -117,7 +120,7 @@ final class SysTemplateRepository
      * one query per page. To handle the capabilities mentioned above, the query is a bit nifty, but
      * the implementation should scale nearly O(1) instead of O(n) with the rootline depth.
      */
-    public function getSysTemplateRowsByRootlineWithUidOverride(array $rootline, SiteInterface $site, int $templateUidOnDeepestRootline): array
+    public function getSysTemplateRowsByRootlineWithUidOverride(array $rootline, ?ServerRequestInterface $request, int $templateUidOnDeepestRootline): array
     {
         // Site-root node first!
         $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
@@ -179,7 +182,7 @@ final class SysTemplateRepository
         //        merged into an early middleware like "SiteResolver" which could join / sub-select
         //        pages together with sys_template directly, which would be possible if we manage
         //        to switch away from RootlineUtility usage in SiteResolver by using a CTE instead.
-        $event = new AfterTemplatesHaveBeenDeterminedEvent($rootline, $site, $sysTemplateRows);
+        $event = new AfterTemplatesHaveBeenDeterminedEvent($rootline, $request, $sysTemplateRows);
         $this->eventDispatcher->dispatch($event);
         return $event->getTemplateRows();
     }

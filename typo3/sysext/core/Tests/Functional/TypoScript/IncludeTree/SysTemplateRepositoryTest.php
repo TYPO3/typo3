@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -38,9 +37,9 @@ class SysTemplateRepositoryTest extends FunctionalTestCase
         ];
         /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite());
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
         self::assertSame(1, $result[0]['uid']);
-        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, new NullSite(), 1);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 1);
         self::assertSame(1, $result[0]['uid']);
     }
 
@@ -64,10 +63,10 @@ class SysTemplateRepositoryTest extends FunctionalTestCase
         ];
         /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite());
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
         self::assertSame(1, $result[0]['uid']);
         self::assertSame(2, $result[1]['uid']);
-        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, new NullSite(), 2);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2);
         self::assertSame(1, $result[0]['uid']);
         self::assertSame(2, $result[1]['uid']);
     }
@@ -87,9 +86,9 @@ class SysTemplateRepositoryTest extends FunctionalTestCase
         ];
         /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite());
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
         self::assertSame(1, $result[0]['uid']);
-        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, new NullSite(), 2);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2);
         self::assertSame(2, $result[0]['uid']);
     }
 }

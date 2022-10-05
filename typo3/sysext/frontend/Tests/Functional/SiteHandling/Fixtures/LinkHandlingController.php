@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\RequestBootstrap;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 /**
  * Test case for frontend requests having site handling configured
@@ -47,10 +47,15 @@ class LinkHandlingController
     /**
      * @return string
      */
-    public function mainAction(): string
+    public function mainAction(mixed $_, array $__, ServerRequestInterface $request): string
     {
-        $instruction = RequestBootstrap::getInternalRequest()
-            ->getInstruction(LinkHandlingController::class);
+        if (!$request instanceof InternalRequest) {
+            throw new \RuntimeException(
+                'LinkHandlingController test fixture must receive a testing framework InternalRequest',
+                1664968186
+            );
+        }
+        $instruction = $request->getInstruction(LinkHandlingController::class);
         if (!$instruction instanceof ArrayValueInstruction) {
             return '';
         }

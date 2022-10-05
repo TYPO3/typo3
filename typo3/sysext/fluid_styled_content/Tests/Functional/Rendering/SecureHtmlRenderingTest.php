@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -35,16 +34,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     private const TYPE_DISABLE_HTML_SANITIZE = 'disable-htmlSanitize';
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-    ];
-
-    protected array $configurationToUseInTestInstance = [
-        'SC_OPTIONS' => [
-            'Core/TypoScript/TemplateService' => [
-                'runThroughTemplatesPostProcessing' => [
-                    'FunctionalTest' => TypoScriptInstructionModifier::class . '->apply',
-                ],
-            ],
-        ],
     ];
 
     protected array $coreExtensionsToLoad = ['fluid_styled_content'];

@@ -110,11 +110,11 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
         }
 
-        /** @var SiteInterface|null $site */
-        $site = $request->getAttribute('site');
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $site, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);

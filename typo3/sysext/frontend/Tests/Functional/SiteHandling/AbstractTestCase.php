@@ -49,13 +49,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
             ],
             'debug' => false,
         ],
-        'SC_OPTIONS' => [
-            'Core/TypoScript/TemplateService' => [
-                'runThroughTemplatesPostProcessing' => [
-                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
-                ],
-            ],
-        ],
     ];
 
     protected array $coreExtensionsToLoad = ['workspaces'];

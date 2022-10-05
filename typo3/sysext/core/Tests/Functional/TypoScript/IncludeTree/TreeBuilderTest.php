@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -79,7 +78,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
     }
@@ -102,7 +101,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -129,7 +128,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite(
             'constants',
-            $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()),
+            $sysTemplateRepository->getSysTemplateRowsByRootline($rootline),
             $siteFinder->getSiteByPageId(1)
         );
         $ast = $this->getAst($includeTree);
@@ -158,7 +157,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -186,7 +185,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertNull($ast->getChildByName('foo'));
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -209,7 +208,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertNull($ast->getChildByName('bar'));
@@ -232,7 +231,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
@@ -255,7 +254,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
@@ -278,7 +277,7 @@ class TreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
-        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, new NullSite()));
+        $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('includeStaticTarget', $ast->getChildByName('bar')->getValue());
