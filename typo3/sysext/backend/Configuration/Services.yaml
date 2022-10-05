@@ -61,10 +61,6 @@ services:
     shared: false
     public: true
 
-  TYPO3\CMS\Backend\View\PageLayoutView:
-    shared: false
-    public: true
-
   TYPO3\CMS\Backend\History\RecordHistoryRollback:
     public: true
 
@@ -105,9 +101,6 @@ services:
     tags: ['backend.controller']
 
   TYPO3\CMS\Backend\Controller\ResetPasswordController:
-    tags: ['backend.controller']
-
-  TYPO3\CMS\Backend\Controller\HelpController:
     tags: ['backend.controller']
 
   TYPO3\CMS\Backend\Controller\MfaConfigurationController:
