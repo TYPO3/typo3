@@ -1369,9 +1369,10 @@ class AbstractPlugin
      */
     public function pi_initPIflexForm($field = 'pi_flexform')
     {
-        // Converting flexform data into array:
-        if (!is_array($this->cObj->data[$field]) && $this->cObj->data[$field]) {
-            $this->cObj->data[$field] = GeneralUtility::xml2array($this->cObj->data[$field]);
+        // Converting flexform data into array
+        $fieldData = $this->cObj->data[$field] ?? null;
+        if (!is_array($fieldData) && $fieldData) {
+            $this->cObj->data[$field] = GeneralUtility::xml2array((string)$fieldData);
             if (!is_array($this->cObj->data[$field])) {
                 $this->cObj->data[$field] = [];
             }
