@@ -202,6 +202,14 @@ services:
   TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem:
     public: true
 
+  TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler:
+    alias: TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler
+    public: true
+    deprecated:
+      package: 'typo3/cms-backend'
+      version: '12.0'
+      message: 'Usage of "%alias_id%" is deprecated. Please use "TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler" instead.'
+
   TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler:
     shared: false
     public: true

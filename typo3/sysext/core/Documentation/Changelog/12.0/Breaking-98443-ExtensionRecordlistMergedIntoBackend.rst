@@ -68,6 +68,9 @@ established as aliases. Extensions should update their dependencies in case they
 extending or implementing specific "recordlist" functionality, the extension scanner
 will find possible usages.
 
+Extensions using the LinkHandler API might need to update corresponding
+:typoscript:`TCEMAIN.linkHandler.*` configuration.
+
 Migration
 =========
 
@@ -81,5 +84,11 @@ Extensions using classes of extension "recordlist" should use the new classes in
 Extensions supporting both TYPO3 v11 and v12 can continue to use the old class names
 since they have been established as aliases to the new class names. These aliases will
 be removed with TYPO3 Core v13.
+
+Extensions using the :php:`TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler`
+as :typoscript:`handler` for a custom :typoscript:`linkHandler` should ajust
+corresponding TSconfig to use the new class name
+:php:`TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler`. Corresponding service
+alias will be removed in TYPO3 v13.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:recordlist
