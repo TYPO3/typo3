@@ -66,24 +66,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 3
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: "#^Result of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<'disabled'\\|'title'\\|int, mixed\\> and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -1301,17 +1286,17 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'ch' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
+			message: "#^Offset 'ch' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: non\\-empty\\-array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'tag' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
+			message: "#^Offset 'tag' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: non\\-empty\\-array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'values' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
+			message: "#^Offset 'values' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: non\\-empty\\-array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
@@ -3331,11 +3316,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Utility/DoubleMetaPhoneUtility.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Command\\\\UpgradeWizardListCommand\\:\\:\\$input is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Command/UpgradeWizardListCommand.php
@@ -3577,6 +3557,16 @@ parameters:
 
 		-
 			message: "#^Offset 'userFunc' on 'user' in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+
+		-
+			message: "#^Offset 0 on array\\{\\} in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
 
