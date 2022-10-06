@@ -86,7 +86,7 @@ since they have been established as aliases to the new class names. These aliase
 be removed with TYPO3 Core v13.
 
 Extensions using the :php:`TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler`
-as :typoscript:`handler` for a custom :typoscript:`linkHandler` should ajust
+as :typoscript:`handler` for a custom :typoscript:`linkHandler` should adjust
 corresponding TSconfig to use the new class name
 :php:`TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler`. Corresponding service
 alias will be removed in TYPO3 v13.
