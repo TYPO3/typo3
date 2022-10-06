@@ -442,6 +442,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.expandAll" resname="labels.expandAll">
 				<source>Expand all</source>
 			</trans-unit>
+			<trans-unit id="labels.generatePassword" resname="labels.generatePassword">
+				<source>Generate password</source>
+			</trans-unit>
 			<trans-unit id="labels.new_section" resname="labels.new_section">
 				<source>Create new</source>
 			</trans-unit>
@@ -1418,6 +1421,9 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="error.missingLanguageIsocode" resname="error.missingLanguageIsocode">
 				<source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
+			</trans-unit>
+			<trans-unit id="error.misconfiguredPasswordRules" resname="error.misconfiguredPasswordRules">
+				<source>No password could be generated due to misconfigured password rules.</source>
 			</trans-unit>
 			<trans-unit id="labels.deleteTitle" resname="labels.deleteTitle">
 				<source>Revert to default Constant</source>

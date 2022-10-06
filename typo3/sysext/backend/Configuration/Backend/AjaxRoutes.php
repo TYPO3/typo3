@@ -370,4 +370,10 @@ return [
         'path' => '/record/download/settings',
         'target' => \TYPO3\CMS\Backend\Controller\RecordListDownloadController::class . '::downloadSettingsAction',
     ],
+
+    // Endpoint to generate a password
+    'password_generate' => [
+        'path' => '/password/generate',
+        'target' => \TYPO3\CMS\Core\Controller\PasswordGeneratorController::class . '::generate',
+    ],
 ];

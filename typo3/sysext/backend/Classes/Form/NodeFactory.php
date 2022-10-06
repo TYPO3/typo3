@@ -135,6 +135,7 @@ class NodeFactory
         'linkPopup' => FieldControl\LinkPopup::class,
         'listModule' => FieldControl\ListModule::class,
         'resetSelection' => FieldControl\ResetSelection::class,
+        'passwordGenerator' => FieldControl\PasswordGenerator::class,
     ];
 
     /**

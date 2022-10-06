@@ -17,11 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Crypto;
 
+use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Crypto safe pseudo-random value generation
  */
 class Random
 {
+    private const DEFAULT_PASSWORD_LEGNTH = 16;
+    private const LOWERCASE_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz';
+    private const UPPERCASE_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private const SPECIAL_CHARACTERS = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~';
+    private const DIGIT_CHARACTERS = '1234567890';
+
     /**
      * Generates cryptographic secure pseudo-random bytes
      *
@@ -54,5 +63,76 @@ class Random
     public function generateRandomHexString(int $length): string
     {
         return substr(bin2hex($this->generateRandomBytes((int)(($length + 1) / 2))), 0, $length);
+    }
+
+    /**
+     * Generates cryptographic secure pseudo-random password based on given password rules
+     *
+     * @param array $passwordRules
+     * @return string
+     * @internal Only to be used within TYPO3. Might change in the future.
+     */
+    public function generateRandomPassword(array $passwordRules): string
+    {
+        $password = '';
+        $passwordLength = (int)($passwordRules['length'] ?? self::DEFAULT_PASSWORD_LEGNTH);
+
+        if ($passwordRules['random'] ?? false) {
+            $password = match ((string)$passwordRules['random']) {
+                'hex' => $this->generateRandomHexString($passwordLength),
+                'base64' => $this->generateRandomBase64String($passwordLength),
+                default => throw new InvalidPasswordRulesException('Invalid value for special option \'random\'. Valid options are: \'hex\' and \'base64\'', 1667557901),
+            };
+        } else {
+            $characters = [];
+            $characterSets = [];
+            if (filter_var($passwordRules['lowerCaseCharacters'] ?? true, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) {
+                $characters = array_merge($characters, str_split(self::LOWERCASE_CHARACTERS));
+                $characterSets[] = self::LOWERCASE_CHARACTERS;
+            }
+            if (filter_var($passwordRules['upperCaseCharacters'] ?? true, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) {
+                $characters = array_merge($characters, str_split(self::UPPERCASE_CHARACTERS));
+                $characterSets[] = self::UPPERCASE_CHARACTERS;
+            }
+            if (filter_var($passwordRules['digitCharacters'] ?? true, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) {
+                $characters = array_merge($characters, str_split(self::DIGIT_CHARACTERS));
+                $characterSets[] = self::DIGIT_CHARACTERS;
+            }
+            if (filter_var($passwordRules['specialCharacters'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) {
+                $characters = array_merge($characters, str_split(self::SPECIAL_CHARACTERS));
+                $characterSets[] = self::SPECIAL_CHARACTERS;
+            }
+
+            if ($passwordLength <= 0 || $characterSets === []) {
+                throw new InvalidPasswordRulesException(
+                    'Password rules are invalid. Length must be grater 0 and at least one character set must be allowed.',
+                    1667557900
+                );
+            }
+
+            foreach ($characterSets as $characterSet) {
+                $password .= $characterSet[random_int(0, strlen($characterSet))];
+            }
+
+            $charactersCount = count($characters);
+            for ($i = 0; $i < $passwordLength - count($characterSets); $i++) {
+                $password .= $characters[random_int(0, $charactersCount)];
+            }
+
+            str_shuffle($password);
+        }
+
+        return $password;
+    }
+
+    /**
+     * Generates cryptographic secure pseudo-random base64 string
+     *
+     * @param int $length
+     * @return string
+     */
+    protected function generateRandomBase64String(int $length): string
+    {
+        return substr(StringUtility::base64urlEncode($this->generateRandomBytes((int)ceil(($length / 4) * 3))), 0, $length);
     }
 }

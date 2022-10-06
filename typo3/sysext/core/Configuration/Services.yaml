@@ -82,6 +82,9 @@ services:
   TYPO3\CMS\Core\Controller\FileDumpController:
     public: true
 
+  TYPO3\CMS\Core\Controller\PasswordGeneratorController:
+    public: true
+
   TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector:
     public: true
 
