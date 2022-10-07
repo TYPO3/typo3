@@ -98,7 +98,6 @@
             "d3-dispatch",
             "d3-drag",
             "d3-selection",
-            "imagesloaded",
             "jasmine",
             "jquery",
             "jqueryui",

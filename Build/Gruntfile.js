@@ -534,10 +534,6 @@ module.exports = function (grunt) {
                 imports.push('jquery');
               }
 
-              if (srcpath === 'node_modules/imagesloaded/imagesloaded.js') {
-                imports.push('ev-emitter');
-              }
-
               if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js') {
                 prefix = 'import Tablesort from "tablesort";';
               }
@@ -549,10 +545,8 @@ module.exports = function (grunt) {
         files: {
           'autosize.js': 'autosize/dist/autosize.min.js',
           'broadcastchannel.js': 'broadcastchannel-polyfill/index.js',
-          'ev-emitter.js': 'ev-emitter/ev-emitter.js',
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
-          'imagesloaded.js': 'imagesloaded/imagesloaded.js',
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
           'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
@@ -654,8 +648,6 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js": ["<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js": ["<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/imagesloaded.js": ["<%= paths.core %>Public/JavaScript/Contrib/imagesloaded.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/ev-emitter.js": ["<%= paths.core %>Public/JavaScript/Contrib/ev-emitter.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],

@@ -20,7 +20,6 @@ import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Cropper from 'cropperjs';
-import ImagesLoaded from 'imagesloaded';
 import {default as Modal, ModalElement} from './modal';
 import '@typo3/backend/element/spinner-element';
 
@@ -176,11 +175,17 @@ class ImageManipulation {
    * @desc Initialize the cropper modal and dispatch the cropper init
    * @private
    */
-  private initializeCropperModal(): void {
+  private async initializeCropperModal(): Promise<void> {
     const image: HTMLImageElement = this.currentModal.querySelector(this.cropImageSelector);
-    ImagesLoaded(image, (): void => {
-      this.init();
+
+    await new Promise<void>((resolve) => {
+      if (image.complete) {
+        resolve();
+      } else {
+        image.addEventListener('load', (): void => resolve());
+      }
     });
+    this.init();
   }
 
   /**
