@@ -60,10 +60,14 @@ trait JwtTrait
         $errorLevel = self::ignoreJwtPhp82Deprecations();
 
         $keyId = $identifier !== null ? json_encode($identifier) : null;
-        $jwt = JWT::encode($payload, $key->getKeyMaterial(), self::getDefaultSigningAlgorithm(), $keyId);
-
-        if (is_int($errorLevel)) {
-            error_reporting($errorLevel);
+        try {
+            $jwt = JWT::encode($payload, $key->getKeyMaterial(), self::getDefaultSigningAlgorithm(), $keyId);
+        } catch(\Exception $e) {
+            throw $e;
+        } finally {
+            if (is_int($errorLevel)) {
+                error_reporting($errorLevel);
+            }
         }
 
         return $jwt;
@@ -74,10 +78,14 @@ trait JwtTrait
         // @todo work-around until https://github.com/firebase/php-jwt/pull/446/files is merged
         $errorLevel = self::ignoreJwtPhp82Deprecations();
 
-        $payload = JWT::decode($jwt, $key);
-
-        if (is_int($errorLevel)) {
-            error_reporting($errorLevel);
+        try {
+            $payload = JWT::decode($jwt, $key);
+        } catch(\Exception $e) {
+            throw $e;
+        } finally {
+            if (is_int($errorLevel)) {
+                error_reporting($errorLevel);
+            }
         }
 
         return $associative ? json_decode(json_encode($payload), true) : $payload;
