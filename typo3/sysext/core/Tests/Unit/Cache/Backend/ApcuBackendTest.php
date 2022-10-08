@@ -39,6 +39,7 @@ class ApcuBackendTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         // APCu module is called apcu, but options are prefixed with apc
         if (!extension_loaded('apcu') || !(bool)ini_get('apc.enabled') || !(bool)ini_get('apc.enable_cli')) {
             self::markTestSkipped('APCu extension was not available, or it was disabled for CLI.');

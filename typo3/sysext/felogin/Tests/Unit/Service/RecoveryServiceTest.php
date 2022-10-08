@@ -51,6 +51,7 @@ class RecoveryServiceTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->userRepository = $this->prophesize(FrontendUserRepository::class);
         $this->recoveryConfiguration = $this->prophesize(RecoveryConfiguration::class);
         $this->templatePathsProphecy = $this->prophesize(TemplatePaths::class);

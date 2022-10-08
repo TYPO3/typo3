@@ -31,6 +31,7 @@ class DashboardPresetRegistryTest extends UnitTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
         $this->subject = GeneralUtility::makeInstance(
             DashboardPresetRegistry::class
         );

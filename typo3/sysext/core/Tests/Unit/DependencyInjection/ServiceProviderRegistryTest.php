@@ -40,6 +40,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
         $this->packageManagerProphecy->isPackageActive(Argument::any())->willReturn(false);
         $this->packageManagerProphecy->getActivePackages()->willReturn([]);
