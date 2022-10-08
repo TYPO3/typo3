@@ -58,6 +58,7 @@ class FileControllerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->fileResourceMock = $this->getMockBuilder(File::class)
             ->onlyMethods(['toArray', 'getModificationTime', 'getExtension', 'getParentFolder'])
             ->disableOriginalConstructor()

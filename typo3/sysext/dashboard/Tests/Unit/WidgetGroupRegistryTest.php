@@ -34,6 +34,7 @@ class WidgetGroupRegistryTest extends UnitTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
         $this->subject = GeneralUtility::makeInstance(
             WidgetGroupRegistry::class
         );

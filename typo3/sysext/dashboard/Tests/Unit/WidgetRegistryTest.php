@@ -45,6 +45,7 @@ class WidgetRegistryTest extends UnitTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $this->containerProphecy = $this->prophesize(ContainerInterface::class);
 

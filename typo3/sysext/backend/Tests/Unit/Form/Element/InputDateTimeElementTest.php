@@ -49,6 +49,7 @@ class InputDateTimeElementTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->timezoneBackup = date_default_timezone_get();
     }
 

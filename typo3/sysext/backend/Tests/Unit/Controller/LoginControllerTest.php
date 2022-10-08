@@ -57,6 +57,7 @@ class LoginControllerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->loginControllerMock = $this->getAccessibleMock(LoginController::class, ['dummy'], [], '', false);
     }
 

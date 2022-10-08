@@ -44,6 +44,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger());
     }
 

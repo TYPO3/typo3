@@ -47,6 +47,7 @@ class ThumbnailControllerTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
             = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
         $this->subject = $this->createPartialMock(

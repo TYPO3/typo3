@@ -44,6 +44,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $this->beUserProphecy;
 
