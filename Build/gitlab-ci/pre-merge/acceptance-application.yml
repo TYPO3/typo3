@@ -14,7 +14,7 @@ acceptance application mariadb php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptance -p 7.4 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-acceptance application mariadb php 8.1 pre-merge:
+acceptance application mariadb php 8.2 pre-merge:
   stage: main
   except:
     refs:
@@ -30,5 +30,5 @@ acceptance application mariadb php 8.1 pre-merge:
         - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 13
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s acceptance -p 8.1 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -p 8.2 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

@@ -17,8 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class UpgradeCest extends AbstractCest
 {
@@ -55,11 +58,42 @@ class UpgradeCest extends AbstractCest
 
         $I->amGoingTo('open the upgrade wizard and set charset to utf8');
         $I->see('Upgrade Wizard', ModalDialog::$openedModalSelector);
-        $I->click('Set default charset to utf8', ModalDialog::$openedModalSelector);
-        $I->waitForText('Default connection database has been set to utf8', 5, ModalDialog::$openedModalSelector);
-        $I->see('No wizards are marked as done', ModalDialog::$openedModalSelector);
 
+        if ($this->shouldDefaultCharsetCheckBeChecked()) {
+            $I->click('Set default charset to utf8', ModalDialog::$openedModalSelector);
+            $I->waitForText('Default connection database has been set to utf8', 5, ModalDialog::$openedModalSelector);
+        }
+
+        $I->see('No wizards are marked as done', ModalDialog::$openedModalSelector);
         $I->click('.t3js-modal-close');
+    }
+
+    /**
+     * Determine if we should check for the UTF8 default charset check in upgrade wizards
+     */
+    protected function shouldDefaultCharsetCheckBeChecked(): bool
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $isDefaultConnectionMysql = ($connection->getDatabasePlatform() instanceof MySqlPlatform);
+        if (!$isDefaultConnectionMysql) {
+            return false;
+        }
+        $queryBuilder = $connection->createQueryBuilder();
+        $charset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
+            ->from('information_schema.SCHEMATA')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'SCHEMA_NAME',
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                )
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchOne();
+        // check if database charset is utf-8, also allows utf8mb4
+        $charsetOk = str_starts_with($charset, 'utf8');
+        return !$charsetOk;
     }
 
     /**

@@ -684,7 +684,12 @@ services:
           set -x
         fi
         composer config --unset platform.php;
-        composer update --no-progress --no-interaction;
+        if [ ${PHP_VERSION} == \"8.2\" ]; then
+          # @todo: Needed until prophecy (req by phpunit) allows PHP 8.2, https://github.com/phpspec/prophecy/issues/556
+          composer update --no-progress --no-interaction --ignore-platform-req=php+;
+        else
+          composer update --no-progress --no-interaction;
+        fi
         composer dumpautoload;
       "
 
@@ -703,7 +708,12 @@ services:
           set -x
         fi
         composer config platform.php ${PHP_VERSION}.0;
-        composer update --prefer-lowest --no-progress --no-interaction;
+        if [ ${PHP_VERSION} == \"8.2\" ]; then
+          # @todo: Needed until prophecy (req by phpunit) allows PHP 8.2, https://github.com/phpspec/prophecy/issues/556
+          composer update --prefer-lowest --no-progress --no-interaction --ignore-platform-req=php+;
+        else
+          composer update --prefer-lowest --no-progress --no-interaction --ignore-platform-req=php+;
+        fi
         composer dumpautoload;
       "
 

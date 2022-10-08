@@ -46,6 +46,7 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.0
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.4
     - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.4
@@ -57,6 +58,26 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkComposer -p 7.4
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 7.4
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 7.4
+
+lint php 7.4 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  needs: []
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 7.4
+
+lint php 8.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  needs: []
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
 
 lint scss ts html pre-merge:
   stage: main

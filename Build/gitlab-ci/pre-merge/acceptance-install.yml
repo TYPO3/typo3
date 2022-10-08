@@ -15,7 +15,7 @@ acceptance install mariadb php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
 
-acceptance install mysql php 8.1 pre-merge:
+acceptance install mysql php 8.2 pre-merge:
   stage: main
   except:
     refs:
@@ -29,8 +29,8 @@ acceptance install mysql php 8.1 pre-merge:
       junit:
         - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.2
 
 acceptance install postgres php 7.4 pre-merge:
   stage: main

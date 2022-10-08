@@ -1,0 +1,13 @@
+diff --git a/lib/Doctrine/DBAL/Platforms/PostgreSqlPlatform.php b/lib/Doctrine/DBAL/Platforms/PostgreSqlPlatform.php
+index 7888030d78e..0c5be453fc5 100644
+--- a/lib/Doctrine/DBAL/Platforms/PostgreSqlPlatform.php
++++ b/lib/Doctrine/DBAL/Platforms/PostgreSqlPlatform.php
+@@ -871,7 +871,7 @@ private function convertSingleBooleanValue($value, $callback)
+             return $callback(true);
+         }
+
+-        throw new UnexpectedValueException("Unrecognized boolean literal '${value}'");
++        throw new UnexpectedValueException(sprintf("Unrecognized boolean literal '%s'", $value));
+     }
+
+     /**

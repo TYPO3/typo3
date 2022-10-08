@@ -54,7 +54,7 @@ acceptance install mariadb php 8.0 locked:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.0
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
 acceptance install mariadb php 8.0 max:
   stage: acceptance
   needs: []
@@ -70,7 +70,7 @@ acceptance install mariadb php 8.0 max:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.0
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
 acceptance install mariadb php 8.0 min:
   stage: acceptance
   needs: []
@@ -86,7 +86,7 @@ acceptance install mariadb php 8.0 min:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.0
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
 
 acceptance install mariadb php 8.1 locked:
   stage: acceptance

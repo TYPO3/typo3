@@ -1,0 +1,37 @@
+Composer Patches
+================
+
+# Description
+
+The core may ship composer package versions of third party packages that
+are no longer supported by the maintainers. This is done to not break the
+backwards compatible promise in the lifetime of TYPO3 core LTS.
+
+When these packages have bugs, they may not be fixed in "upstream" anymore.
+In such cases, the core sometimes ships patches to fix details, for instance
+when a core LTS version is extended to support new PHP versions, and if some
+third party package then raises issues.
+
+These patches may be applied using the `cweagans/composer-patches` composer plugin:
+They are applied to the legacy `typo3_src.tgz` downloads during packaging.
+
+The patches are *not* applied to the composer packages, though. Projects can
+however copy the `.diff` files, require `cweagans/composer-patches` and
+apply the patches if needed.
+
+## List of patches
+
+### [postgres-platform-variable-interpolation-php82-fix.diff](postgres-platform-variable-interpolation-php82-fix.diff)
+
+**Needed**: For PHP8.2 with PostgresSQL dbms backend, if E_DEPRECATION logs are not silenced.
+
+`PostgreSqlPlatform` from doctrine/dbal contains a variable interpolation which
+is deprecated since PHP8.2. This is fixed in newer doctrine/dbal versions, but
+will not be fixed for the EOL version 2.13.x, which is used for TYPO3 v11.
+The composer patch provided to enable PHP8.2 support for TYPO3 v11.
+
+PHP8.2 deprecations are compile time errors of E_DEPRECATE, fail if E_ALL is enabled
+or if errors are converted to exceptions. The patch is not needed if deprecations
+are suppressed and not logged, or if postgres DBMS platform is not used in a project.
+
+The fix is a simple oneliner avoiding the variable interpolation.

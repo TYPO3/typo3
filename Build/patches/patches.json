@@ -1,0 +1,7 @@
+{
+	"patches": {
+		"doctrine/dbal": {
+			"[BUGFIX] Avoid deprecated variable interpolation with PHP8.2": "Build/patches/postgres-platform-variable-interpolation-php82-fix.diff"
+		}
+	}
+}
