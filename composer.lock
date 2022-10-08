@@ -8641,12 +8641,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "2f2a44f7935f5596e6e47aab52119aea60c2cac6"
+                "reference": "44f3954aae7b64f0fbf1caebbda16895a12b470e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/2f2a44f7935f5596e6e47aab52119aea60c2cac6",
-                "reference": "2f2a44f7935f5596e6e47aab52119aea60c2cac6",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/44f3954aae7b64f0fbf1caebbda16895a12b470e",
+                "reference": "44f3954aae7b64f0fbf1caebbda16895a12b470e",
                 "shasum": ""
             },
             "require": {
@@ -8705,7 +8705,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-10-07T20:44:54+00:00"
+            "time": "2022-10-10T10:33:06+00:00"
         }
     ],
     "aliases": [],
