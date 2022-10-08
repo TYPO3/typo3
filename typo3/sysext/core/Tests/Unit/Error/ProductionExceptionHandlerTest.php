@@ -53,6 +53,17 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $this->subject->method('discloseExceptionInformation')->willReturn(true);
     }
 
+    protected function tearDown(): void
+    {
+        $previousExceptionHandler = set_exception_handler(function () {});
+        restore_exception_handler();
+        if ($previousExceptionHandler !== null) {
+            // testcase exception handler detected, remove it
+            restore_exception_handler();
+        }
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
