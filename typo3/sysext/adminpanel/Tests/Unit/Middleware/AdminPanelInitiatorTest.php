@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Middleware;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -34,8 +32,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AdminPanelInitiatorTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -55,27 +51,20 @@ class AdminPanelInitiatorTest extends UnitTestCase
                 'display_top' => true,
             ],
         ];
-        $userAuthenticationProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $userAuthenticationProphecy->getTSConfig()->willReturn($tsConfig);
-        $userAuthentication = $userAuthenticationProphecy->reveal();
+        $userAuthentication = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->getMock();
+        $userAuthentication->expects(self::once())->method('getTSConfig')->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication;
 
-        $controller = $this->prophesize(MainController::class);
-        GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
+        $controller = $this->getMockBuilder(MainController::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(MainController::class, $controller);
         $handler = $this->prophesizeHandler();
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->withAttribute(Argument::cetera())->willReturn($request);
-        $controller->initialize($request->reveal())->willReturn($request);
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $request->expects(self::any())->method('withAttribute')->withAnyParameters()->willReturn($request);
+        $controller->expects(self::once())->method('initialize')->with($request)->willReturn($request);
 
-        // Act
         $adminPanelInitiator = new AdminPanelInitiator();
-        $adminPanelInitiator->process(
-            $request->reveal(),
-            $handler->reveal()
-        );
-        // Assert
-        $controller->initialize(Argument::any())->shouldHaveBeenCalled();
+        $adminPanelInitiator->process($request, $handler);
     }
 
     /**
@@ -120,37 +109,31 @@ class AdminPanelInitiatorTest extends UnitTestCase
      */
     protected function checkAdminPanelDoesNotCallInitialize(array $tsConfig, array $uc): void
     {
-        $userAuthenticationProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $userAuthenticationProphecy->getTSConfig()->willReturn($tsConfig);
-        $userAuthentication = $userAuthenticationProphecy->reveal();
+        $userAuthentication = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->getMock();
+        $userAuthentication->expects(self::once())->method('getTSConfig')->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication;
 
-        $controller = $this->prophesize(MainController::class);
-        GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
+        $controller = $this->getMockBuilder(MainController::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(MainController::class, $controller);
         $handler = $this->prophesizeHandler();
-        $request = $this->prophesize(ServerRequestInterface::class);
-        // Act
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+
         $adminPanelInitiator = new AdminPanelInitiator();
-        $adminPanelInitiator->process(
-            $request->reveal(),
-            $handler->reveal()
-        );
-        // Assert
-        $controller->initialize(Argument::any())->shouldNotHaveBeenCalled();
+        $adminPanelInitiator->process($request, $handler);
+
+        $controller->expects(self::never())->method('initialize');
     }
 
     /**
-     * @return ObjectProphecy<RequestHandlerInterface>
+     * @return RequestHandlerInterface&MockObject
      */
-    protected function prophesizeHandler(): ObjectProphecy
+    protected function prophesizeHandler(): MockObject
     {
-        $handler = $this->prophesize(RequestHandlerInterface::class);
-        $handler
-            ->handle(Argument::any())
-            ->willReturn(
-                $this->prophesize(ResponseInterface::class)->reveal()
-            );
+        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
+
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->onlyMethods(['handle'])->getMock();
+        $handler->expects(self::any())->method('handle')->withAnyParameters()->willReturn($response);
         return $handler;
     }
 }
