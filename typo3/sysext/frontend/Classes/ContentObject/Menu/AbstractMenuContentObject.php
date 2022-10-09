@@ -20,6 +20,7 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
@@ -784,14 +785,15 @@ abstract class AbstractMenuContentObject
         // Get sortField (mode)
         $sortField = $this->getMode($mode);
 
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
         if ($this->conf['special.']['excludeNoSearchPages'] ?? false) {
-            $extraWhere .= ' AND pages.no_search=0';
+            $extraWhere .= sprintf(' AND %s=%s', $connection->quoteIdentifier('pages.no_search'), $connection->quote(0, Connection::PARAM_INT));
         }
         if ($maxAge > 0) {
-            $extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
+            $extraWhere .= sprintf(' AND %s>%s', $connection->quoteIdentifier($sortField), $connection->quote(($GLOBALS['SIM_ACCESS_TIME'] - $maxAge), Connection::PARAM_INT));
         }
-        $extraWhere = $sortField . '>=0' . $extraWhere;
+        $extraWhere = sprintf('%s>=%s', $connection->quoteIdentifier($sortField), $connection->quote(0, Connection::PARAM_INT)) . $extraWhere;
 
         $i = 0;
         $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', $sortingField ?: $sortField . ' DESC', $extraWhere);
