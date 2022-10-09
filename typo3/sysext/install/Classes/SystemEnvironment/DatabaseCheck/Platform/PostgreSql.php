@@ -117,18 +117,18 @@ class PostgreSql extends AbstractPlatform
      */
     protected function checkLibpqVersion()
     {
-        if (!defined('PGSQL_LIBPQ_VERSION_STR')) {
+        if (!defined('PGSQL_LIBPQ_VERSION')) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'It is not possible to retrieve your PostgreSQL libpq version. Please check the version'
                 . ' in the "phpinfo" area of the "System environment" module in the install tool manually.'
                 . ' This should be found in section "pdo_pgsql".'
-                . ' You should have at least the following version of  PostgreSQL libpq installed: '
+                . ' You should have at least the following version of PostgreSQL libpq installed: '
                 . $this->minimumLibPQVersion,
                 'PostgreSQL libpq version cannot be determined',
                 FlashMessage::WARNING
             ));
         } else {
-            preg_match('/PostgreSQL ((\d+\.)*(\d+\.)*\d+)/', \PGSQL_LIBPQ_VERSION_STR, $match);
+            preg_match('/((\d+\.)*(\d+\.)*\d+)/', \PGSQL_LIBPQ_VERSION, $match);
             $currentPostgreSqlLibpqVersion = $match[1];
 
             if (version_compare($currentPostgreSqlLibpqVersion, $this->minimumLibPQVersion, '<')) {
