@@ -43,7 +43,13 @@ class RedirectRepository
 
     public function countRedirectsByByDemand(Demand $demand): int
     {
-        return (int)$this->getQueryBuilderForDemand($demand)->count('*')->executeQuery()->fetchOne();
+        return (int)$this->getQueryBuilderForDemand($demand)
+            // we need to remove the order by part to avoid aggregation field missing errors with PostgresSQL
+            ->resetQueryPart('orderBy')
+            // transform query to a count query
+            ->count('*')
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /**
