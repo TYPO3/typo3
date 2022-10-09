@@ -17,19 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Modules;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PreviewModuleTest extends UnitTestCase
 {
-    use ProphecyTrait;
+    protected $resetSingletonInstances = true;
 
     public function simulateDateDataProvider(): array
     {
@@ -50,23 +48,25 @@ class PreviewModuleTest extends UnitTestCase
     /**
      * @test
      * @dataProvider simulateDateDataProvider
-     * @param string $dateToSimulate
-     * @param int $expectedExecTime
-     * @param int $expectedAccessTime
      */
     public function initializeFrontendPreviewSetsDateForSimulation(string $dateToSimulate, int $expectedExecTime, int $expectedAccessTime): void
     {
-        $this->resetSingletonInstances = true;
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $configurationService = $this->prophesize(ConfigurationService::class);
-        $configurationService->getMainConfiguration()->willReturn([]);
-        $configurationService->getConfigurationOption('preview', 'simulateDate')->willReturn($dateToSimulate);
-        $configurationService->getConfigurationOption('preview', Argument::any())->willReturn('');
+        $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
+        $configurationService->expects(self::once())->method('getMainConfiguration')->willReturn([]);
+        $valueMap = [
+            ['preview', 'showHiddenPages', ''],
+            ['preview', 'simulateDate', $dateToSimulate],
+            ['preview', 'simulateUserGroup', ''],
+            ['preview', 'showScheduledRecords', ''],
+            ['preview', 'showHiddenRecords', ''],
+            ['preview', 'showFluidDebug', ''],
+        ];
+        $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
 
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService->reveal());
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
 
         $previewModule = new PreviewModule();
-        $previewModule->enrich($request->reveal());
+        $previewModule->enrich(new ServerRequest());
 
         self::assertSame($GLOBALS['SIM_EXEC_TIME'], $expectedExecTime, 'EXEC_TIME');
         self::assertSame($GLOBALS['SIM_ACCESS_TIME'], $expectedAccessTime, 'ACCESS_TIME');
@@ -77,29 +77,34 @@ class PreviewModuleTest extends UnitTestCase
      */
     public function initializeFrontendPreviewSetsUserGroupForSimulation(): void
     {
-        $this->resetSingletonInstances = true;
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getQueryParams()->willReturn([]);
-        $request->getAttribute('frontend.user')->willReturn($this->prophesize(FrontendUserAuthentication::class)->reveal());
-        $configurationService = $this->prophesize(ConfigurationService::class);
-        $configurationService->getMainConfiguration()->willReturn([]);
-        $configurationService->getConfigurationOption('preview', 'showHiddenPages')->willReturn('0');
-        $configurationService->getConfigurationOption('preview', 'simulateDate')->willReturn('0');
-        $configurationService->getConfigurationOption('preview', 'showHiddenRecords')->willReturn('0');
-        $configurationService->getConfigurationOption('preview', 'showFluidDebug')->willReturn('0');
-        $configurationService->getConfigurationOption('preview', 'simulateUserGroup')->willReturn('1');
-        $context = $this->prophesize(Context::class);
-        $context->hasAspect('frontend.preview')->willReturn(false);
-        $context->setAspect('date', Argument::any())->hasReturnVoid();
-        $context->setAspect('visibility', Argument::any())->hasReturnVoid();
-        GeneralUtility::setSingletonInstance(Context::class, $context->reveal());
+        $request = (new ServerRequest())->withAttribute('frontend.user', $this->getMockBuilder(FrontendUserAuthentication::class)->getMock());
 
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService->reveal());
+        $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
+        $configurationService->expects(self::once())->method('getMainConfiguration')->willReturn([]);
+        $valueMap = [
+            ['preview', 'showHiddenPages', '0'],
+            ['preview', 'simulateDate', '0'],
+            ['preview', 'simulateUserGroup', '1'],
+            ['preview', 'showScheduledRecords', '0'],
+            ['preview', 'showHiddenRecords', '0'],
+            ['preview', 'showFluidDebug', '0'],
+        ];
+        $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+
+        $context = $this->getMockBuilder(Context::class)->getMock();
+        $context->method('hasAspect')->with('frontend.preview')->willReturn(false);
+        $context->expects(self::any())->method('setAspect')
+            ->withConsecutive(
+                ['date', self::anything()],
+                ['visibility', self::anything()],
+                ['visibility', self::anything()],
+                ['frontend.user', self::anything()],
+                ['frontend.preview', self::anything()],
+            );
+        GeneralUtility::setSingletonInstance(Context::class, $context);
 
         $previewModule = new PreviewModule();
-        $previewModule->enrich($request->reveal());
-
-        $context->setAspect('frontend.user', Argument::any())->shouldHaveBeenCalled();
-        $context->setAspect('frontend.preview', Argument::any())->shouldHaveBeenCalled();
+        $previewModule->enrich($request);
     }
 }
