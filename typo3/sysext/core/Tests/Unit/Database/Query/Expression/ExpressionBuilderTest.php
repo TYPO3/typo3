@@ -27,9 +27,6 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ExpressionBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -169,8 +166,10 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function likeQuotesIdentifier(): void
     {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('mysql');
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
         $result = $this->subject->like('aField', "'aValue%'");
-
         $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame("aField LIKE 'aValue%'", $result);
     }
@@ -180,8 +179,10 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function notLikeQuotesIdentifier(): void
     {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('mysql');
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
         $result = $this->subject->notLike('aField', "'aValue%'");
-
         $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame("aField NOT LIKE 'aValue%'", $result);
     }
