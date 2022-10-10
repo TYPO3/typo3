@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Lowlevel\Database;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -410,9 +412,11 @@ class QueryGenerator
                 }
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
                 $tableColumns = $connection->createSchemaManager()->listTableColumns($table);
+                $normalizedTableColumns = [];
                 $fieldsInDatabase = [];
                 foreach ($tableColumns as $column) {
                     $fieldsInDatabase[] = $column->getName();
+                    $normalizedTableColumns[trim($column->getName(), $connection->getDatabasePlatform()->getIdentifierQuoteCharacter())] = $column;
                 }
                 $fields = array_intersect(array_keys($conf['columns']), $fieldsInDatabase);
 
@@ -422,12 +426,27 @@ class QueryGenerator
                 $likes = [];
                 $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
                 foreach ($fields as $field) {
-                    $likes[] = $queryBuilder->expr()->like(
-                        $field,
+                    $field = trim($field, $connection->getDatabasePlatform()->getIdentifierQuoteCharacter());
+                    $quotedField = $queryBuilder->quoteIdentifier($field);
+                    $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
+                    if ($column !== null
+                        && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
+                        && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                    ) {
+                        if ($column->getType()->getName() === Types::SMALLINT) {
+                            // we need to cast smallint to int first, otherwise text case below won't work
+                            $quotedField .= '::int';
+                        }
+                        $quotedField .= '::text';
+                    }
+                    $likes[] = $queryBuilder->expr()->comparison(
+                        $quotedField,
+                        'LIKE',
                         $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                     );
                 }
-                $count = $queryBuilder->orWhere(...$likes)->executeQuery()->fetchOne();
+                $queryBuilder->orWhere(...$likes);
+                $count = $queryBuilder->executeQuery()->fetchOne();
 
                 if ($count > 0) {
                     $queryBuilder = $connection->createQueryBuilder();
@@ -437,8 +456,22 @@ class QueryGenerator
                         ->setMaxResults(200);
                     $likes = [];
                     foreach ($fields as $field) {
-                        $likes[] = $queryBuilder->expr()->like(
-                            $field,
+                        $field = trim($field, $connection->getDatabasePlatform()->getIdentifierQuoteCharacter());
+                        $quotedField = $queryBuilder->quoteIdentifier($field);
+                        $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
+                        if ($column !== null
+                            && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
+                            && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                        ) {
+                            if ($column->getType()->getName() === Types::SMALLINT) {
+                                // we need to cast smallint to int first, otherwise text case below won't work
+                                $quotedField .= '::int';
+                            }
+                            $quotedField .= '::text';
+                        }
+                        $likes[] = $queryBuilder->expr()->comparison(
+                            $quotedField,
+                            'LIKE',
                             $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                         );
                     }
