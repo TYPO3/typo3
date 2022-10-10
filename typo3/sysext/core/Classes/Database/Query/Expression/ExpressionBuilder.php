@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query\Expression;
 
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\TrimMode;
 use TYPO3\CMS\Core\Database\Connection;
 
@@ -238,11 +239,17 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value Argument to be used in LIKE() comparison. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function like(string $fieldName, $value): string
     {
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof PostgreSqlPlatform) {
+            // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
+            return $this->comparison($this->connection->quoteIdentifier($fieldName), 'ILIKE', $value);
+        }
+        // Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
+        //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
+        //       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
         return $this->comparison($this->connection->quoteIdentifier($fieldName), 'LIKE', $value);
     }
 
@@ -251,11 +258,17 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value Argument to be used in NOT LIKE() comparison. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function notLike(string $fieldName, $value): string
     {
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof PostgreSqlPlatform) {
+            // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
+            return $this->comparison($this->connection->quoteIdentifier($fieldName), 'NOT ILIKE', $value);
+        }
+        // Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
+        //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
+        //       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
         return $this->comparison($this->connection->quoteIdentifier($fieldName), 'NOT LIKE', $value);
     }
 

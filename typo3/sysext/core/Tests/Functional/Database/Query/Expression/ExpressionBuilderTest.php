@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Expression;
 
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class ExpressionBuilderTest extends FunctionalTestCase
 {
     protected $testExtensionsToLoad = [
@@ -670,5 +668,201 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[%]card'))
             );
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
+    }
+
+    public function likeReturnsExpectedDataSetsDataProvider(): \Generator
+    {
+        yield 'lowercase search word matches german umlauts in upper and lower casing #1' => [
+            'searchWord' => '%über%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 1,
+                    'aCsvField' => 'Fächer, Überraschungen sind Äußerungen',
+                ],
+                1 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [
+                // Exclude sqlite due to german umlauts.
+                SqlitePlatform::class,
+            ],
+        ];
+
+        yield 'lowercase search word matches german umlauts in upper and lower casing #2' => [
+            'searchWord' => '%ältere%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [
+                // Exclude sqlite due to german umlauts.
+                SqlitePlatform::class,
+            ],
+        ];
+
+        yield 'uppercase search word matches german umlauts in upper and lower casing #1' => [
+            'searchWord' => '%Ältere%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [
+                // Exclude sqlite due to german umlauts.
+                SqlitePlatform::class,
+            ],
+        ];
+
+        yield 'lowercase ascii search word matches properly case-insensitive' => [
+            'searchWord' => '%klein%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+
+        yield 'uppercase ascii search word matches properly case-insensitive' => [
+            'searchWord' => '%KLEIN%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider likeReturnsExpectedDataSetsDataProvider
+     * Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
+     *       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
+     *       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
+     */
+    public function likeReturnsExpectedDataSets(string $searchWord, array $expectedRows, array $excludePlatforms): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        if ($excludePlatforms !== []) {
+            $platform = $queryBuilder->getConnection()->getDatabasePlatform();
+            foreach ($excludePlatforms as $excludePlatform) {
+                if ($platform instanceof $excludePlatform) {
+                    self::markTestSkipped('Exculded platform ' . $excludePlatform);
+                }
+            }
+        }
+        $rows = $queryBuilder
+            ->select('uid', 'aCsvField')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                // narrow down result set
+                $queryBuilder->expr()->eq('aField', $queryBuilder->createNamedParameter('likecasing')),
+                // this is what we are testing
+                $queryBuilder->expr()->like('aCsvField', $queryBuilder->createNamedParameter($searchWord))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        if (is_array($rows)) {
+            $rows = $this->ensureRowsUidAsInteger($rows);
+        }
+        self::assertSame($expectedRows, $rows);
+    }
+
+    public function notLikeReturnsExpectedDataSetsDataProvider(): \Generator
+    {
+        yield 'lowercase search word filters german umlauts in upper and lower casing #1' => [
+            'searchWord' => '%Überraschungen%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [
+                // Exclude sqlite due to german umlauts.
+                SqlitePlatform::class,
+            ],
+        ];
+
+        yield 'lowercase search word filters german umlauts in upper and lower casing #2' => [
+            'searchWord' => '%überraschungen%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 2,
+                    'aCsvField' => 'Kleingeschriebenes überlebt halt ältere',
+                ],
+            ],
+            'excludePlatforms' => [
+                // Exclude sqlite due to german umlauts.
+                SqlitePlatform::class,
+            ],
+        ];
+
+        yield 'lowercase ascii search word filters properly case-insensitive' => [
+            'searchWord' => '%klein%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 1,
+                    'aCsvField' => 'Fächer, Überraschungen sind Äußerungen',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider notLikeReturnsExpectedDataSetsDataProvider
+     * Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
+     *       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
+     *       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
+     */
+    public function notLikeReturnsExpectedDataSets(string $searchWord, array $expectedRows, array $excludePlatforms): void
+    {
+        self::assertTrue(true);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        if ($excludePlatforms !== []) {
+            $platform = $queryBuilder->getConnection()->getDatabasePlatform();
+            foreach ($excludePlatforms as $excludePlatform) {
+                if ($platform instanceof $excludePlatform) {
+                    self::markTestSkipped('Exculded platform ' . $excludePlatform);
+                }
+            }
+        }
+        $rows = $queryBuilder
+            ->select('uid', 'aCsvField')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                // narrow down result set
+                $queryBuilder->expr()->eq('aField', $queryBuilder->createNamedParameter('likecasing')),
+                // this is what we are testing
+                $queryBuilder->expr()->notLike('aCsvField', $queryBuilder->createNamedParameter($searchWord))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        if (is_array($rows)) {
+            $rows = $this->ensureRowsUidAsInteger($rows);
+        }
+        self::assertSame($expectedRows, $rows);
+    }
+
+    protected function ensureRowsUidAsInteger(array $rows): array
+    {
+        array_walk($rows, function (&$row) {
+            if (array_key_exists('uid', $row)) {
+                $row['uid'] = (int)$row['uid'];
+            }
+        });
+        return $rows;
     }
 }
