@@ -196,7 +196,7 @@ class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $subject = new PasswordReset();
         $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $loggerProphecy->debug()->withArguments(['Password reset not possible due to weak password'])->shouldBeCalled();
+        $loggerProphecy->warning()->withArguments(['Password reset not possible. Valid user for token not found.'])->shouldBeCalled();
         $subject->setLogger($loggerProphecy->reveal());
 
         $context = new Context();

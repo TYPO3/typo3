@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 
@@ -178,6 +180,7 @@ class ResetPasswordController
             'expirationDate' => $expirationDate,
             'formUrl' => $formUrl,
             'restartUrl' => $this->uriBuilder->buildUriWithRedirect('password_forget', $parameters, RouteRedirect::createFromRequest($request)),
+            'passwordRequirements' => $this->getPasswordRequirements(),
         ]);
     }
 
@@ -248,6 +251,17 @@ class ResetPasswordController
             'images' => $this->authenticationStyleInformation->getSupportingImages(),
             'copyright' => $this->typo3Information->getCopyrightNotice(),
         ]);
+    }
+
+    protected function getPasswordRequirements(): array
+    {
+        $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
+        $passwordPolicyValidator = GeneralUtility::makeInstance(
+            PasswordPolicyValidator::class,
+            PasswordPolicyAction::UPDATE_USER_PASSWORD,
+            is_string($passwordPolicy) ? $passwordPolicy : ''
+        );
+        return $passwordPolicyValidator->getRequirements();
     }
 
     protected function getLanguageService(): LanguageService

@@ -39,6 +39,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -291,7 +294,7 @@ class PasswordReset implements LoggerAwareInterface
         $queryBuilder = $this->getPreparedQueryBuilder();
 
         $queryBuilder
-            ->select('uid', 'email', 'password_reset_token')
+            ->select('uid', 'email', 'password_reset_token', 'password')
             ->from('be_users');
         if ($queryBuilder->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
             $queryBuilder->andWhere(
@@ -335,16 +338,23 @@ class PasswordReset implements LoggerAwareInterface
         $token = (string)($request->getQueryParams()['t'] ?? '');
         $newPassword = (string)($request->getParsedBody()['password'] ?? '');
         $newPasswordRepeat = (string)($request->getParsedBody()['passwordrepeat'] ?? '');
-        if (strlen($newPassword) < 8 || $newPassword !== $newPasswordRepeat) {
-            $this->logger->debug('Password reset not possible due to weak password');
-            return false;
-        }
+
         $user = $this->findValidUserForToken($token, $identityHash, $expirationTimestamp);
         if ($user === null) {
             $this->logger->warning('Password reset not possible. Valid user for token not found.');
             return false;
         }
         $userId = (int)$user['uid'];
+
+        if ($newPassword !== $newPasswordRepeat) {
+            $this->logger->debug('Password reset not possible because new password and new password repeat do not match');
+            return false;
+        }
+
+        if (!$this->isValidPassword($newPassword, $user)) {
+            $this->logger->debug('The new password does not match all requirements of the password policy.');
+            return false;
+        }
 
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('be_users')
@@ -499,5 +509,20 @@ class PasswordReset implements LoggerAwareInterface
             )
             ->executeQuery()
             ->fetchOne();
+    }
+
+    /**
+     * Returns, if the given password is compliant with the global password policy for backend users
+     */
+    protected function isValidPassword(string $password, array $user): bool
+    {
+        $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
+        $passwordPolicyValidator = GeneralUtility::makeInstance(
+            PasswordPolicyValidator::class,
+            PasswordPolicyAction::UPDATE_USER_PASSWORD,
+            is_string($passwordPolicy) ? $passwordPolicy : ''
+        );
+        $contextData = new ContextData(currentPasswordHash: $user['password']);
+        return $passwordPolicyValidator->isValidPassword($password, $contextData);
     }
 }
