@@ -989,8 +989,8 @@ class GeneralUtility
         $p = explode('&', $string);
         foreach ($p as $v) {
             if ($v !== '') {
-                [$pK, $pV] = explode('=', $v, 2);
-                $output[rawurldecode($pK)] = rawurldecode($pV);
+                $nameAndValue = explode('=', $v, 2);
+                $output[rawurldecode($nameAndValue[0])] = isset($nameAndValue[1]) ? rawurldecode($nameAndValue[1]) : '';
             }
         }
         return $output;

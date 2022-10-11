@@ -850,27 +850,26 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', false, true));
     }
 
-    /**
-     * @test
-     * @dataProvider explodeUrl2ArrayDataProvider
-     */
-    public function explodeUrl2ArrayTransformsParameterStringToFlatArray($input, $expected): void
-    {
-        self::assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
-    }
-
-    /**
-     * Data provider for explodeUrl2ArrayTransformsParameterStringToFlatArray
-     *
-     * @return array
-     */
-    public function explodeUrl2ArrayDataProvider(): array
+    public function explodeUrl2ArrayTransformsParameterStringToFlatArrayDataProvider(): array
     {
         return [
             'Empty string' => ['', []],
             'Simple parameter string' => ['&one=%E2%88%9A&two=2', ['one' => '√', 'two' => 2]],
             'Nested parameter string' => ['&foo[one]=%E2%88%9A&two=2', ['foo[one]' => '√', 'two' => 2]],
+            'Parameter without value' => ['&one=&two=2', ['one' => '', 'two' => 2]],
+            'Nested parameter without value' => ['&foo[one]=&two=2', ['foo[one]' => '', 'two' => 2]],
+            'Parameter without equals sign' => ['&one&two=2', ['one' => '', 'two' => 2]],
+            'Nested parameter without equals sign' => ['&foo[one]&two=2', ['foo[one]' => '', 'two' => 2]],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider explodeUrl2ArrayTransformsParameterStringToFlatArrayDataProvider
+     */
+    public function explodeUrl2ArrayTransformsParameterStringToFlatArray(string $input, array $expected): void
+    {
+        self::assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
     }
 
     //////////////////////////////////
