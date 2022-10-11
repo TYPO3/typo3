@@ -355,7 +355,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($controller->xhtmlVersion || $doctype === 'html5' && $xmlDocument) {
             // We add this to HTML5 to achieve a slightly better backwards compatibility
             $htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
-            if (is_array($controller->config['config']['namespaces.'])) {
+            if (is_array($controller->config['config']['namespaces.'] ?? null)) {
                 foreach ($controller->config['config']['namespaces.'] as $prefix => $uri) {
                     // $uri gets htmlspecialchared later
                     $htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri;
