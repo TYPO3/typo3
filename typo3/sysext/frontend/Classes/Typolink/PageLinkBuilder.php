@@ -130,14 +130,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (!$pageRepository->isPageSuitableForLanguage($page, $languageAspect)) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($page['l18n_cfg'] ?? 0));
             if ($siteLanguageOfTargetPage->getLanguageId() === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
-                throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1551621985, null, $linkText);
+                throw new UnableToLinkException('Default language of page  "' . ($linkDetails['typoLinkParameter'] ?? 'unknown') . '" is hidden, so "' . $linkText . '" was not linked.', 1551621985, null, $linkText);
             }
             // If the requested language is not the default language and the page has no overlay for this language
             // generating a link would cause a 404 error when using this like if one of those conditions apply:
             //  - The page is set to be hidden if it is not translated (evaluated in TSFE)
             //  - The site configuration has a "strict" fallback set (evaluated in the Router - very early)
             if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_PAGES_OVERLAY']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
-                throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
+                throw new UnableToLinkException('Fallback to default language of page "' . ($linkDetails['typoLinkParameter'] ?? 'unknown') . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
             }
         }
 
