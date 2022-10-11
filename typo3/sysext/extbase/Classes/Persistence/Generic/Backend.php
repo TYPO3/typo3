@@ -656,7 +656,7 @@ class Backend implements BackendInterface, SingletonInterface
             $this->eventDispatcher->dispatch(new EntityAddedToPersistenceEvent($object));
         }
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
+        if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
             $this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
         }
         $this->session->registerObject($object, $identifier);
@@ -895,7 +895,7 @@ class Backend implements BackendInterface, SingletonInterface
 
         $this->removeRelatedObjects($object);
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
+        if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
             $this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
         }
     }
