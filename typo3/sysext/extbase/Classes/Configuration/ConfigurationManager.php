@@ -33,10 +33,7 @@ class ConfigurationManager implements ConfigurationManagerInterface
 {
     private ContainerInterface $container;
 
-    /**
-     * @var AbstractConfigurationManager
-     */
-    protected $concreteConfigurationManager;
+    protected FrontendConfigurationManager|BackendConfigurationManager $concreteConfigurationManager;
 
     public function __construct(ContainerInterface $container)
     {

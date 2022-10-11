@@ -20,13 +20,9 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class BackendConfigurationManagerTest extends FunctionalTestCase
 {
     /**
@@ -89,7 +85,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $backendConfigurationManager->_set('typoScriptService', $mockTypoScriptService);
 
-        $expectedResult = AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
+        $expectedResult = BackendConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
         $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
         self::assertEquals($expectedResult, $actualResult);
     }

@@ -1808,7 +1808,12 @@ parameters:
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Configuration/AbstractConfigurationManager.php
+			path: ../../typo3/sysext/extbase/Classes/Configuration/BackendConfigurationManager.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Configuration/FrontendConfigurationManager.php
 
 		-
 			message: "#^Instanceof between TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\Category\\|null and TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy will always evaluate to false\\.$#"
@@ -2089,11 +2094,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/PersistentObjectConverterTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\AbstractConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/AbstractConfigurationManagerTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\BackendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
