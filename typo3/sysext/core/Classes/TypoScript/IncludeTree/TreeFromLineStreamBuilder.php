@@ -58,29 +58,26 @@ final class TreeFromLineStreamBuilder
 {
     // 'constants' or 'setup'.
     private string $type;
+    private TokenizerInterface $tokenizer;
 
     public function __construct(
         private readonly FileNameValidator $fileNameValidator,
-        private TokenizerInterface $tokenizer,
     ) {
     }
 
-    /**
-     * Setting a different Tokenizer than the default injected LossyTokenizer
-     * disables caching to ensure backend TypoScript IncludeTrees are never cached!
-     */
-    public function setTokenizer(TokenizerInterface $tokenizer): void
-    {
-        $this->tokenizer = $tokenizer;
-    }
-
-    public function buildTree(IncludeInterface $node, string $type): void
+    public function buildTree(IncludeInterface $node, string $type, TokenizerInterface $tokenizer): void
     {
         if (!in_array($type, ['constants', 'setup'])) {
             throw new \RuntimeException('type must be either constants or setup', 1652741356);
         }
-        $previousNode = $node;
         $this->type = $type;
+        $this->tokenizer = $tokenizer;
+        $this->buildTreeInternal($node);
+    }
+
+    private function buildTreeInternal(IncludeInterface $node): void
+    {
+        $previousNode = $node;
         $givenTokenLineStream = $node->getLineStream();
         $lineStream = new LineStream();
         $childNode = new SegmentInclude();
@@ -304,7 +301,7 @@ final class TreeFromLineStreamBuilder
         $newNode->setName($identifier);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
         $newNode->setOriginalLine($atImportLine);
-        $this->buildTree($newNode, $this->type);
+        $this->buildTreeInternal($newNode);
         $node->addChild($newNode);
     }
 
@@ -461,7 +458,7 @@ final class TreeFromLineStreamBuilder
         $newNode->setName($identifier);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
         $newNode->setOriginalLine($importKeywordOldLine);
-        $this->buildTree($newNode, $this->type);
+        $this->buildTreeInternal($newNode);
         $node->addChild($newNode);
     }
 
@@ -498,7 +495,7 @@ final class TreeFromLineStreamBuilder
                 $node->setIdentifier('globals-defaultTypoScript-' . $type . '-defaultContentRendering-' . $identifier);
                 $node->setName('TYPO3_CONF_VARS defaultContentRendering for ' . $identifier);
                 $node->setLineStream($this->tokenizer->tokenize($source));
-                $this->buildTree($node, $this->type);
+                $this->buildTreeInternal($node);
                 $parentNode->addChild($node);
             }
         }

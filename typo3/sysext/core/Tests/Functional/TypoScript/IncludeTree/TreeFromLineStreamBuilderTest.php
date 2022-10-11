@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SegmentInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeFromLineStreamBuilder;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -315,7 +316,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
      */
     public function buildTreeCondition(IncludeInterface $tree, IncludeInterface $expectedTree): void
     {
-        $this->get(TreeFromLineStreamBuilder::class)->buildTree($tree, 'setup');
+        $this->get(TreeFromLineStreamBuilder::class)->buildTree($tree, 'setup', new LossyTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -792,8 +793,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream($lineStream);
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -1394,8 +1394,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream($lineStream);
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -1427,8 +1426,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1/setup.typoscript'\n"));
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -1460,8 +1458,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1/setup'\n"));
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -1512,8 +1509,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1/'\n"));
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -1551,8 +1547,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1/setup*'\n"));
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 
@@ -1584,8 +1579,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $tree = (new FileInclude());
         $tree->setLineStream((new LosslessTokenizer())->tokenize('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario1/setup.typoscript">'));
         $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
-        $treeFromTokenStreamBuilder->setTokenizer(new LosslessTokenizer());
-        $treeFromTokenStreamBuilder->buildTree($tree, 'setup');
+        $treeFromTokenStreamBuilder->buildTree($tree, 'setup', new LosslessTokenizer());
         self::assertEquals($expectedTree, $tree);
     }
 }

@@ -121,7 +121,6 @@ final class TreeBuilder
     {
         $this->tokenizer = $tokenizer;
         $this->disableCache();
-        $this->treeFromTokenStreamBuilder->setTokenizer($tokenizer);
     }
 
     /**
@@ -183,7 +182,7 @@ final class TreeBuilder
                 $includeNode->setClear(true);
             }
             $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow, $site);
-            $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type);
+            $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer);
             $this->cache?->set($identifier, $this->prepareNodeForCache($includeNode));
             $includeTree->addChild($includeNode);
         }
@@ -304,7 +303,7 @@ final class TreeBuilder
                 } else {
                     $includeNode->setLineStream($this->tokenizer->tokenize($sysTemplateRow['config'] ?? ''));
                 }
-                $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type);
+                $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer);
                 if ($sysTemplateRow['root']) {
                     $includeNode->setRoot(true);
                 }
@@ -381,7 +380,7 @@ final class TreeBuilder
                 $fileNode->setIdentifier('EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . $this->type . $extension);
                 $fileNode->setName('EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . $this->type . $extension);
                 $fileNode->setLineStream($this->tokenizer->tokenize($fileContent));
-                $this->treeFromTokenStreamBuilder->buildTree($fileNode, $this->type);
+                $this->treeFromTokenStreamBuilder->buildTree($fileNode, $this->type, $this->tokenizer);
                 $parentNode->addChild($fileNode);
             }
         }
@@ -416,7 +415,7 @@ final class TreeBuilder
                 $node->setIdentifier($identifier);
                 $node->setName('EXT:' . $extensionKey . '/ext_typoscript_' . $this->type . '.typoscript');
                 $node->setLineStream($this->tokenizer->tokenize($fileContent));
-                $this->treeFromTokenStreamBuilder->buildTree($node, $this->type);
+                $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
                 $this->cache?->set($identifier, $this->prepareNodeForCache($node));
                 $parentNode->addChild($node);
             }
@@ -443,7 +442,7 @@ final class TreeBuilder
             $node->setIdentifier($identifier);
             $node->setName('TYPO3_CONF_VARS[\'FE\'][\'defaultTypoScript_' . $this->type . '\']');
             $node->setLineStream($this->tokenizer->tokenize($defaultTypoScriptConstants));
-            $this->treeFromTokenStreamBuilder->buildTree($node, $this->type);
+            $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
             $this->cache?->set($identifier, $this->prepareNodeForCache($node));
             $parentConstantNode->addChild($node);
         }
@@ -495,7 +494,7 @@ final class TreeBuilder
             $node->setIdentifier('globals-defaultTypoScript-' . $this->type . '-' . $identifier);
             $node->setName('TYPO3_CONF_VARS globals_defaultTypoScript_' . $this->type . '.' . $identifier);
             $node->setLineStream($this->tokenizer->tokenize($source));
-            $this->treeFromTokenStreamBuilder->buildTree($node, $this->type);
+            $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
             $parentNode->addChild($node);
         }
         // If this is a template of type "default content rendering", see if other extensions have added their TypoScript that should be included.
@@ -506,7 +505,7 @@ final class TreeBuilder
                 $node->setIdentifier('globals-defaultTypoScript-' . $this->type . '-defaultContentRendering-' . $identifier);
                 $node->setName('TYPO3_CONF_VARS defaultContentRendering ' . $this->type . ' for ' . $identifier);
                 $node->setLineStream($this->tokenizer->tokenize($source));
-                $this->treeFromTokenStreamBuilder->buildTree($node, $this->type);
+                $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
                 $parentNode->addChild($node);
             }
         }
