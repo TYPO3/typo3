@@ -625,14 +625,15 @@ class PageRepository implements LoggerAwareInterface
         if (!empty($tableControl['languageField'])
             // Return record for ALL languages untouched
             // @todo: Fix call stack to prevent this situation in the first place
-            && (int)$row[$tableControl['languageField']] !== -1
+            && (int)($row[$tableControl['languageField']] ?? 0) !== -1
             && !empty($tableControl['transOrigPointerField'])
             && $row['uid'] > 0
-            && ($row['pid'] > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))) {
+            && ($row['pid'] > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))
+        ) {
             // Will try to overlay a record only if the sys_language_content value is larger than zero.
             if ($sys_language_content > 0) {
                 // Must be default language, otherwise no overlaying
-                if ((int)$row[$tableControl['languageField']] === 0) {
+                if ((int)($row[$tableControl['languageField']] ?? 0) === 0) {
                     // Select overlay record:
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($table);
@@ -703,18 +704,18 @@ class PageRepository implements LoggerAwareInterface
                                 $row['_LOCALIZED_UID'] = $olrow['uid'];
                             }
                         }
-                    } elseif ($OLmode === 'hideNonTranslated' && (int)$row[$tableControl['languageField']] === 0) {
+                    } elseif ($OLmode === 'hideNonTranslated' && (int)($row[$tableControl['languageField']] ?? 0) === 0) {
                         // Unset, if non-translated records should be hidden. ONLY done if the source
                         // record really is default language and not [All] in which case it is allowed.
                         $row = null;
                     }
-                } elseif ($sys_language_content != $row[$tableControl['languageField']]) {
+                } elseif ($sys_language_content != ($row[$tableControl['languageField']] ?? null)) {
                     $row = null;
                 }
             } else {
                 // When default language is displayed, we never want to return a record carrying
                 // another language!
-                if ($row[$tableControl['languageField']] > 0) {
+                if ((int)($row[$tableControl['languageField']] ?? 0) > 0) {
                     $row = null;
                 }
             }
