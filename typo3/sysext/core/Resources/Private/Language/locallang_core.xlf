@@ -1213,7 +1213,7 @@ Do you want to refresh it now?</source>
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
 			</trans-unit>
 			<trans-unit id="warning.backend_admin" resname="warning.backend_admin">
-				<source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
+				<source>A backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
 			</trans-unit>
 			<trans-unit id="warning.file_deny_pattern" resname="warning.file_deny_pattern">
 				<source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
@@ -1234,7 +1234,7 @@ Do you want to refresh it now?</source>
 				<source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
 			</trans-unit>
 			<trans-unit id="warning.install_update" resname="warning.install_update">
-				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Upgrade Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
 			</trans-unit>
 			<trans-unit id="warning.header" resname="warning.header">
 				<source>Important Notice!</source>
@@ -1243,7 +1243,7 @@ Do you want to refresh it now?</source>
 				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
 			<trans-unit id="warning.backend_reference_index" resname="warning.backend_reference_index">
-				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sSystem&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
 			<trans-unit id="warning.memcache_not_usable" resname="warning.memcache_not_usable">
 				<source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
