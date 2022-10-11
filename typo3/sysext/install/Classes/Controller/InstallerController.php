@@ -81,73 +81,19 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
  *
  * @phpstan-import-type Params from DriverManager
  */
-class InstallerController
+final class InstallerController
 {
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
-    /**
-     * @var SilentConfigurationUpgradeService
-     */
-    private $silentConfigurationUpgradeService;
-
-    /**
-     * @var SilentTemplateFileUpgradeService
-     */
-    private $silentTemplateFileUpgradeService;
-
-    /**
-     * @var ConfigurationManager
-     */
-    private $configurationManager;
-
-    /**
-     * @var SiteConfiguration
-     */
-    private $siteConfiguration;
-
-    /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
-     * @var FailsafePackageManager
-     */
-    private $packageManager;
-
-    /**
-     * @var VerifyHostHeader
-     */
-    private $verifyHostHeader;
-
-    /**
-     * @var PermissionsCheck
-     */
-    private $databasePermissionsCheck;
-
     public function __construct(
-        LateBootService $lateBootService,
-        SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
-        SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService,
-        ConfigurationManager $configurationManager,
-        SiteConfiguration $siteConfiguration,
-        Registry $registry,
-        FailsafePackageManager $packageManager,
-        VerifyHostHeader $verifyHostHeader,
-        PermissionsCheck $databasePermissionsCheck
+        private readonly LateBootService $lateBootService,
+        private readonly SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
+        private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService,
+        private readonly ConfigurationManager $configurationManager,
+        private readonly SiteConfiguration $siteConfiguration,
+        private readonly Registry $registry,
+        private readonly FailsafePackageManager $packageManager,
+        private readonly VerifyHostHeader $verifyHostHeader,
+        private readonly PermissionsCheck $databasePermissionsCheck
     ) {
-        $this->lateBootService = $lateBootService;
-        $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
-        $this->silentTemplateFileUpgradeService = $silentTemplateFileUpgradeService;
-        $this->configurationManager = $configurationManager;
-        $this->siteConfiguration = $siteConfiguration;
-        $this->registry = $registry;
-        $this->packageManager = $packageManager;
-        $this->verifyHostHeader = $verifyHostHeader;
-        $this->databasePermissionsCheck = $databasePermissionsCheck;
     }
 
     /**
@@ -196,8 +142,6 @@ class InstallerController
 
     /**
      * Render "FIRST_INSTALL file need to exist" view
-     *
-     * @return ResponseInterface
      */
     public function showInstallerNotAvailableAction(): ResponseInterface
     {
@@ -210,8 +154,6 @@ class InstallerController
 
     /**
      * Check if "environment and folders" should be shown
-     *
-     * @return ResponseInterface
      */
     public function checkEnvironmentAndFoldersAction(): ResponseInterface
     {
@@ -222,8 +164,6 @@ class InstallerController
 
     /**
      * Render "environment and folders"
-     *
-     * @return ResponseInterface
      */
     public function showEnvironmentAndFoldersAction(): ResponseInterface
     {
@@ -251,8 +191,6 @@ class InstallerController
 
     /**
      * Create main folder layout, LocalConfiguration, PackageStates
-     *
-     * @return ResponseInterface
      */
     public function executeEnvironmentAndFoldersAction(): ResponseInterface
     {
@@ -280,9 +218,6 @@ class InstallerController
 
     /**
      * Check if trusted hosts pattern needs to be adjusted
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function checkTrustedHostsPatternAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -296,9 +231,6 @@ class InstallerController
 
     /**
      * Adjust trusted hosts pattern to '.*' if it does not match yet
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function executeAdjustTrustedHostsPatternAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -351,8 +283,6 @@ class InstallerController
 
     /**
      * Check if database connect step needs to be shown
-     *
-     * @return ResponseInterface
      */
     public function checkDatabaseConnectAction(): ResponseInterface
     {
@@ -363,8 +293,6 @@ class InstallerController
 
     /**
      * Show database connect step
-     *
-     * @return ResponseInterface
      */
     public function showDatabaseConnectAction(): ResponseInterface
     {
@@ -488,9 +416,6 @@ class InstallerController
 
     /**
      * Test database connect data
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function executeDatabaseConnectAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -642,8 +567,6 @@ class InstallerController
 
     /**
      * Check if a database needs to be selected
-     *
-     * @return ResponseInterface
      */
     public function checkDatabaseSelectAction(): ResponseInterface
     {
@@ -668,8 +591,6 @@ class InstallerController
 
     /**
      * Render "select a database"
-     *
-     * @return ResponseInterface
      */
     public function showDatabaseSelectAction(): ResponseInterface
     {
@@ -694,8 +615,6 @@ class InstallerController
 
     /**
      * Pre-check whether all requirements for the installed database driver and platform are fulfilled
-     *
-     * @return ResponseInterface
      */
     public function checkDatabaseRequirementsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -831,9 +750,6 @@ class InstallerController
 
     /**
      * Select / create and test a database
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function executeDatabaseSelectAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -876,8 +792,6 @@ class InstallerController
 
     /**
      * Check if initial data needs to be imported
-     *
-     * @return ResponseInterface
      */
     public function checkDatabaseDataAction(): ResponseInterface
     {
@@ -892,8 +806,6 @@ class InstallerController
 
     /**
      * Render "import initial data"
-     *
-     * @return ResponseInterface
      */
     public function showDatabaseDataAction(): ResponseInterface
     {
@@ -911,9 +823,6 @@ class InstallerController
 
     /**
      * Create main db layout
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function executeDatabaseDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -996,8 +905,6 @@ class InstallerController
 
     /**
      * Show last "create empty site / install distribution"
-     *
-     * @return ResponseInterface
      */
     public function showDefaultConfigurationAction(): ResponseInterface
     {
@@ -1015,9 +922,6 @@ class InstallerController
 
     /**
      * Last step execution: clean up, remove FIRST_INSTALL file, ...
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function executeDefaultConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -1077,7 +981,7 @@ class InstallerController
                         'tstamp' => time(),
                         'title' => 'Main TypoScript Rendering',
                         'root' => 1,
-                        'clear' => 1,
+                        'clear' => 3,
                         'include_static_file' => 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:fluid_styled_content/Configuration/TypoScript/Styling/',
                         'constants' => '',
                         'config' => 'page = PAGE
@@ -1169,7 +1073,7 @@ For each website you need a TypoScript template on the main page of your website
      *
      * @return bool TRUE if required settings are present
      */
-    protected function isDatabaseConfigurationComplete()
+    protected function isDatabaseConfigurationComplete(): bool
     {
         $configurationComplete = true;
         if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['user'])) {
@@ -1189,8 +1093,6 @@ For each website you need a TypoScript template on the main page of your website
 
     /**
      * Returns configured socket, if set.
-     *
-     * @return string
      */
     protected function getDatabaseConfiguredMysqliSocket(): string
     {
@@ -1199,8 +1101,6 @@ For each website you need a TypoScript template on the main page of your website
 
     /**
      * Returns configured socket, if set.
-     *
-     * @return string
      */
     protected function getDatabaseConfiguredPdoMysqlSocket(): string
     {
@@ -1209,8 +1109,6 @@ For each website you need a TypoScript template on the main page of your website
 
     /**
      * Returns configured socket, if set.
-     *
-     * @return string
      */
     private function getDefaultSocketFor(string $phpIniSetting): string
     {
@@ -1263,7 +1161,7 @@ For each website you need a TypoScript template on the main page of your website
      *
      * @return array List of available databases
      */
-    protected function getDatabaseList()
+    protected function getDatabaseList(): array
     {
         $connectionParams = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME];
         unset($connectionParams['dbname']);
@@ -1316,9 +1214,8 @@ For each website you need a TypoScript template on the main page of your website
      * Creates a new database on the default connection
      *
      * @param string $dbName name of database
-     * @return FlashMessage
      */
-    protected function createNewDatabase($dbName)
+    protected function createNewDatabase(string $dbName): FlashMessage
     {
         try {
             $platform = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1356,9 +1253,8 @@ For each website you need a TypoScript template on the main page of your website
      * persisted to the local configuration if the database is empty.
      *
      * @param string $dbName name of the database
-     * @return FlashMessage
      */
-    protected function checkExistingDatabase($dbName)
+    protected function checkExistingDatabase(string $dbName): FlashMessage
     {
         $result = new FlashMessage('');
         $localConfigurationPathValuePairs = [];
@@ -1406,7 +1302,7 @@ For each website you need a TypoScript template on the main page of your website
      * @return string Hashed password
      * @throws \LogicException If no hash method has been found, should never happen PhpassPasswordHash is always available
      */
-    protected function getHashedPassword($password)
+    protected function getHashedPassword(string $password): string
     {
         $okHashMethods = [
             Argon2iPasswordHash::class,
@@ -1430,7 +1326,7 @@ For each website you need a TypoScript template on the main page of your website
      *
      * @return FlashMessage[]
      */
-    protected function importDatabaseData()
+    protected function importDatabaseData(): array
     {
         // Will load ext_localconf and ext_tables. This is pretty safe here since we are
         // in first install (database empty), so it is very likely that no extension is loaded
@@ -1465,15 +1361,10 @@ For each website you need a TypoScript template on the main page of your website
 
     /**
      * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
-     *
-     * @param string $identifier
-     * @param int $rootPageId
-     * @param ServerRequestInterface $request
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     protected function createSiteConfiguration(string $identifier, int $rootPageId, ServerRequestInterface $request)
     {
-        $normalizedParams = $request->getAttribute('normalizedParams', null);
+        $normalizedParams = $request->getAttribute('normalizedParams');
         if (!($normalizedParams instanceof NormalizedParams)) {
             $normalizedParams = NormalizedParams::createFromRequest($request);
         }
