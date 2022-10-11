@@ -17,16 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Configuration;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
@@ -34,16 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RecoveryConfigurationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<Context> */
-    protected ObjectProphecy $context;
-
-    /** @var ObjectProphecy<ConfigurationManager> */
-    protected ObjectProphecy $configurationManager;
-
-    /** @var ObjectProphecy<HashService> */
-    protected ObjectProphecy $hashService;
+    protected MockObject&ConfigurationManager $configurationManager;
 
     /**
      * @var array
@@ -66,38 +56,36 @@ class RecoveryConfigurationTest extends UnitTestCase
      */
     protected $subject;
 
-    /** @var ObjectProphecy<LoggerInterface> */
-    protected ObjectProphecy $logger;
+    protected LoggerInterface $logger;
 
     protected function setUp(): void
     {
-        $this->context = $this->prophesize(Context::class);
-        $this->configurationManager = $this->prophesize(ConfigurationManager::class);
-        $this->hashService = $this->prophesize(HashService::class);
-        $this->logger = $this->prophesize(LoggerInterface::class);
-
-        $this->hashService->generateHmac(Argument::type('string'))->willReturn('some hash');
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $this->logger = new NullLogger();
 
         parent::setUp();
     }
 
-    /**
-     * @throws InvalidConfigurationTypeException
-     */
-    protected function setupSubject(): void
+    protected function setupSubject(Context $context = null): void
     {
-        $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)->willReturn(
-            $this->settings
-        );
+        if (!$context instanceof Context) {
+            $context = new Context();
+        }
+
+        $this->configurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
+            ->willReturn($this->settings);
+
+        $hashService = $this->getMockBuilder(HashService::class)->disableOriginalConstructor()->getMock();
+        $hashService->method('generateHmac')->willReturn('some hash');
 
         $this->subject = new RecoveryConfiguration(
-            $this->context->reveal(),
-            $this->configurationManager->reveal(),
+            $context,
+            $this->configurationManager,
             new Random(),
-            $this->hashService->reveal()
+            $hashService
         );
 
-        $this->subject->setLogger($this->logger->reveal());
+        $this->subject->setLogger($this->logger);
     }
 
     /**
@@ -162,12 +150,12 @@ class RecoveryConfigurationTest extends UnitTestCase
     {
         $timestamp = time();
         $expected = $timestamp + 3600 * $this->settings['forgotLinkHashValidTime'];
-        $this->context->getPropertyFromAspect('date', 'timestamp')->willReturn($timestamp);
-        $this->setupSubject();
+
+        $context = new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp))]);
+        $this->setupSubject($context);
 
         $actual = $this->subject->getLifeTimeTimestamp();
 
-        $this->context->getPropertyFromAspect('date', 'timestamp')->shouldHaveBeenCalledTimes(1);
         self::assertSame($expected, $actual);
     }
 
@@ -179,8 +167,11 @@ class RecoveryConfigurationTest extends UnitTestCase
         $timestamp = time();
         $expectedTimestamp = $timestamp + 3600 * $this->settings['forgotLinkHashValidTime'];
         $expected = "{$expectedTimestamp}|some hash";
-        $this->context->getPropertyFromAspect('date', 'timestamp')->willReturn($timestamp);
-        $this->setupSubject();
+
+        $context = new Context([
+            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp)),
+        ]);
+        $this->setupSubject($context);
 
         self::assertSame(
             $expected,

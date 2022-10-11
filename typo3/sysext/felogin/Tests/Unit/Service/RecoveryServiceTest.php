@@ -18,11 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Service;
 
 use Generator;
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,33 +34,23 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RecoveryServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /** @var ObjectProphecy<FrontendUserRepository> */
-    protected ObjectProphecy $userRepository;
-
-    /** @var ObjectProphecy<RecoveryConfiguration> */
-    protected ObjectProphecy $recoveryConfiguration;
-
-    /** @var ObjectProphecy<TemplatePaths> */
-    protected ObjectProphecy $templatePathsProphecy;
+    protected MockObject&FrontendUserRepository $userRepository;
+    protected MockObject&RecoveryConfiguration $recoveryConfiguration;
+    protected MockObject&TemplatePaths $templatePaths;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = $this->prophesize(FrontendUserRepository::class);
-        $this->recoveryConfiguration = $this->prophesize(RecoveryConfiguration::class);
-        $this->templatePathsProphecy = $this->prophesize(TemplatePaths::class);
+        $this->userRepository = $this->getMockBuilder(FrontendUserRepository::class)->disableOriginalConstructor()->getMock();
+        $this->recoveryConfiguration = $this->getMockBuilder(RecoveryConfiguration::class)->disableOriginalConstructor()->getMock();
+        $this->templatePaths = $this->getMockBuilder(TemplatePaths::class)->disableOriginalConstructor()->getMock();
     }
 
     /**
      * @test
      * @dataProvider configurationDataProvider
-     *
-     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function sendRecoveryEmailShouldGenerateMailFromConfiguration(
         int $uid,
@@ -83,17 +71,14 @@ class RecoveryServiceTest extends UnitTestCase
             'validUntil'   => date($settings['dateFormat'], $recoveryConfiguration['lifeTimeTimestamp']),
         ];
 
-        $configurationManager = $this->prophesize(ConfigurationManager::class);
-        $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)->willReturn(
-            $settings
-        );
+        $configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()
+            ->getMock();
+        $configurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
+            ->willReturn($settings);
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $languageService->sL(Argument::containingString('password_recovery_mail_header'))->willReturn('translation');
-
-        $uriBuilder = $this->prophesize(UriBuilder::class);
-        $uriBuilder->setCreateAbsoluteUri(true)->willReturn($uriBuilder->reveal());
-        $uriBuilder->uriFor(
+        $uriBuilder = $this->getMockBuilder(UriBuilder::class)->disableOriginalConstructor()->getMock();
+        $uriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->with(true)->willReturn($uriBuilder);
+        $uriBuilder->expects(self::once())->method('uriFor')->with(
             'showChangePassword',
             ['hash' => $recoveryConfiguration['forgotHash']],
             'PasswordRecovery',
@@ -101,22 +86,22 @@ class RecoveryServiceTest extends UnitTestCase
             'Login'
         )->willReturn('some uri');
 
-        $fluidEmailProphecy = $this->setupFluidEmailProphecy($receiver, $expectedViewVariables, $recoveryConfiguration);
+        $fluidEmailMock = $this->setupFluidEmailMock($receiver, $expectedViewVariables, $recoveryConfiguration);
 
-        $mailer = $this->prophesize(MailerInterface::class);
-        $mailer->send($fluidEmailProphecy)->shouldBeCalledOnce();
+        $mailer = $this->getMockBuilder(MailerInterface::class)->disableOriginalConstructor()->getMock();
+        $mailer->expects(self::once())->method('send')->with($fluidEmailMock);
 
-        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $subject = $this->getMockBuilder(RecoveryService::class)
             ->onlyMethods(['getEmailSubject'])
             ->setConstructorArgs(
                 [
-                    $mailer->reveal(),
-                    $eventDispatcherProphecy->reveal(),
-                    $configurationManager->reveal(),
-                    $this->recoveryConfiguration->reveal(),
-                    $uriBuilder->reveal(),
-                    $this->userRepository->reveal(),
+                    $mailer,
+                    $eventDispatcherMock,
+                    $configurationManager,
+                    $this->recoveryConfiguration,
+                    $uriBuilder,
+                    $this->userRepository,
                 ]
             )->getMock();
         $subject->method('getEmailSubject')->willReturn('translation');
@@ -233,41 +218,34 @@ class RecoveryServiceTest extends UnitTestCase
         array $recoveryConfiguration,
         array $userInformation
     ): void {
-        $this->recoveryConfiguration->getForgotHash()->willReturn($recoveryConfiguration['forgotHash']);
-        $this->recoveryConfiguration->getLifeTimeTimestamp()->willReturn($recoveryConfiguration['lifeTimeTimestamp']);
-        $this->recoveryConfiguration->getSender()->willReturn($recoveryConfiguration['sender']);
-        $this->recoveryConfiguration->getMailTemplateName()->willReturn($recoveryConfiguration['mailTemplateName']);
-        $this->recoveryConfiguration->getReplyTo()->willReturn($recoveryConfiguration['replyTo']);
+        $this->recoveryConfiguration->method('getForgotHash')->willReturn($recoveryConfiguration['forgotHash']);
+        $this->recoveryConfiguration->method('getLifeTimeTimestamp')->willReturn($recoveryConfiguration['lifeTimeTimestamp']);
+        $this->recoveryConfiguration->method('getSender')->willReturn($recoveryConfiguration['sender']);
+        $this->recoveryConfiguration->method('getMailTemplateName')->willReturn($recoveryConfiguration['mailTemplateName']);
+        $this->recoveryConfiguration->method('getReplyTo')->willReturn($recoveryConfiguration['replyTo']);
+        $this->recoveryConfiguration->method('getMailTemplatePaths')->willReturn($this->templatePaths);
 
-        $this->templatePathsProphecy->setTemplateRootPaths(['/some/path/to/a/template/folder/']);
-        $this->recoveryConfiguration->getMailTemplatePaths()->willReturn($this->templatePathsProphecy->reveal());
-
-        $this->userRepository->findUserByUsernameOrEmailOnPages($uid, [])->willReturn($userInformation);
+        $this->userRepository->method('findUserByUsernameOrEmailOnPages')->with($uid, [])->willReturn($userInformation);
     }
 
-    /**
-     * @param Address $receiver
-     * @param array $expectedViewVariables
-     * @param array $recoveryConfiguration
-     * @return ObjectProphecy<FluidEmail>
-     */
-    private function setupFluidEmailProphecy(
+    private function setupFluidEmailMock(
         Address $receiver,
         array $expectedViewVariables,
         array $recoveryConfiguration
-    ): ObjectProphecy {
-        $fluidEmailProphecy = $this->prophesize(FluidEmail::class);
-        GeneralUtility::addInstance(FluidEmail::class, $fluidEmailProphecy->reveal());
-        $fluidEmailProphecy->subject('translation')->willReturn($fluidEmailProphecy);
-        $fluidEmailProphecy->from($recoveryConfiguration['sender'])->willReturn($fluidEmailProphecy);
-        $fluidEmailProphecy->to($receiver)->willReturn($fluidEmailProphecy);
-        $fluidEmailProphecy->assignMultiple($expectedViewVariables)->willReturn($fluidEmailProphecy);
-        $fluidEmailProphecy->setTemplate($recoveryConfiguration['mailTemplateName'])->willReturn($fluidEmailProphecy);
+    ): MockObject&FluidEmail {
+        $fluidEmailMock = $this->getMockBuilder(FluidEmail::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::addInstance(FluidEmail::class, $fluidEmailMock);
+        $fluidEmailMock->method('subject')->with('translation')->willReturn($fluidEmailMock);
+        $fluidEmailMock->method('from')->with($recoveryConfiguration['sender'])->willReturn($fluidEmailMock);
+        $fluidEmailMock->method('to')->with($receiver)->willReturn($fluidEmailMock);
+        $fluidEmailMock->method('assignMultiple')->with($expectedViewVariables)->willReturn($fluidEmailMock);
+        $fluidEmailMock->method('setTemplate')->with($recoveryConfiguration['mailTemplateName'])
+            ->willReturn($fluidEmailMock);
 
         if (!empty($recoveryConfiguration['replyTo'])) {
-            $fluidEmailProphecy->addReplyTo($recoveryConfiguration['replyTo'])->willReturn($fluidEmailProphecy);
+            $fluidEmailMock->method('addReplyTo')->with($recoveryConfiguration['replyTo'])->willReturn($fluidEmailMock);
         }
 
-        return $fluidEmailProphecy;
+        return $fluidEmailMock;
     }
 }

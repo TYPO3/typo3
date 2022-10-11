@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Redirect;
 
 use Generator;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
@@ -33,8 +35,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RedirectHandlerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -47,29 +47,22 @@ class RedirectHandlerTest extends UnitTestCase
      */
     protected $typo3Request;
 
-    /** @var ObjectProphecy<ServerRequestHandler> */
-    protected ObjectProphecy $serverRequestHandler;
-
-    /** @var ObjectProphecy<RedirectModeHandler> */
-    protected ObjectProphecy $redirectModeHandler;
-
-    /** @var ObjectProphecy<Context> */
-    protected ObjectProphecy $context;
+    protected MockObject&ServerRequestHandler $serverRequestHandler;
+    protected MockObject&RedirectModeHandler $redirectModeHandler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->serverRequestHandler = $this->prophesize(ServerRequestHandler::class);
-        $this->redirectModeHandler = $this->prophesize(RedirectModeHandler::class);
-        $this->context = $this->prophesize(Context::class);
+        $this->serverRequestHandler = $this->getMockBuilder(ServerRequestHandler::class)->disableOriginalConstructor()->getMock();
+        $this->redirectModeHandler = $this->getMockBuilder(RedirectModeHandler::class)->disableOriginalConstructor()->getMock();
 
-        $GLOBALS['TSFE'] = $this->prophesize(TypoScriptFrontendController::class)->reveal();
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
 
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler->reveal(),
-            $this->redirectModeHandler->reveal(),
-            $this->context->reveal()
+            $this->serverRequestHandler,
+            $this->redirectModeHandler,
+            new Context()
         );
     }
 
@@ -79,7 +72,7 @@ class RedirectHandlerTest extends UnitTestCase
      */
     public function processShouldReturnStringForLoginTypeLogout(string $expect, string $redirectMode): void
     {
-        $this->redirectModeHandler->redirectModeLogout(0)->willReturn('');
+        $this->redirectModeHandler->method('redirectModeLogout')->with(0)->willReturn('');
 
         self::assertEquals($expect, $this->subject->processRedirect('logout', new RedirectConfiguration($redirectMode, '', 0, '', 0, 0), ''));
     }
@@ -100,11 +93,13 @@ class RedirectHandlerTest extends UnitTestCase
         array $body,
         bool $userLoggedIn
     ): void {
-        $this->setUserLoggedIn($userLoggedIn);
+        $this->subject = new RedirectHandler(
+            $this->serverRequestHandler,
+            $this->redirectModeHandler,
+            $this->getContextMockWithUserLoggedIn($userLoggedIn)
+        );
 
-        $this->serverRequestHandler
-            ->getRedirectUrlRequestParam()
-            ->willReturn($body['return_url'] ?? '');
+        $this->serverRequestHandler->method('getRedirectUrlRequestParam')->willReturn($body['return_url'] ?? '');
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectModes]);
         self::assertEquals($expected, $this->subject->getLogoutFormRedirectUrl($configuration, 13, false));
@@ -132,31 +127,25 @@ class RedirectHandlerTest extends UnitTestCase
      */
     public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrlForLoggedInUserAndRedirectPageLogoutSet(): void
     {
-        $this->setUserLoggedIn(true);
-
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler->reveal(),
-            $this->redirectModeHandler->reveal(),
-            $this->context->reveal()
+            $this->serverRequestHandler,
+            $this->redirectModeHandler,
+            $this->getContextMockWithUserLoggedIn()
         );
 
-        $this->serverRequestHandler
-            ->getRedirectUrlRequestParam()
-            ->willReturn([]);
-
-        $this->redirectModeHandler
-            ->redirectModeLogout(3)
-            ->willReturn('https://logout.url');
+        $this->serverRequestHandler->method('getRedirectUrlRequestParam')->willReturn('');
+        $this->redirectModeHandler->method('redirectModeLogout')->with(3)->willReturn('https://logout.url');
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => ['logout']]);
         self::assertEquals('https://logout.url', $this->subject->getLogoutFormRedirectUrl($configuration, 3, false));
     }
 
-    protected function setUserLoggedIn(bool $userLoggedIn): void
+    protected function getContextMockWithUserLoggedIn(bool $userLoggedIn = true): Context
     {
-        $this->context
-            ->getPropertyFromAspect('frontend.user', 'isLoggedIn')
-            ->willReturn($userLoggedIn);
+        $mockUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->disableOriginalConstructor()->getMock();
+        $mockUserAuthentication->user['uid'] = $userLoggedIn ? 1 : 0;
+        return new Context(['frontend.user' => new UserAspect($mockUserAuthentication)]);
     }
 
     public function getLoginFormRedirectUrlDataProvider(): array
@@ -194,12 +183,13 @@ class RedirectHandlerTest extends UnitTestCase
         string $expected
     ) {
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler->reveal(),
-            $this->redirectModeHandler->reveal(),
-            $this->context->reveal()
+            $this->serverRequestHandler,
+            $this->redirectModeHandler,
+            new Context()
         );
 
-        $this->serverRequestHandler->getRedirectUrlRequestParam()->willReturn($redirectUrl);
+        $this->serverRequestHandler->method('getRedirectUrlRequestParam')->willReturn($redirectUrl);
+
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectMode]);
         self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($configuration, $redirectDisabled));
     }
