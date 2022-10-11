@@ -17,13 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -47,53 +45,36 @@ class BackendConfigurationManager implements SingletonInterface
 
     /**
      * Storage of the raw TypoScript configuration
-     *
-     * @var array
      */
-    protected $configuration = [];
+    protected array $configuration = [];
+
+    protected ?ContentObjectRenderer $contentObject = null;
 
     /**
-     * @var ContentObjectRenderer
+     * Name of the extension this Configuration Manager instance belongs to
      */
-    protected $contentObject;
-
-    protected TypoScriptService $typoScriptService;
+    protected ?string $extensionName = null;
 
     /**
-     * name of the extension this Configuration Manager instance belongs to
-     *
-     * @var string
+     * Name of the plugin this Configuration Manager instance belongs to
      */
-    protected $extensionName;
-
-    /**
-     * name of the plugin this Configuration Manager instance belongs to
-     *
-     * @var string
-     */
-    protected $pluginName;
+    protected ?string $pluginName = null;
 
     /**
      * 1st level configuration cache
-     *
-     * @var array
      */
-    protected $configurationCache = [];
+    protected array $configurationCache = [];
+
+    protected array $typoScriptSetupCache = [];
 
     /**
-     * @var array
+     * Stores the current page ID
      */
-    protected $typoScriptSetupCache = [];
+    protected ?int $currentPageId = null;
 
-    /**
-     * stores the current page ID
-     * @var int
-     */
-    protected $currentPageId;
-
-    public function __construct(TypoScriptService $typoScriptService)
-    {
-        $this->typoScriptService = $typoScriptService;
+    public function __construct(
+        private readonly TypoScriptService $typoScriptService
+    ) {
     }
 
     /**
@@ -163,34 +144,23 @@ class BackendConfigurationManager implements SingletonInterface
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
             $pluginConfiguration = $this->getPluginConfiguration((string)$this->extensionName, (string)$this->pluginName);
             ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
-            $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$this->extensionName, (string)$this->pluginName);
+            $pluginConfiguration['controllerConfiguration'] = [];
         } else {
             $pluginConfiguration = $this->getPluginConfiguration((string)$extensionName, (string)$pluginName);
-            $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$extensionName, (string)$pluginName);
+            $pluginConfiguration['controllerConfiguration'] = [];
         }
         ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, $pluginConfiguration);
-        // only load context specific configuration when retrieving configuration of the current plugin
-        if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
-            $frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
-        }
 
         if (!empty($frameworkConfiguration['persistence']['storagePid'])) {
             if (is_array($frameworkConfiguration['persistence']['storagePid'])) {
                 // We simulate the frontend to enable the use of cObjects in
                 // stdWrap. We then convert the configuration to normal TypoScript
                 // and apply the stdWrap to the storagePid
-                $isBackend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
-                if ($isBackend) {
-                    // @todo: This BE specific switch should be moved to BackendConfigurationManager to drop the dependency to $GLOBALS['TYPO3_REQUEST'] here.
-                    // Use makeInstance here since extbase Bootstrap always setContentObject(null) in Backend, no need to call getContentObject().
-                    FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
-                }
+                // Use makeInstance here since extbase Bootstrap always setContentObject(null) in Backend, no need to call getContentObject().
+                FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
                 $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf);
-                if ($isBackend) {
-                    FrontendSimulatorUtility::resetFrontendEnvironment();
-                }
+                FrontendSimulatorUtility::resetFrontendEnvironment();
             }
 
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {
@@ -208,8 +178,6 @@ class BackendConfigurationManager implements SingletonInterface
 
     /**
      * Returns the TypoScript configuration found in config.tx_extbase
-     *
-     * @return array
      */
     protected function getExtbaseConfiguration(): array
     {
@@ -276,14 +244,6 @@ class BackendConfigurationManager implements SingletonInterface
             }
         }
         return $pluginConfiguration;
-    }
-
-    /**
-     * Not in use any more, as TYPO3 Backend Route Registration takes care of this. See ModuleRegistry.
-     */
-    protected function getControllerConfiguration(string $extensionName, string $pluginName): array
-    {
-        return [];
     }
 
     /**
@@ -394,19 +354,6 @@ class BackendConfigurationManager implements SingletonInterface
     {
         // todo: fallback to parent::getDefaultBackendStoragePid() would make sense here.
         return $this->getCurrentPageId();
-    }
-
-    /**
-     * We need to set some default request handler if the framework configuration
-     * could not be loaded; to make sure Extbase also works in Backend modules
-     * in all contexts.
-     *
-     * @param array $frameworkConfiguration
-     * @return array
-     */
-    protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration): array
-    {
-        return $frameworkConfiguration;
     }
 
     /**

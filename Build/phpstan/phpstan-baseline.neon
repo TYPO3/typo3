@@ -1808,11 +1808,6 @@ parameters:
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Configuration/BackendConfigurationManager.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Configuration/FrontendConfigurationManager.php
 
 		-
@@ -2094,11 +2089,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/PersistentObjectConverterTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\BackendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\FrontendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
