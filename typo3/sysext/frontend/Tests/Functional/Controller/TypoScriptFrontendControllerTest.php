@@ -60,28 +60,24 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function headerAndFooterMarkersAreReplacedDuringIntProcessing(): void
     {
         $this->setUpFrontendRootPage(
-            1,
+            2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserInt.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
-            $this->buildSiteConfiguration(1, 'https://website.local/'),
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
 
         // Call page first time to trigger page cache with result
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/en/?id=88')
-        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('userIntContent', $body);
         self::assertStringContainsString('headerDataFromUserInt', $body);
         self::assertStringContainsString('footerDataFromUserInt', $body);
 
         // Call page second time to see if it works with page cache and user_int is still executed.
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/en/?id=88')
-        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('userIntContent', $body);
         self::assertStringContainsString('headerDataFromUserInt', $body);
@@ -104,19 +100,16 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function localizationReturnsUnchangedStringIfNotLocallangLabel(): void
     {
         $this->setUpFrontendRootPage(
-            1,
+            2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithoutLLL.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
-            $this->buildSiteConfiguration(1, 'https://website.local/'),
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
 
-        // Call page first time to trigger page cache with result
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/en/?id=88')
-        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('notprefixedWithLLL', $body);
     }
@@ -135,19 +128,16 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function localizationReturnsLocalizedStringWithLocallangLabel(): void
     {
         $this->setUpFrontendRootPage(
-            1,
+            2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithLLL.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
-            $this->buildSiteConfiguration(1, 'https://website.local/'),
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
 
-        // Call page first time to trigger page cache with result
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/en/?id=88')
-        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Pagetree Overview', $body);
     }
@@ -185,18 +175,19 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function mountPointParameterContainsOnlyValidMPValues(string $inputMp, string $expected): void
     {
         $this->setUpFrontendRootPage(
-            1,
+            2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
-            $this->buildSiteConfiguration(1, 'https://website.local/'),
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
 
-        // Call page first time to trigger page cache with result
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/en/?id=88&MP=' . $inputMp)
+            (new InternalRequest('https://website.local/en/'))
+                ->withPageId(88)
+                ->withQueryParameter('MP', $inputMp)
         );
         $body = (string)$response->getBody();
         self::assertStringContainsString($expected, $body);
@@ -211,5 +202,200 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
             return 'empty';
         }
         return 'foo' . $GLOBALS['TSFE']->MP . 'bar';
+    }
+
+    public function getFromCacheSetsConfigRootlineToLocalRootlineDataProvider(): array
+    {
+        $page1 = [
+            'pid' => 0,
+            'uid' => 1,
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_state' => 0,
+            'title' => 'Pre page without template',
+            'nav_title' => '',
+            'media' => '',
+            'layout' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'fe_group' => '0',
+            'extendToSubpages' => 0,
+            'doktype' => 1,
+            'TSconfig' => null,
+            'tsconfig_includes' => null,
+            'is_siteroot' => 0,
+            'mount_pid' => 0,
+            'mount_pid_ol' => 0,
+            'backend_layout_next_level' => '',
+        ];
+        $page2 = [
+            'pid' => 1,
+            'uid' => 2,
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_state' => 0,
+            'title' => 'Root page having template with root flag set by tests',
+            'nav_title' => '',
+            'media' => '',
+            'layout' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'fe_group' => '0',
+            'extendToSubpages' => 0,
+            'doktype' => 1,
+            'TSconfig' => null,
+            'tsconfig_includes' => null,
+            'is_siteroot' => 1,
+            'mount_pid' => 0,
+            'mount_pid_ol' => 0,
+            'backend_layout_next_level' => '',
+        ];
+        $page88 = [
+            'pid' => 2,
+            'uid' => 88,
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_state' => 0,
+            'title' => 'Sub page 1',
+            'nav_title' => '',
+            'media' => '',
+            'layout' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'fe_group' => '0',
+            'extendToSubpages' => 0,
+            'doktype' => 1,
+            'TSconfig' => null,
+            'tsconfig_includes' => null,
+            'is_siteroot' => 0,
+            'mount_pid' => 0,
+            'mount_pid_ol' => 0,
+            'backend_layout_next_level' => '',
+        ];
+        $page89 = [
+            'pid' => 88,
+            'uid' => 89,
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_state' => 0,
+            'title' => 'Sub sub page 1',
+            'nav_title' => '',
+            'media' => '',
+            'layout' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'fe_group' => '0',
+            'extendToSubpages' => 0,
+            'doktype' => 1,
+            'TSconfig' => null,
+            'tsconfig_includes' => null,
+            'is_siteroot' => 0,
+            'mount_pid' => 0,
+            'mount_pid_ol' => 0,
+            'backend_layout_next_level' => '',
+        ];
+        $page98 = [
+            'pid' => 2,
+            'uid' => 98,
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_state' => 0,
+            'title' => 'Sub page 2 having template with root flag',
+            'nav_title' => '',
+            'media' => '',
+            'layout' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'fe_group' => '0',
+            'extendToSubpages' => 0,
+            'doktype' => 1,
+            'TSconfig' => null,
+            'tsconfig_includes' => null,
+            'is_siteroot' => 0,
+            'mount_pid' => 0,
+            'mount_pid_ol' => 0,
+            'backend_layout_next_level' => '',
+        ];
+        $page99 = [
+            'pid' => 98,
+            'uid' => 99,
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_state' => 0,
+            'title' => 'Sub sub page 2',
+            'nav_title' => '',
+            'media' => '',
+            'layout' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'fe_group' => '0',
+            'extendToSubpages' => 0,
+            'doktype' => 1,
+            'TSconfig' => null,
+            'tsconfig_includes' => null,
+            'is_siteroot' => 0,
+            'mount_pid' => 0,
+            'mount_pid_ol' => 0,
+            'backend_layout_next_level' => '',
+        ];
+        return [
+            'page with one root template on pid 2' => [
+                89,
+                [ 3 => $page89, 2 => $page88, 1 => $page2, 0 => $page1 ],
+                [ 0 => $page2, 1 => $page88, 2 => $page89 ],
+                false,
+            ],
+            'page with one root template on pid 2 no cache' => [
+                89,
+                [ 3 => $page89, 2 => $page88, 1 => $page2, 0 => $page1 ],
+                [ 0 => $page2, 1 => $page88, 2 => $page89 ],
+                true,
+            ],
+            'page with one root template on pid 2 and one on pid 98' => [
+                99,
+                [ 3 => $page99, 2 => $page98, 1 => $page2, 0 => $page1 ],
+                [ 0 => $page98, 1 => $page99 ],
+                false,
+            ],
+            'page with one root template on pid 2 and one on pid 98 no cache' => [
+                99,
+                [ 3 => $page99, 2 => $page98, 1 => $page2, 0 => $page1 ],
+                [ 0 => $page98, 1 => $page99 ],
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getFromCacheSetsConfigRootlineToLocalRootlineDataProvider
+     */
+    public function getFromCacheSetsConfigRootlineToLocalRootline(int $pid, array $expectedRootLine, array $expectedConfigRootLine, bool $nocache): void
+    {
+        $this->setUpFrontendRootPage(
+            2,
+            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
+        );
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
+            [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
+        );
+
+        $request = (new InternalRequest('https://website.local/en/'))->withPageId($pid);
+        if ($nocache) {
+            $request = $request->withAttribute('noCache', true);
+        }
+        $this->executeFrontendSubRequest($request);
+        self::assertSame($expectedRootLine, $GLOBALS['TSFE']->rootLine);
+        self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->config['rootLine']);
+        // @deprecated: b/w compat. Drop when TemplateService is removed.
+        self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->tmpl->rootLine);
     }
 }

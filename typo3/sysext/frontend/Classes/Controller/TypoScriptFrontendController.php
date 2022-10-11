@@ -1177,10 +1177,24 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 
+        // Calculate "local" rootLine that stops at first root=1 template, will be set as $this->config['rootLine']
+        $sysTemplateRowsIndexedByPid = array_combine(array_column($sysTemplateRows, 'pid'), $sysTemplateRows);
+        $localRootline = [];
+        foreach ($this->rootLine as $rootlinePage) {
+            array_unshift($localRootline, $rootlinePage);
+            if ((int)($rootlinePage['uid'] ?? 0) > 0
+                && (int)($sysTemplateRowsIndexedByPid[$rootlinePage['uid']]['root'] ?? 0) === 1
+            ) {
+                break;
+            }
+        }
+        // @deprecated: b/w compat. Remove when TemplateService is dropped.
+        $this->tmpl->rootLine = $localRootline;
+
         if ($this->no_cache) {
             // $this->no_cache = true might have been set by earlier TypoScriptFrontendInitialization middleware.
             // This means we don't do any fancy cache stuff, calculate full TypoScript and ignore page cache.
-            $this->prepareUncachedRendering($request, $sysTemplateRows);
+            $this->prepareUncachedRendering($request, $sysTemplateRows, $localRootline);
             return;
         }
 
@@ -1353,15 +1367,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (is_array($this->pSetup['config.'] ?? null)) {
                 $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
             }
-            // Processing for the config_array:
-            // @todo: This is broken - it should be the "restricted" rootline that starts at sys_template['root'] = 1
-            //        Fix this and add a functional test to make sure this does not break again!
-            $this->config['rootLine'] = array_reverse($this->rootLine);
+            $this->config['rootLine'] = $localRootline;
 
             // b/w compat, especially for bootstrap_package which does a lot of magic with constants
             $this->tmpl->setup = $setupAstArray;
             $this->tmpl->loaded = true;
-            $this->tmpl->rootLine = array_reverse($this->rootLine);
             $this->tmpl->flatSetup = $flatConstants;
         }
 
@@ -1390,7 +1400,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *        This should be cleaned up and merged with getFromCache() in a more efficient way, for
      *        now it is a simple solution to keep the scenarios apart.
      */
-    private function prepareUncachedRendering(ServerRequestInterface $request, array $sysTemplateRows): void
+    private function prepareUncachedRendering(ServerRequestInterface $request, array $sysTemplateRows, array $localRootline): void
     {
         $includeTreeTraverser = GeneralUtility::makeInstance(ConditionVerdictAwareIncludeTreeTraverser::class);
         $treeBuilder = GeneralUtility::makeInstance(TreeBuilder::class);
@@ -1485,14 +1495,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
         }
         // Processing for the config_array:
-        $this->config['rootLine'] = array_reverse($this->rootLine);
+        $this->config['rootLine'] = $localRootline;
         // Auto-configure settings when a site is configured
         $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
 
         // b/w compat, especially for bootstrap_package which does a lot of magic with constants
         $this->tmpl->setup = $setupAstArray;
         $this->tmpl->loaded = true;
-        $this->tmpl->rootLine = array_reverse($this->rootLine);
         $this->tmpl->flatSetup = $flatConstants;
 
         // Hook for postProcessing the configuration array
