@@ -3600,7 +3600,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList'] ?? ''), true);
-        $nonWrappedTag = $conf['nonWrappedTag'];
         $defaultAlign = trim((string)$this->stdWrapValue('defaultAlign', $conf ?? []));
 
         $str_content = '';
@@ -3636,7 +3635,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $uTagName = strtoupper($tagName);
                 $uTagName = strtoupper($conf['remapTag.'][$uTagName] ?? $uTagName);
             } else {
-                $uTagName = strtoupper($nonWrappedTag);
+                $uTagName = strtoupper($conf['nonWrappedTag'] ?? '');
                 // The line will be wrapped: $uTagName should not be an empty tag
                 $emptyTag = false;
                 $str_content = $lParts[$k];
