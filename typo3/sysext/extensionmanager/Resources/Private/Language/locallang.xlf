@@ -666,7 +666,7 @@
 			<trans-unit id="extensionComposerStatus.manifest.error.message" resname="extensionComposerStatus.manifest.error.message">
 				<source>
 					TYPO3 could not create a composer.json proposal. This could be due to an invalid composer.json
-					or network problems while requesting the TER API. Please check for an already exisiting invalid
+					or network problems while requesting the TER API. Please check for an already existing invalid
 					composer.json or try again later.
 				</source>
 			</trans-unit>

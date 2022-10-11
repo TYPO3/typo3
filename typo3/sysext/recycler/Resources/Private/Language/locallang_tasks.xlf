@@ -19,7 +19,7 @@
 				<source>Tables: %s</source>
 			</trans-unit>
 			<trans-unit id="cleanerTaskDescriptionDays" resname="cleanerTaskDescriptionDays">
-				<source>Older than %d days(s)</source>
+				<source>Older than %d day(s)</source>
 			</trans-unit>
 			<trans-unit id="cleanerTaskErrorPeriod" resname="cleanerTaskErrorPeriod">
 				<source>The period has to be an integer and greater than zero.</source>

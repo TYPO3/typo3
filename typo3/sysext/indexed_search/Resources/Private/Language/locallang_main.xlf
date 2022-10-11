@@ -13,7 +13,7 @@
 				<source>Extension %s was set to be ignored.</source>
 			</trans-unit>
 			<trans-unit id="pdfToolsNotFound" resname="pdfToolsNotFound">
-				<source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</source>
+				<source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'</source>
 			</trans-unit>
 			<trans-unit id="pdfToolsDisabled" resname="pdfToolsDisabled">
 				<source>PDF tools disabled</source>

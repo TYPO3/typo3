@@ -6,7 +6,7 @@ call_user_func(static function () {
     $contentTypeName = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'Felogin',
         'Login',
-        'Login Form',
+        'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.CType.felogin_login.title',
         null,
         'forms'
     );

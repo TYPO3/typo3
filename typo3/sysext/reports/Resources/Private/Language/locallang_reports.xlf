@@ -166,7 +166,7 @@
 				<source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
 			</trans-unit>
 			<trans-unit id="status_exportedFiles_warningMessage" resname="status_exportedFiles_warningMessage">
-				<source>The following exported files where found:</source>
+				<source>The following exported files were found:</source>
 			</trans-unit>
 			<trans-unit id="status_exportedFiles_warningRecommendation" resname="status_exportedFiles_warningRecommendation">
 				<source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
