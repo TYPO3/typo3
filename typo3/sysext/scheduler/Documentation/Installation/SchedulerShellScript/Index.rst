@@ -69,8 +69,8 @@ The example will trigger the task with uid 8.
 
     The tasks will be executed in the order in which they are provided.
 
-`--f`
------
+`-f`
+----
 
 To run a task even if it is disabled (or not scheduled to be run yet),
 you need to provide the force option::
@@ -79,8 +79,8 @@ you need to provide the force option::
 
 This will also run the task with uid 8 if it is disabled.
 
-`--v`
------
+`-v`
+----
 
 A single -v flag will output errors only. Two -vv flags will also output additional
 information::
