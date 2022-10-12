@@ -55,7 +55,6 @@ class AuthenticationServiceTest extends FunctionalTestCase
         $this->subject->db_user = [
             'table' => 'be_users',
             'userid_column' => 'uid',
-            'check_pid_clause' => '',
             'enable_clause' => '',
             'username_column' => 'username',
         ];

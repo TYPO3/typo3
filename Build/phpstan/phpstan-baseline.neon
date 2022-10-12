@@ -1421,11 +1421,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedPatternMapperTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$checkPid_value \\(int\\|string\\) does not accept null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AbstractUserAuthenticationTest.php
-
-		-
 			message: "#^Parameter \\#4 \\$pObj of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:initAuth\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication, null given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php

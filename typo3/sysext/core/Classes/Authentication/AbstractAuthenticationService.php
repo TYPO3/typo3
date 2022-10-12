@@ -132,7 +132,6 @@ class AbstractAuthenticationService implements LoggerAwareInterface
             $query->getRestrictions()->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $constraints = array_filter([
-                QueryHelper::stripLogicalOperatorPrefix($dbUser['check_pid_clause']),
                 QueryHelper::stripLogicalOperatorPrefix($dbUser['enable_clause']),
                 QueryHelper::stripLogicalOperatorPrefix($extraWhere),
             ]);

@@ -174,6 +174,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $lastLogin_column = 'lastlogin';
 
     /**
+     * Enable field columns of user table
      * @var array
      */
     public $enablecolumns = [

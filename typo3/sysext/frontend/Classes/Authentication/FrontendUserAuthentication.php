@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
+use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -158,7 +159,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $this->name = self::getCookieName();
         parent::__construct();
-        $this->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
+        $this->checkPid = (bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? true);
     }
 
     /**
@@ -207,6 +208,17 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function getLoginFormData(ServerRequestInterface $request)
     {
         $loginData = parent::getLoginFormData($request);
+        // List of page IDs where to look for frontend user records during login
+        if ($loginData['status'] === LoginType::LOGIN) {
+            $pid = $request->getParsedBody()['pid'] ?? $request->getQueryParams()['pid'] ?? 0;
+            if ($pid) {
+                $this->checkPid_value = implode(',', GeneralUtility::intExplode(',', (string)$pid));
+            }
+        } else {
+            // Needed in order to fetch users which are already logged-in due to fetching from session
+            $this->checkPid_value = null;
+        }
+
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
             $isPermanent = $request->getParsedBody()[$this->formfield_permanent] ?? '';
             if (strlen((string)$isPermanent) != 1) {

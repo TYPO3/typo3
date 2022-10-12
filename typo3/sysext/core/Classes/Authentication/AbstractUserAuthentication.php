@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\PageIdListRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
@@ -166,7 +167,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * The page id the user record must be stored at, can also hold a comma separated list of pids
-     * @var int|string
+     * @var int|string|null
      */
     public $checkPid_value = 0;
 
@@ -989,6 +990,16 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $restrictionContainer->add(GeneralUtility::makeInstance(RootLevelRestriction::class, [$this->user_table]));
         }
 
+        if ($this->checkPid && $this->checkPid_value !== null) {
+            $restrictionContainer->add(
+                GeneralUtility::makeInstance(
+                    PageIdListRestriction::class,
+                    [$this->user_table],
+                    GeneralUtility::intExplode(',', (string)$this->checkPid_value, true)
+                )
+            );
+        }
+
         return $restrictionContainer;
     }
 
@@ -1226,16 +1237,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             [$this->user_table => $this->user_table],
             $expressionBuilder
         );
-        if ($this->checkPid && $this->checkPid_value !== null) {
-            $authInfo['db_user']['checkPidList'] = $this->checkPid_value;
-            $authInfo['db_user']['check_pid_clause'] = $expressionBuilder->in(
-                'pid',
-                GeneralUtility::intExplode(',', (string)$this->checkPid_value)
-            );
-        } else {
-            $authInfo['db_user']['checkPidList'] = '';
-            $authInfo['db_user']['check_pid_clause'] = '';
-        }
         return $authInfo;
     }
 
