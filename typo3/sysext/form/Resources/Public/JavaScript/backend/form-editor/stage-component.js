@@ -17,7 +17,7 @@
 import $ from 'jquery';
 import * as Helper from '@typo3/form/backend/form-editor/helper.js';
 import Icons from '@typo3/backend/icons.js';
-import '@typo3/form/backend/contrib/jquery.mjs.nested-sortable.js';
+import Sortable from 'sortablejs';
 
 const {
   bootstrap,
@@ -389,9 +389,7 @@ function factory($, Helper, Icons) {
       childList = null;
       if ('array' === $.type(childFormElements)) {
         childList = $('<ol></ol>');
-        if (getFormElementDefinition(formElement, '_isTopLevelFormElement')) {
-          childList.addClass(getHelper().getDomElementClassName('sortable'));
-        }
+        childList.addClass(getHelper().getDomElementClassName('sortable'));
         for (var i = 0, len = childFormElements.length; i < len; ++i) {
           childList.append(_renderNestedSortableListItem(childFormElements[i]));
         }
@@ -413,65 +411,55 @@ function factory($, Helper, Icons) {
      * @publish view/stage/abstract/dnd/update
      */
     function _addSortableEvents() {
-      $('ol.' + getHelper().getDomElementClassName('sortable'), _stageDomElement).nestedSortable({
-        forcePlaceholderSize: true,
-        handle: 'div' + getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey'),
-        helper: 'clone',
-        items: 'li:not(' + getHelper().getDomElementDataAttribute('noSorting', 'bracesWithKey') + ')',
-        opacity: .6,
-        revert: 250,
-        delay: 200,
-        tolerance: 'pointer',
-        toleranceElement: '> div',
+      const sortableLists = _stageDomElement.get(0).querySelectorAll('ol.' + getHelper().getDomElementClassName('sortable'));
+      const draggableSelector = 'li:not(' + getHelper().getDomElementDataAttribute('noSorting', 'bracesWithKey') + ')';
+      const handleSelector = 'div' + getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey');
 
-        isAllowed: function(placeholder, placeholderParent, currentItem) {
-          var formElementIdentifierPath, formElementTypeDefinition, targetFormElementIdentifierPath,
-            targetFormElementTypeDefinition;
+      sortableLists.forEach(function (sortableList) {
+        sortableList.querySelectorAll(handleSelector).forEach(function (draggable) {
+          draggable.classList.add('form-sortable-handle');
+        });
 
-          formElementIdentifierPath = getAbstractViewFormElementIdentifierPathWithinDomElement($(currentItem));
-          targetFormElementIdentifierPath = getAbstractViewFormElementIdentifierPathWithinDomElement($(placeholderParent));
-          if (!targetFormElementIdentifierPath) {
-            targetFormElementIdentifierPath = getFormEditorApp().getCurrentlySelectedPage();
-          }
+        new Sortable(sortableList, {
+          group: 'stage-nodes',
+          handle: handleSelector,
+          draggable: draggableSelector,
+          animation: 200,
+          swapThreshold: 0.6,
+          dragClass: 'form-sortable-drag',
+          ghostClass: 'form-sortable-ghost',
+          onStart: function (e) {
+            getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [$(e.item), $(e.item)]);
+          },
+          onChange: function (e) {
+            let enclosingCompositeFormElement;
+            const parentFormElementIdentifierPath = getAbstractViewParentFormElementIdentifierPathWithinDomElement($(e.item));
 
-          return true;
-        },
-        start: function(e, o) {
-          getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [$(o.item), $(o.placeholder)]);
-        },
-        stop: function(e, o) {
-          getPublisherSubscriber().publish('view/stage/abstract/dnd/stop', [
-            getAbstractViewFormElementIdentifierPathWithinDomElement($(o.item))
-          ]);
-        },
-        change: function(e, o) {
-          var enclosingCompositeFormElement, parentFormElementIdentifierPath;
+            if (parentFormElementIdentifierPath) {
+              enclosingCompositeFormElement = getFormEditorApp()
+                .findEnclosingCompositeFormElementWhichIsNotOnTopLevel(parentFormElementIdentifierPath);
+            }
+            getPublisherSubscriber().publish('view/stage/abstract/dnd/change', [
+              $(e.item),
+              parentFormElementIdentifierPath, enclosingCompositeFormElement
+            ]);
+          },
+          onEnd: function (e) {
+            const movedFormElementIdentifierPath = getAbstractViewFormElementIdentifierPathWithinDomElement($(e.item));
+            const previousFormElementIdentifierPath = getAbstractViewSiblingFormElementIdentifierPathWithinDomElement($(e.item), 'prev');
+            const nextFormElementIdentifierPath = getAbstractViewSiblingFormElementIdentifierPathWithinDomElement($(e.item), 'next');
 
-          parentFormElementIdentifierPath = getAbstractViewParentFormElementIdentifierPathWithinDomElement($(o.placeholder));
-          if (parentFormElementIdentifierPath) {
-            enclosingCompositeFormElement = getFormEditorApp()
-              .findEnclosingCompositeFormElementWhichIsNotOnTopLevel(parentFormElementIdentifierPath);
-          }
-          getPublisherSubscriber().publish('view/stage/abstract/dnd/change', [
-            $(o.placeholder),
-            parentFormElementIdentifierPath, enclosingCompositeFormElement
-          ]);
-        },
-        update: function(e, o) {
-          var nextFormElementIdentifierPath, movedFormElement, movedFormElementIdentifierPath,
-            parentFormElementIdentifierPath, previousFormElementIdentifierPath;
-
-          movedFormElementIdentifierPath = getAbstractViewFormElementIdentifierPathWithinDomElement($(o.item));
-          previousFormElementIdentifierPath = getAbstractViewSiblingFormElementIdentifierPathWithinDomElement($(o.item), 'prev');
-          nextFormElementIdentifierPath = getAbstractViewSiblingFormElementIdentifierPathWithinDomElement($(o.item), 'next');
-
-          getPublisherSubscriber().publish('view/stage/abstract/dnd/update', [
-            $(o.item),
-            movedFormElementIdentifierPath,
-            previousFormElementIdentifierPath,
-            nextFormElementIdentifierPath
-          ]);
-        }
+            getPublisherSubscriber().publish('view/stage/abstract/dnd/update', [
+              $(e.item),
+              movedFormElementIdentifierPath,
+              previousFormElementIdentifierPath,
+              nextFormElementIdentifierPath
+            ]);
+            getPublisherSubscriber().publish('view/stage/abstract/dnd/stop', [
+              getAbstractViewFormElementIdentifierPathWithinDomElement($(e.item))
+            ]);
+          },
+        });
       });
     };
 

@@ -17,7 +17,7 @@
 import $ from 'jquery';
 import * as Helper from '@typo3/form/backend/form-editor/helper.js';
 import Icons from '@typo3/backend/icons.js';
-import '@typo3/form/backend/contrib/jquery.mjs.nested-sortable.js';
+import Sortable from 'sortablejs';
 
 const {
   bootstrap,
@@ -334,66 +334,53 @@ function factory($, Helper, Icons) {
      * @publish view/tree/dnd/update
      */
     function _addSortableEvents() {
-      $('ol.' + getHelper().getDomElementClassName('sortable'), _treeDomElement).nestedSortable({
-        forcePlaceholderSize: true,
-        protectRoot: true,
-        isTree: true,
+      const defaultConfiguration = {
         handle: 'div' + getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey'),
-        helper: 'clone',
-        items: 'li',
-        opacity: .6,
-        revert: 250,
-        delay: 200,
-        tolerance: 'pointer',
-        toleranceElement: '> div',
+        draggable: 'li',
+        animation: 200,
+        fallbackTolerance: 200,
+        fallbackOnBody: true,
+        swapThreshold: 0.6,
+        dragClass: 'form-sortable-drag',
+        ghostClass: 'form-sortable-ghost',
+        onChange: function (e) {
+          let enclosingCompositeFormElement;
+          const parentFormElementIdentifierPath = getParentTreeNodeIdentifierPathWithinDomElement($(e.item));
 
-        isAllowed: function(placeholder, placeholderParent, currentItem) {
-          var formElementIdentifierPath, formElementTypeDefinition, targetFormElementIdentifierPath,
-            targetFormElementTypeDefinition;
-
-          if (typeof placeholderParent === 'undefined') {
-            return true;
-          }
-
-          formElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(currentItem));
-          targetFormElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(placeholderParent));
-
-          formElementTypeDefinition = getFormElementDefinition(formElementIdentifierPath);
-          targetFormElementTypeDefinition = getFormElementDefinition(targetFormElementIdentifierPath);
-
-          if (
-            targetFormElementTypeDefinition['_isTopLevelFormElement']
-            && !targetFormElementTypeDefinition['_isCompositeFormElement']
-          ) {
-            return false;
-          }
-
-          return true;
-        },
-        stop: function(e, o) {
-          getPublisherSubscriber().publish('view/tree/dnd/stop', [getTreeNodeIdentifierPathWithinDomElement($(o.item))]);
-        },
-        change: function(e, o) {
-          var enclosingCompositeFormElement, parentFormElementIdentifierPath;
-
-          parentFormElementIdentifierPath = getParentTreeNodeIdentifierPathWithinDomElement($(o.placeholder));
           if (parentFormElementIdentifierPath) {
             enclosingCompositeFormElement = getFormEditorApp().findEnclosingCompositeFormElementWhichIsNotOnTopLevel(parentFormElementIdentifierPath);
           }
-          getPublisherSubscriber().publish('view/tree/dnd/change', [$(o.placeholder), parentFormElementIdentifierPath, enclosingCompositeFormElement]);
+          getPublisherSubscriber().publish('view/tree/dnd/change', [$(e.item), parentFormElementIdentifierPath, enclosingCompositeFormElement]);
         },
-        update: function(e, o) {
-          var nextFormElementIdentifierPath, movedFormElementIdentifierPath,
-            previousFormElementIdentifierPath;
+        onEnd: function (e) {
+          const movedFormElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(e.item));
+          const previousFormElementIdentifierPath = getSiblingTreeNodeIdentifierPathWithinDomElement($(e.item), 'prev');
+          const nextFormElementIdentifierPath = getSiblingTreeNodeIdentifierPathWithinDomElement($(e.item), 'next');
 
-          movedFormElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(o.item));
-          previousFormElementIdentifierPath = getSiblingTreeNodeIdentifierPathWithinDomElement($(o.item), 'prev');
-          nextFormElementIdentifierPath = getSiblingTreeNodeIdentifierPathWithinDomElement($(o.item), 'next');
+          getPublisherSubscriber().publish('view/tree/dnd/update', [$(e.item), movedFormElementIdentifierPath, previousFormElementIdentifierPath, nextFormElementIdentifierPath]);
+          getPublisherSubscriber().publish('view/tree/dnd/stop', [getTreeNodeIdentifierPathWithinDomElement($(e.item))]);
+        },
+      };
 
-          getPublisherSubscriber().publish('view/tree/dnd/update', [$(o.item), movedFormElementIdentifierPath, previousFormElementIdentifierPath, nextFormElementIdentifierPath]);
+      const sortableRoot = _treeDomElement.get(0).querySelector('ol.' + getHelper().getDomElementClassName('sortable'));
+      new Sortable(sortableRoot, {
+        ...defaultConfiguration,
+        ...{
+          group: 'tree-step-nodes',
+          put: ['tree-step-nodes'],
         }
       });
-    };
+
+      sortableRoot.querySelectorAll('ol').forEach(function (sortableList) {
+        new Sortable(sortableList, {
+          ...defaultConfiguration,
+          ...{
+            group: 'tree-leaves-nodes',
+            pull: ['tree-leaves-nodes'],
+          }
+        });
+      });
+    }
 
     /**
      * @private

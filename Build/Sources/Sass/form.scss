@@ -141,7 +141,7 @@ $tree-line-height: 20px;
         padding: 0;
     }
 
-    .ui-sortable-placeholder {
+    .form-sortable-ghost {
         outline-offset: -1px !important;
     }
 }
@@ -280,7 +280,7 @@ $tree-line-height: 20px;
         padding-top: 2.5em;
     }
 
-    .ui-sortable-helper {
+    .form-sortable-drag {
         > div:hover,
         .t3-form-form-element-selected,
         #t3-form-navigation-component-tree-root-container:hover,
@@ -456,7 +456,7 @@ $tree-line-height: 20px;
     margin-top: -1em;
     padding: .5em;
 
-    .ui-sortable-handle {
+    .form-sortable-handle {
         cursor: auto;
     }
 
@@ -565,13 +565,13 @@ $tree-line-height: 20px;
         cursor: move;
     }
 
-    .ui-sortable-helper {
+    .form-sortable-drag {
         td {
             border: none;
         }
     }
 
-    .ui-sortable-placeholder {
+    .form-sortable-ghost {
         height: 45px;
         border-left: 1px solid $module-docheader-border !important;
         border-right: 1px solid $module-docheader-border !important;
@@ -655,7 +655,7 @@ $tree-line-height: 20px;
                 outline-color: $primary;
             }
 
-            & > .ui-sortable-handle {
+            & > .form-sortable-handle {
                 margin: 0;
 
                 div.t3-form-form-element-body {
@@ -664,8 +664,8 @@ $tree-line-height: 20px;
             }
         }
 
-        .t3-form-element-composit.sortable-hover > .ui-sortable-handle,
-        .ui-sortable-handle:hover {
+        .t3-form-element-composit.sortable-hover > .form-sortable-handle,
+        .form-sortable-handle:hover {
             border-color: darken($panel-default-heading-bg, 40%);
 
             .t3-form-icon-container {
@@ -673,22 +673,7 @@ $tree-line-height: 20px;
             }
         }
 
-        .ui-sortable {
-            fieldset {
-                position: relative;
-                min-height: 130px;
-                padding-top: 5em;
-
-                legend {
-                    position: absolute;
-                    top: 1em;
-                    display: inline-block;
-                    width: 95%;
-                }
-            }
-        }
-
-        .ui-sortable-handle {
+        .form-sortable-handle {
             position: relative;
             height: $stage-abstract-element-height;
             margin-bottom: 1em;
@@ -727,7 +712,7 @@ $tree-line-height: 20px;
             }
         }
 
-        .ui-sortable-placeholder {
+        .form-sortable-ghost {
             margin-bottom: 1em;
         }
 
@@ -1050,13 +1035,13 @@ $tree-line-height: 20px;
     line-height: 1.6;
     font-size: .8em;
 
-    .ui-sortable-handle:hover > & {
+    .form-sortable-handle:hover > & {
         display: inline-block;
     }
 }
 
-.ui-sortable-placeholder,
-.t3-form-element-composit.ui-sortable-placeholder {
+.form-sortable-ghost,
+.t3-form-element-composit.form-sortable-ghost {
     z-index: 1;
     position: relative;
     background-color: #fff !important;
@@ -1066,7 +1051,7 @@ $tree-line-height: 20px;
     visibility: visible !important;
 }
 
-.ui-sortable-placeholder.mjs-nestedSortable-error {
+.form-sortable-ghost.mjs-nestedSortable-error {
     outline: 1px dashed #c83c3c !important;
 }
 
@@ -1118,7 +1103,7 @@ $tree-line-height: 20px;
         margin-top: .1em;
     }
 
-    #t3-form-stage-container &.ui-sortable-handle {
+    #t3-form-stage-container &.form-sortable-handle {
         border-color: $danger;
 
         &:before {
@@ -1202,10 +1187,7 @@ $tree-line-height: 20px;
     text-align: center;
 }
 
-//
-// jQuery nestedSortable
-//
-.ui-sortable-handle {
+.form-sortable-handle {
     cursor: pointer;
 }
 

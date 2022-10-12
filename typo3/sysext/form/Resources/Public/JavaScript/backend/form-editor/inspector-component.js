@@ -21,7 +21,7 @@ import Icons from '@typo3/backend/icons.js';
 import Notification from '@typo3/backend/notification.js';
 import Modal from '@typo3/backend/modal.js';
 import {MessageUtility} from '@typo3/backend/utility/message-utility.js';
-import '@typo3/form/backend/contrib/jquery.mjs.nested-sortable.js';
+import Sortable from 'sortablejs';
 
 const {
   bootstrap,
@@ -503,14 +503,17 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
      * @return void
      */
     function _addSortableCollectionElementsEvents(sortableDomElement, collectionName) {
-      sortableDomElement.addClass(getHelper().getDomElementClassName('sortable')).sortable({
-        revert: 'true',
-        items: getHelper().getDomElementClassName('collectionElement', true),
-        cancel: getHelper().getDomElementClassName('jQueryUiStateDisabled', true) + ',input,textarea,select',
-        delay: 200,
-        update: function(e, o) {
-          var dataAttributeName, nextCollectionElementIdentifier, movedCollectionElementIdentifier,
-            previousCollectionElementIdentifier;
+      sortableDomElement.addClass(getHelper().getDomElementClassName('sortable'));
+      new Sortable(sortableDomElement.get(0), {
+        draggable: getHelper().getDomElementClassName('collectionElement', true),
+        filter: 'input,textarea,select',
+        animation: 200,
+        fallbackTolerance: 200,
+        swapThreshold: 0.6,
+        dragClass: 'form-sortable-drag',
+        ghostClass: 'form-sortable-ghost',
+        onEnd: function (e) {
+          let dataAttributeName;
 
           if (collectionName === 'finishers') {
             dataAttributeName = getHelper().getDomElementDataAttribute('finisher');
@@ -518,12 +521,12 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
             dataAttributeName = getHelper().getDomElementDataAttribute('validator');
           }
 
-          movedCollectionElementIdentifier = $(o.item).attr(dataAttributeName);
-          previousCollectionElementIdentifier = $(o.item)
+          const movedCollectionElementIdentifier = $(e.item).attr(dataAttributeName);
+          const previousCollectionElementIdentifier = $(e.item)
             .prevAll(getHelper().getDomElementClassName('collectionElement', true))
             .first()
             .attr(dataAttributeName);
-          nextCollectionElementIdentifier = $(o.item)
+          const nextCollectionElementIdentifier = $(e.item)
             .nextAll(getHelper().getDomElementClassName('collectionElement', true))
             .first()
             .attr(dataAttributeName);
@@ -1959,12 +1962,16 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
       }
 
       if (!!editorConfiguration['isSortable']) {
-        $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer'), $(editorHtml))
-          .addClass(getHelper().getDomElementClassName('sortable'))
-          .sortable({
-            revert: 'true',
-            items: getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
-            update: function(e, o) {
+        editorHtml.get(0).querySelectorAll(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer')  + ' tbody').forEach(function (sortableList) {
+          new Sortable(sortableList, {
+            group: getHelper().getDomElementDataAttributeValue('propertyGridEditorContainer'),
+            handle: getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSortRow'),
+            draggable: getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
+            pull: 'clone',
+            swapThreshold: 0.6,
+            dragClass: 'form-sortable-drag',
+            ghostClass: 'form-sortable-ghost',
+            onUpdate: function() {
               _setPropertyGridData(
                 $(editorHtml),
                 multiSelection,
@@ -1973,6 +1980,7 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
               );
             }
           });
+        });
       } else {
         $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSortRow'), $(rowItemTemplate))
           .parent()

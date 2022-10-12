@@ -1017,8 +1017,8 @@ Subscribe to the event:
 view/inspector/collectionElements/dnd/update
 ++++++++++++++++++++++++++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'update' event from 'jquery.mjs.nestedSortable' calls
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'end' event from 'SortableJS' calls
 the ``view/inspector/collectionElements/dnd/update`` event if a property
 collection element in the ``Inspector`` component is sorted. EXT:form uses this
 event to move the validator/ finisher in the ``form definition`` via the method
@@ -1533,8 +1533,8 @@ Subscribe to the event:
 view/stage/abstract/dnd/change
 ++++++++++++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'change' event from 'jquery.mjs.nestedSortable' calls
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'change' event from 'SortableJS' calls
 the ``view/stage/abstract/dnd/change`` event in the ``Stage`` component in the
 ``abstract view`` mode if form elements are sorted. EXT:form uses this event to
 set various CSS classes during the drag-and-drop process.
@@ -1562,8 +1562,8 @@ Subscribe to the event:
 view/stage/abstract/dnd/start
 +++++++++++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'start' event from 'jquery.mjs.nestedSortable' calls
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'start' event from 'SortableJS' calls
 the ``view/stage/abstract/dnd/start`` event in the ``Stage`` component in the
 ``abstract view`` mode if form elements are sorted. EXT:form uses this event to
 set various CSS classes at the start of the drag-and-drop process.
@@ -1590,8 +1590,8 @@ Subscribe to the event:
 view/stage/abstract/dnd/stop
 ++++++++++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'stop' event from 'jquery.mjs.nestedSortable' calls the
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'end' event from 'SortableJS' calls the
 ``view/stage/abstract/dnd/stop`` event in the ``Stage`` component in the
 ``abstract view`` mode if form elements are sorted. EXT:form uses this event to
 to re-render the ``Tree``, ``Stage`` and ``Inspector`` components at the end of
@@ -1618,8 +1618,8 @@ Subscribe to the event:
 view/stage/abstract/dnd/update
 ++++++++++++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'update' event from 'jquery.mjs.nestedSortable' calls
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'end' event from 'SortableJS' calls
 the ``view/stage/abstract/dnd/update`` event in the ``Stage`` component in the
 ``abstract view`` mode if form elements are sorted. EXT:form uses this event
 to move the form element in the ``form definition`` accordingly at the end of
@@ -2092,8 +2092,8 @@ Subscribe to the event:
 view/tree/dnd/change
 ++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'change' event from 'jquery.mjs.nestedSortable' calls
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'change' event from 'SortableJS' calls
 the ``view/tree/dnd/change`` event in der ``Tree`` component if form elements
 are sorted. EXT:form uses this event to set various CSS classes during the drag
 -and-drop process.
@@ -2121,8 +2121,8 @@ Subscribe to the event:
 view/tree/dnd/stop
 ++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'stop' event from 'jquery.mjs.nestedSortable' calls the
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'end' event from 'SortableJS' calls the
 ``view/tree/dnd/stop`` event in the ``Tree`` component if form elements are
 sorted. EXT:form uses this event to re-render ``Tree``, ``Stage`` and
 ``Inspector`` components at the end of the drag-and-drop process and to select
@@ -2149,8 +2149,8 @@ Subscribe to the event:
 view/tree/dnd/update
 ++++++++++++++++++++
 
-EXT:form uses the jQuery plugin 'jquery.mjs.nestedSortable' for the drag-and-
-drop functionality. The 'update' event from 'jquery.mjs.nestedSortable' calls
+EXT:form uses the library 'SortableJS' for the drag-and-drop functionality.
+The 'end' event from 'SortableJS' calls
 the ``view/tree/dnd/update`` event in der ``Tree`` component if form elements
 are sorted. EXT:form uses this event to move the form element in the ``form
 definition`` accordingly at the end of the drag-and-drop process.
