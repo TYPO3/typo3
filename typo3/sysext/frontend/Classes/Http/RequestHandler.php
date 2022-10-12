@@ -834,7 +834,6 @@ readonly class RequestHandler implements RequestHandlerInterface
     protected function generateHtmlTag(array $htmlTagAttributes, array $configuration, ContentObjectRenderer $cObj): string
     {
         if (is_array($configuration['htmlTag.']['attributes.'] ?? null)) {
-            $attributeString = '';
             foreach ($configuration['htmlTag.']['attributes.'] as $attributeName => $value) {
                 if (str_ends_with($attributeName, '.')) {
                     // Skip this one, but only if the default value is set
@@ -848,13 +847,12 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (is_array($configuration['htmlTag.']['attributes.'][$attributeName . '.'] ?? null)) {
                     $value = $cObj->stdWrap($value, $configuration['htmlTag.']['attributes.'][$attributeName . '.']);
                 }
-                $attributeString .= ' ' . htmlspecialchars($attributeName) . ($value !== '' ? '="' . htmlspecialchars((string)$value) . '"' : '');
-                // If e.g. "htmlTag.attributes.dir" is set, make sure it is not added again with "implodeAttributes()"
-                if (isset($htmlTagAttributes[$attributeName])) {
-                    unset($htmlTagAttributes[$attributeName]);
-                }
+                // If e.g. "htmlTag.attributes.dir" is set, make sure it is not added twice
+                unset($htmlTagAttributes[$attributeName]);
+                // An empty value renders an attribute without a value
+                $htmlTagAttributes[htmlspecialchars($attributeName)] = $value === '' ? true : (string)$value;
             }
-            $attributeString = ltrim(GeneralUtility::implodeAttributes($htmlTagAttributes) . $attributeString);
+            $attributeString = GeneralUtility::implodeAttributes($htmlTagAttributes, false, false, true);
         } elseif (($configuration['htmlTag_setParams'] ?? '') === 'none') {
             $attributeString = '';
         } elseif (isset($configuration['htmlTag_setParams'])) {

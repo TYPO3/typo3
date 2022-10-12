@@ -987,26 +987,60 @@ class GeneralUtility
     /**
      * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
      *
-     * @param array<string, string|int> $arr Array with attribute key/value pairs, eg. "bgcolor" => "red", "border" => 0
+     * @param array<string, mixed> $arr Array with attribute key/value pairs, eg. "bgcolor" => "red", "border" => "0"
      * @param bool $xhtmlSafe If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
      * @param bool $keepBlankAttributes If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
+     * @param bool $convertValues If TRUE, values are converted for HTML5 output: `true` renders a boolean attribute without a value (e.g. `defer`), `false` and `null` omit the attribute, Stringable objects are cast to string, and other arrays or objects are JSON-encoded. Enumerated attributes such as `aria-hidden` or `draggable` need the string 'true' or 'false', as omitting them is not the same as "false". Value-less attributes are not XML-compliant.
      * @return string Imploded attributes, eg. 'bgcolor="red" border="0"'
      */
-    public static function implodeAttributes(array $arr, bool $xhtmlSafe = false, bool $keepBlankAttributes = false): string
+    public static function implodeAttributes(array $arr, bool $xhtmlSafe = false, bool $keepBlankAttributes = false, bool $convertValues = false): string
     {
-        if ($xhtmlSafe) {
+        if ($convertValues) {
+            $newArr = [];
+            foreach ($arr as $attributeName => $attributeValue) {
+                if ($xhtmlSafe) {
+                    $attributeName = strtolower((string)$attributeName);
+                }
+                if (isset($newArr[$attributeName])) {
+                    continue;
+                }
+                if (is_null($attributeValue)) {
+                    $newArr[$attributeName] = null;
+                } elseif (is_bool($attributeValue)) {
+                    $newArr[$attributeName] = $attributeValue;
+                } elseif (!is_scalar($attributeValue) && !$attributeValue instanceof \Stringable) {
+                    $newArr[$attributeName] = self::jsonEncodeForHtmlAttribute($attributeValue);
+                } else {
+                    $newArr[$attributeName] = htmlspecialchars((string)$attributeValue);
+                }
+            }
+            $arr = $newArr;
+        } elseif ($xhtmlSafe) {
             $newArr = [];
             foreach ($arr as $attributeName => $attributeValue) {
                 $attributeName = strtolower((string)$attributeName);
-                if (!isset($newArr[$attributeName])) {
-                    $newArr[$attributeName] = htmlspecialchars((string)$attributeValue);
+                if (isset($newArr[$attributeName])) {
+                    continue;
                 }
+                $newArr[$attributeName] = htmlspecialchars((string)$attributeValue);
             }
             $arr = $newArr;
         }
         $list = [];
         foreach ($arr as $attributeName => $attributeValue) {
-            if ((string)$attributeValue !== '' || $keepBlankAttributes) {
+            if ($convertValues) {
+                if ($attributeValue === null) {
+                    continue;
+                }
+                if (is_bool($attributeValue)) {
+                    if ($attributeValue === true) {
+                        // e.g. " <script defer src=""...>"
+                        $list[] = $attributeName;
+                    }
+                } elseif ((string)$attributeValue !== '' || $keepBlankAttributes) {
+                    $list[] = $attributeName . '="' . $attributeValue . '"';
+                }
+            } elseif ((string)$attributeValue !== '' || $keepBlankAttributes) {
                 $list[] = $attributeName . '="' . $attributeValue . '"';
             }
         }

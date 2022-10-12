@@ -57,41 +57,38 @@ class AudioTagRenderer implements FileRendererInterface
             }
         }
 
-        $additionalAttributes = [];
+        $attributes = [];
         if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
-            $additionalAttributes[] = GeneralUtility::implodeAttributes(
-                array_filter($options['additionalAttributes'], static fn(mixed $value): bool => $value !== null && $value !== false),
-                true,
-                true
-            );
+            $attributes = $options['additionalAttributes'];
         }
         if (isset($options['data']) && is_array($options['data'])) {
-            array_walk($options['data'], static function (string &$value, string $key): void {
-                $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-            });
-            $additionalAttributes[] = implode(' ', $options['data']);
+            foreach ($options['data'] as $key => $value) {
+                $attributes['data-' . $key] ??= $value;
+            }
         }
         if (!isset($options['controls']) || !empty($options['controls'])) {
-            $additionalAttributes[] = 'controls';
+            $attributes['controls'] ??= true;
         }
         if (!empty($options['autoplay'])) {
-            $additionalAttributes[] = 'autoplay';
+            $attributes['autoplay'] ??= true;
         }
         if (!empty($options['muted'])) {
-            $additionalAttributes[] = 'muted';
+            $attributes['muted'] ??= true;
         }
         if (!empty($options['loop'])) {
-            $additionalAttributes[] = 'loop';
+            $attributes['loop'] ??= true;
         }
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'preload', 'controlsList'] as $key) {
             if (!empty($options[$key])) {
-                $additionalAttributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
+                $attributes[$key] ??= $options[$key];
             }
         }
 
+        $attributesString = GeneralUtility::implodeAttributes($attributes, false, true, true);
+
         return sprintf(
             '<audio%s><source src="%s" type="%s"></audio>',
-            empty($additionalAttributes) ? '' : ' ' . implode(' ', $additionalAttributes),
+            $attributesString === '' ? '' : ' ' . $attributesString,
             htmlspecialchars((string)$file->getPublicUrl()),
             $file->getMimeType()
         );

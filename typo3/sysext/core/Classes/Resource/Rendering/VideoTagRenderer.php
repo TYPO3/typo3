@@ -66,46 +66,37 @@ class VideoTagRenderer implements FileRendererInterface
 
         $attributes = [];
         if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
-            $attributes[] = GeneralUtility::implodeAttributes(
-                array_filter($options['additionalAttributes'], static fn(mixed $value): bool => $value !== null && $value !== false),
-                true,
-                true
-            );
+            $attributes = $options['additionalAttributes'];
         }
         if (isset($options['data']) && is_array($options['data'])) {
-            array_walk($options['data'], static function (string &$value, string $key): void {
-                $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-            });
-            $attributes[] = implode(' ', $options['data']);
+            foreach ($options['data'] as $key => $value) {
+                $attributes['data-' . $key] ??= $value;
+            }
         }
         if ((int)$width > 0) {
-            $attributes[] = 'width="' . (int)$width . '"';
+            $attributes['width'] ??= (int)$width;
         }
         if ((int)$height > 0) {
-            $attributes[] = 'height="' . (int)$height . '"';
+            $attributes['height'] ??= (int)$height;
         }
         if (!isset($options['controls']) || !empty($options['controls'])) {
-            $attributes[] = 'controls';
+            $attributes['controls'] ??= true;
         }
         if (!empty($options['autoplay'])) {
-            $attributes[] = 'autoplay';
+            $attributes['autoplay'] ??= true;
             // If autoplay is enabled, enforce muted, see https://developer.chrome.com/blog/autoplay/
-            $attributes[] = 'muted';
+            $attributes['muted'] ??= true;
         }
         if (!empty($options['muted'])) {
-            $attributes[] = 'muted';
+            $attributes['muted'] ??= true;
         }
         if (!empty($options['loop'])) {
-            $attributes[] = 'loop';
+            $attributes['loop'] ??= true;
         }
         if (isset($options['additionalConfig']) && is_array($options['additionalConfig'])) {
             foreach ($options['additionalConfig'] as $key => $value) {
                 if ($value && !in_array($key, $this->excludeAttributes, true)) {
-                    if ((int)$value !== 1) {
-                        $attributes[] = htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-                    } else {
-                        $attributes[] = htmlspecialchars($key);
-                    }
+                    $attributes[$key] ??= (int)$value !== 1 ? $value : true;
                     // Ensure that the property is not set afterwards
                     $options[$key] = false;
                 }
@@ -114,16 +105,15 @@ class VideoTagRenderer implements FileRendererInterface
 
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'controlsList', 'preload'] as $key) {
             if (!empty($options[$key])) {
-                $attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
+                $attributes[$key] ??= $options[$key];
             }
         }
 
-        // Clean up duplicate attributes
-        $attributes = array_unique($attributes);
+        $attributesString = GeneralUtility::implodeAttributes($attributes, false, true, true);
 
         return sprintf(
             '<video%s><source src="%s" type="%s"></video>',
-            empty($attributes) ? '' : ' ' . implode(' ', $attributes),
+            $attributesString === '' ? '' : ' ' . $attributesString,
             htmlspecialchars((string)$file->getPublicUrl()),
             $file->getMimeType()
         );

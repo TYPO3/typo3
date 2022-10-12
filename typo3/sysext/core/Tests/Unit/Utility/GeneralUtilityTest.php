@@ -1677,6 +1677,104 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, GeneralUtility::implodeAttributes($input, $xhtmlSafe, $keepEmptyValues));
     }
 
+    public static function implodeAttributesArbitraryDataProvider(): \Iterator
+    {
+        yield 'Generic input' => [
+            ['href' => 'https://example.com', 'title' => 'above'],
+            false,
+            true,
+            'href="https://example.com" title="above"',
+        ];
+        yield 'Generic input keeping empty values' => [
+            ['href' => 'https://example.com', 'title' => ''],
+            true, // keep empty values
+            false,
+            'href="https://example.com" title=""',
+        ];
+        yield 'Generic input removing empty values' => [
+            ['href' => 'https://example.com', 'title' => ''],
+            false,  // do not keep empty values
+            false,
+            'href="https://example.com"',
+        ];
+        yield 'Generic input keep empty values and HTML5 conversion' => [
+            ['href' => 'https://example.com', 'title' => '', 'aria-hidden' => 'true', 'defer' => true, 'disabled' => false, 'nomodule' => null],
+            true,
+            true,
+            'href="https://example.com" title="" aria-hidden="true" defer',
+        ];
+        yield 'Generic input removing empty values and HTML5 conversion' => [
+            ['href' => 'https://example.com', 'title' => '', 'aria-hidden' => 'true', 'defer' => true, 'disabled' => false, 'nomodule' => null],
+            false,
+            true,
+            'href="https://example.com" aria-hidden="true" defer',
+        ];
+        $attr = ['href' => 'https://example.com', 'title' => 'test', 'aria-hidden' => 'true', 'defer' => true, 'disabled' => true, 'nomodule' => true];
+        yield 'Generic input removing with true-ish values' => [
+            $attr,
+            false,
+            true,
+            'href="https://example.com" title="test" aria-hidden="true" defer disabled nomodule',
+        ];
+        $attr = ['href' => 'https://example.com', 'title' => 'test', 'aria-hidden' => 'true', 'defer' => true, 'disabled' => true, 'nomodule' => true];
+        $attr['title'] = ''; // keeps attribute although setting it to blank string
+        $attr['aria-hidden'] = 'false'; // keeps attribute by setting it to non-empty string 'false'
+        $attr['defer'] = false; // removes boolean attribute by setting it to `false`
+        unset($attr['disabled']); // removes attribute using unset
+        $attr['nomodule'] = null; // removes attribute by setting it to `null`
+        yield 'Generic input keeping with false-ish values' => [
+            $attr,
+            true,
+            true,
+            'href="https://example.com" title="" aria-hidden="false"',
+        ];
+        $attr = ['href' => 'https://example.com', 'title' => 'test', 'aria-hidden' => 'true', 'defer' => true, 'disabled' => true, 'nomodule' => true];
+        $attr['title'] = ''; // removes attribute by setting it to blank string
+        $attr['aria-hidden'] = 'false'; // keeps attribute by setting it to non-empty string 'false'
+        $attr['defer'] = false; // removes boolean attribute by setting it to `false`
+        unset($attr['disabled']); // removes attribute using unset
+        $attr['nomodule'] = null; // removes attribute by setting it to `null`
+        yield 'Generic input removing with false-ish values' => [
+            $attr,
+            false,
+            true,
+            'href="https://example.com" aria-hidden="false"',
+        ];
+        yield 'Generic input removing with arrays' => [
+            ['href' => 'https://example.com', 'data-highlight' => ['above' => true, 'below' => true], 'aria-hidden' => 'true', 'defer' => true, 'disabled' => false, 'nomodule' => null],
+            false,
+            true,
+            'href="https://example.com" data-highlight="{&quot;above&quot;:true,&quot;below&quot;:true}" aria-hidden="true" defer',
+        ];
+        yield 'Generic input with Stringable objects' => [
+            ['src' => new class implements \Stringable {
+                public function __toString(): string
+                {
+                    return '/anything.js?a=1&b=2';
+                }
+            }, 'defer' => true],
+            false,
+            true,
+            'src="/anything.js?a=1&amp;b=2" defer',
+        ];
+        $obj = new \stdClass();
+        $obj->above = true;
+        $obj->below = '20px';
+        yield 'Generic input removing with objects' => [
+            ['href' => 'https://example.com', 'data-highlight' => $obj, 'aria-hidden' => 'true', 'defer' => true, 'disabled' => false, 'nomodule' => null],
+            false,
+            true,
+            'href="https://example.com" data-highlight="{&quot;above&quot;:true,&quot;below&quot;:&quot;20px&quot;}" aria-hidden="true" defer',
+        ];
+    }
+
+    #[DataProvider('implodeAttributesArbitraryDataProvider')]
+    #[Test]
+    public function implodeAttributesEscapesProperlyWithArbitraryValues(array $input, bool $keepEmptyValues, bool $convertHtml5, string $expected): void
+    {
+        self::assertSame($expected, GeneralUtility::implodeAttributes($input, true, $keepEmptyValues, $convertHtml5));
+    }
+
     #[Test]
     public function removeDotsFromTypoScriptOverridesSubArray(): void
     {

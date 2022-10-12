@@ -144,7 +144,7 @@ readonly class AssetRenderer
             if ($nonce !== null && $useCsp) {
                 $attributes['nonce'] = $isInline ? $nonce->consumeInline($directive) : $nonce->consumeStatic($directive);
             }
-            $attributesString = count($attributes) ? ' ' . GeneralUtility::implodeAttributes($attributes, true) : '';
+            $attributesString = count($attributes) ? ' ' . GeneralUtility::implodeAttributes($attributes, true, false, true) : '';
             $results[] = str_replace(
                 ['%attributes%', '%source%'],
                 [$attributesString, $assetData['source']],

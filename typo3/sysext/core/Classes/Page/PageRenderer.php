@@ -1432,7 +1432,7 @@ class PageRenderer implements SingletonInterface
                 $tagAttributes['nonce'] = $this->nonce->consumeStatic(Directive::StyleSrcElem);
             }
             $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
-            $tag = '<link ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . $this->endingSlash . '>';
+            $tag = '<link ' . GeneralUtility::implodeAttributes($tagAttributes, true, true, true) . $this->endingSlash . '>';
         }
         if ($properties['allWrap'] ?? false) {
             $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
@@ -1522,7 +1522,7 @@ class PageRenderer implements SingletonInterface
                     $tagAttributes['nonce'] = $this->nonce->consumeStatic(Directive::ScriptSrcElem);
                 }
                 $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
-                $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
+                $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true, true) . '></script>';
                 if ($properties['allWrap'] ?? false) {
                     $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -1595,7 +1595,7 @@ class PageRenderer implements SingletonInterface
                     $tagAttributes['nonce'] = $this->nonce->consumeStatic(Directive::ScriptSrcElem);
                 }
                 $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
-                $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
+                $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true, true) . '></script>';
                 if ($properties['allWrap'] ?? false) {
                     $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -1857,7 +1857,7 @@ class PageRenderer implements SingletonInterface
             $styleTag = "<style%s>\n/*<![CDATA[*/\n<!-- \n%s-->\n/*]]>*/\n</style>\n";
         }
 
-        $attributesList = GeneralUtility::implodeAttributes($attributes, true);
+        $attributesList = GeneralUtility::implodeAttributes($attributes, true, false, true);
         return sprintf(
             $styleTag,
             $attributesList !== '' ? ' ' . $attributesList : '',
@@ -1877,7 +1877,7 @@ class PageRenderer implements SingletonInterface
             $scriptTag = "<script%s>\n/*<![CDATA[*/\n%s/*]]>*/\n</script>\n";
         }
 
-        $attributesList = GeneralUtility::implodeAttributes($attributes, true);
+        $attributesList = GeneralUtility::implodeAttributes($attributes, true, false, true);
         return sprintf(
             $scriptTag,
             $attributesList !== '' ? ' ' . $attributesList : '',

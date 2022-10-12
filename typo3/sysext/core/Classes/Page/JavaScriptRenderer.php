@@ -201,7 +201,7 @@ class JavaScriptRenderer
         if (empty($attributes)) {
             return '';
         }
-        $attributesPart = GeneralUtility::implodeAttributes($attributes, true);
+        $attributesPart = GeneralUtility::implodeAttributes($attributes, true, false, true);
         return sprintf('<script%s%s>%s</script>', $attributesPart ? ' ' : '', $attributesPart, $textContent);
     }
 

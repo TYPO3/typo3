@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\MetaTag;
 
 use TYPO3\CMS\Core\Type\DocType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 {
@@ -226,18 +227,20 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 
         if ($nameAttribute && $contentAttribute) {
             foreach ($this->getProperty($property) as $propertyItem) {
-                $metaTags[] = '<meta '
-                    . htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property) . '" '
-                    . htmlspecialchars($contentAttribute) . '="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
+                $metaTags[] = '<meta ' . GeneralUtility::implodeAttributes([
+                    htmlspecialchars($nameAttribute) => $property,
+                    htmlspecialchars($contentAttribute) => $propertyItem['content'],
+                ], false, true, true) . $endingSlash . '>';
 
                 if (!count($propertyItem['subProperties'])) {
                     continue;
                 }
                 foreach ($propertyItem['subProperties'] as $subProperty => $subPropertyItems) {
                     foreach ($subPropertyItems as $subPropertyItem) {
-                        $metaTags[] = '<meta '
-                            . htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" '
-                            . htmlspecialchars($contentAttribute) . '="' . htmlspecialchars((string)$subPropertyItem) . '"' . $endingSlash . '>';
+                        $metaTags[] = '<meta ' . GeneralUtility::implodeAttributes([
+                            htmlspecialchars($nameAttribute) => $property . $this->subPropertySeparator . $subProperty,
+                            htmlspecialchars($contentAttribute) => (string)$subPropertyItem,
+                        ], false, true, true) . $endingSlash . '>';
                     }
                 }
             }

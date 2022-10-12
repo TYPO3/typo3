@@ -96,6 +96,11 @@ final class AudioTagRendererTest extends UnitTestCase
             ],
             [
                 '//:path/myAudioFile',
+                ['additionalAttributes' => ['loop' => true, 'preload' => 'none', 'data-foo' => ['a' => 1]]],
+                '<audio loop preload="none" data-foo="{&quot;a&quot;:1}" controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
                 ['data' => ['js-required' => 'yes', 'custom-id' => 'audio-123']],
                 '<audio data-js-required="yes" data-custom-id="audio-123" controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
             ]
