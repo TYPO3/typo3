@@ -308,10 +308,6 @@ services:
 
   TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder:
     public: true
-    arguments:
-      $cache: '@cache.typoscript'
-    # TreeBuilder has state and should not be re-used
-    shared: false
 
   TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor:
     public: true

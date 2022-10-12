@@ -56,9 +56,8 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         private readonly IncludeTreeTraverser $treeTraverser,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
         private readonly TreeBuilder $treeBuilder,
-        LosslessTokenizer $losslessTokenizer,
+        private readonly LosslessTokenizer $losslessTokenizer,
     ) {
-        $this->treeBuilder->setTokenizer($losslessTokenizer);
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -115,7 +114,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         // Build the constant include tree
         /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -132,7 +131,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $flattenedConstants = $constantAst->flatten();
 
         // Build the setup include tree
-        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $site);
+        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);

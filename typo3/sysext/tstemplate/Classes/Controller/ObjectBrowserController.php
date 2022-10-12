@@ -64,9 +64,8 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
         private readonly TreeBuilder $treeBuilder,
         private readonly AstTraverser $astTraverser,
-        LosslessTokenizer $losslessTokenizer,
+        private readonly LosslessTokenizer $losslessTokenizer,
     ) {
-        $this->treeBuilder->setTokenizer($losslessTokenizer);
     }
 
     /**
@@ -145,7 +144,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         // Build the constant include tree
         /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -200,7 +199,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         // Flatten constant AST. Needed for setup condition display and setup AST constant substitution.
         $flattenedConstants = $constantAst->flatten();
         // Build the setup include tree
-        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $site);
+        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -326,7 +325,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
 
         // Get current value of to-edit object path
         // Build the constant include tree
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, null);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -344,7 +343,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             $currentValue = $flattenedConstants[$currentObjectPath] ?? '';
         } else {
             // Build the setup include tree
-            $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $site);
+            $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
             // Set enabled conditions in setup include tree
             $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, null, $flattenedConstants);
             $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);

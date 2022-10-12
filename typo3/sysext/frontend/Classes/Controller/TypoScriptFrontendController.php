@@ -24,6 +24,7 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
@@ -65,6 +66,8 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -1191,12 +1194,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // @deprecated: b/w compat. Remove when TemplateService is dropped.
         $this->tmpl->rootLine = $localRootline;
 
+        $tokenizer = GeneralUtility::makeInstance(LossyTokenizer::class);
+
         if ($this->no_cache) {
             // $this->no_cache = true might have been set by earlier TypoScriptFrontendInitialization middleware.
             // This means we don't do any fancy cache stuff, calculate full TypoScript and ignore page cache.
-            $this->prepareUncachedRendering($request, $sysTemplateRows, $localRootline);
+            $this->prepareUncachedRendering($request, $sysTemplateRows, $localRootline, $tokenizer);
             return;
         }
+
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        /** @var PhpFrontend $typoscriptCache */
+        $typoscriptCache = $cacheManager->getCache('typoscript');
 
         // We *always* need the TypoScript constants, one way or the other: Setup conditions can use constants,
         // so we need the constants to substitute their values within setup conditions.
@@ -1215,7 +1224,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         //        beneficial since the code below is *always* executed even in full cached context.
         $treeBuilder = GeneralUtility::makeInstance(TreeBuilder::class);
         $includeTreeTraverser = GeneralUtility::makeInstance(ConditionVerdictAwareIncludeTreeTraverser::class);
-        $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->getSite());
+        $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $this->getSite(), $typoscriptCache);
         $includeTreeTraverser->resetVisitors();
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         $conditionMatcherVisitor->setConditionMatcher(GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine));
@@ -1240,7 +1249,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         //        at all, but just require the final AST in many cases directly. Both above strategies would be caches shared and
         //        re-usable between multiple different pages when constants and conditions resolve identical, which will safe a ton
         //        of time in both not-yet-cached-page and user-int scenarios since AST parsing is gone.
-        $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->getSite());
+        $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $this->getSite(), $typoscriptCache);
         $includeTreeTraverser->resetVisitors();
         $setupConditionConstantSubstitutionVisitor = GeneralUtility::makeInstance(IncludeTreeSetupConditionConstantSubstitutionVisitor::class);
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
@@ -1400,13 +1409,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *        This should be cleaned up and merged with getFromCache() in a more efficient way, for
      *        now it is a simple solution to keep the scenarios apart.
      */
-    private function prepareUncachedRendering(ServerRequestInterface $request, array $sysTemplateRows, array $localRootline): void
+    private function prepareUncachedRendering(ServerRequestInterface $request, array $sysTemplateRows, array $localRootline, TokenizerInterface $tokenizer): void
     {
         $includeTreeTraverser = GeneralUtility::makeInstance(ConditionVerdictAwareIncludeTreeTraverser::class);
         $treeBuilder = GeneralUtility::makeInstance(TreeBuilder::class);
-        $treeBuilder->disableCache();
 
-        $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->getSite());
+        $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $this->getSite());
         $includeTreeTraverser->resetVisitors();
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         $conditionMatcherVisitor->setConditionMatcher(GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine));
@@ -1418,7 +1426,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $constantAst = $constantAstBuilderVisitor->getAst();
         $flatConstants = $constantAst->flatten();
 
-        $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->getSite());
+        $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $this->getSite());
         $includeTreeTraverser->resetVisitors();
         $setupConditionConstantSubstitutionVisitor = GeneralUtility::makeInstance(IncludeTreeSetupConditionConstantSubstitutionVisitor::class);
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);

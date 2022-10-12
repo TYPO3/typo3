@@ -54,7 +54,6 @@ class ConstantEditorController extends AbstractTemplateModuleController
         private readonly AstBuilderInterface $astBuilder,
         private readonly LosslessTokenizer $losslessTokenizer,
     ) {
-        $this->treeBuilder->setTokenizer($losslessTokenizer);
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -132,7 +131,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
         /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($constantAstBuilderVisitor);
@@ -231,7 +230,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($constantAstBuilderVisitor);

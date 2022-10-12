@@ -98,54 +98,39 @@ final class TreeBuilder
     private array $includedSysTemplateUids = [];
 
     /**
-     * Either 'constants' or 'setup'
+     * @param 'constants'|'setup' $type
      */
     private string $type;
+
+    private TokenizerInterface $tokenizer;
+    private ?PhpFrontend $cache = null;
 
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly PackageManager $packageManager,
         private readonly Context $context,
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
-        private TokenizerInterface $tokenizer,
-        private ?PhpFrontend $cache = null,
     ) {
     }
 
     /**
-     * Setting a different Tokenizer than the default injected LossyTokenizer.
-     * Disables caching to ensure backend TypoScript IncludeTrees are never cached!
-     * Used in backend Template module only.
+     * @param 'constants'|'setup' $type
+     * @param bool $forceProcessExtensionStatics @todo: Needed for extbase, we may be able to solve this differently?
      */
-    public function setTokenizer(TokenizerInterface $tokenizer): void
-    {
-        $this->tokenizer = $tokenizer;
-        $this->disableCache();
-    }
-
-    /**
-     * Used in FE in no_cache = true context.
-     * @todo: Maybe change this and simply hand over a cache to getTreeBySysTemplateRowsAndSite() when needed?
-     */
-    public function disableCache(): void
-    {
-        $this->cache = null;
-    }
-
-    /**
-     * This is a special case for extbase BE modules and should not be used otherwise. See property comment.
-     */
-    public function forceProcessExtensionStatics(): void
-    {
-        $this->forceProcessExtensionStatics = true;
-    }
-
-    public function getTreeBySysTemplateRowsAndSite(string $type, array $sysTemplateRows, ?SiteInterface $site = null): RootInclude
-    {
+    public function getTreeBySysTemplateRowsAndSite(
+        string $type,
+        array $sysTemplateRows,
+        TokenizerInterface $tokenizer,
+        ?SiteInterface $site = null,
+        PhpFrontend $cache = null,
+        bool $forceProcessExtensionStatics = false
+    ): RootInclude {
         if (!in_array($type, ['constants', 'setup'])) {
             throw new \RuntimeException('type must be either constants or setup', 1653737656);
         }
-
+        $this->tokenizer = $tokenizer;
+        $this->cache = $cache;
+        $this->forceProcessExtensionStatics = $forceProcessExtensionStatics;
         $this->type = $type;
         $this->includedSysTemplateUids = [];
         $this->extensionStaticsProcessed = false;
