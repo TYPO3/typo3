@@ -43,7 +43,7 @@ class StaticRouteResolverTest extends UnitTestCase
     {
         parent::setUp();
         // A request handler which expects a site to be found.
-        $this->requestHandler = new class() implements RequestHandlerInterface {
+        $this->requestHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new NullResponse();

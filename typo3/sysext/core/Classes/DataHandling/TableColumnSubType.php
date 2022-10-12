@@ -22,15 +22,15 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class TableColumnSubType extends Enumeration
 {
-    const __default = self::DEFAULT_TYPE;
+    public const __default = self::DEFAULT_TYPE;
 
     /**
      * Constants reflecting the table column sub type
      */
-    const DEFAULT_TYPE = '';
+    public const DEFAULT_TYPE = '';
 
-    const DB = 'DB';
-    const FOLDER = 'FOLDER';
+    public const DB = 'DB';
+    public const FOLDER = 'FOLDER';
 
     /**
      * @param mixed $subType

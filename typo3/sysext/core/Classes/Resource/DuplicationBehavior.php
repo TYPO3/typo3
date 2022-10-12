@@ -22,26 +22,26 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class DuplicationBehavior extends Enumeration
 {
-    const __default = self::CANCEL;
+    public const __default = self::CANCEL;
 
     /**
      * If a file is uploaded and another file with
      * the same name already exists, the new file
      * is renamed.
      */
-    const RENAME = 'rename';
+    public const RENAME = 'rename';
 
     /**
      * If a file is uploaded and another file with
      * the same name already exists, the old file
      * gets overwritten by the new file.
      */
-    const REPLACE = 'replace';
+    public const REPLACE = 'replace';
 
     /**
      * If a file is uploaded and another file with
      * the same name already exists, the process is
      * aborted.
      */
-    const CANCEL = 'cancel';
+    public const CANCEL = 'cancel';
 }

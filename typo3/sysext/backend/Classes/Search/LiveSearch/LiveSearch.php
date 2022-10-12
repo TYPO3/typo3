@@ -44,7 +44,7 @@ class LiveSearch
     /**
      * @var int
      */
-    const RECURSIVE_PAGE_LEVEL = 99;
+    public const RECURSIVE_PAGE_LEVEL = 99;
 
     /**
      * @var string

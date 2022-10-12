@@ -3186,7 +3186,7 @@ class ArrayUtilityTest extends UnitTestCase
             'integer' => 1,
             'float' => 1.9,
             'object' => $testObject,
-            'objectWithStringConversion' => new class() {
+            'objectWithStringConversion' => new class () {
                 /**
                  * @return string
                  */

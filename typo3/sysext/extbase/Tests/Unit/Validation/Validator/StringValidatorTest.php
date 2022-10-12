@@ -54,7 +54,7 @@ class StringValidatorTest extends UnitTestCase
             ->onlyMethods(['translateErrorMessage'])
             ->getMock();
 
-        $object = new class() {
+        $object = new class () {
             /** @return string */
             public function __toString()
             {

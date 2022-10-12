@@ -35,12 +35,12 @@ class QueryParser
     /**
      * @var string
      */
-    const COMMAND_KEY_INDICATOR = '#';
+    public const COMMAND_KEY_INDICATOR = '#';
 
     /**
      * @var string
      */
-    const COMMAND_SPLIT_INDICATOR = ':';
+    public const COMMAND_SPLIT_INDICATOR = ':';
 
     /**
      * Retrieve the validated command key

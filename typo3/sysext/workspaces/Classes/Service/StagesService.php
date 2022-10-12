@@ -30,12 +30,12 @@ use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
  */
 class StagesService implements SingletonInterface
 {
-    const TABLE_STAGE = 'sys_workspace_stage';
+    public const TABLE_STAGE = 'sys_workspace_stage';
     // if a record is in the "ready to publish" stage STAGE_PUBLISH_ID the nextStage is STAGE_PUBLISH_EXECUTE_ID, this id wont be saved at any time in db
-    const STAGE_PUBLISH_EXECUTE_ID = -20;
+    public const STAGE_PUBLISH_EXECUTE_ID = -20;
     // ready to publish stage
-    const STAGE_PUBLISH_ID = -10;
-    const STAGE_EDIT_ID = 0;
+    public const STAGE_PUBLISH_ID = -10;
+    public const STAGE_EDIT_ID = 0;
 
     /**
      * Path to the locallang file

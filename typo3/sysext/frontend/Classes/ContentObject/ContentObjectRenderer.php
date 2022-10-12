@@ -460,13 +460,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @see ContentObjectRender::$userObjectType
      */
-    const OBJECTTYPE_USER_INT = 1;
+    public const OBJECTTYPE_USER_INT = 1;
     /**
      * Indicates that object type is USER.
      *
      * @see ContentObjectRender::$userObjectType
      */
-    const OBJECTTYPE_USER = 2;
+    public const OBJECTTYPE_USER = 2;
 
     /**
      * @param TypoScriptFrontendController $typoScriptFrontendController

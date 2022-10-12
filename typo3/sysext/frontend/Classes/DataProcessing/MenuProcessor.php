@@ -60,8 +60,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class MenuProcessor implements DataProcessorInterface
 {
-    const LINK_PLACEHOLDER = '###LINKPLACEHOLDER###';
-    const TARGET_PLACEHOLDER = '###TARGETPLACEHOLDER###';
+    public const LINK_PLACEHOLDER = '###LINKPLACEHOLDER###';
+    public const TARGET_PLACEHOLDER = '###TARGETPLACEHOLDER###';
 
     /**
      * The content object renderer

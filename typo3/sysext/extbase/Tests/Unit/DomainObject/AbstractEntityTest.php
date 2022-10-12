@@ -30,7 +30,7 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties(): void
     {
-        $domainObject = new class() extends AbstractEntity {
+        $domainObject = new class () extends AbstractEntity {
             public $foo = 'Test';
             public $bar = 'It is raining outside';
         };
@@ -44,7 +44,7 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards(): void
     {
-        $domainObject = new class() extends AbstractEntity {
+        $domainObject = new class () extends AbstractEntity {
             public $foo = 'Test';
             public $bar = 'It is raining outside';
         };
@@ -59,7 +59,7 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties(): void
     {
-        $domainObject = new class() extends AbstractEntity {
+        $domainObject = new class () extends AbstractEntity {
             public $foo;
             public $bar = 'It is raining outside';
         };
@@ -74,12 +74,12 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties(): void
     {
-        $domainObject = new class() extends AbstractEntity {
+        $domainObject = new class () extends AbstractEntity {
             public $foo;
             public $bar;
         };
 
-        $secondDomainObject = new class() extends AbstractEntity {
+        $secondDomainObject = new class () extends AbstractEntity {
             public $foo;
             public $bar;
         };

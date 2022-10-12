@@ -23,19 +23,19 @@ interface FrontendInterface
     /**
      * "Magic" tag for class-related entries
      */
-    const TAG_CLASS = '%CLASS%';
+    public const TAG_CLASS = '%CLASS%';
     /**
      * "Magic" tag for package-related entries
      */
-    const TAG_PACKAGE = '%PACKAGE%';
+    public const TAG_PACKAGE = '%PACKAGE%';
     /**
      * Pattern an entry identifier must match.
      */
-    const PATTERN_ENTRYIDENTIFIER = '/^[a-zA-Z0-9_%\\-&]{1,250}$/';
+    public const PATTERN_ENTRYIDENTIFIER = '/^[a-zA-Z0-9_%\\-&]{1,250}$/';
     /**
      * Pattern a tag must match.
      */
-    const PATTERN_TAG = '/^[a-zA-Z0-9_%\\-&]{1,250}$/';
+    public const PATTERN_TAG = '/^[a-zA-Z0-9_%\\-&]{1,250}$/';
     /**
      * Returns this cache's identifier
      *

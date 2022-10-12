@@ -40,15 +40,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class SystemEnvironmentBuilder
 {
     /** @internal */
-    const REQUESTTYPE_FE = 1;
+    public const REQUESTTYPE_FE = 1;
     /** @internal */
-    const REQUESTTYPE_BE = 2;
+    public const REQUESTTYPE_BE = 2;
     /** @internal */
-    const REQUESTTYPE_CLI = 4;
+    public const REQUESTTYPE_CLI = 4;
     /** @internal */
-    const REQUESTTYPE_AJAX = 8;
+    public const REQUESTTYPE_AJAX = 8;
     /** @internal */
-    const REQUESTTYPE_INSTALL = 16;
+    public const REQUESTTYPE_INSTALL = 16;
 
     /**
      * Run base setup.
@@ -223,7 +223,7 @@ class SystemEnvironmentBuilder
             static::usesComposerClassLoading(),
             $isDifferentRootPath ? $projectRootPath : $sitePath,
             $sitePath,
-            $isDifferentRootPath ? $projectRootPath . '/var'    : $sitePath . '/typo3temp/var',
+            $isDifferentRootPath ? $projectRootPath . '/var' : $sitePath . '/typo3temp/var',
             $isDifferentRootPath ? $projectRootPath . '/config' : $sitePath . '/typo3conf',
             $scriptPath,
             self::isRunningOnWindows() ? 'WINDOWS' : 'UNIX'

@@ -34,8 +34,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvider
 {
-    const MODE_CHILDREN = 1;
-    const MODE_PARENT = 2;
+    public const MODE_CHILDREN = 1;
+    public const MODE_PARENT = 2;
 
     /**
      * @var string

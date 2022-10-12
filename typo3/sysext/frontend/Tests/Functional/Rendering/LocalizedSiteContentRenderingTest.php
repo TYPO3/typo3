@@ -100,9 +100,9 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
 {
     use SiteBasedTestTrait;
 
-    const VALUE_PageId = 89;
-    const TABLE_Content = 'tt_content';
-    const TABLE_Pages = 'pages';
+    public const VALUE_PageId = 89;
+    public const TABLE_Content = 'tt_content';
+    public const TABLE_Pages = 'pages';
 
     protected $coreExtensionsToLoad = ['workspaces'];
 

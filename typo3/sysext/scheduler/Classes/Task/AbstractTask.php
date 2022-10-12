@@ -35,8 +35,8 @@ abstract class AbstractTask implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const TYPE_SINGLE = 1;
-    const TYPE_RECURRING = 2;
+    public const TYPE_SINGLE = 1;
+    public const TYPE_RECURRING = 2;
 
     /**
      * Reference to a scheduler object

@@ -57,7 +57,7 @@ class GenericObjectValidatorTest extends UnitTestCase
         $resultWithError1->addError($error1);
         $resultWithError2 = new Result();
         $resultWithError2->addError($error2);
-        $objectWithPrivateProperties = new class() {
+        $objectWithPrivateProperties = new class () {
             protected $foo = 'foovalue';
             protected $bar = 'barvalue';
 
@@ -114,11 +114,11 @@ class GenericObjectValidatorTest extends UnitTestCase
      */
     public function validateCanHandleRecursiveTargetsWithoutEndlessLooping(): void
     {
-        $A = new class() {
+        $A = new class () {
             public $b;
         };
 
-        $B = new class() {
+        $B = new class () {
             public $a;
         };
 
@@ -139,11 +139,11 @@ class GenericObjectValidatorTest extends UnitTestCase
      */
     public function validateDetectsFailuresInRecursiveTargetsI(): void
     {
-        $A = new class() {
+        $A = new class () {
             public $b;
         };
 
-        $B = new class() {
+        $B = new class () {
             public $a;
             public $uuid = 0xF;
         };
@@ -173,12 +173,12 @@ class GenericObjectValidatorTest extends UnitTestCase
      */
     public function validateDetectsFailuresInRecursiveTargetsII(): void
     {
-        $A = new class() {
+        $A = new class () {
             public $b;
             public $uuid = 0xF;
         };
 
-        $B = new class() {
+        $B = new class () {
             public $a;
             public $uuid = 0xF;
         };
@@ -210,12 +210,12 @@ class GenericObjectValidatorTest extends UnitTestCase
     public function validateDetectsFailuresInRecursiveTargetsIII(): void
     {
         // Create to test-entities. Use the same uuid to make the same validator trigger on both objects
-        $A = new class() {
+        $A = new class () {
             public $b;
             public $uuid = 0xF;
         };
 
-        $B = new class() {
+        $B = new class () {
             public $a;
             public $uuid = 0xF;
         };

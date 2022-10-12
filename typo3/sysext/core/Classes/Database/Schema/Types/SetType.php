@@ -25,7 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SetType extends Type
 {
-    const TYPE = 'set';
+    public const TYPE = 'set';
 
     /**
      * Gets the SQL declaration snippet for a field of this type.

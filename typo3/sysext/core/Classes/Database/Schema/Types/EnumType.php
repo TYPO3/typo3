@@ -25,7 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class EnumType extends Type
 {
-    const TYPE = 'enum';
+    public const TYPE = 'enum';
 
     /**
      * Gets the SQL declaration snippet for a field of this type.

@@ -100,7 +100,7 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     public function add(MiddlewareInterface $middleware)
     {
         $next = $this->tip;
-        $this->tip = new class($middleware, $next) implements RequestHandlerInterface {
+        $this->tip = new class ($middleware, $next) implements RequestHandlerInterface {
             /**
              * @var MiddlewareInterface
              */
@@ -135,7 +135,7 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     public function lazy(string $middleware): void
     {
         $next = $this->tip;
-        $this->tip = new class($middleware, $next, $this->container) implements RequestHandlerInterface {
+        $this->tip = new class ($middleware, $next, $this->container) implements RequestHandlerInterface {
             /**
              * @var string
              */

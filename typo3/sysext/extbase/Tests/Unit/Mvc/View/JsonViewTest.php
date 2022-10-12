@@ -104,7 +104,7 @@ class JsonViewTest extends UnitTestCase
         $output[] = [$object, $configuration, $expected, 'array of objects should be serialized'];
 
         $properties = ['foo' => 'bar', 'prohibited' => 'xxx'];
-        $nestedObject = new class($properties) {
+        $nestedObject = new class ($properties) {
             private $properties;
             private $prohibited;
             public function __construct($properties)
@@ -192,7 +192,7 @@ class JsonViewTest extends UnitTestCase
      */
     public function jsonViewTestDataRecursive(): array
     {
-        $object = new class('foo') {
+        $object = new class ('foo') {
             private $value1 = '';
             private $child;
             public function __construct($value1)
@@ -243,7 +243,7 @@ class JsonViewTest extends UnitTestCase
 
         $output[] = [$object, $configuration, $expected, 'testData', 'Recursive rendering of defined property should be possible.'];
 
-        $object = new class('foo') {
+        $object = new class ('foo') {
             private $value1 = '';
             private $children = [];
             private $secret = 'secret';

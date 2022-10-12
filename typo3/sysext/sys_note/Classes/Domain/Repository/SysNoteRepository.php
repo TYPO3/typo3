@@ -28,8 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysNoteRepository
 {
-    const SYS_NOTE_POSITION_BOTTOM = 0;
-    const SYS_NOTE_POSITION_TOP = 1;
+    public const SYS_NOTE_POSITION_BOTTOM = 0;
+    public const SYS_NOTE_POSITION_TOP = 1;
 
     /**
      * Find notes by given pids and author

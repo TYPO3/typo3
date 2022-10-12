@@ -78,7 +78,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function doesNotDispatchStoppedEvent(callable $callable): void
     {
-        $event = new class() implements StoppableEventInterface {
+        $event = new class () implements StoppableEventInterface {
             public $invoked = 0;
 
             public function isPropagationStopped(): bool
@@ -121,7 +121,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function stopsOnStoppedEvent(callable $callable): void
     {
-        $event = new class() implements StoppableEventInterface {
+        $event = new class () implements StoppableEventInterface {
             public $invoked = 0;
             public $stopped = false;
 
@@ -173,7 +173,7 @@ class EventDispatcherTest extends UnitTestCase
         return [
             [
                 // Invokable
-                new class() {
+                new class () {
                     public function __invoke(object $event): void
                     {
                         $event->invoked += 1;
@@ -183,7 +183,7 @@ class EventDispatcherTest extends UnitTestCase
             [
                 // Class + method
                 [
-                    new class() {
+                    new class () {
                         public function onEvent(object $event): void
                         {
                             $event->invoked += 1;

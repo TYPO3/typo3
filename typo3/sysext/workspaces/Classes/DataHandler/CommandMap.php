@@ -32,16 +32,16 @@ use TYPO3\CMS\Workspaces\Hook\DataHandlerHook;
  */
 class CommandMap
 {
-    const SCOPE_WorkspacesSwap = 'SCOPE_WorkspacesSwap';
-    const SCOPE_WorkspacesSetStage = 'SCOPE_WorkspacesSetStage';
-    const SCOPE_WorkspacesClear = 'SCOPE_WorkspacesClear';
-    const KEY_GetElementPropertiesCallback = 'KEY_GetElementPropertiesCallback';
-    const KEY_GetCommonPropertiesCallback = 'KEY_GetCommonPropertiesCallback';
-    const KEY_ElementConstructCallback = 'KEY_EventConstructCallback';
-    const KEY_ElementCreateChildReferenceCallback = 'KEY_ElementCreateChildReferenceCallback';
-    const KEY_ElementCreateParentReferenceCallback = 'KEY_ElementCreateParentReferenceCallback';
-    const KEY_UpdateGetIdCallback = 'KEY_UpdateGetIdCallback';
-    const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
+    public const SCOPE_WorkspacesSwap = 'SCOPE_WorkspacesSwap';
+    public const SCOPE_WorkspacesSetStage = 'SCOPE_WorkspacesSetStage';
+    public const SCOPE_WorkspacesClear = 'SCOPE_WorkspacesClear';
+    public const KEY_GetElementPropertiesCallback = 'KEY_GetElementPropertiesCallback';
+    public const KEY_GetCommonPropertiesCallback = 'KEY_GetCommonPropertiesCallback';
+    public const KEY_ElementConstructCallback = 'KEY_EventConstructCallback';
+    public const KEY_ElementCreateChildReferenceCallback = 'KEY_ElementCreateChildReferenceCallback';
+    public const KEY_ElementCreateParentReferenceCallback = 'KEY_ElementCreateParentReferenceCallback';
+    public const KEY_UpdateGetIdCallback = 'KEY_UpdateGetIdCallback';
+    public const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
 
     /**
      * @var DataHandlerHook

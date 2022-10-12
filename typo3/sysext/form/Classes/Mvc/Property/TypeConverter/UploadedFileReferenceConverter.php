@@ -49,22 +49,22 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Folder where the file upload should go to (including storage).
      */
-    const CONFIGURATION_UPLOAD_FOLDER = 1;
+    public const CONFIGURATION_UPLOAD_FOLDER = 1;
 
     /**
      * How to handle a upload when the name of the uploaded file conflicts.
      */
-    const CONFIGURATION_UPLOAD_CONFLICT_MODE = 2;
+    public const CONFIGURATION_UPLOAD_CONFLICT_MODE = 2;
 
     /**
      * Random seed to be used for deriving storage sub-folders.
      */
-    const CONFIGURATION_UPLOAD_SEED = 3;
+    public const CONFIGURATION_UPLOAD_SEED = 3;
 
     /**
      * Validator for file types
      */
-    const CONFIGURATION_FILE_VALIDATORS = 4;
+    public const CONFIGURATION_FILE_VALIDATORS = 4;
 
     /**
      * @var string

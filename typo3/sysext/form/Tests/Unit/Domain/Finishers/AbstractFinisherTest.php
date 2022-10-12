@@ -495,7 +495,7 @@ class AbstractFinisherTest extends UnitTestCase
             'date-1' => $date,
         ]);
 
-        $stringableElement = new class() implements StringableFormElementInterface {
+        $stringableElement = new class () implements StringableFormElementInterface {
             /**
              * @param \DateTimeInterface $value
              */

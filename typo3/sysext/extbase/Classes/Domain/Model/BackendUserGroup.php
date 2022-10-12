@@ -26,10 +26,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class BackendUserGroup extends AbstractEntity
 {
-    const FILE_OPPERATIONS = 1;
-    const DIRECTORY_OPPERATIONS = 4;
-    const DIRECTORY_COPY = 8;
-    const DIRECTORY_REMOVE_RECURSIVELY = 16;
+    public const FILE_OPPERATIONS = 1;
+    public const DIRECTORY_OPPERATIONS = 4;
+    public const DIRECTORY_COPY = 8;
+    public const DIRECTORY_REMOVE_RECURSIVELY = 16;
 
     /**
      * @var string

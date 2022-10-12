@@ -40,7 +40,7 @@ class TestServiceProvider implements ServiceProviderInterface
             'serviceC' => static function (ContainerInterface $container): \stdClass {
                 return new \stdClass();
             },
-            'serviceD' => new class() {
+            'serviceD' => new class () {
                 public function __invoke(ContainerInterface $container): \stdClass
                 {
                     return new \stdClass();

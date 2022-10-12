@@ -28,12 +28,12 @@ class Workspace extends AbstractEntity
     /**
      * @var int
      */
-    const UID_LIVE_WORKSPACE = 0;
+    public const UID_LIVE_WORKSPACE = 0;
 
     /**
      * @var int
      */
-    const UID_ANY_WORKSPACE = -99;
+    public const UID_ANY_WORKSPACE = -99;
 
     /**
      * title of the workspace

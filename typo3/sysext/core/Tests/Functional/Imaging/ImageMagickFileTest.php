@@ -43,18 +43,18 @@ class ImageMagickFileTest extends FunctionalTestCase
 
         $fixturePath = __DIR__ . '/Fixtures';
         $structure = [];
-        $this->addFiles($structure, ['file.ai',   'file.ai.jpg'], $fixturePath . '/file.ai');
-        $this->addFiles($structure, ['file.bmp',  'file.bmp.jpg'], $fixturePath . '/file.bmp');
-        $this->addFiles($structure, ['file.gif',  'file.gif.jpg'], $fixturePath . '/file.gif');
-        $this->addFiles($structure, ['file.fax',  'file.fax.jpg'], $fixturePath . '/file.fax');
-        $this->addFiles($structure, ['file.jpg',  'file.jpg.png'], $fixturePath . '/file.jpg');
-        $this->addFiles($structure, ['file.png',  'file.png.jpg'], $fixturePath . '/file.png');
-        $this->addFiles($structure, ['file.svg',  'file.svg.jpg'], $fixturePath . '/file.svg');
-        $this->addFiles($structure, ['file.tif',  'file.tif.jpg'], $fixturePath . '/file.tif');
+        $this->addFiles($structure, ['file.ai', 'file.ai.jpg'], $fixturePath . '/file.ai');
+        $this->addFiles($structure, ['file.bmp', 'file.bmp.jpg'], $fixturePath . '/file.bmp');
+        $this->addFiles($structure, ['file.gif', 'file.gif.jpg'], $fixturePath . '/file.gif');
+        $this->addFiles($structure, ['file.fax', 'file.fax.jpg'], $fixturePath . '/file.fax');
+        $this->addFiles($structure, ['file.jpg', 'file.jpg.png'], $fixturePath . '/file.jpg');
+        $this->addFiles($structure, ['file.png', 'file.png.jpg'], $fixturePath . '/file.png');
+        $this->addFiles($structure, ['file.svg', 'file.svg.jpg'], $fixturePath . '/file.svg');
+        $this->addFiles($structure, ['file.tif', 'file.tif.jpg'], $fixturePath . '/file.tif');
         $this->addFiles($structure, ['file.webp', 'file.webp.jpg'], $fixturePath . '/file.webp');
-        $this->addFiles($structure, ['file.pdf',  'file.pdf.jpg'], $fixturePath . '/file.pdf');
-        $this->addFiles($structure, ['file.ps',   'file.ps.jpg'], $fixturePath . '/file.ps');
-        $this->addFiles($structure, ['file.eps',  'file.eps.jpg'], $fixturePath . '/file.eps');
+        $this->addFiles($structure, ['file.pdf', 'file.pdf.jpg'], $fixturePath . '/file.pdf');
+        $this->addFiles($structure, ['file.ps', 'file.ps.jpg'], $fixturePath . '/file.ps');
+        $this->addFiles($structure, ['file.eps', 'file.eps.jpg'], $fixturePath . '/file.eps');
         $this->directory = vfsStream::setup('root', null, $structure);
     }
 
@@ -71,7 +71,7 @@ class ImageMagickFileTest extends FunctionalTestCase
     {
         return [
             'file.pdf'    => ['file.pdf', null, '\'pdf:{directory}/file.pdf\''],
-            'file.pdf[0]' => ['file.pdf',    0, '\'pdf:{directory}/file.pdf[0]\''],
+            'file.pdf[0]' => ['file.pdf', 0, '\'pdf:{directory}/file.pdf[0]\''],
         ];
     }
 
@@ -100,14 +100,14 @@ class ImageMagickFileTest extends FunctionalTestCase
         if (DIRECTORY_SEPARATOR === '\\') {
             return [
                 'without frame'    => ['file.pdf', null, '"pdf:{directory}/file.pdf"'],
-                'with first frame' => ['file.pdf',    0, '"pdf:{directory}/file.pdf[0]"'],
+                'with first frame' => ['file.pdf', 0, '"pdf:{directory}/file.pdf[0]"'],
                 'special literals' => ['\'`%$!".png', 0, '"png:{directory}/\'` $  .png[0]"'],
             ];
         }
         // probably Unix system
         return [
             'without frame'    => ['file.pdf', null, '\'pdf:{directory}/file.pdf\''],
-            'with first frame' => ['file.pdf',    0, '\'pdf:{directory}/file.pdf[0]\''],
+            'with first frame' => ['file.pdf', 0, '\'pdf:{directory}/file.pdf[0]\''],
             'special literals' => ['\'`%$!".png', 0, '\'png:{directory}/\'\\\'\'`%$!".png[0]\''],
         ];
     }
@@ -134,25 +134,25 @@ class ImageMagickFileTest extends FunctionalTestCase
     public function fileStatementIsResolvedDataProvider(): array
     {
         return [
-            'file.ai'       => ['file.ai',       '\'pdf:{directory}/file.ai\''],
-            'file.ai.jpg'   => ['file.ai.jpg',   '\'pdf:{directory}/file.ai.jpg\''],
-            'file.gif'      => ['file.gif',      '\'gif:{directory}/file.gif\''],
-            'file.gif.jpg'  => ['file.gif.jpg',  '\'gif:{directory}/file.gif.jpg\''],
-            'file.jpg'      => ['file.jpg',      '\'jpg:{directory}/file.jpg\''],
-            'file.jpg.png'  => ['file.jpg.png',  '\'jpg:{directory}/file.jpg.png\''],
-            'file.png'      => ['file.png',      '\'png:{directory}/file.png\''],
-            'file.png.jpg'  => ['file.png.jpg',  '\'png:{directory}/file.png.jpg\''],
-            'file.svg'      => ['file.svg',      '\'svg:{directory}/file.svg\''],
-            'file.svg.jpg'  => ['file.svg.jpg',  '\'svg:{directory}/file.svg.jpg\''],
-            'file.tif'      => ['file.tif',      '\'tif:{directory}/file.tif\''],
-            'file.tif.jpg'  => ['file.tif.jpg',  '\'tif:{directory}/file.tif.jpg\''],
-            'file.webp'     => ['file.webp',     '\'webp:{directory}/file.webp\''],
+            'file.ai'       => ['file.ai', '\'pdf:{directory}/file.ai\''],
+            'file.ai.jpg'   => ['file.ai.jpg', '\'pdf:{directory}/file.ai.jpg\''],
+            'file.gif'      => ['file.gif', '\'gif:{directory}/file.gif\''],
+            'file.gif.jpg'  => ['file.gif.jpg', '\'gif:{directory}/file.gif.jpg\''],
+            'file.jpg'      => ['file.jpg', '\'jpg:{directory}/file.jpg\''],
+            'file.jpg.png'  => ['file.jpg.png', '\'jpg:{directory}/file.jpg.png\''],
+            'file.png'      => ['file.png', '\'png:{directory}/file.png\''],
+            'file.png.jpg'  => ['file.png.jpg', '\'png:{directory}/file.png.jpg\''],
+            'file.svg'      => ['file.svg', '\'svg:{directory}/file.svg\''],
+            'file.svg.jpg'  => ['file.svg.jpg', '\'svg:{directory}/file.svg.jpg\''],
+            'file.tif'      => ['file.tif', '\'tif:{directory}/file.tif\''],
+            'file.tif.jpg'  => ['file.tif.jpg', '\'tif:{directory}/file.tif.jpg\''],
+            'file.webp'     => ['file.webp', '\'webp:{directory}/file.webp\''],
             'file.webp.jpg' => ['file.webp.jpg', '\'webp:{directory}/file.webp.jpg\''],
-            'file.pdf'      => ['file.pdf',      '\'pdf:{directory}/file.pdf\''],
-            'file.pdf.jpg'  => ['file.pdf.jpg',  '\'pdf:{directory}/file.pdf.jpg\''],
+            'file.pdf'      => ['file.pdf', '\'pdf:{directory}/file.pdf\''],
+            'file.pdf.jpg'  => ['file.pdf.jpg', '\'pdf:{directory}/file.pdf.jpg\''],
             // accepted, since postscript files are converted using 'jpg:' format
-            'file.ps.jpg'   => ['file.ps.jpg',   '\'jpg:{directory}/file.ps.jpg\''],
-            'file.eps.jpg'  => ['file.eps.jpg',  '\'jpg:{directory}/file.eps.jpg\''],
+            'file.ps.jpg'   => ['file.ps.jpg', '\'jpg:{directory}/file.ps.jpg\''],
+            'file.eps.jpg'  => ['file.eps.jpg', '\'jpg:{directory}/file.eps.jpg\''],
         ];
     }
 
@@ -180,20 +180,20 @@ class ImageMagickFileTest extends FunctionalTestCase
     public function fileStatementIsResolvedForEnforcedMimeTypeDataProvider(): array
     {
         return [
-            'file.ai.jpg'   => ['file.ai.jpg',   '\'jpg:{directory}/file.ai.jpg\'',   'inode/x-empty'],
-            'file.bmp.jpg'  => ['file.bmp.jpg',  '\'jpg:{directory}/file.bmp.jpg\'',  'inode/x-empty'],
-            'file.fax.jpg'  => ['file.fax.jpg',  '\'jpg:{directory}/file.fax.jpg\'',  'inode/x-empty'],
-            'file.gif.jpg'  => ['file.gif.jpg',  '\'jpg:{directory}/file.gif.jpg\'',  'inode/x-empty'],
-            'file.jpg'      => ['file.jpg',      '\'jpg:{directory}/file.jpg\'',      'inode/x-empty'],
-            'file.jpg.png'  => ['file.jpg.png',  '\'png:{directory}/file.jpg.png\'',  'inode/x-empty'],
-            'file.png'      => ['file.png',      '\'png:{directory}/file.png\'',      'inode/x-empty'],
-            'file.png.jpg'  => ['file.png.jpg',  '\'jpg:{directory}/file.png.jpg\'',  'inode/x-empty'],
-            'file.svg.jpg'  => ['file.svg.jpg',  '\'jpg:{directory}/file.svg.jpg\'',  'inode/x-empty'],
-            'file.tif'      => ['file.tif',      '\'tif:{directory}/file.tif\'',      'inode/x-empty'],
-            'file.tif.jpg'  => ['file.tif.jpg',  '\'jpg:{directory}/file.tif.jpg\'',  'inode/x-empty'],
-            'file.webp'     => ['file.webp',     '\'webp:{directory}/file.webp\'',    'inode/x-empty'],
+            'file.ai.jpg'   => ['file.ai.jpg', '\'jpg:{directory}/file.ai.jpg\'', 'inode/x-empty'],
+            'file.bmp.jpg'  => ['file.bmp.jpg', '\'jpg:{directory}/file.bmp.jpg\'', 'inode/x-empty'],
+            'file.fax.jpg'  => ['file.fax.jpg', '\'jpg:{directory}/file.fax.jpg\'', 'inode/x-empty'],
+            'file.gif.jpg'  => ['file.gif.jpg', '\'jpg:{directory}/file.gif.jpg\'', 'inode/x-empty'],
+            'file.jpg'      => ['file.jpg', '\'jpg:{directory}/file.jpg\'', 'inode/x-empty'],
+            'file.jpg.png'  => ['file.jpg.png', '\'png:{directory}/file.jpg.png\'', 'inode/x-empty'],
+            'file.png'      => ['file.png', '\'png:{directory}/file.png\'', 'inode/x-empty'],
+            'file.png.jpg'  => ['file.png.jpg', '\'jpg:{directory}/file.png.jpg\'', 'inode/x-empty'],
+            'file.svg.jpg'  => ['file.svg.jpg', '\'jpg:{directory}/file.svg.jpg\'', 'inode/x-empty'],
+            'file.tif'      => ['file.tif', '\'tif:{directory}/file.tif\'', 'inode/x-empty'],
+            'file.tif.jpg'  => ['file.tif.jpg', '\'jpg:{directory}/file.tif.jpg\'', 'inode/x-empty'],
+            'file.webp'     => ['file.webp', '\'webp:{directory}/file.webp\'', 'inode/x-empty'],
             'file.webp.jpg' => ['file.webp.jpg', '\'jpg:{directory}/file.webp.jpg\'', 'inode/x-empty'],
-            'file.pdf.jpg'  => ['file.pdf.jpg',  '\'jpg:{directory}/file.pdf.jpg\'',  'inode/x-empty'],
+            'file.pdf.jpg'  => ['file.pdf.jpg', '\'jpg:{directory}/file.pdf.jpg\'', 'inode/x-empty'],
         ];
     }
 
@@ -220,8 +220,8 @@ class ImageMagickFileTest extends FunctionalTestCase
     public function fileStatementIsResolvedForConfiguredMimeTypeDataProvider(): array
     {
         return [
-            'file.fax'      => ['file.fax',      '\'g3:{directory}/file.fax\''],
-            'file.bmp'      => ['file.bmp',      '\'dib:{directory}/file.bmp\''],
+            'file.fax'      => ['file.fax', '\'g3:{directory}/file.fax\''],
+            'file.bmp'      => ['file.bmp', '\'dib:{directory}/file.bmp\''],
         ];
     }
 
@@ -254,7 +254,7 @@ class ImageMagickFileTest extends FunctionalTestCase
             'file.ps'     => ['file.ps'],
             'file.eps'    => ['file.eps'],
             // denied since not defined in allowed extensions
-            'file.ai'     => ['file.ai',  'inode/x-empty'],
+            'file.ai'     => ['file.ai', 'inode/x-empty'],
             'file.svg'    => ['file.svg', 'inode/x-empty'],
             'file.pdf'    => ['file.pdf', 'inode/x-empty'],
         ];

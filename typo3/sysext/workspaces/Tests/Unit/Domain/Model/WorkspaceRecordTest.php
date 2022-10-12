@@ -87,7 +87,7 @@ class WorkspaceRecordTest extends UnitTestCase
      */
     public function getForConfiguredXclassReturnsInstanceOfXclass(): void
     {
-        $xclassInstance = new class([]) extends WorkspaceRecord {
+        $xclassInstance = new class ([]) extends WorkspaceRecord {
         };
         $xclassName = get_class($xclassInstance);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][WorkspaceRecord::class] = ['className' => $xclassName];

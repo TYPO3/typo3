@@ -76,7 +76,7 @@ class StripTagsViewHelperTest extends FunctionalTestCase
      */
     public function renderEscapesObjectIfPossible(): void
     {
-        $toStringClass = new class() {
+        $toStringClass = new class () {
             public function __toString(): string
             {
                 return '<script>alert(\'"xss"\')</script>';

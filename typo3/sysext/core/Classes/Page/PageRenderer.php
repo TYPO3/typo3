@@ -47,8 +47,8 @@ class PageRenderer implements SingletonInterface
     protected const PART_HEADER = 1;
     protected const PART_FOOTER = 2;
 
-    const REQUIREJS_SCOPE_CONFIG = 'config';
-    const REQUIREJS_SCOPE_RESOLVE = 'resolve';
+    public const REQUIREJS_SCOPE_CONFIG = 'config';
+    public const REQUIREJS_SCOPE_RESOLVE = 'resolve';
 
     /**
      * @var bool

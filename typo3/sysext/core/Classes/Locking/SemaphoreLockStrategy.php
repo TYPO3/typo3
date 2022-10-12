@@ -28,8 +28,8 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
 {
     use BlockSerializationTrait;
 
-    const FILE_LOCK_FOLDER = 'lock/';
-    const DEFAULT_PRIORITY = 25;
+    public const FILE_LOCK_FOLDER = 'lock/';
+    public const DEFAULT_PRIORITY = 25;
 
     /**
      * @var int Identifier used for this lock

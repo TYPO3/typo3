@@ -23,11 +23,11 @@ interface PackageInterface
     /**
      * See https://github.com/composer/composer/blob/2.1.6/src/Composer/Command/InitCommand.php#L100
      */
-    const PATTERN_MATCH_COMPOSER_NAME = '{^[a-z0-9_.-]+/[a-z0-9_.-]+$}D';
+    public const PATTERN_MATCH_COMPOSER_NAME = '{^[a-z0-9_.-]+/[a-z0-9_.-]+$}D';
 
-    const PATTERN_MATCH_PACKAGEKEY = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+$/i';
+    public const PATTERN_MATCH_PACKAGEKEY = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+$/i';
 
-    const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_-]+$/i';
+    public const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_-]+$/i';
 
     /**
      * @return array

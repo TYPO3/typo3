@@ -183,7 +183,7 @@ class StringLengthValidatorTest extends UnitTestCase
     public function stringLengthValidatorCanHandleAnObjectWithAToStringMethod(): void
     {
         $validator = new StringLengthValidator(['minimum' => 5, 'maximum' => 100]);
-        $object = new class() {
+        $object = new class () {
             /** @return string */
             public function __toString()
             {
@@ -200,7 +200,7 @@ class StringLengthValidatorTest extends UnitTestCase
     public function validateReturnsErrorsIfTheGivenObjectCanNotBeConvertedToAString(): void
     {
         $validator = new StringLengthValidator(['minimum' => 5, 'maximum' => 100]);
-        $object = new class() {
+        $object = new class () {
         };
 
         $result = $validator->validate($object);

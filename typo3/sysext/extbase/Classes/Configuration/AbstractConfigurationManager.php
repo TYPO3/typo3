@@ -35,7 +35,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
     /**
      * Default backend storage PID
      */
-    const DEFAULT_BACKEND_STORAGE_PID = 0;
+    public const DEFAULT_BACKEND_STORAGE_PID = 0;
 
     /**
      * Storage of the raw TypoScript configuration

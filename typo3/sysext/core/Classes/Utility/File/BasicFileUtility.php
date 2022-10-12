@@ -36,7 +36,7 @@ class BasicFileUtility
     /**
      * @var string
      */
-    const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
+    public const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
 
     /**
      * This number decides the highest allowed appended number used on a filename before we use naming with unique strings

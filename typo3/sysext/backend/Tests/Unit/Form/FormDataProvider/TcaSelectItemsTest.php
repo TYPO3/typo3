@@ -330,7 +330,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'an-icon-reference',
                 'example-group',
                 null,
-            ],            [
+            ], [
                 'non-existing-group',
                 '--div--',
                 null,

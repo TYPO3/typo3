@@ -34,7 +34,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
      */
     protected function getPreparedUserAspect(bool $isLoggedIn, bool $isAdmin, int $userId, array $groupIds): UserAspect
     {
-        return new class($isLoggedIn, $isAdmin, $userId, $groupIds) extends UserAspect {
+        return new class ($isLoggedIn, $isAdmin, $userId, $groupIds) extends UserAspect {
             private $isAdmin;
             private $isLoggedIn;
             private $userId;

@@ -37,7 +37,7 @@ class PasswordResetTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->logger = new class() implements LoggerInterface {
+        $this->logger = new class () implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, $message, array $context = []): void

@@ -33,12 +33,12 @@ class ButtonBar
     /**
      * Identifier for the left button bar
      */
-    const BUTTON_POSITION_LEFT = 'left';
+    public const BUTTON_POSITION_LEFT = 'left';
 
     /**
      * Identifier for the right button bar
      */
-    const BUTTON_POSITION_RIGHT = 'right';
+    public const BUTTON_POSITION_RIGHT = 'right';
 
     /**
      * Internal array of all registered buttons

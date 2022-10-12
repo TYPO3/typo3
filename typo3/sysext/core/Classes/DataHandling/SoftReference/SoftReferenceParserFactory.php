@@ -180,7 +180,7 @@ class SoftReferenceParserFactory
 
         // Build a temporary class acting as a wrapper to call findRef() with the new API.
         /** @var object $softReferenceParser */
-        return new class($softReferenceParser, $softReferenceParserKey) implements SoftReferenceParserInterface {
+        return new class ($softReferenceParser, $softReferenceParserKey) implements SoftReferenceParserInterface {
             private object $parser;
             private string $parserKey;
             private array $parameters = [];

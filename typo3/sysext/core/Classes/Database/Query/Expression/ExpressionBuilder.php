@@ -34,16 +34,16 @@ use TYPO3\CMS\Core\Database\Connection;
  */
 class ExpressionBuilder
 {
-    const EQ = '=';
-    const NEQ = '<>';
-    const LT = '<';
-    const LTE = '<=';
-    const GT = '>';
-    const GTE = '>=';
+    public const EQ = '=';
+    public const NEQ = '<>';
+    public const LT = '<';
+    public const LTE = '<=';
+    public const GT = '>';
+    public const GTE = '>=';
 
-    const QUOTE_NOTHING = 0;
-    const QUOTE_IDENTIFIER = 1;
-    const QUOTE_PARAMETER = 2;
+    public const QUOTE_NOTHING = 0;
+    public const QUOTE_IDENTIFIER = 1;
+    public const QUOTE_PARAMETER = 2;
 
     /**
      * The DBAL Connection.

@@ -211,7 +211,7 @@ class InputTextElement extends AbstractFormElement
                 $itemValue = (int)$itemValue;
             } elseif (in_array('double2', $evalList, true)) {
                 $valueType = 'double';
-                $itemValue = (double)$itemValue;
+                $itemValue = (float)$itemValue;
             }
             $rangeAttributes = [
                 'id' => $id,

@@ -25,10 +25,10 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 interface UrlProcessorInterface
 {
-    const CONTEXT_COMMON = 'common';
-    const CONTEXT_FILE = 'file';
-    const CONTEXT_MAIL = 'mail';
-    const CONTEXT_EXTERNAL = 'external';
+    public const CONTEXT_COMMON = 'common';
+    public const CONTEXT_FILE = 'file';
+    public const CONTEXT_MAIL = 'mail';
+    public const CONTEXT_EXTERNAL = 'external';
 
     /**
      * Generates the JumpURL for the given parameters.

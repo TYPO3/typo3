@@ -24,11 +24,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 abstract class AbstractMessage implements \JsonSerializable
 {
-    const NOTICE = -2;
-    const INFO = -1;
-    const OK = 0;
-    const WARNING = 1;
-    const ERROR = 2;
+    public const NOTICE = -2;
+    public const INFO = -1;
+    public const OK = 0;
+    public const WARNING = 1;
+    public const ERROR = 2;
 
     /**
      * The message's title

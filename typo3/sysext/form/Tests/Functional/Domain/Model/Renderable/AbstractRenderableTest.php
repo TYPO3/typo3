@@ -64,7 +64,7 @@ final class AbstractRenderableTest extends FunctionalTestCase
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class, $configurationManager);
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 
-        $subject = new class() extends AbstractRenderable {
+        $subject = new class () extends AbstractRenderable {
         };
         $subject->setIdentifier('Foo');
         $subject->setParentRenderable(new FormDefinition('foo', $prototypeConfiguration));

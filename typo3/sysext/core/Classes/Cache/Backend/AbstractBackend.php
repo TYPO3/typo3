@@ -28,8 +28,8 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const DATETIME_EXPIRYTIME_UNLIMITED = '9999-12-31T23:59:59+0000';
-    const UNLIMITED_LIFETIME = 0;
+    public const DATETIME_EXPIRYTIME_UNLIMITED = '9999-12-31T23:59:59+0000';
+    public const UNLIMITED_LIFETIME = 0;
 
     /**
      * Reference to the cache which uses this backend

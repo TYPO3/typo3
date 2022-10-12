@@ -107,22 +107,22 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Named constants for "magic numbers" of the field doktype
      */
-    const DOKTYPE_DEFAULT = 1;
-    const DOKTYPE_LINK = 3;
-    const DOKTYPE_SHORTCUT = 4;
-    const DOKTYPE_BE_USER_SECTION = 6;
-    const DOKTYPE_MOUNTPOINT = 7;
-    const DOKTYPE_SPACER = 199;
-    const DOKTYPE_SYSFOLDER = 254;
-    const DOKTYPE_RECYCLER = 255;
+    public const DOKTYPE_DEFAULT = 1;
+    public const DOKTYPE_LINK = 3;
+    public const DOKTYPE_SHORTCUT = 4;
+    public const DOKTYPE_BE_USER_SECTION = 6;
+    public const DOKTYPE_MOUNTPOINT = 7;
+    public const DOKTYPE_SPACER = 199;
+    public const DOKTYPE_SYSFOLDER = 254;
+    public const DOKTYPE_RECYCLER = 255;
 
     /**
      * Named constants for "magic numbers" of the field shortcut_mode
      */
-    const SHORTCUT_MODE_NONE = 0;
-    const SHORTCUT_MODE_FIRST_SUBPAGE = 1;
-    const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
-    const SHORTCUT_MODE_PARENT_PAGE = 3;
+    public const SHORTCUT_MODE_NONE = 0;
+    public const SHORTCUT_MODE_FIRST_SUBPAGE = 1;
+    public const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
+    public const SHORTCUT_MODE_PARENT_PAGE = 3;
 
     /**
      * @var Context

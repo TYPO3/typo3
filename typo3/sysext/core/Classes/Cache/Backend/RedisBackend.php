@@ -42,25 +42,25 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @see https://redis.io/commands/expire
      * @var int Faked unlimited lifetime
      */
-    const FAKED_UNLIMITED_LIFETIME = 31536000;
+    public const FAKED_UNLIMITED_LIFETIME = 31536000;
     /**
      * Key prefix for identifier->data entries
      *
      * @var string
      */
-    const IDENTIFIER_DATA_PREFIX = 'identData:';
+    public const IDENTIFIER_DATA_PREFIX = 'identData:';
     /**
      * Key prefix for identifier->tags sets
      *
      * @var string
      */
-    const IDENTIFIER_TAGS_PREFIX = 'identTags:';
+    public const IDENTIFIER_TAGS_PREFIX = 'identTags:';
     /**
      * Key prefix for tag->identifiers sets
      *
      * @var string
      */
-    const TAG_IDENTIFIERS_PREFIX = 'tagIdents:';
+    public const TAG_IDENTIFIERS_PREFIX = 'tagIdents:';
     /**
      * Instance of the PHP redis class
      *

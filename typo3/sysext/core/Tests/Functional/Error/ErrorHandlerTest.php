@@ -97,7 +97,7 @@ class ErrorHandlerTest extends FunctionalTestCase
         );
         $coreErrorHandler->setLogger($logger);
 
-        $customErrorHandler = new class() {
+        $customErrorHandler = new class () {
             protected $existingHandler;
 
             public function setExistingHandler($existingHandler): void

@@ -59,11 +59,11 @@ class InfoboxViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    const STATE_NOTICE = -2;
-    const STATE_INFO = -1;
-    const STATE_OK = 0;
-    const STATE_WARNING = 1;
-    const STATE_ERROR = 2;
+    public const STATE_NOTICE = -2;
+    public const STATE_INFO = -1;
+    public const STATE_OK = 0;
+    public const STATE_WARNING = 1;
+    public const STATE_ERROR = 2;
 
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

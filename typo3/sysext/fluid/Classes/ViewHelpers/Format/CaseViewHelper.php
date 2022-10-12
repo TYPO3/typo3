@@ -78,27 +78,27 @@ class CaseViewHelper extends AbstractViewHelper
     /**
      * Directs the input string being converted to "lowercase"
      */
-    const CASE_LOWER = 'lower';
+    public const CASE_LOWER = 'lower';
 
     /**
      * Directs the input string being converted to "UPPERCASE"
      */
-    const CASE_UPPER = 'upper';
+    public const CASE_UPPER = 'upper';
 
     /**
      * Directs the input string being converted to "Capital case"
      */
-    const CASE_CAPITAL = 'capital';
+    public const CASE_CAPITAL = 'capital';
 
     /**
      * Directs the input string being converted to "unCapital case"
      */
-    const CASE_UNCAPITAL = 'uncapital';
+    public const CASE_UNCAPITAL = 'uncapital';
 
     /**
      * Directs the input string being converted to "Capital Case For Each Word"
      */
-    const CASE_CAPITAL_WORDS = 'capitalWords';
+    public const CASE_CAPITAL_WORDS = 'capitalWords';
 
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.

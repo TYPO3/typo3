@@ -47,7 +47,7 @@ class DataStructureIdentifierHook
     /**
      * Localisation prefix
      */
-    const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
+    public const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
 
     public function __construct()
     {

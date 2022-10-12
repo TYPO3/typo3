@@ -110,12 +110,12 @@ class CollectionValidatorTest extends UnitTestCase
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
-        $A = new class() {
+        $A = new class () {
             public $b = [];
             public $integer = 5;
         };
 
-        $B = new class() {
+        $B = new class () {
             public $a;
             public $c;
             public $integer = 'Not an integer';

@@ -58,7 +58,7 @@ class ContainerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->logger = new class() implements LoggerInterface {
+        $this->logger = new class () implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, $message, array $context = []): void
@@ -73,7 +73,7 @@ class ContainerTest extends UnitTestCase
 
         $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
 
-        $notFoundException = new class() extends \Exception implements NotFoundExceptionInterface {
+        $notFoundException = new class () extends \Exception implements NotFoundExceptionInterface {
         };
 
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)

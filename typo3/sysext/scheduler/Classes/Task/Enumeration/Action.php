@@ -24,15 +24,15 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class Action extends Enumeration
 {
-    const __default = self::LIST;
-    const ADD = 'add';
-    const DELETE = 'delete';
-    const EDIT = 'edit';
-    const LIST = 'list';
-    const SAVE = 'save';
-    const SAVE_CLOSE = 'saveclose';
-    const SAVE_NEW = 'savenew';
-    const SET_NEXT_EXECUTION_TIME = 'setNextExecutionTime';
-    const STOP = 'stop';
-    const TOGGLE_HIDDEN = 'toggleHidden';
+    public const __default = self::LIST;
+    public const ADD = 'add';
+    public const DELETE = 'delete';
+    public const EDIT = 'edit';
+    public const LIST = 'list';
+    public const SAVE = 'save';
+    public const SAVE_CLOSE = 'saveclose';
+    public const SAVE_NEW = 'savenew';
+    public const SET_NEXT_EXECUTION_TIME = 'setNextExecutionTime';
+    public const STOP = 'stop';
+    public const TOGGLE_HIDDEN = 'toggleHidden';
 }

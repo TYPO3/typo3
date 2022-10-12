@@ -121,7 +121,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             if (($this->I['val']['stdWrap2'] ?? false) || isset($this->I['val']['stdWrap2.'])) {
                 $stdWrap2 = (string)(isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|');
                 $stdWrap2Value = (string)($this->I['val']['stdWrap2'] ?? '|');
-                $stdWrap2Value = $stdWrap2Value !== '' ? $stdWrap2Value :  '|';
+                $stdWrap2Value = $stdWrap2Value !== '' ? $stdWrap2Value : '|';
                 $wrapPartsStdWrap = explode($stdWrap2Value, $stdWrap2);
             } else {
                 $wrapPartsStdWrap = ['', ''];

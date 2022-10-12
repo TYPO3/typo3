@@ -31,10 +31,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInterface
 {
-    const SEPARATOR = '^';
-    const EXPIRYTIME_FORMAT = 'YmdHis';
-    const EXPIRYTIME_LENGTH = 14;
-    const DATASIZE_DIGITS = 10;
+    public const SEPARATOR = '^';
+    public const EXPIRYTIME_FORMAT = 'YmdHis';
+    public const EXPIRYTIME_LENGTH = 14;
+    public const DATASIZE_DIGITS = 10;
     /**
      * Directory where the files are stored
      *

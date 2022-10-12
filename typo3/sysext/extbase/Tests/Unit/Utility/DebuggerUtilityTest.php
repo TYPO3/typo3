@@ -197,7 +197,7 @@ class DebuggerUtilityTest extends UnitTestCase
      */
     public function varDumpShowsUninitializedVariable(): void
     {
-        $class = new class() {
+        $class = new class () {
             protected \stdClass $test;
         };
 

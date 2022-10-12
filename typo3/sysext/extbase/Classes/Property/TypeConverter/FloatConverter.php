@@ -30,12 +30,12 @@ class FloatConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    const CONFIGURATION_THOUSANDS_SEPARATOR = 'thousandsSeparator';
+    public const CONFIGURATION_THOUSANDS_SEPARATOR = 'thousandsSeparator';
 
     /**
      * @var string
      */
-    const CONFIGURATION_DECIMAL_POINT = 'decimalPoint';
+    public const CONFIGURATION_DECIMAL_POINT = 'decimalPoint';
 
     /**
      * @var string[]

@@ -3022,7 +3022,7 @@ class BackendUtility
         if ($obj) {
             if ($obj instanceof SoftReferenceParserInterface && !method_exists($obj, 'findRef')) {
                 // Build a temporary class acting as a wrapper to call findRef() with the new API.
-                return new class($obj) {
+                return new class ($obj) {
                     private SoftReferenceParserInterface $parser;
 
                     public function __construct(SoftReferenceParserInterface $obj)

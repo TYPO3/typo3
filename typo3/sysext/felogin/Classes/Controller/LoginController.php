@@ -159,7 +159,7 @@ class LoginController extends AbstractLoginFormController
                 'storagePid' => implode(',', $this->getStorageFolders()),
                 'permaloginStatus' => $this->getPermaloginStatus(),
                 'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration, $this->isRedirectDisabled()),
-                'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer'): '',
+                'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer') : '',
                 'referer' => $this->requestHandler->getPropertyFromGetAndPost('referer'),
                 'noRedirect' => $this->isRedirectDisabled(),
             ]

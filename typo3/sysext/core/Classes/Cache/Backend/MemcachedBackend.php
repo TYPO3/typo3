@@ -49,7 +49,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @var int
      */
-    const MAX_BUCKET_SIZE = 1048534;
+    public const MAX_BUCKET_SIZE = 1048534;
 
     /**
      * Instance of the PHP Memcache class

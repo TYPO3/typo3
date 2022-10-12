@@ -30,12 +30,12 @@ class TypeHandlingUtility
     /**
      * A property type parse pattern.
      */
-    const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTimeImmutable|DateTime|[A-Z][a-zA-Z0-9\\\\]+|object|resource|array|ArrayObject|SplObjectStorage|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage)(?:<\\\\?(?P<elementType>[a-zA-Z0-9\\\\]+)>)?/';
+    public const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTimeImmutable|DateTime|[A-Z][a-zA-Z0-9\\\\]+|object|resource|array|ArrayObject|SplObjectStorage|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage)(?:<\\\\?(?P<elementType>[a-zA-Z0-9\\\\]+)>)?/';
 
     /**
      * A type pattern to detect literal types.
      */
-    const LITERAL_TYPE_PATTERN = '/^(?:integer|int|float|double|boolean|bool|string)$/';
+    public const LITERAL_TYPE_PATTERN = '/^(?:integer|int|float|double|boolean|bool|string)$/';
 
     /**
      * @var array

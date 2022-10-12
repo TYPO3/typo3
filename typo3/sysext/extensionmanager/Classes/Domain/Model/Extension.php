@@ -29,7 +29,7 @@ class Extension extends AbstractEntity
     /**
      * Category index for distributions
      */
-    const DISTRIBUTION_CATEGORY = 10;
+    public const DISTRIBUTION_CATEGORY = 10;
 
     /**
      * Contains default categories.

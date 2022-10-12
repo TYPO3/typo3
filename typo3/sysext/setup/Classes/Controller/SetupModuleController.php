@@ -58,23 +58,23 @@ class SetupModuleController
     /**
      * Flag if password has not been updated
      */
-    const PASSWORD_NOT_UPDATED = 0;
+    public const PASSWORD_NOT_UPDATED = 0;
 
     /**
      * Flag if password has been updated
      */
-    const PASSWORD_UPDATED = 1;
+    public const PASSWORD_UPDATED = 1;
 
     /**
      * Flag if both new passwords do not match
      */
-    const PASSWORD_NOT_THE_SAME = 2;
+    public const PASSWORD_NOT_THE_SAME = 2;
 
     /**
      * Flag if the current password given was not identical to the real
      * current password
      */
-    const PASSWORD_OLD_WRONG = 3;
+    public const PASSWORD_OLD_WRONG = 3;
 
     /**
      * @var string

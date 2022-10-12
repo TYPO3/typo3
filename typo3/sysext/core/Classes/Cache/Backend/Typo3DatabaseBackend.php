@@ -31,7 +31,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     /**
      * @var int Timestamp of 2038-01-01)
      */
-    const FAKED_UNLIMITED_EXPIRE = 2145909600;
+    public const FAKED_UNLIMITED_EXPIRE = 2145909600;
     /**
      * @var string Name of the cache data table
      */

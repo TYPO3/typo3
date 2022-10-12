@@ -49,9 +49,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 class GeneralUtility
 {
     /* @deprecated since v11, will be removed in v12. */
-    const ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL = '.*';
+    public const ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL = '.*';
     /* @deprecated since v11, will be removed in v12. */
-    const ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME = 'SERVER_NAME';
+    public const ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME = 'SERVER_NAME';
 
     /**
      * @var ContainerInterface|null
@@ -1591,7 +1591,7 @@ class GeneralUtility
                                 $current[$tagName] = (int)$current[$tagName];
                                 break;
                             case 'double':
-                                $current[$tagName] = (double)$current[$tagName];
+                                $current[$tagName] = (float)$current[$tagName];
                                 break;
                             case 'boolean':
                                 $current[$tagName] = (bool)$current[$tagName];

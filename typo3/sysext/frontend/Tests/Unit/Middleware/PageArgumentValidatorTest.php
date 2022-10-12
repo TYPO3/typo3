@@ -56,7 +56,7 @@ class PageArgumentValidatorTest extends UnitTestCase
         $this->cacheHashCalculator = new CacheHashCalculator();
 
         // A request handler which only runs through
-        $this->responseOutputHandler = new class() implements RequestHandlerInterface {
+        $this->responseOutputHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();

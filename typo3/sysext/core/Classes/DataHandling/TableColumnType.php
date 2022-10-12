@@ -22,26 +22,26 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class TableColumnType extends Enumeration
 {
-    const __default = self::INPUT;
+    public const __default = self::INPUT;
 
     /**
      * Constants reflecting the table column type
      */
-    const INPUT = 'INPUT';
-    const TEXT = 'TEXT';
-    const CHECK = 'CHECK';
-    const RADIO = 'RADIO';
-    const SELECT = 'SELECT';
-    const GROUP = 'GROUP';
-    const NONE = 'NONE';
-    const LANGUAGE = 'LANGUAGE';
-    const PASSTHROUGH = 'PASSTHROUGH';
-    const USER = 'USER';
-    const FLEX = 'FLEX';
-    const INLINE = 'INLINE';
-    const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
-    const SLUG = 'SLUG';
-    const CATEGORY = 'CATEGORY';
+    public const INPUT = 'INPUT';
+    public const TEXT = 'TEXT';
+    public const CHECK = 'CHECK';
+    public const RADIO = 'RADIO';
+    public const SELECT = 'SELECT';
+    public const GROUP = 'GROUP';
+    public const NONE = 'NONE';
+    public const LANGUAGE = 'LANGUAGE';
+    public const PASSTHROUGH = 'PASSTHROUGH';
+    public const USER = 'USER';
+    public const FLEX = 'FLEX';
+    public const INLINE = 'INLINE';
+    public const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
+    public const SLUG = 'SLUG';
+    public const CATEGORY = 'CATEGORY';
 
     /**
      * @param mixed $type

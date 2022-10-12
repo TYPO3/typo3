@@ -7503,7 +7503,7 @@ class DataHandler implements LoggerAwareInterface
                     if (!$this->checkStoredRecords_loose || $value || $row[$key]) {
                         if (is_float($row[$key])) {
                             // if the database returns the value as double, compare it as double
-                            if ((double)$value !== (double)$row[$key]) {
+                            if ((float)$value !== (float)$row[$key]) {
                                 $errors[] = $key;
                             }
                         } else {
@@ -7516,7 +7516,7 @@ class DataHandler implements LoggerAwareInterface
                                 // and database returns the field as a string with the least required amount of
                                 // significant digits, i.e. "0.00" being saved and "0" being read back.
                                 if (is_numeric($value) && is_numeric($row[$key])) {
-                                    if ((double)$value === (double)$row[$key]) {
+                                    if ((float)$value === (float)$row[$key]) {
                                         continue;
                                     }
                                 }

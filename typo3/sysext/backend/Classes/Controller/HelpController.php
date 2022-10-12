@@ -45,12 +45,12 @@ class HelpController
     /**
      * Section identifiers
      */
-    const FULL = 0;
+    public const FULL = 0;
 
     /**
      * Show only Table of contents
      */
-    const TOC_ONLY = 1;
+    public const TOC_ONLY = 1;
 
     /** @var ModuleTemplate */
     protected $moduleTemplate;

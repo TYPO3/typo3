@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace TYPO3\CMS\Extbase;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -14,7 +15,7 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     // @deprecated since v11, will be removed with v12. Drop together with extbase ViewInterface
     $container->registerForAutoconfiguration(Mvc\View\ViewInterface::class)->addTag('extbase.view');
 
-    $container->addCompilerPass(new class() implements CompilerPassInterface {
+    $container->addCompilerPass(new class () implements CompilerPassInterface {
         public function process(ContainerBuilder $container): void
         {
             foreach ($container->findTaggedServiceIds('extbase.request_handler') as $id => $tags) {

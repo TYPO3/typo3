@@ -24,8 +24,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class AbstractController extends ActionController
 {
-    const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
-    const TRIGGER_RefreshTopbar = 'refreshTopbar';
+    public const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
+    public const TRIGGER_RefreshTopbar = 'refreshTopbar';
 
     /**
      * @var array

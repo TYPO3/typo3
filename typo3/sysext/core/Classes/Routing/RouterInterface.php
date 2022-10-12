@@ -29,12 +29,12 @@ interface RouterInterface
     /**
      * Generates an absolute URL
      */
-    const ABSOLUTE_URL = 'url';
+    public const ABSOLUTE_URL = 'url';
 
     /**
      * Generates an absolute path
      */
-    const ABSOLUTE_PATH = 'absolute';
+    public const ABSOLUTE_PATH = 'absolute';
 
     /**
      * @param ServerRequestInterface $request

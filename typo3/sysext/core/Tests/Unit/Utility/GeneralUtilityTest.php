@@ -52,9 +52,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class GeneralUtilityTest extends UnitTestCase
 {
-    public const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
-
     use ProphecyTrait;
+    public const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
 
     /**
      * @var bool Reset singletons created by subject

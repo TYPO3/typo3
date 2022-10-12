@@ -141,7 +141,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function getStatusReturnsNoticeIfRepositoryUpdateIsLongerThanSevenDaysAgo(): void
     {
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
-        $remote = new class() extends TerExtensionRemote {
+        $remote = new class () extends TerExtensionRemote {
             public function __construct()
             {
             }
@@ -320,7 +320,7 @@ class ExtensionStatusTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ListUtility::class, $mockListUtility);
         $remoteRegistryProphecy = $this->prophesize(RemoteRegistry::class);
         if ($setupRepositoryStatusOk) {
-            $remote = new class() extends TerExtensionRemote {
+            $remote = new class () extends TerExtensionRemote {
                 public function __construct()
                 {
                 }

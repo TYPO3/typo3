@@ -30,25 +30,25 @@ class IntegrityService
      *
      * @var int
      */
-    const STATUS_Succes = 100;
+    public const STATUS_Succes = 100;
     /**
      * Info status - nothing is wrong, but a notice is shown
      *
      * @var int
      */
-    const STATUS_Info = 101;
+    public const STATUS_Info = 101;
     /**
      * Warning status - user interaction might be required
      *
      * @var int
      */
-    const STATUS_Warning = 102;
+    public const STATUS_Warning = 102;
     /**
      * Error status - user interaction is required
      *
      * @var int
      */
-    const STATUS_Error = 103;
+    public const STATUS_Error = 103;
     /**
      * @var array
      */

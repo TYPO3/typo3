@@ -31,7 +31,7 @@ class TargetPageIdViewHelperTest extends UnitTestCase
      */
     public function nonTypo3TargetInRenderStaticReturnsEmptyString(): void
     {
-        $renderingContext = new class() extends RenderingContext {
+        $renderingContext = new class () extends RenderingContext {
             public function __construct()
             {
             }
@@ -45,7 +45,7 @@ class TargetPageIdViewHelperTest extends UnitTestCase
      */
     public function emptyTargetInRenderStaticReturnsEmptyString(): void
     {
-        $renderingContext = new class() extends RenderingContext {
+        $renderingContext = new class () extends RenderingContext {
             public function __construct()
             {
             }

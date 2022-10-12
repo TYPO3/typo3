@@ -151,7 +151,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $subject = new ProductionExceptionHandler();
-        $logger = new class() implements LoggerInterface {
+        $logger = new class () implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, $message, array $context = []): void

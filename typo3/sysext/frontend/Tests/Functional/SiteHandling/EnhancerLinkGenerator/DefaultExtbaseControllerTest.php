@@ -72,7 +72,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                     'type' => 'Extbase',
                     'routes' => [
                         ['routePath' => '/link/index/{value}', '_controller' => 'Link::index'],
-                        ['routePath' => '/link/list/{value}',  '_controller' => 'Link::list'],
+                        ['routePath' => '/link/list/{value}', '_controller' => 'Link::list'],
                         ['routePath' => '/page/show/{value}', '_controller' => 'Page::show'],
                     ],
                     'defaultController' => 'Link::index',
@@ -154,7 +154,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                     'type' => 'Extbase',
                     'routes' => [
                         ['routePath' => '/link/index/{value}', '_controller' => 'Link::index'],
-                        ['routePath' => '/link/list/{value}',  '_controller' => 'Link::list'],
+                        ['routePath' => '/link/list/{value}', '_controller' => 'Link::list'],
                         ['routePath' => '/page/show/{value}', '_controller' => 'Page::show'],
                     ],
                     'defaultController' => 'Link::index',
