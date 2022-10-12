@@ -1810,6 +1810,47 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
+    //////////////////////////////////
+    // Tests concerning implodeAttributes
+    //////////////////////////////////
+
+    public function implodeAttributesDataProvider(): \Iterator
+    {
+        yield 'Generic input without xhtml' => [
+            ['hREf' => 'https://example.com', 'title' => 'above'],
+            false,
+            true,
+            'hREf="https://example.com" title="above"',
+        ];
+        yield 'Generic input' => [
+            ['hREf' => 'https://example.com', 'title' => 'above'],
+            true,
+            true,
+            'href="https://example.com" title="above"',
+        ];
+        yield 'Generic input keeping empty values' => [
+            ['hREf' => 'https://example.com', 'title' => ''],
+            true,
+            true, // keep empty values
+            'href="https://example.com" title=""',
+        ];
+        yield 'Generic input removing empty values' => [
+            ['hREf' => 'https://example.com', 'title' => '', 'nomodule' => null],
+            true,
+            false,  // do not keep empty values
+            'href="https://example.com"',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider implodeAttributesDataProvider
+     */
+    public function implodeAttributesEscapesProperly(array $input, bool $xhtmlSafe, bool $keepEmptyValues, string $expected): void
+    {
+        self::assertSame($expected, GeneralUtility::implodeAttributes($input, $xhtmlSafe, $keepEmptyValues));
+    }
+
     /**
      * @test
      */

@@ -1100,24 +1100,25 @@ class GeneralUtility
      *
      * @param array<string, string> $arr Array with attribute key/value pairs, eg. "bgcolor" => "red", "border" => "0"
      * @param bool $xhtmlSafe If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
-     * @param bool $dontOmitBlankAttribs If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
+     * @param bool $keepBlankAttributes If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
      * @return string Imploded attributes, eg. 'bgcolor="red" border="0"'
      */
-    public static function implodeAttributes(array $arr, $xhtmlSafe = false, $dontOmitBlankAttribs = false)
+    public static function implodeAttributes(array $arr, $xhtmlSafe = false, $keepBlankAttributes = false)
     {
         if ($xhtmlSafe) {
             $newArr = [];
-            foreach ($arr as $p => $v) {
-                if (!isset($newArr[strtolower($p)])) {
-                    $newArr[strtolower($p)] = htmlspecialchars((string)$v);
+            foreach ($arr as $attributeName => $attributeValue) {
+                $attributeName = strtolower($attributeName);
+                if (!isset($newArr[$attributeName])) {
+                    $newArr[$attributeName] = htmlspecialchars((string)$attributeValue);
                 }
             }
             $arr = $newArr;
         }
         $list = [];
-        foreach ($arr as $p => $v) {
-            if ((string)$v !== '' || $dontOmitBlankAttribs) {
-                $list[] = $p . '="' . $v . '"';
+        foreach ($arr as $attributeName => $attributeValue) {
+            if ((string)$attributeValue !== '' || $keepBlankAttributes) {
+                $list[] = $attributeName . '="' . $attributeValue . '"';
             }
         }
         return implode(' ', $list);
