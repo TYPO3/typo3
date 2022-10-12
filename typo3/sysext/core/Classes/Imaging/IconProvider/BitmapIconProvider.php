@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class BitmapIconProvider implements IconProviderInterface
 {
-    const MARKUP_IDENTIFIER_INLINE = 'inline';
+    public const MARKUP_IDENTIFIER_INLINE = 'inline';
 
     /**
      * @param Icon $icon

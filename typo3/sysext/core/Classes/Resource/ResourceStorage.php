@@ -223,7 +223,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Levels numbers used to generate hashed subfolders in the processing folder
      */
-    const PROCESSING_FOLDER_LEVELS = 2;
+    public const PROCESSING_FOLDER_LEVELS = 2;
 
     /**
      * Constructor for a storage object.

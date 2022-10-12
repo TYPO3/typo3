@@ -54,7 +54,7 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  */
 class FormPersistenceManager implements FormPersistenceManagerInterface
 {
-    const FORM_DEFINITION_FILE_EXTENSION = '.form.yaml';
+    public const FORM_DEFINITION_FILE_EXTENSION = '.form.yaml';
 
     protected YamlSource $yamlSource;
     protected StorageRepository $storageRepository;
@@ -277,8 +277,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                         'identifier' => $form['identifier'],
                         'name' => $form['label'] ?? $form['identifier'],
                         'persistenceIdentifier' => $fullPath,
-                        'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
-                        'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
+                        'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false : true,
+                        'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true : false,
                         'location' => 'extension',
                         'duplicateIdentifier' => false,
                         'invalid' => $form['invalid'] ?? false,

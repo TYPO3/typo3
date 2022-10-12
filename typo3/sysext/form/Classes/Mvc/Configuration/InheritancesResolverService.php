@@ -65,7 +65,7 @@ class InheritancesResolverService
     /**
      * The operator which is used to declare inheritances
      */
-    const INHERITANCE_OPERATOR = '__inheritances';
+    public const INHERITANCE_OPERATOR = '__inheritances';
 
     /**
      * The reference configuration is used to get untouched values which

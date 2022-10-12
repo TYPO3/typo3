@@ -25,8 +25,8 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class Action extends Enumeration
 {
-    const __default = self::LIST;
-    const ADD = 'add';
-    const EDIT = 'edit';
-    const LIST = 'list';
+    public const __default = self::LIST;
+    public const ADD = 'add';
+    public const EDIT = 'edit';
+    public const LIST = 'list';
 }

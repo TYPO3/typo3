@@ -30,7 +30,7 @@ class HtmlParser
     protected $caseShift_cache = [];
 
     // Void elements that do not have closing tags, as defined by HTML5, except link element
-    const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
+    public const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
 
     /************************************
      *

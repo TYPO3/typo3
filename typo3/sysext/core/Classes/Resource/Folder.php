@@ -68,13 +68,13 @@ class Folder implements FolderInterface
     /**
      * Modes for filter usage in getFiles()/getFolders()
      */
-    const FILTER_MODE_NO_FILTERS = 0;
+    public const FILTER_MODE_NO_FILTERS = 0;
     // Merge local filters into storage's filters
-    const FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS = 1;
+    public const FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS = 1;
     // Only use the filters provided by the storage
-    const FILTER_MODE_USE_STORAGE_FILTERS = 2;
+    public const FILTER_MODE_USE_STORAGE_FILTERS = 2;
     // Only use the filters provided by the current class
-    const FILTER_MODE_USE_OWN_FILTERS = 3;
+    public const FILTER_MODE_USE_OWN_FILTERS = 3;
 
     /**
      * Initialization of the folder

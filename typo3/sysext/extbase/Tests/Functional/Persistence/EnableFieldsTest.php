@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class EnableFieldsTest extends AbstractDataHandlerActionTestCase
 {
-    const TABLE_Blog = 'tx_blogexample_domain_model_blog';
+    public const TABLE_Blog = 'tx_blogexample_domain_model_blog';
 
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
  */
 class MetaData
 {
-    const CONSTRAINT_TYPE_DEPENDS = 'depends';
-    const CONSTRAINT_TYPE_CONFLICTS = 'conflicts';
-    const CONSTRAINT_TYPE_SUGGESTS = 'suggests';
+    public const CONSTRAINT_TYPE_DEPENDS = 'depends';
+    public const CONSTRAINT_TYPE_CONFLICTS = 'conflicts';
+    public const CONSTRAINT_TYPE_SUGGESTS = 'suggests';
     private const FRAMEWORK_TYPE = 'typo3-cms-framework';
 
     /**

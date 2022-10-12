@@ -105,7 +105,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
-    const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
+    public const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
     protected ?FormDefinition $formDefinition = null;
     protected ?RequestInterface $request = null;

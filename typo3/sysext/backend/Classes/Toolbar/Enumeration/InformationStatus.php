@@ -22,32 +22,32 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class InformationStatus extends Enumeration
 {
-    const __default = self::STATUS_INFO;
+    public const __default = self::STATUS_INFO;
 
     /**
      * @var string
      */
-    const STATUS_NOTICE = '';
+    public const STATUS_NOTICE = '';
 
     /**
      * @var string
      */
-    const STATUS_INFO = 'info';
+    public const STATUS_INFO = 'info';
 
     /**
      * @var string
      */
-    const STATUS_OK = 'success';
+    public const STATUS_OK = 'success';
 
     /**
      * @var string
      */
-    const STATUS_WARNING = 'warning';
+    public const STATUS_WARNING = 'warning';
 
     /**
      * @var string
      */
-    const STATUS_ERROR = 'danger';
+    public const STATUS_ERROR = 'danger';
 
     /**
      * @var int[]

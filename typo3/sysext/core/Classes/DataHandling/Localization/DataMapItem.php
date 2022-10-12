@@ -24,13 +24,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class DataMapItem
 {
-    const TYPE_PARENT = 'parent';
-    const TYPE_DIRECT_CHILD = 'directChild';
-    const TYPE_GRAND_CHILD = 'grandChild';
+    public const TYPE_PARENT = 'parent';
+    public const TYPE_DIRECT_CHILD = 'directChild';
+    public const TYPE_GRAND_CHILD = 'grandChild';
 
-    const SCOPE_PARENT = State::STATE_PARENT;
-    const SCOPE_SOURCE = State::STATE_SOURCE;
-    const SCOPE_EXCLUDE = 'exclude';
+    public const SCOPE_PARENT = State::STATE_PARENT;
+    public const SCOPE_SOURCE = State::STATE_SOURCE;
+    public const SCOPE_EXCLUDE = 'exclude';
 
     /**
      * @var string

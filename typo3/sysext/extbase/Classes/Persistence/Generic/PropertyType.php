@@ -43,37 +43,37 @@ class PropertyType
      * example, it will never be returned by Property#getType and it cannot be
      * assigned as the type when creating a new property.
      */
-    const UNDEFINED = 0;
+    public const UNDEFINED = 0;
 
     /**
      * The STRING property type is used to store strings.
      */
-    const STRING = 1;
+    public const STRING = 1;
 
     /**
      * BINARY properties are used to store binary data.
      */
-    const BINARY = 2;
+    public const BINARY = 2;
 
     /**
      * The LONG property type is used to store integers.
      */
-    const LONG = 3;
+    public const LONG = 3;
 
     /**
      * The DOUBLE property type is used to store floating point numbers.
      */
-    const DOUBLE = 4;
+    public const DOUBLE = 4;
 
     /**
      * The DATE property type is used to store time and date information.
      */
-    const DATE = 5;
+    public const DATE = 5;
 
     /**
      * The BOOLEAN property type is used to store boolean values.
      */
-    const BOOLEAN = 6;
+    public const BOOLEAN = 6;
 
     /**
      * A NAME is a pairing of a namespace and a local name. When read, the
@@ -81,7 +81,7 @@ class PropertyType
      *
      * WE DO NOT USE THIS IN EXTBASE!
      */
-    const NAME = 7;
+    public const NAME = 7;
 
     /**
      * A PATH property is an ordered list of path elements. A path element is a
@@ -90,7 +90,7 @@ class PropertyType
      *
      * WE DO NOT USE THIS IN EXTBASE!
      */
-    const PATH = 8;
+    public const PATH = 8;
 
     /**
      * A REFERENCE property stores the identifier of a referenceable node (one
@@ -99,7 +99,7 @@ class PropertyType
      * enforces this referential integrity by preventing the removal of its
      * target node.
      */
-    const REFERENCE = 9;
+    public const REFERENCE = 9;
 
     /**
      * A WEAKREFERENCE property stores the identifier of a referenceable node
@@ -108,7 +108,7 @@ class PropertyType
      *
      * WE DO NOT USE THIS IN EXTBASE!
      */
-    const WEAKREFERENCE = 10;
+    public const WEAKREFERENCE = 10;
 
     /**
      * A URI property is identical to STRING property except that it only
@@ -117,91 +117,91 @@ class PropertyType
      *
      * WE DO NOT USE THIS IN EXTBASE!
      */
-    const URI = 11;
+    public const URI = 11;
 
     /**
      * The DECIMAL property type is used to store precise decimal numbers.
      *
      * WE DO NOT USE THIS IN EXTBASE!
      */
-    const DECIMAL = 12;
+    public const DECIMAL = 12;
 
     /**
      * The INTEGER property type is used to store precise decimal numbers.
      *
      * WE DO NOT USE THIS IN EXTBASE!
      */
-    const INTEGER = 13;
+    public const INTEGER = 13;
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_UNDEFINED = 'undefined';
+    public const TYPENAME_UNDEFINED = 'undefined';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_STRING = 'String';
+    public const TYPENAME_STRING = 'String';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_BINARY = 'Binary';
+    public const TYPENAME_BINARY = 'Binary';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_LONG = 'Long';
+    public const TYPENAME_LONG = 'Long';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_DOUBLE = 'Double';
+    public const TYPENAME_DOUBLE = 'Double';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_DATE = 'Date';
+    public const TYPENAME_DATE = 'Date';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_BOOLEAN = 'Boolean';
+    public const TYPENAME_BOOLEAN = 'Boolean';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_NAME = 'Name';
+    public const TYPENAME_NAME = 'Name';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_PATH = 'Path';
+    public const TYPENAME_PATH = 'Path';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_REFERENCE = 'Reference';
+    public const TYPENAME_REFERENCE = 'Reference';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_WEAKREFERENCE = 'WeakReference';
+    public const TYPENAME_WEAKREFERENCE = 'WeakReference';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_URI = 'URI';
+    public const TYPENAME_URI = 'URI';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_DECIMAL = 'Decimal';
+    public const TYPENAME_DECIMAL = 'Decimal';
 
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_INTEGER = 'Integer';
+    public const TYPENAME_INTEGER = 'Integer';
 
     /**
      * Make instantiation impossible...

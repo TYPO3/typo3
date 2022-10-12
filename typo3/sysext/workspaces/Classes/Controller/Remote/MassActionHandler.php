@@ -30,7 +30,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class MassActionHandler
 {
-    const MAX_RECORDS_TO_PROCESS = 30;
+    public const MAX_RECORDS_TO_PROCESS = 30;
 
     /**
      * @var WorkspaceService

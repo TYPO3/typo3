@@ -23,14 +23,14 @@ interface FolderInterface extends ResourceInterface
     /**
      * Roles for folders
      */
-    const ROLE_DEFAULT = 'default';
-    const ROLE_RECYCLER = 'recycler';
-    const ROLE_PROCESSING = 'processing';
-    const ROLE_TEMPORARY = 'temporary';
-    const ROLE_USERUPLOAD = 'userupload';
-    const ROLE_MOUNT = 'mount';
-    const ROLE_READONLY_MOUNT = 'readonly-mount';
-    const ROLE_USER_MOUNT = 'user-mount';
+    public const ROLE_DEFAULT = 'default';
+    public const ROLE_RECYCLER = 'recycler';
+    public const ROLE_PROCESSING = 'processing';
+    public const ROLE_TEMPORARY = 'temporary';
+    public const ROLE_USERUPLOAD = 'userupload';
+    public const ROLE_MOUNT = 'mount';
+    public const ROLE_READONLY_MOUNT = 'readonly-mount';
+    public const ROLE_USER_MOUNT = 'user-mount';
 
     /**
      * @return array<string|int, Folder>

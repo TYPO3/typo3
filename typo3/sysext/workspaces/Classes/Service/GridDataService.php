@@ -43,11 +43,11 @@ class GridDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const GridColumn_Collection = 'Workspaces_Collection';
-    const GridColumn_CollectionLevel = 'Workspaces_CollectionLevel';
-    const GridColumn_CollectionParent = 'Workspaces_CollectionParent';
-    const GridColumn_CollectionCurrent = 'Workspaces_CollectionCurrent';
-    const GridColumn_CollectionChildren = 'Workspaces_CollectionChildren';
+    public const GridColumn_Collection = 'Workspaces_Collection';
+    public const GridColumn_CollectionLevel = 'Workspaces_CollectionLevel';
+    public const GridColumn_CollectionParent = 'Workspaces_CollectionParent';
+    public const GridColumn_CollectionCurrent = 'Workspaces_CollectionCurrent';
+    public const GridColumn_CollectionChildren = 'Workspaces_CollectionChildren';
 
     /**
      * Id of the current active workspace.
@@ -233,7 +233,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
                     $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
                     $versionArray['state_Workspace'] = $recordState;
-                    $versionArray['hasChanges'] = ($recordState === 'unchanged') ? false: true;
+                    $versionArray['hasChanges'] = ($recordState === 'unchanged') ? false : true;
                     // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
                     $versionArray['expanded'] = false;
 

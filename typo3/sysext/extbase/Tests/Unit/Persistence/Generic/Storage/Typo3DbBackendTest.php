@@ -127,7 +127,7 @@ class Typo3DbBackendTest extends UnitTestCase
                 ->shouldBeCalled();
         }
 
-        $domainObject = new class() extends AbstractValueObject {
+        $domainObject = new class () extends AbstractValueObject {
             protected string $propertyName = 'propertyValue';
         };
 

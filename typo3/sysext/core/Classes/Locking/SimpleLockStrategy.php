@@ -28,8 +28,8 @@ class SimpleLockStrategy implements LockingStrategyInterface
 {
     use BlockSerializationTrait;
 
-    const FILE_LOCK_FOLDER = 'lock/';
-    const DEFAULT_PRIORITY = 50;
+    public const FILE_LOCK_FOLDER = 'lock/';
+    public const DEFAULT_PRIORITY = 50;
 
     /**
      * @var string File path used for this lock

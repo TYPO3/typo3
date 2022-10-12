@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class IpLocker
 {
-    const DISABLED_LOCK_VALUE = '[DISABLED]';
+    public const DISABLED_LOCK_VALUE = '[DISABLED]';
 
     /**
      * If set to 4, the session will be locked to the user's IP address (all four numbers).

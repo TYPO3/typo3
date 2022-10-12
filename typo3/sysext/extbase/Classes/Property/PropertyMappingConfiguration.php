@@ -23,7 +23,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Placeholder in property paths for multi-valued types
      */
-    const PROPERTY_PATH_PLACEHOLDER = '*';
+    public const PROPERTY_PATH_PLACEHOLDER = '*';
 
     /**
      * multi-dimensional array which stores type-converter specific configuration:

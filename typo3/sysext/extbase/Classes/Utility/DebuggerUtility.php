@@ -38,8 +38,8 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class DebuggerUtility
 {
-    const PLAINTEXT_INDENT = '   ';
-    const HTML_INDENT = '&nbsp;&nbsp;&nbsp;';
+    public const PLAINTEXT_INDENT = '   ';
+    public const HTML_INDENT = '&nbsp;&nbsp;&nbsp;';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage

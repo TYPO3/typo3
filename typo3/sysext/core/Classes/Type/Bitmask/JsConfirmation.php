@@ -26,37 +26,37 @@ final class JsConfirmation extends Enumeration
     /**
      * @var int
      */
-    const TYPE_CHANGE = 0b00000001;
+    public const TYPE_CHANGE = 0b00000001;
 
     /**
      * @var int
      */
-    const COPY_MOVE_PASTE = 0b00000010;
+    public const COPY_MOVE_PASTE = 0b00000010;
 
     /**
      * @var int
      */
-    const DELETE = 0b00000100;
+    public const DELETE = 0b00000100;
 
     /**
      * @var int
      */
-    const FE_EDIT = 0b00001000;
+    public const FE_EDIT = 0b00001000;
 
     /**
      * @var int
      */
-    const OTHER = 0b10000000;
+    public const OTHER = 0b10000000;
 
     /**
      * @var int
      */
-    const ALL = 255;
+    public const ALL = 255;
 
     /**
      * @var int
      */
-    const __default = self::ALL;
+    public const __default = self::ALL;
 
     /**
      * Bitmask of allowed values beside 255

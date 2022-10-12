@@ -29,7 +29,7 @@ class LinktypeRegistryTest extends UnitTestCase
     public function registrationRequiresInterface(): void
     {
         $linktypes = [
-            new class() {
+            new class () {
             },
             $this->getLinkType('valid-identifier'),
         ];
@@ -74,7 +74,7 @@ class LinktypeRegistryTest extends UnitTestCase
 
     protected function getLinkType(string $identifier = ''): LinktypeInterface
     {
-        return new class($identifier) implements LinktypeInterface {
+        return new class ($identifier) implements LinktypeInterface {
             private string $identifier;
             public function __construct(string $identifier)
             {

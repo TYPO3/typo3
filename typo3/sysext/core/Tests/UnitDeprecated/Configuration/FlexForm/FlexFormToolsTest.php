@@ -62,7 +62,7 @@ class FlexFormToolsTest extends UnitTestCase
      */
     public function tceFormsRemovedInMigration(array $dataStructure, array $expected): void
     {
-        $eventDispatcher = new class() implements EventDispatcherInterface {
+        $eventDispatcher = new class () implements EventDispatcherInterface {
             public function dispatch(object $event)
             {
                 return new \stdClass();

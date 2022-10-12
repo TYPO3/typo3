@@ -68,37 +68,37 @@ abstract class AbstractFile implements FileInterface
     /**
      * any other file
      */
-    const FILETYPE_UNKNOWN = 0;
+    public const FILETYPE_UNKNOWN = 0;
 
     /**
      * Any kind of text
      * @see http://www.iana.org/assignments/media-types/text
      */
-    const FILETYPE_TEXT = 1;
+    public const FILETYPE_TEXT = 1;
 
     /**
      * Any kind of image
      * @see http://www.iana.org/assignments/media-types/image
      */
-    const FILETYPE_IMAGE = 2;
+    public const FILETYPE_IMAGE = 2;
 
     /**
      * Any kind of audio file
      * @see http://www.iana.org/assignments/media-types/audio
      */
-    const FILETYPE_AUDIO = 3;
+    public const FILETYPE_AUDIO = 3;
 
     /**
      * Any kind of video
      * @see http://www.iana.org/assignments/media-types/video
      */
-    const FILETYPE_VIDEO = 4;
+    public const FILETYPE_VIDEO = 4;
 
     /**
      * Any kind of application
      * @see http://www.iana.org/assignments/media-types/application
      */
-    const FILETYPE_APPLICATION = 5;
+    public const FILETYPE_APPLICATION = 5;
 
     /******************
      * VARIOUS FILE PROPERTY GETTERS

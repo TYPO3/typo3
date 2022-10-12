@@ -56,7 +56,7 @@ class StringValidatorTest extends FunctionalTestCase
     {
         $subject = new StringValidator();
         $subject->setOptions([]);
-        $object = new class() {
+        $object = new class () {
             public function __toString(): string
             {
                 return 'ASDF';

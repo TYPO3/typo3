@@ -63,7 +63,7 @@ class RateLimiterFactoryTest extends FunctionalTestCase
     public function loginRateLimiterReturnsExpectedResults(string $loginType, int $loginRateLimit, int $tokens, bool $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS'][$loginType]['loginRateLimit'] = $loginRateLimit;
-        $userAuth = new class($loginType) extends AbstractUserAuthentication {
+        $userAuth = new class ($loginType) extends AbstractUserAuthentication {
             public function __construct($loginType)
             {
                 $this->loginType = $loginType;
@@ -86,7 +86,7 @@ class RateLimiterFactoryTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS'][$loginType]['loginRateLimitIpExcludeList'] = '127.0.0.1';
 
         $request = (new ServerRequest('https://example.com', 'POST', 'php://input', [], ['REMOTE_ADDR' => '127.0.0.1']));
-        $userAuth = new class($loginType) extends AbstractUserAuthentication {
+        $userAuth = new class ($loginType) extends AbstractUserAuthentication {
             public function __construct($loginType)
             {
                 $this->loginType = $loginType;

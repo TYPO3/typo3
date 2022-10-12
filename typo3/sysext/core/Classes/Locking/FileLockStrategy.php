@@ -29,8 +29,8 @@ class FileLockStrategy implements LockingStrategyInterface
 {
     use BlockSerializationTrait;
 
-    const FILE_LOCK_FOLDER = 'lock/';
-    const DEFAULT_PRIORITY = 75;
+    public const FILE_LOCK_FOLDER = 'lock/';
+    public const DEFAULT_PRIORITY = 75;
 
     /**
      * @var resource File pointer if using flock method

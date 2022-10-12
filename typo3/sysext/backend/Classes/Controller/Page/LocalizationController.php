@@ -44,12 +44,12 @@ class LocalizationController
     /**
      * @var string
      */
-    const ACTION_COPY = 'copyFromLanguage';
+    public const ACTION_COPY = 'copyFromLanguage';
 
     /**
      * @var string
      */
-    const ACTION_LOCALIZE = 'localize';
+    public const ACTION_LOCALIZE = 'localize';
 
     /**
      * @var IconFactory

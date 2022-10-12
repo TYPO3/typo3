@@ -22,34 +22,34 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class TableColumnType extends Enumeration
 {
-    const __default = self::INPUT;
+    public const __default = self::INPUT;
 
     /**
      * Constants reflecting the table column type
      */
-    const INPUT = 'INPUT';
-    const TEXT = 'TEXT';
-    const CHECK = 'CHECK';
-    const RADIO = 'RADIO';
-    const SELECT = 'SELECT';
-    const GROUP = 'GROUP';
-    const FOLDER = 'FOLDER';
-    const NONE = 'NONE';
-    const LANGUAGE = 'LANGUAGE';
-    const PASSTHROUGH = 'PASSTHROUGH';
-    const USER = 'USER';
-    const FLEX = 'FLEX';
-    const INLINE = 'INLINE';
-    const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
-    const SLUG = 'SLUG';
-    const CATEGORY = 'CATEGORY';
-    const EMAIL = 'EMAIL';
-    const LINK = 'LINK';
-    const PASSWORD = 'PASSWORD';
-    const DATETIME = 'DATETIME';
-    const COLOR = 'COLOR';
-    const NUMBER = 'NUMBER';
-    const FILE = 'FILE';
+    public const INPUT = 'INPUT';
+    public const TEXT = 'TEXT';
+    public const CHECK = 'CHECK';
+    public const RADIO = 'RADIO';
+    public const SELECT = 'SELECT';
+    public const GROUP = 'GROUP';
+    public const FOLDER = 'FOLDER';
+    public const NONE = 'NONE';
+    public const LANGUAGE = 'LANGUAGE';
+    public const PASSTHROUGH = 'PASSTHROUGH';
+    public const USER = 'USER';
+    public const FLEX = 'FLEX';
+    public const INLINE = 'INLINE';
+    public const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
+    public const SLUG = 'SLUG';
+    public const CATEGORY = 'CATEGORY';
+    public const EMAIL = 'EMAIL';
+    public const LINK = 'LINK';
+    public const PASSWORD = 'PASSWORD';
+    public const DATETIME = 'DATETIME';
+    public const COLOR = 'COLOR';
+    public const NUMBER = 'NUMBER';
+    public const FILE = 'FILE';
 
     /**
      * @param mixed $type

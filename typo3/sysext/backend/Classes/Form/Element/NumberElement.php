@@ -174,7 +174,7 @@ class NumberElement extends AbstractFormElement
         $valueSliderHtml = [];
         if (is_array($config['slider'] ?? false)) {
             if ($format === 'decimal') {
-                $itemValue = (double)$itemValue;
+                $itemValue = (float)$itemValue;
             } else {
                 $itemValue = (int)$itemValue;
             }

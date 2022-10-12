@@ -27,28 +27,28 @@ class Icon
     /**
      * @var string the default size
      */
-    const SIZE_DEFAULT = 'default'; // 1em
+    public const SIZE_DEFAULT = 'default'; // 1em
 
     /**
      * @var string the small size
      */
-    const SIZE_SMALL = 'small'; // 16px
+    public const SIZE_SMALL = 'small'; // 16px
 
     /**
      * @var string the default size
      */
-    const SIZE_MEDIUM = 'medium'; // 32px
+    public const SIZE_MEDIUM = 'medium'; // 32px
 
     /**
      * @var string the large size
      */
-    const SIZE_LARGE = 'large'; // 48px
+    public const SIZE_LARGE = 'large'; // 48px
 
     /**
      * @internal
      * @var string the overlay size, which depends on icon size
      */
-    const SIZE_OVERLAY = 'overlay';
+    public const SIZE_OVERLAY = 'overlay';
 
     /**
      * The identifier which the PHP code that calls the IconFactory hands over

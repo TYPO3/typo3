@@ -34,13 +34,13 @@ class JsonView extends AbstractView
      * Setting this value, the object's class name is fully
      * put out, including the namespace.
      */
-    const EXPOSE_CLASSNAME_FULLY_QUALIFIED = 1;
+    public const EXPOSE_CLASSNAME_FULLY_QUALIFIED = 1;
 
     /**
      * Puts out only the actual class name without namespace.
      * See EXPOSE_CLASSNAME_FULL for the meaning of the constant at all.
      */
-    const EXPOSE_CLASSNAME_UNQUALIFIED = 2;
+    public const EXPOSE_CLASSNAME_UNQUALIFIED = 2;
 
     /**
      * Only variables whose name is contained in this array will be rendered

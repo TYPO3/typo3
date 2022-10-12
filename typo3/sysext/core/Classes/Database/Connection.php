@@ -37,32 +37,32 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     /**
      * Represents a SQL NULL data type.
      */
-    const PARAM_NULL = \PDO::PARAM_NULL; // 0
+    public const PARAM_NULL = \PDO::PARAM_NULL; // 0
 
     /**
      * Represents a SQL INTEGER data type.
      */
-    const PARAM_INT = \PDO::PARAM_INT; // 1
+    public const PARAM_INT = \PDO::PARAM_INT; // 1
 
     /**
      * Represents a SQL CHAR, VARCHAR data type.
      */
-    const PARAM_STR = \PDO::PARAM_STR; // 2
+    public const PARAM_STR = \PDO::PARAM_STR; // 2
 
     /**
      * Represents a SQL large object data type.
      */
-    const PARAM_LOB = \PDO::PARAM_LOB; // 3
+    public const PARAM_LOB = \PDO::PARAM_LOB; // 3
 
     /**
      * Represents a recordset type. Not currently supported by any drivers.
      */
-    const PARAM_STMT = \PDO::PARAM_STMT; // 4
+    public const PARAM_STMT = \PDO::PARAM_STMT; // 4
 
     /**
      * Represents a boolean data type.
      */
-    const PARAM_BOOL = \PDO::PARAM_BOOL; // 5
+    public const PARAM_BOOL = \PDO::PARAM_BOOL; // 5
 
     /** @var ExpressionBuilder */
     protected $_expr;

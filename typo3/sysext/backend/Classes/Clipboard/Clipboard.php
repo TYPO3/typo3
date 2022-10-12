@@ -108,11 +108,11 @@ class Clipboard
 
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         // Get data
-        $clipData = $this->getBackendUser()->getModuleData('clipboard', !empty($userTsConfig['options.']['saveClipboard'])  ? '' : 'ses') ?: [];
+        $clipData = $this->getBackendUser()->getModuleData('clipboard', !empty($userTsConfig['options.']['saveClipboard']) ? '' : 'ses') ?: [];
         $clipData += ['normal' => []];
         $this->numberOfPads = MathUtility::forceIntegerInRange((int)($userTsConfig['options.']['clipboardNumberPads'] ?? 3), 0, 20);
         // Resets/reinstates the clipboard pads
-        $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal']: [];
+        $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal'] : [];
         for ($a = 1; $a <= $this->numberOfPads; $a++) {
             $index = 'tab_' . $a;
             $this->clipData[$index] = is_iterable($clipData[$index] ?? null) ? $clipData[$index] : [];

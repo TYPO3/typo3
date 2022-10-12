@@ -24,8 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionUtility
 {
-    const PLUGIN_TYPE_PLUGIN = 'list_type';
-    const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
+    public const PLUGIN_TYPE_PLUGIN = 'list_type';
+    public const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
 
     /**
      * Add auto-generated TypoScript to configure the Extbase Dispatcher.

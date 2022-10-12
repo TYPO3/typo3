@@ -158,7 +158,7 @@ class StatusTest extends UnitTestCase
     private function createStatusProvider(array $statuses, string $label, bool $requestAware = false, bool $extended = false): StatusProviderInterface
     {
         if ($requestAware) {
-            return new class($label) implements RequestAwareStatusProviderInterface {
+            return new class ($label) implements RequestAwareStatusProviderInterface {
                 public function __construct(
                     private readonly string $label,
                 ) {
@@ -181,7 +181,7 @@ class StatusTest extends UnitTestCase
         }
 
         if ($extended) {
-            return new class($statuses, $label) implements StatusProviderInterface, ExtendedStatusProviderInterface {
+            return new class ($statuses, $label) implements StatusProviderInterface, ExtendedStatusProviderInterface {
                 public function __construct(
                     private readonly array $statuses,
                     private readonly string $label,
@@ -205,7 +205,7 @@ class StatusTest extends UnitTestCase
             };
         }
 
-        return new class($statuses, $label) implements StatusProviderInterface {
+        return new class ($statuses, $label) implements StatusProviderInterface {
             public function __construct(
                 private readonly array $statuses,
                 private readonly string $label,

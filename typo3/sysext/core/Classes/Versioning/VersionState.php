@@ -22,14 +22,14 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class VersionState extends Enumeration
 {
-    const __default = self::DEFAULT_STATE;
+    public const __default = self::DEFAULT_STATE;
 
     /**
      * The t3ver_state 0 is used for a live element, and any
      * commonly "modified" versioned record which is then identified
      * with t3ver_oid=uid of live ID
      */
-    const DEFAULT_STATE = 0;
+    public const DEFAULT_STATE = 0;
 
     /**
      * If a new record is created in a workspace a new
@@ -38,7 +38,7 @@ final class VersionState extends Enumeration
      * record and has no t3ver_oid value. Publishing this record
      * is done by changing the t3ver_wsid field to "0".
      */
-    const NEW_PLACEHOLDER = 1;
+    public const NEW_PLACEHOLDER = 1;
 
     /**
      * Deleting elements is done by actually creating a
@@ -46,7 +46,7 @@ final class VersionState extends Enumeration
      * that indicates the live element must be deleted upon
      * publishing the versions.
      */
-    const DELETE_PLACEHOLDER = 2;
+    public const DELETE_PLACEHOLDER = 2;
 
     /**
      * When an element is moved to a different page, a versioned
@@ -58,7 +58,7 @@ final class VersionState extends Enumeration
      * the t3ver_state=4 records should be fetched as well to
      * find the new position and to do "workspace overlays" properly.
      */
-    const MOVE_POINTER = 4;
+    public const MOVE_POINTER = 4;
 
     /**
      * @return bool

@@ -42,7 +42,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * @var string
      */
-    const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
+    public const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
 
     /**
      * The absolute base path. It always contains a trailing slash.

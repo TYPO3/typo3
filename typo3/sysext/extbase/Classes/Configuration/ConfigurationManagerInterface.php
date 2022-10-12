@@ -26,9 +26,9 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 interface ConfigurationManagerInterface extends SingletonInterface
 {
-    const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
-    const CONFIGURATION_TYPE_SETTINGS = 'Settings';
-    const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
+    public const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
+    public const CONFIGURATION_TYPE_SETTINGS = 'Settings';
+    public const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
 
     /**
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject

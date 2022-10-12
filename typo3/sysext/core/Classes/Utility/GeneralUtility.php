@@ -1456,7 +1456,7 @@ class GeneralUtility
                                 $current[$tagName] = (int)$current[$tagName];
                                 break;
                             case 'double':
-                                $current[$tagName] = (double)$current[$tagName];
+                                $current[$tagName] = (float)$current[$tagName];
                                 break;
                             case 'boolean':
                                 $current[$tagName] = (bool)$current[$tagName];

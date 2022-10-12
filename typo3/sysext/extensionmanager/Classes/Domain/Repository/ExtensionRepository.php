@@ -34,7 +34,7 @@ class ExtensionRepository extends Repository
     /**
      * @var string
      */
-    const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
+    public const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
     protected ?QuerySettingsInterface $querySettings = null;
 

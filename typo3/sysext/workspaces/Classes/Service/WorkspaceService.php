@@ -44,8 +44,8 @@ class WorkspaceService implements SingletonInterface
      */
     protected $pagesWithVersionsInTable = [];
 
-    const TABLE_WORKSPACE = 'sys_workspace';
-    const LIVE_WORKSPACE_ID = 0;
+    public const TABLE_WORKSPACE = 'sys_workspace';
+    public const LIVE_WORKSPACE_ID = 0;
 
     /**
      * retrieves the available workspaces from the database and checks whether

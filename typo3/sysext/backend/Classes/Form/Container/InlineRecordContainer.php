@@ -549,7 +549,7 @@ class InlineRecordContainer extends AbstractContainer
         }
         if (!empty($cells)) {
             $cellContent = trim(implode('', $cells));
-            $out .= $cellContent !== '' ? ' <div class="btn-group btn-group-sm" role="group">' . $cellContent . '</div>': '';
+            $out .= $cellContent !== '' ? ' <div class="btn-group btn-group-sm" role="group">' . $cellContent . '</div>' : '';
         }
         return $out;
     }

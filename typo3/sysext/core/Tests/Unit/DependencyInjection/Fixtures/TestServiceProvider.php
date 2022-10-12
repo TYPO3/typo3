@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 
 function myFunctionFactory(): object
 {
-    return new class() {
+    return new class () {
         public int $number;
         public function __construct()
         {
@@ -46,7 +46,7 @@ class TestServiceProvider implements ServiceProviderInterface
             'serviceC' => static function (ContainerInterface $container): \stdClass {
                 return new \stdClass();
             },
-            'serviceD' => new class() {
+            'serviceD' => new class () {
                 public function __invoke(ContainerInterface $container): \stdClass
                 {
                     return new \stdClass();

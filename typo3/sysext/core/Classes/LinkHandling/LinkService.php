@@ -31,15 +31,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class LinkService implements SingletonInterface
 {
-    const TYPE_PAGE = 'page';
-    const TYPE_INPAGE = 'inpage';
-    const TYPE_URL = 'url';
-    const TYPE_EMAIL = 'email';
-    const TYPE_TELEPHONE = 'telephone';
-    const TYPE_FILE = 'file';
-    const TYPE_FOLDER = 'folder';
-    const TYPE_RECORD = 'record';
-    const TYPE_UNKNOWN = 'unknown';
+    public const TYPE_PAGE = 'page';
+    public const TYPE_INPAGE = 'inpage';
+    public const TYPE_URL = 'url';
+    public const TYPE_EMAIL = 'email';
+    public const TYPE_TELEPHONE = 'telephone';
+    public const TYPE_FILE = 'file';
+    public const TYPE_FOLDER = 'folder';
+    public const TYPE_RECORD = 'record';
+    public const TYPE_UNKNOWN = 'unknown';
 
     /**
      * All registered LinkHandlers

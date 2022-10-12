@@ -25,19 +25,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class LikeWildcard extends Enumeration
 {
-    const __default = self::BOTH;
+    public const __default = self::BOTH;
 
     /** @var int Do not use any wildcard */
-    const NONE = 0;
+    public const NONE = 0;
 
     /** @var int Use wildcard on left side */
-    const LEFT = 1;
+    public const LEFT = 1;
 
     /** @var int Use wildcard on right side */
-    const RIGHT = 2;
+    public const RIGHT = 2;
 
     /** @var int Use wildcard on both sides */
-    const BOTH = 3;
+    public const BOTH = 3;
 
     /**
      * Returns a LIKE clause for sql queries.

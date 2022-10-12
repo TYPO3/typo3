@@ -257,7 +257,7 @@ class LinkFactory implements LoggerAwareInterface
     {
         $aTagParams = $contentObjectRenderer->stdWrapValue('ATagParams', $linkConfiguration);
         // Add the global config.ATagParams
-        $globalParams = $contentObjectRenderer->getTypoScriptFrontendController() ? trim($contentObjectRenderer->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? ''): '';
+        $globalParams = $contentObjectRenderer->getTypoScriptFrontendController() ? trim($contentObjectRenderer->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') : '';
         $aTagParams = trim($globalParams . ' ' . $aTagParams);
         if (!empty($aTagParams)) {
             // Decode entities here, as they are doubly escaped again when using HTML output

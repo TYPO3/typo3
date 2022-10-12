@@ -52,7 +52,7 @@ class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
         $mockScheduler->method('saveTask')->willReturn(false);
         GeneralUtility::addInstance(Execution::class, $this->prophesize(Execution::class)->reveal());
 
-        $command = new class() extends Command {
+        $command = new class () extends Command {
             protected function configure(): void
             {
                 $this

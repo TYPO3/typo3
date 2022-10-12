@@ -55,7 +55,7 @@ final class RenderViewHelper extends AbstractViewHelper
         $section = $this->arguments['section'];
         $partial = $this->arguments['partial'];
         $arguments = (array)$this->arguments['arguments'];
-        $optional = (boolean)$this->arguments['optional'];
+        $optional = (bool)$this->arguments['optional'];
         $contentAs = $this->arguments['contentAs'];
         $tagContent = $this->renderChildren();
 

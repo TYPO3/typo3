@@ -32,14 +32,14 @@ class Uri implements UriInterface
      *
      * @var string
      */
-    const SUBDELIMITER_CHARLIST = '!\$&\'\(\)\*\+,;=';
+    public const SUBDELIMITER_CHARLIST = '!\$&\'\(\)\*\+,;=';
 
     /**
      * Unreserved characters used in paths, query strings, and fragments.
      *
      * @var string
      */
-    const UNRESERVED_CHARLIST = 'a-zA-Z0-9_\-\.~';
+    public const UNRESERVED_CHARLIST = 'a-zA-Z0-9_\-\.~';
 
     /**
      * The default scheme for the URI

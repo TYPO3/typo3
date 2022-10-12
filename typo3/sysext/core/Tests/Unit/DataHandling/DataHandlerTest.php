@@ -647,7 +647,7 @@ class DataHandlerTest extends UnitTestCase
 
         $eventDispatcher = new MockEventDispatcher();
         GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-        $flexFormTools = new class($eventDispatcher) extends FlexFormTools {
+        $flexFormTools = new class ($eventDispatcher) extends FlexFormTools {
             public function getDataStructureIdentifier(...$args): string
             {
                 return 'anIdentifier';

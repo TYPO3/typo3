@@ -22,15 +22,15 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class IconState extends Enumeration
 {
-    const __default = self::STATE_DEFAULT;
+    public const __default = self::STATE_DEFAULT;
 
     /**
      * @var string the default state identifier
      */
-    const STATE_DEFAULT = 'default';
+    public const STATE_DEFAULT = 'default';
 
     /**
      * @var string the disabled state identifier
      */
-    const STATE_DISABLED = 'disabled';
+    public const STATE_DISABLED = 'disabled';
 }

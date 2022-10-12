@@ -551,7 +551,7 @@ class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecords(
             [
                 self::TABLE_Page => [$this->recordIds['newPageId']],
-                self::TABLE_Content => [$this->recordIds['newContentIdTenth'], $this->recordIds['newContentIdTenthLocalized'],  $this->recordIds['newContentIdTenthLocalized2']],
+                self::TABLE_Content => [$this->recordIds['newContentIdTenth'], $this->recordIds['newContentIdTenthLocalized'], $this->recordIds['newContentIdTenthLocalized2']],
             ]
         );
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');

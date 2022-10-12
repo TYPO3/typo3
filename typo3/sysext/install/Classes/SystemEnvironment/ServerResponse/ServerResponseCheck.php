@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Install\SystemEnvironment\ServerResponse;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+
 use function GuzzleHttp\Promise\settle;
+
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;

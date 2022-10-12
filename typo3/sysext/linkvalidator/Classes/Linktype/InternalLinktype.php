@@ -27,22 +27,22 @@ class InternalLinktype extends AbstractLinktype
     /**
      * @var string
      */
-    const DELETED = 'deleted';
+    public const DELETED = 'deleted';
 
     /**
      * @var string
      */
-    const HIDDEN = 'hidden';
+    public const HIDDEN = 'hidden';
 
     /**
      * @var string
      */
-    const MOVED = 'moved';
+    public const MOVED = 'moved';
 
     /**
      * @var string
      */
-    const NOTEXISTING = 'notExisting';
+    public const NOTEXISTING = 'notExisting';
 
     /**
      * Result of the check, if the current page uid is valid or not

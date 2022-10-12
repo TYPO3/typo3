@@ -36,7 +36,7 @@ class PreviewUriBuilderTest extends UnitTestCase
      */
     public function attributesContainAlternativeUri(): void
     {
-        $eventDispatcher = new class() implements EventDispatcherInterface {
+        $eventDispatcher = new class () implements EventDispatcherInterface {
             public function dispatch(object $event)
             {
                 if ($event instanceof BeforePagePreviewUriGeneratedEvent) {

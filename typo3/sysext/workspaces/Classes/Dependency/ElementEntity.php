@@ -23,12 +23,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ElementEntity
 {
-    const REFERENCES_ChildOf = 'childOf';
-    const REFERENCES_ParentOf = 'parentOf';
-    const EVENT_Construct = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::construct';
-    const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createChildReference';
-    const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createParentReference';
-    const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity->skip';
+    public const REFERENCES_ChildOf = 'childOf';
+    public const REFERENCES_ParentOf = 'parentOf';
+    public const EVENT_Construct = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::construct';
+    public const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createChildReference';
+    public const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createParentReference';
+    public const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity->skip';
 
     /**
      * @var bool

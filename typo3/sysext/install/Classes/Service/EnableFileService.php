@@ -27,17 +27,17 @@ class EnableFileService
     /**
      * @var string Relative path to ENABLE_INSTALL_TOOL file
      */
-    const INSTALL_TOOL_ENABLE_FILE_PATH = 'typo3conf/ENABLE_INSTALL_TOOL';
+    public const INSTALL_TOOL_ENABLE_FILE_PATH = 'typo3conf/ENABLE_INSTALL_TOOL';
 
     /**
      * @var string Relative path to  FIRST_INSTALL file
      */
-    const FIRST_INSTALL_FILE_PATH = 'FIRST_INSTALL';
+    public const FIRST_INSTALL_FILE_PATH = 'FIRST_INSTALL';
 
     /**
      * @var string Maximum age of ENABLE_INSTALL_TOOL file before it gets removed (in seconds)
      */
-    const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
+    public const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
 
     /**
      * @return bool

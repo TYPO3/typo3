@@ -303,7 +303,7 @@ class InstallUtilityTest extends UnitTestCase
             SiteConfiguration::class,
             new SiteConfiguration(
                 Environment::getConfigPath() . '/sites',
-                new class() implements EventDispatcherInterface {
+                new class () implements EventDispatcherInterface {
                     public function dispatch(object $event)
                     {
                         return $event;
@@ -388,7 +388,7 @@ class InstallUtilityTest extends UnitTestCase
             SiteConfiguration::class,
             new SiteConfiguration(
                 Environment::getConfigPath() . '/sites',
-                new class() implements EventDispatcherInterface {
+                new class () implements EventDispatcherInterface {
                     public function dispatch(object $event)
                     {
                         return $event;

@@ -37,8 +37,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
 {
     use LoggerAwareTrait;
 
-    const CONTEXT_WEB = 'WEB';
-    const CONTEXT_CLI = 'CLI';
+    public const CONTEXT_WEB = 'WEB';
+    public const CONTEXT_CLI = 'CLI';
 
     protected bool $logExceptionStackTrace = false;
 

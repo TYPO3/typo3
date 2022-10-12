@@ -27,17 +27,17 @@ interface LockingStrategyInterface
     /**
      * Exclusive locks can be acquired
      */
-    const LOCK_CAPABILITY_EXCLUSIVE = 1;
+    public const LOCK_CAPABILITY_EXCLUSIVE = 1;
 
     /**
      * Shared locks can be acquired
      */
-    const LOCK_CAPABILITY_SHARED = 2;
+    public const LOCK_CAPABILITY_SHARED = 2;
 
     /**
      * Do not block when acquiring the lock
      */
-    const LOCK_CAPABILITY_NOBLOCK = 4;
+    public const LOCK_CAPABILITY_NOBLOCK = 4;
 
     /**
      * @return int LOCK_CAPABILITY_* elements combined with bit-wise OR

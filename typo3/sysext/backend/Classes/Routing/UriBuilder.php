@@ -42,17 +42,17 @@ class UriBuilder implements SingletonInterface
     /**
      * Generates an absolute URL
      */
-    const ABSOLUTE_URL = 'url';
+    public const ABSOLUTE_URL = 'url';
 
     /**
      * Generates an absolute path
      */
-    const ABSOLUTE_PATH = 'absolute';
+    public const ABSOLUTE_PATH = 'absolute';
 
     /**
      * Generates an absolute url for URL sharing
      */
-    const SHAREABLE_URL = 'share';
+    public const SHAREABLE_URL = 'share';
 
     /**
      * @var array

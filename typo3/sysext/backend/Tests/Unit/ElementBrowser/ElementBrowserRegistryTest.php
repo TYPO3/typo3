@@ -29,7 +29,7 @@ class ElementBrowserRegistryTest extends UnitTestCase
     public function registrationRequiresInterface(): void
     {
         $elementBrowser = [
-            new class() {
+            new class () {
             },
             $this->getElementBrowser('valid-identifier'),
         ];
@@ -85,7 +85,7 @@ class ElementBrowserRegistryTest extends UnitTestCase
 
     protected function getElementBrowser(string $identifier = ''): ElementBrowserInterface
     {
-        return new class($identifier) implements ElementBrowserInterface {
+        return new class ($identifier) implements ElementBrowserInterface {
             private string $identifier;
             public function __construct(string $identifier)
             {

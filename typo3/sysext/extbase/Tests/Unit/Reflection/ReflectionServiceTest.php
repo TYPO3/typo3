@@ -64,7 +64,7 @@ class ReflectionServiceTest extends UnitTestCase
      */
     public function reflectionServiceCanBeSerializedAndUnserialized(): void
     {
-        $class = new class() {
+        $class = new class () {
         };
 
         $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
@@ -82,7 +82,7 @@ class ReflectionServiceTest extends UnitTestCase
      */
     public function reflectionServiceCanBeSerializedAndUnserializedWithCacheManager(): void
     {
-        $class = new class() {
+        $class = new class () {
         };
 
         $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');

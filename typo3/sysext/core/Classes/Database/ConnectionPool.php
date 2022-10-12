@@ -46,7 +46,7 @@ class ConnectionPool
     /**
      * @var string
      */
-    const DEFAULT_CONNECTION_NAME = 'Default';
+    public const DEFAULT_CONNECTION_NAME = 'Default';
 
     /**
      * @var Connection[]

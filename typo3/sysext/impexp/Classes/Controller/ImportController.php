@@ -109,7 +109,7 @@ class ImportController
         $importFolder = $import->getOrCreateDefaultImportExportFolder();
 
         $view->assignMultiple([
-            'importFolder' => ($importFolder instanceof Folder) ? $importFolder->getCombinedIdentifier(): '',
+            'importFolder' => ($importFolder instanceof Folder) ? $importFolder->getCombinedIdentifier() : '',
             'import' => $import,
             'errors' => $import->getErrorLog(),
             'preview' => $import->renderPreview(),

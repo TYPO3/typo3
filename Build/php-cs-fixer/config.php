@@ -49,7 +49,7 @@ return (new \PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@DoctrineAnnotation' => true,
-        '@PSR2' => true,
+        '@PER' => true,
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_after_opening_tag' => true,
         'braces' => ['allow_single_line_closure' => true],
@@ -81,6 +81,7 @@ return (new \PhpCsFixer\Config())
         'no_unneeded_control_parentheses' => true,
         'no_unused_imports' => true,
         'no_useless_else' => true,
+        'no_useless_nullsafe_operator' => true,
         'no_whitespace_in_blank_line' => true,
         'ordered_imports' => true,
         'php_unit_construct' => ['assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']],
@@ -98,6 +99,6 @@ return (new \PhpCsFixer\Config())
         'single_line_comment_style' => ['comment_types' => ['hash']],
         'single_trait_insert_per_statement' => true,
         'trailing_comma_in_multiline' => ['elements' => ['arrays']],
-        'whitespace_after_comma_in_array' => true,
+        'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
     ]);

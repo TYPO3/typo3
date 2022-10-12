@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class State
 {
-    const STATE_CUSTOM = 'custom';
-    const STATE_PARENT = 'parent';
-    const STATE_SOURCE = 'source';
+    public const STATE_CUSTOM = 'custom';
+    public const STATE_PARENT = 'parent';
+    public const STATE_SOURCE = 'source';
 
     /**
      * @param string $tableName

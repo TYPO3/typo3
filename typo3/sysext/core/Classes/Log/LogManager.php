@@ -34,12 +34,12 @@ class LogManager implements SingletonInterface, LogManagerInterface
     /**
      * @var string
      */
-    const CONFIGURATION_TYPE_WRITER = 'writer';
+    public const CONFIGURATION_TYPE_WRITER = 'writer';
 
     /**
      * @var string
      */
-    const CONFIGURATION_TYPE_PROCESSOR = 'processor';
+    public const CONFIGURATION_TYPE_PROCESSOR = 'processor';
 
     /**
      * Loggers to retrieve them for repeated use.

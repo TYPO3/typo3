@@ -243,7 +243,7 @@ class ContentObjectRendererTest extends UnitTestCase
         }
         $linkFactory = new LinkFactory(
             $linkService,
-            new class() implements EventDispatcherInterface {
+            new class () implements EventDispatcherInterface {
                 public function dispatch(object $event)
                 {
                     return $event;
@@ -2671,7 +2671,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
-            new class() implements EventDispatcherInterface {
+            new class () implements EventDispatcherInterface {
                 public function dispatch(object $event)
                 {
                     return $event;
@@ -3118,7 +3118,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
-            new class() implements EventDispatcherInterface {
+            new class () implements EventDispatcherInterface {
                 public function dispatch(object $event)
                 {
                     return $event;
@@ -3222,7 +3222,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
-            new class() implements EventDispatcherInterface {
+            new class () implements EventDispatcherInterface {
                 public function dispatch(object $event)
                 {
                     return $event;
@@ -3293,7 +3293,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
-            new class() implements EventDispatcherInterface {
+            new class () implements EventDispatcherInterface {
                 public function dispatch(object $event)
                 {
                     return $event;

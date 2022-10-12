@@ -401,13 +401,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @see ContentObjectRender::$userObjectType
      */
-    const OBJECTTYPE_USER_INT = 1;
+    public const OBJECTTYPE_USER_INT = 1;
     /**
      * Indicates that object type is USER.
      *
      * @see ContentObjectRender::$userObjectType
      */
-    const OBJECTTYPE_USER = 2;
+    public const OBJECTTYPE_USER = 2;
 
     /**
      * @param TypoScriptFrontendController $typoScriptFrontendController
@@ -1101,7 +1101,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         trigger_error('$cObj->getATagParams is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $aTagParams = $this->stdWrapValue('ATagParams', $conf ?? []);
         // Add the global config.ATagParams
-        $globalParams = $this->getTypoScriptFrontendController() ? trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? ''): '';
+        $globalParams = $this->getTypoScriptFrontendController() ? trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') : '';
         $aTagParams = ' ' . trim($globalParams . ' ' . $aTagParams);
         // Extend params
         $aTagParams = trim($aTagParams);

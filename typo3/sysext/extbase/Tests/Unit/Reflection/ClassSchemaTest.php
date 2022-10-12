@@ -273,7 +273,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsMethodParameterTypeViaReflection(): void
     {
-        $class = new class() {
+        $class = new class () {
             public function foo(string $foo): void
             {
             }
@@ -293,7 +293,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaPrefersMethodParameterTypeDetectionViaReflection(): void
     {
-        $class = new class() {
+        $class = new class () {
             /**
              * @param ClassSchema $foo
              */
@@ -311,7 +311,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaCanHandleSelfMethodReturnTypes(): void
     {
-        $class = new class() {
+        $class = new class () {
             public function __construct(self $copy = null)
             {
             }

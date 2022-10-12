@@ -140,7 +140,7 @@ class GifBuilder extends GraphicalFunctions
                         $this->charRangeMap[$cRMkey] = [];
                         $this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'] ?? [];
                         $this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey, 0, -1);
-                        $this->charRangeMap[$cRMkey]['multiplicator'] = (double)$cRMcfg['fontSizeMultiplicator'];
+                        $this->charRangeMap[$cRMkey]['multiplicator'] = (float)$cRMcfg['fontSizeMultiplicator'];
                         $this->charRangeMap[$cRMkey]['pixelSpace'] = (int)$cRMcfg['pixelSpaceFontSizeRef'];
                     }
                 }

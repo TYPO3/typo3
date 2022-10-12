@@ -224,7 +224,7 @@ class DataMapper
                     $propertyValue = (int)$row[$columnName];
                     break;
                 case 'float':
-                    $propertyValue = (double)$row[$columnName];
+                    $propertyValue = (float)$row[$columnName];
                     break;
                 case 'bool':
                 case 'boolean':
