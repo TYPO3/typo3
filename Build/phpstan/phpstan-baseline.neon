@@ -1401,11 +1401,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
-
-		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\StorageRepository\\:\\:findByUid\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
