@@ -113,7 +113,7 @@
 		"php-webdriver/webdriver": "^1.13.0",
 		"phpspec/prophecy": "^1.15.0",
 		"phpspec/prophecy-phpunit": "^2.0.1",
-		"phpstan/phpstan": "^1.8.8",
+		"phpstan/phpstan": "^1.8.9",
 		"phpstan/phpstan-phpunit": "^1.1.1",
 		"phpunit/phpunit": "^9.5.25",
 		"typo3/cms-styleguide": "~12.0@dev",
