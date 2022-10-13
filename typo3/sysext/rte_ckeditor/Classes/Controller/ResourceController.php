@@ -59,9 +59,12 @@ class ResourceController
         if ($cache->has($cacheIdentifier)) {
             $compiledStyles = $cache->get($cacheIdentifier);
         } else {
-            // @todo this is so blunt, it ignores any comments, `:root` whatever instructions...
-            $source = sprintf("%s {\n%s\n}", $cssPrefix, $styleSrcContent);
-            $compiledStyles = (new Compiler())->compileString($source)->getCss();
+            if (trim($cssPrefix) !== '') {
+                $source = $this->prepareCssForScssParsing($cssPrefix, $styleSrcContent);
+                $compiledStyles = (new Compiler())->compileString($source)->getCss();
+            } else {
+                $compiledStyles = $styleSrcContent;
+            }
             $cache->set($cacheIdentifier, $compiledStyles);
         }
 
@@ -75,5 +78,23 @@ class ResourceController
     public function hmac(string $payload, string $scope): string
     {
         return GeneralUtility::hmac($payload, self::class . '::' . $scope);
+    }
+
+    private function prepareCssForScssParsing(string $prefix, string $content): string
+    {
+        // Some CSS minifier remove the semicolon before the curly brace
+        // While this is valid CSS, the ScssPHP Parser is unable to identify
+        // the end of a declaration block. We are adding them, to avoid
+        // parsing errors. Superfluous semicolons will be dropped by the parser.
+        $content = str_replace('}', ';}', $content);
+
+        // Ensure the additional CSS is only applied to the Editor by
+        // prefixing all CSS definitions.
+        $content = sprintf("%s {\n%s\n}", $prefix, $content);
+
+        // Moving CSS variables assigned to :root to the new parent.
+        $content = str_replace(':root', '&', $content);
+
+        return $content;
     }
 }
