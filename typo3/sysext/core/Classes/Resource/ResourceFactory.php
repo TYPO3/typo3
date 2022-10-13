@@ -130,7 +130,7 @@ class ResourceFactory implements SingletonInterface
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException('The UID of collection has to be numeric. UID given: "' . $uid . '"', 1314085999);
         }
-        if (!$this->collectionInstances[$uid]) {
+        if (!isset($this->collectionInstances[$uid])) {
             // Get mount data if not already supplied as argument to this function
             if (empty($recordData) || $recordData['uid'] !== $uid) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_collection');
