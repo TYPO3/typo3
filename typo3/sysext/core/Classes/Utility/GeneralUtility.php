@@ -1896,7 +1896,7 @@ class GeneralUtility
      */
     public static function mkdir($newFolder)
     {
-        $result = @mkdir($newFolder, (int)octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
+        $result = @mkdir($newFolder, (int)octdec((string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '0')));
         if ($result) {
             static::fixPermissions($newFolder);
         }
@@ -1941,7 +1941,7 @@ class GeneralUtility
     {
         $currentPath = $fullDirectoryPath;
         $firstCreatedPath = '';
-        $permissionMask = (int)octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? 0);
+        $permissionMask = (int)octdec((string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '0'));
         if (!@is_dir($currentPath)) {
             do {
                 $firstCreatedPath = $currentPath;
