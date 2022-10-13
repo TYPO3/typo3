@@ -546,7 +546,7 @@ final class TreeBuilder
 
     private function prepareNodeForCache(IncludeInterface $node): string
     {
-        return 'return unserialize(\'' . addcslashes(serialize($node), '\'') . '\');';
+        return 'return unserialize(\'' . addcslashes(serialize($node), '\'\\') . '\');';
     }
 
     /**

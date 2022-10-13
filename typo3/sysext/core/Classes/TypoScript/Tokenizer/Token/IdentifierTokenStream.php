@@ -63,12 +63,13 @@ final class IdentifierTokenStream extends AbstractTokenStream
         return $source;
     }
 
-    protected function serialize(array $result = []): array
+    protected function serialize(): array
     {
+        $result = parent::serialize();
         if ($this->isRelative()) {
             $result['relative'] = true;
         }
-        return parent::serialize($result);
+        return $result;
     }
 
     /**

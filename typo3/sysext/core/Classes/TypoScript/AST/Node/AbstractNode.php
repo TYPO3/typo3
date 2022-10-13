@@ -42,6 +42,28 @@ abstract class AbstractNode implements NodeInterface
     private array $comments = [];
 
     /**
+     * When storing to cache, we only store FE relevant properties and skip
+     * various BE related properties which then default to class defaults when
+     * unserialized. This is done to create smaller php cache files.
+     */
+    final public function __serialize(): array
+    {
+        return $this->serialize();
+    }
+
+    protected function serialize(): array
+    {
+        $result = [
+            'name' => $this->name,
+            'children' => $this->children,
+        ];
+        if ($this->value !== null) {
+            $result['value'] = $this->value;
+        }
+        return $result;
+    }
+
+    /**
      * This forces $this->name NOT to be readonly.
      * Used with '<' operator on tree root to copy:
      *      foo = value

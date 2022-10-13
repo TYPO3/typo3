@@ -34,10 +34,11 @@ abstract class AbstractConditionInclude extends AbstractInclude implements Inclu
     /**
      * Add the condition token to cache when serialized. See __serialize() of AbstractInclude.
      */
-    protected function serialize(array $result = []): array
+    protected function serialize(): array
     {
+        $result = parent::serialize();
         $result['conditionValueToken'] = $this->conditionValueToken;
-        return parent::serialize($result);
+        return $result;
     }
 
     public function setConditionToken(Token $token): void

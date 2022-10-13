@@ -50,7 +50,7 @@ interface IncludeInterface
     public function getIdentifier(): string;
 
     /**
-     * A human readable version of the identifier: Used in backend tree rendering.
+     * A human-readable version of the identifier: Used in backend tree rendering.
      */
     public function setName(string $name): void;
     public function getName(): string;

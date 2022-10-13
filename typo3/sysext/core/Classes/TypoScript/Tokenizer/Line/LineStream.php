@@ -50,6 +50,18 @@ final class LineStream
     }
 
     /**
+     * When storing to cache, we only store FE relevant properties and skip
+     * irrelevant things. In particular, $currentIndex should always initialize
+     * to -1 and does not need to be stored.
+     */
+    final public function __serialize(): array
+    {
+        return [
+            'lines' => $this->lines,
+        ];
+    }
+
+    /**
      * Stream creation.
      */
     public function append(LineInterface $line): self

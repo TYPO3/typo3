@@ -33,6 +33,16 @@ final class RootNode extends AbstractNode
         throw new \LogicException('Can not clone RootNode', 1655988945);
     }
 
+    /**
+     * RootNode has no properties to cache, just children.
+     */
+    protected function serialize(): array
+    {
+        return [
+            'children' => $this->children,
+        ];
+    }
+
     public function getName(): ?string
     {
         return null;

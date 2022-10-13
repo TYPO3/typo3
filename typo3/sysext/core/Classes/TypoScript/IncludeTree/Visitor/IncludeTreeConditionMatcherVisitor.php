@@ -46,7 +46,7 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
      * A list of all handled conditions with their verdicts.
      * This is used in FE since condition verdicts influence page caches.
      */
-    public function getConditionList(): array
+    public function getConditionListWithVerdicts(): array
     {
         return $this->conditionList;
     }

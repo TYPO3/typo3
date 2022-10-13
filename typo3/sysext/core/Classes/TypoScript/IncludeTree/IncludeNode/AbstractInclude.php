@@ -51,7 +51,7 @@ abstract class AbstractInclude implements IncludeInterface
         return $this->serialize();
     }
 
-    protected function serialize(array $result = []): array
+    protected function serialize(): array
     {
         $result['children'] = $this->children;
         if ($this->isSplit()) {

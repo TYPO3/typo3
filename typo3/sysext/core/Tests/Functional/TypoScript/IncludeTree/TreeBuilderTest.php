@@ -43,6 +43,10 @@ class TreeBuilderTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
+        // Register custom comparator to compare IncludeTree with its unserialized(serialized())
+        // representation since we don't serialize all properties. Custom comparators are
+        // unregistered after test by phpunit runBare() automatically.
+        $this->registerComparator(new UnserializedIncludeTreeObjectComparator());
         $this->get(CacheManager::class)->getCache('typoscript')->flush();
         $this->writeSiteConfiguration(
             'website-local',
@@ -80,6 +84,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
     }
@@ -103,6 +108,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -133,6 +139,7 @@ class TreeBuilderTest extends FunctionalTestCase
             new LossyTokenizer(),
             $siteFinder->getSiteByPageId(1)
         );
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('testValueFromSite', $ast->getChildByName('testConstantFromSite')->getValue());
     }
@@ -160,6 +167,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -188,6 +196,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertNull($ast->getChildByName('foo'));
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -211,6 +220,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertNull($ast->getChildByName('bar'));
@@ -234,6 +244,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
@@ -257,6 +268,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
@@ -280,6 +292,7 @@ class TreeBuilderTest extends FunctionalTestCase
         /** @var TreeBuilder $treeBuilder */
         $treeBuilder = $this->get(TreeBuilder::class);
         $includeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('includeStaticTarget', $ast->getChildByName('bar')->getValue());

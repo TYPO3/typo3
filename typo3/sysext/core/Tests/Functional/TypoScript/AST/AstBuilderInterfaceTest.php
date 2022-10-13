@@ -44,6 +44,7 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
+        self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
     /**
@@ -56,6 +57,7 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
+        self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
     /**
@@ -71,6 +73,7 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
+        self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
     /**
@@ -86,6 +89,7 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
+        self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
     /**
@@ -101,6 +105,7 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
+        self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
     /**
@@ -116,5 +121,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
+        self::assertEquals($ast, unserialize(serialize($ast)));
     }
 }

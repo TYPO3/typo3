@@ -53,7 +53,7 @@ abstract class AbstractTokenStream implements TokenStreamInterface
         return $this->serialize();
     }
 
-    protected function serialize(array $result = []): array
+    protected function serialize(): array
     {
         $result['tokens'] = $this->tokens;
         return $result;

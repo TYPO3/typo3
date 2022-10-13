@@ -39,6 +39,15 @@ final class ReferenceChildNode extends AbstractChildNode
 {
     private ?IdentifierTokenStream $referenceSourceStream;
 
+    protected function serialize(): array
+    {
+        $result = parent::serialize();
+        if ($this->referenceSourceStream !== null) {
+            $result['referenceSourceStream'] = $this->referenceSourceStream;
+        }
+        return $result;
+    }
+
     public function setReferenceSourceStream(?IdentifierTokenStream $referenceSourceStream): void
     {
         $this->referenceSourceStream = $referenceSourceStream;
