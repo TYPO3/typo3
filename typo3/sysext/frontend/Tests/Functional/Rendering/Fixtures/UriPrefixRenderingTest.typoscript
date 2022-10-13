@@ -20,6 +20,16 @@ page {
     externalJS.excludeFromConcatenation = 1
     externalJS.disableCompression = 1
   }
+  # added so we can also test the inclusion of these types in FE
+  includeCSSLibs {
+    relativeCSS = {$relativeCSS}
+  }
+  includeJSLibs {
+    relativeJS = {$relativeJS}
+  }
+  includeJSFooterlibs {
+    relativeJS = {$relativeJS}
+  }
   20 = IMAGE
   20 {
     file = {$localImage}

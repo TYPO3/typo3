@@ -482,7 +482,7 @@ class RequestHandler implements RequestHandlerInterface
                         }
                     }
                     if ($ss) {
-                        $additionalAttributes = $cssFileConfig;
+                        $additionalAttributes = $cssFileConfig ?? [];
                         unset(
                             $additionalAttributes['alternate'],
                             $additionalAttributes['media'],
@@ -536,7 +536,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSLibs.'][$key . '.'];
-                        $additionalAttributes = $jsFileConfig;
+                        $additionalAttributes = $jsFileConfig ?? [];
                         $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = (string)($jsFileConfig['crossorigin'] ?? '');
                         if ($crossOrigin === '' && ($jsFileConfig['integrity'] ?? false) && ($jsFileConfig['external'] ?? false)) {
@@ -593,7 +593,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSFooterlibs.'][$key . '.'];
-                        $additionalAttributes = $jsFileConfig;
+                        $additionalAttributes = $jsFileConfig ?? [];
                         $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = (string)($jsFileConfig['crossorigin'] ?? '');
                         if ($crossOrigin === '' && ($jsFileConfig['integrity'] ?? false) && ($jsFileConfig['external'] ?? false)) {
