@@ -232,7 +232,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($backButton);
         $editButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
-            ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [$uid => 'edit']],
