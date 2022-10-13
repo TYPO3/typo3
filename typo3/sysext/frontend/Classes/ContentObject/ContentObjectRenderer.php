@@ -4943,9 +4943,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Hook: Call post processing function for link rendering:
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'])) {
+            $lastTypoLinkText = $this->lastTypoLinkResult->getLinkText();
             $_params = [
                 'conf' => &$conf,
-                'linktxt' => &$linkText,
+                'originalLinktxt' => &$linkText,
+                'linktxt' => &$lastTypoLinkText,
                 'finalTag' => &$finalAnchorTag,
                 'finalTagParts' => &$finalTagParts,
                 'linkDetails' => &$linkDetails,
