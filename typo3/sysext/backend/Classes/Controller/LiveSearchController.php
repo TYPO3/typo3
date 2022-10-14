@@ -19,11 +19,11 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch;
-use TYPO3\CMS\Backend\Search\LiveSearch\QueryParser;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Returns the results for any live searches, e.g. in the toolbar
@@ -31,37 +31,72 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LiveSearchController
 {
+    private const LIMIT = 50;
+
+    public function __construct(
+        protected readonly SearchProviderRegistry $searchProviderRegistry,
+        protected readonly BackendViewFactory $backendViewFactory,
+    ) {
+    }
+
     /**
      * Processes all AJAX calls and sends back a JSON object
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function liveSearchAction(ServerRequestInterface $request): ResponseInterface
+    public function searchAction(ServerRequestInterface $request): ResponseInterface
     {
-        if (!isset($request->getQueryParams()['q'])) {
+        if (!isset($request->getParsedBody()['q'])) {
             return new Response('', 400, [], 'Missing argument "q"');
         }
-        $queryString = trim($request->getQueryParams()['q']);
-        $liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
-        $queryParser = GeneralUtility::makeInstance(QueryParser::class);
 
+        $queryString = trim($request->getParsedBody()['q']);
+        $searchProviders = $request->getParsedBody()['options']['searchProviders'] ?? [];
         $searchResults = [];
-        $liveSearch->setQueryString($queryString);
-        // Jump & edit - find page and retrieve an edit link (this is only for pages
-        if ($queryParser->isValidPageJump($queryString)) {
-            $commandQuery = $queryParser->getCommandForPageJump($queryString);
-            if ($commandQuery) {
-                $queryString = $commandQuery;
+        $remainingItems = self::LIMIT;
+
+        foreach ($this->searchProviderRegistry->getProviders() as $provider) {
+            if ($remainingItems < 1) {
+                break;
             }
-        }
-        // Search through the database and find records who match to the given search string
-        $resultArray = $liveSearch->find($queryString);
-        foreach ($resultArray as $resultFromTable) {
-            foreach ($resultFromTable as $item) {
-                $searchResults[] = $item;
+
+            if ($searchProviders !== [] && !in_array(get_class($provider), $searchProviders, true)) {
+                continue;
             }
+
+            $searchDemand = new SearchDemand($queryString, $remainingItems, 0);
+            $providerResult = $provider->find($searchDemand);
+            $remainingItems -= count($providerResult);
+
+            $searchResults[] = $providerResult;
         }
-        return new JsonResponse($searchResults);
+
+        $flattenedSearchResults = array_merge([], ...$searchResults);
+
+        return new JsonResponse($flattenedSearchResults);
+    }
+
+    public function formAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $hints = [
+            'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_helpDescriptionPages',
+            'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_helpDescriptionContent',
+            'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_help.shortcutOpen',
+        ];
+        $randomHintKey = array_rand($hints);
+
+        $query = $request->getQueryParams()['q'] ?? '';
+        $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
+        $view->assignMultiple([
+            'query' => $query,
+            'hint' => $hints[$randomHintKey],
+            'searchProviders' => $this->searchProviderRegistry->getProviders(),
+        ]);
+
+        $response = new Response();
+        $response->getBody()->write($view->render('LiveSearch/Form'));
+
+        return $response;
     }
 }

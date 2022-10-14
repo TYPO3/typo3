@@ -163,6 +163,18 @@ Have a nice day.</source>
 			<trans-unit id="shortcut.title" resname="shortcut.title">
 				<source>%s%s on page "%s" [%d]</source>
 			</trans-unit>
+			<trans-unit id="liveSearch.databaseRecordProvider.filterLabel" resname="liveSearch.databaseRecordProvider.filterLabel">
+				<source>Database records</source>
+			</trans-unit>
+			<trans-unit id="liveSearch.databaseRecordProvider.typeLabel" resname="liveSearch.databaseRecordProvider.typeLabel">
+				<source>Database record</source>
+			</trans-unit>
+			<trans-unit id="liveSearch.pageRecordProvider.filterLabel" resname="liveSearch.pageRecordProvider.filterLabel">
+				<source>Pages</source>
+			</trans-unit>
+			<trans-unit id="liveSearch.pageRecordProvider.typeLabel" resname="liveSearch.pageRecordProvider.typeLabel">
+				<source>Page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

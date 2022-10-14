@@ -121,16 +121,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Routing/Router.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Search\\\\LiveSearch\\\\LiveSearch\\:\\:makeQuerySearchByTable\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression but returns string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/LiveSearch.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Search\\\\LiveSearch\\\\QueryParser\\:\\:getId\\(\\) should return int but returns string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Search/LiveSearch/QueryParser.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Tree\\\\TableConfiguration\\\\AbstractTableConfigurationTreeDataProvider\\:\\:getStartingPoints\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php

@@ -8,8 +8,6 @@ typo3-backend-live-search-result-list {
 }
 
 typo3-backend-live-search-result-item {
-    display: flex;
-    gap: .5em;
     font-size: var(--typo3-component-font-size);
     line-height: var(--typo3-component-line-height);
     padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
@@ -34,22 +32,30 @@ typo3-backend-live-search-result-item {
         outline: 1px solid tint-color($primary, 20%);
     }
 
-    .livesearch-result-item-icon {
-        flex-grow: 0;
-        flex-shrink: 0;
-    }
+    & > * {
+        display: flex;
+        gap: .5em;
 
-    .livesearch-result-item-title {
-        flex-grow: 1;
+        .livesearch-result-item-icon {
+            display: flex;
+            gap: .5em;
+            flex-grow: 0;
+            flex-shrink: 0;
+            align-items: center;
+        }
 
-        small {
+        .livesearch-result-item-title {
+            flex-grow: 1;
+
+            small {
+                opacity: .5;
+            }
+        }
+
+        .livesearch-result-item-type {
+            flex-shrink: 0;
+            flex-grow: 0;
             opacity: .5;
         }
-    }
-
-    .livesearch-result-item-type {
-        flex-shrink: 0;
-        flex-grow: 0;
-        opacity: .5;
     }
 }

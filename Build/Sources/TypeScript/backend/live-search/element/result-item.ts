@@ -16,22 +16,18 @@ import {html, LitElement, TemplateResult} from 'lit';
 import '@typo3/backend/element/icon-element';
 
 export interface ResultItemInterface {
-  editLink: string;
+  provider: string;
+  actionUrl: string;
   icon: { [key: string]: string };
-  uid: number;
-  pid: number;
-  title: string;
+  itemTitle: string;
   typeLabel: string;
+  extraData: { [key: string]: any }
 }
 
 @customElement('typo3-backend-live-search-result-item')
 export class ResultItem extends LitElement {
-  @property({type: String}) editLink: string;
-  @property({type: Object}) icon: { [key: string]: string };
-  @property({type: Number}) uid: number;
-  @property({type: Number}) pid: number;
-  @property({type: String}) itemTitle: string;
-  @property({type: String}) typeLabel: string;
+  @property({type: String}) provider: string;
+  @property({type: String}) actionUrl: string;
 
   public connectedCallback() {
     super.connectedCallback();
@@ -56,24 +52,14 @@ export class ResultItem extends LitElement {
   }
 
   protected render(): TemplateResult {
-    return html`
-      <div class="livesearch-result-item-icon">
-        <typo3-backend-icon title="${this.icon.title}" identifier="${this.icon.identifier}" overlay="${this.icon.overlay}" size="small"></typo3-backend-icon>
-      </div>
-      <div class="livesearch-result-item-title">
-        ${this.itemTitle} <small>- uid:${this.uid}</small>
-      </div>
-      <div class="livesearch-result-item-type">
-        ${this.typeLabel}
-      </div>
-    `;
+    return html``;
   }
 
   private dispatchItemChosenEvent(): void {
     document.dispatchEvent(new CustomEvent('live-search:item-chosen', {
       detail: {
         callback: (): void => {
-          TYPO3.Backend.ContentContainer.setUrl(this.editLink);
+          TYPO3.Backend.ContentContainer.setUrl(this.actionUrl);
         }
       }
     }));

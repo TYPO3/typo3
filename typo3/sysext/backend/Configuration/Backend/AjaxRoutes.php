@@ -294,10 +294,16 @@ return [
         'target' => \TYPO3\CMS\Backend\Controller\Wizard\ImageManipulationController::class . '::getWizardContent',
     ],
 
-    // Save a newly added online media
+    // Search records
     'livesearch' => [
-        'path' => '/livesearch',
-        'target' => Controller\LiveSearchController::class . '::liveSearchAction',
+        'path' => '/livesearch/search',
+        'target' => Controller\LiveSearchController::class . '::searchAction',
+    ],
+
+    // Get livesearch form
+    'livesearch_form' => [
+        'path' => '/livesearch/form',
+        'target' => Controller\LiveSearchController::class . '::formAction',
     ],
 
     // Save a newly added online media

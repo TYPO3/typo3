@@ -14,18 +14,26 @@
 import {customElement, property} from 'lit/decorators';
 import {css, html, LitElement, TemplateResult} from 'lit';
 import {lll} from '@typo3/core/lit-helper';
-import '@typo3/backend/element/spinner-element';
 import './result-item';
-import {ResultItemInterface} from './result-item';
+import './provider/default-result-item';
+import {ResultItemInterface} from '@typo3/backend/live-search/element/result-item';
+import RegularEvent from '@typo3/core/event/regular-event';
 
-@customElement('typo3-backend-live-search-result-container')
+export const componentName = 'typo3-backend-live-search-result-container';
+
+@customElement(componentName)
 export class ResultContainer extends LitElement {
-  @property({type: Object}) results: ResultItemInterface[]|null = null;
-  @property({type: Boolean}) loading: boolean = false;
+  @property({type: Object, attribute: false}) results: ResultItemInterface[]|null = null;
+  @property({type: Boolean, attribute: false}) loading: boolean = false;
+  @property({type: Object, attribute: false}) renderers: { [key: string]: Function } = {};
 
   public connectedCallback() {
     super.connectedCallback();
     this.addEventListener('keydown', this.handleKeyDown);
+
+    new RegularEvent('live-search:item-chosen', (e: CustomEvent): void => {
+      e.detail.callback();
+    }).bindTo(document);
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
@@ -52,15 +60,24 @@ export class ResultContainer extends LitElement {
   }
 
   private renderResultItem(result: ResultItemInterface): TemplateResult {
+    let innerResultItemComponent;
+
+    if (typeof this.renderers[result.provider] === 'function') {
+      innerResultItemComponent = this.renderers[result.provider](result);
+    } else {
+      innerResultItemComponent = html`<typo3-backend-live-search-result-item-default
+        title="${result.typeLabel}: ${result.itemTitle}"
+        .icon="${result.icon}"
+        .itemTitle="${result.itemTitle}"
+        .typeLabel="${result.typeLabel}"
+        .extraData="${result.extraData}">
+      </typo3-backend-live-search-result-item-default>`;
+    }
     return html`<typo3-backend-live-search-result-item
       tabindex="1"
-      editLink="${result.editLink}"
-      icon="${JSON.stringify(result.icon)}"
-      uid="${result.uid}"
-      pid="${result.pid}"
-      title="${result.typeLabel}: ${result.title} - uid:${result.uid}"
-      itemTitle="${result.title}"
-      typeLabel="${result.typeLabel}">
+      provider="${result.provider}"
+      actionUrl="${result.actionUrl}">
+      ${innerResultItemComponent}
     </typo3-backend-live-search-result-item>`;
   }
 

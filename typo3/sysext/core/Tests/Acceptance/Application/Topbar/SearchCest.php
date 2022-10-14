@@ -45,7 +45,7 @@ class SearchCest
         $I->fillField(self::$searchField, 'adm');
 
         $I->canSee('Backend user', self::$searchResultItem);
-        $I->click(self::$searchResultItem . '[itemtitle="admin"]');
+        $I->click(self::$searchResultItem . ' [title~="admin"]');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#EditDocumentController');
