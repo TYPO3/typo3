@@ -766,7 +766,7 @@ class FlexFormTools
         // Traverse languages:
         foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
             // Render sheet:
-            if (is_array($sheetData['ROOT']) && is_array($sheetData['ROOT']['el'])) {
+            if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
                 $PA['vKeys'] = ['DEF'];
                 $PA['lKey'] = 'lDEF';
                 $PA['callBackMethod_value'] = $callBackMethod_value;
