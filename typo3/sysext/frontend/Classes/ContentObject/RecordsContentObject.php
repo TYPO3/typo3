@@ -89,7 +89,7 @@ class RecordsContentObject extends AbstractContentObject
             }
             $itemArrayCount = count($this->itemArray);
             if ($itemArrayCount > 0) {
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $frontendController);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
                 $pageRepository = $this->getPageRepository();
