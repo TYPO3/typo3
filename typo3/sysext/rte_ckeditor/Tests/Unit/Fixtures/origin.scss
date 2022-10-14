@@ -1,0 +1,62 @@
+body{margin:0}
+
+html,
+body{margin:0}
+
+body,
+html{margin:0}
+
+BODY{margin:0}
+
+HTML,
+BODY{margin:0}
+
+BODY,
+HTML{margin:0}
+
+.someclass{padding:0} body,html{margin:0}
+
+body {margin:0}
+body { margin:0; }
+body     {margin:0}
+
+body{
+    padding: 0;
+}
+
+body{
+    padding: 0;
+}
+
+/* minified version */
+body{margin:0}html,body{margin:0}body,html{margin:0}.someclass{padding:0} body,html{margin:0}body {margin:0}body     {margin:0}body{padding: 0;}body{padding: 0;}
+
+/* NO CHANGES HERE */
+body-unofindmemargin {
+    padding: 0
+}
+
+#body {
+    padding: 0;
+}
+
+.body {}
+
+.body-some {}
+.some-body {}
+
+html-unofindmemargin {
+    padding: 0
+}
+
+#html {
+    padding: 0;
+}
+
+.html {}
+
+.html-some {}
+.some-html {}
+
+/* minified version */
+body-unofindmemargin {padding: 0} #body {padding: 0;} .body {} .body-some {} .some-body {} html-unofindmemargin {padding: 0} #html {padding: 0;} .html {} .html-some {} .some-html {}

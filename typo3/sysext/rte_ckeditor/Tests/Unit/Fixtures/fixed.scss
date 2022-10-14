@@ -1,0 +1,65 @@
+foo {
+&{margin:0;}
+
+&,
+&{margin:0;}
+
+&,
+&{margin:0;}
+
+&{margin:0;}
+
+&,
+&{margin:0;}
+
+&,
+&{margin:0;}
+
+.someclass{padding:0;} &,&{margin:0;}
+
+& {margin:0;}
+& { margin:0; ;}
+&     {margin:0;}
+
+&{
+    padding: 0;
+;}
+
+&{
+    padding: 0;
+;}
+
+/* minified version */
+&{margin:0;}&,&{margin:0;}&,&{margin:0;}.someclass{padding:0;} &,&{margin:0;}& {margin:0;}&     {margin:0;}&{padding: 0;;}&{padding: 0;;}
+
+/* NO CHANGES HERE */
+body-unofindmemargin {
+    padding: 0
+;}
+
+#body {
+    padding: 0;
+;}
+
+.body {;}
+
+.body-some {;}
+.some-body {;}
+
+html-unofindmemargin {
+    padding: 0
+;}
+
+#html {
+    padding: 0;
+;}
+
+.html {;}
+
+.html-some {;}
+.some-html {;}
+
+/* minified version */
+body-unofindmemargin {padding: 0;} #body {padding: 0;;} .body {;} .body-some {;} .some-body {;} html-unofindmemargin {padding: 0;} #html {padding: 0;;} .html {;} .html-some {;} .some-html {;}
+
+}

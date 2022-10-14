@@ -11,3 +11,14 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\RteCKEditor\Controller\ResourceController:
+    shared: false
+    public: true
+
+  TYPO3\CMS\RteCKEditor\Service\ScssProcessor:
+    shared: true
+    public: true
+
+  ScssPhp\ScssPhp\Compiler:
+    shared: false
+    public: true

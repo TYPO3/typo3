@@ -19,13 +19,13 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ScssPhp\ScssPhp\Compiler;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\RteCKEditor\Service\ScssProcessor;
 
 /**
  * @internal This API is used internally only.
@@ -33,6 +33,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceController
 {
+    public function __construct(
+        protected readonly ScssProcessor $scssProcessor
+    ) {
+    }
+
     public function stylesheetAction(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getMethod() !== 'GET') {
@@ -60,8 +65,8 @@ class ResourceController
             $compiledStyles = $cache->get($cacheIdentifier);
         } else {
             if (trim($cssPrefix) !== '') {
-                $source = $this->prepareCssForScssParsing($cssPrefix, $styleSrcContent);
-                $compiledStyles = (new Compiler())->compileString($source)->getCss();
+                $source = $this->scssProcessor->prefixCssForScss($cssPrefix, $styleSrcContent);
+                $compiledStyles = $this->scssProcessor->compileToCss($source);
             } else {
                 $compiledStyles = $styleSrcContent;
             }
@@ -78,23 +83,5 @@ class ResourceController
     public function hmac(string $payload, string $scope): string
     {
         return GeneralUtility::hmac($payload, self::class . '::' . $scope);
-    }
-
-    private function prepareCssForScssParsing(string $prefix, string $content): string
-    {
-        // Some CSS minifier remove the semicolon before the curly brace
-        // While this is valid CSS, the ScssPHP Parser is unable to identify
-        // the end of a declaration block. We are adding them, to avoid
-        // parsing errors. Superfluous semicolons will be dropped by the parser.
-        $content = str_replace('}', ';}', $content);
-
-        // Ensure the additional CSS is only applied to the Editor by
-        // prefixing all CSS definitions.
-        $content = sprintf("%s {\n%s\n}", $prefix, $content);
-
-        // Moving CSS variables assigned to :root to the new parent.
-        $content = str_replace(':root', '&', $content);
-
-        return $content;
     }
 }
