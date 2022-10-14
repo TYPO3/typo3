@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
@@ -55,29 +54,9 @@ use TYPO3\CMS\Install\Service\SessionService;
 class Maintenance implements MiddlewareInterface
 {
     /**
-     * @var FailsafePackageManager
-     */
-    protected $packageManager;
-
-    /**
-     * @var ConfigurationManager
-     */
-    protected $configurationManager;
-
-    /**
-     * @var PasswordHashFactory
-     */
-    protected $passwordHashFactory;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var array List of valid controllers
      */
-    protected $controllers = [
+    protected array $controllers = [
         'icon' => IconController::class,
         'layout' => LayoutController::class,
         'login' => LoginController::class,
@@ -88,15 +67,12 @@ class Maintenance implements MiddlewareInterface
     ];
 
     public function __construct(
-        FailsafePackageManager $packageManager,
-        ConfigurationManager $configurationManager,
-        PasswordHashFactory $passwordHashFactory,
-        ContainerInterface $container
+        protected readonly FailsafePackageManager $packageManager,
+        protected readonly ConfigurationManager $configurationManager,
+        protected readonly PasswordHashFactory $passwordHashFactory,
+        protected readonly ContainerInterface $container,
+        protected readonly FormProtectionFactory $formProtectionFactory
     ) {
-        $this->packageManager = $packageManager;
-        $this->configurationManager = $configurationManager;
-        $this->passwordHashFactory = $passwordHashFactory;
-        $this->container = $container;
     }
 
     /**
@@ -152,9 +128,7 @@ class Maintenance implements MiddlewareInterface
             // log out the user and destroy the session
             $session->resetSession();
             $session->destroySession();
-            $formProtection = FormProtectionFactory::get(
-                InstallToolFormProtection::class
-            );
+            $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $formProtection->clean();
 
             return new HtmlResponse('', 403);
@@ -222,9 +196,7 @@ class Maintenance implements MiddlewareInterface
             if (EnableFileService::installToolEnableFileExists() && !EnableFileService::isInstallToolEnableFilePermanent()) {
                 EnableFileService::removeInstallToolEnableFile();
             }
-            $formProtection = FormProtectionFactory::get(
-                InstallToolFormProtection::class
-            );
+            $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $formProtection->clean();
             $session->destroySession();
             $response = new JsonResponse([
@@ -312,9 +284,7 @@ class Maintenance implements MiddlewareInterface
         $tokenOk = false;
         // A token must be given as soon as there is POST data
         if (isset($postValues['token'])) {
-            $formProtection = FormProtectionFactory::get(
-                InstallToolFormProtection::class
-            );
+            $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $action = (string)$postValues['action'];
             if ($action === '') {
                 throw new \RuntimeException(

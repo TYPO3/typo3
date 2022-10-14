@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -49,43 +48,14 @@ use TYPO3\CMS\Install\Service\Typo3tempFileService;
  */
 class MaintenanceController extends AbstractController
 {
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
-    /**
-     * @var ClearCacheService
-     */
-    private $clearCacheService;
-
-    /**
-     * @var ConfigurationManager
-     */
-    private $configurationManager;
-
-    /**
-     * @var PasswordHashFactory
-     */
-    private $passwordHashFactory;
-
-    /**
-     * @var Locales
-     */
-    private $locales;
-
     public function __construct(
-        LateBootService $lateBootService,
-        ClearCacheService $clearCacheService,
-        ConfigurationManager $configurationManager,
-        PasswordHashFactory $passwordHashFactory,
-        Locales $locales
+        private readonly LateBootService $lateBootService,
+        private readonly ClearCacheService $clearCacheService,
+        private readonly ConfigurationManager $configurationManager,
+        private readonly PasswordHashFactory $passwordHashFactory,
+        private readonly Locales $locales,
+        private readonly FormProtectionFactory $formProtectionFactory
     ) {
-        $this->lateBootService = $lateBootService;
-        $this->clearCacheService = $clearCacheService;
-        $this->configurationManager = $configurationManager;
-        $this->passwordHashFactory = $passwordHashFactory;
-        $this->locales = $locales;
     }
     /**
      * Main "show the cards" view
@@ -133,7 +103,7 @@ class MaintenanceController extends AbstractController
         $typo3tempFileService = $container->get(Typo3tempFileService::class);
 
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
         ]);
@@ -229,7 +199,7 @@ class MaintenanceController extends AbstractController
     public function databaseAnalyzerAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
         ]);
@@ -455,7 +425,7 @@ class MaintenanceController extends AbstractController
     public function clearTablesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
         ]);
@@ -507,7 +477,7 @@ class MaintenanceController extends AbstractController
     public function createAdminGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
         ]);
@@ -626,7 +596,7 @@ class MaintenanceController extends AbstractController
     public function languagePacksGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'languagePacksActivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksActivateLanguage'),
             'languagePacksDeactivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksDeactivateLanguage'),

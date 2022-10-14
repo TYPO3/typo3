@@ -65,6 +65,7 @@ class ServiceProvider extends AbstractServiceProvider
             Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
             EventDispatcher\EventDispatcher::class => [ static::class, 'getEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
+            FormProtection\FormProtectionFactory::class => [ static::class, 'getFormProtectionFactory' ],
             Http\Client\GuzzleClientFactory::class => [ static::class, 'getGuzzleClientFactory' ],
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Http\RequestFactory::class => [ static::class, 'getRequestFactory' ],
@@ -500,6 +501,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getBackendEntryPointResolver(ContainerInterface $container): Routing\BackendEntryPointResolver
     {
         return self::new($container, Routing\BackendEntryPointResolver::class);
+    }
+
+    public static function getFormProtectionFactory(ContainerInterface $container): FormProtection\FormProtectionFactory
+    {
+        return self::new($container, FormProtection\FormProtectionFactory::class);
     }
 
     public static function getGuzzleClientFactory(ContainerInterface $container): Http\Client\GuzzleClientFactory

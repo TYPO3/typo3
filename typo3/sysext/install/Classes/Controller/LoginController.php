@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
@@ -30,6 +29,11 @@ use TYPO3\CMS\Install\Service\EnableFileService;
  */
 class LoginController extends AbstractController
 {
+    public function __construct(
+        private readonly FormProtectionFactory $formProtectionFactory
+    ) {
+    }
+
     /**
      * Render the "Create an "enable install tool file" action
      *
@@ -53,7 +57,7 @@ class LoginController extends AbstractController
      */
     public function showLoginAction(ServerRequestInterface $request): ResponseInterface
     {
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view = $this->initializeView($request);
         $view->assignMultiple([
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],

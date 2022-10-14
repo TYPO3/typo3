@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -94,7 +93,8 @@ class UpgradeController extends AbstractController
     public function __construct(
         protected readonly PackageManager $packageManager,
         private readonly LateBootService $lateBootService,
-        private readonly UpgradeWizardsService $upgradeWizardsService
+        private readonly UpgradeWizardsService $upgradeWizardsService,
+        private readonly FormProtectionFactory $formProtectionFactory
     ) {
     }
 
@@ -496,7 +496,7 @@ class UpgradeController extends AbstractController
      */
     public function extensionCompatTesterLoadedExtensionListAction(ServerRequestInterface $request): ResponseInterface
     {
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view = $this->initializeView($request);
         $view->assignMultiple([
             'extensionCompatTesterLoadExtLocalconfToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtLocalconf'),
@@ -641,7 +641,7 @@ class UpgradeController extends AbstractController
         }
         sort($extensions);
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'extensionScannerExtensionList' => $extensions,
             'extensionScannerFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerFiles'),
@@ -963,7 +963,7 @@ class UpgradeController extends AbstractController
      */
     public function upgradeDocsGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $documentationDirectories = $this->getDocumentationDirectories();
         $view = $this->initializeView($request);
         $view->assignMultiple([
@@ -1258,7 +1258,7 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'upgradeWizardsMarkUndoneToken' => $formProtection->generateToken('installTool', 'upgradeWizardsMarkUndone'),
             'upgradeWizardsInputToken' => $formProtection->generateToken('installTool', 'upgradeWizardsInput'),

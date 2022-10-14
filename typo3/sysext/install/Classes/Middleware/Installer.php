@@ -24,7 +24,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Install\Controller\InstallerController;
 use TYPO3\CMS\Install\Service\EnableFileService;
@@ -36,14 +35,10 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class Installer implements MiddlewareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly FormProtectionFactory $formProtectionFactory
+    ) {
     }
 
     /**
@@ -95,7 +90,7 @@ class Installer implements MiddlewareInterface
             }
             if (isset($postValues['token'])) {
                 // A token must be given as soon as there is POST data
-                $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+                $formProtection = $this->formProtectionFactory->createFromRequest($request);
                 if ($actionName === '') {
                     throw new \RuntimeException('No POST action given for token check', 1505647681);
                 }

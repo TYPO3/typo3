@@ -42,7 +42,6 @@ use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -92,7 +91,8 @@ final class InstallerController
         private readonly Registry $registry,
         private readonly FailsafePackageManager $packageManager,
         private readonly VerifyHostHeader $verifyHostHeader,
-        private readonly PermissionsCheck $databasePermissionsCheck
+        private readonly PermissionsCheck $databasePermissionsCheck,
+        private readonly FormProtectionFactory $formProtectionFactory
     ) {
     }
 
@@ -294,10 +294,10 @@ final class InstallerController
     /**
      * Show database connect step
      */
-    public function showDatabaseConnectAction(): ResponseInterface
+    public function showDatabaseConnectAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView();
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $hasAtLeastOneOption = false;
         $activeAvailableOption = '';
 
@@ -592,10 +592,10 @@ final class InstallerController
     /**
      * Render "select a database"
      */
-    public function showDatabaseSelectAction(): ResponseInterface
+    public function showDatabaseSelectAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView();
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $errors = [];
         try {
             $view->assign('databaseList', $this->getDatabaseList());
@@ -807,10 +807,10 @@ final class InstallerController
     /**
      * Render "import initial data"
      */
-    public function showDatabaseDataAction(): ResponseInterface
+    public function showDatabaseDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView();
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'executeDatabaseDataToken' => $formProtection->generateToken('installTool', 'executeDatabaseData'),
@@ -906,10 +906,10 @@ final class InstallerController
     /**
      * Show last "create empty site / install distribution"
      */
-    public function showDefaultConfigurationAction(): ResponseInterface
+    public function showDefaultConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView();
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'composerMode' => Environment::isComposerMode(),
             'executeDefaultConfigurationToken' => $formProtection->generateToken('installTool', 'executeDefaultConfiguration'),
@@ -1025,7 +1025,7 @@ For each website you need a TypoScript template on the main page of your website
 
         $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $formProtection->clean();
 
         EnableFileService::removeFirstInstallFile();

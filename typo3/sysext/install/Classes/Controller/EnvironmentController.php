@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -55,15 +54,10 @@ class EnvironmentController extends AbstractController
     private const IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf', 'webp'];
     private const TEST_REFERENCE_PATH = __DIR__ . '/../../Resources/Public/Images/TestReference';
 
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
     public function __construct(
-        LateBootService $lateBootService
+        private readonly LateBootService $lateBootService,
+        private readonly FormProtectionFactory $formProtectionFactory,
     ) {
-        $this->lateBootService = $lateBootService;
     }
 
     /**
@@ -236,7 +230,7 @@ class EnvironmentController extends AbstractController
     public function mailTestGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
             'mailTestSenderAddress' => $this->getSenderEmailAddress(),

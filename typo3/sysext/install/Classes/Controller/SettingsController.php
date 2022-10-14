@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -58,6 +57,7 @@ class SettingsController extends AbstractController
         private readonly CommentAwareAstBuilder $astBuilder,
         private readonly LosslessTokenizer $losslessTokenizer,
         private readonly AstTraverser $astTraverser,
+        private readonly FormProtectionFactory $formProtectionFactory
     ) {
     }
 
@@ -85,7 +85,7 @@ class SettingsController extends AbstractController
     public function changeInstallToolPasswordGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'changeInstallToolPasswordToken' => $formProtection->generateToken('installTool', 'changeInstallToolPassword'),
         ]);
@@ -152,7 +152,7 @@ class SettingsController extends AbstractController
     public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
             'systemMaintainerIsDevelopmentContext' => Environment::getContext()->isDevelopment(),
@@ -269,7 +269,7 @@ class SettingsController extends AbstractController
     public function localConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
         $localConfigurationValueService = new LocalConfigurationValueService();
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view = $this->initializeView($request);
         $view->assignMultiple([
             'localConfigurationWriteToken' => $formProtection->generateToken('installTool', 'localConfigurationWrite'),
@@ -333,7 +333,7 @@ class SettingsController extends AbstractController
         $view = $this->initializeView($request);
         $presetFeatures = GeneralUtility::makeInstance(FeatureManager::class);
         $presetFeatures = $presetFeatures->getInitializedFeatures($request->getParsedBody()['install']['values'] ?? []);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'presetsActivateToken' => $formProtection->generateToken('installTool', 'presetsActivate'),
             // This action is called again from within the card itself if a custom image path is supplied
@@ -444,7 +444,7 @@ class SettingsController extends AbstractController
             }
         }
         ksort($extensionsWithConfigurations);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view = $this->initializeView($request);
         $view->assignMultiple([
             'extensionsWithConfigurations' => $extensionsWithConfigurations,
@@ -512,7 +512,7 @@ class SettingsController extends AbstractController
                 ];
             }
         }
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view = $this->initializeView($request);
         $view->assignMultiple([
             'features' => $features,
