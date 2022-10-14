@@ -407,11 +407,21 @@ class RichTextElement extends AbstractFormElement
         if (is_array($configuration['extraPlugins'] ?? null)) {
             $configuration['extraPlugins'] = implode(',', $configuration['extraPlugins']);
         }
-        if (is_array($configuration['removePlugins'] ?? null)) {
-            $configuration['removePlugins'] = implode(',', $configuration['removePlugins']);
-        }
         if (is_array($configuration['removeButtons'] ?? null)) {
             $configuration['removeButtons'] = implode(',', $configuration['removeButtons']);
+        }
+
+        // The removePlugins option needs to be assigned as an array in CKEditor5.
+        // While we recommended passing the option already as an array, CKEditor4
+        // needed a comma-separated string. The conversion was only handled if the
+        // Integrator passed an array, which means if someone already provided a
+        // comma-separated string the option was simply passed as is to the Editor.
+        // To avoid javascript errors we are going to migrate it to array for now.
+        // The possibility to pass the option as a string is deprecated and will be
+        // removed with version 13.
+        if (isset($configuration['removePlugins']) && !is_array($configuration['removePlugins'])) {
+            trigger_error('Passing the CKEditor removePlugins option as string is deprecated, use an array instead. Support for passing the option as string will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
+            $configuration['removePlugins'] = explode(',', $configuration['removePlugins']);
         }
 
         $configuration = $this->eventDispatcher
