@@ -802,7 +802,7 @@ class RequestHandler implements RequestHandlerInterface
             $bodyTag = '';
         } else {
             $defBT = (isset($controller->pSetup['bodyTagCObject']) && $controller->pSetup['bodyTagCObject'])
-                ? $controller->cObj->cObjGetSingle($controller->pSetup['bodyTagCObject'], $controller->pSetup['bodyTagCObject.'], 'bodyTagCObject')
+                ? $controller->cObj->cObjGetSingle($controller->pSetup['bodyTagCObject'], $controller->pSetup['bodyTagCObject.'] ?? [], 'bodyTagCObject')
                 : '<body>';
             $bodyTag = (isset($controller->pSetup['bodyTag']) && $controller->pSetup['bodyTag'])
                 ? $controller->pSetup['bodyTag']
