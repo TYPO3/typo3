@@ -1,4 +1,4 @@
-acceptance install mariadb php 8.1 locked:
+acceptance install mariadb php 8.2 locked:
   stage: acceptance
   needs: []
   only:
@@ -11,9 +11,9 @@ acceptance install mariadb php 8.1 locked:
       junit:
         - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
-acceptance install mariadb php 8.1 max:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.2
+acceptance install mariadb php 8.2 max:
   stage: acceptance
   needs: []
   only:
@@ -27,9 +27,9 @@ acceptance install mariadb php 8.1 max:
     paths:
       - typo3temp/var/tests/AcceptanceReports
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
-acceptance install mariadb php 8.1 min:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.2
+acceptance install mariadb php 8.2 min:
   stage: acceptance
   needs: []
   only:
@@ -46,8 +46,8 @@ acceptance install mariadb php 8.1 min:
       junit:
         - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.2
 
 acceptance install mysql php 8.1 locked:
   stage: acceptance

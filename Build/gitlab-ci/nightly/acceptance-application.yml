@@ -178,55 +178,53 @@ acceptance application sqlite php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-# @todo New acceptance tests with postgres has some issues, so we leave them
-#       disabled for now before adding more unstable acceptance tests.
-#acceptance application postgres php 8.1 locked:
-#  stage: acceptance
-#  needs: []
-#  only:
-#    - schedules
-#  artifacts:
-#    when: on_failure
-#    paths:
-#      - typo3temp/var/tests/acceptance/typo3temp/var/log
-#      - typo3temp/var/tests/AcceptanceReports
-#  parallel: 8
-#  script:
-#    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-#    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-#acceptance application postgres php 8.1 max:
-#  stage: acceptance
-#  needs: []
-#  only:
-#    - schedules
-#  cache:
-#    key: main-composer-max
-#    paths:
-#      - .cache
-#  artifacts:
-#    when: on_failure
-#    paths:
-#      - typo3temp/var/tests/acceptance/typo3temp/var/log
-#      - typo3temp/var/tests/AcceptanceReports
-#  parallel: 8
-#  script:
-#    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-#    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-#acceptance application postgres php 8.1 min:
-#  stage: acceptance
-#  needs: []
-#  only:
-#    - schedules
-#  cache:
-#    key: main-composer-min
-#    paths:
-#      - .cache
-#  artifacts:
-#    when: on_failure
-#    paths:
-#      - typo3temp/var/tests/acceptance/typo3temp/var/log
-#      - typo3temp/var/tests/AcceptanceReports
-#  parallel: 8
-#  script:
-#    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-#    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application postgres php 8.2 locked:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application postgres php 8.2 max:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application postgres php 8.2 min:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-min
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

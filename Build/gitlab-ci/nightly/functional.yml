@@ -280,8 +280,7 @@ functional postgres 10 php 8.2 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-# @todo change to php8.2 if issue with "prophecy/prophecy" is fixed, see: https://github.com/phpspec/prophecy/issues/556
-functional postgres 10 php 8.1 max:
+functional postgres 10 php 8.2 max:
   stage: functional
   needs: []
   only:
@@ -292,10 +291,9 @@ functional postgres 10 php 8.1 max:
       - .cache
   parallel: 6
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-# @todo change to php8.2 if issue with "prophecy/prophecy" is fixed, see: https://github.com/phpspec/prophecy/issues/556
-functional postgres 10 php 8.1 min:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional postgres 10 php 8.2 min:
   stage: functional
   needs: []
   only:
@@ -306,8 +304,8 @@ functional postgres 10 php 8.1 min:
       - .cache
   parallel: 6
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 functional sqlite php 8.2 locked:
   stage: functional
@@ -318,8 +316,7 @@ functional sqlite php 8.2 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-# @todo change to php8.2 if issue with "prophecy/prophecy" is fixed, see: https://github.com/phpspec/prophecy/issues/556
-functional sqlite php 8.1 max:
+functional sqlite php 8.2 max:
   stage: functional
   needs: []
   only:
@@ -330,10 +327,9 @@ functional sqlite php 8.1 max:
       - .cache
   parallel: 6
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-# @todo change to php8.2 if issue with "prophecy/prophecy" is fixed, see: https://github.com/phpspec/prophecy/issues/556
-functional sqlite php 8.1 min:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional sqlite php 8.2 min:
   stage: functional
   needs: []
   only:
@@ -344,5 +340,5 @@ functional sqlite php 8.1 min:
       - .cache
   parallel: 6
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
