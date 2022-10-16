@@ -436,6 +436,7 @@ class RequestHandler implements RequestHandlerInterface
                     if ($ss) {
                         $additionalAttributes = $cssFileConfig ?? [];
                         unset(
+                            $additionalAttributes['if.'],
                             $additionalAttributes['alternate'],
                             $additionalAttributes['media'],
                             $additionalAttributes['title'],
@@ -484,6 +485,7 @@ class RequestHandler implements RequestHandlerInterface
                     if ($ss) {
                         $additionalAttributes = $cssFileConfig ?? [];
                         unset(
+                            $additionalAttributes['if.'],
                             $additionalAttributes['alternate'],
                             $additionalAttributes['media'],
                             $additionalAttributes['title'],
@@ -543,6 +545,7 @@ class RequestHandler implements RequestHandlerInterface
                             $crossOrigin = 'anonymous';
                         }
                         unset(
+                            $additionalAttributes['if.'],
                             $additionalAttributes['type'],
                             $additionalAttributes['crossorigin'],
                             $additionalAttributes['integrity'],
@@ -600,6 +603,7 @@ class RequestHandler implements RequestHandlerInterface
                             $crossOrigin = 'anonymous';
                         }
                         unset(
+                            $additionalAttributes['if.'],
                             $additionalAttributes['type'],
                             $additionalAttributes['crossorigin'],
                             $additionalAttributes['integrity'],
