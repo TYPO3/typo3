@@ -66,11 +66,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<'disabled'\\|'title'\\|int, mixed\\> and array\\{\\} will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/FieldWizard/LocalizationStateSelector.php
@@ -2722,12 +2717,7 @@ parameters:
 
 		-
 			message: "#^Offset 'cache\\.' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Offset 'cache\\.' on non\\-empty\\-array\\<non\\-empty\\-array\\> on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 2
+			count: 3
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
