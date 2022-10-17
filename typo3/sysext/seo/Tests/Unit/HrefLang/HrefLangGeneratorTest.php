@@ -17,12 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
 
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
 use TYPO3\CMS\Seo\HrefLang\HrefLangGenerator;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,42 +31,30 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class HrefLangGeneratorTest extends UnitTestCase
 {
-    use ProphecyTrait;
+    protected MockObject&AccessibleObjectInterface&HrefLangGenerator $subject;
 
-    /**
-     * @test
-     *
-     * @param string $url
-     *
-     * @dataProvider urlPathDataProvider
-     */
-    public function checkIfGetSiteLanguageIsCalled(string $url): void
+    public function setUp(): void
     {
-        $subject = $this->getAccessibleMock(
+        parent::setUp();
+
+        $this->subject = $this->getAccessibleMock(
             HrefLangGenerator::class,
-            ['getSiteLanguage'],
+            ['dummy'],
             [
-                $this->prophesize(ContentObjectRenderer::class)->reveal(),
-                $this->prophesize(LanguageMenuProcessor::class)->reveal(),
+                $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock(),
+                $this->getMockBuilder(LanguageMenuProcessor::class)->disableOriginalConstructor()->getMock(),
             ]
         );
-
-        $siteLanguageProphecy = $this->prophesize(SiteLanguage::class);
-        $siteLanguageProphecy->getBase()->willReturn($this->prophesize(UriInterface::class)->reveal());
-        $subject->_call('getAbsoluteUrl', $url, $siteLanguageProphecy->reveal());
     }
 
-    /**
-     * @return array
-     */
-    public function urlPathDataProvider(): array
+    public function urlPathWithoutHostDataProvider(): array
     {
         return [
             [
                 '/',
             ],
             [
-                'example.com',
+                'example.com', // This can't be defined as a domain because it can also be a filename
             ],
             [
                 'filename.pdf',
@@ -73,6 +62,27 @@ class HrefLangGeneratorTest extends UnitTestCase
             [
                 'example.com/filename.pdf',
             ],
+            [
+                '/page-1/subpage-1',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider urlPathWithoutHostDataProvider
+     */
+    public function checkIfSiteLanguageGetBaseIsCalledForUrlsWithoutHost(string $url): void
+    {
+        $mockUriInterface = $this->getMockBuilder(UriInterface::class)->getMock();
+        $mockSiteLanguage = $this->getMockBuilder(SiteLanguage::class)->disableOriginalConstructor()->getMock();
+        $mockSiteLanguage->expects(self::once())->method('getBase')->willReturn($mockUriInterface);
+        $this->subject->_call('getAbsoluteUrl', $url, $mockSiteLanguage);
+    }
+
+    public function urlPathWithHostDataProvider(): array
+    {
+        return [
             [
                 '//example.com/filename.pdf',
             ],
@@ -83,11 +93,20 @@ class HrefLangGeneratorTest extends UnitTestCase
                 'https://example.com',
             ],
             [
-                '/page-1/subpage-1',
-            ],
-            [
                 'https://example.com/page-1/subpage-1',
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider urlPathWithHostDataProvider
+     */
+    public function checkIfSiteLanguageGetBaseIsNotCalledForUrlsWithHost(string $url): void
+    {
+        $mockUriInterface = $this->getMockBuilder(UriInterface::class)->getMock();
+        $mockSiteLanguage = $this->getMockBuilder(SiteLanguage::class)->disableOriginalConstructor()->getMock();
+        $mockSiteLanguage->expects(self::never())->method('getBase')->willReturn($mockUriInterface);
+        $this->subject->_call('getAbsoluteUrl', $url, $mockSiteLanguage);
     }
 }

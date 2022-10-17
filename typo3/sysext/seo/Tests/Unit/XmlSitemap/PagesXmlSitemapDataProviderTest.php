@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\XmlSitemap;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider;
@@ -25,13 +24,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PagesXmlSitemapDataProviderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var array
-     */
     protected array $items;
 
     public function setUp(): void
@@ -63,12 +57,12 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
     public function checkIfCorrectKeyIsGivenAfterConstruct(): void
     {
         $key = 'dummyKey';
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
 
         $subject = $this->getAccessibleMock(
             PagesXmlSitemapDataProvider::class,
             ['generateItems'],
-            [$this->prophesize(ServerRequestInterface::class)->reveal(), $key, [], $cObj->reveal()],
+            [$this->getMockBuilder(ServerRequestInterface::class)->getMock(), $key, [], $cObj],
             '',
             true
         );
@@ -82,16 +76,16 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
     public function checkGetItemsReturnsDefinedItems(int $numberOfItemsPerPage): void
     {
         $key = 'dummyKey';
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
 
         $subject = $this->getAccessibleMock(
             PagesXmlSitemapDataProvider::class,
             ['generateItems', 'defineUrl'],
-            [$this->prophesize(ServerRequestInterface::class)->reveal(), $key, [], $cObj->reveal()],
+            [$this->getMockBuilder(ServerRequestInterface::class)->getMock(), $key, [], $cObj],
             '',
             false
         );
-        $subject->_set('request', $this->prophesize(ServerRequestInterface::class)->reveal());
+        $subject->_set('request', $this->getMockBuilder(ServerRequestInterface::class)->getMock());
         $subject->_set('items', $this->items);
         $subject->_set('numberOfItemsPerPage', $numberOfItemsPerPage);
 
@@ -115,12 +109,12 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
     public function checkGetLastModReturnsRightDate(): void
     {
         $key = 'dummyKey';
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
 
         $subject = $this->getAccessibleMock(
             PagesXmlSitemapDataProvider::class,
             ['generateItems'],
-            [$this->prophesize(ServerRequestInterface::class)->reveal(), $key, [], $cObj->reveal()],
+            [$this->getMockBuilder(ServerRequestInterface::class)->getMock(), $key, [], $cObj],
             '',
             false
         );
@@ -130,9 +124,6 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         self::assertEquals(1535655756, $subject->getLastModified());
     }
 
-    /**
-     * @return array
-     */
     public function numberOfItemsPerPageProvider(): array
     {
         return [
