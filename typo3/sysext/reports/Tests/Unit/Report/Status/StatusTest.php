@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -37,13 +36,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StatusTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['LANG'] = $mockLanguageService;
     }
 
     /**
@@ -131,11 +128,11 @@ class StatusTest extends UnitTestCase
      */
     private function createSubject(array $statusProviderArguments): Status
     {
-        $container = $this->prophesize(ContainerInterface::class)->reveal();
-        $cacheManager = $this->prophesize(CacheManager::class)->reveal();
-        $viewHelperResolverFactory = $this->prophesize(ViewHelperResolverFactoryInterface::class)->reveal();
+        $container = $this->getMockBuilder(ContainerInterface::class)->getMock();
+        $cacheManager = new CacheManager();
+        $viewHelperResolverFactory = $this->getMockBuilder(ViewHelperResolverFactoryInterface::class)->getMock();
         $renderingContextFactory = new RenderingContextFactory($container, $cacheManager, $viewHelperResolverFactory);
-        $packageManager = $this->prophesize(PackageManager::class)->reveal();
+        $packageManager = $this->getMockBuilder(PackageManager::class)->disableOriginalConstructor()->getMock();
         $backendViewFactory = new BackendViewFactory($renderingContextFactory, $packageManager);
         $statusRegistry = new StatusRegistry($this->generateStatusProviders($statusProviderArguments));
 

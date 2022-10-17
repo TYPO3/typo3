@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\Report\Status\Typo3Status;
@@ -29,17 +27,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3StatusTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * Set up
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->getLL(Argument::any())->willReturn('');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['LANG'] = $mockLanguageService;
     }
 
     /**
