@@ -28,8 +28,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The purpose of the UserSessionManager is to create new user session objects (acting as a factory),
- * depending on the need / request, and to fetch sessions from the Session Backend, effectively
- * encapsulating all calls to the SessionManager
+ * depending on the need / request, and to fetch sessions from the session backend, effectively
+ * encapsulating all calls to the `SessionManager`.
+ *
+ * The UserSessionManager can be retrieved using its static factory method create():
+ *
+ * ```
+ * use TYPO3\CMS\Core\Session\UserSessionManager
+ *
+ * $loginType = 'BE'; // or 'FE' for frontend
+ * $userSessionManager = UserSessionManager::create($loginType);
+ * ```
  */
 class UserSessionManager implements LoggerAwareInterface
 {
@@ -59,7 +68,7 @@ class UserSessionManager implements LoggerAwareInterface
      * @param SessionBackendInterface $sessionBackend
      * @param int $sessionLifetime
      * @param IpLocker $ipLocker
-     * @internal
+     * @internal it is recommended to use the factory method "create"
      */
     public function __construct(SessionBackendInterface $sessionBackend, int $sessionLifetime, IpLocker $ipLocker)
     {
@@ -76,12 +85,13 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * sessionId is set to ses_id if a cookie is present in the request.
-     * Otherwise a new anonymous session will start.
+     * Creates and returns a session from the given request. If the given
+     * `$cookieName` can not be obtained from the request an anonymous
+     * session will be returned.
      *
      * @param ServerRequestInterface $request
-     * @param string $cookieName
-     * @return UserSession
+     * @param string $cookieName Name of the cookie that might contain the session
+     * @return UserSession An existing session if one is stored in the cookie, an anonymous session otherwise
      */
     public function createFromRequestOrAnonymous(ServerRequestInterface $request, string $cookieName): UserSession
     {
@@ -95,11 +105,10 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * sessionId is set to ses_id if a cookie is present in $_COOKIE.
-     * Otherwise a new anonymous session will start.
-     *
-     * @param string $cookieName
-     * @return UserSession
+     * Creates and returns a session from a global cookie (`$_COOKIE`). If
+     * no cookie can be found for the given name, an anonymous session
+     * will be returned. It is recommended to use the
+     * PSR-7-Request based method instead.
      */
     public function createFromGlobalCookieOrAnonymous(string $cookieName): UserSession
     {
@@ -113,9 +122,7 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Creates a non-fixated session without a user logged in
-     *
-     * @return UserSession
+     * Creates and returns an anonymous session object (which is not persisted)
      */
     public function createAnonymousSession(): UserSession
     {
@@ -124,7 +131,7 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Creates a new user session object from an existing session data.
+     * Creates and returns a new session object for a given session id
      *
      * @param string $sessionId The session id to be looked up in the session backend
      * @return UserSession The created user session object
@@ -138,11 +145,7 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Check if a session has expired. This is the case if sessionLifetime is 0,
-     * or current time greater than sessionLifetime plus last update time of the session.
-     *
-     * @param UserSession $session
-     * @return bool
+     * Checks whether a session has expired. This is also the case if `sessionLifetime` is `0`
      */
     public function hasExpired(UserSession $session): bool
     {
@@ -150,11 +153,9 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Check if a session will expire within the given grace period.
+     * Checks whether a given user session will expire within the given grace period
      *
-     * @param UserSession $session
-     * @param int $gracePeriod
-     * @return bool
+     * @param int $gracePeriod in seconds
      */
     public function willExpire(UserSession $session, int $gracePeriod): bool
     {
@@ -162,12 +163,12 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Persists an anonymous session without a user logged in,
-     * in order to store session data between requests.
+     * Persists an anonymous session without a user logged-in,
+     * in order to store session data between requests
      *
      * @param UserSession $session The user session to fixate
-     * @param bool $isPermanent If TRUE, the session will get the is_permanent flag
-     * @return UserSession a new session object with an updated ses_tstamp (allowing to keep the session alive)
+     * @param bool $isPermanent If `true`, the session will get the `ses_permanent` flag
+     * @return UserSession a new session object with an updated `ses_tstamp` (allowing to keep the session alive)
      *
      * @throws Backend\Exception\SessionNotCreatedException
      */
@@ -187,11 +188,12 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Removes existing entries, creates and returns a new user session record
+     * Removes existing entries, creates and returns a new user session object.
+     * See `regenerateSession()` below.
      *
      * @param UserSession $session The user session to recreate
      * @param int $userId The user id the session belongs to
-     * @param bool $isPermanent If TRUE, the session will get the is_permanent flag
+     * @param bool $isPermanent If `true`, the session will get the `ses_permanent` flag
      * @return UserSession The newly created user session object
      *
      * @throws Backend\Exception\SessionNotCreatedException
@@ -218,9 +220,9 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Regenerate the session ID and transfer the session to new ID
-     * Call this method whenever a user proceeds to a higher authorization level
-     * e.g. when an anonymous session is now authenticated.
+     * Regenerates the given session. This method should be used whenever a
+     * user proceeds to a higher authorization level, for example when an
+     * anonymous session is now authenticated.
      *
      * @param string $sessionId The session id
      * @param array $existingSessionRecord If given, this session record will be used instead of fetching again
@@ -249,9 +251,9 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Updates the session timestamp for the given user session if
-     * the session is marked as "needs update" (which means the current
-     * timestamp is greater than "last updated + a specified gracetime-value".
+     * Updates the session timestamp for the given user session if the session
+     * is marked as "needs update" (which means the current timestamp is
+     * greater than "last updated + a specified grace-time").
      *
      * @param UserSession $session
      * @return UserSession a modified user session with a last updated value if needed
@@ -267,22 +269,34 @@ class UserSessionManager implements LoggerAwareInterface
         return $session;
     }
 
+    /**
+     * Checks whether a given session is already persisted
+     */
     public function isSessionPersisted(UserSession $session): bool
     {
         return $this->getSessionFromSessionId($session->getIdentifier()) !== null;
     }
 
+    /**
+     * Removes a given session from the session backend
+     */
     public function removeSession(UserSession $session): void
     {
         $this->sessionBackend->remove($session->getIdentifier());
     }
 
+    /**
+     * Updates the session data + timestamp in the session backend
+     */
     public function updateSession(UserSession $session): UserSession
     {
         $sessionRecord = $this->sessionBackend->update($session->getIdentifier(), $session->toArray());
         return $this->recreateUserSession($session, $sessionRecord);
     }
 
+    /**
+     * Calls the session backends `collectGarbage()` method
+     */
     public function collectGarbage(int $garbageCollectionProbability = 1): void
     {
         // If we're lucky we'll get to clean up old sessions
@@ -306,7 +320,7 @@ class UserSessionManager implements LoggerAwareInterface
 
     /**
      * Tries to fetch a user session form the session backend.
-     * If non is given, an anonymous session will be created.
+     * If none is given, an anonymous session will be created.
      *
      * @param string $id
      * @return UserSession|null The created user session object or null
@@ -337,11 +351,12 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Create a UserSessionManager instance for the given login type. Has several optional arguments used for testing purposes
-     * to inject dummy objects if needed.
+     * Creates a `UserSessionManager` instance for the given login type. Has
+     * several optional arguments used for testing purposes to inject dummy
+     * objects if needed.
      *
-     * Ideally, this factory encapsulates all "TYPO3_CONF_VARS" options, so the actual object does not need to consider any
-     * global state.
+     * Ideally, this factory encapsulates all `TYPO3_CONF_VARS` options, so
+     * the actual object does not need to consider any global state.
      *
      * @param string $loginType
      * @param int|null $sessionLifetime
@@ -376,7 +391,7 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Recreates `UserSession` object from existing session data - keeping `new` state.
+     * Recreates a `UserSession` object from the existing session data - keeping `new` state.
      * This method shall be used to reflect updated low-level session data in corresponding `UserSession` object.
      *
      * @param UserSession $session

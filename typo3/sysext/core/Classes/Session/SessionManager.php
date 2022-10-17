@@ -28,12 +28,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Example Configuration
  *
+ * ```
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['session'] => [
  *     'BE' => [
  *         'backend' => \TYPO3\CMS\Core\Session\Backend\FileSessionBackend::class,
  *         'savePath' => '/var/www/t3sessionframework/data/'
- *     ]
- * ]
+ *     ],
+ * ];
+ * ```
  */
 class SessionManager implements SingletonInterface
 {
@@ -99,7 +101,7 @@ class SessionManager implements SingletonInterface
     }
 
     /**
-     * Creates a session backend from configuration
+     * Creates a session backend from the configuration
      *
      * @param string $identifier the identifier
      * @param array<string, class-string> $configuration The session configuration array
