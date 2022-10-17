@@ -634,7 +634,7 @@ class DatabaseRecordList
         }
 
         $backendUser = $this->getBackendUserAuthentication();
-        $tableCollapsed = (bool)($this->moduleData?->get('collapsedTables')[$table] ?? false);
+        $tableCollapsed = (bool)($this->moduleData?->get('collapsedTables')[$tableIdentifier] ?? false);
 
         // Header line is drawn
         $theData = [];
