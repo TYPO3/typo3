@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\ArrayBrowser;
+use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -36,7 +38,9 @@ class ArrayBrowserTest extends UnitTestCase
      */
     public function depthKeysWithEmptyFirstParameterAddsNothing(): void
     {
-        GeneralUtility::setSingletonInstance(UriBuilder::class, new UriBuilder(new Router(), new BackendEntryPointResolver()));
+        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
+        GeneralUtility::setSingletonInstance(UriBuilder::class, new UriBuilder(new Router(), new BackendEntryPointResolver(), $formProtectionFactory));
         $subject = new ArrayBrowser();
         self::assertEquals([], $subject->depthKeys([], []));
     }
@@ -46,7 +50,9 @@ class ArrayBrowserTest extends UnitTestCase
      */
     public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray(): void
     {
-        GeneralUtility::setSingletonInstance(UriBuilder::class, new UriBuilder(new Router(), new BackendEntryPointResolver()));
+        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
+        GeneralUtility::setSingletonInstance(UriBuilder::class, new UriBuilder(new Router(), new BackendEntryPointResolver(), $formProtectionFactory));
         $subject = new ArrayBrowser();
         self::assertEquals([0 => 1], $subject->depthKeys(['foo'], []));
     }

@@ -505,7 +505,15 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getFormProtectionFactory(ContainerInterface $container): FormProtection\FormProtectionFactory
     {
-        return self::new($container, FormProtection\FormProtectionFactory::class);
+        return self::new(
+            $container,
+            FormProtection\FormProtectionFactory::class,
+            [
+                $container->get(Messaging\FlashMessageService::class),
+                $container->get(Localization\LanguageServiceFactory::class),
+                $container->get(Registry::class),
+            ]
+        );
     }
 
     public static function getGuzzleClientFactory(ContainerInterface $container): Http\Client\GuzzleClientFactory

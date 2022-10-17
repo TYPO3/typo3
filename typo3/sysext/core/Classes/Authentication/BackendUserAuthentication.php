@@ -2206,7 +2206,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             && $GLOBALS['BE_USER'] instanceof self
             && isset($GLOBALS['BE_USER']->user['uid'])
         ) {
-            FormProtectionFactory::get()->clean();
+            GeneralUtility::makeInstance(FormProtectionFactory::class)->createForType('backend')->clean();
             // Release the locked records
             $this->releaseLockedRecords((int)$GLOBALS['BE_USER']->user['uid']);
 

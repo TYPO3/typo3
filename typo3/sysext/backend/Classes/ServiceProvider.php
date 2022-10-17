@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Exception as CoreException;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -110,9 +111,8 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
     {
         return self::new($container, RouteDispatcher::class, [
+            $container->get(FormProtectionFactory::class),
             $container,
-            $container->get(UriBuilder::class),
-            $container->get(ModuleProvider::class),
         ]);
     }
 
@@ -121,6 +121,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, UriBuilder::class, [
             $container->get(Router::class),
             $container->get(BackendEntryPointResolver::class),
+            $container->get(FormProtectionFactory::class),
         ]);
     }
 

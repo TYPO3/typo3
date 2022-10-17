@@ -24,6 +24,8 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -95,7 +97,9 @@ class UriBuilderTest extends UnitTestCase
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
         $router->addRoute('', new Route('', []));
-        GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, new BackendEntryPointResolver()));
+        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
+        GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, new BackendEntryPointResolver(), $formProtectionFactory));
     }
 
     /**

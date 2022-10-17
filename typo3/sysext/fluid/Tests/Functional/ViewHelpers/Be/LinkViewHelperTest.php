@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -35,7 +36,8 @@ class LinkViewHelperTest extends FunctionalTestCase
     public function renderRendersTagWithHrefFromRoute(): void
     {
         // Mock Uribuilder in this functional test so we don't have to work with existing routes
-        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([new Router(), new BackendEntryPointResolver()])->getMock();
+        $formProtectionFactoryMock = $this->createMock(FormProtectionFactory::class);
+        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([new Router(), new BackendEntryPointResolver(), $formProtectionFactoryMock])->getMock();
         $uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
         GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);
@@ -53,7 +55,8 @@ class LinkViewHelperTest extends FunctionalTestCase
     public function renderPassesEmptyArrayToUriBuilderForNoParameters(): void
     {
         // Mock Uribuilder in this functional test so we don't have to work with existing routes
-        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([new Router(), new BackendEntryPointResolver()])->getMock();
+        $formProtectionFactoryMock = $this->createMock(FormProtectionFactory::class);
+        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([new Router(), new BackendEntryPointResolver(), $formProtectionFactoryMock])->getMock();
         $uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');
         GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);

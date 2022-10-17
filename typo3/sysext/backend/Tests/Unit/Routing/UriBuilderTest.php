@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -83,7 +85,9 @@ class UriBuilderTest extends UnitTestCase
         foreach ($routes as $nameRoute => $route) {
             $router->addRoute($nameRoute, $route);
         }
-        $subject = new UriBuilder($router, new BackendEntryPointResolver());
+        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
+        $subject = new UriBuilder($router, new BackendEntryPointResolver(), $formProtectionFactory);
         $uri = $subject->buildUriFromRoute(
             $routeName,
             $routeParameters
@@ -97,9 +101,12 @@ class UriBuilderTest extends UnitTestCase
      */
     public function nonExistingRouteThrowsException(): void
     {
+        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
+
         $this->expectException(RouteNotFoundException::class);
         $this->expectExceptionCode(1476050190);
-        $subject = new UriBuilder(new Router(), new BackendEntryPointResolver());
+        $subject = new UriBuilder(new Router(), new BackendEntryPointResolver(), $formProtectionFactory);
         $subject->buildUriFromRoute(StringUtility::getUniqueId('any'));
     }
 }

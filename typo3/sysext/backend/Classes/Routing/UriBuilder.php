@@ -64,7 +64,8 @@ class UriBuilder implements SingletonInterface
      */
     public function __construct(
         protected readonly Router $router,
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
+        protected readonly FormProtectionFactory $formProtectionFactory
     ) {
     }
 
@@ -148,7 +149,7 @@ class UriBuilder implements SingletonInterface
         // If the route is not shareable and doesn't have the "public" option set, a token must be generated.
         if ($referenceType !== self::SHAREABLE_URL && (!$route->hasOption('access') || $route->getOption('access') !== 'public')) {
             $parameters = [
-                'token' => FormProtectionFactory::get('backend')->generateToken('route', $name),
+                'token' => $this->formProtectionFactory->createForType('backend')->generateToken('route', $name),
             ] + $parameters;
         }
 

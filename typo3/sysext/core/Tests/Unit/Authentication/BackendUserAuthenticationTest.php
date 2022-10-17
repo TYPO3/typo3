@@ -28,6 +28,10 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -60,15 +64,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         'recursivedeleteFolder' => false,
     ];
 
-    /**
-     * Tear down
-     */
-    protected function tearDown(): void
-    {
-        FormProtectionFactory::purgeInstances();
-        parent::tearDown();
-    }
-
     /////////////////////////////////////////
     // Tests concerning the form protection
     /////////////////////////////////////////
@@ -77,6 +72,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function logoffCleansFormProtectionIfBackendUserIsLoggedIn(): void
     {
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $connection = $this->prophesize(Connection::class);
         $connection->delete('sys_lockedrecords', Argument::cetera())->willReturn(1);
 
@@ -88,10 +84,13 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $formProtection = $this->prophesize(BackendFormProtection::class);
         $formProtection->clean()->shouldBeCalled();
 
-        FormProtectionFactory::set(
-            'default',
-            $formProtection->reveal()
+        $formProtectionFactory = new FormProtectionFactory(
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(LanguageServiceFactory::class),
+            $this->createMock(Registry::class)
         );
+        GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
+        GeneralUtility::addInstance(BackendFormProtection::class, $formProtection->reveal());
 
         $sessionBackend = $this->prophesize(SessionBackendInterface::class);
         $sessionBackend->remove(Argument::cetera())->willReturn(true);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Http;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
@@ -24,7 +25,6 @@ use TYPO3\CMS\Backend\Routing\Exception\MissingRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
@@ -35,6 +35,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RouteDispatcher extends Dispatcher
 {
+    public function __construct(
+        protected readonly FormProtectionFactory $formProtectionFactory,
+        ContainerInterface $container,
+    ) {
+        parent::__construct($container);
+    }
+
     /**
      * Main method checks the target of the route, and tries to call it.
      *
@@ -60,16 +67,6 @@ class RouteDispatcher extends Dispatcher
         $target = $this->getCallableFromTarget($targetIdentifier);
         $arguments = [$request];
         return $target(...$arguments);
-    }
-
-    /**
-     * Wrapper method for static form protection utility
-     *
-     * @return AbstractFormProtection
-     */
-    protected function getFormProtection(): AbstractFormProtection
-    {
-        return FormProtectionFactory::get();
     }
 
     /**
@@ -119,7 +116,8 @@ class RouteDispatcher extends Dispatcher
                 1627905246
             );
         }
-        if (!$this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'))) {
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        if (!$formProtection->validateToken($token, 'route', $route->getOption('_identifier'))) {
             throw new InvalidRequestTokenException(
                 sprintf('Invalid request for route "%s"', $route->getPath()),
                 1425389455

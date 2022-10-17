@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -75,7 +74,6 @@ class SetupModuleController
     protected bool $setupIsUpdated = false;
     protected bool $settingsAreResetToDefault = false;
 
-    protected AbstractFormProtection $formProtection;
     protected PasswordPolicyValidator $passwordPolicyValidator;
 
     public function __construct(
@@ -87,8 +85,8 @@ class SetupModuleController
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly ModuleProvider $moduleProvider,
         protected readonly UriBuilder $uriBuilder,
+        protected readonly FormProtectionFactory $formProtectionFactory
     ) {
-        $this->formProtection = FormProtectionFactory::get();
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
         $this->passwordPolicyValidator = GeneralUtility::makeInstance(
             PasswordPolicyValidator::class,
@@ -107,13 +105,14 @@ class SetupModuleController
         if ($this->pagetreeNeedsRefresh) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
         $this->getButtons($view);
         $view->assignMultiple([
             'isLanguageUpdate' => $this->languageUpdate,
             'menuItems' => $this->renderUserSetup(),
             'menuId' => 'DTM-375167ed176e8c9caf4809cee7df156c',
-            'formToken' => $this->formProtection->generateToken('BE user setup', 'edit'),
+            'formToken' => $formProtection->generateToken('BE user setup', 'edit'),
         ]);
         return $view->renderResponse('Main');
     }
@@ -172,6 +171,7 @@ class SetupModuleController
             return;
         }
 
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         // First check if something is submitted in the data-array from POST vars
         $d = $postData['data'] ?? null;
         $columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
@@ -180,7 +180,7 @@ class SetupModuleController
         $storeRec = [];
         $doSaveData = false;
         $fieldList = $this->getFieldsFromShowItem();
-        if (is_array($d) && $this->formProtection->validateToken((string)($postData['formToken'] ?? ''), 'BE user setup', 'edit')) {
+        if (is_array($d) && $formProtection->validateToken((string)($postData['formToken'] ?? ''), 'BE user setup', 'edit')) {
             // UC hashed before applying changes
             $save_before = md5(serialize($backendUser->uc));
             // PUT SETTINGS into the ->uc array:

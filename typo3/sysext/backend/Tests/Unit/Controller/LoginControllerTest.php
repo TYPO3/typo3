@@ -17,43 +17,27 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\LoginController;
+use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LoginControllerTest extends UnitTestCase
 {
     use ProphecyTrait;
-
-    protected bool $resetSingletonInstances = true;
-
-    /**
-     * @var LoginController|MockObject|AccessibleObjectInterface
-     */
-    protected $loginControllerMock;
-
-    /**
-     * @var bool
-     * @see prophesizeFormProtection
-     */
-    protected static bool $alreadySetUp = false;
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->loginControllerMock = $this->getAccessibleMock(LoginController::class, ['dummy'], [], '', false);
-    }
 
     /**
      * @test
@@ -72,22 +56,32 @@ class LoginControllerTest extends UnitTestCase
         $authenticationProphecy->writeUC()->willReturn();
         $authenticationProphecy->getSessionData('formProtectionSessionToken')->willReturn('foo');
         $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
-        $this->prophesizeFormProtection();
 
-        $this->loginControllerMock = $this->getAccessibleMock(
+        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($this->createMock(BackendFormProtection::class));
+        $loginControllerMock = $this->getAccessibleMock(
             LoginController::class,
             ['isLoginInProgress', 'redirectToUrl'],
-            [],
-            '',
-            false
+            [
+                new Typo3Information(),
+                $this->createMock(EventDispatcherInterface::class),
+                $this->createMock(PageRenderer::class),
+                $this->createMock(UriBuilder::class),
+                new Features(),
+                new Context(),
+                $this->createMock(LoginProviderResolver::class),
+                new ExtensionConfiguration(),
+                new BackendEntryPointResolver(),
+                $formProtectionFactory,
+            ],
         );
 
         $GLOBALS['BE_USER']->user['uid'] = 1;
-        $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
-        $this->loginControllerMock->_set('loginRefresh', false);
+        $loginControllerMock->method('isLoginInProgress')->willReturn(true);
+        $loginControllerMock->_set('loginRefresh', false);
 
-        $this->loginControllerMock->expects(self::once())->method('redirectToUrl');
-        $this->loginControllerMock->_call(
+        $loginControllerMock->expects(self::once())->method('redirectToUrl');
+        $loginControllerMock->_call(
             'checkRedirect',
             $this->prophesize(ServerRequest::class)->reveal(),
             $this->prophesize(PageRenderer::class)->reveal()
@@ -100,7 +94,7 @@ class LoginControllerTest extends UnitTestCase
     public function checkRedirectDoesNotRedirectIfNoUserIsFound(): void
     {
         $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
-        $this->loginControllerMock = $this->getAccessibleMock(
+        $loginControllerMock = $this->getAccessibleMock(
             LoginController::class,
             ['redirectToUrl'],
             [],
@@ -110,23 +104,11 @@ class LoginControllerTest extends UnitTestCase
 
         $GLOBALS['BE_USER']->user['uid'] = null;
 
-        $this->loginControllerMock->expects(self::never())->method('redirectToUrl');
-        $this->loginControllerMock->_call(
+        $loginControllerMock->expects(self::never())->method('redirectToUrl');
+        $loginControllerMock->_call(
             'checkRedirect',
             $this->prophesize(ServerRequest::class)->reveal(),
             $this->prophesize(PageRenderer::class)->reveal()
         );
-    }
-
-    /**
-     * FormProtectionFactory has an internal static instance cache we need to work around here
-     */
-    protected function prophesizeFormProtection(): void
-    {
-        if (!self::$alreadySetUp) {
-            $formProtectionProphecy = $this->prophesize(BackendFormProtection::class);
-            GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionProphecy->reveal());
-            self::$alreadySetUp = true;
-        }
     }
 }

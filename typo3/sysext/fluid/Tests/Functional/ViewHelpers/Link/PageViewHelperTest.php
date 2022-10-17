@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,12 +34,6 @@ class PageViewHelperTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [];
-
-    public function tearDown(): void
-    {
-        FormProtectionFactory::purgeInstances();
-        parent::tearDown();
-    }
 
     /**
      * @test

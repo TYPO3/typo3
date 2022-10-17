@@ -18,12 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,6 +36,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormProtectionFactoryTest extends UnitTestCase
 {
+    protected FormProtectionFactory $subject;
+
+    protected function setUp(): void
+    {
+        $this->subject = new FormProtectionFactory(
+            new FlashMessageService(),
+            new LanguageServiceFactory(
+                new Locales(),
+                $this->createMock(LocalizationFactory::class),
+                new NullFrontend('null')
+            ),
+            new Registry()
+        );
+        parent::setUp();
+    }
+
     protected function tearDown(): void
     {
         FormProtectionFactory::purgeInstances();
@@ -124,26 +145,92 @@ class FormProtectionFactoryTest extends UnitTestCase
         self::assertNotSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(DisabledFormProtection::class));
     }
 
-    /////////////////////////
-    // Tests concerning set
-    /////////////////////////
     /**
      * @test
      */
-    public function setSetsInstanceForType(): void
+    public function createForTypeReturnsDisabledIfInvalidTypeIsGiven(): void
     {
-        $instance = new FormProtectionTesting();
-        FormProtectionFactory::set(BackendFormProtection::class, $instance);
-        self::assertSame($instance, FormProtectionFactory::get(BackendFormProtection::class));
+        $formProtection = $this->subject->createForType('invalid-type');
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
     }
 
     /**
      * @test
      */
-    public function setNotSetsInstanceForOtherType(): void
+    public function createForTypeReturnsDisabledIfInvalidTypeIsGivenAndSameInstanceIfDisabledIsGivenLaterOn(): void
     {
-        $instance = new FormProtectionTesting();
-        FormProtectionFactory::set(BackendFormProtection::class, $instance);
-        self::assertNotSame($instance, FormProtectionFactory::get(InstallToolFormProtection::class));
+        $formProtection = $this->subject->createForType('invalid-type');
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
+        $formProtectionDisabled = $this->subject->createForType('disabled');
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtectionDisabled);
+        self::assertSame($formProtectionDisabled, $formProtection);
+    }
+
+    /**
+     * @test
+     */
+    public function createForTypeReturnsDisabledForValidTypeButWithoutValidGlobalArguments(): void
+    {
+        $formProtection = $this->subject->createForType('frontend');
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
+        $formProtection = $this->subject->createForType('backend');
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
+    }
+
+    /**
+     * @test
+     */
+    public function createForTypeAlwaysReturnsInstallToolRegardlessOfRequirementsIfRequested(): void
+    {
+        $formProtection = $this->subject->createForType('installtool');
+        self::assertInstanceOf(InstallToolFormProtection::class, $formProtection);
+    }
+
+    /**
+     * @test
+     */
+    public function createForTypeReturnsDisabledIfBackendUserIsNotAvailable(): void
+    {
+        $user = new BackendUserAuthentication();
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/backend/login/');
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('backend.user', $user);
+        $formProtection = $this->subject->createForType('backend');
+        // User is not logged in
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
+    }
+
+    /**
+     * @test
+     */
+    public function createForTypeReturnsBackendIfBackendUserIsLoggedIn(): void
+    {
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => 13];
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/backend/login/');
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('backend.user', $user);
+        $formProtection = $this->subject->createForType('backend');
+        // User is now logged in
+        self::assertInstanceOf(BackendFormProtection::class, $formProtection);
+    }
+
+    /**
+     * @test
+     */
+    public function createForTypeReturnsTheSameInstanceEvenThoughUserWasLoggedInLaterOn(): void
+    {
+        $user = new BackendUserAuthentication();
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/backend/login/');
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('backend.user', $user);
+        $formProtection = $this->subject->createForType('backend');
+        // User is not logged in
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
+        $user->user = ['uid' => 13];
+        $formProtection = $this->subject->createForType('backend');
+        // User is now logged in, but we still get the disabled form protection due to the "singleton" concept
+        self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
+        $this->subject->clearInstances();
+        $formProtection = $this->subject->createForType('backend');
+        // User is now logged in, now we get a backend form protection, due to the "purge instance" concept.
+        self::assertInstanceOf(BackendFormProtection::class, $formProtection);
     }
 }

@@ -33,6 +33,11 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
  */
 class AjaxLoginController
 {
+    public function __construct(
+        protected readonly FormProtectionFactory $formProtectionFactory
+    ) {
+    }
+
     /**
      * Handles the actual login process, more specifically it defines the response.
      * The login details were sent in as part of the ajax request and automatically logged in
@@ -49,7 +54,7 @@ class AjaxLoginController
             $result = ['success' => true];
             if ($this->hasLoginBeenProcessed($request)) {
                 /** @var BackendFormProtection $formProtection */
-                $formProtection = FormProtectionFactory::get();
+                $formProtection = $this->formProtectionFactory->createFromRequest($request);
                 $formProtection->setSessionTokenFromRegistry();
                 $formProtection->persistSessionToken();
             }

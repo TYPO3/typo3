@@ -112,7 +112,8 @@ class LoginController
         protected readonly Context $context,
         protected readonly LoginProviderResolver $loginProviderResolver,
         protected readonly ExtensionConfiguration $extensionConfiguration,
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
+        protected readonly FormProtectionFactory $formProtectionFactory
     ) {
     }
 
@@ -367,7 +368,7 @@ class LoginController
             $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
         }
 
-        $formProtection = FormProtectionFactory::get();
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
         if (!$formProtection instanceof BackendFormProtection) {
             throw new \RuntimeException('The Form Protection retrieved does not match the expected one.', 1432080411);
         }

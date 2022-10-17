@@ -36,6 +36,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LogoutController
 {
+    public function __construct(
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly FormProtectionFactory $formProtectionFactory
+    ) {
+    }
+
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
@@ -46,13 +52,12 @@ class LogoutController
      */
     public function logoutAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->processLogout();
+        $this->processLogout($request);
 
         $redirectUrl = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'] ?? '';
         $redirectUrl = GeneralUtility::sanitizeLocalUrl($redirectUrl);
         if (empty($redirectUrl)) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('login', [], $uriBuilder::ABSOLUTE_URL);
+            $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('login', [], UriBuilder::ABSOLUTE_URL);
         }
         return new RedirectResponse(GeneralUtility::locationHeaderUrl($redirectUrl), 303);
     }
@@ -60,7 +65,7 @@ class LogoutController
     /**
      * Performs the logout processing
      */
-    protected function processLogout(): void
+    protected function processLogout(ServerRequestInterface $request): void
     {
         if (empty($this->getBackendUser()->user['username'])) {
             return;
@@ -68,7 +73,7 @@ class LogoutController
         // Logout written to log
         $this->getBackendUser()->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 1, 'User %s logged out from TYPO3 Backend', [$this->getBackendUser()->user['username']]);
         /** @var BackendFormProtection $backendFormProtection */
-        $backendFormProtection = FormProtectionFactory::get();
+        $backendFormProtection = $this->formProtectionFactory->createFromRequest($request);
         $backendFormProtection->removeSessionTokenFromRegistry();
         $this->getBackendUser()->logoff();
     }
