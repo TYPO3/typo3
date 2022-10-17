@@ -1,2 +1,5 @@
 <span class="toolbar-item-icon" title="{f:translate(key: title, default: title)}">{icon -> f:format.raw()}</span>
 <span class="toolbar-item-title">{f:translate(key: title) -> f:format.raw()}</span>
+<f:if condition="{name}">
+    <span class="toolbar-item-name">{name -> f:format.raw()}</span>
+</f:if>

@@ -31,23 +31,9 @@
 </f:if>
 
 <f:section name="workspaceItem">
-    <li class="t3js-workspace-item{f:if(condition: item.isActive, then: ' selected')}">
-        <a href="{item.link}" data-workspaceid="{item.workspaceId}" class="dropdown-item t3js-workspaces-switchlink">
+    <li class="t3js-workspace-item">
+        <a href="{item.link}" data-workspaceid="{item.workspaceId}" class="dropdown-item t3js-workspaces-switchlink {item.isActive ? 'active' : ''}">
             <span class="dropdown-item-columns">
-                <span class="dropdown-item-column dropdown-item-column-icon t3js-workspace-item-icon">
-                    <f:if condition="{item.isActive}">
-                        <f:then>
-                            <span class="text-success">
-                                <core:icon identifier="status-status-checked" size="small" />
-                            </span>
-                        </f:then>
-                        <f:else>
-                            <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_inactive')}">
-                                <core:icon identifier="empty-empty" size="small" />
-                            </span>
-                        </f:else>
-                    </f:if>
-                </span>
                 <span class="dropdown-item-column dropdown-item-column-title">
                     {item.label -> f:format.htmlspecialchars()}
                 </span>

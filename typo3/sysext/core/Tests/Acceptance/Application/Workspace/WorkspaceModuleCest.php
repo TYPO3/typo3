@@ -38,9 +38,9 @@ class WorkspaceModuleCest
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->waitForText('Test Workspace', 5, self::$topBarModuleSelector);
         $I->click('Test Workspace', self::$topBarModuleSelector);
-        $I->waitForElement('body.typo3-in-workspace');
+        $I->waitForElement('.topbar-header.typo3-in-workspace');
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->waitForText('Test Workspace', 5, '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .selected');
+        $I->waitForText('Test Workspace', 5, '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .active');
     }
 
     /**
@@ -48,17 +48,14 @@ class WorkspaceModuleCest
      */
     public function editPageTitleAndSeeChangeInWorkspaceModule(ApplicationTester $I, PageTree $pageTree): void
     {
-        $currentPageTitle = 'styleguide TCA demo';
-        $newPageTitle = 'styleguide TCA demo workspace';
-
         $I->click('Page');
-        $pageTree->openPath([$currentPageTitle]);
+        $pageTree->openPath([self::$currentPageTitle]);
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
 
         $I->comment('Rename page');
         $I->switchToContentFrame();
         $I->click('button[data-action="edit"]');
-        $I->fillField('input[class*="t3js-title-edit-input"]', $newPageTitle);
+        $I->fillField('input[class*="t3js-title-edit-input"]', self::$newPageTitle);
         $I->click('button[data-action="submit"]');
 
         $I->switchToMainFrame();
@@ -68,7 +65,7 @@ class WorkspaceModuleCest
 
         $I->comment('See the new page title in Workspace module');
         $I->switchToContentFrame();
-        $I->see($newPageTitle, '#workspace-panel');
+        $I->see(self::$newPageTitle, '#workspace-panel');
     }
 
     /**

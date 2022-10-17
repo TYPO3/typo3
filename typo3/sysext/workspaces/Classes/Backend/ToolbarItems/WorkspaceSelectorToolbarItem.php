@@ -64,7 +64,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
         }
         $currentWorkspace = $this->getBackendUser()->workspace;
         $view = $this->backendViewFactory->create($this->request, ['typo3/cms-workspaces']);
-        $view->assign('workspaceTitle', $currentWorkspace !== -99 ? $this->workspaceService->getWorkspaceTitle($currentWorkspace) : '');
+        $view->assign('workspaceTitle', $currentWorkspace > 0 ? $this->workspaceService->getWorkspaceTitle($currentWorkspace) : '');
         return $view->render('ToolbarItems/ToolbarItem');
     }
 

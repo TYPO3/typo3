@@ -18,13 +18,11 @@ import ModuleMenu from '@typo3/backend/module-menu';
 import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
-import Icons from '@typo3/backend/icons';
 
 enum Identifiers {
+  topbarHeaderSelector = '.t3js-topbar-header',
   containerSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
-  activeMenuItemLinkSelector = '.dropdown-menu .selected',
-  menuItemIconHolderSelector = '.t3js-workspace-item-icon',
-  menuItemSelector = '.t3js-workspace-item',
+  activeMenuItemLinkSelector = '.t3js-workspaces-switchlink.active',
   menuItemLinkSelector = '.t3js-workspaces-switchlink',
   toolbarItemSelector = '.dropdown-toggle',
   workspaceModuleLinkSelector = '.t3js-workspaces-modulelink',
@@ -60,7 +58,7 @@ class WorkspacesMenu {
    */
   private static getWorkspaceState(): null|WorkspaceState {
     const selectedWorkspaceLink: HTMLElement = document.querySelector(
-      [Identifiers.containerSelector, Identifiers.activeMenuItemLinkSelector, Identifiers.menuItemLinkSelector].join(' ')
+      [Identifiers.containerSelector, Identifiers.activeMenuItemLinkSelector].join(' ')
     );
     if (selectedWorkspaceLink === null) {
       return null;
@@ -83,16 +81,6 @@ class WorkspacesMenu {
     // Remove the workspace title in toolbar
     $('.' + Classes.workspacesTitleInToolbarClass, Identifiers.containerSelector).remove();
 
-    // Unset the check icon for all workspace items
-    Icons.getIcon('empty-empty', Icons.sizes.small).then((icon: string): void => {
-      $(Identifiers.containerSelector + ' ' + Identifiers.menuItemSelector).each((_: number, element: Element): void => {
-        const iconHolder: HTMLElement = element.querySelector(Identifiers.menuItemIconHolderSelector);
-        if (iconHolder) {
-          iconHolder.innerHTML = icon
-        }
-      });
-    });
-
     // If we are in a workspace, add the corresponding title to the toolbar - if available
     if (workspaceState.inWorkspace && workspaceState.title) {
       $(Identifiers.toolbarItemSelector, Identifiers.containerSelector).append(
@@ -100,16 +88,6 @@ class WorkspacesMenu {
           'class': Classes.workspacesTitleInToolbarClass,
         }).text(workspaceState.title)
       );
-    }
-
-    // Set the check icon to the currently selected workspace menu item
-    const iconHolder: HTMLElement = document.querySelector(
-      [Identifiers.containerSelector, Identifiers.activeMenuItemLinkSelector, Identifiers.menuItemIconHolderSelector].join(' ')
-    );
-    if (iconHolder !== null) {
-      Icons.getIcon('actions-check', Icons.sizes.small).then((icon: string): void => {
-        iconHolder.innerHTML = icon;
-      });
     }
   }
 
@@ -127,12 +105,12 @@ class WorkspacesMenu {
     }
 
     if (workspaceState.inWorkspace) {
-      $('body').addClass(Classes.workspaceBodyClass);
+      $(Identifiers.topbarHeaderSelector).addClass(Classes.workspaceBodyClass);
       if (!workspaceState.title) {
         workspaceState.title = TYPO3.lang['Workspaces.workspaceTitle'];
       }
     } else {
-      $('body').removeClass(Classes.workspaceBodyClass);
+      $(Identifiers.topbarHeaderSelector).removeClass(Classes.workspaceBodyClass);
     }
 
     WorkspacesMenu.updateTopBar(workspaceState);
@@ -160,13 +138,12 @@ class WorkspacesMenu {
    * @param {String} title the workspace title
    */
   public performWorkspaceSwitch(id: number, title: string): void {
-    // remove "selected" class
-    $(Identifiers.activeMenuItemLinkSelector, Identifiers.containerSelector).removeClass('selected');
+    // remove "active" class
+    $(Identifiers.activeMenuItemLinkSelector, Identifiers.containerSelector).removeClass('active');
 
-    // add "selected" class to currently selected workspace
+    // add "active" class to currently selected workspace
     $(Identifiers.menuItemLinkSelector + '[data-workspaceid=' + id + ']', Identifiers.containerSelector)
-      ?.closest(Identifiers.menuItemSelector)
-      ?.addClass('selected');
+      ?.addClass('active');
 
     // Initiate backend context update
     WorkspacesMenu.updateBackendContext({id: id, title: title, inWorkspace: id !== 0});
