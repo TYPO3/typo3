@@ -37,7 +37,7 @@ class TypoLinkCodecService
     /**
      * Encode TypoLink parts to a single string
      *
-     * @param array $typoLinkParts Array with keys url and optionally any of target, class, title, additionalParams
+     * @param array{url?: string, target?: string, class?: string, title?: string, additionalParams?: string} $typoLinkParts
      * @return string Returns a correctly encoded TypoLink string
      */
     public function encode(array $typoLinkParts)
@@ -73,7 +73,7 @@ class TypoLinkCodecService
      * Decodes a TypoLink string into its parts
      *
      * @param string $typoLink The properly encoded TypoLink string
-     * @return array Associative array of TypoLink parts with the keys url, target, class, title, additionalParams
+     * @return array{url: string, target: string, class: string, title: string, additionalParams: string}
      */
     public function decode($typoLink)
     {
@@ -81,7 +81,7 @@ class TypoLinkCodecService
         if ($typoLink !== '') {
             $parts = str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($typoLink, static::$partDelimiter));
         } else {
-            $parts = '';
+            $parts = [];
         }
 
         // The order of the entries is crucial!!
