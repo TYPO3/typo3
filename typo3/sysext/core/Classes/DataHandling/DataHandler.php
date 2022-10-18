@@ -1965,7 +1965,7 @@ class DataHandler implements LoggerAwareInterface
 
         if ($value !== '') {
             // Extract the actual link from the link definition for further evaluation
-            $linkParameter = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($value)['url'] ?? '';
+            $linkParameter = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($value)['url'];
             if ($linkParameter === '') {
                 $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition for the field "{field}" of the table "{table}"', -1, ['link' => $value, 'field' => $field, 'table' => $table]);
                 $value = '';
