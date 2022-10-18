@@ -66,7 +66,7 @@ class InMemoryLogWriter extends AbstractWriter
             return $this;
         }
 
-        self::$log[] = $record;
+        self::$log[] = (clone $record)->setMessage($this->interpolate($record->getMessage(), $record->getData()));
 
         return $this;
     }
