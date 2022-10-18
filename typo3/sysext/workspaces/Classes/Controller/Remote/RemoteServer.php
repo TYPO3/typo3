@@ -163,7 +163,8 @@ class RemoteServer
             // Gets the TCA configuration for the current field
             $configuration = $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'];
             // check for exclude fields
-            if ($this->getBackendUser()->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0 || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
+            $isFieldExcluded = (bool)($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] ?? false);
+            if ($this->getBackendUser()->isAdmin() || !$isFieldExcluded || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
                 // call diff class only if there is a difference
                 if ($configuration['type'] === 'inline' && $configuration['foreign_table'] === 'sys_file_reference') {
                     $useThumbnails = false;
