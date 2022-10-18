@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\EventListener;
 
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
@@ -48,7 +49,7 @@ final class IncrementHitCount
         $queryBuilder
             ->update('sys_redirect')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($matchedRedirect['uid'], \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($matchedRedirect['uid'], Connection::PARAM_INT))
             )
             ->set('hitcount', $queryBuilder->quoteIdentifier('hitcount') . '+1', false)
             ->set('lasthiton', $GLOBALS['EXEC_TIME'])

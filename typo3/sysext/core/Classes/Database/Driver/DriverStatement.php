@@ -24,6 +24,7 @@ use Doctrine\DBAL\Driver\Result as ResultInterface;
 use Doctrine\DBAL\Driver\Statement as StatementInterface;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\Deprecations\Deprecation;
+use TYPO3\CMS\Core\Database\Connection;
 
 /**
  * TYPO3's custom Statement object for Database statements based on Doctrine DBAL in TYPO3's drivers.
@@ -39,13 +40,13 @@ use Doctrine\Deprecations\Deprecation;
 class DriverStatement implements StatementInterface
 {
     private const PARAM_TYPE_MAP = [
-        ParameterType::NULL => \PDO::PARAM_NULL,
-        ParameterType::INTEGER => \PDO::PARAM_INT,
-        ParameterType::STRING => \PDO::PARAM_STR,
-        ParameterType::ASCII => \PDO::PARAM_STR,
-        ParameterType::BINARY => \PDO::PARAM_LOB,
-        ParameterType::LARGE_OBJECT => \PDO::PARAM_LOB,
-        ParameterType::BOOLEAN => \PDO::PARAM_BOOL,
+        ParameterType::NULL => Connection::PARAM_NULL,
+        ParameterType::INTEGER => Connection::PARAM_INT,
+        ParameterType::STRING => Connection::PARAM_STR,
+        ParameterType::ASCII => Connection::PARAM_STR,
+        ParameterType::BINARY => Connection::PARAM_LOB,
+        ParameterType::LARGE_OBJECT => Connection::PARAM_LOB,
+        ParameterType::BOOLEAN => Connection::PARAM_BOOL,
     ];
 
     /** @var \PDOStatement */

@@ -1202,11 +1202,11 @@ class ConnectionMigrator
             ->where(
                 $queryBuilder->expr()->eq(
                     'TABLE_TYPE',
-                    $queryBuilder->createNamedParameter('BASE TABLE', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('BASE TABLE')
                 ),
                 $queryBuilder->expr()->eq(
                     'TABLE_SCHEMA',
-                    $queryBuilder->createNamedParameter($this->connection->getDatabase(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->connection->getDatabase())
                 )
             )
             ->executeQuery();

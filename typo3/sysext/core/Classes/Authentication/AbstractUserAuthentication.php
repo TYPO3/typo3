@@ -1297,7 +1297,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $query->setRestrictions($this->userConstraints());
         $query->select('*')
             ->from($this->user_table)
-            ->where($query->expr()->eq($this->userid_column, $query->createNamedParameter($uid, \PDO::PARAM_INT)));
+            ->where($query->expr()->eq($this->userid_column, $query->createNamedParameter($uid, Connection::PARAM_INT)));
 
         return $query->executeQuery()->fetchAssociative();
     }
@@ -1316,7 +1316,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $query->setRestrictions($this->userConstraints());
         $query->select('*')
             ->from($this->user_table)
-            ->where($query->expr()->eq($this->username_column, $query->createNamedParameter($name, \PDO::PARAM_STR)));
+            ->where($query->expr()->eq($this->username_column, $query->createNamedParameter($name)));
 
         return $query->executeQuery()->fetchAssociative();
     }

@@ -1375,15 +1375,15 @@ class QueryBuilderTest extends UnitTestCase
         return [
             'string input and output' => [
                 'aValue',
-                \PDO::PARAM_STR,
+                Connection::PARAM_STR,
             ],
             'int input and string output' => [
                 17,
-                \PDO::PARAM_STR,
+                Connection::PARAM_STR,
             ],
             'int input and int output' => [
                 17,
-                \PDO::PARAM_INT,
+                Connection::PARAM_INT,
             ],
             'string input and array output' => [
                 'aValue',

@@ -629,7 +629,7 @@ class ExpressionBuilder
      * @param \PDO::PARAM_*|Connection::PARAM_*|int $type The type of the parameter.
      * @return mixed Often string, but also int or float or similar depending on $input and platform
      */
-    public function literal($input, int $type = \PDO::PARAM_STR)
+    public function literal($input, int $type = Connection::PARAM_STR)
     {
         return $this->connection->quote($input, $type);
     }

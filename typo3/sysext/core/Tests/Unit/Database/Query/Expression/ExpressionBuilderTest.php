@@ -280,7 +280,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
         $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphecy->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote("'1'", Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -440,7 +440,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
         $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphecy->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote("'1'", Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -778,7 +778,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function literalQuotesValue(): void
     {
-        $this->connectionProphecy->quote('aField', \PDO::PARAM_STR)
+        $this->connectionProphecy->quote('aField', Connection::PARAM_STR)
             ->shouldBeCalled()
             ->willReturn('"aField"');
         $result = $this->subject->literal('aField');

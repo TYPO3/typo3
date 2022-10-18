@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Service;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -179,15 +180,15 @@ class ExtensionService implements SingletonInterface
                     ->where(
                         $queryBuilder->expr()->eq(
                             'list_type',
-                            $queryBuilder->createNamedParameter($pluginSignature, \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter($pluginSignature)
                         ),
                         $queryBuilder->expr()->eq(
                             'CType',
-                            $queryBuilder->createNamedParameter('list', \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter('list')
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',
-                            $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                         )
                     )
                     ->setMaxResults(2)

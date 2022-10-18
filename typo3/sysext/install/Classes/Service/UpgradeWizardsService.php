@@ -22,6 +22,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\StreamOutput;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -230,7 +231,7 @@ class UpgradeWizardsService
                 ->where(
                     $queryBuilder->expr()->eq(
                         'SCHEMA_NAME',
-                        $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($connection->getDatabase())
                     )
                 )
                 ->setMaxResults(1)

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -145,7 +146,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
             $queryBuilder->where(
                 $queryBuilder->expr()->eq(
                     $this->typeField,
-                    $queryBuilder->createNamedParameter($this->type, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->type)
                 )
             );
         }
@@ -207,7 +208,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
             ->select('*')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAssociative();

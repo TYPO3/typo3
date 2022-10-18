@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -154,8 +155,8 @@ class ReferenceIndexUpdater
                         ->from('sys_refindex')
                         ->where(
                             $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
-                            $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($item['uid'], \PDO::PARAM_INT)),
-                            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT))
+                            $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($item['uid'], Connection::PARAM_INT)),
+                            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT))
                         )
                         ->executeQuery();
                     while ($row = $statement->fetchAssociative()) {
@@ -176,15 +177,15 @@ class ReferenceIndexUpdater
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
                     $queryBuilder->delete('sys_refindex')
                         ->where(
-                            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)),
+                            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)),
                             $queryBuilder->expr()->or(
                                 $queryBuilder->expr()->and(
                                     $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                                    $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                                    $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
                                 ),
                                 $queryBuilder->expr()->and(
                                     $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
-                                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
                                 )
                             )
                         )

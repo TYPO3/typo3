@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Linkvalidator\Result;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -298,11 +299,11 @@ class LinkAnalyzerResult
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($parentId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($parentId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)

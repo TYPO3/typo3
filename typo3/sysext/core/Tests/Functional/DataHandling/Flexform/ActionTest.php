@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Flexform;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
 class ActionTest extends AbstractDataHandlerActionTestCase
@@ -102,7 +103,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
         $flexFormContent = $queryBuilder
             ->select('pi_flexform')
             ->from('tt_content')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(self::VALUE_ContentId, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(self::VALUE_ContentId, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
 
@@ -183,7 +184,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
         $flexFormContent = $queryBuilder
             ->select('pi_flexform')
             ->from('tt_content')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(self::VALUE_ContentId, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(self::VALUE_ContentId, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
 

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -160,23 +161,23 @@ class ExtensionRepository extends Repository
         $searchConstraints = [
             'extension_key' => $queryBuilder->expr()->eq(
                 'extension_key',
-                $queryBuilder->createNamedParameter($searchString, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchString)
             ),
             'extension_key_like' => $queryBuilder->expr()->like(
                 'extension_key',
-                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike)
             ),
             'title' => $queryBuilder->expr()->like(
                 'title',
-                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike)
             ),
             'description' => $queryBuilder->expr()->like(
                 'description',
-                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike)
             ),
             'author_name' => $queryBuilder->expr()->like(
                 'author_name',
-                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike)
             ),
         ];
 
@@ -194,8 +195,8 @@ class ExtensionRepository extends Repository
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->or(...array_values($searchConstraints)),
-                $queryBuilder->expr()->eq('current_version', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('current_version', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
+                $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->orderBy('position', 'DESC')
             ->executeQuery()

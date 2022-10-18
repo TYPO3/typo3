@@ -305,7 +305,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
             ->from('tt_content')
             ->where($queryBuilder->expr()->like(
                 'pi_flexform',
-                $queryBuilder->createNamedParameter('%<value index="vDEF">4</value>%', \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter('%<value index="vDEF">4</value>%')
             ))
             ->executeQuery()
             ->fetchOne();

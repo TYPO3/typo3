@@ -25,6 +25,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -1368,7 +1369,7 @@ class UpgradeController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'entry_namespace',
-                    $queryBuilder->createNamedParameter('upgradeAnalysisIgnoredFiles', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('upgradeAnalysisIgnoredFiles')
                 )
             )
             ->executeQuery()
@@ -1384,7 +1385,7 @@ class UpgradeController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'entry_namespace',
-                    $queryBuilder->createNamedParameter('extensionScannerNotAffected', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('extensionScannerNotAffected')
                 )
             )
             ->executeQuery()

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Category\Collection;
 use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Collection\EditableCollectionInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -109,7 +110,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
         $collectionRecord = $queryBuilder->select('*')
             ->from(static::$storageTableName)
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT))
             )
             ->setMaxResults(1)
             ->executeQuery()
@@ -157,15 +158,15 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
             ->where(
                 $queryBuilder->expr()->eq(
                     static::$storageTableName . '.uid',
-                    $queryBuilder->createNamedParameter($this->getIdentifier(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getIdentifier(), Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.tablenames',
-                    $queryBuilder->createNamedParameter($this->getItemTableName(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->getItemTableName())
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.fieldname',
-                    $queryBuilder->createNamedParameter($this->getRelationFieldName(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->getRelationFieldName())
                 )
             )
             // Add required sorting field.

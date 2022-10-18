@@ -141,7 +141,7 @@ class AbstractAuthenticationService implements LoggerAwareInterface
                     $constraints,
                     $query->expr()->eq(
                         $dbUser['username_column'],
-                        $query->createNamedParameter($username, \PDO::PARAM_STR)
+                        $query->createNamedParameter($username)
                     )
                 );
             }

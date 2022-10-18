@@ -55,15 +55,15 @@ final class PresetRepository
             ->from(self::PRESET_TABLE)
             ->where(
                 $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->gt('public', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT))
+                    $queryBuilder->expr()->gt('public', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($backendUser->user['uid'], Connection::PARAM_INT))
                 )
             );
         if ($pageId) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
                 )
             );
         }
@@ -173,7 +173,7 @@ final class PresetRepository
         $queryBuilder = $this->queryBuilder;
         $preset = $queryBuilder->select('*')
             ->from(self::PRESET_TABLE)
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
         if (!is_array($preset)) {

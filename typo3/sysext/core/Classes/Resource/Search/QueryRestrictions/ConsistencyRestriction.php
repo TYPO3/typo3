@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Search\QueryRestrictions;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -42,7 +43,7 @@ class ConsistencyRestriction implements QueryRestrictionInterface
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
             if ($tableName === 'sys_file') {
-                $constraints[] = $this->queryBuilder->expr()->eq($tableAlias . '.missing', $this->queryBuilder->createNamedParameter(0, \PDO::PARAM_INT));
+                $constraints[] = $this->queryBuilder->expr()->eq($tableAlias . '.missing', $this->queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
             }
         }
 

@@ -80,7 +80,7 @@ class FalStatus implements StatusProviderInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'missing',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->in(
                         'storage',
@@ -102,7 +102,7 @@ class FalStatus implements StatusProviderInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'missing',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->in(
                         'storage',

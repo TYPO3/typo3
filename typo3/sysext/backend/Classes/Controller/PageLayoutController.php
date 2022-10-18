@@ -34,6 +34,7 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -191,7 +192,7 @@ class PageLayoutController
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                     )
                 )->executeQuery();
             while ($pageTranslation = $statement->fetchAssociative()) {
@@ -436,7 +437,7 @@ class PageLayoutController
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
+            ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)));
         $links = [];
         $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
         if (!empty($rows)) {
@@ -467,11 +468,11 @@ class PageLayoutController
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter($currentSelectedLanguage, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($currentSelectedLanguage, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -615,11 +616,11 @@ class PageLayoutController
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($this->currentSelectedLanguage, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->currentSelectedLanguage, Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)
@@ -664,7 +665,7 @@ class PageLayoutController
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                 )
             );
         if (!empty($languageColumns)) {
@@ -673,7 +674,7 @@ class PageLayoutController
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->in(
                         'sys_language_uid',
-                        [0, $queryBuilder->createNamedParameter($this->currentSelectedLanguage, \PDO::PARAM_INT)]
+                        [0, $queryBuilder->createNamedParameter($this->currentSelectedLanguage, Connection::PARAM_INT)]
                     )
                 );
             }
@@ -681,25 +682,25 @@ class PageLayoutController
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($this->currentSelectedLanguage, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->currentSelectedLanguage, Connection::PARAM_INT)
                 )
             );
         }
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'])) {
             $andWhere[] = $queryBuilder->expr()->neq(
                 'hidden',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             );
         }
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['starttime'])) {
             $andWhere[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->neq(
                     'starttime',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
                     'starttime',
-                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], Connection::PARAM_INT)
                 )
             );
         }
@@ -707,11 +708,11 @@ class PageLayoutController
             $andWhere[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->neq(
                     'endtime',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->lte(
                     'endtime',
-                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], Connection::PARAM_INT)
                 )
             );
         }

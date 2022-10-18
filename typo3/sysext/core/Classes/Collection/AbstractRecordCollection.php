@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Collection;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -310,7 +311,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $collectionRecord = $queryBuilder->select('*')
             ->from(static::getCollectionDatabaseTable())
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
         return self::create($collectionRecord ?: [], $fillItems);

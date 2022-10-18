@@ -315,7 +315,7 @@ class TreelistCacheUpdateHooks
             ->where(
                 $queryBuilder->expr()->lte(
                     'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 )
             )
             ->executeStatement();

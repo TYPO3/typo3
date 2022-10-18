@@ -492,14 +492,14 @@ class TemplateService
             $where = [
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($this->absoluteRootLine[$a]['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->absoluteRootLine[$a]['uid'], Connection::PARAM_INT)
                 ),
             ];
             // If first loop AND there is set an alternative template uid, use that
             if ($a === $c - 1 && $start_template_uid) {
                 $where[] = $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($start_template_uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($start_template_uid, Connection::PARAM_INT)
                 );
             }
             $queryBuilder->setRestrictions($this->queryBuilderRestrictions);

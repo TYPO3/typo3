@@ -229,7 +229,7 @@ class RecordHistory
                     ->where(
                         $queryBuilder->expr()->eq(
                             'pid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery();
@@ -309,7 +309,7 @@ class RecordHistory
         $record = $queryBuilder
             ->select('uid', 'tablename', 'recuid')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($lastHistoryEntry, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($lastHistoryEntry, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
 
@@ -331,8 +331,8 @@ class RecordHistory
             ->from('sys_history')
             ->where(
                 $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($record['uid'], Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, Connection::PARAM_INT))
             )
             ->setMaxResults(1)
             ->executeQuery()
@@ -353,7 +353,7 @@ class RecordHistory
             ->where(
                 $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
                 $queryBuilder->expr()->in('recuid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY)),
-                $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAllAssociative();
@@ -377,8 +377,8 @@ class RecordHistory
             ->select('*')
             ->from('sys_history')
             ->where(
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
-                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             );
         if ($backendUser->workspace === 0) {
             $queryBuilder->andWhere(
@@ -388,7 +388,7 @@ class RecordHistory
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('workspace', 0),
-                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, Connection::PARAM_INT))
                 )
             );
         }
@@ -397,7 +397,7 @@ class RecordHistory
         }
 
         if ($minimumUid) {
-            $queryBuilder->andWhere($queryBuilder->expr()->gte('uid', $queryBuilder->createNamedParameter($minimumUid, \PDO::PARAM_INT)));
+            $queryBuilder->andWhere($queryBuilder->expr()->gte('uid', $queryBuilder->createNamedParameter($minimumUid, Connection::PARAM_INT)));
         }
 
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
@@ -409,7 +409,7 @@ class RecordHistory
         $queryBuilder
             ->select('*')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId, \PDO::PARAM_STR)));
+            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId)));
 
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
     }

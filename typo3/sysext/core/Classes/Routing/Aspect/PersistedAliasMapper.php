@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
-use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\ContextAwareInterface;
 use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
@@ -200,7 +200,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
             ->select(...$this->persistenceFieldNames)
             ->where($queryBuilder->expr()->eq(
                 'uid',
-                $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($value, Connection::PARAM_INT)
             ))
             ->executeQuery()
             ->fetchAssociative();
@@ -215,7 +215,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $constraints = [
             $queryBuilder->expr()->eq(
                 $this->routeFieldName,
-                $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($value)
             ),
         ];
 

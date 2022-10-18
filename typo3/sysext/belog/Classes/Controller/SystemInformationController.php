@@ -54,7 +54,7 @@ final class SystemInformationController
             ->where(
                 $queryBuilder->expr()->gte(
                     'tstamp',
-                    $queryBuilder->createNamedParameter($this->fetchLastAccessTimestamp(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->fetchLastAccessTimestamp(), Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->in(
                     'error',

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -62,7 +63,7 @@ final class SysTemplateNoWorkspaceMigration implements UpgradeWizardInterface
         $numberOfNotDeletedWorkspaceRows = (int)$queryBuilder
             ->count('uid')
             ->from(self::TABLE_NAME)
-            ->where($queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
         if ($numberOfNotDeletedWorkspaceRows > 0) {
@@ -79,10 +80,10 @@ final class SysTemplateNoWorkspaceMigration implements UpgradeWizardInterface
         $queryBuilder = $this->getPreparedQueryBuilder();
         $queryBuilder->update(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
             )
-            ->set('deleted', 1, true, \PDO::PARAM_INT)
+            ->set('deleted', 1, true, Connection::PARAM_INT)
             ->executeStatement();
         return true;
     }

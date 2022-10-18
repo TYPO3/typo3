@@ -351,9 +351,9 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
             ],
             [
                 // Needs to be declared LOB, so MSSQL can handle the conversion from string (nvarchar) to blob (varbinary)
-                'entry_value' => \PDO::PARAM_LOB,
-                'entry_namespace' => \PDO::PARAM_STR,
-                'entry_key' => \PDO::PARAM_STR,
+                'entry_value' => Connection::PARAM_LOB,
+                'entry_namespace' => Connection::PARAM_STR,
+                'entry_key' => Connection::PARAM_STR,
             ]
         );
     }

@@ -80,7 +80,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -140,11 +140,11 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
                     $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq(
                             $languageField,
-                            $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             $transOrigPointerField,
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         )
                     )
                 );

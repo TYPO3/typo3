@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -92,7 +93,7 @@ class PasswordReset implements LoggerAwareInterface
             ->select('uid')
             ->from('be_users')
             ->andWhere(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($userId, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($userId, Connection::PARAM_INT))
             )
             ->setMaxResults(1)
             ->executeQuery();
@@ -394,7 +395,7 @@ class PasswordReset implements LoggerAwareInterface
         );
         if (!($GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] ?? false)) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             );
         }
         return $queryBuilder;
@@ -442,22 +443,22 @@ class PasswordReset implements LoggerAwareInterface
             'sys_log',
             $fields,
             [
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
             ]
         );
     }
@@ -494,7 +495,7 @@ class PasswordReset implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(SystemLogType::LOGIN)),
                 $queryBuilder->expr()->eq('action', $queryBuilder->createNamedParameter(SystemLogLoginAction::PASSWORD_RESET_REQUEST)),
                 $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter(json_encode(['email' => $email]))),
-                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($since->getTimestamp(), \PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($since->getTimestamp(), Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchOne();

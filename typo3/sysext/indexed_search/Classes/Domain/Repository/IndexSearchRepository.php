@@ -824,10 +824,10 @@ class IndexSearchRepository
         $indexCfgRec = $queryBuilder->select('indexcfgs')
             ->from('index_config')
             ->where(
-                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(5, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(5, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($freeIndexUid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -850,7 +850,7 @@ class IndexSearchRepository
                             ->where(
                                 $queryBuilder->expr()->eq(
                                     'uid',
-                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                                 )
                             )
                             ->executeQuery()
@@ -864,7 +864,7 @@ class IndexSearchRepository
                             ->where(
                                 $queryBuilder->expr()->eq(
                                     'pid',
-                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                                 )
                             )
                             ->executeQuery();

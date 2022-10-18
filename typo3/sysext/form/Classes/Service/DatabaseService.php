@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Service;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -58,10 +59,10 @@ class DatabaseService
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier')),
                 $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier, \PDO::PARAM_STR)),
-                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier)),
+                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT))
                 )
             )
             ->executeQuery()
@@ -114,13 +115,13 @@ class DatabaseService
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
 
         $constraints = [
-            $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier', \PDO::PARAM_STR)),
+            $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier')),
         ];
 
         if ($column === 'ref_string') {
-            $constraints[] = $queryBuilder->expr()->neq('ref_string', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR));
+            $constraints[] = $queryBuilder->expr()->neq('ref_string', $queryBuilder->createNamedParameter(''));
         } else {
-            $constraints[] = $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT));
+            $constraints[] = $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
         }
 
         return $queryBuilder

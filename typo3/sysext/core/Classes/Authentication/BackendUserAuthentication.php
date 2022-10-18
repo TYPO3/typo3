@@ -683,7 +683,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ->where(
                     $queryBuilder->expr()->eq(
                         $pointerField,
-                        $queryBuilder->createNamedParameter($pointerValue, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pointerValue, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -1389,7 +1389,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $defaultStorageRow = $queryBuilder->select('uid')
                 ->from('sys_file_storage')
                 ->where(
-                    $queryBuilder->expr()->eq('is_default', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('is_default', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
                 )
                 ->setMaxResults(1)
                 ->executeQuery()
@@ -1810,7 +1810,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     ->from('sys_workspace')
                     ->where($queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($wsRec, Connection::PARAM_INT)
                     ))
                     ->executeQuery()
                     ->fetchAssociative();
@@ -2016,22 +2016,22 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             'sys_log',
             $fields,
             [
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
             ]
         );
 
@@ -2186,9 +2186,9 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($backUserId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($backUserId, Connection::PARAM_INT)
                     ),
-                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
                 )
                 ->executeQuery()
                 ->fetchOne();

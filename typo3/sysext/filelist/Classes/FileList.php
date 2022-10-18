@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -775,11 +776,11 @@ class FileList
             ->where(
                 $queryBuilder->expr()->eq(
                     $languageParentField,
-                    $queryBuilder->createNamedParameter($metaDataRecord['uid'] ?? 0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($metaDataRecord['uid'] ?? 0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
                     $languageField,
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -1532,7 +1533,7 @@ class FileList
                 ),
                 $queryBuilder->expr()->eq(
                     'ref_uid',
-                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
                     'tablename',

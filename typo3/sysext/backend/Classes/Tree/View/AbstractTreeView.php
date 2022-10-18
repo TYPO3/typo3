@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -488,7 +489,7 @@ abstract class AbstractTreeView
                 ->where(
                     $queryBuilder->expr()->eq(
                         $this->parentField,
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     ),
                     QueryHelper::stripLogicalOperatorPrefix($this->clause)
                 )
@@ -531,7 +532,7 @@ abstract class AbstractTreeView
                 ->where(
                     $queryBuilder->expr()->eq(
                         $this->parentField,
-                        $queryBuilder->createNamedParameter($parentId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($parentId, Connection::PARAM_INT)
                     ),
                     QueryHelper::stripLogicalOperatorPrefix($this->clause)
                 );

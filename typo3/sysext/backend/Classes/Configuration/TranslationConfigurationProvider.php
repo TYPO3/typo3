@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Configuration;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -155,13 +156,13 @@ class TranslationConfigurationProvider
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter(
                         $row['pid'],
-                        \PDO::PARAM_INT
+                        Connection::PARAM_INT
                     )
                 )
             );
@@ -169,7 +170,7 @@ class TranslationConfigurationProvider
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->gt(
                     $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             );
         } else {
@@ -177,7 +178,7 @@ class TranslationConfigurationProvider
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($languageUid, Connection::PARAM_INT)
                     )
                 );
         }

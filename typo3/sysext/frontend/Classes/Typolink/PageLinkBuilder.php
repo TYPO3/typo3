@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
@@ -679,15 +680,15 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_RECYCLER, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_BE_USER_SECTION, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_BE_USER_SECTION, Connection::PARAM_INT)
                     )
                 )->executeQuery();
             while ($row = $queryResult->fetchAssociative()) {

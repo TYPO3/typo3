@@ -855,8 +855,7 @@ abstract class AbstractMenuContentObject
                 $keyWordsWhereArr[] = $queryBuilder->expr()->like(
                     $kfield,
                     $queryBuilder->createNamedParameter(
-                        '%' . $queryBuilder->escapeLikeWildcards($word) . '%',
-                        \PDO::PARAM_STR
+                        '%' . $queryBuilder->escapeLikeWildcards($word) . '%'
                     )
                 );
             }
@@ -870,7 +869,7 @@ abstract class AbstractMenuContentObject
                     ),
                     $queryBuilder->expr()->neq(
                         'uid',
-                        $queryBuilder->createNamedParameter($specialValue, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($specialValue, Connection::PARAM_INT)
                     )
                 );
 

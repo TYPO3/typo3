@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
-use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\ContextAwareInterface;
 use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
@@ -214,7 +214,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             ->select('*')
             ->where($queryBuilder->expr()->eq(
                 'uid',
-                $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($value, Connection::PARAM_INT)
             ))
             ->executeQuery()
             ->fetchAssociative();
@@ -277,8 +277,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             $constraints[] = $queryBuilder->expr()->eq(
                 $fieldName,
                 $queryBuilder->createNamedParameter(
-                    $fieldValue,
-                    \PDO::PARAM_STR
+                    $fieldValue
                 )
             );
         }
@@ -286,7 +285,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         if ($languageExpansion) {
             $idParameter = $queryBuilder->createNamedParameter(
                 $values['uid'],
-                \PDO::PARAM_INT
+                Connection::PARAM_INT
             );
             $constraints[] = $queryBuilder->expr()->or(
                 $queryBuilder->expr()->eq('uid', $idParameter),

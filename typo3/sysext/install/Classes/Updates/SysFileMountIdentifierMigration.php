@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -99,7 +100,7 @@ class SysFileMountIdentifierMigration implements UpgradeWizardInterface
         $queryBuilder
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->gt('base', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gt('base', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 $queryBuilder->expr()->neq('path', $queryBuilder->createNamedParameter('')),
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter(''))
             );

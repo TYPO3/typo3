@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Service;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -117,8 +118,8 @@ class IntegrityService
 
         $queryBuilder->where(
             $queryBuilder->expr()->or(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($site->getRootPageId(), \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq($this->getPagesLanguageParentFieldName(), $queryBuilder->createNamedParameter($site->getRootPageId(), \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($site->getRootPageId(), Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq($this->getPagesLanguageParentFieldName(), $queryBuilder->createNamedParameter($site->getRootPageId(), Connection::PARAM_INT)),
             )
         );
         $result = $queryBuilder->executeQuery();
@@ -157,7 +158,7 @@ class IntegrityService
             ->from('pages');
 
         $queryBuilder->where(
-            $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
+            $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
         );
         $result = $queryBuilder->executeQuery();
 

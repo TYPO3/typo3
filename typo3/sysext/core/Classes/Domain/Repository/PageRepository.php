@@ -572,7 +572,7 @@ class PageRepository implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->in(
                         $GLOBALS['TCA']['pages']['ctrl']['languageField'],
@@ -692,15 +692,15 @@ class PageRepository implements LoggerAwareInterface
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'pid',
-                                $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 $tableControl['languageField'],
-                                $queryBuilder->createNamedParameter($languageAspect->getContentId(), \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($languageAspect->getContentId(), Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 $tableControl['transOrigPointerField'],
-                                $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row['uid'], Connection::PARAM_INT)
                             )
                         )
                         ->setMaxResults(1)
@@ -855,7 +855,7 @@ class PageRepository implements LoggerAwareInterface
                 ),
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
@@ -982,7 +982,7 @@ class PageRepository implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         $searchField,
-                        $queryBuilder->createNamedParameter($searchUid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($searchUid, Connection::PARAM_INT)
                     ),
                     QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                     QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
@@ -1218,11 +1218,11 @@ class PageRepository implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -1251,11 +1251,11 @@ class PageRepository implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($mount_pid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($mount_pid, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -1340,7 +1340,7 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
             $row = $queryBuilder->select('*')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
 
@@ -1356,7 +1356,7 @@ class PageRepository implements LoggerAwareInterface
                             ->where(
                                 $queryBuilder->expr()->eq(
                                     'uid',
-                                    $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($row['pid'], Connection::PARAM_INT)
                                 )
                             )
                             ->executeQuery()
@@ -1393,7 +1393,7 @@ class PageRepository implements LoggerAwareInterface
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
 
@@ -1618,7 +1618,7 @@ class PageRepository implements LoggerAwareInterface
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fieldNames, true))
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], \PDO::PARAM_INT)))
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], Connection::PARAM_INT)))
                     ->executeQuery()
                     ->fetchAssociative();
             }
@@ -1696,23 +1696,23 @@ class PageRepository implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->or(
                         // t3ver_state=1 does not contain a t3ver_oid, and returns itself
                         $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
                             )
                         ),
                         $queryBuilder->expr()->eq(
                             't3ver_oid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         )
                     )
                 )
@@ -1734,23 +1734,23 @@ class PageRepository implements LoggerAwareInterface
                 $queryBuilder->where(
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->or(
                         // t3ver_state=1 does not contain a t3ver_oid, and returns itself
                         $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
                             )
                         ),
                         $queryBuilder->expr()->eq(
                             't3ver_oid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         )
                     )
                 );
@@ -1764,7 +1764,7 @@ class PageRepository implements LoggerAwareInterface
             // OK, so no workspace version was found. Then check if online version can be
             // selected with full enable fields and if so, return 1:
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             );
             if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
                 // Means search was done, but no version found.
@@ -1854,7 +1854,7 @@ class PageRepository implements LoggerAwareInterface
                 ),
                 $queryBuilder->expr()->gt(
                     'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -1939,7 +1939,7 @@ class PageRepository implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 ),
                 // tree is only built by language=0 pages
                 $queryBuilder->expr()->eq('sys_language_uid', 0)
@@ -1986,7 +1986,7 @@ class PageRepository implements LoggerAwareInterface
                     ->where(
                         $queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($next_id, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($next_id, Connection::PARAM_INT)
                         )
                     )
                     ->orderBy('sorting')
@@ -2082,7 +2082,7 @@ class PageRepository implements LoggerAwareInterface
             }
             // Check for the language and all its fallbacks (except for default language)
             $constraint = $queryBuilder->expr()->and(
-                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
             );
             // If the fallback language Ids also contains the default language, this needs to be considered
@@ -2091,7 +2091,7 @@ class PageRepository implements LoggerAwareInterface
                     $constraint,
                     // Ensure to also fetch the default record
                     $queryBuilder->expr()->and(
-                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
                         $queryBuilder->expr()->eq('sys_language_uid', 0)
                     )
                 );
@@ -2101,7 +2101,7 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->orderBy('sys_language_uid', 'DESC');
         } else {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
             );
         }
         $page = $queryBuilder->executeQuery()->fetchAssociative();

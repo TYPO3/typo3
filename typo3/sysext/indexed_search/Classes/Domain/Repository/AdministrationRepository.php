@@ -68,7 +68,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -99,7 +99,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -121,7 +121,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -142,7 +142,7 @@ class AdministrationRepository
             ->select('index_phash.*')
             ->addSelectLiteral($queryBuilder->expr()->count('*', 'pcount'))
             ->from('index_phash')
-            ->where($queryBuilder->expr()->neq('item_type', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->neq('item_type', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)))
             ->groupBy(
                 'phash_grouping',
                 'phash',
@@ -183,11 +183,11 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash_grouping',
-                            $queryBuilder->createNamedParameter($row['phash_grouping'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash_grouping'], Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->neq(
                             'phash',
-                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery();
@@ -281,7 +281,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'item_type',
-                    $queryBuilder->createNamedParameter($itemType, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($itemType)
                 )
             )
             ->groupBy('phash_grouping')
@@ -306,7 +306,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -326,7 +326,7 @@ class AdministrationRepository
             ->select('index_phash.*')
             ->addSelectLiteral($queryBuilder->expr()->count('*', 'pcount'))
             ->from('index_phash')
-            ->where($queryBuilder->expr()->neq('data_page_id', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->neq('data_page_id', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)))
             ->groupBy(
                 'phash_grouping',
                 'phash',
@@ -366,11 +366,11 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash_grouping',
-                            $queryBuilder->createNamedParameter($row['phash_grouping'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash_grouping'], Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->neq(
                             'phash',
-                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery();
@@ -402,7 +402,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'pageid',
-                    $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 )
             )
             ->groupBy('word')
@@ -504,7 +504,7 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'index_rel.phash',
-                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
                     )
@@ -530,7 +530,7 @@ class AdministrationRepository
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'phash',
-                                $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
                             )
                         )
                         ->setMaxResults(1)
@@ -545,7 +545,7 @@ class AdministrationRepository
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'index_rel.phash',
-                                $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 'index_words.wid',
@@ -613,7 +613,7 @@ class AdministrationRepository
                 $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('ISEC.phash')),
                 $queryBuilder->expr()->eq(
                     'ISEC.page_id',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
             ->groupBy(
@@ -700,7 +700,7 @@ class AdministrationRepository
             ->select('uid', 'title')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT))
             )
             ->executeQuery();
 
@@ -750,7 +750,7 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash',
-                            $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery();
@@ -798,7 +798,7 @@ class AdministrationRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         'wid',
-                        $queryBuilder->createNamedParameter($wid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($wid, Connection::PARAM_INT)
                     )
                 )
                 ->executeStatement();

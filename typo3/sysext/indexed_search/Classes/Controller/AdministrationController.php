@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -236,7 +237,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -253,7 +254,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -276,7 +277,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.wid',
@@ -318,7 +319,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -334,11 +335,11 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.is_stopword',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.wid',
@@ -359,11 +360,11 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.is_stopword',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.wid',
@@ -430,7 +431,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.wid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',

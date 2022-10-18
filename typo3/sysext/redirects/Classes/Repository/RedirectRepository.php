@@ -83,7 +83,7 @@ class RedirectRepository
             $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($demand->getSourcePath()) . '%';
             $constraints[] = $queryBuilder->expr()->like(
                 'source_path',
-                $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($escapedLikeString)
             );
         }
 
@@ -91,7 +91,7 @@ class RedirectRepository
             $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($demand->getTarget()) . '%';
             $constraints[] = $queryBuilder->expr()->like(
                 'target',
-                $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($escapedLikeString)
             );
         }
 
@@ -105,12 +105,12 @@ class RedirectRepository
         if ($demand->hasMaxHits()) {
             $constraints[] = $queryBuilder->expr()->lt(
                 'hitcount',
-                $queryBuilder->createNamedParameter($demand->getMaxHits(), \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($demand->getMaxHits(), Connection::PARAM_INT)
             );
             // When max hits is set, exclude records which explicitly disabled the hitcount feature
             $constraints[] = $queryBuilder->expr()->eq(
                 'disable_hitcount',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             );
         }
 
@@ -164,12 +164,12 @@ class RedirectRepository
         $queryBuilder
             ->delete('sys_redirect')
             ->where(
-                $queryBuilder->expr()->eq('protected', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('protected', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             );
 
         if ($demand->hasMaxHits()) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->lt('hitcount', $queryBuilder->createNamedParameter($demand->getMaxHits(), \PDO::PARAM_INT))
+                $queryBuilder->expr()->lt('hitcount', $queryBuilder->createNamedParameter($demand->getMaxHits(), Connection::PARAM_INT))
             );
         }
         if ($demand->hasSourceHosts()) {
@@ -185,13 +185,13 @@ class RedirectRepository
         if ($demand->hasOlderThan()) {
             $timeStamp = $demand->getOlderThan()->getTimestamp();
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->lt('createdon', $queryBuilder->createNamedParameter($timeStamp, \PDO::PARAM_INT))
+                $queryBuilder->expr()->lt('createdon', $queryBuilder->createNamedParameter($timeStamp, Connection::PARAM_INT))
             );
         }
         if ($demand->hasSourcePath()) {
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->like('source_path', ':path'))
-                ->setParameter('path', $demand->getSourcePath(), \PDO::PARAM_STR);
+                ->setParameter('path', $demand->getSourcePath());
         }
 
         $queryBuilder->executeStatement();

@@ -319,7 +319,7 @@ class LiveSearch
                 ) {
                     $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,
-                        $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->queryString, Connection::PARAM_INT)
                     );
                 } elseif ($fieldType === 'input'
                     || $fieldType === 'text'
@@ -333,8 +333,7 @@ class LiveSearch
                     $constraints[] = $queryBuilder->expr()->like(
                         $fieldName,
                         $queryBuilder->createNamedParameter(
-                            '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%',
-                            \PDO::PARAM_STR
+                            '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%'
                         )
                     );
                 }
@@ -353,7 +352,7 @@ class LiveSearch
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
-                        $queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter(mb_strtolower($like))
                     )
                 );
 
@@ -363,7 +362,7 @@ class LiveSearch
                         $searchConstraint = $queryBuilder->expr()->and(
                             $queryBuilder->expr()->like(
                                 $fieldName,
-                                $queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
+                                $queryBuilder->createNamedParameter($like)
                             )
                         );
                     }

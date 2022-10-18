@@ -309,7 +309,7 @@ class SearchController extends ActionController
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($freeIndexUid, Connection::PARAM_INT)
                             )
                         )
                         ->executeQuery()
@@ -744,7 +744,7 @@ class SearchController extends ActionController
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash',
-                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery()
@@ -869,7 +869,7 @@ class SearchController extends ActionController
                 'index_stat_word',
                 $entries,
                 [ 'word', 'tstamp', 'pageid' ],
-                [ \PDO::PARAM_STR, \PDO::PARAM_INT, \PDO::PARAM_INT ]
+                [ Connection::PARAM_STR, Connection::PARAM_INT, Connection::PARAM_INT ]
             );
     }
 

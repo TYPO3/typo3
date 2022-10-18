@@ -126,11 +126,11 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 ->where(
                     $queryBuilder->expr()->eq(
                         'storage',
-                        $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($storage->getUid(), Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'identifier',
-                        $queryBuilder->createNamedParameter($identifier, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($identifier)
                     )
                 )
                 ->executeQuery()
@@ -160,7 +160,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             ->where(
                 $queryBuilder->expr()->eq(
                     'storage',
-                    $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($storage->getUid(), Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -235,12 +235,12 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             ->where(
                 $queryBuilder->expr()->eq(
                     'original',
-                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT)
                 ),
-                $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType, \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType)),
                 $queryBuilder->expr()->eq(
                     'configurationsha1',
-                    $queryBuilder->createNamedParameter(sha1(serialize($configuration)), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter(sha1(serialize($configuration)))
                 )
             )
             ->executeQuery()
@@ -272,7 +272,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             ->where(
                 $queryBuilder->expr()->eq(
                     'original',
-                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -296,12 +296,12 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->table);
         $where = [
-            $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)),
+            $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('')),
         ];
         if ($storageUid !== null) {
             $where[] = $queryBuilder->expr()->eq(
                 'storage',
-                $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($storageUid, Connection::PARAM_INT)
             );
         }
         $result = $queryBuilder
@@ -339,7 +339,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             // else remove db rows of this storage only
             GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable($this->table)
-                ->delete($this->table, ['storage' => $storageUid], [\PDO::PARAM_INT]);
+                ->delete($this->table, ['storage' => $storageUid], [Connection::PARAM_INT]);
         }
 
         return $errorCount;

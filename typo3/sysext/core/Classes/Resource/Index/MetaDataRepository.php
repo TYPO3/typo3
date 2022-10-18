@@ -117,7 +117,7 @@ class MetaDataRepository implements SingletonInterface
             ->select('*')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY))
             )
             ->executeQuery()

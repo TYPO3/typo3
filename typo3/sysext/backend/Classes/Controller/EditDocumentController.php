@@ -38,6 +38,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -1690,7 +1691,7 @@ class EditDocumentController
             ->andWhere(
                 $queryBuilder->expr()->gt(
                     $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -1707,7 +1708,7 @@ class EditDocumentController
             ->andWhere(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -1731,15 +1732,15 @@ class EditDocumentController
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($page, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($page, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     $languageField,
-                    $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'colPos',
-                    $queryBuilder->createNamedParameter($column, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($column, Connection::PARAM_INT)
                 )
             );
     }
@@ -1933,15 +1934,15 @@ class EditDocumentController
                             ->where(
                                 $queryBuilder->expr()->eq(
                                     'pid',
-                                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                                 ),
                                 $queryBuilder->expr()->gt(
                                     $languageField,
-                                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                                 ),
                                 $queryBuilder->expr()->eq(
                                     $transOrigPointerField,
-                                    $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], Connection::PARAM_INT)
                                 )
                             )
                             ->executeQuery();
@@ -2048,11 +2049,11 @@ class EditDocumentController
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($origUid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($origUid, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -2116,7 +2117,7 @@ class EditDocumentController
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery();

@@ -319,17 +319,17 @@ class WorkspaceService implements SingletonInterface
         $constraints = [
             $queryBuilder->expr()->gt(
                 'A.t3ver_oid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ),
             $queryBuilder->expr()->eq(
                 'B.t3ver_oid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ),
             $queryBuilder->expr()->neq(
                 'A.t3ver_state',
                 $queryBuilder->createNamedParameter(
                     (string)new VersionState(VersionState::MOVE_POINTER),
-                    \PDO::PARAM_INT
+                    Connection::PARAM_INT
                 )
             ),
         ];
@@ -367,21 +367,21 @@ class WorkspaceService implements SingletonInterface
         if ($isTableLocalizable && MathUtility::canBeInterpretedAsInteger($language)) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
             );
         }
 
         if ($wsid >= 0) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.t3ver_wsid',
-                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($wsid, Connection::PARAM_INT)
             );
         }
 
         if ((int)$stage !== -99) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.t3ver_stage',
-                $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($stage, Connection::PARAM_INT)
             );
         }
 
@@ -454,7 +454,7 @@ class WorkspaceService implements SingletonInterface
                 't3ver_state',
                 $queryBuilder->createNamedParameter(
                     VersionState::NEW_PLACEHOLDER,
-                    \PDO::PARAM_INT
+                    Connection::PARAM_INT
                 )
             ),
         ];
@@ -492,21 +492,21 @@ class WorkspaceService implements SingletonInterface
         if ($isTableLocalizable && MathUtility::canBeInterpretedAsInteger($language)) {
             $constraints[] = $queryBuilder->expr()->eq(
                 $languageField,
-                $queryBuilder->createNamedParameter((int)$language, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter((int)$language, Connection::PARAM_INT)
             );
         }
 
         if ($wsid >= 0) {
             $constraints[] = $queryBuilder->expr()->eq(
                 't3ver_wsid',
-                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($wsid, Connection::PARAM_INT)
             );
         }
 
         if ($stage !== -99) {
             $constraints[] = $queryBuilder->expr()->eq(
                 't3ver_stage',
-                $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($stage, Connection::PARAM_INT)
             );
         }
 
@@ -545,18 +545,18 @@ class WorkspaceService implements SingletonInterface
                 'B.t3ver_state',
                 $queryBuilder->createNamedParameter(
                     (string)new VersionState(VersionState::DEFAULT_STATE),
-                    \PDO::PARAM_INT
+                    Connection::PARAM_INT
                 )
             ),
             $queryBuilder->expr()->eq(
                 'B.t3ver_wsid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ),
             $queryBuilder->expr()->eq(
                 'C.t3ver_state',
                 $queryBuilder->createNamedParameter(
                     (string)new VersionState(VersionState::MOVE_POINTER),
-                    \PDO::PARAM_INT
+                    Connection::PARAM_INT
                 )
             ),
             $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid')),
@@ -565,14 +565,14 @@ class WorkspaceService implements SingletonInterface
         if ($wsid >= 0) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'C.t3ver_wsid',
-                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($wsid, Connection::PARAM_INT)
             );
         }
 
         if ((int)$stage !== -99) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'C.t3ver_stage',
-                $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($stage, Connection::PARAM_INT)
             );
         }
 
@@ -680,11 +680,11 @@ class WorkspaceService implements SingletonInterface
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
-                        $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($wsid, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_state',
-                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
                     )
                 )
                 ->orderBy('uid')
@@ -768,7 +768,7 @@ class WorkspaceService implements SingletonInterface
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
                     $queryBuilder->expr()->eq('sys_language_uid', 0),
                     $permsClause
                 )
@@ -866,15 +866,15 @@ class WorkspaceService implements SingletonInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
-                        $queryBuilder->createNamedParameter($this->getCurrentWorkspace(), \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->getCurrentWorkspace(), Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)
@@ -1005,18 +1005,18 @@ class WorkspaceService implements SingletonInterface
                     $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq(
                             't3ver_state',
-                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->gt(
                             't3ver_oid',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         ),
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter(
                             $workspaceId,
-                            \PDO::PARAM_INT
+                            Connection::PARAM_INT
                         )
                     )
                 )

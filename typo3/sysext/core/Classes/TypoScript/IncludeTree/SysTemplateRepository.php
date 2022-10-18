@@ -21,6 +21,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -74,8 +75,8 @@ final class SysTemplateRepository
         foreach ($rootLinePageIds as $sorting => $rootLinePageId) {
             $valueList[] = sprintf(
                 $pattern,
-                $queryBuilder->createNamedParameter($rootLinePageId, \PDO::PARAM_INT),
-                $queryBuilder->createNamedParameter($sorting, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($rootLinePageId, Connection::PARAM_INT),
+                $queryBuilder->createNamedParameter($sorting, Connection::PARAM_INT)
             );
         }
         $valueList = 'SELECT ' . implode(' UNION ALL SELECT ', $valueList);
@@ -132,10 +133,10 @@ final class SysTemplateRepository
         if ($templateUidOnDeepestRootline && $templatePidOnDeepestRootline) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->neq('sys_template.pid', $queryBuilder->createNamedParameter($templatePidOnDeepestRootline, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->neq('sys_template.pid', $queryBuilder->createNamedParameter($templatePidOnDeepestRootline, Connection::PARAM_INT)),
                     $queryBuilder->expr()->and(
-                        $queryBuilder->expr()->eq('sys_template.pid', $queryBuilder->createNamedParameter($templatePidOnDeepestRootline, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq('sys_template.uid', $queryBuilder->createNamedParameter($templateUidOnDeepestRootline, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('sys_template.pid', $queryBuilder->createNamedParameter($templatePidOnDeepestRootline, Connection::PARAM_INT)),
+                        $queryBuilder->expr()->eq('sys_template.uid', $queryBuilder->createNamedParameter($templateUidOnDeepestRootline, Connection::PARAM_INT)),
                     ),
                 ),
             );
@@ -149,8 +150,8 @@ final class SysTemplateRepository
         foreach ($rootLinePageIds as $sorting => $rootLinePageId) {
             $valueList[] = sprintf(
                 $pattern,
-                $queryBuilder->createNamedParameter($rootLinePageId, \PDO::PARAM_INT),
-                $queryBuilder->createNamedParameter($sorting, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($rootLinePageId, Connection::PARAM_INT),
+                $queryBuilder->createNamedParameter($sorting, Connection::PARAM_INT)
             );
         }
         $valueList = 'SELECT ' . implode(' UNION ALL SELECT ', $valueList);

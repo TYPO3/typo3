@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Backend\Avatar;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -78,15 +79,15 @@ class DefaultAvatarProvider implements AvatarProviderInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablenames',
-                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('be_users')
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('avatar')
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter((int)$backendUserId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter((int)$backendUserId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

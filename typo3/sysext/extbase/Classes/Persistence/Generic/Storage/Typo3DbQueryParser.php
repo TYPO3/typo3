@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -466,7 +467,7 @@ class Typo3DbQueryParser
                 $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GTE, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_LIKE:
-                $placeHolder = $this->createTypedNamedParameter($value, \PDO::PARAM_STR);
+                $placeHolder = $this->createTypedNamedParameter($value, Connection::PARAM_STR);
                 $expr = $exprBuilder->comparison($fieldName, 'LIKE', $placeHolder);
                 break;
             default:
@@ -491,9 +492,9 @@ class Typo3DbQueryParser
         $parameterType = gettype($value);
         switch ($parameterType) {
             case 'integer':
-                return \PDO::PARAM_INT;
+                return Connection::PARAM_INT;
             case 'string':
-                return \PDO::PARAM_STR;
+                return Connection::PARAM_STR;
             default:
                 throw new \InvalidArgumentException(
                     'Unsupported parameter type encountered. Expected integer or string, ' . $parameterType . ' given.',

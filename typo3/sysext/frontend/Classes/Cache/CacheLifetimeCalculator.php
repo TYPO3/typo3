@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Cache;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
@@ -173,7 +174,7 @@ class CacheLifetimeCalculator
                     . 'CASE WHEN '
                     . $queryBuilder->expr()->lte(
                         $timeFields[$field],
-                        $queryBuilder->createNamedParameter($currentTimestamp, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($currentTimestamp, Connection::PARAM_INT)
                     )
                     . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
                     . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
@@ -181,7 +182,7 @@ class CacheLifetimeCalculator
                 $timeConditions = $timeConditions->with(
                     $queryBuilder->expr()->gt(
                         $timeFields[$field],
-                        $queryBuilder->createNamedParameter($currentTimestamp, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($currentTimestamp, Connection::PARAM_INT)
                     )
                 );
             }
@@ -195,7 +196,7 @@ class CacheLifetimeCalculator
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                     ),
                     $timeConditions
                 )

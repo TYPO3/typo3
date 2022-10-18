@@ -769,7 +769,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function set(string $key, $value, bool $createNamedParameter = true, int $type = \PDO::PARAM_STR): QueryBuilder
+    public function set(string $key, $value, bool $createNamedParameter = true, int $type = Connection::PARAM_STR): QueryBuilder
     {
         $this->concreteQueryBuilder->set(
             $this->quoteIdentifier($key),
@@ -1068,7 +1068,7 @@ class QueryBuilder
      *
      * @return string the placeholder name used.
      */
-    public function createNamedParameter($value, int $type = \PDO::PARAM_STR, string $placeHolder = null): string
+    public function createNamedParameter($value, int $type = Connection::PARAM_STR, string $placeHolder = null): string
     {
         return $this->concreteQueryBuilder->createNamedParameter($value, $type, $placeHolder);
     }
@@ -1086,7 +1086,7 @@ class QueryBuilder
      *
      * @return string
      */
-    public function createPositionalParameter($value, int $type = \PDO::PARAM_STR): string
+    public function createPositionalParameter($value, int $type = Connection::PARAM_STR): string
     {
         return $this->concreteQueryBuilder->createPositionalParameter($value, $type);
     }
@@ -1110,7 +1110,7 @@ class QueryBuilder
      * @param int $type The type of the parameter.
      * @return mixed Often string, but also int or float or similar depending on $input and platform
      */
-    public function quote($input, int $type = \PDO::PARAM_STR)
+    public function quote($input, int $type = Connection::PARAM_STR)
     {
         return $this->getConnection()->quote($input, $type);
     }
@@ -1271,7 +1271,7 @@ class QueryBuilder
         // Ensure all values are quoted as string values for used dbmns
         $connection = $this;
         array_walk($values, static function (&$value) use ($connection) {
-            $value = $connection->quote($value, Connection::PARAM_STR);
+            $value = $connection->quote($value);
         });
 
         return implode(',', $values);

@@ -889,7 +889,7 @@ class DataMapProcessor
             // It *might* be possible to simplify this since it may be the case that ws-deleted records are
             // impossible to be incoming here at all? But this query is a safe thing, so we go with it for now.
             $expressions[] = $queryBuilder->expr()->and(
-                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->backendUser->workspace, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->backendUser->workspace, Connection::PARAM_INT)),
                 $queryBuilder->expr()->in(
                     't3ver_state',
                     $queryBuilder->createNamedParameter(
@@ -1111,7 +1111,7 @@ class DataMapProcessor
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->backendUser->workspace));
 
-        $zeroParameter = $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT);
+        $zeroParameter = $queryBuilder->createNamedParameter(0, Connection::PARAM_INT);
         $ids = $this->filterNumericIds($ids);
         $idsParameter = $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY);
 

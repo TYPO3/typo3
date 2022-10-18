@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -66,7 +67,7 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
             ->from('pages')
             ->where($queryBuilder->expr()->eq(
                 $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
             ))
             ->executeQuery()
             ->fetchAllAssociative();

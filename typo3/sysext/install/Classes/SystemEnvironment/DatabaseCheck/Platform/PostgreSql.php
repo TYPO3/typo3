@@ -159,7 +159,7 @@ class PostgreSql extends AbstractPlatform
         $defaultDatabaseCharset = $connection->executeQuery(
             'SELECT pg_catalog.pg_encoding_to_char(pg_database.encoding) from pg_database where datname = ?',
             [$connection->getDatabase()],
-            [\PDO::PARAM_STR]
+            [Connection::PARAM_STR]
         )->fetchAssociative();
 
         if (!in_array(strtolower($defaultDatabaseCharset['pg_encoding_to_char']), $this->databaseCharsetToCheck, true)) {

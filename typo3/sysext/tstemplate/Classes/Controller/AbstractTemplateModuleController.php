@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -211,7 +212,7 @@ abstract class AbstractTemplateModuleController
         $queryBuilder = $this->getTemplateQueryBuilder($pageId)->setMaxResults(1);
         if ($templateUid) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, Connection::PARAM_INT))
             );
         }
         return $queryBuilder->executeQuery()->fetchAssociative();
@@ -229,7 +230,7 @@ abstract class AbstractTemplateModuleController
         return $queryBuilder->select('*')
             ->from('sys_template')
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
             )
             ->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
     }

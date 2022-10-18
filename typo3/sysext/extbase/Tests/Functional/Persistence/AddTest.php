@@ -72,7 +72,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle)
                 )
             )
             ->executeQuery()
@@ -101,7 +101,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle)
                 )
             )
             ->executeQuery()
@@ -131,7 +131,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle)
                 )
             )
             ->executeQuery()
@@ -167,7 +167,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'subtitle',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle)
                 )
             )
             ->executeQuery()

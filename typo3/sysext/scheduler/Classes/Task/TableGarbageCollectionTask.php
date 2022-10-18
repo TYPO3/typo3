@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Scheduler\Task;
 
 use Doctrine\DBAL\Exception as DBALException;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -86,8 +87,8 @@ class TableGarbageCollectionTask extends AbstractTask
             // If expire field value is 0, do not delete
             // Expire field = 0 means no expiration
             $queryBuilder->where(
-                $queryBuilder->expr()->lte($field, $queryBuilder->createNamedParameter($dateLimit, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->gt($field, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->lte($field, $queryBuilder->createNamedParameter($dateLimit, Connection::PARAM_INT)),
+                $queryBuilder->expr()->gt($field, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             );
         } elseif (!empty($configuration['dateField'])) {
             if (!$this->allTables) {
@@ -101,7 +102,7 @@ class TableGarbageCollectionTask extends AbstractTask
             $queryBuilder->where(
                 $queryBuilder->expr()->lt(
                     $configuration['dateField'],
-                    $queryBuilder->createNamedParameter($deleteTimestamp, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($deleteTimestamp, Connection::PARAM_INT)
                 )
             );
         } else {

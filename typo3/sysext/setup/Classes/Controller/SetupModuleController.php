@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
@@ -757,15 +758,15 @@ class SetupModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablenames',
-                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('be_users')
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('avatar')
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($beUserId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -799,15 +800,15 @@ class SetupModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablenames',
-                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('be_users')
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('avatar')
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($beUserId, Connection::PARAM_INT)
                 )
             )
             ->executeStatement();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Domain\Repository;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
@@ -61,11 +62,11 @@ class SysNoteRepository
                 $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->quoteIdentifier('be_users.uid'))
             )
             ->where(
-                $queryBuilder->expr()->eq('sys_note.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_note.pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_note.deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_note.pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq('sys_note.personal', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->createNamedParameter($author, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('sys_note.personal', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->createNamedParameter($author, Connection::PARAM_INT))
                 )
             )
             ->orderBy('sorting', 'asc')
@@ -73,7 +74,7 @@ class SysNoteRepository
 
         if ($position !== null) {
             $res->andWhere(
-                $queryBuilder->expr()->eq('sys_note.position', $queryBuilder->createNamedParameter($position, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('sys_note.position', $queryBuilder->createNamedParameter($position, Connection::PARAM_INT))
             );
         }
 
