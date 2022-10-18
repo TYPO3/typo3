@@ -13,7 +13,6 @@
 
 import {html, TemplateResult} from 'lit';
 import {lll} from '@typo3/core/lit-helper';
-import Viewport from '../viewport';
 import Modal from '../modal';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/input/clearable';
@@ -46,9 +45,7 @@ class LiveSearch {
 
   constructor() {
     DocumentService.ready().then((): void => {
-      Viewport.Topbar.Toolbar.registerEvent((): void => {
-        this.registerEvents();
-      });
+      this.registerEvents();
     });
   }
 
