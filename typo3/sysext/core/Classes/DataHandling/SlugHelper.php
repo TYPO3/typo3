@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -502,7 +503,7 @@ class SlugHelper
         $queryBuilder->andWhere(
             $queryBuilder->expr()->eq(
                 $languageFieldName,
-                $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
             )
         );
     }
@@ -540,7 +541,7 @@ class SlugHelper
         $queryBuilder->andWhere(
             $queryBuilder->expr()->eq(
                 'pid',
-                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
             )
         );
     }
@@ -557,12 +558,12 @@ class SlugHelper
         }
 
         $queryBuilder->andWhere(
-            $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($recordId, \PDO::PARAM_INT))
+            $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($recordId, Connection::PARAM_INT))
         );
         if ($this->workspaceId > 0 && $this->workspaceEnabled) {
             $liveId = BackendUtility::getLiveVersionIdOfRecord($this->tableName, (int)$recordId) ?? $recordId;
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT))
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($liveId, Connection::PARAM_INT))
             );
         }
     }

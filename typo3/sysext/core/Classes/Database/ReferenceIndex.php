@@ -188,11 +188,11 @@ class ReferenceIndex implements LoggerAwareInterface
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
-            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)),
-            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName, Connection::PARAM_STR)),
+            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
             $queryBuilder->expr()->eq(
                 'workspace',
-                $queryBuilder->createNamedParameter($this->getWorkspaceId(), \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($this->getWorkspaceId(), Connection::PARAM_INT)
             )
         )->executeQuery();
         $currentRelationHashes = [];
@@ -283,11 +283,11 @@ class ReferenceIndex implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'ref_table',
-                    $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tableName, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'ref_uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             )->executeQuery()->fetchOne();
     }
@@ -654,7 +654,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 ->select('*')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash, \PDO::PARAM_STR))
+                    $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash, Connection::PARAM_STR))
                 )
                 ->setMaxResults(1)
                 ->executeQuery()
@@ -679,7 +679,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)
@@ -1065,7 +1065,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'tablename',
-                        $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($tableName, Connection::PARAM_STR)
                     ),
                     'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
                 )
@@ -1084,7 +1084,7 @@ class ReferenceIndex implements LoggerAwareInterface
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'tablename',
-                                $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                                $queryBuilder->createNamedParameter($tableName, Connection::PARAM_STR)
                             ),
                             'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
                         )
@@ -1250,7 +1250,7 @@ class ReferenceIndex implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             );
         // Do not fetch soft deleted records
@@ -1259,7 +1259,7 @@ class ReferenceIndex implements LoggerAwareInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $deleteField,
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             );
         }

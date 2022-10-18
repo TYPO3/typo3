@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -141,7 +142,7 @@ class AbstractAuthenticationService implements LoggerAwareInterface
                     $constraints,
                     $query->expr()->eq(
                         $dbUser['username_column'],
-                        $query->createNamedParameter($username, \PDO::PARAM_STR)
+                        $query->createNamedParameter($username, Connection::PARAM_STR)
                     )
                 );
             }

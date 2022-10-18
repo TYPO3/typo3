@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Recycler\Task;
 
 use Doctrine\DBAL\Exception as DBALException;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -71,7 +72,7 @@ class CleanerTask extends AbstractTask
             $constraints = [
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA'][$tableName]['ctrl']['delete'],
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                 )
                 ,
             ];
@@ -80,7 +81,7 @@ class CleanerTask extends AbstractTask
                 $dateBefore = $this->getPeriodAsTimestamp();
                 $constraints[] = $queryBuilder->expr()->lt(
                     $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'],
-                    $queryBuilder->createNamedParameter($dateBefore, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($dateBefore, Connection::PARAM_INT)
                 );
             }
             try {

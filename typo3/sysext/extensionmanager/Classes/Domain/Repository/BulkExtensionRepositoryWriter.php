@@ -177,7 +177,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             ->delete(
                 self::TABLE_NAME,
                 ['remote' => $remoteIdentifier],
-                [\PDO::PARAM_STR]
+                [Connection::PARAM_STR]
             );
         $this->remoteIdentifier = $remoteIdentifier;
         $zlibStream = 'compress.zlib://';

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\ViewHelpers;
 
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -100,7 +101,7 @@ class AvatarViewHelper extends AbstractViewHelper
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($arguments['backendUser'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($arguments['backendUser'], Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()

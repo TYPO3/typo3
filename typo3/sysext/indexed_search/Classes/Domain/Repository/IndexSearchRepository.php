@@ -478,13 +478,13 @@ class IndexSearchRepository
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         'pages.no_search',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     )
                 )
                 ->andWhere(
                     $queryBuilder->expr()->lt(
                         'pages.doktype',
-                        $queryBuilder->createNamedParameter(200, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(200, Connection::PARAM_INT)
                     )
                 );
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
@@ -888,10 +888,10 @@ class IndexSearchRepository
         $indexCfgRec = $queryBuilder->select('indexcfgs')
             ->from('index_config')
             ->where(
-                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(5, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(5, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($freeIndexUid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -914,7 +914,7 @@ class IndexSearchRepository
                             ->where(
                                 $queryBuilder->expr()->eq(
                                     'uid',
-                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                                 )
                             )
                             ->executeQuery()
@@ -928,7 +928,7 @@ class IndexSearchRepository
                             ->where(
                                 $queryBuilder->expr()->eq(
                                     'pid',
-                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                                 )
                             )
                             ->executeQuery();
@@ -1025,11 +1025,11 @@ class IndexSearchRepository
                 $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page_id')),
                 $queryBuilder->expr()->eq(
                     'pages.no_search',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->lt(
                     'pages.doktype',
-                    $queryBuilder->createNamedParameter(200, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(200, Connection::PARAM_INT)
                 )
             );
         } elseif ($this->searchRootPageIdList >= 0) {

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Recycler\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -98,7 +99,7 @@ class RecyclerUtility
             $queryBuilder
                 ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
             $row = $queryBuilder->executeQuery()->fetchAssociative();
             if ($row !== false) {
                 BackendUtility::workspaceOL('pages', $row);
@@ -150,7 +151,7 @@ class RecyclerUtility
         $deleted = $queryBuilder
             ->select('deleted')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
 
@@ -172,7 +173,7 @@ class RecyclerUtility
         $pid = $queryBuilder
             ->select('pid')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
 

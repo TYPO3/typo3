@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -5633,14 +5634,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'md5hash',
-                        $queryBuilder->createNamedParameter($requestHash, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($requestHash, Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->orX(
                         $queryBuilder->expr()->gt(
                             'expires',
-                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                         ),
-                        $queryBuilder->expr()->eq('expires', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                        $queryBuilder->expr()->eq('expires', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
                     )
                 )
                 ->setMaxResults(1)
@@ -5686,7 +5687,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                     ),
                     // tree is only built by language=0 pages
                     $queryBuilder->expr()->eq('sys_language_uid', 0)
@@ -5729,7 +5730,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($next_id, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($next_id, Connection::PARAM_INT)
                             )
                         )
                         ->orderBy('sorting')

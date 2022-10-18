@@ -26,6 +26,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Command\ProgressListener\ReferenceIndexProgressListener;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -240,8 +241,8 @@ If you want to get more detailed information, use the --verbose option.')
             ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
-                $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE', Connection::PARAM_STR)),
+                $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->executeQuery();
 
@@ -271,7 +272,7 @@ If you want to get more detailed information, use the --verbose option.')
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($rec['ref_uid'], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($rec['ref_uid'], Connection::PARAM_INT)
                             )
                         )
                         ->executeQuery()

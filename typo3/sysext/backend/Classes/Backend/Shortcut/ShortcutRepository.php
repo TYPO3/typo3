@@ -160,7 +160,7 @@ class ShortcutRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'userid',
-                    $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq('route', $queryBuilder->createNamedParameter($routeIdentifier)),
                 $queryBuilder->expr()->eq('arguments', $queryBuilder->createNamedParameter($arguments))
@@ -302,7 +302,7 @@ class ShortcutRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                 )
             )
             ->set('description', $title)
@@ -313,7 +313,7 @@ class ShortcutRepository
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'userid',
-                    $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($backendUser->user['uid'], Connection::PARAM_INT)
                 )
             );
 
@@ -344,7 +344,7 @@ class ShortcutRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                     )
                 )
                 ->executeStatement();
@@ -448,11 +448,11 @@ class ShortcutRepository
                 $queryBuilder->expr()->andX(
                     $queryBuilder->expr()->eq(
                         'userid',
-                        $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($backendUser->user['uid'], Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->gte(
                         'sc_group',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     )
                 )
             )

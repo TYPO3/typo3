@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
@@ -267,19 +268,19 @@ class RecyclerAjaxController
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablename',
-                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'usertype',
-                    $queryBuilder->createNamedParameter('BE', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('BE', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'recuid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'actiontype',
-                    $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_DELETE, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_DELETE, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1);

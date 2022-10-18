@@ -181,7 +181,7 @@ class PlainDataResolver
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter($this->workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->workspaceId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -230,11 +230,11 @@ class PlainDataResolver
             ->where(
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter($this->workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->workspaceId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->in(
                     't3ver_oid',

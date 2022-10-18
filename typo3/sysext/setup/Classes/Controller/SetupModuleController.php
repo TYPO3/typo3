@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -910,19 +911,19 @@ class SetupModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablenames',
-                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('be_users', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('avatar', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'table_local',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('sys_file', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($beUserId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -956,19 +957,19 @@ class SetupModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablenames',
-                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('be_users', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('avatar', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'table_local',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('sys_file', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($beUserId, Connection::PARAM_INT)
                 )
             )
             ->executeStatement();

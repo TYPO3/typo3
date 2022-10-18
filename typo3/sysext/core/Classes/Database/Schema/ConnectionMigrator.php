@@ -1234,11 +1234,11 @@ class ConnectionMigrator
             ->where(
                 $queryBuilder->expr()->eq(
                     'TABLE_TYPE',
-                    $queryBuilder->createNamedParameter('BASE TABLE', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('BASE TABLE', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'TABLE_SCHEMA',
-                    $queryBuilder->createNamedParameter($this->connection->getDatabase(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->connection->getDatabase(), Connection::PARAM_STR)
                 )
             )
             ->executeQuery();

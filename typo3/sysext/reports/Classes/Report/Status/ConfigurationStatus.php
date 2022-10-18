@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
@@ -237,7 +238,7 @@ class ConfigurationStatus implements StatusProviderInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'SCHEMA_NAME',
-                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), Connection::PARAM_STR)
                 )
             )
             ->setMaxResults(1)

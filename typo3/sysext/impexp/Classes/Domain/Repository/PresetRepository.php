@@ -53,11 +53,11 @@ class PresetRepository
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->gt(
                         'public',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'user_uid',
-                        $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], Connection::PARAM_INT)
                     )
                 )
             );
@@ -67,11 +67,11 @@ class PresetRepository
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq(
                         'item_uid',
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'item_uid',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     )
                 )
             );
@@ -104,7 +104,7 @@ class PresetRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

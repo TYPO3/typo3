@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -257,7 +258,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 't3ver_wsid'
             )
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rootID, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
 
@@ -292,7 +293,7 @@ class WorkspaceVersionRecordsCommand extends Command
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'pid',
-                                $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($rootID, Connection::PARAM_INT)
                             )
                         )
                         ->executeQuery();
@@ -333,7 +334,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($rootID, Connection::PARAM_INT)
                     )
                 )
                 ->orderBy('sorting');
@@ -430,7 +431,7 @@ class WorkspaceVersionRecordsCommand extends Command
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                             )
                         )
                         ->set('t3ver_wsid', 0)

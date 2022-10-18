@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -89,15 +90,15 @@ class FileRepository extends AbstractRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid_foreign',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'tablenames',
-                        $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($tableName, Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->eq(
                         'fieldname',
-                        $queryBuilder->createNamedParameter($fieldName, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($fieldName, Connection::PARAM_STR)
                     )
                 )
                 ->orderBy('sorting_foreign')

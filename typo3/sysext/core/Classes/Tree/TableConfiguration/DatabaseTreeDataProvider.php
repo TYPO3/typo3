@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -400,7 +401,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($node->getId(), \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($node->getId(), Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)
@@ -519,7 +520,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                         ->where(
                             $queryBuilder->expr()->eq(
                                 $this->columnConfiguration['foreign_field'],
-                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                             )
                         )
                         ->executeQuery()

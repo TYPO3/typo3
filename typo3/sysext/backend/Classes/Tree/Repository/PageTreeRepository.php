@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\Repository;
 
-use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -228,7 +228,7 @@ class PageTreeRepository
             ->select(...$this->fields)
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
@@ -353,7 +353,7 @@ class PageTreeRepository
             ->from('pages')
             ->where(
                 // Only show records in default language
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             );
 
         if ($resolveUserPermissions) {
@@ -527,7 +527,7 @@ class PageTreeRepository
             ->from('pages')
             ->where(
                 // Only show records in default language
-                $expressionBuilder->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $expressionBuilder->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 $workspaceIdExpression,
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
@@ -535,7 +535,7 @@ class PageTreeRepository
         $searchParts = $expressionBuilder->orX();
         if (is_numeric($searchFilter) && $searchFilter > 0) {
             $searchParts->add(
-                $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_INT))
+                $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT))
             );
         }
         $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
@@ -543,11 +543,11 @@ class PageTreeRepository
         $searchWhereAlias = $expressionBuilder->orX(
             $expressionBuilder->like(
                 'nav_title',
-                $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_STR)
             ),
             $expressionBuilder->like(
                 'title',
-                $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_STR)
             )
         );
         $searchParts->add($searchWhereAlias);

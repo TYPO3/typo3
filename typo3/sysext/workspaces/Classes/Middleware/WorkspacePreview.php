@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -288,7 +289,7 @@ class WorkspacePreview implements MiddlewareInterface
                 ),
                 $queryBuilder->expr()->gt(
                     'endtime',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -377,7 +378,7 @@ class WorkspacePreview implements MiddlewareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

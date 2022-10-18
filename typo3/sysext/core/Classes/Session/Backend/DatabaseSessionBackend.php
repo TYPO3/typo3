@@ -94,7 +94,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         $query = $this->getQueryBuilder();
         $query->select('*')
             ->from($this->configuration['table'])
-            ->where($query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)));
+            ->where($query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), Connection::PARAM_STR)));
         $result = $query->executeQuery()->fetchAssociative();
         if (!is_array($result)) {
             throw new SessionNotFoundException(
@@ -117,8 +117,8 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         $query->delete($this->configuration['table'])
             ->where(
                 $query->expr()->orX(
-                    $query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)),
-                    $query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR))
+                    $query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), Connection::PARAM_STR)),
+                    $query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, Connection::PARAM_STR))
                 )
             );
 
@@ -145,7 +145,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
             $this->getConnection()->insert(
                 $this->configuration['table'],
                 $sessionData,
-                ['ses_data' => \PDO::PARAM_LOB]
+                ['ses_data' => Connection::PARAM_LOB]
             );
         } catch (DBALException $e) {
             throw new SessionNotCreatedException(
@@ -180,7 +180,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
                 $this->configuration['table'],
                 $sessionData,
                 ['ses_id' => $hashedSessionId],
-                ['ses_data' => \PDO::PARAM_LOB]
+                ['ses_data' => Connection::PARAM_LOB]
             );
         } catch (DBALException $e) {
             throw new SessionNotUpdatedException(

@@ -126,11 +126,11 @@ class DatabaseIntegrityCheck
         if ($versions) {
             $queryBuilder->addSelect('t3ver_wsid');
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, Connection::PARAM_INT))
             );
         } else {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, Connection::PARAM_INT))
             );
         }
         $result = $queryBuilder->executeQuery();
@@ -197,11 +197,11 @@ class DatabaseIntegrityCheck
         // Select all records from table pointing to this page
         if ($versions) {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, Connection::PARAM_INT))
             );
         } else {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, Connection::PARAM_INT))
             );
         }
         $queryResult = $queryBuilder->executeQuery();
@@ -422,7 +422,7 @@ class DatabaseIntegrityCheck
                         $queryBuilder->expr()->isNotNull($fieldName),
                         $queryBuilder->expr()->neq(
                             $fieldName,
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         )
                     );
                 } elseif (in_array($fieldType, [Types::STRING, Types::TEXT], true)) {
@@ -430,7 +430,7 @@ class DatabaseIntegrityCheck
                         $queryBuilder->expr()->isNotNull($fieldName),
                         $queryBuilder->expr()->neq(
                             $fieldName,
-                            $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter('', Connection::PARAM_STR)
                         )
                     );
                 } elseif ($fieldType === Types::BLOB) {
@@ -440,7 +440,7 @@ class DatabaseIntegrityCheck
                             ->comparison(
                                 $queryBuilder->expr()->length($fieldName),
                                 ExpressionBuilder::GT,
-                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                             )
                     );
                 }

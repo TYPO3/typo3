@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Collection;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,11 +76,11 @@ class CategoryBasedFileCollection extends AbstractFileCollection
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_category.uid',
-                    $queryBuilder->createNamedParameter($this->getItemsCriteria(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getItemsCriteria(), Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.tablenames',
-                    $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('sys_file_metadata', Connection::PARAM_STR)
                 )
             )
             ->executeQuery();

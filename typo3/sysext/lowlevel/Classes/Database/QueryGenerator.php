@@ -441,7 +441,7 @@ class QueryGenerator
                     $likes[] = $queryBuilder->expr()->comparison(
                         $quotedField,
                         'LIKE',
-                        $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($escapedLikeString, Connection::PARAM_STR)
                     );
                 }
                 $queryBuilder->orWhere(...$likes);
@@ -471,7 +471,7 @@ class QueryGenerator
                         $likes[] = $queryBuilder->expr()->comparison(
                             $quotedField,
                             'LIKE',
-                            $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter($escapedLikeString, Connection::PARAM_STR)
                         );
                     }
                     $statement = $queryBuilder->orWhere(...$likes)->executeQuery();
@@ -529,7 +529,7 @@ class QueryGenerator
             $queryBuilder->getRestrictions()->removeAll();
             $statement = $queryBuilder->select('uid', 'title')
                 ->from('sys_action')
-                ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2, Connection::PARAM_INT)))
                 ->orderBy('title')
                 ->executeQuery();
             $opt[] = '<option value="0">__Save to Action:__</option>';
@@ -1136,7 +1136,7 @@ class QueryGenerator
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
                     $queryBuilder->expr()->eq('sys_language_uid', 0)
                 )
                 ->orderBy('uid');

@@ -155,7 +155,7 @@ class MySql extends AbstractPlatform
             ->where(
                 $queryBuilder->expr()->eq(
                     'SCHEMA_NAME',
-                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), Connection::PARAM_STR)
                 )
             )
             ->setMaxResults(1)

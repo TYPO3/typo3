@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
 
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -131,7 +132,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         $statement = $queryBuilder
             ->select('*')
             ->from('tx_test_test')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)))
             ->executeQuery();
         $record = $statement->fetchAssociative();
         $collection->rewind();

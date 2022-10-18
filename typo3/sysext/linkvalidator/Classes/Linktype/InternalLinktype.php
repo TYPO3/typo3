@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Linkvalidator\Linktype;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -133,7 +134,7 @@ class InternalLinktype extends AbstractLinktype
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($page, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($page, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -180,7 +181,7 @@ class InternalLinktype extends AbstractLinktype
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($anchor, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($anchor, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

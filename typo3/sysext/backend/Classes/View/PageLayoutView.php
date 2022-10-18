@@ -1362,7 +1362,7 @@ class PageLayoutView implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'sys_language_uid',
-                        $queryBuilder->createNamedParameter($lP, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($lP, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->in(
                         'l18n_parent',
@@ -1510,7 +1510,7 @@ class PageLayoutView implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                 )
             );
         $statement = $queryBuilder->executeQuery();
@@ -1843,7 +1843,7 @@ class PageLayoutView implements LoggerAwareInterface
         $queryBuilder->andWhere(
             $queryBuilder->expr()->eq(
                 $table . '.pid',
-                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
             )
         );
 
@@ -1917,11 +1917,11 @@ class PageLayoutView implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($this->tt_contentConfig['sys_language_uid'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->tt_contentConfig['sys_language_uid'], Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)

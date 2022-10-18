@@ -69,15 +69,15 @@ class LocalizationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'tt_content.pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tt_content.sys_language_uid',
-                    $queryBuilder->createNamedParameter($localizedLanguage, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($localizedLanguage, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
                     'tt_content_orig.sys_language_uid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             )
             ->groupBy('tt_content_orig.sys_language_uid');
@@ -103,15 +103,15 @@ class LocalizationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
                     'l10n_source',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -135,11 +135,11 @@ class LocalizationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                 )
             )
             ->groupBy('sys_language_uid');
@@ -195,11 +195,11 @@ class LocalizationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($destLanguageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($destLanguageId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -213,11 +213,11 @@ class LocalizationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
             ->orderBy('sorting');

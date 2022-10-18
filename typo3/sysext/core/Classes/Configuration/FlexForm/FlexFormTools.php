@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootExceptio
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -300,7 +301,7 @@ class FlexFormTools
                     ->where(
                         $queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row[$parentFieldName], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery();
@@ -643,7 +644,7 @@ class FlexFormTools
                     ->where(
                         $queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($identifier['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($identifier['uid'], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery()

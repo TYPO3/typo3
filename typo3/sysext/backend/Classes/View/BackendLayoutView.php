@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -164,7 +165,7 @@ class BackendLayoutView implements SingletonInterface
                     ->where(
                         $queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter(abs($data['pid']), \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(abs($data['pid']), Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery()
@@ -462,7 +463,7 @@ class BackendLayoutView implements SingletonInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

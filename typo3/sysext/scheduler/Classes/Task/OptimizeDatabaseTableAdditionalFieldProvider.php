@@ -206,7 +206,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             ->where(
                 $queryBuilder->expr()->eq(
                     'TABLE_TYPE',
-                    $queryBuilder->createNamedParameter('BASE TABLE', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('BASE TABLE', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->in(
                     'ENGINE',
@@ -214,7 +214,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
                 ),
                 $queryBuilder->expr()->eq(
                     'TABLE_SCHEMA',
-                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), Connection::PARAM_STR)
                 )
             );
 
@@ -222,7 +222,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'TABLE_NAME',
-                    $queryBuilder->createNamedParameter($tableNames, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR)
                 )
             );
         }

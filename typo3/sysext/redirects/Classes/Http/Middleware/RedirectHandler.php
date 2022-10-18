@@ -25,6 +25,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -107,7 +108,7 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
         $queryBuilder
             ->update('sys_redirect')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($redirectRecord['uid'], \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($redirectRecord['uid'], Connection::PARAM_INT))
             )
             ->set('hitcount', $queryBuilder->quoteIdentifier('hitcount') . '+1', false)
             ->set('lasthiton', $GLOBALS['EXEC_TIME'])

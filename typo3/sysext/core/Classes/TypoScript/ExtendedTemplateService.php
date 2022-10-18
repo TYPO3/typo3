@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -660,7 +661,7 @@ class ExtendedTemplateService extends TemplateService
             ->setMaxResults(1);
         if ($templateUid) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, Connection::PARAM_INT))
             );
         }
         $row = $queryBuilder->executeQuery()->fetchAssociative();
@@ -710,7 +711,7 @@ class ExtendedTemplateService extends TemplateService
         $queryBuilder->select('*')
             ->from('sys_template')
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
             );
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);

@@ -25,6 +25,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Command\ProgressListener\ReferenceIndexProgressListener;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -177,7 +178,7 @@ If you want to get more detailed information, use the --verbose option.')
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', Connection::PARAM_STR)),
                 $queryBuilder->expr()->isNull('softref_key')
             )
             ->executeQuery();
@@ -210,7 +211,7 @@ If you want to get more detailed information, use the --verbose option.')
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', Connection::PARAM_STR)),
                 $queryBuilder->expr()->isNotNull('softref_key')
             )
             ->executeQuery();

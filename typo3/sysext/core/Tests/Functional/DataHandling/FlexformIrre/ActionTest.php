@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
 class ActionTest extends AbstractDataHandlerActionTestCase
@@ -59,7 +60,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
         $referenceCount = $queryBuilder
             ->count('uid')
             ->from('sys_file_reference')
-            ->where($queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(20, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(20, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
 

@@ -93,7 +93,7 @@ class SqlSrv extends AbstractPlatform
         $defaultDatabaseCharset = $connection->executeQuery(
             'SELECT DATABASEPROPERTYEX(?,\'collation\')',
             [$connection->getDatabase()],
-            [\PDO::PARAM_STR]
+            [Connection::PARAM_STR]
         )
             ->fetchNumeric();
 

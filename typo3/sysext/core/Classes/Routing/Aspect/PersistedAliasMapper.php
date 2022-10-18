@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
-use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\ContextAwareInterface;
 use TYPO3\CMS\Core\Context\ContextAwareTrait;
@@ -200,7 +199,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
             ->select(...$this->persistenceFieldNames)
             ->where($queryBuilder->expr()->eq(
                 'uid',
-                $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($value, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
             ))
             ->executeQuery()
             ->fetchAssociative();
@@ -215,7 +214,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $constraints = [
             $queryBuilder->expr()->eq(
                 $this->routeFieldName,
-                $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($value, \TYPO3\CMS\Core\Database\Connection::PARAM_STR)
             ),
         ];
 
@@ -224,7 +223,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
             $languageIds = $this->resolveAllRelevantLanguageIds();
             $constraints[] = $queryBuilder->expr()->in(
                 $this->languageFieldName,
-                $queryBuilder->createNamedParameter($languageIds, Connection::PARAM_INT_ARRAY)
+                $queryBuilder->createNamedParameter($languageIds, \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY)
             );
         }
 

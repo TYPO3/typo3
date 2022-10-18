@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -71,7 +72,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -100,7 +101,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -130,7 +131,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -166,7 +167,7 @@ class AddTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq(
                     'subtitle',
-                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($newBlogTitle, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()

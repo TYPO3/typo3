@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -224,7 +225,7 @@ class ContentFetcher
         $queryBuilder->andWhere(
             $queryBuilder->expr()->eq(
                 'tt_content.pid',
-                $queryBuilder->createNamedParameter($this->context->getPageId(), \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($this->context->getPageId(), Connection::PARAM_INT)
             )
         );
 

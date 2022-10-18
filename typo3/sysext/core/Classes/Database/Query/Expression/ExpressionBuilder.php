@@ -683,7 +683,7 @@ class ExpressionBuilder
     public function literal($input, $type = \PDO::PARAM_STR)
     {
         // @todo: drop this line together with signature change in v12
-        $type = $type ?? \PDO::PARAM_STR;
+        $type = $type ?? Connection::PARAM_STR;
         return $this->connection->quote($input, $type);
     }
 

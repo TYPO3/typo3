@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -417,15 +418,15 @@ class Clipboard
             ->where(
                 $queryBuilder->expr()->eq(
                     $tcaCtrl['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter((int)$parentRecord['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter((int)$parentRecord['uid'], Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
                     $tcaCtrl['languageField'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
                     'pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             )
             ->orderBy($tcaCtrl['languageField']);

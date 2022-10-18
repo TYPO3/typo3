@@ -280,7 +280,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
         $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphecy->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote("'1'", Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -400,10 +400,10 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('mssql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
 
-        $this->connectionProphecy->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphecy->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphecy->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphecy->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphecy->quote('1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote('1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
+        $this->connectionProphecy->quote('%,1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
+        $this->connectionProphecy->quote('%,1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
         });
@@ -464,7 +464,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
         $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphecy->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote("'1'", Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -584,10 +584,10 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('mssql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
 
-        $this->connectionProphecy->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphecy->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphecy->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphecy->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphecy->quote('1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote('1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
+        $this->connectionProphecy->quote('%,1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
+        $this->connectionProphecy->quote('%,1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
         });

@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -559,11 +560,11 @@ class InlineRecordContainer extends AbstractContainer
                     ->where(
                         $queryBuilder->expr()->eq(
                             'file',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             $languageField,
-                            $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                         )
                     )
                     ->setMaxResults(1)

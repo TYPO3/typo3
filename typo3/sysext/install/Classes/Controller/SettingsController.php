@@ -178,9 +178,9 @@ class SettingsController extends AbstractController
             ->from('be_users')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->neq('username', $queryBuilder->createNamedParameter('_cli_', \PDO::PARAM_STR))
+                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->neq('username', $queryBuilder->createNamedParameter('_cli_', Connection::PARAM_STR))
                 )
             )
             ->orderBy('uid')
@@ -236,8 +236,8 @@ class SettingsController extends AbstractController
             ->from('be_users')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
                     $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($newUserList, Connection::PARAM_INT_ARRAY))
                 )
             )->executeQuery()->fetchAllAssociative();

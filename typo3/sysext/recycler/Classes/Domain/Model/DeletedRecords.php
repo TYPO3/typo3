@@ -170,7 +170,7 @@ class DeletedRecords
                 ->andWhere(
                     $queryBuilder->expr()->neq(
                         $deletedField,
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -235,7 +235,7 @@ class DeletedRecords
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         $deletedField,
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                     )
                 )
                 ->orderBy('uid')
@@ -274,18 +274,18 @@ class DeletedRecords
                 'LIKE',
                 $queryBuilder->createNamedParameter(
                     '%' . $queryBuilder->escapeLikeWildcards($filter) . '%',
-                    \PDO::PARAM_STR
+                    Connection::PARAM_STR
                 )
             );
             if (MathUtility::canBeInterpretedAsInteger($filter)) {
                 $filterConstraint = $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($filter, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($filter, Connection::PARAM_INT)
                     ),
                     $filterConstraint
                 );
@@ -441,7 +441,7 @@ class DeletedRecords
             ->select('uid', 'pid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1)
             )
             ->executeQuery()
@@ -537,7 +537,7 @@ class DeletedRecords
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
                 ->executeQuery();

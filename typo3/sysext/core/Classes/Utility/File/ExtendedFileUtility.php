@@ -405,15 +405,15 @@ class ExtendedFileUtility extends BasicFileUtility
                 ->where(
                     $queryBuilder->expr()->eq(
                         'ref_table',
-                        $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('sys_file', Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->eq(
                         'ref_uid',
-                        $queryBuilder->createNamedParameter($fileObject->getUid(), \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($fileObject->getUid(), Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         'tablename',
-                        $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('sys_file_metadata', Connection::PARAM_STR)
                     )
                 )
                 ->executeQuery()
@@ -553,7 +553,7 @@ class ExtendedFileUtility extends BasicFileUtility
             ->where(
                 $queryBuilder->expr()->eq(
                     'ref_table',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('sys_file', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->in(
                     'ref_uid',
@@ -561,7 +561,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 ),
                 $queryBuilder->expr()->neq(
                     'tablename',
-                    $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('sys_file_metadata', Connection::PARAM_STR)
                 )
             )->executeQuery()->fetchOne();
 
@@ -597,7 +597,7 @@ class ExtendedFileUtility extends BasicFileUtility
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

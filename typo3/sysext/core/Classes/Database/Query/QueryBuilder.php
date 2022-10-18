@@ -1122,7 +1122,7 @@ class QueryBuilder
     public function quote($input, ?int $type = \PDO::PARAM_STR)
     {
         // @todo: drop this line together with signature change in v12
-        $type = $type ?? \PDO::PARAM_STR;
+        $type = $type ?? Connection::PARAM_STR;
         return $this->getConnection()->quote($input, $type);
     }
 

@@ -2579,7 +2579,7 @@ class DatabaseRecordList
                     $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                     $queryBuilder->createNamedParameter(
                         $this->id,
-                        \PDO::PARAM_INT
+                        Connection::PARAM_INT
                     )
                 )
             );
@@ -3040,14 +3040,14 @@ class DatabaseRecordList
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($pageRecord['pid'] ?? 0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageRecord['pid'] ?? 0, Connection::PARAM_INT)
                 )
             );
         } elseif ($searchLevels === 0) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                 )
             );
         } elseif ($searchLevels > 0) {
@@ -3174,11 +3174,11 @@ class DatabaseRecordList
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq($localizationParentField, $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq($localizationParentField, $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)),
                     $queryBuilder->expr()->in($languageField, $queryBuilder->createNamedParameter($availableSystemLanguageUids, Connection::PARAM_INT_ARRAY)),
                     $queryBuilder->expr()->gt(
                         $languageField,
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     )
                 )
             )

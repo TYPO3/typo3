@@ -161,7 +161,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq(
                             'pid',
-                            $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->in(
                             'sys_language_uid',

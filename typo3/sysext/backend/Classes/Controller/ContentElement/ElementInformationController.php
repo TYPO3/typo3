@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
-use Doctrine\DBAL\Connection;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,6 +30,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -658,11 +658,11 @@ class ElementInformationController
         $predicates = [
             $queryBuilder->expr()->eq(
                 'ref_table',
-                $queryBuilder->createNamedParameter($selectTable, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($selectTable, Connection::PARAM_STR)
             ),
             $queryBuilder->expr()->eq(
                 'ref_uid',
-                $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($selectUid, Connection::PARAM_INT)
             ),
         ];
 
@@ -750,11 +750,11 @@ class ElementInformationController
         $predicates = [
             $queryBuilder->expr()->eq(
                 'tablename',
-                $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
             ),
             $queryBuilder->expr()->eq(
                 'recuid',
-                $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($ref, Connection::PARAM_INT)
             ),
         ];
 
@@ -827,7 +827,7 @@ class ElementInformationController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

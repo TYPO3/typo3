@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Impexp;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
@@ -1095,15 +1096,15 @@ class Import extends ImportExport
             ->where(
                 $queryBuilder->expr()->eq(
                     'file',
-                    $queryBuilder->createNamedParameter($file, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($file, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($sysLanguageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sysLanguageUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

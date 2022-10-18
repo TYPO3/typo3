@@ -668,14 +668,14 @@ abstract class AbstractItemProvider
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq(
                     $foreignTableName . '.pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             );
         } elseif ($rootLevel === 1) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $foreignTableName . '.pid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             );
         } else {
@@ -698,7 +698,7 @@ abstract class AbstractItemProvider
                 ->andWhere(
                     $queryBuilder->expr()->neq(
                         $foreignTableName . '.t3ver_state',
-                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
                     )
                 );
         }

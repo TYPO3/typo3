@@ -325,7 +325,7 @@ class LiveSearch
                 ) {
                     $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,
-                        $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->queryString, Connection::PARAM_INT)
                     );
                 } elseif ($fieldType === 'text'
                     || $fieldType === 'flex'
@@ -337,7 +337,7 @@ class LiveSearch
                         $fieldName,
                         $queryBuilder->createNamedParameter(
                             '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%',
-                            \PDO::PARAM_STR
+                            Connection::PARAM_STR
                         )
                     );
                 }
@@ -357,7 +357,7 @@ class LiveSearch
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
-                        $queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter(mb_strtolower($like), Connection::PARAM_STR)
                     )
                 );
 
@@ -367,7 +367,7 @@ class LiveSearch
                         $searchConstraint = $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->like(
                                 $fieldName,
-                                $queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
+                                $queryBuilder->createNamedParameter($like, Connection::PARAM_STR)
                             )
                         );
                     }

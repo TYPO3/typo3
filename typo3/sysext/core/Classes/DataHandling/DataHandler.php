@@ -2443,7 +2443,7 @@ class DataHandler implements LoggerAwareInterface
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value)),
-                $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, Connection::PARAM_INT))
             );
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
         if (($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '') === 'exclude'
@@ -2455,24 +2455,24 @@ class DataHandler implements LoggerAwareInterface
                         // records without l10n_parent must be taken into account (in any language)
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                            $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createPositionalParameter(0, Connection::PARAM_INT)
                         ),
                         // translations of other records must be taken into account
                         $queryBuilder->expr()->neq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                            $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createPositionalParameter($uid, Connection::PARAM_INT)
                         )
                     )
                 );
         }
         if ($pid !== 0) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createPositionalParameter($pid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createPositionalParameter($pid, Connection::PARAM_INT))
             );
         } else {
             // pid>=0 for versioning
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createPositionalParameter(0, Connection::PARAM_INT))
             );
         }
         return $queryBuilder;
@@ -2511,17 +2511,17 @@ class DataHandler implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     $fieldName,
-                    $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($value, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->neq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             );
 
         if ($pageId) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
             );
         }
 
@@ -3491,7 +3491,7 @@ class DataHandler implements LoggerAwareInterface
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'pid',
-                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                             )
                         );
                     if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
@@ -3969,7 +3969,7 @@ class DataHandler implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     $transOrigPointerField,
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT, ':pointer')
                 )
             );
 
@@ -3993,7 +3993,7 @@ class DataHandler implements LoggerAwareInterface
             // If $destPid < 0, then it is the uid of the original language record we are inserting after
             if ($destPid < 0) {
                 // Get the localized records of the record we are inserting after
-                $queryBuilder->setParameter('pointer', abs($destPid), \PDO::PARAM_INT);
+                $queryBuilder->setParameter('pointer', abs($destPid), Connection::PARAM_INT);
                 $destL10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
@@ -4408,7 +4408,7 @@ class DataHandler implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     $transOrigPointerField,
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT, ':pointer')
                 )
             )
             ->executeQuery()
@@ -4419,7 +4419,7 @@ class DataHandler implements LoggerAwareInterface
             // If $$originalRecordDestinationPid < 0, then it is the uid of the original language record we are inserting after
             if ($originalRecordDestinationPid < 0) {
                 // Get the localized records of the record we are inserting after
-                $queryBuilder->setParameter('pointer', abs($originalRecordDestinationPid), \PDO::PARAM_INT);
+                $queryBuilder->setParameter('pointer', abs($originalRecordDestinationPid), Connection::PARAM_INT);
                 $destL10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
@@ -4893,13 +4893,13 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder = $queryBuilder->select('*')->from($table)
             ->where(
                 // workspace elements
-                $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 // with sys_language_uid > 0
-                $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 // in state 'new'
-                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)),
                 // with "l10n_parent" set to uid of live record
-                $queryBuilder->expr()->eq($localizationParentFieldName, $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq($localizationParentFieldName, $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             );
         $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
@@ -5174,11 +5174,11 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->where(
                         $queryBuilder->expr()->eq(
                             'pid',
-                            $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                            $queryBuilder->createNamedParameter($pageLanguageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($pageLanguageId, Connection::PARAM_INT)
                         )
                     );
                 } else {
@@ -5186,7 +5186,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->where(
                         $queryBuilder->expr()->eq(
                             'pid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         )
                     );
                 }
@@ -5197,7 +5197,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->andWhere(
                         $queryBuilder->expr()->eq(
                             't3ver_wsid',
-                            $queryBuilder->createNamedParameter($currentUserWorkspace, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($currentUserWorkspace, Connection::PARAM_INT)
                         )
                     );
                 }
@@ -5381,7 +5381,7 @@ class DataHandler implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             );
 
@@ -5712,11 +5712,11 @@ class DataHandler implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
-                        $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, Connection::PARAM_INT)
                     )
                 );
             if ($isLocalizedPage) {
@@ -5724,7 +5724,7 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($sysLanguageId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($sysLanguageId, Connection::PARAM_INT)
                     )
                 );
             }
@@ -5799,9 +5799,9 @@ class DataHandler implements LoggerAwareInterface
         $statement = $queryBuilder->select('tablename', 'recuid', 'field')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($record['t3ver_wsid'], \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($record['t3ver_wsid'], Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
-                $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($record['uid'], Connection::PARAM_INT))
             )
             ->executeQuery();
         while ($row = $statement->fetchAssociative()) {
@@ -5834,7 +5834,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($row['tablename']);
                     $queryBuilder->update($row['tablename'])
                         ->set($row['field'], implode(',', $listOfRelatedRecordsWithoutDiscardedRecord))
-                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['recuid'], \PDO::PARAM_INT)))
+                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['recuid'], Connection::PARAM_INT)))
                         ->executeStatement();
                 }
             }
@@ -5858,7 +5858,7 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTableName);
         $queryBuilder->delete($mmTableName)->where(
             // uid_local = given uid OR uid_foreign = given uid
-            $queryBuilder->expr()->eq($relationUidFieldName, $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT))
+            $queryBuilder->expr()->eq($relationUidFieldName, $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT))
         );
         if (!empty($fieldConfig['MM_table_where']) && is_string($fieldConfig['MM_table_where'])) {
             if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
@@ -5874,7 +5874,7 @@ class DataHandler implements LoggerAwareInterface
         $mmMatchFields = $fieldConfig['MM_match_fields'] ?? [];
         foreach ($mmMatchFields as $fieldName => $fieldValue) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($fieldValue, \PDO::PARAM_STR))
+                $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($fieldValue, Connection::PARAM_STR))
             );
         }
         $queryBuilder->executeStatement();
@@ -5907,11 +5907,11 @@ class DataHandler implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -6066,7 +6066,7 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder->delete($mmTableName);
             $queryBuilder->where($queryBuilder->expr()->eq(
                 $uidFieldName,
-                $queryBuilder->createNamedParameter((int)$liveRecord['uid'], \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter((int)$liveRecord['uid'], Connection::PARAM_INT)
             ));
             if ($this->mmQueryShouldUseTablenamesColumn($config)) {
                 $queryBuilder->andWhere($queryBuilder->expr()->eq(
@@ -6084,10 +6084,10 @@ class DataHandler implements LoggerAwareInterface
             $mmTableName = $config['MM'];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTableName);
             $queryBuilder->update($mmTableName);
-            $queryBuilder->set($uidFieldName, (int)$liveRecord['uid'], true, \PDO::PARAM_INT);
+            $queryBuilder->set($uidFieldName, (int)$liveRecord['uid'], true, Connection::PARAM_INT);
             $queryBuilder->where($queryBuilder->expr()->eq(
                 $uidFieldName,
-                $queryBuilder->createNamedParameter((int)$workspaceRecord['uid'], \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter((int)$workspaceRecord['uid'], Connection::PARAM_INT)
             ));
             if ($this->mmQueryShouldUseTablenamesColumn($config)) {
                 $queryBuilder->andWhere($queryBuilder->expr()->eq(
@@ -6679,7 +6679,7 @@ class DataHandler implements LoggerAwareInterface
     {
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($table)
-            ->delete($table, ['uid' => $uid], [\PDO::PARAM_INT]);
+            ->delete($table, ['uid' => $uid], [Connection::PARAM_INT]);
     }
 
     /*****************************
@@ -6916,7 +6916,7 @@ class DataHandler implements LoggerAwareInterface
             ->from('pages')
             ->where($queryBuilder->expr()->eq(
                 'uid',
-                $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
             ));
         if (!$permission->nothingIsGranted() && !$this->admin) {
             $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($perms));
@@ -6926,7 +6926,7 @@ class DataHandler implements LoggerAwareInterface
         ) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq(
                 $GLOBALS['TCA']['pages']['ctrl']['editlock'],
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ));
         }
 
@@ -6958,7 +6958,7 @@ class DataHandler implements LoggerAwareInterface
         $result = $queryBuilder
             ->select('uid', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
             ->orderBy('sorting')
             ->executeQuery();
         while ($row = $result->fetchAssociative()) {
@@ -7030,7 +7030,7 @@ class DataHandler implements LoggerAwareInterface
             $result = $queryBuilder
                 ->select('pid', 'uid', 't3ver_oid', 't3ver_wsid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($destinationId, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($destinationId, Connection::PARAM_INT)))
                 ->executeQuery();
             if ($row = $result->fetchAssociative()) {
                 // Ensure that the moved location is used as the PID value
@@ -7110,7 +7110,7 @@ class DataHandler implements LoggerAwareInterface
                 ->from($table)
                 ->where($queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($page_uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($page_uid, Connection::PARAM_INT)
                 ))
                 ->executeQuery()
                 ->fetchOne();
@@ -7143,7 +7143,7 @@ class DataHandler implements LoggerAwareInterface
             $row = $queryBuilder
                 ->select('*')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
             if ($row) {
@@ -7174,7 +7174,7 @@ class DataHandler implements LoggerAwareInterface
         $result = $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $fieldList))
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
         return $result ?: null;
@@ -7200,7 +7200,7 @@ class DataHandler implements LoggerAwareInterface
 
             $record = $queryBuilder->select(...$columns)
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
 
@@ -7221,7 +7221,7 @@ class DataHandler implements LoggerAwareInterface
                 $output = $queryBuilder
                     ->select(...$columns)
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
                     ->executeQuery()
                     ->fetchAssociative();
                 // If record found, check page as well:
@@ -7492,7 +7492,7 @@ class DataHandler implements LoggerAwareInterface
             $row = $queryBuilder
                 ->select('*')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
 
@@ -7675,7 +7675,7 @@ class DataHandler implements LoggerAwareInterface
         if ($pid >= 0) {
             // Fetches the first record (lowest sorting) under this pid
             $queryBuilder
-                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)));
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)));
 
             if ($considerWorkspaces) {
                 $queryBuilder->andWhere(
@@ -7715,7 +7715,7 @@ class DataHandler implements LoggerAwareInterface
         $row = $queryBuilder
                 ->where($queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter(abs($pid), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(abs($pid), Connection::PARAM_INT)
                 ))
                 ->executeQuery()
                 ->fetchAssociative();
@@ -7750,11 +7750,11 @@ class DataHandler implements LoggerAwareInterface
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'pid',
-                                $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row['pid'], Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->gte(
                                 $sortColumn,
-                                $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row[$sortColumn], Connection::PARAM_INT)
                             )
                         )
                         ->orderBy($sortColumn, 'ASC')
@@ -7819,7 +7819,7 @@ class DataHandler implements LoggerAwareInterface
 
             $queryBuilder
                 ->update($table)
-                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
                 ->set($sortBy, $queryBuilder->quoteIdentifier($sortBy) . ' + ' . $this->sortIntervals . ' + ' . $this->sortIntervals, false);
             if ($sortingValue !== null) {
                 $queryBuilder->andWhere($queryBuilder->expr()->gt($sortBy, $sortingValue));
@@ -7907,15 +7907,15 @@ class DataHandler implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     $languageField,
-                    $queryBuilder->createNamedParameter($row[$languageField], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($row[$languageField], Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->lt(
                     $sortColumn,
-                    $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($row[$sortColumn], Connection::PARAM_INT)
                 )
             )
             ->orderBy($sortColumn, 'DESC')
@@ -7925,7 +7925,7 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'colPos',
-                    $queryBuilder->createNamedParameter($row['colPos'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($row['colPos'], Connection::PARAM_INT)
                 )
             );
         }
@@ -8062,7 +8062,7 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder->getRestrictions()->removeAll();
         $currentRecord = $queryBuilder->select('*')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
         // If the current record exists (which it should...), begin comparison:
@@ -8225,7 +8225,7 @@ class DataHandler implements LoggerAwareInterface
             ->removeAll();
         $queryBuilder->select('pid')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
         if ($row = $queryBuilder->executeQuery()->fetchAssociative()) {
             return $row['pid'];
         }
@@ -8272,14 +8272,14 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder
                 ->select('uid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
                 ->orderBy('sorting', 'DESC');
             if (!$this->admin) {
                 $queryBuilder->andWhere($this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW));
             }
             if ((int)$this->BE_USER->workspace === 0) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
                 );
             } else {
                 $queryBuilder->andWhere($queryBuilder->expr()->in(
@@ -8540,8 +8540,8 @@ class DataHandler implements LoggerAwareInterface
                 ->count('uid')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle, \PDO::PARAM_STR))
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle, Connection::PARAM_STR))
                 )
                 ->executeQuery()
                 ->fetchOne();
@@ -8584,7 +8584,7 @@ class DataHandler implements LoggerAwareInterface
             $row = $query
                 ->select('pid')
                 ->from($table)
-                ->where($query->expr()->eq('uid', $query->createNamedParameter(abs($pid), \PDO::PARAM_INT)))
+                ->where($query->expr()->eq('uid', $query->createNamedParameter(abs($pid), Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
             $pid = (int)$row['pid'];
@@ -8766,7 +8766,7 @@ class DataHandler implements LoggerAwareInterface
                 ->count('uid')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_oid', 0)
                 )
                 ->executeQuery()
@@ -8794,9 +8794,9 @@ class DataHandler implements LoggerAwareInterface
                     ->from('pages', 'A')
                     ->from('pages', 'B')
                     ->where(
-                        $queryBuilder->expr()->eq('A.uid', $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('A.uid', $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)),
                         $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid')),
-                        $queryBuilder->expr()->gte('A.pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                        $queryBuilder->expr()->gte('A.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
                     )
                     ->executeQuery();
 
@@ -8815,7 +8815,7 @@ class DataHandler implements LoggerAwareInterface
                             ->from('pages')
                             ->where($siblingChildrenQuery->expr()->eq(
                                 'pid',
-                                $siblingChildrenQuery->createNamedParameter($row_tmp['uid'], \PDO::PARAM_INT)
+                                $siblingChildrenQuery->createNamedParameter($row_tmp['uid'], Connection::PARAM_INT)
                             ))
                             ->executeQuery();
                         while ($row_tmp2 = $siblingChildren->fetchAssociative()) {
@@ -8838,7 +8838,7 @@ class DataHandler implements LoggerAwareInterface
                         ->from('pages')
                         ->where($parentQuery->expr()->eq(
                             'uid',
-                            $parentQuery->createNamedParameter($parentPageId, \PDO::PARAM_INT)
+                            $parentQuery->createNamedParameter($parentPageId, Connection::PARAM_INT)
                         ))
                         ->executeQuery()
                         ->fetchAssociative();
@@ -8860,7 +8860,7 @@ class DataHandler implements LoggerAwareInterface
                         ->from('pages')
                         ->where($parentQuery->expr()->eq(
                             'uid',
-                            $parentQuery->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                            $parentQuery->createNamedParameter($pageUid, Connection::PARAM_INT)
                         ))
                         ->executeQuery()
                         ->fetchAssociative();
@@ -9055,16 +9055,16 @@ class DataHandler implements LoggerAwareInterface
             ->select('*')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(SystemLogType::DB, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(SystemLogType::DB, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq(
                     'userid',
-                    $queryBuilder->createNamedParameter($this->BE_USER->user['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->BE_USER->user['uid'], Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tstamp',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 ),
-                $queryBuilder->expr()->neq('error', $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, \PDO::PARAM_INT))
+                $queryBuilder->expr()->neq('error', $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, Connection::PARAM_INT))
             )
             ->executeQuery();
 

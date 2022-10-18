@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Linkvalidator\Repository;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -142,7 +143,7 @@ class BrokenLinkRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'record_uid',
-                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'table_name',
@@ -162,7 +163,7 @@ class BrokenLinkRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'record_uid',
-                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'table_name',

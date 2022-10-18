@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -455,19 +456,19 @@ class RemoteServer
             ->where(
                 $queryBuilder->expr()->eq(
                     'action',
-                    $queryBuilder->createNamedParameter(DatabaseAction::UPDATE, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(DatabaseAction::UPDATE, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'details_nr',
-                    $queryBuilder->createNamedParameter(30, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(30, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tablename',
-                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'recuid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             )
             ->orderBy('tstamp', 'DESC')

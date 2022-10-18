@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -210,7 +211,7 @@ class SortSubPagesController
                 $queryBuilder->expr()->eq('sys_language_uid', 0),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($parentPageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($parentPageUid, Connection::PARAM_INT)
                 )
             )
             ->orderBy($orderBy)

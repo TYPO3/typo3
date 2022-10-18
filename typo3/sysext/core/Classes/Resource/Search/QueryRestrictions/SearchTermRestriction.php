@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Search\QueryRestrictions;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -93,7 +94,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                     $searchConstraint = $this->queryBuilder->expr()->andX(
                         $this->queryBuilder->expr()->like(
                             $tableAlias . '.' . $fieldName,
-                            $this->queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
+                            $this->queryBuilder->createNamedParameter($like, Connection::PARAM_STR)
                         )
                     );
                 } else {
@@ -102,7 +103,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                         $this->queryBuilder->expr()->comparison(
                             'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
                             'LIKE',
-                            $this->queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
+                            $this->queryBuilder->createNamedParameter(mb_strtolower($like), Connection::PARAM_STR)
                         )
                     );
                 }

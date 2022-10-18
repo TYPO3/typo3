@@ -208,7 +208,7 @@ class FrontendUserRepository
                 ),
                 $queryBuilder->expr()->eq(
                     $this->userService->getFeUserIdColumn(),
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)

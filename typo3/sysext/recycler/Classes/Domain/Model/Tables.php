@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recycler\Domain\Model;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
@@ -51,7 +52,7 @@ class Tables
                     ->where(
                         $queryBuilder->expr()->neq(
                             $deletedField,
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery()

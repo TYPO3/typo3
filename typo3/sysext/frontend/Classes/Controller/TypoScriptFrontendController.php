@@ -856,7 +856,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ->select('uid', 'hidden', 'starttime', 'endtime')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->setMaxResults(1);
 
@@ -866,7 +866,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $languagesToCheck = array_merge([$this->language->getLanguageId()], $this->language->getFallbackLanguageIds());
             // Check for the language and all its fallbacks
             $constraint = $queryBuilder->expr()->andX(
-                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
             );
             // If the fallback language Ids also contains the default language, this needs to be considered
@@ -875,7 +875,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $constraint,
                     // Ensure to also fetch the default record
                     $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)),
                         $queryBuilder->expr()->in('sys_language_uid', 0)
                     )
                 );
@@ -883,7 +883,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Ensure that the translated records are shown first (maxResults is set to 1)
             $queryBuilder->orderBy('sys_language_uid', 'DESC');
         } else {
-            $constraint = $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT));
+            $constraint = $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT));
         }
         $queryBuilder->andWhere($constraint);
 
@@ -1319,7 +1319,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                             ),
                             $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                         )
@@ -3388,7 +3388,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         . 'CASE WHEN '
                         . $queryBuilder->expr()->lte(
                             $timeFields[$field],
-                            $queryBuilder->createNamedParameter($now, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($now, Connection::PARAM_INT)
                         )
                         . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
                         . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
@@ -3396,7 +3396,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $timeConditions->add(
                     $queryBuilder->expr()->gt(
                         $timeFields[$field],
-                        $queryBuilder->createNamedParameter($now, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($now, Connection::PARAM_INT)
                     )
                 );
             }
@@ -3410,7 +3410,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                     ),
                     $timeConditions
                 )

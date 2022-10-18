@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Workspaces\Domain\Record;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
@@ -122,11 +123,11 @@ class WorkspaceRecord extends AbstractRecord
                 ->where(
                     $queryBuilder->expr()->eq(
                         'parentid',
-                        $queryBuilder->createNamedParameter($this->getUid(), \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->getUid(), Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'parenttable',
-                        $queryBuilder->createNamedParameter('sys_workspace', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('sys_workspace', Connection::PARAM_STR)
                     )
                 )
                 ->orderBy('sorting')

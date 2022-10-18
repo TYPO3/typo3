@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Authentication;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -72,7 +73,7 @@ class PreviewUserAuthentication extends BackendUserAuthentication
                         ->from('sys_workspace')
                         ->where($queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($wsRec, Connection::PARAM_INT)
                         ))
                         ->orderBy('title')
                         ->setMaxResults(1)

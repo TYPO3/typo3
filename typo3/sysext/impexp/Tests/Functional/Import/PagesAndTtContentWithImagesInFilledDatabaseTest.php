@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -312,7 +313,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
             ->from('tt_content')
             ->where($queryBuilder->expr()->like(
                 'pi_flexform',
-                $queryBuilder->createNamedParameter('%<value index="vDEF">4</value>%', \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter('%<value index="vDEF">4</value>%', Connection::PARAM_STR)
             ))
             ->executeQuery()
             ->fetchOne();

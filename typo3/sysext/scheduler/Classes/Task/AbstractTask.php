@@ -406,7 +406,7 @@ abstract class AbstractTask implements LoggerAwareInterface
             ->select('serialized_executions')
             ->from('tx_scheduler_task')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAssociative();
@@ -432,7 +432,7 @@ abstract class AbstractTask implements LoggerAwareInterface
             ->select('serialized_executions')
             ->from('tx_scheduler_task')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAssociative();
@@ -481,7 +481,7 @@ abstract class AbstractTask implements LoggerAwareInterface
             ->select('serialized_executions')
             ->from('tx_scheduler_task')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAssociative();

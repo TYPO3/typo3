@@ -140,11 +140,11 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             ->where(
                 $queryBuilder->expr()->eq(
                     'identifier',
-                    $queryBuilder->createNamedParameter($entryIdentifier, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($entryIdentifier, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->gte(
                     'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -175,11 +175,11 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             ->where(
                 $queryBuilder->expr()->eq(
                     'identifier',
-                    $queryBuilder->createNamedParameter($entryIdentifier, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($entryIdentifier, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->gte(
                     'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -230,11 +230,11 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 $queryBuilder->expr()->eq($this->cacheTable . '.identifier', $queryBuilder->quoteIdentifier($this->tagsTable . '.identifier')),
                 $queryBuilder->expr()->eq(
                     $this->tagsTable . '.tag',
-                    $queryBuilder->createNamedParameter($tag, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tag, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->gte(
                     $this->cacheTable . '.expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 )
             )
             ->groupBy($this->cacheTable . '.identifier')
@@ -397,7 +397,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 ->from($this->cacheTable)
                 ->where($queryBuilder->expr()->lt(
                     'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 ))
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
@@ -415,7 +415,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             $queryBuilder->delete($this->cacheTable)
                 ->where($queryBuilder->expr()->lt(
                     'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
                 ))
                 ->executeStatement();
 

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
@@ -99,20 +100,20 @@ class IpAnonymizationTask extends AbstractTask
                 ->where(
                     $queryBuilder->expr()->lt(
                         $configuration['dateField'],
-                        $queryBuilder->createNamedParameter($deleteTimestamp, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($deleteTimestamp, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         $configuration['ipField'],
-                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('', Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->isNotNull($configuration['ipField']),
                     $queryBuilder->expr()->notLike(
                         $configuration['ipField'],
-                        $queryBuilder->createNamedParameter($notLikeMaskPattern, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($notLikeMaskPattern, Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->notLike(
                         $configuration['ipField'],
-                        $queryBuilder->createNamedParameter('%::', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%::', Connection::PARAM_STR)
                     )
                 )
                 ->from($table)

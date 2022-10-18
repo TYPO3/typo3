@@ -1247,7 +1247,7 @@ class AbstractPlugin
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($whereClause)
             );

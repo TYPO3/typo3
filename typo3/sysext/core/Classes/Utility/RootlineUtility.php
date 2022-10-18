@@ -246,7 +246,7 @@ class RootlineUtility
             $row = $queryBuilder->select(...self::$rootlineFields)
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
                     $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $this->workspaceUid], Connection::PARAM_INT_ARRAY))
                 )
                 ->executeQuery()
@@ -471,7 +471,7 @@ class RootlineUtility
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -500,15 +500,15 @@ class RootlineUtility
             ->where(
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter($this->workspaceUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->workspaceUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_oid',
-                    $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($liveId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();

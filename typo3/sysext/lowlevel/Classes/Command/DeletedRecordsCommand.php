@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -156,7 +157,7 @@ class DeletedRecordsCommand extends Command
                     $queryBuilderForPages->expr()->andX(
                         $queryBuilderForPages->expr()->eq(
                             'uid',
-                            $queryBuilderForPages->createNamedParameter($pageId, \PDO::PARAM_INT)
+                            $queryBuilderForPages->createNamedParameter($pageId, Connection::PARAM_INT)
                         ),
                         $queryBuilderForPages->expr()->neq('deleted', 0)
                     )
@@ -192,7 +193,7 @@ class DeletedRecordsCommand extends Command
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery();

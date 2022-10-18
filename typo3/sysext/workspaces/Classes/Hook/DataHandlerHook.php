@@ -826,7 +826,7 @@ class DataHandlerHook
         $l10nParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         $constraints = $queryBuilder->expr()->eq(
             $l10nParentFieldName,
-            $queryBuilder->createNamedParameter($previouslyUsedVersionId, \PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter($previouslyUsedVersionId, Connection::PARAM_INT)
         );
         $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null;
         if ($translationSourceFieldName) {
@@ -834,7 +834,7 @@ class DataHandlerHook
                 $constraints,
                 $queryBuilder->expr()->eq(
                     $translationSourceFieldName,
-                    $queryBuilder->createNamedParameter($previouslyUsedVersionId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($previouslyUsedVersionId, Connection::PARAM_INT)
                 )
             );
         }
@@ -846,7 +846,7 @@ class DataHandlerHook
                 $constraints,
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                 )
             );
 
@@ -857,14 +857,14 @@ class DataHandlerHook
         $statement = $queryBuilder->executeQuery();
         while ($record = $statement->fetchAssociative()) {
             $updateFields = [];
-            $dataTypes = [\PDO::PARAM_INT];
+            $dataTypes = [Connection::PARAM_INT];
             if ((int)$record[$l10nParentFieldName] === $previouslyUsedVersionId) {
                 $updateFields[$l10nParentFieldName] = $liveId;
-                $dataTypes[] = \PDO::PARAM_INT;
+                $dataTypes[] = Connection::PARAM_INT;
             }
             if ($translationSourceFieldName && (int)$record[$translationSourceFieldName] === $previouslyUsedVersionId) {
                 $updateFields[$translationSourceFieldName] = $liveId;
-                $dataTypes[] = \PDO::PARAM_INT;
+                $dataTypes[] = Connection::PARAM_INT;
             }
 
             if (empty($updateFields)) {
@@ -970,11 +970,11 @@ class DataHandlerHook
                     'uid' => (int)$id,
                 ],
                 [
-                    \PDO::PARAM_INT,
-                    \PDO::PARAM_INT,
-                    \PDO::PARAM_INT,
-                    \PDO::PARAM_INT,
-                    \PDO::PARAM_INT,
+                    Connection::PARAM_INT,
+                    Connection::PARAM_INT,
+                    Connection::PARAM_INT,
+                    Connection::PARAM_INT,
+                    Connection::PARAM_INT,
                 ]
             );
         } catch (DBALException $e) {
@@ -1041,7 +1041,7 @@ class DataHandlerHook
         $l10nParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         $constraints = $queryBuilder->expr()->eq(
             $l10nParentFieldName,
-            $queryBuilder->createNamedParameter($newVersionedRecordId, \PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter($newVersionedRecordId, Connection::PARAM_INT)
         );
         $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null;
         if ($translationSourceFieldName) {
@@ -1049,7 +1049,7 @@ class DataHandlerHook
                 $constraints,
                 $queryBuilder->expr()->eq(
                     $translationSourceFieldName,
-                    $queryBuilder->createNamedParameter($newVersionedRecordId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($newVersionedRecordId, Connection::PARAM_INT)
                 )
             );
         }
@@ -1061,7 +1061,7 @@ class DataHandlerHook
                 $constraints,
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                 )
             );
 
@@ -1131,11 +1131,11 @@ class DataHandlerHook
                     ->where(
                         $queryBuilder->expr()->eq(
                             't3ver_stage',
-                            $queryBuilder->createNamedParameter($stageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($stageId, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->gt(
                             't3ver_wsid',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         )
                     )
                     ->executeStatement();
@@ -1163,18 +1163,18 @@ class DataHandlerHook
                     ->where(
                         $queryBuilder->expr()->eq(
                             't3ver_wsid',
-                            $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                         ),
                         // t3ver_oid >= 0 basically omits placeholder records here, those would otherwise
                         // fail to delete later in DH->discard() and would create "can't do that" log entries.
                         $queryBuilder->expr()->orX(
                             $queryBuilder->expr()->gt(
                                 't3ver_oid',
-                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
                             )
                         )
                     )
@@ -1275,15 +1275,15 @@ class DataHandlerHook
                     ->where(
                         $queryBuilder->expr()->gt(
                             'A.t3ver_oid',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             'B.pid',
-                            $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             'A.t3ver_wsid',
-                            $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
                     )
@@ -1330,7 +1330,7 @@ class DataHandlerHook
                     ->where(
                         $queryBuilder->expr()->gt(
                             'A.t3ver_oid',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->in(
                             'B.pid',
@@ -1338,7 +1338,7 @@ class DataHandlerHook
                         ),
                         $queryBuilder->expr()->eq(
                             'A.t3ver_wsid',
-                            $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
                     )
@@ -1385,11 +1385,11 @@ class DataHandlerHook
             ->where(
                 $queryBuilder->expr()->gt(
                     'A.t3ver_oid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'A.t3ver_wsid',
-                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->in(
                     'A.uid',
@@ -1539,7 +1539,7 @@ class DataHandlerHook
                     $table,
                     [$deleteField => 1],
                     ['uid' => $uid],
-                    [\PDO::PARAM_INT]
+                    [Connection::PARAM_INT]
                 );
         } else {
             GeneralUtility::makeInstance(ConnectionPool::class)

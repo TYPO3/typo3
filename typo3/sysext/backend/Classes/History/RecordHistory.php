@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\History;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
@@ -228,7 +229,7 @@ class RecordHistory
                     ->where(
                         $queryBuilder->expr()->eq(
                             'pid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery();
@@ -308,7 +309,7 @@ class RecordHistory
         $record = $queryBuilder
             ->select('uid', 'tablename', 'recuid')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($lastHistoryEntry, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($lastHistoryEntry, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
 
@@ -337,8 +338,8 @@ class RecordHistory
             ->select('*')
             ->from('sys_history')
             ->where(
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
-                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             );
         if ($backendUser->workspace === 0) {
             $queryBuilder->andWhere(
@@ -348,7 +349,7 @@ class RecordHistory
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq('workspace', 0),
-                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, Connection::PARAM_INT))
                 )
             );
         }
@@ -357,7 +358,7 @@ class RecordHistory
         }
 
         if ($minimumUid) {
-            $queryBuilder->andWhere($queryBuilder->expr()->gte('uid', $queryBuilder->createNamedParameter($minimumUid, \PDO::PARAM_INT)));
+            $queryBuilder->andWhere($queryBuilder->expr()->gte('uid', $queryBuilder->createNamedParameter($minimumUid, Connection::PARAM_INT)));
         }
 
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
@@ -369,7 +370,7 @@ class RecordHistory
         $queryBuilder
             ->select('*')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId, \PDO::PARAM_STR)));
+            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId, Connection::PARAM_STR)));
 
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
     }

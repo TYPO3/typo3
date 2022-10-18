@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Updates\RowUpdater;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -99,8 +100,8 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
             ->select('*')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAssociative();
@@ -140,9 +141,9 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
         $relationFieldName = $isOnRightSide ? 'uid_local' : 'uid_foreign';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTable);
         $queryBuilder->update($mmTable)
-            ->set($relationFieldName, $newUid, true, \PDO::PARAM_INT)
+            ->set($relationFieldName, $newUid, true, Connection::PARAM_INT)
             ->where(
-                $queryBuilder->expr()->eq($relationFieldName, $queryBuilder->createNamedParameter($originalUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq($relationFieldName, $queryBuilder->createNamedParameter($originalUid, Connection::PARAM_INT))
             );
         if ($matchMMFields) {
             foreach ($matchMMFields as $matchMMFieldName => $matchMMFieldValue) {

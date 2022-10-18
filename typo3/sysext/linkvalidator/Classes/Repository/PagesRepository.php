@@ -62,7 +62,7 @@ class PagesRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -109,7 +109,7 @@ class PagesRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($permsClause)
             )
@@ -160,7 +160,7 @@ class PagesRepository
         $constraints = [
             $queryBuilder->expr()->eq(
                 'l10n_parent',
-                $queryBuilder->createNamedParameter($currentPage, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($currentPage, Connection::PARAM_INT)
             ),
         ];
         if (!empty($limitToLanguageIds)) {

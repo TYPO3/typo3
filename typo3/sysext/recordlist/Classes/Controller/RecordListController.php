@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -587,7 +588,7 @@ class RecordListController
             ->where(
                 $queryBuilder->expr()->eq(
                     $localizationParentField,
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
