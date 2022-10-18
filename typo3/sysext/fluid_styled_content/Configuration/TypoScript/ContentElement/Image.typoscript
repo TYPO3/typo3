@@ -7,11 +7,11 @@ tt_content.image =< lib.contentElement
 tt_content.image {
     templateName = Image
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+        10 = files
         10 {
             references.fieldName = image
         }
-        20 = TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor
+        20 = gallery
         20 {
             maxGalleryWidth = {$styles.content.textmedia.maxW}
             maxGalleryWidthInText = {$styles.content.textmedia.maxWInText}

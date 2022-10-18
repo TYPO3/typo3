@@ -7,13 +7,13 @@ tt_content.menu_sitemap_pages =< lib.contentElement
 tt_content.menu_sitemap_pages {
     templateName = MenuSitemapPages
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 = menu
         10 {
             special = directory
             special.value.field = pages
             levels = 7
             dataProcessing {
-                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 = files
                 10 {
                     references.fieldName = media
                 }

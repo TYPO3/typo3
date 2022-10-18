@@ -7,23 +7,23 @@ tt_content.menu_section_pages =< lib.contentElement
 tt_content.menu_section_pages {
     templateName = MenuSectionPages
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 = menu
         10 {
             special = directory
             special.value.field = pages
             dataProcessing {
-                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 = files
                 10 {
                     references.fieldName = media
                 }
-                20 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+                20 = database-query
                 20 {
                     table = tt_content
                     pidInList.field = uid
                     orderBy = sorting
                     as = content
                     dataProcessing {
-                        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                        10 = files
                         10 {
                             references.fieldName = image
                         }

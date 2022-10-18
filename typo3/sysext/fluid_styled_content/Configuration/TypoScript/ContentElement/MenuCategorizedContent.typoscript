@@ -7,7 +7,7 @@ tt_content.menu_categorized_content =< lib.contentElement
 tt_content.menu_categorized_content {
     templateName = MenuCategorizedContent
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+        10 = database-query
         10 {
             table = tt_content
             selectFields = {#tt_content}.*
@@ -21,7 +21,7 @@ tt_content.menu_categorized_content {
             orderBy = tt_content.sorting
             as = content
             dataProcessing {
-                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 = files
                 10 {
                     references.fieldName = image
                 }

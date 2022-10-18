@@ -7,7 +7,7 @@ tt_content.bullets =< lib.contentElement
 tt_content.bullets {
     templateName = Bullets
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\SplitProcessor
+        10 = split
         10 {
             if {
                 value = 2
@@ -17,7 +17,7 @@ tt_content.bullets {
             removeEmptyEntries = 1
             as = bullets
         }
-        20 = TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor
+        20 = comma-separated-value
         20 {
             fieldName = bodytext
             if {

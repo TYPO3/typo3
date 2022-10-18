@@ -7,12 +7,12 @@ tt_content.menu_subpages =< lib.contentElement
 tt_content.menu_subpages {
     templateName = MenuSubpages
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 = menu
         10 {
             special = directory
             special.value.field = pages
             dataProcessing {
-                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 = files
                 10 {
                     references.fieldName = media
                 }

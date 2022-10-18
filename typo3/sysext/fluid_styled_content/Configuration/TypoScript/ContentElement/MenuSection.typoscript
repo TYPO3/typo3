@@ -7,7 +7,7 @@ tt_content.menu_section =< lib.contentElement
 tt_content.menu_section {
     templateName = MenuSection
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 = menu
         10 {
             // Always activate includeNotInMenu for a section menu of the current page
             includeNotInMenu.override = 1
@@ -33,11 +33,11 @@ tt_content.menu_section {
                 }
             }
             dataProcessing {
-                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 = files
                 10 {
                     references.fieldName = media
                 }
-                20 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+                20 = database-query
                 20 {
                     table = tt_content
                     pidInList.field = uid
@@ -45,7 +45,7 @@ tt_content.menu_section {
                     where = {#sectionIndex} = 1
                     orderBy = sorting
                     dataProcessing {
-                        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                        10 = files
                         10 {
                             references.fieldName = image
                         }

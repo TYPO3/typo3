@@ -7,7 +7,7 @@ tt_content.table =< lib.contentElement
 tt_content.table {
     templateName = Table
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor
+        10 = comma-separated-value
         10 {
             fieldName = bodytext
             fieldDelimiter.char.cObject = TEXT

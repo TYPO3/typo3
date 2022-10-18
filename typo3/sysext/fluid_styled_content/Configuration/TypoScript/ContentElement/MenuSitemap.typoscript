@@ -7,11 +7,11 @@ tt_content.menu_sitemap =< lib.contentElement
 tt_content.menu_sitemap {
     templateName = MenuSitemap
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 = menu
         10 {
             levels = 7
             dataProcessing {
-                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 = files
                 10 {
                     references.fieldName = media
                 }

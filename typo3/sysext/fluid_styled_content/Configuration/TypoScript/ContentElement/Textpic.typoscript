@@ -7,11 +7,11 @@ tt_content.textpic =< lib.contentElement
 tt_content.textpic {
     templateName = Textpic
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+        10 = files
         10 {
             references.fieldName = image
         }
-        20 = TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor
+        20 = gallery
         20 {
             maxGalleryWidth = {$styles.content.textmedia.maxW}
             maxGalleryWidthInText = {$styles.content.textmedia.maxWInText}

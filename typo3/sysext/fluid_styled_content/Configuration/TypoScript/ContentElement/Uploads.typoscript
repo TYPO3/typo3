@@ -7,7 +7,7 @@ tt_content.uploads =< lib.contentElement
 tt_content.uploads {
     templateName = Uploads
     dataProcessing {
-        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+        10 = files
         10 {
             references.fieldName = media
             collections.field = file_collections
