@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
@@ -33,8 +30,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -43,14 +38,11 @@ class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
     public function argumentsAndOptionsWithSameNameAreAdded(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn('');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
 
         $mockScheduler = $this->getAccessibleMock(Scheduler::class, ['saveTask'], [], '', false);
         GeneralUtility::setSingletonInstance(Scheduler::class, $mockScheduler);
         $mockScheduler->method('saveTask')->willReturn(false);
-        GeneralUtility::addInstance(Execution::class, $this->prophesize(Execution::class)->reveal());
 
         $command = new class () extends Command {
             protected function configure(): void
@@ -63,11 +55,12 @@ class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
             }
         };
 
-        $commandRegistryProphecy = $this->prophesize(CommandRegistry::class);
-        $commandRegistryProphecy->getSchedulableCommands()->willReturn(
+        $mockCommandRegistry = $this->getMockBuilder(CommandRegistry::class)->disableOriginalConstructor()->getMock();
+        $mockCommandRegistry->method('getSchedulableCommands')->willReturn(
             (static function () use ($command) { yield $command->getName() => $command; })()
         );
-        GeneralUtility::setSingletonInstance(CommandRegistry::class, $commandRegistryProphecy->reveal());
+
+        GeneralUtility::setSingletonInstance(CommandRegistry::class, $mockCommandRegistry);
 
         $task = GeneralUtility::makeInstance(ExecuteSchedulableCommandTask::class);
         $task->setCommandIdentifier('some:test:command');
@@ -80,7 +73,7 @@ class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
         $fields = $subject->getAdditionalFields(
             $taskInfo,
             $task,
-            $this->prophesize(SchedulerModuleController::class)->reveal()
+            $this->getMockBuilder(SchedulerModuleController::class)->disableOriginalConstructor()->getMock()
         );
 
         self::assertCount(4, $fields);
