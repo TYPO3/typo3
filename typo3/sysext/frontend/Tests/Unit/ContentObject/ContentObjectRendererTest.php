@@ -3252,7 +3252,6 @@ class ContentObjectRendererTest extends UnitTestCase
                 'returnLast' => 'result',
             ]
         );
-        /** @phpstan-ignore-next-line */
         self::assertInstanceOf(LinkResultInterface::class, $linkResult);
         self::assertEquals(json_encode([
             'href' => 'https://example.tld',

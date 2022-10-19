@@ -73,8 +73,8 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder;
-use TYPO3\CMS\Frontend\Typolink\HtmlLinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
@@ -4315,7 +4315,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $linkText The string (text) to link
      * @param array $conf TypoScript configuration (see link below)
-     * @return string A link-wrapped string.
+     * @return string|LinkResult A link-wrapped string.
      * @see stdWrap()
      */
     public function typoLink(string $linkText, array $conf)
@@ -4327,22 +4327,23 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // If flag "returnLast" set, then just return the latest URL / url / target that was built.
-        // This returns the information without being wrapped in a "HtmlLinkResult" object.
+        // This returns the information without being wrapped in a "LinkResult" object.
         switch ($conf['returnLast'] ?? null) {
             case 'url':
                 return $linkResult->getUrl();
             case 'target':
                 return $linkResult->getTarget();
             case 'result':
-                return $linkResult;
+                // kept for backwards-compatibility, as this was added in TYPO3 v11
+                return LinkResult::adapt($linkResult, LinkResult::STRING_CAST_JSON);
         }
 
         $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
         if ($conf['ATagBeforeWrap'] ?? false) {
             $linkResult = $linkResult->withLinkText($this->wrap((string)$linkResult->getLinkText(), $wrap));
-            return (string)(new HtmlLinkResult($linkResult));
+            return LinkResult::adapt($linkResult)->getHtml();
         }
-        $result = (string)(new HtmlLinkResult($linkResult));
+        $result = LinkResult::adapt($linkResult)->getHtml();
         return $this->wrap($result, $wrap);
     }
 
@@ -4350,7 +4351,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Similar to ->typoLink(), however it does not evaluate the .wrap and .ATagBeforeWrap
      * functionality.
      *
-     * For this reason, it also does not consider the HtmlLinkResult functionality,
+     * For this reason, it also does not consider the LinkResult functionality,
      * and "returnLast" logic, as the whole LinkResult object is available.
      *
      * It is recommended to use this method when working with PHP and wanting to create

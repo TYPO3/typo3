@@ -18,19 +18,40 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class represents a created link to a resource (page, email etc.), coming from LinkService.
  * After it was executed by the LinkBuilders (mostly in Frontend) after it is called from Typolink.
  */
-class LinkResult implements LinkResultInterface, \JsonSerializable
+class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
 {
+    public const STRING_CAST_HTML = 1;
+    public const STRING_CAST_JSON = 2;
+
     protected string $type = LinkService::TYPE_UNKNOWN;
     protected string $url;
     protected string $target = '';
     protected array $additionalAttributes = [];
     protected ?string $linkText = null;
     protected array $linkConfiguration = [];
+    protected int $flags = self::STRING_CAST_HTML;
+
+    /**
+     * Use this method to create a new LinkResult for a specific output format (HTML or JSON)
+     */
+    public static function adapt(LinkResultInterface $other, int $flags = self::STRING_CAST_HTML): self
+    {
+        $target = $other;
+        if (!$target instanceof self) {
+            $target = GeneralUtility::makeInstance(self::class, $other->getType(), $other->getUrl());
+            $target->target = $other->getTarget();
+            $target->additionalAttributes = $target->filterAdditionalAttributes($other->getAttributes());
+            $target->linkText = $other->getLinkText();
+            $target->linkConfiguration = $other->getLinkConfiguration();
+        }
+        return $target->withFlags($flags);
+    }
 
     public function __construct(string $type, string $url)
     {
@@ -133,25 +154,6 @@ class LinkResult implements LinkResultInterface, \JsonSerializable
         return $newObject;
     }
 
-    public function jsonSerialize(): array
-    {
-        $additionalAttrs = $this->additionalAttributes;
-        foreach ($additionalAttrs as $attribute => $value) {
-            if (in_array($attribute, ['href', 'target', 'class', 'title'], true)) {
-                unset($additionalAttrs[$attribute]);
-            }
-        }
-
-        return [
-            'href' => $this->url ?: null,
-            'target' => $this->target ?: null,
-            'class' => $this->additionalAttributes['class'] ?? null,
-            'title' => $this->additionalAttributes['title'] ?? null,
-            'linkText' => $this->linkText ?: null,
-            'additionalAttributes' => $additionalAttrs,
-        ];
-    }
-
     public function hasAttribute(string $attributeName): bool
     {
         switch ($attributeName) {
@@ -186,12 +188,74 @@ class LinkResult implements LinkResultInterface, \JsonSerializable
         return array_merge($attributes, $this->additionalAttributes);
     }
 
-    public function __toString(): string
+    public function withFlags(int $flags): self
+    {
+        if ($flags !== self::STRING_CAST_HTML && $flags !== self::STRING_CAST_JSON) {
+            $flags = self::STRING_CAST_HTML;
+        }
+        if ($this->flags === $flags) {
+            return $this;
+        }
+        $target = clone $this;
+        $target->flags = $flags;
+        return $target;
+    }
+
+    protected function filterAdditionalAttributes(array $attributes): array
+    {
+        return array_filter(
+            $attributes,
+            static fn (string $key) => !in_array($key, ['href', 'target', 'class', 'title'], true),
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * @return array{href: ?string, target: ?string, class: ?string, title: ?string, linkText: ?string, additionalAttributes: array}
+     */
+    public function toArray(): array
+    {
+        return [
+            'href' => $this->url ?: null,
+            'target' => $this->target ?: null,
+            'class' => $this->getAttribute('class') ?: null,
+            'title' => $this->getAttribute('title') ?: null,
+            'linkText' => $this->linkText ?: null,
+            'additionalAttributes' => $this->filterAdditionalAttributes($this->getAttributes()),
+        ];
+    }
+
+    public function getHtml(): string
+    {
+        return sprintf(
+            '<a %s>%s</a>',
+            GeneralUtility::implodeAttributes($this->getAttributes(), true),
+            $this->linkText
+        );
+    }
+
+    public function getJson(): string
     {
         try {
-            return json_encode($this->jsonSerialize(), JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+            return json_encode($this, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
             return '';
         }
+    }
+
+    public function __toString(): string
+    {
+        if ($this->flags === self::STRING_CAST_HTML) {
+            return $this->getHtml();
+        }
+        if ($this->flags === self::STRING_CAST_JSON) {
+            return $this->getJson();
+        }
+        throw new \LogicException('Unsupported flags assignment', 1666024513);
     }
 }

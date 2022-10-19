@@ -2716,11 +2716,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:typoLink\\(\\) should return string but returns TYPO3\\\\CMS\\\\Frontend\\\\Typolink\\\\LinkResultInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
