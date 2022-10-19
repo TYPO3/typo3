@@ -21,9 +21,6 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
- *
- * It's safe to use this interface in TYPO3 10 LTS as it will not be changed or removed in that
- * version but this interface is likely to be removed and/or changed in version 11.
  */
 interface ViewResolverInterface
 {
