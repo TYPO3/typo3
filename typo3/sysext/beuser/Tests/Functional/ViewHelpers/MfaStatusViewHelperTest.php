@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\Tests\Functional\ViewHelpers;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -26,8 +24,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class MfaStatusViewHelperTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected array $coreExtensionsToLoad = [
         'beuser',
     ];
@@ -40,10 +36,9 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_mfa.csv');
 
-        // Default LANG prophecy just returns incoming value as label if calling ->sL()
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $mockLanguageService->expects(self::any())->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $mockLanguageService;
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('bu', 'TYPO3\\CMS\\Beuser\\ViewHelpers');
