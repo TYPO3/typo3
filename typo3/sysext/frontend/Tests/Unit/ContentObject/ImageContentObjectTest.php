@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -33,8 +32,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ImageContentObjectTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -48,9 +45,9 @@ class ImageContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE'] = $tsfe->reveal();
-        $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE'] = $tsfe;
+        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $this->subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [
             new MarkerBasedTemplateService(
                 new NullFrontend('hash'),
