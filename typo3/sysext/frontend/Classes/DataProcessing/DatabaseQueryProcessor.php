@@ -46,17 +46,8 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class DatabaseQueryProcessor implements DataProcessorInterface
 {
-    /**
-     * @var ContentDataProcessor
-     */
-    protected $contentDataProcessor;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function __construct(protected readonly ContentDataProcessor $contentDataProcessor)
     {
-        $this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
     }
 
     /**

@@ -143,6 +143,7 @@ services:
       - { name: 'data.processor', identifier: 'comma-separated-value' }
 
   TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor:
+    public: true
     tags:
       - { name: 'data.processor', identifier: 'database-query' }
 
