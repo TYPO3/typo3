@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\Tests\Unit\Event;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Resource\File;
@@ -27,8 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ModifyEditFileFormDataEventTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -49,8 +46,8 @@ class ModifyEditFileFormDataEventTest extends UnitTestCase
                 ],
             ],
         ];
-        $resourceStorageProphecy = $this->prophesize(ResourceStorage::class);
-        $file = new File([], $resourceStorageProphecy->reveal());
+        $mockResourceStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $file = new File([], $mockResourceStorage);
         $request = new ServerRequest(new Uri('https://example.com'));
 
         $event = new ModifyEditFileFormDataEvent($formData, $file, $request);
