@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Http;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -34,13 +32,8 @@ use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
 use TYPO3\CMS\Frontend\Http\RequestHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class RequestHandlerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     public function generateHtmlTagIncludesAllPossibilitiesDataProvider(): array
@@ -101,9 +94,9 @@ class RequestHandlerTest extends UnitTestCase
     public function generateHtmlTagIncludesAllPossibilities(array $htmlTagAttributes, array $configuration, string $expectedResult): void
     {
         $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->stdWrap(Argument::cetera())->shouldNotBeCalled();
-        $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $cObj->reveal());
+        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock->expects(self::never())->method('stdWrap');
+        $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $contentObjectRendererMock);
 
         self::assertEquals($expectedResult, $result);
     }
@@ -239,36 +232,36 @@ class RequestHandlerTest extends UnitTestCase
         ];
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->willReturn('');
-        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
-        $tmpl = $this->prophesize(TemplateService::class);
-        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $frontendControllerProphecy->generatePageTitle()->willReturn('');
-        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
-        $frontendController = $frontendControllerProphecy->reveal();
-        $frontendController->cObj = $cObj->reveal();
-        $frontendController->tmpl = $tmpl->reveal();
+        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
+        $contentObjectRendererMock->expects(self::once())->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
+        $templateServiceMock = $this->getMockBuilder(TemplateService::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock->expects(self::once())->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendController = $frontendControllerMock;
+        $frontendController->cObj = $contentObjectRendererMock;
+        $frontendController->tmpl = $templateServiceMock;
         $frontendController->page = [
             'title' => '',
         ];
         $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getInlineHeaderComment()->willReturn('dummy');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
-        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class)->reveal();
-        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($requestProphecy);
-        $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
-        $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
-        $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrow(\InvalidArgumentException::class);
+        $request = new ServerRequest();
+        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($request);
+        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcherMock->expects(self::once())->method('dispatch')->with($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
+        $subject->_set('eventDispatcher', $eventDispatcherMock);
+        $subject->method('getPageRenderer')->willReturn($pageRendererMock);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
+        $pageRendererMock->expects(self::never())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrowException(new \InvalidArgumentException('', 1666309039));
     }
 
     /**
@@ -282,16 +275,16 @@ class RequestHandlerTest extends UnitTestCase
     public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags): void
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->willReturn('');
-        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
-        $tmpl = $this->prophesize(TemplateService::class);
-        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $frontendControllerProphecy->generatePageTitle()->willReturn('');
-        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
-        $frontendController = $frontendControllerProphecy->reveal();
-        $frontendController->cObj = $cObj->reveal();
-        $frontendController->tmpl = $tmpl->reveal();
+        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
+        $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
+        $templateServiceMock = $this->getMockBuilder(TemplateService::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock->expects(self::once())->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendController = $frontendControllerMock;
+        $frontendController->cObj = $contentObjectRendererMock;
+        $frontendController->tmpl = $templateServiceMock;
         $frontendController->config = [
             'config' => [],
         ];
@@ -301,21 +294,20 @@ class RequestHandlerTest extends UnitTestCase
         $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getInlineHeaderComment()->willReturn('dummy');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
-        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->expects(self::once())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class)->reveal();
-        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($requestProphecy);
-        $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
-        $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
-
-        $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false)->shouldHaveBeenCalled();
+        $request = new ServerRequest();
+        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($request);
+        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcherMock->expects(self::once())->method('dispatch')->with($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
+        $subject->_set('eventDispatcher', $eventDispatcherMock);
+        $subject->method('getPageRenderer')->willReturn($pageRendererMock);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
     }
 
     /**
@@ -330,16 +322,16 @@ class RequestHandlerTest extends UnitTestCase
         ];
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->willReturn('');
-        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
-        $tmpl = $this->prophesize(TemplateService::class);
-        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $frontendControllerProphecy->generatePageTitle()->willReturn('');
-        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
-        $frontendController = $frontendControllerProphecy->reveal();
-        $frontendController->cObj = $cObj->reveal();
-        $frontendController->tmpl = $tmpl->reveal();
+        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
+        $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
+        $templateServiceMock = $this->getMockBuilder(TemplateService::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendController = $frontendControllerMock;
+        $frontendController->cObj = $contentObjectRendererMock;
+        $frontendController->tmpl = $templateServiceMock;
         $frontendController->config = [
             'config' => [],
         ];
@@ -349,22 +341,21 @@ class RequestHandlerTest extends UnitTestCase
         $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getInlineHeaderComment()->willReturn('dummy');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
-        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->expects(self::never())->method('setMetaTag');
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->method('getPageRenderer')->willReturn($pageRendererMock);
         $subject->_set('timeTracker', new TimeTracker(false));
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class)->reveal();
-        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($requestProphecy);
-        $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
-        $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
-
-        $pageRendererProphecy->setMetaTag(null, null, null)->shouldNotBeCalled();
+        $request = new ServerRequest();
+        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($request);
+        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcherMock->expects(self::once())->method('dispatch')->with($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
+        $subject->_set('eventDispatcher', $eventDispatcherMock);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
     }
 
     public function generateMultipleMetaTagsDataProvider(): array
@@ -433,16 +424,16 @@ class RequestHandlerTest extends UnitTestCase
     public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags): void
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
-        $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->cObjGet(Argument::cetera())->shouldBeCalled()->wilLReturn('');
-        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
-        $tmpl = $this->prophesize(TemplateService::class);
-        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $frontendControllerProphecy->generatePageTitle()->willReturn('');
-        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
-        $frontendController = $frontendControllerProphecy->reveal();
-        $frontendController->cObj = $cObj->reveal();
-        $frontendController->tmpl = $tmpl->reveal();
+        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->wilLReturn('');
+        $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
+        $templateServiceMock = $this->getMockBuilder(TemplateService::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $frontendControllerMock->expects(self::once())->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendController = $frontendControllerMock;
+        $frontendController->cObj = $contentObjectRendererMock;
+        $frontendController->tmpl = $templateServiceMock;
         $frontendController->config = [
             'config' => [],
         ];
@@ -452,23 +443,24 @@ class RequestHandlerTest extends UnitTestCase
         $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getInlineHeaderComment()->willReturn('This website is...');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('This website is...');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
-        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->expects(self::exactly(2))->method('setMetaTag')->withConsecutive(
+            [$expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false],
+            [$expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false]
+        );
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->method('getPageRenderer')->willReturn($pageRendererMock);
         $subject->_set('timeTracker', new TimeTracker(false));
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class)->reveal();
-        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($requestProphecy);
-        $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
-        $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
-
-        $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false)->shouldHaveBeenCalled();
-        $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false)->shouldHaveBeenCalled();
+        $request = new ServerRequest();
+        $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($request);
+        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcherMock->expects(self::once())->method('dispatch')->with($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
+        $subject->_set('eventDispatcher', $eventDispatcherMock);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
     }
 
     /**
