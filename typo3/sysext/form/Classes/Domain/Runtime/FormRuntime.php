@@ -159,8 +159,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $currentFinisher;
 
     public function __construct(
-        // @todo: Set readonly when FormRuntimeTest has been rewritten to a functional test
-        protected ContainerInterface $container,
+        protected readonly ContainerInterface $container,
         protected readonly ConfigurationManagerInterface $configurationManager,
         protected readonly HashService $hashService,
         protected readonly ValidatorResolver $validatorResolver,
