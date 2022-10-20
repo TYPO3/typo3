@@ -19,10 +19,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
@@ -89,12 +85,8 @@ use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ContentObjectRendererTest extends UnitTestCase
 {
-    use ProphecyTrait;
     use ContentObjectRendererTestTrait;
 
     protected bool $resetSingletonInstances = true;
@@ -140,8 +132,7 @@ class ContentObjectRendererTest extends UnitTestCase
         'SVG' => ScalableVectorGraphicsContentObject::class,
     ];
 
-    /** @var ObjectProphecy<CacheManager> */
-    protected ObjectProphecy $cacheManager;
+    protected MockObject&CacheManager $cacheManagerMock;
 
     protected bool $backupEnvironment = true;
 
@@ -186,8 +177,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
 
-        $this->cacheManager = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $this->cacheManager->reveal());
+        $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $this->cacheManagerMock);
 
         $this->subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -195,33 +186,24 @@ class ContentObjectRendererTest extends UnitTestCase
             [$this->frontendControllerMock]
         );
 
-        $logger = $this->prophesize(Logger::class);
-        $this->subject->setLogger($logger->reveal());
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $this->subject->setRequest($request->reveal());
+        $logger = new NullLogger();
+        $this->subject->setLogger($logger);
+        $request = new ServerRequest();
+        $this->subject->setRequest($request);
 
-        $cObjectFactoryProphecy = $this->prophesize(ContentObjectFactory::class);
-        $cObjectFactoryProphecy->getContentObject(Argument::any(), Argument::cetera())->willReturn(null);
+        $contentObjectFactoryMock = $this->createContentObjectFactoryMock();
+        $cObj = $this->subject;
         foreach ($this->contentObjectMap as $name => $className) {
-            $cObj = $this->subject;
-            $cObjectFactoryProphecy->getContentObject($name, Argument::cetera())->will(function () use ($className, $request, $cObj) {
-                if ($className === 'FluidTemplateContentObject') {
-                    $contentObject = new FluidTemplateContentObject(
-                        new ContentDataProcessor(
-                            $this->prophesize(ContainerInterface::class)->reveal(),
-                            $this->prophesize(DataProcessorRegistry::class)->reveal()
-                        )
-                    );
-                } else {
-                    $contentObject = new $className();
-                }
-                $contentObject->setRequest($request->reveal());
-                $contentObject->setContentObjectRenderer($cObj);
-                return $contentObject;
-            });
+            $contentObjectFactoryMock->addGetContentObjectCallback(
+                $name,
+                $className,
+                $request,
+                $cObj,
+                $this->getMockBuilder(DataProcessorRegistry::class)->disableOriginalConstructor()->getMock()
+            );
         }
         $container = new Container();
-        $container->set(ContentObjectFactory::class, $cObjectFactoryProphecy->reveal());
+        $container->set(ContentObjectFactory::class, $contentObjectFactoryMock);
         GeneralUtility::setContainer($container);
 
         $this->subject->start([], 'tt_content');
@@ -243,7 +225,7 @@ class ContentObjectRendererTest extends UnitTestCase
         if ($siteConfiguration) {
             $siteFinder = new SiteFinder($siteConfiguration);
         } else {
-            $siteFinder = $this->prophesize(SiteFinder::class)->reveal();
+            $siteFinder = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
         }
         $linkFactory = new LinkFactory(
             $linkService,
@@ -281,12 +263,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getImgResourceCallsGetImgResourcePostProcessHook(): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(CacheFrontendInterface::class);
-        $cacheManagerProphecy->getCache('imagesizes')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheProphecy->set(Argument::cetera(), null)->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
+        $cacheMock = $this->getMockBuilder(CacheFrontendInterface::class)->disableOriginalConstructor()->getMock();
+        $cacheMock->method('get')->willReturn(false);
+        $cacheMock->method('set')->willReturn(false);
+        $cacheManagerMock->method('getCache')->with('imagesizes')->willReturn($cacheMock);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->method('getResourceFactory')->willReturn($resourceFactory);
@@ -1075,8 +1057,8 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
 
         $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap_ifEmpty']);
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $subject->setRequest($request->reveal());
+        $request = new ServerRequest();
+        $subject->setRequest($request);
         $subject->expects(self::exactly(($ifEmptyShouldBeCalled ? 1 : 0)))
             ->method('stdWrap_ifEmpty');
 
@@ -1949,9 +1931,9 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_parseFuncReturnsParsedHtml(string $value, array $configuration, string $expectedResult, LinkResultInterface|false $linkResult): void
     {
         if ($linkResult !== false) {
-            $linkFactory = $this->prophesize(LinkFactory::class);
-            $linkFactory->create(Argument::cetera())->willReturn($linkResult);
-            GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+            $linkFactory = $this->getMockBuilder(LinkFactory::class)->disableOriginalConstructor()->getMock();
+            $linkFactory->method('create')->willReturn($linkResult);
+            GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         }
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
@@ -2367,9 +2349,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function httpMakelinksReturnsLink(string $data, array $configuration, string $expectedResult, LinkResult $linkResult): void
     {
-        $linkFactory = $this->prophesize(LinkFactory::class);
-        $linkFactory->create(Argument::cetera())->willReturn($linkResult);
-        GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+        $linkFactory = $this->getMockBuilder(LinkFactory::class)->disableOriginalConstructor()->getMock();
+        $linkFactory->method('create')->willReturn($linkResult);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
     }
@@ -2479,9 +2461,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function mailtoMakelinksReturnsMailToLink(string $data, array $configuration, string $expectedResult, LinkResult $linkResult): void
     {
-        $linkFactory = $this->prophesize(LinkFactory::class);
-        $linkFactory->create(Argument::cetera())->willReturn($linkResult);
-        GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+        $linkFactory = $this->getMockBuilder(LinkFactory::class)->disableOriginalConstructor()->getMock();
+        $linkFactory->method('create')->willReturn($linkResult);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         self::assertSame($expectedResult, $this->subject->mailto_makelinks($data, $configuration));
     }
@@ -2680,8 +2662,10 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
-        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
-        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+        $this->cacheManagerMock->method('getCache')->willReturnMap([
+            ['runtime', new NullFrontend('dummy')],
+            ['core', new NullFrontend('runtime')],
+        ]);
 
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
@@ -2947,8 +2931,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
         GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory());
@@ -3109,8 +3093,8 @@ class ContentObjectRendererTest extends UnitTestCase
                 'parseFunc.' => $this->getLibParseFunc(),
             ],
         ];
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
@@ -3140,8 +3124,10 @@ class ContentObjectRendererTest extends UnitTestCase
             },
             new NullFrontend('dummy')
         );
-        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('runtime'));
-        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+        $this->cacheManagerMock->method('getCache')->willReturnMap([
+            ['runtime', new NullFrontend('dummy')],
+            ['core', new NullFrontend('runtime')],
+        ]);
         $linkFactory = $this->getLinkFactory($siteConfiguration);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $linkText = 'Nice Text';
@@ -3181,9 +3167,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible(): void
     {
-        $linkService = $this->prophesize(LinkService::class);
-        $linkService->resolve('foo')->willThrow(InvalidPathException::class);
-        $linkFactory = $this->getLinkFactory(null, $linkService->reveal());
+        $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303735));
+        $linkFactory = $this->getLinkFactory(null, $linkService);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         self::assertSame('foo', $this->subject->typoLink('foo', ['parameter' => 'foo']));
     }
@@ -3193,12 +3179,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typoLinkLogsErrorIfNoLinkResolvingIsPossible(): void
     {
-        $linkService = $this->prophesize(LinkService::class);
-        $linkService->resolve('foo')->willThrow(InvalidPathException::class);
-        $linkFactory = $this->getLinkFactory(null, $linkService->reveal());
-        $logger = $this->prophesize(Logger::class);
-        $logger->warning('The link could not be generated', Argument::any())->shouldBeCalled();
-        $linkFactory->setLogger($logger->reveal());
+        $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
+        $linkFactory = $this->getLinkFactory(null, $linkService);
+        $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
+        $logger->expects(self::atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
+        $linkFactory->setLogger($logger);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         $this->subject->typoLink('foo', ['parameter' => 'foo']);
@@ -3228,11 +3214,13 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
-        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
-        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+        $this->cacheManagerMock->method('getCache')->willReturnMap([
+            ['runtime', new NullFrontend('dummy')],
+            ['core', new NullFrontend('runtime')],
+        ]);
 
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
@@ -3298,11 +3286,13 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
-        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
-        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+        $this->cacheManagerMock->method('getCache')->willReturnMap([
+            ['runtime', new NullFrontend('dummy')],
+            ['core', new NullFrontend('runtime')],
+        ]);
 
         $siteConfiguration = new SiteConfiguration(
             Environment::getConfigPath() . '/sites',
@@ -3820,11 +3810,11 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function notAllStdWrapProcessorsAreCallableWithEmptyConfiguration(): void
     {
-        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
-        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
-        $linkFactory = $this->prophesize(LinkFactory::class);
-        $linkFactory->create(Argument::cetera())->willReturn(new LinkResult('', ''));
-        GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+        $timeTrackerMock = $this->getMockBuilder(TimeTracker::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerMock);
+        $linkFactory = $this->getMockBuilder(LinkFactory::class)->disableOriginalConstructor()->getMock();
+        $linkFactory->expects(self::atLeastOnce())->method('create')->with(self::anything())->willReturn(new LinkResult('', ''));
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         $expectExceptions = ['numRows'];
         $count = 0;
@@ -8248,4 +8238,47 @@ class ContentObjectRendererTest extends UnitTestCase
     /***************************************************************************
      * End: Mixed tests
      ***************************************************************************/
+
+    protected function createContentObjectFactoryMock()
+    {
+        return new class (new Container()) extends ContentObjectFactory {
+            /**
+             * @var array<string, callable>
+             */
+            private array $getContentObjectCallbacks = [];
+
+            public function getContentObject(
+                string $name,
+                \Psr\Http\Message\ServerRequestInterface $request,
+                ContentObjectRenderer $contentObjectRenderer
+            ): ?AbstractContentObject {
+                if (is_callable($this->getContentObjectCallbacks[$name] ?? null)) {
+                    return $this->getContentObjectCallbacks[$name]();
+                }
+                return null;
+            }
+
+            /**
+             * @internal This method is just for testing purpose.
+             */
+            public function addGetContentObjectCallback(string $name, string $className, ServerRequestInterface $request, ContentObjectRenderer $cObj, MockObject&DataProcessorRegistry $dataProcessorRegistry): void
+            {
+                $this->getContentObjectCallbacks[$name] = static function () use ($className, $request, $cObj, $dataProcessorRegistry) {
+                    if ($className === 'FluidTemplateContentObject') {
+                        $contentObject = new FluidTemplateContentObject(
+                            new ContentDataProcessor(
+                                new Container(),
+                                $dataProcessorRegistry
+                            )
+                        );
+                    } else {
+                        $contentObject = new $className();
+                    }
+                    $contentObject->setRequest($request);
+                    $contentObject->setContentObjectRenderer($cObj);
+                    return $contentObject;
+                };
+            }
+        };
+    }
 }
