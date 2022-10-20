@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -32,12 +31,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RemoteServerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
-     * @var array<string, FileReference>
+     * @var array<string, MockObject&FileReference>
      */
     protected array $fileReferenceMocks;
 
@@ -132,38 +129,38 @@ class RemoteServerTest extends UnitTestCase
 
     /**
      * @param string $idList List of ids
-     * @return array<string, FileReference>
+     * @return array<string, MockObject&FileReference>
      */
     protected function getFileReferenceMocks(string $idList): array
     {
-        $fileReferenceProphecies = [];
+        $fileReferenceMocks = [];
         $ids = GeneralUtility::trimExplode(',', $idList, true);
 
         foreach ($ids as $id) {
-            $fileReferenceProphecies[$id] = $this->getFileReferenceMock($id);
+            $fileReferenceMocks[$id] = $this->getFileReferenceMock($id);
         }
 
-        return $fileReferenceProphecies;
+        return $fileReferenceMocks;
     }
 
-    protected function getFileReferenceMock(string $id): FileReference
+    protected function getFileReferenceMock(string $id): MockObject&FileReference
     {
         if (isset($this->fileReferenceMocks[$id])) {
             return $this->fileReferenceMocks[$id];
         }
 
-        $processedFileProphecy = $this->prophesize(ProcessedFile::class);
-        $processedFileProphecy->getPublicUrl(Argument::cetera())->willReturn('/tmb/' . $id . '.png');
+        $processedFileMock = $this->getMockBuilder(ProcessedFile::class)->disableOriginalConstructor()->getMock();
+        $processedFileMock->expects(self::any())->method('getPublicUrl')->willReturn('/tmb/' . $id . '.png');
 
-        $fileProphecy = $this->prophesize(File::class);
-        $fileProphecy->process(Argument::cetera())->willReturn($processedFileProphecy->reveal());
+        $fileMock = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
+        $fileMock->expects(self::any())->method('process')->willReturn($processedFileMock);
 
-        $fileReferenceProphecy = $this->prophesize(FileReference::class);
-        $fileReferenceProphecy->getUid()->willReturn($id);
-        $fileReferenceProphecy->getOriginalFile()->willReturn($fileProphecy->reveal());
-        $fileReferenceProphecy->getPublicUrl(Argument::cetera())->willReturn('/img/' . $id . '.png');
+        $fileReferenceMock = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
+        $fileReferenceMock->method('getUid')->willReturn($id);
+        $fileReferenceMock->method('getOriginalFile')->willReturn($fileMock);
+        $fileReferenceMock->expects(self::any())->method('getPublicUrl')->willReturn('/img/' . $id . '.png');
 
-        $this->fileReferenceMocks[$id] = $fileReferenceProphecy->reveal();
+        $this->fileReferenceMocks[$id] = $fileReferenceMock;
         return $this->fileReferenceMocks[$id];
     }
 }
