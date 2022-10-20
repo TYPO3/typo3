@@ -17,30 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\DataProcessorFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor
- */
 class ContentDataProcessorTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected ContentDataProcessor $contentDataProcessor;
-
-    /** @var ObjectProphecy<ContainerInterface> */
-    protected ObjectProphecy $containerProphecy;
-
-    /** @var ObjectProphecy<DataProcessorRegistry> */
-    protected ObjectProphecy $dataProcessorRegistryProphecy;
+    protected Container $container;
+    protected MockObject&DataProcessorRegistry $dataProcessorRegistryMock;
 
     /**
      * Set up
@@ -48,13 +37,12 @@ class ContentDataProcessorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->containerProphecy = $this->prophesize(ContainerInterface::class);
-        $this->containerProphecy->has(Argument::any())->willReturn(false);
-        $this->dataProcessorRegistryProphecy = $this->prophesize(DataProcessorRegistry::class);
-        $this->dataProcessorRegistryProphecy->getDataProcessor(Argument::any())->willReturn(null);
+        $this->container = new Container();
+        $this->dataProcessorRegistryMock = $this->getMockBuilder(DataProcessorRegistry::class)->disableOriginalConstructor()->getMock();
+        $this->dataProcessorRegistryMock->method('getDataProcessor')->willReturn(null);
         $this->contentDataProcessor = new ContentDataProcessor(
-            $this->containerProphecy->reveal(),
-            $this->dataProcessorRegistryProphecy->reveal()
+            $this->container,
+            $this->dataProcessorRegistryMock
         );
     }
 
@@ -119,8 +107,7 @@ class ContentDataProcessorTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1635927108);
         $contentObjectRendererStub = new ContentObjectRenderer();
-        $this->containerProphecy->has(static::class)->willReturn(true);
-        $this->containerProphecy->get(static::class)->willReturn($this);
+        $this->container->set(static::class, $this);
         $config = [
             'dataProcessing.' => [
                 '10' => static::class,
@@ -136,8 +123,7 @@ class ContentDataProcessorTest extends UnitTestCase
     public function processorServiceIsCalled(): void
     {
         $contentObjectRendererStub = new ContentObjectRenderer();
-        $this->containerProphecy->has('dataProcessorFixture')->willReturn(true);
-        $this->containerProphecy->get('dataProcessorFixture')->willReturn(new DataProcessorFixture());
+        $this->container->set('dataProcessorFixture', new DataProcessorFixture());
         $config = [
             'dataProcessing.' => [
                 '10' => 'dataProcessorFixture',
