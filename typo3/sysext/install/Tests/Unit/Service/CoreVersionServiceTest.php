@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,21 +24,16 @@ use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CoreVersionServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     public function setUpApiResponse(string $url, array $responseData): void
     {
         $response = new JsonResponse($responseData);
-        $requestFactory = $this->prophesize(RequestFactory::class);
-        $requestFactory->request('https://get.typo3.org/api/v1/' . $url, Argument::cetera())->willReturn($response);
-        GeneralUtility::addInstance(RequestFactory::class, $requestFactory->reveal());
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::atLeastOnce())->method('request')->willReturn($response);
+        GeneralUtility::addInstance(RequestFactory::class, $requestFactoryMock);
     }
 
     /**

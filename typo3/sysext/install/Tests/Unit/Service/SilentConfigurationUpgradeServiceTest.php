@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -36,13 +34,8 @@ use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var ConfigurationManager|MockObject
      */
@@ -544,17 +537,17 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migratesGraphicsProcessorEffects($currentValue, bool $expectedMigratedValue): void
     {
-        $configurationManager = $this->prophesize(ConfigurationManager::class);
-        $configurationManager->getLocalConfigurationValueByPath('GFX/processor')->willReturn('GraphicsMagick');
-        $configurationManager->getLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng')->willReturn(false);
-        $configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects')->willReturn($currentValue);
-        $configurationManager->setLocalConfigurationValuesByPathValuePairs([
-            'GFX/processor_effects' => $expectedMigratedValue,
-        ])->shouldBeCalled();
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->expects(self::any())->method('getLocalConfigurationValueByPath')->willReturnMap([
+            ['GFX/processor', 'GraphicsMagick'],
+            ['GFX/processor_allowTemporaryMasksAsPng', false],
+            ['GFX/processor_effects', $currentValue],
+        ]);
+        $configurationManagerMock->expects(self::atLeastOnce())->method('setLocalConfigurationValuesByPathValuePairs');
 
         $this->expectException(ConfigurationChangedException::class);
 
-        $silentConfigurationUpgradeService = new SilentConfigurationUpgradeService($configurationManager->reveal());
+        $silentConfigurationUpgradeService = new SilentConfigurationUpgradeService($configurationManagerMock);
         // Call protected method
         \Closure::bind(function () {
             return $this->setImageMagickDetailSettings();
@@ -669,23 +662,15 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateCacheHashOptions(): void
     {
-        $oldConfig = [
-            'FE/cHashOnlyForParameters' => 'foo,bar',
-            'FE/cHashExcludedParameters' => 'bar,foo',
-            'FE/cHashRequiredParameters' => 'bar,baz',
-            'FE/cHashExcludedParametersIfEmpty' => '*',
-        ];
-
-        $configurationManager = $this->prophesize(ConfigurationManager::class);
-
-        foreach ($oldConfig as $key => $value) {
-            $configurationManager->getLocalConfigurationValueByPath($key)
-                ->shouldBeCalled()
-                ->willReturn($value);
-        }
-
-        $configurationManager->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())->shouldBeCalled();
-        $configurationManager->removeLocalConfigurationKeysByPath(Argument::cetera())->shouldBeCalled();
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->method('getLocalConfigurationValueByPath')->willReturnMap([
+            ['FE/cHashOnlyForParameters', 'foo,bar'],
+            ['FE/cHashExcludedParameters', 'bar,foo'],
+            ['FE/cHashRequiredParameters', 'bar,baz'],
+            ['FE/cHashExcludedParametersIfEmpty', '*'],
+        ]);
+        $configurationManagerMock->expects(self::atLeastOnce())->method('setLocalConfigurationValuesByPathValuePairs');
+        $configurationManagerMock->expects(self::atLeastOnce())->method('removeLocalConfigurationKeysByPath');
 
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
@@ -698,7 +683,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManagerMock);
         $silentConfigurationUpgradeServiceInstance->_call('migrateCacheHashOptions');
     }
 
@@ -707,16 +692,14 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreNotSet(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989414);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
-            ->shouldBeCalled()->willThrow($configurationManagerException);
-        $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())
-            ->shouldNotBeCalled();
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->method('getLocalConfigurationValueByPath')->willThrowException($configurationManagerException);
+        $configurationManagerMock->expects(self::never())->method('setLocalConfigurationValuesByPathValuePairs');
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
-            [$configurationManagerProphecy->reveal()]
+            [$configurationManagerMock]
         );
         $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
     }
@@ -726,15 +709,14 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreEmpty(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
-            ->shouldBeCalled()->willReturn([]);
-        $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())
-            ->shouldNotBeCalled();
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->method('getLocalConfigurationValueByPath')->willReturn([]);
+        $configurationManagerMock->expects(self::never())->method('setLocalConfigurationValuesByPathValuePairs');
+
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
-            [$configurationManagerProphecy->reveal()]
+            [$configurationManagerMock]
         );
         $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
     }
@@ -744,21 +726,19 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
-            ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
-        $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
-        $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());
-        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords'])
-            ->shouldBeCalled();
+        $argonBeMock = $this->getMockBuilder(Argon2iPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $argonBeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(true);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeMock);
+        $argonFeMock = $this->getMockBuilder(Argon2iPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $argonFeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(true);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeMock);
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->expects(self::atLeastOnce())->method('getLocalConfigurationValueByPath')->willReturn(['thereIs' => 'something']);
+        $configurationManagerMock->expects(self::atLeastOnce())->method('removeLocalConfigurationKeysByPath')->with(['EXTENSIONS/saltedpasswords']);
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
-            [$configurationManagerProphecy->reveal()]
+            [$configurationManagerMock]
         );
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
@@ -770,37 +750,38 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2idAndArgon2iIsNotAvailable(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
-            ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
-        $argon2idBeProphecy = $this->prophesize(Argon2idPasswordHash::class);
-        $argon2idBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
-        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idBeProphecy->reveal());
-        $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
-        $bcryptBeProphecy = $this->prophesize(BcryptPasswordHash::class);
-        $bcryptBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptBeProphecy->reveal());
-        $argon2idFeProphecy = $this->prophesize(Argon2idPasswordHash::class);
-        $argon2idFeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
-        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idFeProphecy->reveal());
-        $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());
-        $bcryptFeProphecy = $this->prophesize(BcryptPasswordHash::class);
-        $bcryptFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptFeProphecy->reveal());
-        $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs([
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->expects(self::atLeastOnce())->method('removeLocalConfigurationKeysByPath')->with(['EXTENSIONS/saltedpasswords']);
+        $configurationManagerMock->expects(self::atLeastOnce())->method('setLocalConfigurationValuesByPathValuePairs')->with([
             'BE/passwordHashing/className' => BcryptPasswordHash::class,
             'FE/passwordHashing/className' => BcryptPasswordHash::class,
-        ])->shouldBeCalled();
-        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords'])
-            ->shouldBeCalled();
+        ]);
+        $configurationManagerMock->expects(self::atLeastOnce())->method('getLocalConfigurationValueByPath')->willReturnMap([
+            ['EXTENSIONS/saltedpasswords', ['thereIs' => 'something']],
+        ]);
+        $argon2idBeMock = $this->getMockBuilder(Argon2idPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $argon2idBeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idBeMock);
+        $argonBeMock = $this->getMockBuilder(Argon2iPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $argonBeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeMock);
+        $bcryptBeMock = $this->getMockBuilder(BcryptPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $bcryptBeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(true);
+        GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptBeMock);
+        $argon2idFeMock = $this->getMockBuilder(Argon2idPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $argon2idFeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idFeMock);
+        $argonFeMock = $this->getMockBuilder(Argon2iPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $argonFeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeMock);
+        $bcryptFeMock = $this->getMockBuilder(BcryptPasswordHash::class)->disableOriginalConstructor()->getMock();
+        $bcryptFeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(true);
+        GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptFeMock);
+
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
-            [$configurationManagerProphecy->reveal()]
+            [$configurationManagerMock]
         );
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
@@ -842,12 +823,12 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'groups' => ['system'],
             ],
         ];
-        $configurationManager = $this->prophesize(ConfigurationManager::class);
-        $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations')
-            ->shouldBeCalled()
-            ->willReturn($oldCacheConfigurations);
-
-        $configurationManager->setLocalConfigurationValueByPath('SYS/caching/cacheConfigurations', $newCacheConfigurations)->shouldBeCalled();
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->expects(self::atLeastOnce())->method('getLocalConfigurationValueByPath')->willReturnMap([
+            ['SYS/caching/cacheConfigurations', $oldCacheConfigurations],
+        ]);
+        $configurationManagerMock->expects(self::atLeastOnce())->method('setLocalConfigurationValueByPath')
+            ->with('SYS/caching/cacheConfigurations', $newCacheConfigurations);
 
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
@@ -860,7 +841,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManagerMock);
         $silentConfigurationUpgradeServiceInstance->_call('migrateCachingFrameworkCaches');
     }
 
@@ -884,13 +865,11 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'groups' => ['system'],
             ],
         ];
-        $configurationManager = $this->prophesize(ConfigurationManager::class);
-        $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations')
-            ->shouldBeCalled()
-            ->willReturn($oldCacheConfigurations);
-
-        $configurationManager->setLocalConfigurationValueByPath(Argument::cetera())->shouldNotBeCalled();
-
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->expects(self::atLeastOnce())->method('getLocalConfigurationValueByPath')->willReturnMap([
+            ['SYS/caching/cacheConfigurations', $oldCacheConfigurations],
+        ]);
+        $configurationManagerMock->expects(self::never())->method('setLocalConfigurationValueByPath');
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -899,7 +878,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManagerMock);
         $silentConfigurationUpgradeServiceInstance->_call('migrateCachingFrameworkCaches');
     }
 }

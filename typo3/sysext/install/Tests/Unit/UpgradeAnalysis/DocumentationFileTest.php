@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\UpgradeAnalysis;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
@@ -29,13 +27,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DocumentationFileTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected DocumentationFile $documentationFileService;
     protected vfsStreamDirectory $docRoot;
 
-    /** @var ObjectProphecy<Registry> */
-    protected ObjectProphecy $registry;
+    /** @var MockObject&Registry */
+    protected MockObject $registry;
 
     /**
      * set up test environment
@@ -108,9 +104,9 @@ class DocumentationFileTest extends UnitTestCase
 
         $this->docRoot = vfsStream::setup('root', null, $structure);
 
-        $this->registry = $this->prophesize(Registry::class);
+        $this->registry = $this->getMockBuilder(Registry::class)->disableOriginalConstructor()->getMock();
         $this->documentationFileService = new DocumentationFile(
-            $this->registry->reveal(),
+            $this->registry,
             vfsStream::url('root/Changelog')
         );
     }
@@ -142,7 +138,7 @@ class DocumentationFileTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1485425530);
-        $documentationFileService = new DocumentationFile($this->registry->reveal());
+        $documentationFileService = new DocumentationFile($this->registry);
         $documentationFileService->findDocumentationFiles($path);
     }
 
@@ -184,22 +180,6 @@ class DocumentationFileTest extends UnitTestCase
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/2.0'));
         $firstResult = current($result);
         self::assertEquals($expected, $firstResult['tags']);
-    }
-
-    /**
-     * @test
-     */
-    public function filesAreFilteredByUsersChoice(): void
-    {
-        $ignoredFiles = ['vfs://root/Changelog/1.2/Breaking-12345-Issue.rst'];
-        $this->registry->get(
-            'upgradeAnalysisIgnoreFilter',
-            'ignoredDocumentationFiles',
-            Argument::any()
-        )->willReturn($ignoredFiles);
-
-        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/1.2'));
-        self::assertArrayNotHasKey(12345, $result);
     }
 
     /**

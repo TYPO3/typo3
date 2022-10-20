@@ -17,19 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class Typo3tempFileServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -37,9 +31,9 @@ class Typo3tempFileServiceTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781453);
-        $processedFileRepository = $this->prophesize(ProcessedFileRepository::class);
-        $storageRepository = $this->prophesize(StorageRepository::class);
-        $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
+        $processedFileRepositoryMock = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
+        $storageRepositoryMock = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $subject = new Typo3tempFileService($processedFileRepositoryMock, $storageRepositoryMock);
         $subject->clearAssetsFolder('../foo');
     }
 
@@ -50,9 +44,9 @@ class Typo3tempFileServiceTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781453);
-        $processedFileRepository = $this->prophesize(ProcessedFileRepository::class);
-        $storageRepository = $this->prophesize(StorageRepository::class);
-        $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
+        $processedFileRepositoryMock = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
+        $storageRepositoryMock = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $subject = new Typo3tempFileService($processedFileRepositoryMock, $storageRepositoryMock);
         $subject->clearAssetsFolder('typo3temp/foo');
     }
 }
