@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -26,21 +25,15 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class FlexFormProcessorTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<ContentObjectRenderer> */
-    protected ObjectProphecy $contentObjectRenderer;
+    protected MockObject&ContentObjectRenderer $contentObjectRendererMock;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->resetSingletonInstances = true;
-        $this->contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $this->contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
         $this->prepareFlexFormService();
     }
 
@@ -50,12 +43,10 @@ class FlexFormProcessorTest extends UnitTestCase
     public function customFieldNameDoesNotExistsWillReturnUnchangedProcessedData(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'non_existing_field'];
-        $this->contentObjectRenderer
-            ->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform')
-            ->willReturn('non_existing_field');
-        $this->contentObjectRenderer
-            ->stdWrapValue('as', $processorConfiguration, 'flexFormData')
-            ->willReturn('myOutputVariable');
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+           ['fieldName', $processorConfiguration, 'pi_flexform', 'non_existing_field'],
+           ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
+        ]);
 
         $processedData = [
             'data' => [
@@ -65,7 +56,7 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $subject = new FlexFormProcessor();
         $expected = $subject->process(
-            $this->contentObjectRenderer->reveal(),
+            $this->contentObjectRendererMock,
             [],
             $processorConfiguration,
             $processedData
@@ -80,12 +71,10 @@ class FlexFormProcessorTest extends UnitTestCase
     public function customFieldNameDoesNotContainFlexFormDataWillReturnUnchangedProcessedData(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'custom_field'];
-        $this->contentObjectRenderer
-            ->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform')
-            ->willReturn('custom_field');
-        $this->contentObjectRenderer
-            ->stdWrapValue('as', $processorConfiguration, 'flexFormData')
-            ->willReturn('myOutputVariable');
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'non_existing_field'],
+            ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
+        ]);
 
         $processedData = [
             'data' => [
@@ -95,7 +84,7 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $subject = new FlexFormProcessor();
         $expected = $subject->process(
-            $this->contentObjectRenderer->reveal(),
+            $this->contentObjectRendererMock,
             [],
             $processorConfiguration,
             $processedData
@@ -110,12 +99,10 @@ class FlexFormProcessorTest extends UnitTestCase
     public function customOutputVariableForProcessorWillReturnParsedFlexFormToDataCustomVariable(): void
     {
         $processorConfiguration = ['as' => 'myCustomVar'];
-        $this->contentObjectRenderer
-            ->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform')
-            ->willReturn('pi_flexform');
-        $this->contentObjectRenderer
-            ->stdWrapValue('as', $processorConfiguration, 'flexFormData')
-            ->willReturn('myCustomVar');
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
+            ['as', $processorConfiguration, 'flexFormData', 'myCustomVar'],
+        ]);
 
         $processedData = [
             'data' => [
@@ -125,7 +112,7 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $subject = new FlexFormProcessor();
         $expected = $subject->process(
-            $this->contentObjectRenderer->reveal(),
+            $this->contentObjectRendererMock,
             [],
             $processorConfiguration,
             $processedData
@@ -140,12 +127,10 @@ class FlexFormProcessorTest extends UnitTestCase
     public function defaultOutputVariableForProcessorWillBeUsed(): void
     {
         $processorConfiguration = [];
-        $this->contentObjectRenderer
-            ->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform')
-            ->willReturn('pi_flexform');
-        $this->contentObjectRenderer
-            ->stdWrapValue('as', $processorConfiguration, 'flexFormData')
-            ->willReturn('flexFormData');
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
+            ['as', $processorConfiguration, 'flexFormData', 'flexFormData'],
+        ]);
 
         $processedData = [
             'data' => [
@@ -155,7 +140,7 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $subject = new FlexFormProcessor();
         $expected = $subject->process(
-            $this->contentObjectRenderer->reveal(),
+            $this->contentObjectRendererMock,
             [],
             $processorConfiguration,
             $processedData
@@ -171,12 +156,10 @@ class FlexFormProcessorTest extends UnitTestCase
     public function defaultConfigurationWithCustomFieldNameWillReturnParsedFlexFormToDefaultOutputVariable(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'my_flexform'];
-        $this->contentObjectRenderer
-            ->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform')
-            ->willReturn('my_flexform');
-        $this->contentObjectRenderer
-            ->stdWrapValue('as', $processorConfiguration, 'flexFormData')
-            ->willReturn('myOutputVariable');
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'my_flexform'],
+            ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
+        ]);
 
         $processedData = [
             'data' => [
@@ -186,7 +169,7 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $subject = new FlexFormProcessor();
         $expected = $subject->process(
-            $this->contentObjectRenderer->reveal(),
+            $this->contentObjectRendererMock,
             [],
             $processorConfiguration,
             $processedData
@@ -210,37 +193,36 @@ class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
 
-        $this->contentObjectRenderer
-            ->stdWrapValue('fieldName', $processorConfiguration, 'pi_flexform')
-            ->willReturn('pi_flexform');
-        $this->contentObjectRenderer
-            ->stdWrapValue('as', $processorConfiguration, 'flexFormData')
-            ->willReturn('flexFormData');
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
+            ['as', $processorConfiguration, 'flexFormData', 'flexFormData'],
+        ]);
         $convertedFlexFormData = [
             'options' => [
                 'hotels' => 0,
                 'images' => '12',
             ],
         ];
-        $this->contentObjectRenderer->start([$convertedFlexFormData])->shouldBeCalled();
+        $this->contentObjectRendererMock->expects(self::once())->method('start')->with([$convertedFlexFormData]);
 
-        $contentDataProcessor = $this->prophesize(ContentDataProcessor::class);
+        $contentDataProcessorMock = $this->getMockBuilder(ContentDataProcessor::class)->disableOriginalConstructor()->getMock();
         $renderedDataFromProcessors = [
             'options' => [
                 'hotels' => 0,
                 'images' => 'img/foo.jpg',
             ],
         ];
-        $contentDataProcessor
-            ->process($this->contentObjectRenderer->reveal(), $processorConfiguration, $convertedFlexFormData)
+        $contentDataProcessorMock
+            ->method('process')
+            ->with($this->contentObjectRendererMock, $processorConfiguration, $convertedFlexFormData)
             ->willReturn($renderedDataFromProcessors);
 
-        GeneralUtility::addInstance(ContentObjectRenderer::class, $this->contentObjectRenderer->reveal());
-        GeneralUtility::addInstance(ContentDataProcessor::class, $contentDataProcessor->reveal());
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $this->contentObjectRendererMock);
+        GeneralUtility::addInstance(ContentDataProcessor::class, $contentDataProcessorMock);
 
         $subject = new FlexFormProcessor();
         $actual = $subject->process(
-            $this->contentObjectRenderer->reveal(),
+            $this->contentObjectRendererMock,
             [],
             $processorConfiguration,
             $processedData
@@ -274,9 +256,9 @@ class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
 
-        $flexFormService = $this->prophesize(FlexFormService::class);
-        $flexFormService->convertFlexFormContentToArray($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
-        GeneralUtility::setSingletonInstance(FlexFormService::class, $flexFormService->reveal());
+        $flexFormService = $this->getMockBuilder(FlexFormService::class)->disableOriginalConstructor()->getMock();
+        $flexFormService->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
+        GeneralUtility::setSingletonInstance(FlexFormService::class, $flexFormService);
     }
 
     private function prepareFlexFormServiceWithSubDataProcessorData(): void
@@ -288,8 +270,8 @@ class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
 
-        $flexFormService = $this->prophesize(FlexFormService::class);
-        $flexFormService->convertFlexFormContentToArray($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
-        GeneralUtility::setSingletonInstance(FlexFormService::class, $flexFormService->reveal());
+        $flexFormService = $this->getMockBuilder(FlexFormService::class)->disableOriginalConstructor()->getMock();
+        $flexFormService->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
+        GeneralUtility::setSingletonInstance(FlexFormService::class, $flexFormService);
     }
 }
