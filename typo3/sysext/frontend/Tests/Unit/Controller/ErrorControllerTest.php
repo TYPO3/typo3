@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -25,13 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ErrorControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -39,9 +33,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function pageNotFoundHandlingReturns404ResponseIfNotConfigured(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -55,9 +49,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function unavailableHandlingReturns503ResponseIfNotConfigured(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -87,9 +81,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function internalErrorHandlingReturns500ResponseIfNotConfigured(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -119,9 +113,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -151,9 +145,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -183,9 +177,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -215,9 +209,9 @@ class ErrorControllerTest extends UnitTestCase
      */
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
