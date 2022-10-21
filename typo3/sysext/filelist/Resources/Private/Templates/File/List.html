@@ -94,13 +94,13 @@
                             <f:if condition="{downloadActionConfiguration}">
                                 <div class="col">
                                     <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="download" data-multi-record-selection-action-config="{downloadActionConfiguration -> f:format.raw()}">
-                                <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')}">
-                                    <core:icon identifier="actions-download" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download" />
-                                </span>
+                                        <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')}">
+                                            <core:icon identifier="actions-download" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download" />
+                                        </span>
                                     </button>
                                 </div>
                             </f:if>
-                            <f:if condition="{enableClipBoard.enabled}">
+                            <f:if condition="{showClipboardPanel} && {enableClipBoard.mode} != 'normal'">
                                 <div class="col">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="copyMarked">
