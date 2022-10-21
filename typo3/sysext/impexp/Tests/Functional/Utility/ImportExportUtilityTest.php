@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Utility;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
 class ImportExportUtilityTest extends AbstractImportExportTestCase
 {
-    use ProphecyTrait;
-
     public function importFailsDataProvider(): array
     {
         return [
@@ -50,11 +47,10 @@ class ImportExportUtilityTest extends AbstractImportExportTestCase
         $this->expectException(\ErrorException::class);
         $this->expectExceptionMessage('No page records imported');
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $importUtilityMock = $this->getAccessibleMock(
             ImportExportUtility::class,
             ['dummy'],
-            ['eventDispatcher' => $eventDispatcher->reveal()]
+            ['eventDispatcher' => new NoopEventDispatcher()]
         );
         $importUtilityMock->importT3DFile($filePath, 0);
     }
@@ -66,11 +62,10 @@ class ImportExportUtilityTest extends AbstractImportExportTestCase
     {
         $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml';
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $importUtilityMock = $this->getAccessibleMock(
             ImportExportUtility::class,
             ['dummy'],
-            ['eventDispatcher' => $eventDispatcher->reveal()]
+            ['eventDispatcher' => new NoopEventDispatcher()]
         );
         $result = $importUtilityMock->importT3DFile($filePath, 0);
 
