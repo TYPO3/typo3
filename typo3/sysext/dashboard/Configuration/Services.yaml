@@ -16,3 +16,8 @@ services:
 
   TYPO3\CMS\Dashboard\Controller\WidgetAjaxController:
     public: true
+
+  TYPO3\CMS\Dashboard\EventListener\AfterBackendPageRenderEventListener:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent
