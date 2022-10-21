@@ -30,10 +30,17 @@ prototypes:
               propertyPath: defaultValue
               propertyValidators:
                 10: IntegerOrEmpty
-            700:
+            600:
               identifier: step
               templateName: Inspector-TextEditor
               label: formEditor.elements.TextMixin.editor.step.label
+              propertyPath: properties.fluidAdditionalAttributes.step
+              propertyValidators:
+                10: Integer
+            700:
+              identifier: gridColumnViewPortConfiguration
+              templateName: Inspector-GridColumnViewPortConfigurationEditor
+              label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
               configurationOptions:
                 viewPorts:
                   10:
@@ -58,9 +65,6 @@ prototypes:
                   label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
                   propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
                   fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
-              propertyPath: properties.fluidAdditionalAttributes.step
-              propertyValidators:
-                10: Integer
             800:
               identifier: requiredValidator
               templateName: Inspector-RequiredValidatorEditor
