@@ -198,7 +198,7 @@ class AddController extends AbstractWizardController
         $queryParams = $request->getQueryParams();
         // Init GPvars:
         $this->P = $parsedBody['P'] ?? $queryParams['P'] ?? [];
-        $this->returnEditConf = $parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? null;
+        $this->returnEditConf = $parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? '';
         // Get this record
         $record = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
         // Set table:
