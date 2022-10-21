@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -34,13 +31,12 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     ///////////////////////////////////////
@@ -153,8 +149,7 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
 
         self::assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
@@ -175,9 +170,9 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn('testLabel');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::once())->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
         self::assertSame('testLabel', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
@@ -197,9 +192,9 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn('testLabel');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
         self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'pi_flexform', null));
     }
 
@@ -219,9 +214,9 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn('testLabel');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
         $expectation = "\n"
             . "\n    "
             . "\n        "
@@ -280,14 +275,14 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::any())->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
-        $relationHandlerProphet = $this->prophesize(RelationHandler::class);
-        $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
-        $relationHandlerProphet->getFromDB()->willReturn([]);
-        $relationHandlerProphet->getResolvedItemArray()->willReturn([
+        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
+        $relationHandlerMock->expects(self::once())->method('start')->with('1,2');
+        $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
+        $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
             [
                 'table' => 'pages',
                 'uid' => 1,
@@ -307,7 +302,7 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ]);
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphet->reveal());
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
 
         self::assertSame('Page 1, Page 2', BackendUtility::getProcessedValue('tt_content', 'pages', '1,2'));
     }
@@ -351,14 +346,14 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
-        $relationHandlerProphet = $this->prophesize(RelationHandler::class);
-        $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
-        $relationHandlerProphet->getFromDB()->willReturn([]);
-        $relationHandlerProphet->getResolvedItemArray()->willReturn([
+        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
+        $relationHandlerMock->expects(self::once())->method('start')->with('pages_1,index_config_2');
+        $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
+        $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
             [
                 'table' => 'pages',
                 'uid' => 1,
@@ -378,7 +373,7 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ]);
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphet->reveal());
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
         self::assertSame('Page 1, Configuration 2', BackendUtility::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
     }
 
@@ -387,10 +382,10 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForSelectWithMMRelation(): void
     {
-        $relationHandlerProphet = $this->prophesize(RelationHandler::class);
-        $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
-        $relationHandlerProphet->getFromDB()->willReturn([]);
-        $relationHandlerProphet->getResolvedItemArray()->willReturn([
+        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
+        $relationHandlerMock->expects(self::once())->method('start')->with('2');
+        $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
+        $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
             [
                 'table' => 'sys_category',
                 'uid' => 1,
@@ -411,7 +406,7 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ]);
 
-        $relationHandlerInstance = $relationHandlerProphet->reveal();
+        $relationHandlerInstance = $relationHandlerMock;
         $relationHandlerInstance->tableArray['sys_category'] = [1, 2];
 
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerInstance);
@@ -453,9 +448,9 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::any())->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
         self::assertSame(
             'Category 1, Category 2',
@@ -476,9 +471,9 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
     {
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+        $GLOBALS['LANG'] = $languageServiceMock;
 
         $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
 
@@ -528,9 +523,10 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
     {
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+
+        $GLOBALS['LANG'] = $languageServiceMock;
 
         $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
 
@@ -571,10 +567,14 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
-        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturnMap(
+            [
+                ['LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes', 'Yes'],
+                ['LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no', 'No'],
+            ]
+        );
+        $GLOBALS['LANG'] = $languageServiceMock;
         self::assertSame('Yes', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
@@ -600,10 +600,14 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
-        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturnMap(
+            [
+                ['LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes', 'Yes'],
+                ['LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no', 'No'],
+            ]
+        );
+        $GLOBALS['LANG'] = $languageServiceMock;
         self::assertSame('No', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
@@ -999,9 +1003,9 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function dateTimeAgeReturnsCorrectValues(): void
     {
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+        $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 3, 23, 2016);
 
         self::assertSame('24-03-16 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
@@ -1082,31 +1086,29 @@ class BackendUtilityTest extends UnitTestCase
     {
         $expected = ['called.' => ['config']];
         $pageId = 13;
-        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcherProphecy->dispatch(Argument::any())->willReturnArgument();
-        $loader = new PageTsConfigLoader($eventDispatcherProphecy->reveal());
-        $parserProphecy = $this->prophesize(PageTsConfigParser::class);
-        $parserProphecy->parse(Argument::cetera())->willReturn($expected);
-        $configuration = new PageTsConfig(new NullFrontend('runtimeCache'), $loader, $parserProphecy->reveal());
+        $eventDispatcher = new NoopEventDispatcher();
+        $loader = new PageTsConfigLoader($eventDispatcher);
+        $parserMock = $this->createMock(PageTsConfigParser::class);
+        $parserMock->method('parse')->willReturn($expected);
+        $configuration = new PageTsConfig(new NullFrontend('runtimeCache'), $loader, $parserMock);
         GeneralUtility::addInstance(PageTsConfig::class, $configuration);
 
-        $matcherProphecy = $this->prophesize(ConditionMatcher::class);
-        GeneralUtility::addInstance(ConditionMatcher::class, $matcherProphecy->reveal());
+        GeneralUtility::addInstance(ConditionMatcher::class, $this->createMock(ConditionMatcher::class));
 
-        $siteFinder = $this->prophesize(SiteFinder::class);
-        $siteFinder->getSiteByPageId($pageId)->willReturn(
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteFinderMock->method('getSiteByPageId')->willReturn(
             new Site('dummy', $pageId, ['base' => 'https://example.com'])
-        );
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
+        )->with($pageId);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->has(Argument::cetera())->willReturn(false);
-        $cacheProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheProphecy->set(Argument::cetera())->willReturn(false);
-        $cacheProphecy->get('backendUtilityBeGetRootLine')->willReturn(['13--1' => []]);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->willReturn($cacheMock)->with('runtime');
+        $cacheMock->method('has')->willReturn(false);
+        $cacheMock->method('set')->willReturn(false);
+        $cacheMock->method('get')->willReturn(['13--1' => []])->with('backendUtilityBeGetRootLine');
+        $cacheMock->method('get')->willReturn(false)->withAnyParameters();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $result = BackendUtility::getPagesTSconfig($pageId);
         self::assertEquals($expected, $result);
@@ -1194,19 +1196,18 @@ class BackendUtilityTest extends UnitTestCase
     {
         $tableName = 'table_a';
         $fieldName = 'field_a';
-        $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
-        $relationHandlerProphecy->start(
+        $relationHandlerMock = $this->createMock(RelationHandler::class);
+        $relationHandlerMock->expects(self::once())->method('start')->with(
             'foo',
             'sys_file_reference',
             '',
             42,
             $tableName,
             ['type' => 'file', 'foreign_table' => 'sys_file_reference']
-        )->shouldBeCalled();
-        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
-        $relationHandler = $relationHandlerProphecy->reveal();
-        $relationHandler->tableArray = ['sys_file_reference' => []];
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandler);
+        );
+        $relationHandlerMock->expects(self::once())->method('processDeletePlaceholder');
+        $relationHandlerMock->tableArray = ['sys_file_reference' => []];
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
             'type' => 'file',
             'foreign_table' => 'sys_file_reference',
