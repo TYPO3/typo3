@@ -395,7 +395,7 @@ class PaletteAndSingleContainer extends AbstractContainer
         $label = htmlspecialchars($element['fieldLabel']);
 
         if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-            $label .= '<code>[' . htmlspecialchars($fieldName) . ']</code>';
+            $label .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
 
         $content = [];
