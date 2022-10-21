@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -36,8 +35,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageArgumentValidatorTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     protected CacheHashCalculator $cacheHashCalculator;
@@ -98,9 +95,9 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = $request->withAttribute('routing', $pageArguments);
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
@@ -115,9 +112,9 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -152,9 +149,9 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = $request->withAttribute('routing', $pageArguments);
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
+        $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
