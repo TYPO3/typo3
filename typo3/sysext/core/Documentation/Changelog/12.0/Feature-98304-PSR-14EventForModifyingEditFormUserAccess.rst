@@ -23,7 +23,7 @@ convenience methods.
 To modify the user access, the following methods are available:
 
 *   :php:`allowUserAccess()`: Allows user access to the editing form
-*   :php:`setLinkExplanation()`: Denies user access to the editing form
+*   :php:`denyUserAccess()`: Denies user access to the editing form
 *   :php:`doesUserHaveAccess()`: Returns the current user access state
 *   :php:`getAccessDeniedException()`: If Core's DataProvider previously denied
     access, this returns the corresponding exception, :php:`null` otherwise
