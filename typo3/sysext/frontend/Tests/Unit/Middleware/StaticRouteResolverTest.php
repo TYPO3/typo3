@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -32,8 +31,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StaticRouteResolverTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected RequestHandlerInterface $requestHandler;
 
     /**
@@ -56,12 +53,9 @@ class StaticRouteResolverTest extends UnitTestCase
      */
     public function invalidStaticRouteDoesNotWork(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $linkServiceProphecy = $this->prophesize(LinkService::class);
-        $subject = new StaticRouteResolver(
-            $requestFactoryProphecy->reveal(),
-            $linkServiceProphecy->reveal()
-        );
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $subject = new StaticRouteResolver($requestFactoryMock, $linkServiceMock);
         $site = new Site('lotus-flower', 13, [
             'base' => 'https://example.com/',
             'languages' => [
