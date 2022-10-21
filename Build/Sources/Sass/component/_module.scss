@@ -78,10 +78,10 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
     border-bottom: 1px solid $module-docheader-border;
     padding: $module-docheader-padding;
 
-    @include transition(top 0.3s ease-in-out);
+    @include transition(transform 0.3s ease-in-out);
 
     &-folded {
-        top: -$module-docheader-scroll-offset;
+        transform: translateY(-$module-docheader-scroll-offset);
     }
 
     .module-docheader-bar {
