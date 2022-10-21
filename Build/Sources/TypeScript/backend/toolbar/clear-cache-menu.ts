@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '../icons';
 import Notification from '../notification';
 import Viewport from '../viewport';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
@@ -39,13 +39,14 @@ class ClearCacheMenu {
    * the clear cache call
    */
   private initializeEvents = (): void => {
-    $(Identifiers.containerSelector).on('click', Identifiers.menuItemSelector, (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-      const ajaxUrl = $(evt.currentTarget).attr('href');
-      if (ajaxUrl) {
-        this.clearCache(ajaxUrl);
+    const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
+
+    new RegularEvent('click', (e: Event, menuItem: HTMLAnchorElement): void => {
+      e.preventDefault()
+      if (menuItem.href) {
+        this.clearCache(menuItem.href);
       }
-    });
+    }).delegateTo(toolbarItemContainer, Identifiers.menuItemSelector);
   }
 
   /**
@@ -55,14 +56,15 @@ class ClearCacheMenu {
    * @param {string} ajaxUrl The URL to load
    */
   private clearCache(ajaxUrl: string): void {
+    const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
     // Close clear cache menu
-    $(Identifiers.containerSelector).removeClass('open');
+    toolbarItemContainer.classList.remove('open');
 
-    const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
-    const $existingIcon = $toolbarItemIcon.clone();
+    const toolbarItemIcon = toolbarItemContainer.querySelector(Identifiers.toolbarIconSelector);
+    const existingIcon = toolbarItemIcon.cloneNode(true);
 
     Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
-      $toolbarItemIcon.replaceWith(spinner);
+      toolbarItemIcon.replaceWith(document.createRange().createContextualFragment(spinner));
     });
 
     (new AjaxRequest(ajaxUrl)).post({}).then(
@@ -78,7 +80,7 @@ class ClearCacheMenu {
         Notification.error(TYPO3.lang['flushCaches.error'], TYPO3.lang['flushCaches.error.description']);
       },
     ).finally((): void => {
-      $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
+      toolbarItemContainer.querySelector(Identifiers.toolbarIconSelector).replaceWith(existingIcon);
     });
   }
 }
