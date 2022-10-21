@@ -1342,8 +1342,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // constant condition verdicts, the setup condition verdicts, plus various not TypoScript related details like
         // obviously the page id.
         if (!$this->no_cache) {
-            $lockHash = $this->createLockHash();
-            $this->newHash = $this->id . '_' . md5($this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList));
+            $this->newHash = $this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList);
             if ($this->shouldAcquireCacheData($request)) {
                 // Try to get a page cache row.
                 $this->getTimeTracker()->push('Cache Row');
@@ -1356,9 +1355,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // a page cache entry, which we can use.
                     // To handle the second case - if our process had to wait for another one creating the content for us - we
                     // simply query the page cache again to see if there is a page cache now. This has the drawback that the page
-                    // cache is queried twice if the lock did not had to wait for another process ... Maybe we could suppress this?
-                    $this->acquireLock('pages', $lockHash);
-                    // From this point on we're the only one working on that page ($lockHash).
+                    // cache is queried twice if the lock did not have to wait for another process ... Maybe we could suppress this?
+                    $this->acquireLock('pages', $this->newHash);
+                    // From this point on we're the only one working on that page.
                     // Query the cache again to see if the data is there meanwhile.
                     // @todo: We could avoid this query if acquireLock() returns an information if it got the lock immediately.
                     $pageCacheRow = $this->pageCache->get($this->newHash);
@@ -1376,7 +1375,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->getTimeTracker()->pull();
             } else {
                 // User forced page cache rebuilding. Get a lock for the page content so other processes can't interfere.
-                $this->acquireLock('pages', $lockHash);
+                $this->acquireLock('pages', $this->newHash);
             }
         }
 
@@ -1585,53 +1584,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * This creates a hash used to lock generation for a specific page: When multiple requests try
-     * to render the same page, this lock allows creating by one request which typically puts the result
-     * into page cache, while the other requests wait until this finished and re-use the result.
-     * This method is similar to createHashBase() which is used as identifier for the page cache entry,
-     * with the exception that it does not include TypoScript constant and constant / setup condition
-     * results. This means multiple "different" calls to the same page still block each other when their
-     * TypoScript conditions verdicts are different.
-     * @todo: Find out if we couldn't simply use createHashBase() instead. Why should different calls to
-     *        the same page that will lead to different page cache entries block each other?
-     */
-    private function createLockHash(): string
-    {
-        /** @var UserAspect $userAspect */
-        $userAspect = $this->context->getAspect('frontend.user');
-        $hashParameters = [
-            'id' => $this->id,
-            'type' => $this->type,
-            'groupIds' => (string)implode(',', $userAspect->getGroupIds()),
-            'MP' => (string)$this->MP,
-            'site' => $this->site->getIdentifier(),
-            // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
-            // is not cached properly as we don't have any language-specific conditions anymore
-            'siteBase' => (string)$this->language->getBase(),
-            // additional variation trigger for static routes
-            'staticRouteArguments' => $this->pageArguments->getStaticArguments(),
-            // dynamic route arguments (if route was resolved)
-            'dynamicArguments' => $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments),
-        ];
-        // Call hook to influence the hash calculation
-        $_params = [
-            'hashParameters' => &$hashParameters,
-            'createLockHashBase' => true,
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        return $this->id . '_' . md5(serialize($hashParameters));
-    }
-
-    /**
-     * Calculates the cache-hash (or the lock-hash)
-     * This hash is unique to the template,
-     * the variables ->id, ->type, list of frontend user groups,
-     * ->MP (Mount Points) and cHash array
-     * Used to get and later store the cached data.
+     * This creates a hash used as page cache entry identifier and as page generation lock.
+     * When multiple requests try to render the same page that will result in the same page cache entry,
+     * this lock allows creation by one request which typically puts the result into page cache, while
+     * the other requests wait until this finished and re-use the result.
      *
-     * @return string the serialized hash base
+     * This hash is unique to the TS template and constant and setup condition verdict,
+     * the variables ->id, ->type, list of frontend user groups, ->MP (Mount Points) and cHash array.
+     *
+     * @return string Page cache entry identifier also used as page generation lock
      */
     protected function createHashBase(array $sysTemplateRows, array $constantConditionList, array $setupConditionList): string
     {
@@ -1658,12 +1619,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Call hook to influence the hash calculation
         $_params = [
             'hashParameters' => &$hashParameters,
-            'createLockHashBase' => false,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
-        return serialize($hashParameters);
+        return $this->id . '_' . sha1(serialize($hashParameters));
     }
 
     /********************************************
