@@ -26,7 +26,7 @@ abstract class AbstractEscapingBaseViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void
     {
-        $this->registerArgument('content', 'string', 'Content provided as argument', false, null);
+        $this->registerArgument('content', 'string', 'Content provided as argument');
     }
 
     /**

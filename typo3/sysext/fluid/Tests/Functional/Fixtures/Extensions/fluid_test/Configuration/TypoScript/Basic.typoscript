@@ -97,7 +97,7 @@ lib.viewConfig {
     }
 [end]
 
-<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.ts" condition="[request.getQueryParams()['mode'] == 'fluidTemplate' || request.getParsedBody()['mode'] == 'fluidTemplate']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.ts" condition="[request.getQueryParams()['mode'] == 'plugin' || request.getParsedBody()['mode'] == 'plugin']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.ts" condition="[request.getQueryParams()['mode'] == 'controller' || request.getParsedBody()['mode'] == 'controller']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.ts" condition="[request.getQueryParams()['mode'] == '2plugins' || request.getParsedBody()['mode'] == '2plugins']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.typoscript" condition="[request.getQueryParams()['mode'] == 'fluidTemplate' || request.getParsedBody()['mode'] == 'fluidTemplate']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.typoscript" condition="[request.getQueryParams()['mode'] == 'plugin' || request.getParsedBody()['mode'] == 'plugin']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.typoscript" condition="[request.getQueryParams()['mode'] == 'controller' || request.getParsedBody()['mode'] == 'controller']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.typoscript" condition="[request.getQueryParams()['mode'] == '2plugins' || request.getParsedBody()['mode'] == '2plugins']">

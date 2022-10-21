@@ -77,7 +77,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
-        $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.ts']);
+        $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.typoscript']);
     }
 
     /**
