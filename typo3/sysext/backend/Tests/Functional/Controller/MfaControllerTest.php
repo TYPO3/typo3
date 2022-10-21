@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Controller\MfaController;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -38,8 +37,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaControllerTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected MfaController $subject;
     protected ServerRequest $request;
 
