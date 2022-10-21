@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Opendocs\Tests\Unit\Service;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -28,12 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class OpenDocumentServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected OpenDocumentService $subject;
-
-    /** @var ObjectProphecy<BackendUserAuthentication> */
-    protected ObjectProphecy $backendUser;
+    protected MockObject&BackendUserAuthentication $backendUser;
 
     /**
      * Set up this test case
@@ -41,9 +36,8 @@ class OpenDocumentServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backendUser = $this->prophesize(BackendUserAuthentication::class);
-        $this->backendUser->start()->willReturn();
-        $GLOBALS['BE_USER'] = $this->backendUser->reveal();
+        $this->backendUser = $this->getMockBuilder(BackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['BE_USER'] = $this->backendUser;
         $this->subject = new OpenDocumentService();
     }
 
@@ -52,7 +46,7 @@ class OpenDocumentServiceTest extends UnitTestCase
      */
     public function getsOpenDocumentsFromUserSession(): void
     {
-        $this->backendUser->getModuleData('FormEngine', 'ses')->willReturn([
+        $this->backendUser->method('getModuleData')->with('FormEngine', 'ses')->willReturn([
             [
                 'identifier1' => [ 'data1' ],
                 'identifier2' => [ 'data2' ],
@@ -74,7 +68,7 @@ class OpenDocumentServiceTest extends UnitTestCase
      */
     public function handlesUserSessionWithoutOpenDocuments(): void
     {
-        $this->backendUser->getModuleData('FormEngine', 'ses')->willReturn();
+        $this->backendUser->method('getModuleData')->with('FormEngine', 'ses')->willReturn(null);
 
         $openDocuments = $this->subject->getOpenDocuments();
 
@@ -86,7 +80,7 @@ class OpenDocumentServiceTest extends UnitTestCase
      */
     public function getsRecentDocumentsFromUserSession(): void
     {
-        $this->backendUser->getModuleData('opendocs::recent')->willReturn([
+        $this->backendUser->method('getModuleData')->with('opendocs::recent')->willReturn([
             'identifier1' => [ 'data1' ],
         ]);
 
@@ -103,7 +97,7 @@ class OpenDocumentServiceTest extends UnitTestCase
      */
     public function handlesUserSessionWithoutRecentDocuments(): void
     {
-        $this->backendUser->getModuleData('opendocs::recent')->willReturn();
+        $this->backendUser->method('getModuleData')->with('opendocs::recent')->willReturn(null);
 
         $recentDocuments = $this->subject->getRecentDocuments();
 
@@ -115,22 +109,32 @@ class OpenDocumentServiceTest extends UnitTestCase
      */
     public function closesDocument(): void
     {
-        $this->backendUser->getModuleData('FormEngine', 'ses')->willReturn([
+        $this->backendUser->method('getModuleData')->willReturnMap([
             [
-                'identifier8' => [ 'data8' ],
-                'identifier9' => [ 'data9' ],
+                'FormEngine',
+                'ses',
+                [
+                    [
+                        'identifier8' => ['data8'],
+                        'identifier9' => ['data9'],
+                    ],
+                    'identifier9',
+                ],
             ],
-            'identifier9',
-        ]);
-        $this->backendUser->getModuleData('opendocs::recent')->willReturn([
-                'identifier8' => [ 'data8' ],
-                'identifier7' => [ 'data7' ],
-                'identifier6' => [ 'data6' ],
-                'identifier5' => [ 'data5' ],
-                'identifier4' => [ 'data4' ],
-                'identifier3' => [ 'data3' ],
-                'identifier2' => [ 'data2' ],
-                'identifier1' => [ 'data1' ],
+            [
+                'opendocs::recent',
+                '',
+                [
+                    'identifier8' => [ 'data8' ],
+                    'identifier7' => [ 'data7' ],
+                    'identifier6' => [ 'data6' ],
+                    'identifier5' => [ 'data5' ],
+                    'identifier4' => [ 'data4' ],
+                    'identifier3' => [ 'data3' ],
+                    'identifier2' => [ 'data2' ],
+                    'identifier1' => [ 'data1' ],
+                ],
+            ],
         ]);
 
         $expectedOpenDocumentsData = [
@@ -139,19 +143,22 @@ class OpenDocumentServiceTest extends UnitTestCase
             ],
             'identifier9',
         ];
-        $this->backendUser->pushModuleData('FormEngine', $expectedOpenDocumentsData)->shouldBeCalled();
 
         $expectedRecentDocumentsData = [
-                'identifier9' => [ 'data9' ],
-                'identifier8' => [ 'data8' ],
-                'identifier7' => [ 'data7' ],
-                'identifier6' => [ 'data6' ],
-                'identifier5' => [ 'data5' ],
-                'identifier4' => [ 'data4' ],
-                'identifier3' => [ 'data3' ],
-                'identifier2' => [ 'data2' ],
+            'identifier9' => [ 'data9' ],
+            'identifier8' => [ 'data8' ],
+            'identifier7' => [ 'data7' ],
+            'identifier6' => [ 'data6' ],
+            'identifier5' => [ 'data5' ],
+            'identifier4' => [ 'data4' ],
+            'identifier3' => [ 'data3' ],
+            'identifier2' => [ 'data2' ],
         ];
-        $this->backendUser->pushModuleData('opendocs::recent', $expectedRecentDocumentsData)->shouldBeCalled();
+
+        $this->backendUser->expects(self::atLeastOnce())->method('pushModuleData')->withConsecutive(
+            ['FormEngine', $expectedOpenDocumentsData],
+            ['opendocs::recent', $expectedRecentDocumentsData]
+        );
 
         $this->subject->closeDocument('identifier9');
         $this->subject->closeDocument('identifier9');
