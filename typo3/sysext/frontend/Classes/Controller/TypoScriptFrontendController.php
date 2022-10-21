@@ -451,7 +451,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected ?LanguageService $languageService = null;
 
     /**
-     * @var LockingStrategyInterface[][]
+     * @var LockingStrategyInterface[]
      */
     protected array $locks = [];
     protected ?PageRenderer $pageRenderer = null;
@@ -1354,16 +1354,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // this case, the below call will wait until the lock is released again. The other process then probably wrote
                     // a page cache entry, which we can use.
                     // To handle the second case - if our process had to wait for another one creating the content for us - we
-                    // simply query the page cache again to see if there is a page cache now. This has the drawback that the page
-                    // cache is queried twice if the lock did not have to wait for another process ... Maybe we could suppress this?
-                    $this->acquireLock('pages', $this->newHash);
+                    // simply query the page cache again to see if there is a page cache now.
+                    $hadToWaitForLock = $this->acquireLock($this->newHash);
                     // From this point on we're the only one working on that page.
-                    // Query the cache again to see if the data is there meanwhile.
-                    // @todo: We could avoid this query if acquireLock() returns an information if it got the lock immediately.
-                    $pageCacheRow = $this->pageCache->get($this->newHash);
-                    if (is_array($pageCacheRow)) {
-                        // We have the content, some other process did the work for us, release our lock again.
-                        $this->releaseLock('pages');
+                    if ($hadToWaitForLock) {
+                        // Query the cache again to see if the data is there meanwhile: We did not get the lock
+                        // immediately, chances are high the other process created a page cache for us.
+                        // There is a small chance the other process actually pageCache->set() the content,
+                        // but pageCache->get() still returns false, for instance when a database returned "done"
+                        // for the INSERT, but SELECT still does not return the new row - may happen in multi-head
+                        // DB instances, and with some other distributed cache backends as well. The worst that
+                        // can happen here is the page generation is done too often, which we accept as trade-off.
+                        $pageCacheRow = $this->pageCache->get($this->newHash);
+                        if (is_array($pageCacheRow)) {
+                            // We have the content, some other process did the work for us, release our lock again.
+                            $this->releaseLocks();
+                        }
                     }
                     // We keep the lock set, because we are the ones generating the page now and filling the cache.
                     // This indicates that we have to release the lock later in releaseLocks()!
@@ -1375,7 +1381,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->getTimeTracker()->pull();
             } else {
                 // User forced page cache rebuilding. Get a lock for the page content so other processes can't interfere.
-                $this->acquireLock('pages', $this->newHash);
+                $this->acquireLock($this->newHash);
             }
         }
 
@@ -1549,15 +1555,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $debugCacheTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
         }
         if ($debugCacheTime) {
-            $this->prepareDebugInformationForCachedPage($cachedData);
+            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $this->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $cachedData['tstamp'])
+                . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $cachedData['expires']);
         }
-    }
-
-    protected function prepareDebugInformationForCachedPage(array $cachedData): void
-    {
-        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-        $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-        $this->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $cachedData['tstamp']) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $cachedData['expires']);
     }
 
     /**
@@ -1948,16 +1950,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->register['SYS_LASTCHANGED'] < (int)$page['SYS_LASTCHANGED']) {
             $this->register['SYS_LASTCHANGED'] = (int)$page['SYS_LASTCHANGED'];
         }
-    }
-
-    /**
-     * Release pending locks
-     *
-     * @internal
-     */
-    public function releaseLocks()
-    {
-        $this->releaseLock('pages');
     }
 
     /**
@@ -2715,8 +2707,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Acquire a page specific lock
-     *
+     * Acquire the page specific lock
      *
      * The schematics here is:
      * - First acquire an access lock. This is using the type of the requested lock as key.
@@ -2742,70 +2733,67 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * Note that the access lock resources are NEVER deleted/destroyed, otherwise the whole thing would be broken.
      *
-     * @param string $type
      * @param string $key
+     * @return bool True if we did not get the lock immediately and had to wait
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @internal
      */
-    protected function acquireLock($type, $key)
+    protected function acquireLock(string $key): bool
     {
         $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
-        $this->locks[$type]['accessLock'] = $lockFactory->createLocker($type);
-
-        $this->locks[$type]['pageLock'] = $lockFactory->createLocker(
+        $this->locks['accessLock'] = $lockFactory->createLocker('pages');
+        $this->locks['pageLock'] = $lockFactory->createLocker(
             $key,
             LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
         );
-
+        $hadToWaitForLock = false;
         do {
-            if (!$this->locks[$type]['accessLock']->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1294586098);
+            if (!$this->locks['accessLock']->acquire()) {
+                throw new \RuntimeException('Could not acquire access lock for "pages".', 1294586098);
             }
-
             try {
-                $locked = $this->locks[$type]['pageLock']->acquire(
+                $locked = $this->locks['pageLock']->acquire(
                     LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
                 );
             } catch (LockAcquireWouldBlockException $e) {
-                // somebody else has the lock, we keep waiting
-
-                // first release the access lock
-                $this->locks[$type]['accessLock']->release();
-                // now lets make a short break (100ms) until we try again, since
-                // the page generation by the lock owner will take a while anyways
-                usleep(100000);
+                // Somebody else has the lock, we keep waiting.
+                // First release the access lock, it will be acquired in next iteration again.
+                $this->locks['accessLock']->release();
+                // Mark "We had to wait".
+                $hadToWaitForLock = true;
+                // Now lets make a short break (20ms) until we try again, since
+                // the page generation by the lock owner will take a while.
+                usleep(20000);
                 continue;
             }
-            $this->locks[$type]['accessLock']->release();
+            $this->locks['accessLock']->release();
             if ($locked) {
                 break;
             }
             throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1460975877);
         } while (true);
+        return $hadToWaitForLock;
     }
 
     /**
-     * Release a page specific lock
+     * Release the page specific lock.
      *
-     * @param string $type
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @internal
      */
-    protected function releaseLock($type)
+    public function releaseLocks(): void
     {
-        if ($this->locks[$type]['accessLock'] ?? false) {
-            if (!$this->locks[$type]['accessLock']->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1460975902);
+        if ($this->locks['accessLock'] ?? false) {
+            if (!$this->locks['accessLock']->acquire()) {
+                throw new \RuntimeException('Could not acquire access lock for "pages".', 1460975902);
             }
-
-            $this->locks[$type]['pageLock']->release();
-            $this->locks[$type]['pageLock']->destroy();
-            $this->locks[$type]['pageLock'] = null;
-
-            $this->locks[$type]['accessLock']->release();
-            $this->locks[$type]['accessLock'] = null;
+            $this->locks['pageLock']->release();
+            $this->locks['pageLock']->destroy();
+            $this->locks['pageLock'] = null;
+            $this->locks['accessLock']->release();
+            $this->locks['accessLock'] = null;
         }
     }
 

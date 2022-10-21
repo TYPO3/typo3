@@ -42,12 +42,15 @@ class ImageProcessingService
         $processedFile = $this->processedFileRepository->findByUid($processedFileId);
         try {
             $this->validateProcessedFile($processedFile);
-            $this->locker->acquireLock(self::class, (string)$processedFileId);
+            $hadToWaitForLock = $this->locker->acquireLock(self::class, (string)$processedFileId);
 
-            // Fetch the processed file again, as it might have been processed by another process while waiting for the lock
-            /** @var ProcessedFile $processedFile */
-            $processedFile = $this->processedFileRepository->findByUid($processedFileId);
-            $this->validateProcessedFile($processedFile);
+            if ($hadToWaitForLock) {
+                // Fetch the processed file again, as it might have been processed by
+                // another process while waiting for the lock
+                /** @var ProcessedFile $processedFile */
+                $processedFile = $this->processedFileRepository->findByUid($processedFileId);
+                $this->validateProcessedFile($processedFile);
+            }
 
             $this->context->setAspect('fileProcessing', new FileProcessingAspect(false));
             $processedFile = $processedFile->getOriginalFile()->process(

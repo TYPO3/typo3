@@ -20,84 +20,100 @@ use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 
 /**
- * Wrapper for locking API that uses two locks
- * to not exhaust locking resources and still block properly
+ * Wrapper for locking API that uses two locks to not exhaust locking resources and still block properly.
+ *
+ * The schematics here is:
+ * - First acquire an access lock. This is using the type of the requested lock as key.
+ *   Since the number of types is rather limited we can use the type as key as it will only
+ *   eat up a limited number of lock resources on the system (files, semaphores)
+ * - Second, we acquire the actual lock. We can be sure we are the only process at this
+ *   very moment, hence we either get the lock for the given key or we get an error as
+ *   we request a non-blocking mode.
+ *
+ * Interleaving two locks is important, because the actual lock uses a hash value as key (see callers).
+ * If we would simply employ a normal blocking lock, we would get a potentially unlimited number of
+ * different locks. Depending on the available locking methods on the system we might run out of available
+ * resources: For instance maximum limit of semaphores is a system setting and applies to the whole system.
+ *
+ * We therefore must make sure that page locks are destroyed again if they are not used anymore, such that
+ * we never use more locking resources than parallel requests.
+ *
+ * In order to ensure this, we need to guarantee that no other process is waiting on a lock when
+ * the process currently having the lock on the lock is about to release the lock again.
+ *
+ * This can only be achieved by using a non-blocking mode, such that a process is never put into wait state
+ * by the kernel, but only checks the availability of the lock. The access lock is our guard to be sure
+ * that no two processes are at the same time releasing/destroying a lock, whilst the other one tries to
+ * get a lock for this page lock.
+ *
+ * The only drawback of this implementation is that we basically have to poll the availability of the page lock.
+ *
+ * Note that the access lock resources are NEVER deleted/destroyed, otherwise the whole thing would be broken.
  */
 class ResourceMutex
 {
     /**
-     * @var LockFactory
-     */
-    private $lockFactory;
-
-    /**
-     * Access lock
-     *
      * @var array<string,LockingStrategyInterface|null>
      */
-    private $accessLocks = [];
+    private array $accessLocks = [];
 
     /**
-     * Image processing lock
-     *
      * @var array<string,LockingStrategyInterface|null>
      */
-    private $workerLocks = [];
+    private array $workerLocks = [];
 
-    public function __construct(LockFactory $lockFactory)
+    public function __construct(private readonly LockFactory $lockFactory)
     {
-        $this->lockFactory = $lockFactory;
     }
 
     /**
-     * Acquire a specific lock for the given scope
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::acquireLock
+     * Acquire a specific lock for the given scope.
      *
-     * @param string $scope
-     * @param string $key
      * @throws LockAcquireException
      * @throws LockCreateException
+     * @return bool True if we did not get the lock immediately and had to wait. This can be useful to
+     *              know in the consumer since another process may have created something that we can
+     *              re-use immediately.
      */
-    public function acquireLock(string $scope, string $key): void
+    public function acquireLock(string $scope, string $key): bool
     {
         $this->accessLocks[$scope] = $this->lockFactory->createLocker($scope);
-
         $this->workerLocks[$scope] = $this->lockFactory->createLocker(
             $key,
             LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
         );
-
+        $hadToWaitForLock = false;
         do {
             if (!$this->accessLocks[$scope]->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "' . $scope . '"".', 1601923209);
+                throw new \RuntimeException('Could not acquire access lock for "' . $scope . '".', 1601923209);
             }
-
             try {
                 $locked = $this->workerLocks[$scope]->acquire(
                     LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
                 );
             } catch (LockAcquireWouldBlockException $e) {
-                // somebody else has the lock, we keep waiting
-
-                // first release the access lock
+                // Somebody else has the lock, we keep waiting.
+                // First release the access lock, it will be acquired in next iteration again.
                 $this->accessLocks[$scope]->release();
-                // now lets make a short break (100ms) until we try again, since
-                // the page generation by the lock owner will take a while anyways
-                usleep(100000);
+                // Mark "We had to wait".
+                $hadToWaitForLock = true;
+                // Now lets make a short break (20ms) until we try again, since
+                // the page generation by the lock owner will take a while.
+                usleep(20000);
                 continue;
             }
             $this->accessLocks[$scope]->release();
             if ($locked) {
                 break;
             }
-            throw new \RuntimeException('Could not acquire image process lock for ' . $key . '.', 1601923215);
+            throw new \RuntimeException('Could not acquire process lock for "' . $scope . '" with key "' . $key . '".', 1601923215);
         } while (true);
+        return $hadToWaitForLock;
     }
 
     /**
-     * Release a worker specific lock
+     * Release a worker specific lock.
      *
-     * @param string $scope
      * @throws LockAcquireException
      * @throws LockAcquireWouldBlockException
      */
@@ -105,13 +121,11 @@ class ResourceMutex
     {
         if ($this->accessLocks[$scope] ?? null) {
             if (!$this->accessLocks[$scope]->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "' . $scope . '"".', 1601923319);
+                throw new \RuntimeException('Could not acquire access lock for "' . $scope . '".', 1601923319);
             }
-
             $this->workerLocks[$scope]->release();
             $this->workerLocks[$scope]->destroy();
             $this->workerLocks[$scope] = null;
-
             $this->accessLocks[$scope]->release();
             $this->accessLocks[$scope] = null;
         }
