@@ -275,19 +275,19 @@ class SiteTest extends UnitTestCase
      */
     public function getErrorHandlerUsesFallbackWhenNoErrorHandlerForStatusCodeIsConfigured(): void
     {
-        $app = new class() extends Application {
+        $app = new class () extends Application {
             // This is ugly but php-cs-fixer insists.
             public function __construct()
             {
             }
         };
-        $link = new class() extends LinkService {
+        $link = new class () extends LinkService {
             // This is ugly but php-cs-fixer insists.
             public function __construct()
             {
             }
         };
-        $siteFinder = new class() extends SiteFinder {
+        $siteFinder = new class () extends SiteFinder {
             // This is ugly but php-cs-fixer insists.
             public function __construct()
             {
