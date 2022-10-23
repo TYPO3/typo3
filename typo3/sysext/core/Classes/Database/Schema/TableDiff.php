@@ -78,4 +78,27 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
 
         return '';
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return count($this->addedColumns) === 0
+            && count($this->changedColumns) === 0
+            && count($this->removedColumns) === 0
+            && count($this->renamedColumns) === 0
+            && count($this->addedIndexes) === 0
+            && count($this->changedIndexes) === 0
+            && count($this->removedIndexes) === 0
+            && count($this->renamedIndexes) === 0
+            && count($this->addedForeignKeys) === 0
+            && count($this->changedForeignKeys) === 0
+            && count($this->removedForeignKeys) === 0
+            // @todo Recheck this after proper table rename strategy has been evolved. Related to doctrine/dbal 3.5 changes.
+            && $this->newName === false
+            // @todo doctrine/dbal 3.5 deprecated schema events, thus a new way to provide table option has to
+            //       be found and implemented. Recheck this afterwards.
+            && $this->tableOptions === [];
+    }
 }

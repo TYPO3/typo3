@@ -676,7 +676,6 @@ class ConnectionMigrator
             );
 
             $statements = $changedFieldDiff->toSql($this->connection->getDatabasePlatform());
-
             foreach ($statements as $statement) {
                 $updateSuggestions['change_table'][md5($statement)] = $statement;
             }
