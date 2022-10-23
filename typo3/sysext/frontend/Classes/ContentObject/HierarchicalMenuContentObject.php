@@ -50,6 +50,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject
             $frontendController->register['count_HMENU_MENUOBJ'] = 0;
             $frontendController->register['count_MENUOBJ'] = 0;
             $menu->parent_cObj = $this->getContentObjectRenderer();
+            // @deprecated since v12: Hand over null as first argument in v13 when TemplateService is removed.
             $menu->start($frontendController->tmpl, $this->getPageRepository(), '', $conf, 1, '', $this->request);
             $menu->makeMenu();
             $theValue .= $menu->writeMenu();

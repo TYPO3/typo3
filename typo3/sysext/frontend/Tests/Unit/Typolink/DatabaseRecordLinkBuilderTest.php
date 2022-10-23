@@ -19,11 +19,12 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -31,18 +32,10 @@ use TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Tests for DatabaseRecordLinkBuilderTest
- */
 class DatabaseRecordLinkBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * Dataprovider with different parameter configurations
-     *
-     * @return array
-     */
     public function attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider(): array
     {
         return [
@@ -143,7 +136,6 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
                 [
                     'linkHandler.' =>
                         [
-
                             'tx_news.' =>
                                 [
                                     'handler' => RecordLinkHandler::class,
@@ -170,15 +162,15 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
         // Arrange
         $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
         $context = new Context();
-        $templateService = $this->prophesize(TemplateService::class);
         $pageRepository = $this->prophesize(PageRepository::class);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
-        $cObj->getRequest()->willReturn($this->prophesize(ServerRequestInterface::class)->reveal());
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($typoScriptConfig);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $cObj->getRequest()->willReturn($request);
 
         $frontendControllerProphecy->getContext()->willReturn($context);
         $frontendController = $frontendControllerProphecy->reveal();
-        $frontendController->tmpl = $templateService->reveal();
-        $frontendController->tmpl->setup = $typoScriptConfig;
         $frontendController->sys_page = $pageRepository->reveal();
         GeneralUtility::addInstance(ContentObjectRenderer::class, $cObj->reveal());
 

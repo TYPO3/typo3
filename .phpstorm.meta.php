@@ -96,7 +96,9 @@ namespace PHPSTORM_META {
         'language',
         'routing',
         'module',
-        'moduleData'
+        'moduleData',
+        'frontend.controller',
+        'frontend.typoscript',
     );
 
     override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
@@ -108,6 +110,8 @@ namespace PHPSTORM_META {
         'routing' => '\TYPO3\CMS\Core\Routing\SiteRouteResult|\TYPO3\CMS\Core\Routing\PageArguments',
         'module' => \TYPO3\CMS\Backend\Module\ModuleInterface::class,
         'moduleData' => \TYPO3\CMS\Backend\Module\ModuleData::class,
+        'frontend.controller' => \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
+        'frontend.typoscript' => \TYPO3\CMS\Core\TypoScript\FrontendTypoScript::class,
     ]));
 
     expectedArguments(

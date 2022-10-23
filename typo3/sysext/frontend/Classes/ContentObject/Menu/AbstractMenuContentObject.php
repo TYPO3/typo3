@@ -102,9 +102,9 @@ abstract class AbstractMenuContentObject
     protected $mconf = [];
 
     /**
-     * @var TemplateService
+     * @deprecated since v12: Remove property and usages in v13 when TemplateService is removed
      */
-    protected $tmpl;
+    protected TemplateService|null $tmpl;
 
     /**
      * @var PageRepository
@@ -194,7 +194,7 @@ abstract class AbstractMenuContentObject
     /**
      * The initialization of the object. This just sets some internal variables.
      *
-     * @param TemplateService $tmpl The $this->getTypoScriptFrontendController()->tmpl object
+     * @param TemplateService|null $_ Obsolete argument
      * @param PageRepository $sys_page The $this->getTypoScriptFrontendController()->sys_page object
      * @param int|string $id A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
      * @param array $conf The TypoScript configuration for the HMENU cObject
@@ -204,7 +204,7 @@ abstract class AbstractMenuContentObject
      * @return bool Returns TRUE on success
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
      */
-    public function start($tmpl, $sys_page, $id, $conf, int $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
+    public function start($_, $sys_page, $id, $conf, int $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $this->conf = $conf;
@@ -212,8 +212,9 @@ abstract class AbstractMenuContentObject
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
         $this->request = $request;
         // Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the PageRepository object
-        if ($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl) && is_object($sys_page)) {
-            $this->tmpl = $tmpl;
+        if ($this->conf[$this->menuNumber . $objSuffix] && is_object($sys_page)) {
+            // @deprecated since v12, will be removed in v13: Remove assignment and property when TemplateService is removed
+            $this->tmpl = $_;
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
             $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf ?? []);
@@ -298,9 +299,9 @@ abstract class AbstractMenuContentObject
             if (($this->conf['special'] ?? '') === 'directory') {
                 $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
                 if ($value === '') {
-                    $value = (string)$tsfe->id;
+                    $value = $tsfe->id;
                 }
-                $directoryLevel = (int)$tsfe->tmpl->getRootlineLevel($value);
+                $directoryLevel = $this->getRootlineLevel($tsfe->config['rootLine'], (string)$value);
             }
             // Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
             // Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
@@ -1292,6 +1293,7 @@ abstract class AbstractMenuContentObject
                 if (is_array($altArray) && !empty($altArray)) {
                     $submenu->alternativeMenuTempArray = $altArray;
                 }
+                // @deprecated since v12, will be removed in v13: Hand over null as first argument.
                 if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix)) {
                     $submenu->makeMenu();
                     // Memorize the current menu item count
@@ -1898,5 +1900,23 @@ abstract class AbstractMenuContentObject
         }
 
         return $sortField;
+    }
+
+    /**
+     * Returns the level of the given page in the rootline - Multiple pages can be given by separating the UIDs by comma.
+     *
+     * @param string $list A list of UIDs for which the rootline-level should get returned
+     * @return int The level in the rootline. If more than one page was given the lowest level will get returned.
+     */
+    private function getRootlineLevel(array $rootLine, string $list): int
+    {
+        $idx = 0;
+        foreach ($rootLine as $page) {
+            if (GeneralUtility::inList($list, $page['uid'])) {
+                return $idx;
+            }
+            $idx++;
+        }
+        return 0;
     }
 }

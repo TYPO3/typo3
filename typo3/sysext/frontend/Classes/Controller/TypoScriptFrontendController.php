@@ -59,6 +59,8 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
@@ -1127,6 +1129,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @throws PropagateResponseException
      * @throws AbstractServerErrorException
+     * @return ServerRequestInterface New request object with typoscript attribute
      *
      * @internal This method may vanish from TypoScriptFrontendController without further notice.
      * @todo: This method is typically called by PrepareTypoScriptFrontendRendering middleware.
@@ -1134,7 +1137,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *        calls this as well. We may want to put this code into some helper class, reduce class
      *        state as much as possible and carry really needed state as request attributes around?!
      */
-    public function getFromCache(ServerRequestInterface $request): void
+    public function getFromCache(ServerRequestInterface $request): ServerRequestInterface
     {
         // Reset some state.
         // @todo: Find out which resets are really needed here - Since this is called from a
@@ -1175,11 +1178,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         if (!$this->tmpl instanceof TemplateService) {
-            // @todo: Well, TemplateService should be deprecated entirely, soon. We're essentially not
-            //        using the old parser anymore and some properties are later just set for b/w compat
-            //        reasons. The if() probably only exists to allow early setting of this property to
-            //        something in tests, other than that, we could expect it to be null at
-            //        this point in the middleware stack.
+            // @deprecated since v12, will be removed in v13: b/w compat. Remove when TemplateService is dropped.
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 
@@ -1194,7 +1193,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 break;
             }
         }
-        // @deprecated: b/w compat. Remove when TemplateService is dropped.
+        // @deprecated: since v12, will be removed in v13: b/w compat. Remove when TemplateService is dropped.
         $this->tmpl->rootLine = $localRootline;
 
         $tokenizer = new LossyTokenizer();
@@ -1216,6 +1215,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // so we need the constants to substitute their values within setup conditions.
         $constantConditionIncludeListCacheIdentifier = 'constant-condition-include-list-' . sha1($serializedSysTemplateRows);
         $constantConditionList = [];
+        $constantsAst = new RootNode();
         $flatConstants = [];
         $serializedConstantConditionList = '';
         $gotConstantFromCache = false;
@@ -1235,7 +1235,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $constantCacheEntryIdentifier = 'constant-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList);
             $constantsCacheEntry = $typoscriptCache->require($constantCacheEntryIdentifier);
             if (is_array($constantsCacheEntry)) {
-                $constantAst = $constantsCacheEntry['ast'];
+                $constantsAst = $constantsCacheEntry['ast'];
                 $flatConstants = $constantsCacheEntry['flatConstants'];
                 $gotConstantFromCache = true;
             }
@@ -1260,8 +1260,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // We must use ConditionVerdictAwareIncludeTreeTraverser here: This one does not walk into
             // children for not matching conditions, which is important to create the correct AST.
             $includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree);
-            $constantAst = $constantAstBuilderVisitor->getAst();
-            $flatConstants = $constantAst->flatten();
+            $constantsAst = $constantAstBuilderVisitor->getAst();
+            $flatConstants = $constantsAst->flatten();
             if (!$this->no_cache) {
                 // We are allowed to cache and can create both the full list of conditions, plus the constant AST and flat constant
                 // list cache entry. To do that, we need all (!) conditions, but the above ConditionVerdictAwareIncludeTreeTraverser
@@ -1279,9 +1279,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $serializedConstantConditionList = serialize($constantConditionList);
                 $typoscriptCache->set($constantConditionIncludeListCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($constantConditionIncludeListAccumulatorVisitor->getConditionIncludes()), '\'\\') . '\');');
                 $constantCacheEntryIdentifier = 'constant-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList);
-                $typoscriptCache->set($constantCacheEntryIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $constantAst, 'flatConstants' => $flatConstants]), '\'\\') . '\');');
+                $typoscriptCache->set($constantCacheEntryIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $constantsAst, 'flatConstants' => $flatConstants]), '\'\\') . '\');');
             }
         }
+
+        $frontendTypoScript = new FrontendTypoScript($constantsAst, $flatConstants);
 
         // Next step: We have constants and fetch the setup include tree now. We then calculate setup condition verdicts
         // and set the constants to allow substitution of constants within conditions. Next, we traverse include tree
@@ -1398,7 +1400,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (!$this->no_cache && !$forceTemplateParsing) {
                 // We need AST, but we are allowed to potentially get it from cache.
                 if ($setupTypoScriptCache = $typoscriptCache->require($setupTypoScriptCacheIdentifier)) {
-                    $setupAst = $setupTypoScriptCache['ast'];
+                    $frontendTypoScript->setSetupTree($setupTypoScriptCache['ast']);
                     $setupArray = $setupTypoScriptCache['array'];
                     $gotSetupFromCache = true;
                 }
@@ -1425,6 +1427,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $includeTreeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
                 $includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree);
                 $setupAst = $setupAstBuilderVisitor->getAst();
+                $frontendTypoScript->setSetupTree($setupAst);
 
                 // Create top-level setup AST 'types' node from all top-level PAGE objects.
                 // This is essentially a preparation for type-lookup below and should vanish later.
@@ -1486,7 +1489,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             // Filling the config-array, first with the main "config." part
             if (is_array($setupArray['config.'] ?? null)) {
-                // @todo: These operations should happen on AST instead an array is exported (and cached) afterwards
+                // @todo: These operations should happen on AST instead and array is exported (and cached) afterwards
                 $setupArray['config.'] = array_replace_recursive($setupArray['config.'], $this->config['config']);
                 $this->config['config'] = $setupArray['config.'];
             }
@@ -1495,16 +1498,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
             }
             $this->config['rootLine'] = $localRootline;
+            $frontendTypoScript->setSetupArray($setupArray);
 
-            // b/w compat, especially for bootstrap_package which does a lot of magic with constants
+            // @deprecated: since v12, will be removed in v13: b/w compat. Remove when TemplateService is dropped.
             $this->tmpl->setup = $setupArray;
             $this->tmpl->loaded = true;
             $this->tmpl->flatSetup = $flatConstants;
         }
-
-        // @todo: To phase out TemplateService, we should attach $constantAst and $setupAst (and maybe their array
-        //        representations as well for a transition phase) as attributes to the request here and also below
-        //        in prepareUncachedRendering().
 
         // Set $this->no_cache TRUE if the config.no_cache value is set!
         if (!$this->no_cache && ($this->config['config']['no_cache'] ?? false)) {
@@ -1519,6 +1519,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
             GeneralUtility::callUserFunction($funcRef, $params, $this);
         }
+
+        return $request->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 
     /**

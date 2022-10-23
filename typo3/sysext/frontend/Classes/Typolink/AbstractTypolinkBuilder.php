@@ -240,6 +240,7 @@ abstract class AbstractTypolinkBuilder
             GeneralUtility::makeInstance(FrontendUserAuthentication::class)
         );
         $this->typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        // @deprecated since v12, will be removed with v13
         $this->typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         return $this->typoScriptFrontendController;
     }

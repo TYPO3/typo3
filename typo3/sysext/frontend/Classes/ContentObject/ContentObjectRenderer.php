@@ -55,7 +55,6 @@ use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -637,7 +636,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
             // $name and $conf is loaded with the referenced values.
             $confOverride = is_array($conf) ? $conf : [];
-            [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
+            $typoScriptSetupArray = $this->getRequest()->getAttribute('frontend.typoscript')->getSetupArray();
+            [$name, $conf] = $cF->getVal($key, $typoScriptSetupArray);
             $conf = array_replace_recursive($conf, $confOverride);
             // Getting the cObject
             $timeTracker->incStackPointer();
@@ -3267,8 +3267,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // These operations should only be performed on code outside the tags...
                     if (!is_array($currentTag)) {
                         // Constants
-                        $tsfe = $this->getTypoScriptFrontendController();
-                        $tmpConstants = $tsfe->tmpl->setup['constants.'] ?? null;
+                        $typoScriptSetupArray = [];
+                        $frontendTypoScript = $this->getRequest()->getAttribute('frontend.typoscript');
+                        if ($frontendTypoScript && $frontendTypoScript->hasSetup()) {
+                            $typoScriptSetupArray = $frontendTypoScript->getSetupArray();
+                        }
+                        $tmpConstants = $typoScriptSetupArray['constants.'] ?? null;
                         if (!empty($conf['constants']) && is_array($tmpConstants)) {
                             foreach ($tmpConstants as $key => $val) {
                                 if (is_string($val)) {
@@ -4778,12 +4782,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // $name and $conf is loaded with the referenced values.
             $old_conf = $confArr[$prop . '.'] ?? null;
             $setupArray = [];
-            $tsfe = $this->getTypoScriptFrontendController();
-            if ($tsfe instanceof TypoScriptFrontendController
-                && $tsfe->tmpl instanceof TemplateService
-                && is_array($tsfe->tmpl->setup)
-            ) {
-                $setupArray = $tsfe->tmpl->setup;
+            $frontendTypoScript = $this->getRequest()->getAttribute('frontend.typoscript');
+            if ($frontendTypoScript && $frontendTypoScript->hasSetup()) {
+                $setupArray = $frontendTypoScript->getSetupArray();
             }
             $conf = $cF->getVal($key, $setupArray)[1];
             if (is_array($old_conf) && !empty($old_conf)) {

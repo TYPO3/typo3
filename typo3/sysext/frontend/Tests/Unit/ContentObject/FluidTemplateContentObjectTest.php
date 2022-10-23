@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Tests\Unit\Page\PageRendererFactoryTrait;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -110,9 +109,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->subject->setRequest($this->request);
         $this->subject->setContentObjectRenderer($this->contentObjectRenderer);
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
-        $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
         $GLOBALS['TSFE'] = $tsfe;
     }
 

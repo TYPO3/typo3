@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -78,7 +77,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
             GeneralUtility::makeInstance(FrontendUserAuthentication::class)
         );
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $this->subject->setRequest($this->getPreparedRequest());
     }

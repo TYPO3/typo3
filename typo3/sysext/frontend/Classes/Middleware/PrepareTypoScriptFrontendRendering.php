@@ -43,7 +43,6 @@ final class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        /** @var TypoScriptFrontendController $controller */
         $controller = $request->getAttribute('frontend.controller');
 
         // as long as TSFE throws errors with the global object, this needs to be set, but
@@ -52,8 +51,11 @@ final class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 
         $this->timeTracker->push('Get Page from cache');
         // Get from cache. Locks may be acquired here. After this, we should have a valid config-array ready.
-        $controller->getFromCache($request);
+        $request = $controller->getFromCache($request);
         $this->timeTracker->pull();
+
+        // Set new request which now has the frontend.typoscript attribute
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $response = $handler->handle($request);
 

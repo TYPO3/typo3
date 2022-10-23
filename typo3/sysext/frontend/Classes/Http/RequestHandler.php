@@ -66,18 +66,11 @@ use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
  */
 class RequestHandler implements RequestHandlerInterface
 {
-    protected TimeTracker $timeTracker;
-
-    protected EventDispatcherInterface $eventDispatcher;
-
-    private ListenerProvider $listenerProvider;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        ListenerProvider $listenerProvider
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ListenerProvider $listenerProvider,
+        private readonly TimeTracker $timeTracker,
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->listenerProvider = $listenerProvider;
     }
 
     /**
@@ -114,10 +107,7 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Fetch the initialized time tracker object
-        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
-        /** @var TypoScriptFrontendController $controller */
-        $controller = $GLOBALS['TSFE'];
+        $controller = $request->getAttribute('frontend.controller');
 
         $this->resetGlobalsToCurrentRequest($request);
 
@@ -392,9 +382,10 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
         // Including CSS files
-        if (is_array($controller->tmpl->setup['plugin.'] ?? null)) {
+        $typoScriptSetupArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
+        if (is_array($typoScriptSetupArray['plugin.'] ?? null)) {
             $stylesFromPlugins = '';
-            foreach ($controller->tmpl->setup['plugin.'] as $key => $iCSScode) {
+            foreach ($typoScriptSetupArray['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
                     if (($iCSScode['_CSS_DEFAULT_STYLE'] ?? false) && empty($controller->config['config']['removeDefaultCss'])) {
                         $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode ?? []);

@@ -31,7 +31,9 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $tsfe = $this->getTypoScriptFrontendController();
         $pageTsConfig = $tsfe->getPagesTSconfig();
         $configurationKey = $linkDetails['identifier'] . '.';
-        $configuration = $tsfe->tmpl->setup['config.']['recordLinks.'] ?? [];
+        $request = $this->contentObjectRenderer->getRequest();
+        $typoScriptArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
+        $configuration = $typoScriptArray['config.']['recordLinks.'] ?? [];
         $linkHandlerConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'] ?? [];
 
         if (!isset($configuration[$configurationKey], $linkHandlerConfiguration[$configurationKey])) {

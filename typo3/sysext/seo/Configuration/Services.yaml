@@ -16,6 +16,5 @@ services:
     public: true
 
   TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRenderer:
-    shared: false
     public: true
 

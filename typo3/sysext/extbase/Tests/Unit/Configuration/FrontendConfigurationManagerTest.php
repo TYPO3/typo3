@@ -19,7 +19,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -107,8 +110,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
         $this->mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['getTreeList'])
             ->getMock();
@@ -504,9 +505,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypoScriptSetupReturnsSetupFromTsfe(): void
+    public function getTypoScriptSetupReturnsSetupFromRequest(): void
     {
-        $GLOBALS['TSFE']->tmpl->setup = ['foo' => 'bar'];
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray(['foo' => 'bar']);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         self::assertEquals(['foo' => 'bar'], $this->frontendConfigurationManager->_call('getTypoScriptSetup'));
     }
 
@@ -515,7 +518,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound(): void
     {
-        $GLOBALS['TSFE']->tmpl->setup = ['foo' => 'bar'];
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray(['foo' => 'bar']);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [];
         $actualResult = $this->frontendConfigurationManager->_call(
             'getPluginConfiguration',
@@ -546,7 +551,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ],
         ];
         $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
-        $GLOBALS['TSFE']->tmpl->setup = $testSetup;
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($testSetup);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar',
@@ -577,7 +584,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ],
         ];
         $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
-        $GLOBALS['TSFE']->tmpl->setup = $testSetup;
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($testSetup);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar',
@@ -637,7 +646,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $this->mockTypoScriptService->expects(self::exactly(2))->method('convertTypoScriptArrayToPlainArray')
             ->withConsecutive([$testExtensionSettings], [$testPluginSettings])
             ->willReturnOnConsecutiveCalls($testExtensionSettingsConverted, $testPluginSettingsConverted);
-        $GLOBALS['TSFE']->tmpl->setup = $testSetup;
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($testSetup);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar',

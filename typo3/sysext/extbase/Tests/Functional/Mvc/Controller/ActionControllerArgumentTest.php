@@ -23,6 +23,8 @@ use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
@@ -31,26 +33,15 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class ActionControllerArgumentTest extends FunctionalTestCase
 {
     private string $pluginName = 'Pi1';
     private string $extensionName = 'ActionControllerArgumentTest';
-    private ?string $pluginNamespacePrefix = null;
+    private string $pluginNamespacePrefix = 'tx_actioncontrollerargumenttest_pi1';
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test',
     ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->pluginNamespacePrefix = strtolower('tx_' . $this->extensionName . '_' . $this->pluginName);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-    }
 
     public function validationErrorReturnsToForwardedPreviousActionDataProvider(): array
     {
@@ -78,22 +69,20 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $forwardTargetAction
-     * @param array $forwardTargetArguments
-     * @param string $validateAction
-     * @param array $expectations
-     *
      * @test
      * @dataProvider validationErrorReturnsToForwardedPreviousActionDataProvider
+     * @todo: It might be better if these tests would executeFrontendSubRequest() to setup less stuff on their own?!
      */
     public function validationErrorReturnsToForwardedPreviousAction(string $forwardTargetAction, array $forwardTargetArguments, string $validateAction, array $expectations): void
     {
+        $inputRequest = $this->buildRequest('forward');
+        $GLOBALS['TYPO3_REQUEST'] = $inputRequest;
+
         // trigger action to forward to some `input*` action
         $controller = $this->buildController();
         $controller->declareForwardTargetAction($forwardTargetAction);
         $controller->declareForwardTargetArguments($forwardTargetArguments);
 
-        $inputRequest = $this->buildRequest('forward');
         $inputResponse = $this->dispatch($controller, $inputRequest);
 
         $body = $inputResponse->getBody();
@@ -103,9 +92,11 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         self::assertNotEmpty($parsedInputData['form'] ?? null);
         unset($inputRequest, $controller);
 
+        $validateRequest = $this->buildRequest($validateAction, $parsedInputData['form']);
+        $GLOBALS['TYPO3_REQUEST'] = $validateRequest;
+
         // trigger `validate*` action with generated arguments from FormViewHelper (see template)
         $controller = $this->buildController();
-        $validateRequest = $this->buildRequest($validateAction, $parsedInputData['form']);
 
         // dispatch request to `validate*` action
         $validateResponse = $this->dispatch($controller, $validateRequest);
@@ -136,9 +127,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     /**
      * Parses result HTML, extracts inflated name/value pairs of `<form>` and validation errors, e.g.
      * `['validationResults' => ..., 'form' => ['value' => ..., '__referrer' => [...]]]`
-     *
-     * @param \DOMDocument $document
-     * @return array
      */
     private function parseDataFromResponseDocument(\DOMDocument $document): array
     {
@@ -169,9 +157,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     /**
      * Inflates form values for plugin arguments.
      * `['tx_ext_pi1[aaa][bbb]' => 'value'] --> ['aaa' => ['bbb' => 'value']]`
-     *
-     * @param array $formValues
-     * @return array
      */
     private function inflateFormValues(array $formValues): array
     {
@@ -205,7 +190,12 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function buildRequest(string $actionName, array $arguments = null): Request
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([]);
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $request = new Request($serverRequest);
         $request = $request->withPluginName($this->pluginName);
         $request = $request->withControllerExtensionName($this->extensionName);

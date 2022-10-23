@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -200,13 +201,15 @@ class FrontendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * Returns TypoScript Setup array from current Environment.
-     *
-     * @return array the raw TypoScript setup
+     * Returns full Frontend TypoScript setup array calculated by FE middlewares.
      */
     public function getTypoScriptSetup(): array
     {
-        return $GLOBALS['TSFE']->tmpl->setup ?? [];
+        // @todo: This class obviously has a dependency to request ... it should get it hand over!
+        /** @var ServerRequestInterface $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
+        return $frontendTypoScript->getSetupArray();
     }
 
     /**

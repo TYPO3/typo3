@@ -168,7 +168,7 @@ final class HtmlViewHelper extends AbstractViewHelper
         }
 
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $contentObject->start($data, $table);
+        $contentObject->start($data, $table, $request);
 
         if ($current !== null) {
             $contentObject->setCurrentVal($current);
@@ -193,6 +193,10 @@ final class HtmlViewHelper extends AbstractViewHelper
      */
     protected static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
     {
+        // @todo: We may want to deprecate this entirely and throw an exception in v13 when this VH is used in BE scope:
+        //        Core has no BE related usages to this anymore and in general it shouldn't be needed in BE scope at all.
+        //        If BE really relies on content being processed via FE parseFunc, a controller should do this and assign
+        //        the processed value directly, which could then be rendered using f:format.raw.
         $tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();

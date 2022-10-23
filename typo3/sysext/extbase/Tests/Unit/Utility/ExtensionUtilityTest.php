@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
-use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
@@ -25,49 +24,10 @@ use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdCo
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for class \TYPO3\CMS\Extbase\Utility\ExtensionUtility
- */
 class ExtensionUtilityTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $GLOBALS['TSFE']->tmpl->setup = [];
-        $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'] = [
-            '9' => 'CASE',
-            '9.' => [
-                'key.' => [
-                    'field' => 'layout',
-                ],
-                0 => '< plugin.tt_news',
-            ],
-            'extensionname_someplugin' => 'USER',
-            'extensionname_someplugin.' => [
-                'userFunc' => Bootstrap::class . '->run',
-                'extensionName' => 'ExtensionName',
-                'pluginName' => 'SomePlugin',
-            ],
-            'someotherextensionname_secondplugin' => 'USER',
-            'someotherextensionname_secondplugin.' => [
-                'userFunc' => Bootstrap::class . '->run',
-                'extensionName' => 'SomeOtherExtensionName',
-                'pluginName' => 'SecondPlugin',
-            ],
-            'extensionname_thirdplugin' => 'USER',
-            'extensionname_thirdplugin.' => [
-                'userFunc' => Bootstrap::class . '->run',
-                'extensionName' => 'ExtensionName',
-                'pluginName' => 'ThirdPlugin',
-            ],
-        ];
-    }
-
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForMinimalisticSetup(): void
     {
@@ -84,7 +44,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginCreatesCorrectDefaultTypoScriptSetup(): void
     {
@@ -96,7 +55,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForASingleControllerAction(): void
     {
@@ -124,7 +82,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginThrowsExceptionIfExtensionNameIsEmpty(): void
     {
@@ -137,7 +94,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginThrowsExceptionIfPluginNameIsEmpty(): void
     {
@@ -150,7 +106,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginRespectsDefaultActionAsANonCacheableAction(): void
     {
@@ -181,7 +136,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginRespectsNonDefaultActionAsANonCacheableAction(): void
     {
@@ -212,7 +166,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault(): void
     {
@@ -252,7 +205,6 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault(): void
     {
@@ -317,7 +269,6 @@ class ExtensionUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests if method registerPlugin() returns pluginSignature
      * @test
      */
     public function registerPluginMethodReturnsPluginSignature(): void
@@ -418,8 +369,8 @@ class ExtensionUtilityTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider checkResolveControllerAliasFromControllerClassNameDataProvider
      * @test
+     * @dataProvider checkResolveControllerAliasFromControllerClassNameDataProvider
      */
     public function checkResolveControllerAliasFromControllerClassName(string $expectedControllerAlias, string $controllerClassName): void
     {

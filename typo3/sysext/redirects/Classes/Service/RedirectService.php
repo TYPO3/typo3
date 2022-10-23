@@ -345,7 +345,6 @@ class RedirectService implements LoggerAwareInterface
      *
      * - TSFE->fe_user
      * - TSFE->sys_page
-     * - TSFE->tmpl
      * - TSFE->config
      * - TSFE->cObj
      *
@@ -369,9 +368,9 @@ class RedirectService implements LoggerAwareInterface
         );
         $controller->determineId($originalRequest);
         $controller->calculateLinkVars($queryParams);
-        $controller->getFromCache($originalRequest);
+        $newRequest = $controller->getFromCache($originalRequest);
         $controller->releaseLocks();
-        $controller->newCObj($originalRequest);
+        $controller->newCObj($newRequest);
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE'] = $controller;
         }

@@ -48,7 +48,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -102,11 +101,6 @@ class ContentObjectRendererTest extends UnitTestCase
     protected MockObject $frontendControllerMock;
 
     /**
-     * @var MockObject|TemplateService
-     */
-    protected $templateServiceMock;
-
-    /**
      * Default content object name -> class name map, shipped with TYPO3 CMS
      *
      * @var array
@@ -151,14 +145,6 @@ class ContentObjectRendererTest extends UnitTestCase
         ]);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->templateServiceMock =
-            $this->getMockBuilder(TemplateService::class)
-                ->setConstructorArgs([null, $packageManagerMock])
-                ->addMethods(['linkData'])
-                ->getMock();
         $pageRepositoryMock =
             $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
         $this->frontendControllerMock =
@@ -170,7 +156,6 @@ class ContentObjectRendererTest extends UnitTestCase
                 false
             );
         $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
-        $this->frontendControllerMock->tmpl = $this->templateServiceMock;
         $this->frontendControllerMock->config = [];
         $this->frontendControllerMock->page = [];
         $this->frontendControllerMock->sys_page = $pageRepositoryMock;
@@ -2636,30 +2621,14 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $linkText
-     * @param array $configuration
-     * @param string $expectedResult
      * @dataProvider typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider
      */
     public function typolinkReturnsCorrectLinksForEmailsAndUrls(string $linkText, array $configuration, string $expectedResult): void
     {
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
-            ->setConstructorArgs([null, $packageManagerMock])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $templateServiceObjectMock->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
         ];
-        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
         $this->cacheManagerMock->method('getCache')->willReturnMap([
@@ -2905,30 +2874,14 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $linkText
-     * @param array $configuration
-     * @param string $expectedResult
      * @dataProvider typolinkReturnsCorrectLinksFilesDataProvider
      */
     public function typolinkReturnsCorrectLinksFiles(string $linkText, array $configuration, string $expectedResult): void
     {
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
-            ->setConstructorArgs([null, $packageManagerMock])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $templateServiceObjectMock->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
         ];
-        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
         $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
@@ -3069,30 +3022,10 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $linkText
-     * @param array $configuration
-     * @param string $absRefPrefix
-     * @param string $expectedResult
      * @dataProvider typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider
      */
-    public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix(
-        string $linkText,
-        array $configuration,
-        string $absRefPrefix,
-        string $expectedResult
-    ): void {
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
-            ->setConstructorArgs([null, $packageManagerMock])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $templateServiceObjectMock->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
+    public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix(string $linkText, array $configuration, string $absRefPrefix, string $expectedResult): void
+    {
         $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
@@ -3100,7 +3033,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
         ];
-        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
         $GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
@@ -3195,23 +3127,10 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typolinkLinkResult(): void
     {
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
-            ->setConstructorArgs([null, $packageManagerMock])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $templateServiceObjectMock->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
         ];
-        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
         $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
@@ -3267,23 +3186,10 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typoLinkProperlyEncodesLinkResult(string $linkText, array $configuration, string $expectedResult): void
     {
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
-            ->setConstructorArgs([null, $packageManagerMock])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $templateServiceObjectMock->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
         ];
-        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
         $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();

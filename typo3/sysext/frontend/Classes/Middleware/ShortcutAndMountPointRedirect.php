@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
@@ -64,7 +63,6 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         }
 
         // See if the current page is of doktype "External URL", if so, do a redirect as well.
-        /** @var TypoScriptFrontendController */
         $controller = $request->getAttribute('frontend.controller');
         if ((int)$controller->page['doktype'] === PageRepository::DOKTYPE_LINK) {
             $externalUrl = $this->prefixExternalPageUrl(
@@ -97,7 +95,6 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
 
     protected function getRedirectUri(ServerRequestInterface $request): ?string
     {
-        /** @var TypoScriptFrontendController */
         $controller = $request->getAttribute('frontend.controller');
         $redirectToUri = $controller->getRedirectUriForShortcut($request);
         if ($redirectToUri !== null) {
