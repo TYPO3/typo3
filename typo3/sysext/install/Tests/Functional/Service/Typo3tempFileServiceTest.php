@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,19 +26,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class Typo3tempFileServiceTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected bool $initializeDatabase = false;
-
-    /**
-     * @var string
-     */
-    private $directoryName;
-
-    /**
-     * @var string
-     */
-    private $directoryPath;
+    private string $directoryName;
+    private string $directoryPath;
 
     protected function setUp(): void
     {
@@ -63,9 +52,9 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781454);
 
-        $processedFileRepository = $this->prophesize(ProcessedFileRepository::class);
-        $storageRepository = $this->prophesize(StorageRepository::class);
-        $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
+        $processedFileRepository = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
+        $storageRepository = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $subject = new Typo3tempFileService($processedFileRepository, $storageRepository);
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
     }
 
@@ -79,9 +68,9 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
         file_put_contents($this->directoryPath . '/a/b/c.css', '/* test */');
         file_put_contents($this->directoryPath . '/a/b/d.css', '/* test */');
 
-        $processedFileRepository = $this->prophesize(ProcessedFileRepository::class);
-        $storageRepository = $this->prophesize(StorageRepository::class);
-        $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
+        $processedFileRepository = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
+        $storageRepository = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $subject = new Typo3tempFileService($processedFileRepository, $storageRepository);
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
 
         self::assertDirectoryDoesNotExist($this->directoryPath . '/a');

@@ -17,30 +17,26 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BackendGroupsExplicitAllowDenyMigrationTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
-    public function backenGroupsRowsAreUpdated(): void
+    public function backendGroupsRowsAreUpdated(): void
     {
-        /** @var ObjectProphecy&OutputInterface $outputProphecy */
-        $outputProphecy = $this->prophesize(OutputInterface::class);
+        /** @var MockObject&OutputInterface $outputMock */
+        $outputMock = $this->getMockBuilder(OutputInterface::class)->getMock();
+        $outputMock->expects(self::atLeastOnce())->method('writeln');
         $subject = new BackendGroupsExplicitAllowDenyMigration();
-        $subject->setOutput($outputProphecy->reveal());
+        $subject->setOutput($outputMock);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendGroupsExplicitAllowDenyMigrationBefore.csv');
         self::assertTrue($subject->updateNecessary());
         $subject->executeUpdate();
-        $outputProphecy->writeln(Argument::cetera())->shouldHaveBeenCalled();
         self::assertFalse($subject->updateNecessary());
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/BackendGroupsExplicitAllowDenyMigrationAfter.csv');
 
