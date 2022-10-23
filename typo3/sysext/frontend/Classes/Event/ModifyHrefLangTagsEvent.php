@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Frontend\Event;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Listeners to this Event will be able to modify the hreflang tags that will be generated. You can use this when you
+ * Listeners to this event will be able to modify the hreflang tags that will be generated. You can use this when you
  * have an edge case language scenario and need to alter the default hreflang tags.
  */
 final class ModifyHrefLangTagsEvent
@@ -42,12 +42,14 @@ final class ModifyHrefLangTagsEvent
     }
 
     /**
-     * Set the hreflangs. This should be an array in format::
+     * Set the hreflangs. This should be an array in format:
      *
-     *     [
-     *         'en-US' => 'https://example.com',
-     *         'nl-NL' => 'https://example.com/nl'
-     *     ]
+     * ```
+     * [
+     *     'en-US' => 'https://example.com',
+     *     'nl-NL' => 'https://example.com/nl'
+     * ]
+     * ```
      *
      * @param array $hrefLangs
      */
