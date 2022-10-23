@@ -197,7 +197,9 @@ html {
 }
 
 .t3-page-ce-actions {
+    position: relative;
     text-align: center;
+    z-index: 2;
 }
 
 //
