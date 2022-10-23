@@ -197,12 +197,12 @@ class Filelist {
           text: TYPO3.lang['button.close'] || 'Close',
           active: true,
           btnClass: 'btn-default',
-          trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
+          trigger: (modalEvent: Event, modal: ModalElement) => modal.hideModal(),
         },
         {
           text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
-          trigger: (e: Event, modal: ModalElement) => {
+          trigger: (modalEvent: Event, modal: ModalElement) => {
             Filelist.submitClipboardFormWithCommand('delete', e.target as HTMLButtonElement)
             modal.hideModal();
           }
