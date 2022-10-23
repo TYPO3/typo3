@@ -20,34 +20,27 @@ namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Linktype;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExternalLinktypeTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->buildLanguageServiceProphecy()->reveal();
+        $GLOBALS['LANG'] = $this->buildLanguageServiceMock();
     }
 
-    private function buildLanguageServiceProphecy(): ObjectProphecy
+    private function buildLanguageServiceMock(): MockObject
     {
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy
-            ->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
-        $languageServiceProphecy->getLL(Argument::any())->willReturn('translation string');
-        return $languageServiceProphecy;
+        $languageServiceMock = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $languageServiceMock->method('getLL')->with(self::anything())->willReturn('translation string');
+        return $languageServiceMock;
     }
 
     /**
@@ -55,25 +48,21 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function checkLinkWithExternalUrlNotFoundReturnsFalse(): void
     {
-        $responseProphecy = $this->prophesize(Response::class);
-        $responseProphecy->getStatusCode()->willReturn(404);
-
-        $exceptionProphecy = $this->prophesize(ClientException::class);
-        $exceptionProphecy->hasResponse()
-            ->willReturn(true);
-        $exceptionProphecy->getResponse()
-            ->willReturn($responseProphecy->reveal());
+        $response = new Response(404);
+        $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
+        $clientExceptionMock->expects(self::once())->method('hasResponse')->willReturn(true);
+        $clientExceptionMock->expects(self::once())->method('getResponse')->willReturn($response);
 
         $url = 'https://example.org/~not-existing-url';
         $options = $this->getRequestHeaderOptions();
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request($url, 'HEAD', $options)
-            ->willThrow($exceptionProphecy->reveal());
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->method('request')->with($url, 'HEAD', $options)
+            ->willThrowException($clientExceptionMock);
 
         $optionsSecondTryWithGET = array_merge_recursive($options, ['headers' => ['Range' => 'bytes=0-4048']]);
-        $requestFactoryProphecy->request($url, 'GET', $optionsSecondTryWithGET)
-            ->willThrow($exceptionProphecy->reveal());
-        $subject = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $requestFactoryMock->method('request')->with($url, 'GET', $optionsSecondTryWithGET)
+            ->willThrowException($clientExceptionMock);
+        $subject = new ExternalLinktype($requestFactoryMock);
 
         $result = $subject->checkLink($url, null, null);
 
@@ -85,25 +74,22 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function checkLinkWithExternalUrlNotFoundResultsNotFoundErrorType(): void
     {
-        $responseProphecy = $this->prophesize(Response::class);
-        $responseProphecy->getStatusCode()->willReturn(404);
-
-        $exceptionProphecy = $this->prophesize(ClientException::class);
-        $exceptionProphecy->hasResponse()
-            ->willReturn(true);
-        $exceptionProphecy->getResponse()
-            ->willReturn($responseProphecy->reveal());
+        $response = new Response(404);
+        $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
+        $clientExceptionMock->expects(self::once())->method('hasResponse')->willReturn(true);
+        $clientExceptionMock->expects(self::once())->method('getResponse')->willReturn($response);
 
         $options = $this->getRequestHeaderOptions();
 
         $url = 'https://example.org/~not-existing-url';
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request($url, 'HEAD', $options)
-            ->willThrow($exceptionProphecy->reveal());
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->method('request')->with($url, 'HEAD', $options)
+            ->willThrowException($clientExceptionMock);
         $optionsSecondTryWithGET = array_merge_recursive($options, ['headers' => ['Range' => 'bytes=0-4048']]);
-        $requestFactoryProphecy->request($url, 'GET', $optionsSecondTryWithGET)
-            ->willThrow($exceptionProphecy->reveal());
-        $subject = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $requestFactoryMock->method('request')->with($url, 'GET', $optionsSecondTryWithGET)
+            ->willThrowException($clientExceptionMock);
+
+        $subject = new ExternalLinktype($requestFactoryMock);
 
         $subject->checkLink($url, null, null);
         $errorParams = $subject->getErrorParams();
@@ -112,18 +98,10 @@ class ExternalLinktypeTest extends UnitTestCase
         self::assertSame($errorParams['errno'], 404);
     }
 
-    private function getCookieJarProphecy(): CookieJar
-    {
-        $cookieJar = $this->prophesize(CookieJar::class);
-        $cookieJar = $cookieJar->reveal();
-        GeneralUtility::addInstance(CookieJar::class, $cookieJar);
-        return $cookieJar;
-    }
-
     private function getRequestHeaderOptions(): array
     {
         return [
-            'cookies' => $this->getCookieJarProphecy(),
+            'cookies' => new CookieJar(),
             'allow_redirects' => ['strict' => true],
             'headers' => [
                 'User-Agent' => 'TYPO3 linkvalidator',
@@ -213,19 +191,25 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function setAdditionalConfigMergesHeaders(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'HEAD',
+            self::callback(static function ($result) {
+                return $result['headers']['X-MAS'] === 'Merry!' && $result['headers']['User-Agent'] === 'TYPO3 linkvalidator';
+            })
+        );
 
-        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType = new ExternalLinktype($requestFactoryMock);
         $externalLinkType->setAdditionalConfig(['headers.' => [
             'X-MAS' => 'Merry!',
         ]]);
 
-        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
-
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(static function ($result) {
-            return $result['headers']['X-MAS'] === 'Merry!' && $result['headers']['User-Agent'] === 'TYPO3 linkvalidator';
-        }))->shouldBeCalled();
+        $externalLinkType->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 
     /**
@@ -235,16 +219,25 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function requestWithNoTimeoutIsCalledIfTimeoutNotSetByTsConfig(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'HEAD',
+            self::callback(static function ($result) {
+                if (isset($result['timeout'])) {
+                    return false;
+                }
+                return true;
+            })
+        );
+
+        $externalLinkType = new ExternalLinktype($requestFactoryMock);
         $externalLinkType->setAdditionalConfig([]);
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(static function ($result) {
-            if (isset($result['timeout'])) {
-                return false;
-            }
-            return true;
-        }))->shouldBeCalled();
-        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+        $externalLinkType->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 
     /**
@@ -252,19 +245,25 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function setAdditionalConfigOverwritesUserAgent(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'HEAD',
+            self::callback(static function ($result) {
+                return $result['headers']['User-Agent'] === 'TYPO3 Testing';
+            })
+        );
 
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype = new ExternalLinktype($requestFactoryMock);
         $externalLinktype->setAdditionalConfig([
             'httpAgentName' => 'TYPO3 Testing',
         ]);
 
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
-
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(static function ($result) {
-            return $result['headers']['User-Agent'] === 'TYPO3 Testing';
-        }))->shouldBeCalled();
+        $externalLinktype->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 
     /**
@@ -272,19 +271,25 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function setAdditionalConfigAppendsAgentUrlIfConfigured(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'HEAD',
+            self::callback(static function ($result) {
+                return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator http://example.com';
+            })
+        );
 
-        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType = new ExternalLinktype($requestFactoryMock);
         $externalLinkType->setAdditionalConfig([
             'httpAgentUrl' => 'http://example.com',
         ]);
 
-        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
-
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(static function ($result) {
-            return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator http://example.com';
-        }))->shouldBeCalled();
+        $externalLinkType->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 
     /**
@@ -292,19 +297,25 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function setAdditionalConfigAppendsEmailIfConfigured(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'HEAD',
+            self::callback(static function ($result) {
+                return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator;mail@example.com';
+            })
+        );
 
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype = new ExternalLinktype($requestFactoryMock);
         $externalLinktype->setAdditionalConfig([
             'httpAgentEmail' => 'mail@example.com',
         ]);
 
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
-
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(static function ($result) {
-            return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator;mail@example.com';
-        }))->shouldBeCalled();
+        $externalLinktype->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 
     /**
@@ -312,18 +323,25 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function setAdditionalConfigAppendsEmailFromGlobalsIfConfigured(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'HEAD',
+            self::callback(static function ($result) {
+                return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator;test@example.com';
+            })
+        );
+
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'test@example.com';
 
-        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType = new ExternalLinktype($requestFactoryMock);
         $externalLinkType->setAdditionalConfig([]);
 
-        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
-
-        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(static function ($result) {
-            return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator;test@example.com';
-        }))->shouldBeCalled();
+        $externalLinkType->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 
     /**
@@ -331,20 +349,27 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function setAdditionalConfigSetsRangeAndMethod(): void
     {
-        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $requestFactoryProphecy->request('http://example.com', 'GET', Argument::any())->shouldBeCalled();
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $requestFactoryMock->expects(self::once())->method('request')->with(
+            'http://example.com',
+            'GET',
+            self::callback(static function ($result) {
+                return $result['headers']['Range'] === 'bytes=0-2048';
+            })
+        );
+
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'test@example.com';
 
-        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType = new ExternalLinktype($requestFactoryMock);
         $externalLinkType->setAdditionalConfig([
             'method' => 'GET',
             'range' => '0-2048',
         ]);
 
-        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
-
-        $requestFactoryProphecy->request('http://example.com', 'GET', Argument::that(static function ($result) {
-            return $result['headers']['Range'] === 'bytes=0-2048';
-        }))->shouldBeCalled();
+        $externalLinkType->checkLink(
+            'http://example.com',
+            [],
+            $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock()
+        );
     }
 }
