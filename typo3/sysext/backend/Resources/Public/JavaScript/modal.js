@@ -41,13 +41,9 @@ var Identifiers,__decorate=function(t,e,a,o){var s,n=arguments.length,i=n<3?e:nu
               </div>
           </div>
       </div>
-    `}_buttonClick(t,e){const a=t.currentTarget;e.action?(this.activeButton=e,e.action.execute(a).then((()=>this.bootstrapModal.hide()))):e.trigger&&e.trigger(t,this),a.dispatchEvent(new CustomEvent("button.clicked",{bubbles:!0}))}renderAjaxBody(){return null===this.templateResultContent?(new AjaxRequest(this.content).get().then((async t=>{const e=await t.raw().text();this.templateResultContent=html`${unsafeHTML(e)}`,this.updateComplete.then((()=>{this.ajaxCallback&&this.ajaxCallback(this),this.dispatchEvent(new CustomEvent("modal-loaded"))}))})).catch((async t=>{const e=await t.raw().text();this.templateResultContent=e?html`${unsafeHTML(e)}`:html`<p><strong>Oops, received a ${t.response.status} response from </strong> <span class="text-break">${this.content}</span>.</p>`})),html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`):this.templateResultContent}renderModalBody(){return this.type===Types.ajax?this.renderAjaxBody():this.type===Types.iframe?html`
-        <iframe src="${this.content}"
-                name="modal_frame"
-                class="modal-iframe t3js-modal-iframe"
-                @load=${t=>this.modalTitle=t.currentTarget.contentDocument.title}
-        ></iframe>
-      `:this.type===Types.template?this.templateResultContent:html`<p>${this.content}</p>`}renderModalButton(t){const e={btn:!0,[t.btnClass||"btn-default"]:!0,"t3js-active":t.active,disabled:this.activeButton&&this.activeButton!==t};return html`
+    `}_buttonClick(t,e){const a=t.currentTarget;e.action?(this.activeButton=e,e.action.execute(a).then((()=>this.bootstrapModal.hide()))):e.trigger&&e.trigger(t,this),a.dispatchEvent(new CustomEvent("button.clicked",{bubbles:!0}))}renderAjaxBody(){return null===this.templateResultContent?(new AjaxRequest(this.content).get().then((async t=>{const e=await t.raw().text();this.templateResultContent=html`${unsafeHTML(e)}`,this.updateComplete.then((()=>{this.ajaxCallback&&this.ajaxCallback(this),this.dispatchEvent(new CustomEvent("modal-loaded"))}))})).catch((async t=>{const e=await t.raw().text();this.templateResultContent=e?html`${unsafeHTML(e)}`:html`<p><strong>Oops, received a ${t.response.status} response from </strong> <span class="text-break">${this.content}</span>.</p>`})),html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`):this.templateResultContent}renderModalBody(){if(this.type===Types.ajax)return this.renderAjaxBody();if(this.type===Types.iframe){const t=t=>{const e=t.currentTarget;this.modalTitle=e.contentDocument.title,e.contentDocument.body.classList.add("with-overflow")};return html`
+        <iframe src="${this.content}" name="modal_frame" class="modal-iframe t3js-modal-iframe" @load=${t}></iframe>
+      `}return this.type===Types.template?this.templateResultContent:html`<p>${this.content}</p>`}renderModalButton(t){const e={btn:!0,[t.btnClass||"btn-default"]:!0,"t3js-active":t.active,disabled:this.activeButton&&this.activeButton!==t};return html`
       <button class=${classMap(e)}
               name=${ifDefined(t.name||void 0)}
               @click=${e=>this._buttonClick(e,t)}>

@@ -216,12 +216,14 @@ export class ModalElement extends LitElement {
     }
 
     if (this.type === Types.iframe) {
+      const loadCallback = (e: Event) => {
+        const iframe = e.currentTarget as HTMLIFrameElement;
+        this.modalTitle = iframe.contentDocument.title;
+        // see Build/Sources/Sass/scaffold/_scaffold.scss
+        iframe.contentDocument.body.classList.add('with-overflow');
+      };
       return html`
-        <iframe src="${this.content}"
-                name="modal_frame"
-                class="modal-iframe t3js-modal-iframe"
-                @load=${(e: Event) => this.modalTitle = (e.currentTarget as HTMLIFrameElement).contentDocument.title}
-        ></iframe>
+        <iframe src="${this.content}" name="modal_frame" class="modal-iframe t3js-modal-iframe" @load=${loadCallback}></iframe>
       `;
     }
 
