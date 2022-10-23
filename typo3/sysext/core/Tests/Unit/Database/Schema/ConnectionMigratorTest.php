@@ -28,7 +28,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -73,7 +72,7 @@ class ConnectionMigratorTest extends UnitTestCase
      */
     public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
-        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$this->getTable()]);
+        $originalSchemaDiff = new SchemaDiff([], [], [$this->getTable()]);
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
 
         self::assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->newName);
@@ -89,9 +88,8 @@ class ConnectionMigratorTest extends UnitTestCase
     public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $table = $this->getTable();
-        $tableDiff = new TableDiff($table->getName());
-        $originalSchemaDiff = new SchemaDiff(null, [$tableDiff]);
-        $originalSchemaDiff->changedTables[0]->removedColumns[] = $this->getColumn();
+        $tableDiff = new TableDiff($table->getName(), [], [], [$this->getColumn()]);
+        $originalSchemaDiff = new SchemaDiff([], [$tableDiff]);
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
 
         self::assertStringStartsWith(

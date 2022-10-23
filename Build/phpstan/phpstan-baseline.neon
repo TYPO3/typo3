@@ -1546,11 +1546,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Database/RelationHandlerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$newTables of class Doctrine\\\\DBAL\\\\Schema\\\\SchemaDiff constructor expects array\\<Doctrine\\\\DBAL\\\\Schema\\\\Table\\>, null given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/ConnectionMigratorTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 0 and string\\|null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/TableBuilderTest.php
