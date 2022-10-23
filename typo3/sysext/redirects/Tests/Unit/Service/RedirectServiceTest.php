@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Log\LoggerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -37,35 +35,27 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RedirectServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /** @var ObjectProphecy<RedirectCacheService> */
-    protected ObjectProphecy $redirectCacheServiceProphecy;
-
-    /** @var ObjectProphecy<LinkService> */
-    protected ObjectProphecy $linkServiceProphecy;
+    protected MockObject&RedirectCacheService $redirectCacheServiceMock;
+    protected MockObject&LinkService $linkServiceMock;
 
     protected RedirectService $redirectService;
 
-    /** @var ObjectProphecy<SiteFinder> */
-    protected ObjectProphecy $siteFinder;
-
-    /** @var ObjectProphecy<RedirectRepository> */
-    protected ObjectProphecy $redirectRepository;
+    protected MockObject&SiteFinder $siteFinder;
+    protected MockObject&RedirectRepository $redirectRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $this->redirectCacheServiceProphecy = $this->prophesize(RedirectCacheService::class);
-        $this->linkServiceProphecy = $this->prophesize(LinkService::class);
-        $this->siteFinder = $this->prophesize(SiteFinder::class);
-        $this->redirectRepository = $this->prophesize(RedirectRepository::class);
+        $logger = new NullLogger();
+        $this->redirectCacheServiceMock = $this->getMockBuilder(RedirectCacheService::class)->disableOriginalConstructor()->getMock();
+        $this->linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $this->siteFinder = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
+        $this->redirectRepository = $this->getMockBuilder(RedirectRepository::class)->disableOriginalConstructor()->getMock();
 
-        $this->redirectService = new RedirectService($this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal());
-        $this->redirectService->setLogger($loggerProphecy->reveal());
+        $this->redirectService = new RedirectService($this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder);
+        $this->redirectService->setLogger($logger);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
     }
@@ -75,8 +65,10 @@ class RedirectServiceTest extends UnitTestCase
      */
     public function matchRedirectReturnsNullIfNoRedirectsExist(): void
     {
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn([]);
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
+            ['example.com', []],
+            ['*', []],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 
@@ -99,16 +91,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'flat' => [
-                    $path . '/' => [
-                        1 => $row,
+                'example.com',
+                [
+                    'flat' => [
+                        $path . '/' => [
+                            1 => $row,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', rawurlencode($path));
 
@@ -157,16 +155,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'respect_query_parameters' => [
-                    'index.php?id=123' => [
-                        1 => $row,
+                'example.com',
+                [
+                    'respect_query_parameters' => [
+                        'index.php?id=123' => [
+                            1 => $row,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123');
 
@@ -188,16 +192,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'respect_query_parameters' => [
-                    'index.php/?id=123' => [
-                        1 => $row,
+                'example.com',
+                [
+                    'respect_query_parameters' => [
+                        'index.php/?id=123' => [
+                            1 => $row,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123');
 
@@ -219,16 +229,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'respect_query_parameters' => [
-                    'index.php?id=123&a=b' => [
-                        1 => $row,
+                'example.com',
+                [
+                    'respect_query_parameters' => [
+                        'index.php?id=123&a=b' => [
+                            1 => $row,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=b');
 
@@ -250,16 +266,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'respect_query_parameters' => [
-                    'index.php?id=123&a=b' => [
-                        1 => $row,
+                'example.com',
+                [
+                    'respect_query_parameters' => [
+                        'index.php?id=123&a=b' => [
+                            1 => $row,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=a');
 
@@ -291,22 +313,28 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'flat' => [
-                    'special/page/' =>
-                        [
-                            1 => $row1,
+                'example.com',
+                [
+                    'flat' => [
+                        'special/page/' =>
+                            [
+                                1 => $row1,
+                            ],
+                    ],
+                    'respect_query_parameters' => [
+                        'special/page?key=998877' => [
+                            1 => $row2,
                         ],
-                ],
-                'respect_query_parameters' => [
-                    'special/page?key=998877' => [
-                        1 => $row2,
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'special/page', 'key=998877');
 
@@ -336,24 +364,29 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'flat' => [
-                    'foo/' => [
-                        1 => $row1,
+                'example.com',
+                [
+                    'flat' => [
+                        'foo/' => [
+                            1 => $row1,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn(
+            ],
             [
-                'flat' => [
-                    'foo/' => [
-                        2 => $row2,
+                '*',
+                [
+                    'flat' => [
+                        'foo/' => [
+                            2 => $row2,
+                        ],
                     ],
                 ],
-            ]
-        );
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 
@@ -374,16 +407,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'regexp' => [
-                    '/f.*?/' => [
-                        1 => $row,
+                'example.com',
+                [
+                    'regexp' => [
+                        '/f.*?/' => [
+                            1 => $row,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 
@@ -413,17 +452,23 @@ class RedirectServiceTest extends UnitTestCase
             'endtime' => '0',
             'disabled' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
+        $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
             [
-                'flat' => [
-                    'foo/' => [
-                        1 => $row1,
-                        2 => $row2,
+                'example.com',
+                [
+                    'flat' => [
+                        'foo/' => [
+                            1 => $row1,
+                            2 => $row2,
+                        ],
                     ],
                 ],
-            ]
-        );
-        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 
@@ -435,7 +480,7 @@ class RedirectServiceTest extends UnitTestCase
      */
     public function getTargetUrlReturnsNullIfUrlCouldNotBeResolved(): void
     {
-        $this->linkServiceProphecy->resolve(Argument::any())->willThrow(new InvalidPathException('', 1516531195));
+        $this->linkServiceMock->method('resolve')->with(self::anything())->willThrowException(new InvalidPathException('', 1516531195));
 
         $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], new ServerRequest(new Uri()));
 
@@ -456,7 +501,7 @@ class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'https://example.com/',
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -472,8 +517,8 @@ class RedirectServiceTest extends UnitTestCase
      */
     public function getTargetUrlReturnsUrlForTypeFile(): void
     {
-        $fileProphecy = $this->prophesize(File::class);
-        $fileProphecy->getPublicUrl()->willReturn('https://example.com/file.txt');
+        $fileMock = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
+        $fileMock->method('getPublicUrl')->willReturn('https://example.com/file.txt');
         $redirectTargetMatch = [
             'target' => 'https://example.com',
             'force_https' => '0',
@@ -481,9 +526,9 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_FILE,
-            'file' => $fileProphecy->reveal(),
+            'file' => $fileMock,
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -499,19 +544,19 @@ class RedirectServiceTest extends UnitTestCase
      */
     public function getTargetUrlReturnsUrlForTypeFolder(): void
     {
-        $folderProphecy = $this->prophesize(Folder::class);
-        $folderProphecy->getPublicUrl()->willReturn('https://example.com/folder/');
+        $folderMock = $this->getMockBuilder(Folder::class)->disableOriginalConstructor()->getMock();
+        $folderMock->method('getPublicUrl')->willReturn('https://example.com/folder/');
         $redirectTargetMatch = [
             'target' => 'https://example.com',
             'force_https' => '0',
             'keep_query_parameters' => '0',
         ];
-        $folder = $folderProphecy->reveal();
+        $folder = $folderMock;
         $linkDetails = [
             'type' => LinkService::TYPE_FOLDER,
             'folder' => $folder,
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/');
         $request = new ServerRequest($source);
@@ -536,7 +581,7 @@ class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'http://example.com',
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -561,7 +606,7 @@ class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'https://example.com/?foo=1&bar=2',
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         $request = new ServerRequest($source);
@@ -581,13 +626,12 @@ class RedirectServiceTest extends UnitTestCase
         $redirectService = $this->getAccessibleMock(
             RedirectService::class,
             ['getUriFromCustomLinkDetails'],
-            [$this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal(), $this->redirectRepository->reveal()],
+            [$this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder, $this->redirectRepository],
             '',
-            true
         );
 
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $redirectService->setLogger($loggerProphecy->reveal());
+        $logger = new NullLogger();
+        $redirectService->setLogger($logger);
 
         $pageRecord = 't3://page?uid=13';
         $redirectTargetMatch = [
@@ -600,7 +644,7 @@ class RedirectServiceTest extends UnitTestCase
             'pageuid' => 13,
             'type' => LinkService::TYPE_PAGE,
         ];
-        $this->linkServiceProphecy->resolve($pageRecord)->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($pageRecord)->willReturn($linkDetails);
 
         $queryParams = [];
         $queryParams['foo'] = 'bar';
@@ -636,7 +680,7 @@ class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'https://anotherdomain.com/$1',
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/foo/bar');
         $request = new ServerRequest($source);
@@ -714,7 +758,7 @@ class RedirectServiceTest extends UnitTestCase
             'url' => $redirectTarget,
             'query' => '',
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri($requestUri);
         $queryParams = [];
@@ -794,7 +838,7 @@ class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => $redirectTarget,
         ];
-        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri($requestUri);
         $queryParams = [];

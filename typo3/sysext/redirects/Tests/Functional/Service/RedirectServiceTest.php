@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -36,7 +35,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RedirectServiceTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [];
@@ -79,9 +77,9 @@ class RedirectServiceTest extends FunctionalTestCase
         $this->testFilesToDelete[] = $typoscriptFile;
         $this->setUpFrontendRootPage(1, [$typoscriptFile]);
 
-        $logger = $this->prophesize(LoggerInterface::class);
+        $logger = new NullLogger();
         $frontendUserAuthentication = new FrontendUserAuthentication();
-        $frontendUserAuthentication->setLogger($logger->reveal());
+        $frontendUserAuthentication->setLogger($logger);
 
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $uri = new Uri('https://acme.com/redirect-to-access-restricted-site');
@@ -90,8 +88,8 @@ class RedirectServiceTest extends FunctionalTestCase
             ->withAttribute('frontend.user', $frontendUserAuthentication)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
-        $linkServiceProphecy = $this->prophesize(LinkService::class);
-        $linkServiceProphecy->resolve('t3://page?uid=2')->willReturn(
+        $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $linkServiceMock->method('resolve')->with('t3://page?uid=2')->willReturn(
             [
                 'pageuid' => 2,
                 'type' => LinkService::TYPE_PAGE,
@@ -100,10 +98,10 @@ class RedirectServiceTest extends FunctionalTestCase
 
         $redirectService = new RedirectService(
             new RedirectCacheService(),
-            $linkServiceProphecy->reveal(),
+            $linkServiceMock,
             $siteFinder
         );
-        $redirectService->setLogger($logger->reveal());
+        $redirectService->setLogger($logger);
 
         // Assert correct redirect is matched
         $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());

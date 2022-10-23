@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -28,25 +28,18 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class IntegrityServiceTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
-
     protected array $coreExtensionsToLoad = ['redirects'];
-
-    /**
-     * @var IntegrityService
-     */
-    protected $subject;
+    protected IntegrityService $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $siteFinder = $this->prophesizeSiteFinder()->reveal();
+        $siteFinder = $this->getSiteFinderMock();
         $this->subject = new IntegrityService(
             new RedirectService(
                 new RedirectCacheService(),
-                $this->prophesize(LinkService::class)->reveal(),
+                $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock(),
                 $siteFinder,
             ),
             $siteFinder
@@ -220,9 +213,9 @@ class IntegrityServiceTest extends FunctionalTestCase
         self::assertSame(count($expectedConflicts), $matches);
     }
 
-    private function prophesizeSiteFinder(): ObjectProphecy
+    private function getSiteFinderMock(): MockObject&SiteFinder
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
+        $siteFinderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
 
         $simpleSite = new Site('simple-page', 1, [
             'base' => 'https://example.com',
@@ -257,10 +250,13 @@ class IntegrityServiceTest extends FunctionalTestCase
             ],
         ]);
 
-        $siteFinderProphecy->getSiteByIdentifier('simple-page')->willReturn($simpleSite);
-        $siteFinderProphecy->getSiteByIdentifier('localized-page')->willReturn($localizedSite);
-        $siteFinderProphecy->getAllSites()->willReturn([$simpleSite, $localizedSite]);
+        $siteFinderMock->method('getSiteByIdentifier')->willReturnMap([
+            ['simple-page', $simpleSite],
+            ['localized-page', $localizedSite],
+        ]);
 
-        return $siteFinderProphecy;
+        $siteFinderMock->method('getAllSites')->willReturn([$simpleSite, $localizedSite]);
+
+        return $siteFinderMock;
     }
 }

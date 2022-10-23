@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
@@ -25,8 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ValuePickerItemDataProviderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected array $sysRedirectResultSet = [
         'tableName' => 'sys_redirect',
         'processedTca' => [
@@ -51,9 +48,8 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
             'tableName' => 'tt_content',
         ];
 
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getAllSites()->willReturn([]);
-        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
+        $siteFinderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
+        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderMock);
         $actualResult = $valuePickerItemDataProvider->addData($result);
         self::assertSame($result, $actualResult);
     }
@@ -64,12 +60,12 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     public function addDataAddsHostsAsKeyAndValueToRedirectValuePicker(): void
     {
         // no results for now
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getAllSites()->willReturn([
+        $siteFinderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
+        $siteFinderMock->expects(self::once())->method('getAllSites')->willReturn([
             new Site('bar', 13, ['base' => 'bar.test']),
             new Site('foo', 14, ['base' => 'foo.test']),
         ]);
-        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
+        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderMock);
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
         $expected = $this->sysRedirectResultSet;
         $expected['processedTca']['columns']['source_host']['config']['valuePicker']['items'] = [
@@ -84,9 +80,9 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
      */
     public function addDataDoesNotChangeResultSetIfNoSitesAreFound(): void
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getAllSites()->willReturn([]);
-        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
+        $siteFinderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
+        $siteFinderMock->expects(self::once())->method('getAllSites')->willReturn([]);
+        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderMock);
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
 
         self::assertSame($this->sysRedirectResultSet, $actualResult);
