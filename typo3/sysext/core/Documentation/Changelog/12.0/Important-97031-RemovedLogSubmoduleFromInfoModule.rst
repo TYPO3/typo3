@@ -11,7 +11,7 @@ See :issue:`97031`
 Description
 ===========
 
-The info module in the TYPO3 backend does no longer provide the "Log"
+The info module in the TYPO3 backend does no longer provide the :guilabel:`Log`
 submodule. It has been removed since related page and record logs can
 be accessed via the history module since TYPO3 v9.
 

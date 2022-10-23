@@ -15,7 +15,7 @@ Extending the class :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin` is not a
 recommended way of developing Frontend plugins anymore. This class is not
 maintained anymore and may be removed in future versions without further notice.
 
-The TypoScript property :typoscript`plugin.tx_myextension_pi1._DEFAULT_PI_VARS`
+The TypoScript property :typoscript:`plugin.tx_myextension_pi1._DEFAULT_PI_VARS`
 has only been used in the class :php:`AbstractPlugin`. It is therefore not public
 API anymore.
 

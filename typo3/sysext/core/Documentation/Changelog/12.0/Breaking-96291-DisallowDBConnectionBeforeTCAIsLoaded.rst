@@ -31,6 +31,7 @@ that access database API before TCA is loaded.
 Migration
 =========
 
-Database API can be accessed earliest in :php:`BootCompleted` event.
+Database API can be accessed earliest in the
+:php:`\TYPO3\CMS\Core\Core\Event\BootCompletedEvent`.
 
 .. index:: Database, NotScanned, ext:core

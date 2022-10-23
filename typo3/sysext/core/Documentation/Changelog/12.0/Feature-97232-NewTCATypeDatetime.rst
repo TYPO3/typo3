@@ -41,15 +41,15 @@ The TCA type :php:`datetime` features the following column configuration:
 
 .. note::
 
-   The :php:`eval=int` option is now automatically set for the element in
-   case no specific :php:`dbType` has been defined. It should therefore be
-   removed from the TCA configuration.
+   The :php:`eval=integer` option is now automatically set for the element
+   in case no specific :php:`dbType` has been defined. It should therefore
+   be removed from the TCA configuration.
 
 .. note::
 
    The :php:`format` option defines how the display of the field value
    will be in e.g. FormEngine. The storage format is defined via :php:`dbType`
-   or :php:`eval=int`.
+   and falls back to :php:`eval=integer`.
 
 The following column configuration can be overwritten by page TSconfig:
 

@@ -12,12 +12,12 @@ Description
 PageRenderer supports additional tag attributes for CSS and JavaScript files.
 These data attributes can be configured using a key-value list via TypoScript.
 
-* :ts:`page.includeCSS`
-* :ts:`page.includeCSSLibs`
-* :ts:`page.includeJS`
-* :ts:`page.includeJSFooter`
-* :ts:`page.includeJSLibs`
-* :ts:`page.includeJSFooterlibs`
+* :typoscript:`page.includeCSS`
+* :typoscript:`page.includeCSSLibs`
+* :typoscript:`page.includeJS`
+* :typoscript:`page.includeJSFooter`
+* :typoscript:`page.includeJSLibs`
+* :typoscript:`page.includeJSFooterlibs`
 
 
 Impact
@@ -32,7 +32,7 @@ Example
 
 Configuration:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    page = PAGE
    page {
@@ -63,6 +63,7 @@ Configuration:
    }
 
 Reserved keywords which will not be mapped to attributes are:
+
 - compress
 - forceOnTop
 - allWrap
