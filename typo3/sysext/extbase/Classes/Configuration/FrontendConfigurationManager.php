@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -161,23 +158,9 @@ class FrontendConfigurationManager implements SingletonInterface
 
         if (!empty($frameworkConfiguration['persistence']['storagePid'])) {
             if (is_array($frameworkConfiguration['persistence']['storagePid'])) {
-                // We simulate the frontend to enable the use of cObjects in
-                // stdWrap. We then convert the configuration to normal TypoScript
-                // and apply the stdWrap to the storagePid
-                $isBackend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
-                if ($isBackend) {
-                    // @todo: This BE specific switch should be moved to BackendConfigurationManager to drop the dependency to $GLOBALS['TYPO3_REQUEST'] here.
-                    // Use makeInstance here since extbase Bootstrap always setContentObject(null) in Backend, no need to call getContentObject().
-                    FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
-                }
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
                 $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf);
-                if ($isBackend) {
-                    FrontendSimulatorUtility::resetFrontendEnvironment();
-                }
             }
-
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {
                 $storagePids = $this->getRecursiveStoragePids(
                     GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? '')),
