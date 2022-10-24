@@ -51,7 +51,7 @@ class CKEditor5Migrator
         'Subscript' => ['subscript'],
         'Superscript' => ['superscript'],
         'Link' => ['link'],
-        'Anchor' => ['link'],
+        'Anchor' => [],
         'list' => ['numberedList', 'bulletedList'],
         'Indent' => ['indent', 'outdent'],
         'Format' => ['heading'],
@@ -159,6 +159,7 @@ class CKEditor5Migrator
         if (!isset($this->configuration['removeButtons'])) {
             return;
         }
+
         $removeItems = [];
         foreach ($this->configuration['removeButtons'] as $legacyButtonName) {
             if (isset(self::TOOLBAR_GROUPS_MAP[$legacyButtonName])) {
@@ -174,6 +175,10 @@ class CKEditor5Migrator
                 $removeItems[] = lcfirst($legacyButtonName);
             }
         }
+
+        // remove legacy configuration after migration
+        unset($this->configuration['removeButtons']);
+
         $this->configuration['toolbar']['removeItems'] = $removeItems;
     }
 
@@ -216,6 +221,7 @@ class CKEditor5Migrator
                         ];
                 }
             }
+            unset($this->configuration['format_tags']);
             $this->configuration['heading']['options'] = $allowedHeadings;
         }
     }
