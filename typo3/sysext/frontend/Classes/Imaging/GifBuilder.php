@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
@@ -130,19 +129,16 @@ class GifBuilder extends GraphicalFunctions
                 $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
                 $this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
             }
-            // Initializing global Char Range Map
+            // Initializing Char Range Map
             $this->charRangeMap = [];
-            if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] ?? null)) {
-                foreach ($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg) {
-                    if (is_array($cRMcfg)) {
-                        // Initializing:
-                        $cRMkey = $GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'][substr($cRMcfgkey, 0, -1)];
-                        $this->charRangeMap[$cRMkey] = [];
-                        $this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'] ?? [];
-                        $this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey, 0, -1);
-                        $this->charRangeMap[$cRMkey]['multiplicator'] = (float)$cRMcfg['fontSizeMultiplicator'];
-                        $this->charRangeMap[$cRMkey]['pixelSpace'] = (int)$cRMcfg['pixelSpaceFontSizeRef'];
-                    }
+            foreach (($conf['charRangeMap.'] ?? []) as $cRMcfgkey => $cRMcfg) {
+                if (is_array($cRMcfg)) {
+                    $cRMkey = $conf['charRangeMap.'][substr($cRMcfgkey, 0, -1)];
+                    $this->charRangeMap[$cRMkey] = [];
+                    $this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'] ?? [];
+                    $this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey, 0, -1);
+                    $this->charRangeMap[$cRMkey]['multiplicator'] = (float)$cRMcfg['fontSizeMultiplicator'];
+                    $this->charRangeMap[$cRMkey]['pixelSpace'] = (int)$cRMcfg['pixelSpaceFontSizeRef'];
                 }
             }
             // Getting sorted list of TypoScript keys from setup.
