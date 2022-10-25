@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\DisabledMainModuleFixture;
@@ -28,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ModuleLoaderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -114,14 +111,13 @@ class ModuleLoaderTest extends UnitTestCase
             ],
         ];
 
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceProphecy->reveal());
-        $dependencyOrderingServiceProphecy->orderByDependencies($config)->willReturn($config);
+        $dependencyOrderingServiceMock = $this->getMockBuilder(DependencyOrderingService::class)->getMock();
+        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceMock);
+        $dependencyOrderingServiceMock->expects(self::atLeastOnce())->method('orderByDependencies')
+            ->with($config)->willReturn($config);
 
         $moduleLoader = new ModuleLoader();
         $moduleLoader->validateSortAndInitializeModules($config);
-
-        $dependencyOrderingServiceProphecy->orderByDependencies($config)->shouldHaveBeenCalled();
     }
 
     /**
@@ -138,9 +134,10 @@ class ModuleLoaderTest extends UnitTestCase
             ],
         ];
 
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceProphecy->reveal());
-        $dependencyOrderingServiceProphecy->orderByDependencies($config)->willReturn($config);
+        $dependencyOrderingServiceMock = $this->getMockBuilder(DependencyOrderingService::class)->getMock();
+        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceMock);
+        $dependencyOrderingServiceMock->expects(self::atLeastOnce())->method('orderByDependencies')
+            ->with($config)->willReturn($config);
 
         $moduleLoader = new ModuleLoader();
         $result = $moduleLoader->validateSortAndInitializeModules($config);

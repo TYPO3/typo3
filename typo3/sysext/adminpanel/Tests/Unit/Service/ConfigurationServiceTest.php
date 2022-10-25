@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\MainModuleFixture;
@@ -29,18 +27,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConfigurationServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<BackendUserAuthentication> */
-    protected ObjectProphecy $beUserProphecy;
-
-    protected BackendUserAuthentication $beUser;
+    protected MockObject&BackendUserAuthentication $beUser;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $this->beUser = $this->beUserProphecy->reveal();
+        $this->beUser = $this->getMockBuilder(BackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
         $GLOBALS['BE_USER'] = $this->beUser;
     }
 
@@ -170,24 +162,22 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function saveConfigurationTriggersOnSubmitOnEnabledModules(): void
     {
-        $subModuleFixture = $this->prophesize(SubModuleFixture::class);
-        $mainModuleFixture = $this->prophesize(MainModuleFixture::class);
-        $mainModuleFixture->isEnabled()->willReturn(true);
-        $mainModuleFixture->onSubmit(Argument::cetera())->shouldBeCalled()->hasReturnVoid();
-        $mainModuleFixture->getSubModules()->willReturn(
-            [$subModuleFixture->reveal()]
+        $requestMock = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+
+        $subModuleFixture = $this->getMockBuilder(SubModuleFixture::class)->getMock();
+        $subModuleFixture->expects(self::atLeastOnce())->method('onSubmit')->with([], $requestMock);
+        $mainModuleFixture = $this->getMockBuilder(MainModuleFixture::class)->getMock();
+        $mainModuleFixture->method('isEnabled')->willReturn(true);
+        $mainModuleFixture->expects(self::atLeastOnce())->method('onSubmit')->with([], $requestMock);
+        $mainModuleFixture->method('getSubModules')->willReturn(
+            [$subModuleFixture]
         );
         $modules = [
-            $mainModuleFixture->reveal(),
+            $mainModuleFixture,
         ];
 
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-
         $configurationService = new ConfigurationService();
-        $configurationService->saveConfiguration($modules, $requestProphecy->reveal());
-
-        $mainModuleFixture->onSubmit([], $requestProphecy->reveal())->shouldHaveBeenCalled();
-        $subModuleFixture->onSubmit([], $requestProphecy->reveal())->shouldHaveBeenCalled();
+        $configurationService->saveConfiguration($modules, $requestMock);
     }
 
     /**
@@ -202,9 +192,11 @@ class ConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
+        $this->beUser->expects(self::atLeastOnce())->method('writeUC');
+
         // new configuration to save
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $requestProphecy->getParsedBody()->willReturn(
+        $requestMock = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $requestMock->method('getParsedBody')->willReturn(
             [
                 'TSFE_ADMIN_PANEL' => [
                     'baz' => 'bam',
@@ -213,7 +205,7 @@ class ConfigurationServiceTest extends UnitTestCase
         );
 
         $configurationService = new ConfigurationService();
-        $configurationService->saveConfiguration([], $requestProphecy->reveal());
+        $configurationService->saveConfiguration([], $requestMock);
 
         $expected = [
             'AdminPanel' => [
@@ -222,7 +214,6 @@ class ConfigurationServiceTest extends UnitTestCase
             ],
         ];
         self::assertSame($expected, $this->beUser->uc);
-        $this->beUserProphecy->writeUC()->shouldHaveBeenCalled();
     }
 
     /**
@@ -230,7 +221,7 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     private function setUpUserTsConfigForAdmPanel(array $userTsAdmPanelConfig): void
     {
-        $this->beUserProphecy->getTSConfig()->willReturn(
+        $this->beUser->method('getTSConfig')->willReturn(
             ['admPanel.' => $userTsAdmPanelConfig]
         );
     }

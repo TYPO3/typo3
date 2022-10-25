@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Utility;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -25,8 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StateUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -42,7 +39,7 @@ class StateUtilityTest extends UnitTestCase
      */
     public function isEnabledReturnsFalseIfNoBackendUserInFrontendContextIsLoggedIn(): void
     {
-        $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
+        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
         $isEnabled = StateUtility::isActivatedForUser();
         self::assertFalse($isEnabled);
     }
@@ -78,9 +75,9 @@ class StateUtilityTest extends UnitTestCase
      */
     public function isEnabledReturnsTrueIfAtLeastOneModuleIsEnabled(array $tsConfig): void
     {
-        $beUserProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $beUserProphecy->getTSConfig()->willReturn($tsConfig);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
+        $beUserMock->method('getTSConfig')->willReturn($tsConfig);
+        $GLOBALS['BE_USER'] = $beUserMock;
         $isEnabled = StateUtility::isActivatedForUser();
         self::assertTrue($isEnabled);
     }
@@ -115,9 +112,9 @@ class StateUtilityTest extends UnitTestCase
      */
     public function isEnabledReturnsFalseIfNoModulesEnabled(array $tsConfig): void
     {
-        $beUserProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $beUserProphecy->getTSConfig()->willReturn($tsConfig);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
+        $beUserMock->method('getTSConfig')->willReturn($tsConfig);
+        $GLOBALS['BE_USER'] = $beUserMock;
         $isEnabled = StateUtility::isActivatedForUser();
         self::assertFalse($isEnabled);
     }
@@ -156,9 +153,9 @@ class StateUtilityTest extends UnitTestCase
      */
     public function isHiddenForUserReturnsCorrectValue(array $tsConfig, bool $expected): void
     {
-        $beUserProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $beUserProphecy->getTSConfig()->willReturn($tsConfig);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
+        $beUserMock->method('getTSConfig')->willReturn($tsConfig);
+        $GLOBALS['BE_USER'] = $beUserMock;
         $isEnabled = StateUtility::isHiddenForUser();
         self::assertSame($expected, $isEnabled);
     }

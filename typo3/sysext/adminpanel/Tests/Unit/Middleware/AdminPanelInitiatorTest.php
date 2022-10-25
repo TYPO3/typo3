@@ -27,9 +27,6 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AdminPanelInitiatorTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
@@ -58,7 +55,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
 
         $controller = $this->getMockBuilder(MainController::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::setSingletonInstance(MainController::class, $controller);
-        $handler = $this->prophesizeHandler();
+        $handler = $this->getHandlerMock();
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
         $request->expects(self::any())->method('withAttribute')->withAnyParameters()->willReturn($request);
         $controller->expects(self::once())->method('initialize')->with($request)->willReturn($request);
@@ -116,7 +113,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
 
         $controller = $this->getMockBuilder(MainController::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::setSingletonInstance(MainController::class, $controller);
-        $handler = $this->prophesizeHandler();
+        $handler = $this->getHandlerMock();
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
 
         $adminPanelInitiator = new AdminPanelInitiator();
@@ -125,13 +122,9 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $controller->expects(self::never())->method('initialize');
     }
 
-    /**
-     * @return RequestHandlerInterface&MockObject
-     */
-    protected function prophesizeHandler(): MockObject
+    protected function getHandlerMock(): RequestHandlerInterface&MockObject
     {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-
         $handler = $this->getMockBuilder(RequestHandlerInterface::class)->onlyMethods(['handle'])->getMock();
         $handler->expects(self::any())->method('handle')->withAnyParameters()->willReturn($response);
         return $handler;
