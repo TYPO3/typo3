@@ -19,47 +19,26 @@ namespace TYPO3\CMS\Install\UpgradeAnalysis;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
- * Provide information about documentation files
+ * Provide information about documentation files.
+ *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class DocumentationFile
+final class DocumentationFile
 {
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    /**
-     * @var array Unified array of used tags
-     */
-    protected $tagsTotal = [];
-
     /**
      * all files handled in this Class need to reside inside the changelog dir
      * this is a security measure to protect system files
-     *
-     * @var string
      */
-    protected $changelogPath = '';
+    private string $changelogPath;
 
-    /**
-     * DocumentationFile constructor.
-     * @param Registry|null $registry
-     * @param string $changelogDir
-     */
-    public function __construct(Registry $registry = null, $changelogDir = '')
+    public function __construct(string $changelogDir = '')
     {
-        if ($registry === null) {
-            $registry = new Registry();
-        }
-        $this->registry = $registry;
         $this->changelogPath = $changelogDir !== '' ? $changelogDir : (string)realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog');
         $this->changelogPath = str_replace('\\', '/', $this->changelogPath);
     }
@@ -67,7 +46,6 @@ class DocumentationFile
     /**
      * Traverse given directory, select directories
      *
-     * @param string $path
      * @return string[] Version directories
      * @throws \InvalidArgumentException
      */
@@ -79,7 +57,7 @@ class DocumentationFile
 
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
         $versions = range($currentVersion, $currentVersion - 2);
-        $pattern = '(master|' . implode('\.*|', $versions) . '\.*)';
+        $pattern = '(' . implode('\.*|', $versions) . '\.*)';
         $finder = new Finder();
         $finder
             ->depth(0)
@@ -99,7 +77,6 @@ class DocumentationFile
     /**
      * Traverse given directory, select files
      *
-     * @param string $path
      * @return array file details of affected documentation files
      * @throws \InvalidArgumentException
      */
@@ -108,18 +85,13 @@ class DocumentationFile
         if (strcasecmp($path, $this->changelogPath) < 0 || !str_contains($path, $this->changelogPath)) {
             throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1485425530);
         }
-
-        $documentationFiles = $this->getDocumentationFilesForVersion($path);
-        $this->tagsTotal = $this->collectTagTotal($documentationFiles);
-
-        return $documentationFiles;
+        return $this->getDocumentationFilesForVersion($path);
     }
 
     /**
      * Get main information from a .rst file
      *
      * @param string $file Absolute path to documentation file
-     * @return array
      * @throws \InvalidArgumentException
      */
     public function getListEntry(string $file): array
@@ -165,29 +137,11 @@ class DocumentationFile
     }
 
     /**
-     * True if file should be considered
-     *
-     * @param array $fileInfo
-     * @return bool
-     */
-    protected function isRelevantFile(array $fileInfo): bool
-    {
-        $isRelevantFile = $fileInfo['extension'] === 'rst' && $fileInfo['filename'] !== 'Index';
-        // file might be ignored by users choice
-        if ($isRelevantFile && $this->isFileIgnoredByUsersChoice($fileInfo['basename'])) {
-            $isRelevantFile = false;
-        }
-
-        return $isRelevantFile;
-    }
-
-    /**
      * Add tags from file
      *
      * @param array $file file content, each line is an array item
-     * @return array
      */
-    protected function extractTags(array $file): array
+    private function extractTags(array $file): array
     {
         $tags = $this->extractTagsFromFile($file);
         // Headline starting with the category like Breaking, Important or Feature
@@ -204,7 +158,7 @@ class DocumentationFile
      * @param array $file file content, each line is an array item
      * @return array extracted tags
      */
-    protected function extractTagsFromFile(array $file): array
+    private function extractTagsFromFile(array $file): array
     {
         foreach ($file as $line) {
             if (str_starts_with($line, '.. index::')) {
@@ -217,30 +171,23 @@ class DocumentationFile
     }
 
     /**
-     * Files contain a headline (provided as input parameter,
+     * Files contain a headline (provided as input parameter),
      * it starts with the category string.
-     * This will used as a tag
-     *
-     * @param array $lines
-     * @return string
+     * This will be used as a tag.
      */
-    protected function extractCategoryFromHeadline(array $lines): string
+    private function extractCategoryFromHeadline(array $lines): string
     {
         $headline = $this->extractHeadline($lines);
         if (str_contains($headline, ':')) {
             return 'cat:' . substr($headline, 0, (int)strpos($headline, ':'));
         }
-
         return '';
     }
 
     /**
-     * Skip include line and markers, use the first line actually containing text
-     *
-     * @param array $lines
-     * @return string
+     * Skip include line and markers, use the first line actually containing text.
      */
-    protected function extractHeadline(array $lines): string
+    private function extractHeadline(array $lines): string
     {
         $index = 0;
         while (str_starts_with($lines[$index], '..') || str_starts_with($lines[$index], '==')) {
@@ -250,94 +197,21 @@ class DocumentationFile
     }
 
     /**
-     * @param string $docDirectory
-     * @param string $version
-     * @return bool
+     * Handle a single directory.
      */
-    protected function versionHasDocumentationFiles(string $docDirectory, string $version): bool
-    {
-        $absolutePath = str_replace('\\', '/', $docDirectory) . '/' . $version;
-        $finder = $this->getDocumentFinder()->in($absolutePath);
-
-        return $finder->files()->count() > 0;
-    }
-
-    /**
-     * Handle a single directory
-     *
-     * @param string $docDirectory
-     * @return array
-     */
-    protected function getDocumentationFilesForVersion(string $docDirectory): array
+    private function getDocumentationFilesForVersion(string $docDirectory): array
     {
         $documentationFiles = [[]];
         $absolutePath = str_replace('\\', '/', $docDirectory);
         $finder = $this->getDocumentFinder()->in($absolutePath);
-
         foreach ($finder->files() as $file) {
             /** @var SplFileInfo $file */
             $documentationFiles[] = $this->getListEntry($file->getPathname());
         }
-
         return array_merge(...$documentationFiles);
     }
 
-    /**
-     * Merge tag list
-     *
-     * @param iterable $documentationFiles
-     * @return array
-     */
-    protected function collectTagTotal($documentationFiles): array
-    {
-        $tags = [[]];
-        foreach ($documentationFiles as $fileArray) {
-            $tags[] = $fileArray['tags'];
-        }
-
-        return array_unique(array_merge(...$tags));
-    }
-
-    /**
-     * Return full tag list
-     *
-     * @return array
-     */
-    public function getTagsTotal(): array
-    {
-        return $this->tagsTotal;
-    }
-
-    /**
-     * whether that file has been removed from users view
-     *
-     * @param string $filename
-     * @return bool
-     */
-    protected function isFileIgnoredByUsersChoice(string $filename): bool
-    {
-        $isFileIgnoredByUsersChoice = false;
-
-        $ignoredFiles = $this->registry->get('upgradeAnalysisIgnoreFilter', 'ignoredDocumentationFiles');
-        if (is_array($ignoredFiles)) {
-            foreach ($ignoredFiles as $filePath) {
-                if ($filePath !== null && strlen($filePath) > 0) {
-                    if (str_contains($filePath, $filename)) {
-                        $isFileIgnoredByUsersChoice = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return $isFileIgnoredByUsersChoice;
-    }
-
-    /**
-     * @param string $rstContent
-     *
-     * @return string
-     */
-    protected function parseContent(string $rstContent): string
+    private function parseContent(string $rstContent): string
     {
         $content = htmlspecialchars($rstContent, ENT_COMPAT | ENT_SUBSTITUTE);
         $content = (string)preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
@@ -348,27 +222,18 @@ class DocumentationFile
         return trim($content);
     }
 
-    /**
-     * @param string $filename
-     *
-     * @return string|null
-     */
-    protected function parseIssueId(string $filename): ?string
+    private function parseIssueId(string $filename): ?string
     {
         return GeneralUtility::trimExplode('-', $filename)[1] ?? null;
     }
 
-    /**
-     * @return Finder
-     */
-    protected function getDocumentFinder(): Finder
+    private function getDocumentFinder(): Finder
     {
         $finder = new Finder();
         $finder
             ->depth(0)
             ->sortByName()
             ->name('/^(Feature|Breaking|Deprecation|Important)\-\d+.+\.rst$/i');
-
         return $finder;
     }
 }
