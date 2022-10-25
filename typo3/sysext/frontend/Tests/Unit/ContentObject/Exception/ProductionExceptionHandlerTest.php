@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Exception;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -28,38 +27,18 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ProductionExceptionHandlerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    protected bool $resetSingletonInstances = true;
-
-    protected ProductionExceptionHandler $subject;
-
-    /**
-     * Sets up this test case.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger());
-    }
-
     /**
      * @test
      */
     public function relayPropagateResponseException(): void
     {
-        $response = $this->getMockBuilder(HtmlResponse::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $exception = new PropagateResponseException($response, 1607328584);
-
+        $exception = new PropagateResponseException(new HtmlResponse(''), 1607328584);
         $this->expectException(PropagateResponseException::class);
-        $this->subject->handle($exception);
+        $this->expectExceptionCode(1607328584);
+        $subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger());
+        $subject->handle($exception);
     }
 
     /**
@@ -67,13 +46,11 @@ class ProductionExceptionHandlerTest extends UnitTestCase
      */
     public function relayImmediateResponseException(): void
     {
-        $response = $this->getMockBuilder(HtmlResponse::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $exception = new ImmediateResponseException($response, 1533939251);
-
+        $exception = new ImmediateResponseException(new HtmlResponse(''), 1533939251);
         $this->expectException(ImmediateResponseException::class);
-        $this->subject->handle($exception);
+        $this->expectExceptionCode(1533939251);
+        $subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger());
+        $subject->handle($exception);
     }
 
     /**
@@ -84,12 +61,12 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $currentTimestamp = 1629993829;
         $random = '029cca07';
 
-        $randomProphecy = $this->prophesize(Random::class);
-        $randomProphecy->generateRandomHexString(8)->willReturn($random);
+        $randomMock = $this->createMock(Random::class);
+        $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
 
         $exceptionHandler = new ProductionExceptionHandler(
             new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp))]),
-            $randomProphecy->reveal(),
+            $randomMock,
             new NullLogger()
         );
 
@@ -107,12 +84,12 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $currentTimestamp = 1629993829;
         $random = '029cca07';
 
-        $randomProphecy = $this->prophesize(Random::class);
-        $randomProphecy->generateRandomHexString(8)->willReturn($random);
+        $randomMock = $this->createMock(Random::class);
+        $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
 
         $exceptionHandler = new ProductionExceptionHandler(
             new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp))]),
-            $randomProphecy->reveal(),
+            $randomMock,
             new NullLogger()
         );
         $exceptionHandler->setConfiguration([
@@ -133,12 +110,12 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $currentTimestamp = 1629993829;
         $random = '029cca07';
 
-        $randomProphecy = $this->prophesize(Random::class);
-        $randomProphecy->generateRandomHexString(8)->willReturn($random);
+        $randomMock = $this->createMock(Random::class);
+        $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
 
         $exceptionHandler = new ProductionExceptionHandler(
             new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp))]),
-            $randomProphecy->reveal(),
+            $randomMock,
             new NullLogger()
         );
         $exceptionHandler->setConfiguration([
