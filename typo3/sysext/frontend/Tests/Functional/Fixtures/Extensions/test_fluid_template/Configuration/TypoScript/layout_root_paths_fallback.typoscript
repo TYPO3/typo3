@@ -1,0 +1,13 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = Main
+  layoutRootPath =
+  layoutRootPaths {
+    0 = EXT:test_fluid_template/Resources/Private
+    10 = EXT:test_fluid_template/Resources/Private/LayoutOverrides/Layouts
+  }
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/Templates
+  }
+}

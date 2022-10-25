@@ -1,0 +1,14 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = Settings
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/Templates
+  }
+  variables {
+    data = foo
+    data {
+      bar = baz
+    }
+  }
+}

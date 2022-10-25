@@ -1,0 +1,10 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  template = TEXT
+  template.value = 1+1=
+
+  stdWrap {
+    wrap = |2
+  }
+}

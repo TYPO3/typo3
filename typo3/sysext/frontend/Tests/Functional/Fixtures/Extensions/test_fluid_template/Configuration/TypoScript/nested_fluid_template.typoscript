@@ -1,0 +1,17 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  template = TEXT
+  template {
+    value = A{anotherFluidTemplate}C
+  }
+  variables {
+    anotherFluidTemplate = FLUIDTEMPLATE
+    anotherFluidTemplate {
+      template = TEXT
+      template {
+        value = B
+      }
+    }
+  }
+}

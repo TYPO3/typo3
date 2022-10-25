@@ -1,0 +1,14 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = Variables
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/Templates
+  }
+  variables {
+    var1 = TEXT
+    var1.value = I am coming from the
+    var2 = TEXT
+    var2.value = variables
+  }
+}

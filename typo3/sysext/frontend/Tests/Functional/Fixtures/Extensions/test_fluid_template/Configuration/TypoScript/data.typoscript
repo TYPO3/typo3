@@ -1,0 +1,6 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  template = TEXT
+  template.value = {data.title}
+}

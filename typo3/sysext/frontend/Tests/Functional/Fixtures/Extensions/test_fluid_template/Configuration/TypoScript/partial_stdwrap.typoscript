@@ -1,0 +1,10 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = WithPartial
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/Templates
+  }
+  partialRootPath = EXT:test_fluid_template/Resources/Private/
+  partialRootPath.wrap = |Partials
+}

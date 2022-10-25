@@ -1,0 +1,16 @@
+{
+    "name": "typo3/fixture-fluid-template-content-object-test",
+    "type": "typo3-cms-extension",
+    "description": "FluidTemplateContentObject Test",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "TYPO3Tests\\TestFluidTemplate\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "test_fluid_template"
+        }
+    }
+}

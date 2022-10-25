@@ -1,0 +1,12 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = AlternativeTemplate
+  layoutRootPaths {
+    0 = EXT:test_fluid_template/Resources/Private/
+    0.wrap = |Layouts
+  }
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/Templates
+  }
+}

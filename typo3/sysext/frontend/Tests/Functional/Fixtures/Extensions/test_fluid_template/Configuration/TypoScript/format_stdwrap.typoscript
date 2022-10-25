@@ -1,0 +1,11 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = Foobar
+  format = ml
+  format.prepend = TEXT
+  format.prepend.value = x
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/FoobarTemplates
+  }
+}

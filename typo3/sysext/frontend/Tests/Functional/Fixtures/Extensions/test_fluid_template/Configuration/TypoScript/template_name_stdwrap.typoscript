@@ -1,0 +1,9 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  templateName = Foo
+  templateName.wrap = |bar
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/FoobarTemplates
+  }
+}

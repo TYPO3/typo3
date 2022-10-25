@@ -1,0 +1,26 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  template = TEXT
+  template {
+    value = <f:layout/><f:section name="Main"><f:format.raw>{anotherFluidTemplate}</f:format.raw></f:section>
+  }
+
+  layoutRootPaths {
+    0 = EXT:test_fluid_template/Resources/Private/Layouts
+  }
+
+  variables {
+    anotherFluidTemplate = FLUIDTEMPLATE
+    anotherFluidTemplate {
+      template = TEXT
+      template {
+        value = <f:layout/><f:section name="Main"></f:section>
+      }
+
+      layoutRootPaths {
+        0 = EXT:test_fluid_template/Resources/Private/LayoutOverrides/Layouts
+      }
+    }
+  }
+}
