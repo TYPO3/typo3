@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -54,17 +52,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractMenuContentObjectTest extends UnitTestCase
 {
-    use ProphecyTrait;
     use PageRendererFactoryTrait;
 
-    /**
-     * @var AbstractMenuContentObject|MockObject|AccessibleObjectInterface
-     */
-    protected $subject;
+    protected AbstractMenuContentObject&MockObject&AccessibleObjectInterface $subject;
 
-    /**
-     * Set up this testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -82,29 +73,29 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ],
             ],
         ]);
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
-        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
-        $importMapProphecy = $this->prophesize(ImportMap::class);
-        $importMapProphecy->render(Argument::type('string'), Argument::type('string'))->willReturn('');
-        $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
-        $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
-        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+        $packageManagerMock = $this->createMock(PackageManager::class);
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        $cacheFrontendMock->method('get')->willReturn(false);
+        $cacheFrontendMock->method('set')->willReturn(null);
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock), $cacheFrontendMock);
+        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
+        $languageServiceFactoryMock->method('createFromSiteLanguage')->willReturn($languageService);
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
+        $importMapMock = $this->createMock(ImportMap::class);
+        $importMapMock->method('render')->willReturn('')->withAnyParameters();
+        $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
+        $importMapFactoryMock->method('create')->willReturn($importMapMock);
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
         GeneralUtility::setSingletonInstance(
             PageRenderer::class,
             new PageRenderer(...$this->getPageRendererConstructorArgs()),
         );
-        $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
+        $frontendUserMock = $this->createMock(FrontendUserAuthentication::class);
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', []), $frontendUserProphecy->reveal()])
+            ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', []), $frontendUserMock])
             ->onlyMethods(['initCaches'])
             ->getMock();
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
@@ -128,13 +119,13 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     protected function prepareSectionIndexTest(): void
     {
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->getExpressionBuilder()->willReturn(new ExpressionBuilder($connectionProphet->reveal()));
-        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock));
+        $connectionMock->method('quoteIdentifier')->willReturnArgument(0)->withAnyParameters();
 
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getConnectionForTable('tt_content')->willReturn($connectionProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with('tt_content')->willReturn($connectionMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
     }
 
     /**
@@ -157,7 +148,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->willReturn(null)->with(10);
+        $pageRepository->expects(self::once())->method('getPage')->with(10)->willReturn(null);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -189,8 +180,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage(): void
     {
-        $statementProphet = $this->prophesize(Result::class);
-        $statementProphet->fetchAssociative()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
+        $statementMock = $this->createMock(Result::class);
+        $statementMock->expects(self::exactly(2))->method('fetchAssociative')->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
 
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', [
@@ -207,7 +198,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('sys_page', $pageRepository);
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
-        $cObject->expects(self::once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
+        $cObject->expects(self::once())->method('exec_getQuery')->willReturn($statementMock);
         $this->subject->_set('parent_cObj', $cObject);
 
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -263,8 +254,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     public function sectionIndexFilters(int $expectedAmount, array $dataRow): void
     {
-        $statementProphet = $this->prophesize(Result::class);
-        $statementProphet->fetchAssociative()->willReturn($dataRow, false);
+        $statementMock = $this->createMock(Result::class);
+        $statementMock->method('fetchAssociative')->willReturn($dataRow, false);
 
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', [
@@ -279,7 +270,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('sys_page', $pageRepository);
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
-        $cObject->expects(self::once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
+        $cObject->expects(self::once())->method('exec_getQuery')->willReturn($statementMock);
         $this->subject->_set('parent_cObj', $cObject);
 
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -332,8 +323,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     public function sectionIndexQueriesWithDifferentColPos(array $configuration, string $colPosFromStdWrapValue, string $whereClausePrefix): void
     {
-        $statementProphet = $this->prophesize(Result::class);
-        $statementProphet->fetchAssociative()->willReturn([]);
+        $statementMock = $this->createMock(Result::class);
+        $statementMock->method('fetchAssociative')->willReturn([]);
 
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);
@@ -359,7 +350,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             ->expects(self::once())
             ->method('exec_getQuery')
             ->with('tt_content', $queryConfiguration)
-            ->willReturn($statementProphet->reveal());
+            ->willReturn($statementMock);
         $this->subject->parent_cObj = $cObject;
 
         $this->subject->_call('sectionIndex', 'field', 12);
