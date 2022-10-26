@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
-use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -30,9 +29,6 @@ use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase;
 
-/**
- * Test case
- */
 class FileNodeTest extends FolderStructureTestCase
 {
     /**
@@ -562,23 +558,6 @@ class FileNodeTest extends FolderStructureTestCase
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->_call('createFile');
         self::assertTrue(is_file($path));
-    }
-
-    /**
-     * @test
-     */
-    public function createFileReturnsErrorStatusIfFileWasNotCreated(): void
-    {
-        $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        // using vfs here to avoid inconsistent behaviour of file systems concerning permissions
-        $root = vfsStream::setup();
-        $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId();
-        chmod($path, 00440);
-        $subPath = $path . '/' . StringUtility::getUniqueId('file_');
-        $node->expects(self::once())->method('exists')->willReturn(false);
-        $node->method('getAbsolutePath')->willReturn($subPath);
-        $node->method('getRelativePathBelowSiteRoot')->willReturn($subPath);
-        self::assertSame(ContextualFeedbackSeverity::ERROR, $node->_call('createFile')->getSeverity());
     }
 
     /**
