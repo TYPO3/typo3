@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
-use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -25,20 +24,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class FolderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-
-    protected string $basedir = 'basedir';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        vfsStream::setup($this->basedir);
-    }
 
     protected function createFolderFixture($path, $name, $mockedStorage = null): Folder
     {
