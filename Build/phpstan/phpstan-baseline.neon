@@ -1321,6 +1321,11 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Authentication/Mfa/MfaProviderPropertyManagerTest.php
 
 		-
+			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\FileBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/FileBackendTest.php
+
+		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\MemcachedBackend\\:\\:set\\(\\) expects string, array\\<string, array\\<int, string\\>\\|float\\|int\\|string\\|true\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/MemcachedBackendTest.php
@@ -1419,11 +1424,6 @@ parameters:
 			message: "#^Parameter \\#4 \\$pObj of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:initAuth\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication, null given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\FileBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/FileBackendTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Backend\\\\Fixtures\\\\ConcreteBackendFixture\\:\\:has\\(\\) should return bool but return statement is missing\\.$#"
