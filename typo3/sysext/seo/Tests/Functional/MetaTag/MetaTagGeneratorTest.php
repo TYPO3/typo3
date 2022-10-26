@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\MetaTag;
 
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\File;
@@ -36,7 +34,6 @@ class MetaTagGeneratorTest extends FunctionalTestCase
 {
     private MetaTagGenerator $subject;
     private ResourceStorage $defaultStorage;
-    private vfsStreamDirectory $temporaryFileSystem;
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected function setUp(): void
@@ -46,7 +43,6 @@ class MetaTagGeneratorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'] = $this->determineGraphicMagickBinaryPath();
         $this->subject = GeneralUtility::makeInstance(MetaTagGenerator::class);
         $this->defaultStorage = GeneralUtility::makeInstance(StorageRepository::class)->getDefaultStorage();
-        $this->temporaryFileSystem = vfsStream::setup();
     }
 
     public static function socialImageIsProcessedDataProvider(): \Generator
@@ -190,10 +186,12 @@ class MetaTagGeneratorTest extends FunctionalTestCase
 
     private function createImagePngContent(int $width, int $height): string
     {
-        $filePath = $this->temporaryFileSystem->url() . '/image.png';
+        $filePath = $this->instancePath . '/typo3temp/var/transient/seo-test-image.png';
         $gdImage = imagecreatetruecolor($width, $height);
         imagepng($gdImage, $filePath);
-        return file_get_contents($filePath);
+        $content = file_get_contents($filePath);
+        unlink($this->instancePath . '/typo3temp/var/transient/seo-test-image.png');
+        return $content;
     }
 
     private function determineGraphicMagickBinaryPath(): string
@@ -203,7 +201,7 @@ class MetaTagGeneratorTest extends FunctionalTestCase
     }
 
     /**
-     * A little bit like `\TYPO3\CMS\Backend\Form\Element\ImageManipulationElement::populateConfiguration`...
+     * A bit like `\TYPO3\CMS\Backend\Form\Element\ImageManipulationElement::populateConfiguration`...
      */
     private function resolveCropVariantsConfiguration(): array
     {

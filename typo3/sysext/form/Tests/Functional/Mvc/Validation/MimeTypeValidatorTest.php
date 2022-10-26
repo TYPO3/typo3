@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
-use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -32,22 +31,22 @@ class MimeTypeValidatorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['form'];
 
-    /**
-     * @var array<string, string>
-     */
-    private array $files = [
-        'file.exe' => "MZ\x90\x00\x03\x00",
-        'file.zip' => "PK\x03\x04",
-        'file.jpg' => "\xFF\xD8\xFF\xDB",
-        'file.gif' => 'GIF87a',
-        'file.pdf' => '%PDF-',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-        vfsStream::setup('tmp', null, $this->files);
+        mkdir($this->instancePath . '/tmp');
+        file_put_contents($this->instancePath . '/tmp/file.exe', "MZ\x90\x00\x03\x00");
+        file_put_contents($this->instancePath . '/tmp/file.zip', "PK\x03\x04");
+        file_put_contents($this->instancePath . '/tmp/file.jpg', "\xFF\xD8\xFF\xDB");
+        file_put_contents($this->instancePath . '/tmp/file.gif', 'GIF87a');
+        file_put_contents($this->instancePath . '/tmp/file.pdf', '%PDF-');
+    }
+
+    protected function tearDown(): void
+    {
+        GeneralUtility::rmdir($this->instancePath . '/tmp', true);
+        parent::tearDown();
     }
 
     /**
@@ -150,7 +149,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
         return [
             'submitted gif as upload.gif' => [
                 [
-                    'tmp_name' => 'vfs://tmp/file.gif',
+                    'tmp_name' => 'file.gif',
                     'name' => 'upload.gif',
                     'type' => 'does/not-matter',
                 ],
@@ -158,7 +157,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
             ],
             'submitted jpg as upload.jpg' => [
                 [
-                    'tmp_name' => 'vfs://tmp/file.jpg',
+                    'tmp_name' => 'file.jpg',
                     'name' => 'upload.jpg',
                     'type' => 'does/not-matter',
                 ],
@@ -166,7 +165,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
             ],
             'submitted pdf as upload.pdf' => [
                 [
-                    'tmp_name' => 'vfs://tmp/file.pdf',
+                    'tmp_name' => 'file.pdf',
                     'name' => 'upload.pdf',
                     'type' => 'does/not-matter',
                 ],
@@ -174,7 +173,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
             ],
             'submitted exe as upload.exe' => [
                 [
-                    'tmp_name' => 'vfs://tmp/file.exe',
+                    'tmp_name' => 'file.exe',
                     'name' => 'upload.exe',
                     'type' => 'does/not-matter',
                 ], // upload data (as in $_FILES)
@@ -183,7 +182,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
             ],
             'submitted gif as upload.exe' => [
                 [
-                    'tmp_name' => 'vfs://tmp/file.gif',
+                    'tmp_name' => 'file.gif',
                     'name' => 'upload.exe',
                     'type' => 'does/not-matter',
                 ], // upload data (as in $_FILES)
@@ -197,12 +196,12 @@ class MimeTypeValidatorTest extends FunctionalTestCase
      * @param array<string, int|string> $uploadData
      * @param List<string> $allowedMimeTypes
      * @param List<int> $expectedErrorCodes
-     *
      * @test
      * @dataProvider validateHandlesMimeTypesOfFilesDataProvider
      */
     public function validateHandlesMimeTypesOfFiles(array $uploadData, array $allowedMimeTypes, array $expectedErrorCodes = []): void
     {
+        $uploadData['tmp_name'] = $this->instancePath . '/tmp/' . $uploadData['tmp_name'];
         $uploadData['error'] = \UPLOAD_ERR_OK;
         $uploadData['size'] = filesize($uploadData['tmp_name']);
 

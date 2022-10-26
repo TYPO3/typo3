@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Type\File\FileInfo;
@@ -29,41 +27,6 @@ class ImageMagickFileTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $directory;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $fixturePath = __DIR__ . '/Fixtures';
-        $structure = [];
-        $this->addFiles($structure, ['file.ai', 'file.ai.jpg'], $fixturePath . '/file.ai');
-        $this->addFiles($structure, ['file.bmp', 'file.bmp.jpg'], $fixturePath . '/file.bmp');
-        $this->addFiles($structure, ['file.gif', 'file.gif.jpg'], $fixturePath . '/file.gif');
-        $this->addFiles($structure, ['file.fax', 'file.fax.jpg'], $fixturePath . '/file.fax');
-        $this->addFiles($structure, ['file.jpg', 'file.jpg.png'], $fixturePath . '/file.jpg');
-        $this->addFiles($structure, ['file.png', 'file.png.jpg'], $fixturePath . '/file.png');
-        $this->addFiles($structure, ['file.svg', 'file.svg.jpg'], $fixturePath . '/file.svg');
-        $this->addFiles($structure, ['file.tif', 'file.tif.jpg'], $fixturePath . '/file.tif');
-        $this->addFiles($structure, ['file.webp', 'file.webp.jpg'], $fixturePath . '/file.webp');
-        $this->addFiles($structure, ['file.pdf', 'file.pdf.jpg'], $fixturePath . '/file.pdf');
-        $this->addFiles($structure, ['file.ps', 'file.ps.jpg'], $fixturePath . '/file.ps');
-        $this->addFiles($structure, ['file.eps', 'file.eps.jpg'], $fixturePath . '/file.eps');
-        $this->directory = vfsStream::setup('root', null, $structure);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->directory);
-        parent::tearDown();
-    }
-
-    /**
-     * @return array
-     */
     public function framesAreConsideredDataProvider(): array
     {
         return [
@@ -73,24 +36,17 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param int|null $frame
-     * @param string $expectation
-     *
      * @test
      * @dataProvider framesAreConsideredDataProvider
      */
     public function framesAreConsidered(string $fileName, ?int $frame, string $expectation): void
     {
         $expectation = $this->substituteVariables($expectation);
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
         $file = ImageMagickFile::fromFilePath($filePath, $frame);
         self::assertSame($expectation, (string)$file);
     }
 
-    /**
-     * @return array
-     */
     public function resultIsEscapedDataProvider(): array
     {
         // probably Windows system
@@ -110,24 +66,17 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param int|null $frame
-     * @param string $expectation
-     *
      * @test
      * @dataProvider resultIsEscapedDataProvider
      */
     public function resultIsEscaped(string $fileName, ?int $frame, string $expectation): void
     {
         $expectation = $this->substituteVariables($expectation);
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
         $file = ImageMagickFile::fromFilePath($filePath, $frame);
         self::assertSame($expectation, (string)$file);
     }
 
-    /**
-     * @return array
-     */
     public function fileStatementIsResolvedDataProvider(): array
     {
         return [
@@ -154,25 +103,20 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param string $expectation
-     *
      * @test
      * @dataProvider fileStatementIsResolvedDataProvider
      */
     public function fileStatementIsResolved(string $fileName, string $expectation): void
     {
         $expectation = $this->substituteVariables($expectation);
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
-        $file = ImageMagickFile::fromFilePath($filePath, null);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
+        $file = ImageMagickFile::fromFilePath($filePath);
         self::assertSame($expectation, (string)$file);
     }
 
     /**
      * In case mime-types cannot be resolved (or cannot be verified), allowed extensions
      * are used as conversion format (e.g. 'file.ai.jpg' -> 'jpg:...').
-     *
-     * @return array
      */
     public function fileStatementIsResolvedForEnforcedMimeTypeDataProvider(): array
     {
@@ -195,10 +139,6 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param string $expectation
-     * @param string $mimeType
-     *
      * @test
      * @dataProvider fileStatementIsResolvedForEnforcedMimeTypeDataProvider
      */
@@ -206,14 +146,11 @@ class ImageMagickFileTest extends FunctionalTestCase
     {
         $this->simulateNextFileInfoInvocation($mimeType);
         $expectation = $this->substituteVariables($expectation);
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
         $file = ImageMagickFile::fromFilePath($filePath, null);
         self::assertSame($expectation, (string)$file);
     }
 
-    /**
-     * @return array
-     */
     public function fileStatementIsResolvedForConfiguredMimeTypeDataProvider(): array
     {
         return [
@@ -223,9 +160,6 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param string $expectation
-     *
      * @test
      * @dataProvider fileStatementIsResolvedForConfiguredMimeTypeDataProvider
      */
@@ -237,14 +171,11 @@ class ImageMagickFileTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']['bmp'] = 'image/x-ms-bmp';
 
         $expectation = $this->substituteVariables($expectation);
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
         $file = ImageMagickFile::fromFilePath($filePath, null);
         self::assertSame($expectation, (string)$file);
     }
 
-    /**
-     * @return array
-     */
     public function fileStatementIsDeniedDataProvider(): array
     {
         return [
@@ -258,13 +189,10 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param string|null $mimeType
-     *
      * @test
      * @dataProvider fileStatementIsDeniedDataProvider
      */
-    public function fileStatementIsDenied(string $fileName, string $mimeType = null): void
+    public function fileStatementIsDenied(string $fileName, ?string $mimeType = null): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1550060977);
@@ -273,13 +201,10 @@ class ImageMagickFileTest extends FunctionalTestCase
             $this->simulateNextFileInfoInvocation($mimeType);
         }
 
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
-        ImageMagickFile::fromFilePath($filePath, null);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
+        ImageMagickFile::fromFilePath($filePath);
     }
 
-    /**
-     * @return array
-     */
     public function fileStatementIsDeniedForConfiguredMimeTypeDataProvider(): array
     {
         return [
@@ -289,8 +214,6 @@ class ImageMagickFileTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $fileName
-     *
      * @test
      * @dataProvider fileStatementIsDeniedForConfiguredMimeTypeDataProvider
      */
@@ -302,44 +225,20 @@ class ImageMagickFileTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1550060977);
 
-        $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
         ImageMagickFile::fromFilePath($filePath, null);
     }
 
-    /**
-     * @param array $structure
-     * @param array $fileNames
-     * @param string $sourcePath
-     */
-    private function addFiles(array &$structure, array $fileNames, string $sourcePath): void
-    {
-        $structure = array_merge(
-            $structure,
-            array_fill_keys(
-                $fileNames,
-                file_get_contents($sourcePath)
-            )
-        );
-    }
-
-    /**
-     * @param string $value
-     * @return string
-     */
     private function substituteVariables(string $value): string
     {
         return str_replace(
             ['{directory}'],
-            [$this->directory->url()],
+            [__DIR__ . '/Fixtures'],
             $value
         );
     }
 
-    /**
-     * @param string $mimeType
-     * @param string[] $mimeExtensions
-     */
-    private function simulateNextFileInfoInvocation(string $mimeType, array $mimeExtensions = []): void
+    private function simulateNextFileInfoInvocation(string $mimeType): void
     {
         $fileInfo = $this->getAccessibleMock(
             FileInfo::class,
@@ -349,7 +248,7 @@ class ImageMagickFileTest extends FunctionalTestCase
             false
         );
         $fileInfo->expects(self::atLeastOnce())->method('getMimeType')->willReturn($mimeType);
-        $fileInfo->expects(self::atLeastOnce())->method('getMimeExtensions')->willReturn($mimeExtensions);
+        $fileInfo->expects(self::atLeastOnce())->method('getMimeExtensions')->willReturn([]);
         GeneralUtility::addInstance(FileInfo::class, $fileInfo);
     }
 }

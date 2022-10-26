@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Service\Archive;
 
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,33 +26,11 @@ class ZipServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $vfs;
-
-    /**
-     * @var string
-     */
-    private $directory;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $structure = [
-            'typo3conf' => [
-                'ext' => [],
-            ],
-        ];
-        $this->vfs = vfsStream::setup('root', null, $structure);
-        $this->directory = vfsStream::url('root/typo3conf/ext');
-    }
-
     protected function tearDown(): void
     {
+        GeneralUtility::rmdir($this->instancePath . '/typo3conf/ext/malicious', true);
+        GeneralUtility::rmdir($this->instancePath . '/typo3conf/ext/my_extension', true);
         parent::tearDown();
-        unset($this->vfs, $this->directory);
     }
 
     /**
@@ -62,9 +38,8 @@ class ZipServiceTest extends FunctionalTestCase
      */
     public function filesCanNotGetExtractedOutsideTargetDirectory(): void
     {
-        $extensionDirectory = $this->directory . '/malicious';
+        $extensionDirectory = $this->instancePath . '/typo3conf/ext/malicious';
         GeneralUtility::mkdir($extensionDirectory);
-
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/malicious.zip',
             $extensionDirectory
@@ -81,14 +56,12 @@ class ZipServiceTest extends FunctionalTestCase
      */
     public function fileContentIsExtractedAsExpected(): void
     {
-        $extensionDirectory = $this->directory . '/my_extension';
+        $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
         GeneralUtility::mkdir($extensionDirectory);
-
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
         );
-
         self::assertDirectoryExists($extensionDirectory . '/Classes');
         self::assertFileExists($extensionDirectory . '/Resources/Public/Css/empty.css');
         self::assertFileExists($extensionDirectory . '/ext_emconf.php');
@@ -101,18 +74,15 @@ class ZipServiceTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
-        $extensionDirectory = $this->directory . '/my_extension';
+        $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
         GeneralUtility::mkdir($extensionDirectory);
-
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
         );
-
         self::assertDirectoryExists($extensionDirectory . '/Classes');
         self::assertFileExists($extensionDirectory . '/Resources/Public/Css/empty.css');
         self::assertFileExists($extensionDirectory . '/ext_emconf.php');
-
         $filePerms = fileperms($extensionDirectory . '/Resources/Public/Css/empty.css');
         $folderPerms = fileperms($extensionDirectory . '/Classes');
         self::assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'], substr(sprintf('%o', $filePerms), -4));
@@ -126,10 +96,11 @@ class ZipServiceTest extends FunctionalTestCase
     {
         $this->expectException(ExtractException::class);
         $this->expectExceptionCode(1565709712);
-
+        $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
+        GeneralUtility::mkdir($extensionDirectory);
         (new ZipService())->extract(
             'foobar.zip',
-            vfsStream::url('root')
+            $this->instancePath . '/typo3conf/ext/my_extension'
         );
     }
 
@@ -140,30 +111,10 @@ class ZipServiceTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1565773005);
-
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
-            vfsStream::url('root/non-existent-directory')
+            $this->instancePath . '/typo3conf/foo/my_extension'
         );
-    }
-
-    /**
-     * @test
-     */
-    public function nonWritableDirectoryThrowsException(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1565773006);
-
-        $extensionDirectory = $this->directory . '/my_extension';
-        GeneralUtility::mkdir($extensionDirectory);
-        chmod($extensionDirectory, 0000);
-
-        (new ZipService())->extract(
-            __DIR__ . '/Fixtures/my_extension.zip',
-            $extensionDirectory
-        );
-        self::assertFileExists($extensionDirectory . '/Resources/Public/Css/empty.css');
     }
 
     /**
@@ -183,7 +134,6 @@ class ZipServiceTest extends FunctionalTestCase
     {
         $this->expectException(ExtractException::class);
         $this->expectExceptionCode(1565709714);
-
         (new ZipService())->verify(__DIR__ . '/Fixtures/malicious.zip');
     }
 }
