@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "776140f2a7659530cfed5cb190b80063",
+    "content-hash": "326aff820ca19ae069fcc16e4b15d347",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4965,16 +4965,16 @@
         },
         {
             "name": "codeception/module-webdriver",
-            "version": "3.1.3",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-webdriver.git",
-                "reference": "7472027411d4edd236e04c3bde00950a486bbf26"
+                "reference": "8d65b02f50f90bf3f4da2174693a1cb5cd5fe7b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/7472027411d4edd236e04c3bde00950a486bbf26",
-                "reference": "7472027411d4edd236e04c3bde00950a486bbf26",
+                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/8d65b02f50f90bf3f4da2174693a1cb5cd5fe7b2",
+                "reference": "8d65b02f50f90bf3f4da2174693a1cb5cd5fe7b2",
                 "shasum": ""
             },
             "require": {
@@ -5019,9 +5019,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-webdriver/issues",
-                "source": "https://github.com/Codeception/module-webdriver/tree/3.1.3"
+                "source": "https://github.com/Codeception/module-webdriver/tree/3.2.0"
             },
-            "time": "2022-09-11T12:33:19+00:00"
+            "time": "2022-10-15T19:19:42+00:00"
         },
         {
             "name": "codeception/stub",
@@ -8568,12 +8568,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "197314f5700e02ecdf2c6fd5473d9c7373ec3ae6"
+                "reference": "148a00b31dc1fa27ed9303ec2063517c4ef3e58f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/197314f5700e02ecdf2c6fd5473d9c7373ec3ae6",
-                "reference": "197314f5700e02ecdf2c6fd5473d9c7373ec3ae6",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/148a00b31dc1fa27ed9303ec2063517c4ef3e58f",
+                "reference": "148a00b31dc1fa27ed9303ec2063517c4ef3e58f",
                 "shasum": ""
             },
             "require-dev": {
@@ -8633,7 +8633,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2022-10-03T19:49:52+00:00"
+            "time": "2022-10-26T11:20:32+00:00"
         },
         {
             "name": "typo3/testing-framework",
@@ -8641,12 +8641,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "51f8281dc9ad402a06f5b14c18f3dfd85fbd99a3"
+                "reference": "760a498581d4329cf2fb73dd6b8e4d946a75451d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/51f8281dc9ad402a06f5b14c18f3dfd85fbd99a3",
-                "reference": "51f8281dc9ad402a06f5b14c18f3dfd85fbd99a3",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/760a498581d4329cf2fb73dd6b8e4d946a75451d",
+                "reference": "760a498581d4329cf2fb73dd6b8e4d946a75451d",
                 "shasum": ""
             },
             "require": {
@@ -8705,7 +8705,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-10-25T15:09:49+00:00"
+            "time": "2022-10-26T11:19:50+00:00"
         }
     ],
     "aliases": [],
