@@ -26,6 +26,19 @@ export default abstract class AbstractClientStorage {
     return this.storage.getItem(this.keyPrefix + key);
   }
 
+  public getByPrefix(prefix: string): { [key: string]: string } {
+    if (this.storage === null) {
+      return {};
+    }
+    const entries = Object.entries(this.storage)
+      .filter((item: [string, string]) => item[0].startsWith(this.keyPrefix + prefix))
+      .map((item: [string, string]) => {
+        return [item[0].substring(this.keyPrefix.length), item[1]];
+      });
+
+    return Object.fromEntries(entries);
+  }
+
   public set(key: string, value: string): void {
     if (this.storage !== null) {
       this.storage.setItem(this.keyPrefix + key, value);
