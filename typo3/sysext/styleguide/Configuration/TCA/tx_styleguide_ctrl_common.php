@@ -24,6 +24,9 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'palettes' => [
         'timeRestriction' => ['showitem' => 'starttime, endtime'],

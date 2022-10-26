@@ -19,6 +19,9 @@ return [
             'disabled' => 'hidden',
         ],
         'type' => 'foreign_table:record_type',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
 
     'columns' => [

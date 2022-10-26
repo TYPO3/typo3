@@ -16,6 +16,9 @@ return [
         'enablecolumns' => [
             'disabled' => 'disable',
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
 
     'columns' => [

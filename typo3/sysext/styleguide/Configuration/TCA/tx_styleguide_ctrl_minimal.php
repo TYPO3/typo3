@@ -5,6 +5,9 @@ return [
        'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitle',
        'label' => 'title',
        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
+       'security' => [
+           'ignorePageTypeRestriction' => true,
+       ],
    ],
    'columns' => [
        'title' => [

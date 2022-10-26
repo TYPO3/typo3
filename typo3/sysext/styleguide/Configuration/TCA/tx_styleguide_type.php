@@ -19,6 +19,9 @@ return [
             'disabled' => 'hidden',
         ],
         'type' => 'record_type',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
 
     'columns' => [
