@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -133,7 +132,7 @@ class BackendController extends ActionController
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedTitle', 'styleguide'),
                 'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedBody', 'styleguide'),
-                'status' => AbstractMessage::ERROR,
+                'status' => ContextualFeedbackSeverity::ERROR,
             ];
         } else {
             $generator = GeneralUtility::makeInstance(Generator::class);
@@ -142,7 +141,7 @@ class BackendController extends ActionController
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide'),
                 'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkBody', 'styleguide'),
-                'status' => AbstractMessage::OK,
+                'status' => ContextualFeedbackSeverity::OK,
             ];
         }
         // And redirect to display action
@@ -157,7 +156,7 @@ class BackendController extends ActionController
         $json = [
             'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkTitle', 'styleguide'),
             'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkBody', 'styleguide'),
-            'status' => AbstractMessage::OK,
+            'status' => ContextualFeedbackSeverity::OK,
         ];
         return new JsonResponse($json);
     }
@@ -302,7 +301,7 @@ class BackendController extends ActionController
             $json = [
               'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedTitle', 'styleguide'),
               'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedBody', 'styleguide'),
-              'status' => AbstractMessage::ERROR,
+              'status' => ContextualFeedbackSeverity::ERROR,
             ];
         } else {
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
@@ -311,7 +310,7 @@ class BackendController extends ActionController
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkTitle', 'styleguide'),
                 'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkBody', 'styleguide'),
-                'status' => AbstractMessage::OK,
+                'status' => ContextualFeedbackSeverity::OK,
             ];
         }
         return new JsonResponse($json);
@@ -324,7 +323,7 @@ class BackendController extends ActionController
         $json = [
             'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkTitle', 'styleguide'),
             'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkBody', 'styleguide'),
-            'status' => AbstractMessage::OK,
+            'status' => ContextualFeedbackSeverity::OK,
         ];
         return new JsonResponse($json);
     }
