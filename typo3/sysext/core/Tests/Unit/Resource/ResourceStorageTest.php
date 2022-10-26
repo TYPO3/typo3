@@ -47,15 +47,10 @@ class ResourceStorageTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     /**
-     * @var ResourceStorage|MockObject
+     * @var (ResourceStorage&MockObject)|null
      */
     protected $subject;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
+    protected EventDispatcherInterface $eventDispatcher;
     protected string $basedir = 'basedir';
     protected ?string $mountDir;
     protected array $vfsContents = [];
@@ -99,48 +94,33 @@ class ResourceStorageTest extends UnitTestCase
 
     /**
      * Returns a simple mock of a file object that just knows its identifier
-     *
-     * @param string $identifier
-     * @param array $mockedMethods the methods to mock
-     * @return \TYPO3\CMS\Core\Resource\Folder
      */
-    private function getSimpleFolderMock(string $identifier, array $mockedMethods = [])
+    private function getSimpleFolderMock(string $identifier): Folder&MockObject
     {
-        return $this->_createFileFolderMock(Folder::class, $identifier, $mockedMethods);
-    }
-
-    /**
-     * Returns a simple mock of a file object that just knows its identifier
-     *
-     * @param string $identifier
-     * @param array $mockedMethods the methods to mock
-     * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getSimpleFileMock(string $identifier, array $mockedMethods = [])
-    {
-        return $this->_createFileFolderMock(File::class, $identifier, $mockedMethods);
-    }
-
-    /**
-     * Creates a file or folder mock. This should not be called directly, but only through getSimple{File,Folder}Mock()
-     * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
-     */
-    private function _createFileFolderMock(string $type, string $identifier, array $mockedMethods)
-    {
-        if (!in_array('getIdentifier', $mockedMethods, true)) {
-            $mockedMethods[] = 'getIdentifier';
-        }
-        if (!in_array('getName', $mockedMethods, true)) {
-            $mockedMethods[] = 'getName';
-        }
-
-        $mock = $this->getMockBuilder($type)
-            ->onlyMethods($mockedMethods)
+        $mock = $this->getMockBuilder(Folder::class)
+            ->onlyMethods(['getIdentifier', 'getName'])
             ->disableOriginalConstructor()
             ->getMock();
 
         $mock->method('getIdentifier')->willReturn($identifier);
         $mock->method('getName')->willReturn(basename($identifier));
+
+        return $mock;
+    }
+
+    /**
+     * Returns a simple mock of a file object that just knows its identifier
+     */
+    private function getSimpleFileMock(string $identifier): File&MockObject
+    {
+        $mock = $this->getMockBuilder(File::class)
+            ->onlyMethods(['getIdentifier', 'getName'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mock->method('getIdentifier')->willReturn($identifier);
+        $mock->method('getName')->willReturn(basename($identifier));
+
         return $mock;
     }
 
@@ -149,7 +129,7 @@ class ResourceStorageTest extends UnitTestCase
      *
      * @param array $configuration
      * @param bool $mockPermissionChecks
-     * @param AbstractDriver|MockObject $driverObject
+     * @param AbstractDriver $driverObject
      * @param ResourceFactory $resourceFactory
      * @param array $storageRecord
      * @param array $mockedMethods
@@ -202,8 +182,6 @@ class ResourceStorageTest extends UnitTestCase
     /**
      * Converts a simple configuration array into a FlexForm data structure serialized as XML
      *
-     * @param array $configuration
-     * @return string
      * @see GeneralUtility::array2xml()
      */
     protected function convertConfigurationArrayToFlexformXml(array $configuration): string
@@ -220,14 +198,12 @@ class ResourceStorageTest extends UnitTestCase
      * Creates a driver fixture object, optionally using a given mount object.
      *
      * IMPORTANT: Call this only after setting up the virtual file system (with the addTo* methods)!
-     *
-     * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver|MockObject
      */
     protected function createDriverMock(
         array $driverConfiguration,
         ResourceStorage $storageObject = null,
         array $mockedDriverMethods = []
-    ) {
+    ): LocalDriver&MockObject {
         $this->initializeVfs();
 
         if (!isset($driverConfiguration['basePath'])) {
@@ -250,7 +226,7 @@ class ResourceStorageTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array{0: array<string, bool>}>
      */
     public function capabilitiesDataProvider(): array
     {
@@ -330,7 +306,7 @@ class ResourceStorageTest extends UnitTestCase
     /**
      * Data provider for checkFolderPermissionsRespectsFilesystemPermissions
      *
-     * @return array
+     * @return array<string, array{0: 'read'|'write', 1: array<string, bool>, 2: bool}>
      */
     public function checkFolderPermissionsFilesystemPermissionsDataProvider(): array
     {
@@ -356,9 +332,7 @@ class ResourceStorageTest extends UnitTestCase
     /**
      * @test
      * @dataProvider checkFolderPermissionsFilesystemPermissionsDataProvider
-     * @param string $action 'read' or 'write'
-     * @param array $permissionsFromDriver The permissions as returned from the driver
-     * @param bool $expectedResult
+     * @param 'read'|'write' $action
      */
     public function checkFolderPermissionsRespectsFilesystemPermissions(
         string $action,
@@ -403,7 +377,7 @@ class ResourceStorageTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array{0: array<string, bool>, 1: string, string}>
      */
     public function checkUserActionPermission_arbitraryPermissionDataProvider(): array
     {
@@ -427,9 +401,6 @@ class ResourceStorageTest extends UnitTestCase
     }
 
     /**
-     * @param array $permissions
-     * @param string $action
-     * @param string $type
      * @test
      * @dataProvider checkUserActionPermission_arbitraryPermissionDataProvider
      */
