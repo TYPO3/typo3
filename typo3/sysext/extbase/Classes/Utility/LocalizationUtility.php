@@ -125,7 +125,7 @@ class LocalizationUtility
             $value = self::$LOCAL_LANG[$languageFilePath]['default'][$key][0]['target'];
         }
 
-        if (is_array($arguments) && $value !== null) {
+        if (is_array($arguments) && $arguments !== [] && $value !== null) {
             // This unrolls arguments from $arguments - instead of calling vsprintf which receives arguments as an array.
             // The reason is that only sprintf() will return an error message if the number of arguments does not match
             // the number of placeholders in the format string. Whereas, vsprintf would silently return nothing.

@@ -120,7 +120,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('key', 'string', 'Translation Key');
         $this->registerArgument('id', 'string', 'Translation ID. Same as key.');
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
-        $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string', false, []);
+        $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
         $this->registerArgument('languageKey', 'string', 'Language key ("dk" for example) or "default" to use. If empty, use current language. Ignored in non-extbase context.');
         $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist. Ignored in non-extbase context.');
