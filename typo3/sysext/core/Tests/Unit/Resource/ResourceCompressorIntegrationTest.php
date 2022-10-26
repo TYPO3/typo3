@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Unit\Resource\ResourceCompressorTest\Fixtures\TestableResourceCompressor;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
-class ResourceCompressorIntegrationTest extends BaseTestCase
+class ResourceCompressorIntegrationTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 
@@ -32,9 +32,18 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     protected ?string $fixtureDir;
     protected ?string $fixtureDirFromTest;
 
-    public function setUp(): void
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
+
+    protected function setUp(): void
     {
         parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
         $this->fixtureDir = 'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/';
         $this->fixtureDirFromTest = GeneralUtility::fixWindowsFilePath(__DIR__ . '/ResourceCompressorTest/Fixtures/');
     }

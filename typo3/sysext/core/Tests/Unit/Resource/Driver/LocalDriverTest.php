@@ -26,13 +26,14 @@ use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
-use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LocalDriverTest extends BaseTestCase
+class LocalDriverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -43,12 +44,52 @@ class LocalDriverTest extends BaseTestCase
     protected string $utf8Latin1Supplement = '';
     protected string $utf8Latin1ExtendedA = '';
 
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
+
     protected function setUp(): void
     {
         $testRoot = Environment::getVarPath() . '/tests';
         $this->testFilesToDelete[] = $testRoot;
         GeneralUtility::mkdir_deep($testRoot);
         parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
+    }
+
+    private function initializeVfs(): void
+    {
+        vfsStream::create($this->vfsContents);
+    }
+
+    /**
+     * Returns the URL for a path inside the mount directory
+     */
+    private function getUrlInMount(string $path): string
+    {
+        return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
+    }
+
+    /**
+     * Returns the URL for a path inside the VFS
+     */
+    private function getUrl(string $path): string
+    {
+        return vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
+    }
+
+    /**
+     * Adds the given directory structure to the mount folder in the VFS. Existing files will be overwritten!
+     *
+     * @param array $dirStructure
+     */
+    private function addToMount(array $dirStructure): void
+    {
+        ArrayUtility::mergeRecursiveWithOverrule($this->vfsContents, [$this->mountDir => $dirStructure]);
     }
 
     /**
@@ -91,7 +132,7 @@ class LocalDriverTest extends BaseTestCase
         // it's important to do that here, so vfsContents could have been set before
         if (!isset($driverConfiguration['basePath'])) {
             $this->initializeVfs();
-            $driverConfiguration['basePath'] = $this->getMountRootUrl();
+            $driverConfiguration['basePath'] = $this->getUrlInMount('');
         }
         $mockedDriverMethods[] = 'isPathValid';
         $driver = $this->getAccessibleMock(
@@ -492,11 +533,14 @@ class LocalDriverTest extends BaseTestCase
     public function addFileMovesFileToCorrectLocation(): void
     {
         $this->addToMount(['targetFolder' => []]);
-        $this->addToVfs([
-            'sourceFolder' => [
-                'file' => 'asdf',
-            ],
-        ]);
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $this->vfsContents,
+            [
+                'sourceFolder' => [
+                    'file' => 'asdf',
+                ],
+            ]
+        );
         $subject = $this->createDriver(
             [],
             ['getMimeTypeOfFile']
@@ -512,11 +556,14 @@ class LocalDriverTest extends BaseTestCase
     public function addFileUsesFilenameIfGiven(): void
     {
         $this->addToMount(['targetFolder' => []]);
-        $this->addToVfs([
-            'sourceFolder' => [
-                'file' => 'asdf',
-            ],
-        ]);
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $this->vfsContents,
+            [
+                'sourceFolder' => [
+                    'file' => 'asdf',
+                ],
+            ]
+        );
         $subject = $this->createDriver(
             [],
             ['getMimeTypeOfFile']
@@ -548,11 +595,14 @@ class LocalDriverTest extends BaseTestCase
     public function addFileReturnsFileIdentifier(): void
     {
         $this->addToMount(['targetFolder' => []]);
-        $this->addToVfs([
-            'sourceFolder' => [
-                'file' => 'asdf',
-            ],
-        ]);
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $this->vfsContents,
+            [
+                'sourceFolder' => [
+                    'file' => 'asdf',
+                ],
+            ]
+        );
         $subject = $this->createDriver(
             [],
             ['getMimeTypeOfFile']

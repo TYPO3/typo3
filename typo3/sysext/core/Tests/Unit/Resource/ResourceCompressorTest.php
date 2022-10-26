@@ -17,16 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the ResourceCompressor class
- */
-class ResourceCompressorTest extends BaseTestCase
+class ResourceCompressorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 
@@ -35,12 +35,18 @@ class ResourceCompressorTest extends BaseTestCase
      */
     protected $subject;
 
-    /**
-     * Set up the test
-     */
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
         $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
     }
 

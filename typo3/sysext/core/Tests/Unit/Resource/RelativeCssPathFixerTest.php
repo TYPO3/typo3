@@ -17,14 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the RelativeCssPathFixer class
- */
-class RelativeCssPathFixerTest extends BaseTestCase
+class RelativeCssPathFixerTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
+
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
+    }
 
     /**
      * @return array

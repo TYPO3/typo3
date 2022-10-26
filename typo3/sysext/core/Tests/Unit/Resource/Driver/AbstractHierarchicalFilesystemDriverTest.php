@@ -17,24 +17,32 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver;
-use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
-class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
+class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
 {
     /**
      * @var AbstractHierarchicalFilesystemDriver|MockObject|AccessibleObjectInterface
      */
     protected $subject;
 
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractHierarchicalFilesystemDriver::class, [], '', false);
     }
 

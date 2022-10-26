@@ -17,22 +17,32 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
+use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
-use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test cases for FileCollectionRegistry
  */
-class FileCollectionRegistryTest extends BaseTestCase
+class FileCollectionRegistryTest extends UnitTestCase
 {
     protected ?FileCollectionRegistry $testSubject;
+
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
         $this->initializeTestSubject();
     }
 

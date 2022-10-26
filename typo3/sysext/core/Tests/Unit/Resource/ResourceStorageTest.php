@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -36,11 +37,10 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case for ResourceStorage class
- */
-class ResourceStorageTest extends BaseTestCase
+class ResourceStorageTest extends UnitTestCase
 {
     use ProphecyTrait;
 
@@ -56,12 +56,18 @@ class ResourceStorageTest extends BaseTestCase
      */
     protected $eventDispatcher;
 
-    /**
-     * Set up
-     */
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
+        vfsStream::setup($this->basedir);
+        // Add an entry for the mount directory to the VFS contents
+        $this->vfsContents = [$this->mountDir => []];
         $fileRepositoryMock = $this->createMock(FileRepository::class);
         GeneralUtility::setSingletonInstance(
             FileRepository::class,
@@ -76,6 +82,66 @@ class ResourceStorageTest extends BaseTestCase
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
         $this->eventDispatcher = $eventDispatcher->reveal();
+    }
+
+    private function initializeVfs(): void
+    {
+        vfsStream::create($this->vfsContents);
+    }
+
+    /**
+     * Returns the URL for a path inside the mount directory
+     */
+    private function getUrlInMount(string $path): string
+    {
+        return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
+    }
+
+    /**
+     * Returns a simple mock of a file object that just knows its identifier
+     *
+     * @param string $identifier
+     * @param array $mockedMethods the methods to mock
+     * @return \TYPO3\CMS\Core\Resource\Folder
+     */
+    private function getSimpleFolderMock(string $identifier, array $mockedMethods = [])
+    {
+        return $this->_createFileFolderMock(Folder::class, $identifier, $mockedMethods);
+    }
+
+    /**
+     * Returns a simple mock of a file object that just knows its identifier
+     *
+     * @param string $identifier
+     * @param array $mockedMethods the methods to mock
+     * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private function getSimpleFileMock(string $identifier, array $mockedMethods = [])
+    {
+        return $this->_createFileFolderMock(File::class, $identifier, $mockedMethods);
+    }
+
+    /**
+     * Creates a file or folder mock. This should not be called directly, but only through getSimple{File,Folder}Mock()
+     * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
+     */
+    private function _createFileFolderMock(string $type, string $identifier, array $mockedMethods)
+    {
+        if (!in_array('getIdentifier', $mockedMethods, true)) {
+            $mockedMethods[] = 'getIdentifier';
+        }
+        if (!in_array('getName', $mockedMethods, true)) {
+            $mockedMethods[] = 'getName';
+        }
+
+        $mock = $this->getMockBuilder($type)
+            ->onlyMethods($mockedMethods)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mock->method('getIdentifier')->willReturn($identifier);
+        $mock->method('getName')->willReturn(basename($identifier));
+        return $mock;
     }
 
     /**
@@ -165,7 +231,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->initializeVfs();
 
         if (!isset($driverConfiguration['basePath'])) {
-            $driverConfiguration['basePath'] = $this->getMountRootUrl();
+            $driverConfiguration['basePath'] = $this->getUrlInMount('');
         }
 
         // We are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
@@ -245,7 +311,7 @@ class ResourceStorageTest extends BaseTestCase
     public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
         $driver = $this->getMockBuilder(LocalDriver::class)
-            ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
+            ->setConstructorArgs([['basePath' => $this->getUrlInMount('')]])
             ->getMock();
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
         $subject = $this->getMockBuilder(ResourceStorage::class)
