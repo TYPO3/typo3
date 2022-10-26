@@ -1,5 +1,5 @@
 TYPO3 CMS
-=========
+==========
 
 TYPO3 is an open source PHP based web content management system released
 under the GNU GPL. TYPO3 is copyright © 1999-2022 by Kasper Skårhøj.
