@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
-use org\bovigo\vfs\vfsStream;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
@@ -56,18 +55,12 @@ class GeneralUtilityTest extends UnitTestCase
 
     protected ?PackageManager $backupPackageManager;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
@@ -2765,41 +2758,26 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Helper method to create test directory.
      *
-     * @return string A unique directory name prefixed with test_.
+     * @return string A directory name prefixed with FilesInDirTests.
      */
     protected function getFilesInDirCreateTestDirectory(): string
     {
-        $structure = [
-            'subDirectory' => [
-                'test.php' => 'butter',
-                'other.php' => 'milk',
-                'stuff.csv' => 'honey',
-            ],
-            'excludeMe.txt' => 'cocoa nibs',
-            'double.setup.typoscript' => 'cool TS',
-            'testB.txt' => 'olive oil',
-            'testA.txt' => 'eggs',
-            'testC.txt' => 'carrots',
-            'test.js' => 'oranges',
-            'test.css' => 'apples',
-            '.secret.txt' => 'sammon',
-        ];
-        vfsStream::setup('test', null, $structure);
-        $vfsUrl = vfsStream::url('test');
-
-        // set random values for mtime
-        foreach ($structure as $structureLevel1Key => $structureLevel1Content) {
-            $newMtime = random_int(0, mt_getrandmax());
-            if (is_array($structureLevel1Content)) {
-                foreach ($structureLevel1Content as $structureLevel2Key => $structureLevel2Content) {
-                    touch($vfsUrl . '/' . $structureLevel1Key . '/' . $structureLevel2Key, $newMtime);
-                }
-            } else {
-                touch($vfsUrl . '/' . $structureLevel1Key, $newMtime);
-            }
-        }
-
-        return $vfsUrl;
+        $path = Environment::getVarPath() . '/FilesInDirTests';
+        $this->testFilesToDelete[] = $path;
+        mkdir($path);
+        mkdir($path . '/subDirectory');
+        file_put_contents($path . '/subDirectory/test.php', 'butter');
+        file_put_contents($path . '/subDirectory/other.php', 'milk');
+        file_put_contents($path . '/subDirectory/stuff.csv', 'honey');
+        file_put_contents($path . '/excludeMe.txt', 'cocoa nibs');
+        file_put_contents($path . '/double.setup.typoscript', 'cool TS');
+        file_put_contents($path . '/testB.txt', 'olive oil');
+        file_put_contents($path . '/testA.txt', 'eggs');
+        file_put_contents($path . '/testC.txt', 'carrots');
+        file_put_contents($path . '/test.js', 'oranges');
+        file_put_contents($path . '/test.css', 'apples');
+        file_put_contents($path . '/.secret.txt', 'sammon');
+        return $path;
     }
 
     /**
@@ -2807,8 +2785,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirFindsRegularFile(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path);
         self::assertContains('testA.txt', $files);
     }
 
@@ -2817,8 +2795,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirFindsHiddenFile(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path);
         self::assertContains('.secret.txt', $files);
     }
 
@@ -2851,8 +2829,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirByExtensionFindsFiles($fileExtensions): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl, $fileExtensions);
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path, $fileExtensions);
         self::assertContains('double.setup.typoscript', $files);
         self::assertContains('testA.txt', $files);
         self::assertContains('test.js', $files);
@@ -2864,8 +2842,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirByExtensionDoesNotFindFilesWithOtherExtensions(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path, 'txt,js');
         self::assertContains('testA.txt', $files);
         self::assertContains('test.js', $files);
         self::assertNotContains('test.css', $files);
@@ -2876,8 +2854,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirExcludesFilesMatchingPattern(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl, '', false, '', 'excludeMe.*');
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path, '', false, '', 'excludeMe.*');
         self::assertContains('test.js', $files);
         self::assertNotContains('excludeMe.txt', $files);
     }
@@ -2887,10 +2865,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirCanPrependPath(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+        $path = $this->getFilesInDirCreateTestDirectory();
         self::assertContains(
-            $vfsStreamUrl . '/testA.txt',
-            GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
+            $path . '/testA.txt',
+            GeneralUtility::getFilesInDir($path, '', true)
         );
     }
 
@@ -2899,30 +2877,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirDoesSortAlphabeticallyByDefault(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+        $path = $this->getFilesInDirCreateTestDirectory();
         self::assertSame(
-            array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false)),
-            ['.secret.txt', 'double.setup.typoscript', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt']
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function getFilesInDirCanOrderByMtime(): void
-    {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = [];
-        $iterator = new \DirectoryIterator($vfsStreamUrl);
-        foreach ($iterator as $fileinfo) {
-            if ($fileinfo->isFile()) {
-                $files[$fileinfo->getFilename()] = $fileinfo->getMTime();
-            }
-        }
-        asort($files);
-        self::assertSame(
-            array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false, 'mtime')),
-            array_keys($files)
+            ['.secret.txt', 'double.setup.typoscript', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt'],
+            array_values(GeneralUtility::getFilesInDir($path))
         );
     }
 
@@ -2931,10 +2889,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+        $path = $this->getFilesInDirCreateTestDirectory();
         self::assertArrayHasKey(
-            md5($vfsStreamUrl . '/testA.txt'),
-            GeneralUtility::getFilesInDir($vfsStreamUrl)
+            md5($path . '/testA.txt'),
+            GeneralUtility::getFilesInDir($path)
         );
     }
 
@@ -2943,10 +2901,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirDoesNotFindDirectories(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+        $path = $this->getFilesInDirCreateTestDirectory();
         self::assertNotContains(
             'subDirectory',
-            GeneralUtility::getFilesInDir($vfsStreamUrl)
+            GeneralUtility::getFilesInDir($path)
         );
     }
 
@@ -2958,8 +2916,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getFilesInDirDoesNotFindDotfiles(): void
     {
-        $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path);
         self::assertNotContains('..', $files);
         self::assertNotContains('.', $files);
     }
