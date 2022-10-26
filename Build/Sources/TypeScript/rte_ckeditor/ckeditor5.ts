@@ -117,7 +117,7 @@ export class CKEditor5Element extends LitElement {
           wordCount: this.options.wordCount || null,
           typo3link: this.options.typo3link || null,
           // alternative, purge from `plugins` (classes) above already (probably better)
-          removePlugins: this.options.removePlugins || ['Link'],
+          removePlugins: this.options.removePlugins || [],
         } as any;
         if (this.options.language) {
           config.language = this.options.language;

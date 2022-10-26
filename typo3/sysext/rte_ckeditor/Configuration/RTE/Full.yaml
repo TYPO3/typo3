@@ -39,7 +39,8 @@ editor:
         - find
         - selectAll
         - '|'
-        - Link
+        - link
+        - unlink
         - SoftHyphen
         - insertTable
         - tableColumn

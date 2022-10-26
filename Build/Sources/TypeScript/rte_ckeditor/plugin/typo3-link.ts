@@ -267,7 +267,7 @@ export class Typo3LinkUI extends Core.Plugin {
     });
 
     // re-uses 'Link' plugin name -> original plugin 'Link' needs to be removed during runtime
-    editor.ui.componentFactory.add('Typo3Link', locale => {
+    editor.ui.componentFactory.add('link', locale => {
       const linkButton = new UI.ButtonView(locale);
       linkButton.isEnabled = true;
       linkButton.label = t('Link');
@@ -280,7 +280,7 @@ export class Typo3LinkUI extends Core.Plugin {
       this.listenTo(linkButton, 'execute', () => this.showUI());
       return linkButton;
     });
-    editor.ui.componentFactory.add('Typo3Unlink', locale => {
+    editor.ui.componentFactory.add('unlink', locale => {
       const unlinkButton = new UI.ButtonView(locale);
       unlinkButton.isEnabled = true;
       unlinkButton.label = t( 'Unlink');

@@ -25,8 +25,8 @@ editor:
         - alignment
         - '|'
         - findAndReplace
-        - Typo3Link
-        - Typo3Unlink
+        - link
+        - unlink
         - SoftHyphen
         - '|'
         - removeFormat
