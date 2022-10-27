@@ -18,33 +18,23 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CacheServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    protected ?CacheService $cacheService = null;
-
-    /**
-     * @var CacheManager|MockObject
-     */
-    protected $cacheManagerMock;
+    protected CacheService $cacheService;
+    protected CacheManager&MockObject $cacheManagerMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
-        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn([]);
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManager->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn([]);
         $this->cacheManagerMock = $this->createMock(CacheManager::class);
-        $this->cacheService = new CacheService($configurationManager->reveal(), $this->cacheManagerMock);
+        $this->cacheService = new CacheService($configurationManager, $this->cacheManagerMock);
     }
 
     /**
