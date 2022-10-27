@@ -358,7 +358,8 @@ class TemplateService
      */
     public function getCurrentPageData(int $pageId, string $mountPointValue)
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection')->get($pageId . '_' . GeneralUtility::md5int($mountPointValue));
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection')
+            ->get($pageId . '_' . $this->context->getPropertyFromAspect('language', 'id') . '_' . GeneralUtility::md5int($mountPointValue));
     }
 
     /**
@@ -490,10 +491,14 @@ class TemplateService
                 // Only save the data if we're not simulating by hidden/starttime/endtime
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection');
-                $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
-                    'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
-                    'mpvarHash_' . $mpvarHash,
-                ]);
+                $pageSectionCache->set(
+                    (int)$this->getTypoScriptFrontendController()->id . '_' . $this->context->getPropertyFromAspect('language', 'id') . '_' . $mpvarHash,
+                    $cc,
+                    [
+                        'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
+                        'mpvarHash_' . $mpvarHash,
+                    ]
+                );
             }
             // If everything OK.
             if ($this->rootId && $this->rootLine && $this->setup) {
