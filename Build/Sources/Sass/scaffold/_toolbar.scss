@@ -71,6 +71,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 .toolbar-item {
     .dropdown-menu {
         width: 350px;
+        max-height: 500px;
         overflow-y: auto;
 
         @media (min-width: $scaffold-breakpoint) {
