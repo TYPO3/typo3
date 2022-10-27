@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -50,15 +48,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 
 class ActionControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
-
-    /**
-     * @var ActionController|MockObject|AccessibleObjectInterface
-     */
-    protected $actionController;
-
+    protected ActionController&MockObject&AccessibleObjectInterface $actionController;
     protected UriBuilder $mockUriBuilder;
     protected MvcPropertyMappingConfigurationService $mockMvcPropertyMappingConfigurationService;
 
@@ -516,18 +507,19 @@ class ActionControllerTest extends UnitTestCase
      */
     public function rendersAndAssignsAssetsFromViewIntoPageRenderer($viewMock, ?string $expectedHeader, ?string $expectedFooter): void
     {
-        $pageRenderer = $this->prophesize(PageRenderer::class);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer->reveal());
+        $pageRenderer = $this->createMock(PageRenderer::class);
         if (!empty(trim($expectedHeader ?? ''))) {
-            $pageRenderer->addHeaderData($expectedHeader)->shouldBeCalled();
+            $pageRenderer->expects(self::atLeastOnce())->method('addHeaderData')->with($expectedHeader);
         } else {
-            $pageRenderer->addHeaderData(Argument::any())->shouldNotBeCalled();
+            $pageRenderer->expects(self::never())->method('addHeaderData');
         }
         if (!empty(trim($expectedFooter ?? ''))) {
-            $pageRenderer->addFooterData($expectedFooter)->shouldBeCalled();
+            $pageRenderer->expects(self::atLeastOnce())->method('addFooterData')->with($expectedFooter);
         } else {
-            $pageRenderer->addFooterData(Argument::any())->shouldNotBeCalled();
+            $pageRenderer->expects(self::never())->method('addFooterData');
         }
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
+
         $requestMock = $this->getMockBuilder(RequestInterface::class)->getMockForAbstractClass();
         $subject = new class () extends ActionController {
         };
@@ -655,13 +647,13 @@ class ActionControllerTest extends UnitTestCase
             ['dummy']
         );
 
-        $flashMessageService = $this->prophesize(FlashMessageService::class);
-        $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue);
-        $controller->injectInternalFlashMessageService($flashMessageService->reveal());
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $controller->injectInternalFlashMessageService($flashMessageService);
 
-        $extensionService = $this->prophesize(ExtensionService::class);
-        $extensionService->getPluginNamespace(Argument::cetera(), Argument::cetera())->willReturn('');
-        $controller->injectInternalExtensionService($extensionService->reveal());
+        $extensionService = $this->createMock(ExtensionService::class);
+        $extensionService->method('getPluginNamespace')->with(self::anything(), self::anything())->willReturn('');
+        $controller->injectInternalExtensionService($extensionService);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
