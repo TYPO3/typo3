@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,25 +35,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected string $className = 'Vendor\\Ext\\Domain\\Model\\ClubMate';
     protected QueryFactory $queryFactory;
-
-    /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $dataMapFactory;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $dataMap;
+    protected ContainerInterface $container;
+    protected DataMapFactory&MockObject $dataMapFactory;
+    protected DataMap&MockObject $dataMap;
 
     protected function setUp(): void
     {
@@ -106,7 +92,7 @@ class QueryFactoryTest extends UnitTestCase
         $query = $this->createMock(QueryInterface::class);
         $querySettings = new Typo3QuerySettings(
             new Context(),
-            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+            $this->createMock(ConfigurationManagerInterface::class)
         );
         GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
         $this->container->method('has')->willReturn(true);
