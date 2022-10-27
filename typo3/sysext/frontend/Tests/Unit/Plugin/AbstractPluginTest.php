@@ -17,11 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,54 +33,51 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Frontend\Tests\Unit\Fixtures\ResultBrowserPluginHook;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractPluginTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected AbstractPlugin $abstractPlugin;
-
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Sets up this testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->getLanguage(Argument::cetera())->willReturn(
+        $typoScriptFrontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $typoScriptFrontendControllerMock->method('getLanguage')->willReturn(
             $this->createSiteWithDefaultLanguage()->getLanguageById(0)
         );
-        $tsfe->baseUrlWrap(Argument::cetera())->will(static function (array $args) {
-            return $args[0] ?? '';
-        });
+        $typoScriptFrontendControllerMock->method('baseUrlWrap')->willReturnArgument(0);
 
         GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
             new NullFrontend('hash'),
             new NullFrontend('runtime'),
         ));
-        $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
-        $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
-        $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
+        $this->abstractPlugin = new AbstractPlugin(null, $typoScriptFrontendControllerMock);
+        $contentObjectRenderer = new ContentObjectRenderer($typoScriptFrontendControllerMock);
+        $contentObjectRenderer->setRequest(new ServerRequest());
 
-        $cObjectFactoryProphecy = $this->prophesize(ContentObjectFactory::class);
+        $contentObjectFactoryMock = $this->createMock(ContentObjectFactory::class);
 
         $caseContentObject = new CaseContentObject();
-        $caseContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $caseContentObject->setRequest((new ServerRequest()));
         $caseContentObject->setContentObjectRenderer($contentObjectRenderer);
-        $cObjectFactoryProphecy->getContentObject('CASE', Argument::cetera())->willReturn($caseContentObject);
 
         $textContentObject = new TextContentObject();
-        $textContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $textContentObject->setRequest((new ServerRequest()));
         $textContentObject->setContentObjectRenderer($contentObjectRenderer);
-        $cObjectFactoryProphecy->getContentObject('TEXT', Argument::cetera())->willReturn($textContentObject);
+
+        $contentObjectFactoryMock->method('getContentObject')
+            ->withConsecutive(
+                ['TEXT', self::anything()],
+                ['CASE', self::anything()],
+            )
+            ->willReturnOnConsecutiveCalls(
+                $textContentObject,
+                $caseContentObject,
+            );
 
         $container = new Container();
-        $container->set(ContentObjectFactory::class, $cObjectFactoryProphecy->reveal());
+        $container->set(ContentObjectFactory::class, $contentObjectFactoryMock);
         GeneralUtility::setContainer($container);
 
         $this->abstractPlugin->setContentObjectRenderer($contentObjectRenderer);
