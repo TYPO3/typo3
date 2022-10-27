@@ -232,7 +232,7 @@ class ExtensionManagementUtility
             return;
         }
         if ($position !== '') {
-            [$positionIdentifier, $entityName] = GeneralUtility::trimExplode(':', $position);
+            [$positionIdentifier, $entityName] = GeneralUtility::trimExplode(':', $position, false, 2);
         } else {
             $positionIdentifier = '';
             $entityName = '';
@@ -274,7 +274,7 @@ class ExtensionManagementUtility
                             switch ($positionIdentifier) {
                                 case 'after':
                                 case 'before':
-                                    if (preg_match('/\\b' . $entityName . '\\b/', $palette['showitem']) > 0) {
+                                    if (preg_match('/\\b' . $entityName . '\\b/', $palette['showitem']) > 0 || $entityName === 'palette:' . $paletteName) {
                                         $newPosition = $positionIdentifier . ':--palette--;;' . $paletteName;
                                     }
                                     break;
@@ -1217,6 +1217,9 @@ class ExtensionManagementUtility
         if (!isset($itemArray[2]) || !$itemArray[2]) {
             // @todo do we really set $itemArray[2], even if we cannot find an icon? (as that means it's set to 'EXT:foobar/')
             $itemArray[2] = 'EXT:' . $extensionKey . '/' . static::getExtensionIcon(static::$packageManager->getPackage($extensionKey)->getPackagePath());
+        } elseif ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$itemArray[1]])) {
+            // Set the type icon as well
+            $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$itemArray[1]] = $itemArray[2];
         }
         if (!isset($itemArray[3])) {
             $itemArray[3] = 'default';
@@ -1229,6 +1232,10 @@ class ExtensionManagementUtility
                 }
             }
             $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = $itemArray;
+        }
+        // Ensure to have at least some basic information available when editing the new type in FormEngine
+        if ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['types'][$itemArray[1]]) && isset($GLOBALS['TCA']['tt_content']['types']['header'])) {
+            $GLOBALS['TCA']['tt_content']['types'][$itemArray[1]] = $GLOBALS['TCA']['tt_content']['types']['header'];
         }
     }
 
