@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -28,18 +27,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ActionControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var array List of created fake extensions to be deleted in tearDown() again
+     * List of created fake extensions to be deleted in tearDown() again
      */
-    protected $fakedExtensions = [];
+    protected array $fakedExtensions = [];
 
     /**
      * Creates a fake extension inside typo3temp/. No configuration is created,
      * just the folder
-     *
-     * @return array
      */
     protected function createFakeExtension(): array
     {
@@ -69,15 +64,15 @@ class ActionControllerTest extends UnitTestCase
         $fakeExtension = $this->createFakeExtension();
         $extKey = $fakeExtension['extensionKey'];
         $extensionRoot = $fakeExtension['packagePath'];
-        $installUtility = $this->prophesize(InstallUtility::class);
-        $installUtility->enrichExtensionWithDetails($extKey)->willReturn($fakeExtension);
+        $installUtility = $this->createMock(InstallUtility::class);
+        $installUtility->method('enrichExtensionWithDetails')->with($extKey)->willReturn($fakeExtension);
         // Build mocked fileHandlingUtility:
         $subject = $this->getAccessibleMock(
             ActionController::class,
             ['dummy'],
             [
-                $installUtility->reveal(),
-                $this->prophesize(ExtensionManagementService::class)->reveal(),
+                $installUtility,
+                $this->createMock(ExtensionManagementService::class),
             ]
         );
 
