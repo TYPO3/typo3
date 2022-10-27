@@ -1,7 +1,10 @@
 
-/* moved by compressor */
-@import "../../../typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/import1.css";@import "../../../typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/import2.css";@import url("http://example.com/style.css");@import url("//example.com/style.css");
-/* moved by compressor */
+
+@import "import1.css";
+@import "import2.css";
+@import url("http://example.com/style.css");
+@import url("//example.com/style.css");
+
 body {
   margin: 0;
   padding: 0;

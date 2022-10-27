@@ -15,19 +15,18 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+namespace TYPO3\CMS\Core\Tests\Functional\Resource\Driver\Fixtures;
 
-use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-
-class AbstractDriverTest extends UnitTestCase
+/**
+ * Fixture class for the filename filters in the local driver.
+ */
+class LocalDriverFilenameFilter
 {
-    /**
-     * @test
-     */
-    public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured(): void
+    public static function filterFilename(string $itemName): int|bool
     {
-        $subject = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
-        self::assertTrue($subject->isCaseSensitiveFileSystem());
+        if ($itemName === 'fileA' || $itemName === 'folderA') {
+            return -1;
+        }
+        return true;
     }
 }

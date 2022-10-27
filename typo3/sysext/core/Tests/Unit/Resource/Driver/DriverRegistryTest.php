@@ -23,32 +23,17 @@ use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the FAL driver registry.
- */
 class DriverRegistryTest extends UnitTestCase
 {
-    protected ?DriverRegistry $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initializeSubject();
-    }
-
-    protected function initializeSubject(): void
-    {
-        $this->subject = new DriverRegistry();
-    }
-
     /**
      * @test
      */
     public function registeredDriverClassesCanBeRetrieved(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
-        $this->subject->registerDriverClass($className, 'foobar');
-        $returnedClassName = $this->subject->getDriverClass('foobar');
+        $subject = new DriverRegistry();
+        $subject->registerDriverClass($className, 'foobar');
+        $returnedClassName = $subject->getDriverClass('foobar');
         self::assertEquals($className, $returnedClassName);
     }
 
@@ -59,7 +44,8 @@ class DriverRegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314979197);
-        $this->subject->registerDriverClass(StringUtility::getUniqueId('class_'));
+        $subject = new DriverRegistry();
+        $subject->registerDriverClass(StringUtility::getUniqueId('class_'));
     }
 
     /**
@@ -71,8 +57,9 @@ class DriverRegistryTest extends UnitTestCase
         $this->expectExceptionCode(1314979451);
         $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
         $className2 = get_class($this->getMockForAbstractClass(DriverInterface::class));
-        $this->subject->registerDriverClass($className, 'foobar');
-        $this->subject->registerDriverClass($className2, 'foobar');
+        $subject = new DriverRegistry();
+        $subject->registerDriverClass($className, 'foobar');
+        $subject->registerDriverClass($className2, 'foobar');
     }
 
     /**
@@ -82,7 +69,8 @@ class DriverRegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314085990);
-        $this->subject->getDriverClass(StringUtility::getUniqueId('class_'));
+        $subject = new DriverRegistry();
+        $subject->getDriverClass(StringUtility::getUniqueId('class_'));
     }
 
     /**
@@ -91,8 +79,9 @@ class DriverRegistryTest extends UnitTestCase
     public function getDriverClassAcceptsClassNameIfClassIsRegistered(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
-        $this->subject->registerDriverClass($className, 'foobar');
-        self::assertEquals($className, $this->subject->getDriverClass($className));
+        $subject = new DriverRegistry();
+        $subject->registerDriverClass($className, 'foobar');
+        self::assertEquals($className, $subject->getDriverClass($className));
     }
 
     /**
@@ -107,8 +96,8 @@ class DriverRegistryTest extends UnitTestCase
                 'class' => $className,
             ],
         ];
-        $this->initializeSubject();
-        self::assertEquals($className, $this->subject->getDriverClass($shortName));
+        $subject = new DriverRegistry();
+        self::assertEquals($className, $subject->getDriverClass($shortName));
     }
 
     /**
@@ -123,9 +112,9 @@ class DriverRegistryTest extends UnitTestCase
                 'class' => $className,
             ],
         ];
-        $this->initializeSubject();
-        self::assertTrue($this->subject->driverExists($shortName));
-        self::assertFalse($this->subject->driverExists(StringUtility::getUniqueId('class')));
+        $subject = new DriverRegistry();
+        self::assertTrue($subject->driverExists($shortName));
+        self::assertFalse($subject->driverExists(StringUtility::getUniqueId('class')));
     }
 
     /**
@@ -134,7 +123,7 @@ class DriverRegistryTest extends UnitTestCase
     public function driverExistsReturnsFalseIfDriverDoesNotExist(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
-        $this->initializeSubject();
-        self::assertFalse($this->subject->driverExists(StringUtility::getUniqueId('class_')));
+        $subject = new DriverRegistry();
+        self::assertFalse($subject->driverExists(StringUtility::getUniqueId('class_')));
     }
 }

@@ -15,141 +15,48 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+namespace TYPO3\CMS\Core\Tests\Functional\Resource\Driver;
 
-use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
-use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Tests\Functional\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LocalDriverTest extends UnitTestCase
+class LocalDriverTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
+    protected bool $initializeDatabase = false;
 
-    protected bool $backupEnvironment = true;
-
-    protected ?LocalDriver $localDriver;
-    protected string $iso88591GreaterThan127 = '';
-    protected string $utf8Latin1Supplement = '';
-    protected string $utf8Latin1ExtendedA = '';
-
-    protected string $basedir = 'basedir';
-    protected ?string $mountDir;
-    protected array $vfsContents = [];
+    private string $baseDirectory;
 
     protected function setUp(): void
     {
-        $testRoot = Environment::getVarPath() . '/tests';
-        $this->testFilesToDelete[] = $testRoot;
-        GeneralUtility::mkdir_deep($testRoot);
         parent::setUp();
-        $this->mountDir = StringUtility::getUniqueId('mount-');
-        $this->basedir = StringUtility::getUniqueId('base-');
-        vfsStream::setup($this->basedir);
-        // Add an entry for the mount directory to the VFS contents
-        $this->vfsContents = [$this->mountDir => []];
+        $this->baseDirectory = $this->instancePath . '/local-driver-tests';
+        mkdir($this->baseDirectory);
+        mkdir(Environment::getVarPath() . '/tests');
     }
 
-    private function initializeVfs(): void
+    protected function tearDown(): void
     {
-        vfsStream::create($this->vfsContents);
+        GeneralUtility::rmdir($this->instancePath . '/local-driver-tests', true);
+        GeneralUtility::rmdir(Environment::getVarPath() . '/tests');
+        parent::tearDown();
     }
 
-    /**
-     * Returns the URL for a path inside the mount directory
-     */
-    private function getUrlInMount(string $path): string
+    private function getDefaultInitializedSubject(): LocalDriver
     {
-        return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
-    }
-
-    /**
-     * Returns the URL for a path inside the VFS
-     */
-    private function getUrl(string $path): string
-    {
-        return vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
-    }
-
-    /**
-     * Adds the given directory structure to the mount folder in the VFS. Existing files will be overwritten!
-     *
-     * @param array $dirStructure
-     */
-    private function addToMount(array $dirStructure): void
-    {
-        ArrayUtility::mergeRecursiveWithOverrule($this->vfsContents, [$this->mountDir => $dirStructure]);
-    }
-
-    /**
-     * Creates a "real" directory for doing tests. This is necessary because some file system properties (e.g. permissions)
-     * cannot be reflected by vfsStream, and some methods (like touch()) don't work there either.
-     *
-     * Created directories are automatically destroyed during tearDown()
-     *
-     * @return string
-     */
-    protected function createRealTestdir(): string
-    {
-        $basedir = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('fal-test-');
-        GeneralUtility::mkdir_deep($basedir);
-        return $basedir;
-    }
-
-    /**
-     * Create a "real" directory together with a driver configured
-     * for this directory.
-     *
-     * @return array With path to base directory and driver
-     */
-    protected function prepareRealTestEnvironment(): array
-    {
-        $basedir = $this->createRealTestdir();
-        $subject = $this->createDriver([
-            'basePath' => $basedir,
-        ]);
-        return [$basedir, $subject];
-    }
-
-    /**
-     * Creates a mocked driver object as test subject, optionally using a given mount object.
-     *
-     * IMPORTANT: Call this only after setting up the virtual file system (with the addTo* methods)!
-     */
-    protected function createDriver(array $driverConfiguration = [], array $mockedDriverMethods = []): LocalDriver|MockObject|AccessibleObjectInterface
-    {
-        // it's important to do that here, so vfsContents could have been set before
-        if (!isset($driverConfiguration['basePath'])) {
-            $this->initializeVfs();
-            $driverConfiguration['basePath'] = $this->getUrlInMount('');
-        }
-        $mockedDriverMethods[] = 'isPathValid';
-        $driver = $this->getAccessibleMock(
-            LocalDriver::class,
-            $mockedDriverMethods,
-            [$driverConfiguration]
-        );
-        $driver
-            ->method('isPathValid')
-            ->willReturn(
-                true
-            );
-
-        $driver->setStorageUid(5);
-        $driver->processConfiguration();
-        $driver->initialize();
-        return $driver;
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = new LocalDriver($driverConfiguration);
+        $subject->processConfiguration();
+        return $subject;
     }
 
     /**
@@ -157,15 +64,13 @@ class LocalDriverTest extends UnitTestCase
      */
     public function calculatedBasePathRelativeIsSane(): void
     {
-        $subject = $this->createDriver();
-
         // This would cause problems if you fill "/fileadmin/" into the base path field of a sys_file_storage record and select "relative" as path type
         $relativeDriverConfiguration = [
             'pathType' => 'relative',
             'basePath' => '/typo3temp/var/tests/',
         ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null);
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
-
         self::assertStringNotContainsString('//', $basePath);
     }
 
@@ -174,8 +79,6 @@ class LocalDriverTest extends UnitTestCase
      */
     public function calculatedBasePathAbsoluteIsSane(): void
     {
-        $subject = $this->createDriver();
-
         // This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
         $varPath = Environment::getVarPath();
         $projectPath = Environment::getProjectPath();
@@ -184,8 +87,8 @@ class LocalDriverTest extends UnitTestCase
         $relativeDriverConfiguration = [
             'basePath' => Environment::getVarPath() . '/tests' . $segments . $relativeVarPath . '/tests/',
         ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null);
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
-
         self::assertStringNotContainsString('/../', $basePath);
     }
 
@@ -245,23 +148,12 @@ class LocalDriverTest extends UnitTestCase
     }
 
     /**
-     * @param string $basePath
-     * @param string $baseUri
-     * @param string $fileName
-     * @param bool $expectedIsPublic
-     * @param string|null $expectedPublicUrl
      * @test
      * @dataProvider publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider
      */
-    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUris(
-        string $basePath,
-        string $baseUri,
-        string $fileName,
-        bool $expectedIsPublic,
-        ?string $expectedPublicUrl
-    ): void {
-        $testDir = $this->createRealTestdir();
-        $projectPath = $testDir . '/app';
+    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUris(string $basePath, string $baseUri, string $fileName, bool $expectedIsPublic, ?string $expectedPublicUrl): void
+    {
+        $projectPath = $this->baseDirectory . '/app';
         $publicPath = $projectPath . '/public';
         $absoluteBaseDir = $publicPath . $basePath;
         mkdir($projectPath);
@@ -283,9 +175,8 @@ class LocalDriverTest extends UnitTestCase
             'basePath' => $basePath,
             'baseUri' => $baseUri,
         ];
-
-        $subject = $this->createDriver($driverConfiguration);
-
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
         self::assertSame($expectedIsPublic, $subject->hasCapability(ResourceStorageInterface::CAPABILITY_PUBLIC));
         self::assertSame($fileName, $subject->createFile($fileName, '/'));
         self::assertSame($expectedPublicUrl, $subject->getPublicUrl($fileName));
@@ -296,14 +187,18 @@ class LocalDriverTest extends UnitTestCase
      */
     public function createFolderRecursiveSanitizesFilename(): void
     {
-        $driver = $this->createDriver([], ['sanitizeFilename']);
-        $driver->expects(self::exactly(2))
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, ['sanitizeFilename'], [$driverConfiguration]);
+        $subject->processConfiguration();
+        $subject->expects(self::exactly(2))
             ->method('sanitizeFileName')
             ->willReturn(
                 'sanitized'
             );
-        $driver->createFolder('newFolder/andSubfolder', '/', true);
-        self::assertFileExists($this->getUrlInMount('/sanitized/sanitized/'));
+        $subject->createFolder('newFolder/andSubfolder', '/', true);
+        self::assertFileExists($this->baseDirectory . '/sanitized/sanitized');
     }
 
     /**
@@ -311,22 +206,16 @@ class LocalDriverTest extends UnitTestCase
      */
     public function determineBaseUrlUrlEncodesUriParts(): void
     {
-        $driver = $this->getAccessibleMock(
-            LocalDriver::class,
-            ['hasCapability'],
-            [],
-            '',
-            false
-        );
-        $driver->expects(self::once())
+        $subject = $this->getAccessibleMock(LocalDriver::class, ['hasCapability'], [], '', false);
+        $subject->expects(self::once())
             ->method('hasCapability')
-            ->with(ResourceStorage::CAPABILITY_PUBLIC)
+            ->with(ResourceStorageInterface::CAPABILITY_PUBLIC)
             ->willReturn(
                 true
             );
-        $driver->_set('absoluteBasePath', Environment::getPublicPath() . '/un encö/ded %path/');
-        $driver->_call('determineBaseUrl');
-        $baseUri = $driver->_get('baseUri');
+        $subject->_set('absoluteBasePath', Environment::getPublicPath() . '/un encö/ded %path/');
+        $subject->_call('determineBaseUrl');
+        $baseUri = $subject->_get('baseUri');
         self::assertEquals(rawurlencode('un encö') . '/' . rawurlencode('ded %path') . '/', $baseUri);
     }
 
@@ -335,9 +224,8 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getDefaultFolderReturnsFolderForUserUploadPath(): void
     {
-        $subject = $this->createDriver();
-        $folderIdentifier = $subject->getDefaultFolder();
-        self::assertEquals('/user_upload/', $folderIdentifier);
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertEquals('/user_upload/', $subject->getDefaultFolder());
     }
 
     /**
@@ -345,8 +233,8 @@ class LocalDriverTest extends UnitTestCase
      */
     public function defaultLevelFolderFolderIsCreatedIfItDoesntExist(): void
     {
-        $subject = $this->createDriver();
-        self::assertFileExists($this->getUrlInMount($subject->getDefaultFolder()));
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertFileExists($this->baseDirectory . '/' . $subject->getDefaultFolder());
     }
 
     /**
@@ -354,14 +242,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFolderInFolderReturnsCorrectFolderObject(): void
     {
-        $this->addToMount([
-            'someDir' => [
-                'someSubdir' => [],
-            ],
-        ]);
-        $subject = $this->createDriver();
-        $folder = $subject->getFolderInFolder('someSubdir', '/someDir/');
-        self::assertEquals('/someDir/someSubdir/', $folder);
+        mkdir($this->baseDirectory . '/someDir');
+        mkdir($this->baseDirectory . '/someDir/someSubdir');
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertEquals('/someDir/someSubdir/', $subject->getFolderInFolder('someSubdir', '/someDir/'));
     }
 
     /**
@@ -369,11 +253,11 @@ class LocalDriverTest extends UnitTestCase
      */
     public function createFolderCreatesFolderOnDisk(): void
     {
-        $this->addToMount(['some' => ['folder' => []]]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/some');
+        mkdir($this->baseDirectory . '/some/folder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->createFolder('path', '/some/folder/');
-        self::assertFileExists($this->getUrlInMount('/some/folder/'));
-        self::assertFileExists($this->getUrlInMount('/some/folder/path'));
+        self::assertFileExists($this->baseDirectory . '/some/folder/path');
     }
 
     /**
@@ -381,15 +265,13 @@ class LocalDriverTest extends UnitTestCase
      */
     public function createFolderReturnsFolderObject(): void
     {
-        $this->addToMount(['some' => ['folder' => []]]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/some');
+        mkdir($this->baseDirectory . '/some/folder');
+        $subject = $this->getDefaultInitializedSubject();
         $createdFolder = $subject->createFolder('path', '/some/folder/');
         self::assertEquals('/some/folder/path/', $createdFolder);
     }
 
-    /**
-     * @return array
-     */
     public static function createFolderSanitizesFolderNameBeforeCreationDataProvider(): array
     {
         return [
@@ -407,15 +289,14 @@ class LocalDriverTest extends UnitTestCase
     /**
      * @test
      * @dataProvider createFolderSanitizesFolderNameBeforeCreationDataProvider
-     * @param string $newFolderName
-     * @param string $expectedFolderName
      */
     public function createFolderSanitizesFolderNameBeforeCreation(string $newFolderName, string $expectedFolderName): void
     {
-        $this->addToMount(['some' => ['folder' => []]]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/some');
+        mkdir($this->baseDirectory . '/some/folder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->createFolder($newFolderName, '/some/folder/');
-        self::assertFileExists($this->getUrlInMount('/some/folder/' . $expectedFolderName));
+        self::assertFileExists($this->baseDirectory . '/some/folder/' . $expectedFolderName);
     }
 
     /**
@@ -423,7 +304,11 @@ class LocalDriverTest extends UnitTestCase
      */
     public function basePathIsNormalizedWithTrailingSlash(): void
     {
-        $subject = $this->createDriver();
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
         self::assertEquals('/', substr($subject->_call('getAbsoluteBasePath'), -1));
     }
 
@@ -432,13 +317,14 @@ class LocalDriverTest extends UnitTestCase
      */
     public function noSecondSlashIsAddedIfBasePathAlreadyHasTrailingSlash(): void
     {
-        $subject = $this->createDriver();
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
         self::assertNotEquals('/', substr($subject->_call('getAbsoluteBasePath'), -2, 1));
     }
 
-    /**
-     * @return array
-     */
     public function getSpecificFileInformationDataProvider(): array
     {
         return [
@@ -488,27 +374,16 @@ class LocalDriverTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getSpecificFileInformationDataProvider
-     * @param string|int $expectedValue
-     * @param string $property
      */
-    public function getSpecificFileInformationReturnsRequestedFileInformation($expectedValue, string $property): void
+    public function getSpecificFileInformationReturnsRequestedFileInformation(string|int $expectedValue, string $property): void
     {
-        $root = vfsStream::setup('root');
-
-        $subFolder = vfsStream::newDirectory('fileadmin');
-        $root->addChild($subFolder);
-
-        // Load fixture files and folders from disk
-        $directory = vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024 * 1024);
+        copy(__DIR__ . '/Fixtures/Dummy.html', $this->baseDirectory . '/Dummy.html');
         if (in_array($property, ['mtime', 'ctime', 'atime'])) {
-            $expectedValue = $directory->getChild('Dummy.html')->filemtime();
+            $expectedValue = filemtime($this->baseDirectory . '/Dummy.html');
         }
-
-        $subject = $this->createDriver(['basePath' => 'vfs://root/fileadmin']);
-        self::assertSame(
-            $expectedValue,
-            $subject->getSpecificFileInformation('vfs://root/fileadmin/Dummy.html', '/', $property)
-        );
+        $subject = $this->getDefaultInitializedSubject();
+        $subject->setStorageUid(5);
+        self::assertSame($expectedValue, $subject->getSpecificFileInformation($this->baseDirectory . '/Dummy.html', '/', $property));
     }
 
     /**
@@ -516,15 +391,14 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getAbsolutePathReturnsCorrectPath(): void
     {
-        $this->addToMount([
-            'someFolder' => [
-                'file1.ext' => 'asdfg',
-            ],
-        ]);
-        $subject = $this->createDriver();
-        $path = $subject->_call('getAbsolutePath', '/someFolder/file1.ext');
-        self::assertFileExists($path);
-        self::assertEquals($this->getUrlInMount('/someFolder/file1.ext'), $path);
+        mkdir($this->baseDirectory . '/someFolder');
+        file_put_contents($this->baseDirectory . '/someFolder/file1.ext', 'asdfg');
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
+        self::assertEquals($this->baseDirectory . '/someFolder/file1.ext', $subject->_call('getAbsolutePath', '/someFolder/file1.ext'));
     }
 
     /**
@@ -532,22 +406,12 @@ class LocalDriverTest extends UnitTestCase
      */
     public function addFileMovesFileToCorrectLocation(): void
     {
-        $this->addToMount(['targetFolder' => []]);
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $this->vfsContents,
-            [
-                'sourceFolder' => [
-                    'file' => 'asdf',
-                ],
-            ]
-        );
-        $subject = $this->createDriver(
-            [],
-            ['getMimeTypeOfFile']
-        );
-        self::assertFileExists($this->getUrl('sourceFolder/file'));
-        $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
-        self::assertFileExists($this->getUrlInMount('/targetFolder/file'));
+        mkdir($this->baseDirectory . '/targetFolder');
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', 'asdf');
+        $subject = $this->getDefaultInitializedSubject();
+        $subject->addFile($this->baseDirectory . '/sourceFolder/file', '/targetFolder/', 'file');
+        self::assertFileExists($this->baseDirectory . '/targetFolder/file');
     }
 
     /**
@@ -555,22 +419,12 @@ class LocalDriverTest extends UnitTestCase
      */
     public function addFileUsesFilenameIfGiven(): void
     {
-        $this->addToMount(['targetFolder' => []]);
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $this->vfsContents,
-            [
-                'sourceFolder' => [
-                    'file' => 'asdf',
-                ],
-            ]
-        );
-        $subject = $this->createDriver(
-            [],
-            ['getMimeTypeOfFile']
-        );
-        self::assertFileExists($this->getUrl('sourceFolder/file'));
-        $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'targetFile');
-        self::assertFileExists($this->getUrlInMount('/targetFolder/targetFile'));
+        mkdir($this->baseDirectory . '/targetFolder');
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', 'asdf');
+        $subject = $this->getDefaultInitializedSubject();
+        $subject->addFile($this->baseDirectory . '/sourceFolder/file', '/targetFolder/', 'targetFile');
+        self::assertFileExists($this->baseDirectory . '/targetFolder/targetFile');
     }
 
     /**
@@ -580,13 +434,11 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314778269);
-        $this->addToMount([
-            'targetFolder' => [
-                'file' => 'asdf',
-            ],
-        ]);
-        $subject = $this->createDriver();
-        $subject->addFile($this->getUrlInMount('/targetFolder/file'), '/targetFolder/', 'file');
+        mkdir($this->baseDirectory . '/targetFolder');
+        file_put_contents($this->baseDirectory . '/targetFolder/file', 'asdf');
+        $subject = $this->getDefaultInitializedSubject();
+        $subject->setStorageUid(5);
+        $subject->addFile($this->baseDirectory . '/targetFolder/file', '/targetFolder/', 'file');
     }
 
     /**
@@ -594,22 +446,11 @@ class LocalDriverTest extends UnitTestCase
      */
     public function addFileReturnsFileIdentifier(): void
     {
-        $this->addToMount(['targetFolder' => []]);
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $this->vfsContents,
-            [
-                'sourceFolder' => [
-                    'file' => 'asdf',
-                ],
-            ]
-        );
-        $subject = $this->createDriver(
-            [],
-            ['getMimeTypeOfFile']
-        );
-        self::assertFileExists($this->getUrl('sourceFolder/file'));
-        $fileIdentifier = $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
-        self::assertEquals('file', basename($fileIdentifier));
+        mkdir($this->baseDirectory . '/targetFolder');
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', 'asdf');
+        $subject = $this->getDefaultInitializedSubject();
+        $fileIdentifier = $subject->addFile($this->baseDirectory . '/sourceFolder/file', '/targetFolder/', 'file');
         self::assertEquals('/targetFolder/file', $fileIdentifier);
     }
 
@@ -618,12 +459,9 @@ class LocalDriverTest extends UnitTestCase
      */
     public function existenceChecksWorkForFilesAndFolders(): void
     {
-        $this->addToMount([
-            'file' => 'asdf',
-            'folder' => [],
-        ]);
-        $subject = $this->createDriver();
-        // Using slashes at the beginning of paths because they will be stored in the DB this way.
+        mkdir($this->baseDirectory . '/folder');
+        file_put_contents($this->baseDirectory . '/file', 'asdf');
+        $subject = $this->getDefaultInitializedSubject();
         self::assertTrue($subject->fileExists('/file'));
         self::assertTrue($subject->folderExists('/folder/'));
         self::assertFalse($subject->fileExists('/nonexistingFile'));
@@ -635,13 +473,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function existenceChecksInFolderWorkForFilesAndFolders(): void
     {
-        $this->addToMount([
-            'subfolder' => [
-                'file' => 'asdf',
-                'folder' => [],
-            ],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/subfolder');
+        file_put_contents($this->baseDirectory . '/subfolder/file', 'asdf');
+        mkdir($this->baseDirectory . '/subfolder/folder');
+        $subject = $this->getDefaultInitializedSubject();
         self::assertTrue($subject->fileExistsInFolder('file', '/subfolder/'));
         self::assertTrue($subject->folderExistsInFolder('folder', '/subfolder/'));
         self::assertFalse($subject->fileExistsInFolder('nonexistingFile', '/subfolder/'));
@@ -653,26 +488,18 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getPublicUrlReturnsCorrectUriForConfiguredBaseUri(): void
     {
-        $baseUri = 'http://example.org/foobar/' . StringUtility::getUniqueId('uri_');
-        $this->addToMount([
-            'file.ext' => 'asdf',
-            'subfolder' => [
-                'file2.ext' => 'asdf',
-            ],
-        ]);
-        $subject = $this->createDriver([
+        $baseUri = 'https://example.org/foobar/' . StringUtility::getUniqueId('uri_');
+        $driverConfiguration = [
             'baseUri' => $baseUri,
-        ]);
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = new LocalDriver($driverConfiguration);
+        $subject->processConfiguration();
         self::assertEquals($baseUri . '/file.ext', $subject->getPublicUrl('/file.ext'));
         self::assertEquals($baseUri . '/subfolder/file2.ext', $subject->getPublicUrl('/subfolder/file2.ext'));
     }
 
-    /**
-     * Data provider for getPublicUrlReturnsValidUrlContainingSpecialCharacters().
-     *
-     * @return array
-     */
-    public function getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider(): array
+    public function getPublicUrlReturnsValidUrlContainingSpecialCharactersDataProvider(): array
     {
         return [
             ['/single file with some special chars äüö!.txt'],
@@ -684,20 +511,19 @@ class LocalDriverTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider
-     * @param string $fileIdentifier
+     * @dataProvider getPublicUrlReturnsValidUrlContainingSpecialCharactersDataProvider
      */
     public function getPublicUrlReturnsValidUrlContainingSpecialCharacters(string $fileIdentifier): void
     {
-        $baseUri = 'http://example.org/foobar/' . StringUtility::getUniqueId('uri_');
-        $subject = $this->createDriver([
+        $baseUri = 'https://example.org/foobar/' . StringUtility::getUniqueId('uri_');
+        $driverConfiguration = [
             'baseUri' => $baseUri,
-        ]);
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = new LocalDriver($driverConfiguration);
+        $subject->processConfiguration();
         $publicUrl = $subject->getPublicUrl($fileIdentifier);
-        self::assertTrue(
-            GeneralUtility::isValidUrl($publicUrl),
-            'getPublicUrl did not return a valid URL:' . $publicUrl
-        );
+        self::assertTrue(GeneralUtility::isValidUrl($publicUrl));
     }
 
     /**
@@ -706,18 +532,12 @@ class LocalDriverTest extends UnitTestCase
     public function fileContentsCanBeWrittenAndRead(): void
     {
         $fileContents = 'asdf';
-        $this->addToMount([
-            'file.ext' => $fileContents,
-        ]);
-        $subject = $this->createDriver();
-        self::assertEquals($fileContents, $subject->getFileContents('/file.ext'), 'File contents could not be read');
+        file_put_contents($this->baseDirectory . '/file.ext', $fileContents);
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertEquals($fileContents, $subject->getFileContents('/file.ext'));
         $newFileContents = 'asdfgh';
         $subject->setFileContents('/file.ext', $newFileContents);
-        self::assertEquals(
-            $newFileContents,
-            $subject->getFileContents('/file.ext'),
-            'New file contents could not be read.'
-        );
+        self::assertEquals($newFileContents, $subject->getFileContents('/file.ext'));
     }
 
     /**
@@ -726,10 +546,8 @@ class LocalDriverTest extends UnitTestCase
     public function setFileContentsReturnsNumberOfBytesWrittenToFile(): void
     {
         $fileContents = 'asdf';
-        $this->addToMount([
-            'file.ext' => $fileContents,
-        ]);
-        $subject = $this->createDriver();
+        file_put_contents($this->baseDirectory . '/file.ext', $fileContents);
+        $subject = $this->getDefaultInitializedSubject();
         $newFileContents = 'asdfgh';
         $bytesWritten = $subject->setFileContents('/file.ext', $newFileContents);
         self::assertEquals(strlen($newFileContents), $bytesWritten);
@@ -737,24 +555,23 @@ class LocalDriverTest extends UnitTestCase
 
     /**
      * @test
-     * @see http://phpmagazin.de/vfsStream-1.1.0-nutzt-PHP-5.4-M%C3%B6glichkeiten-064406.html
      */
     public function newFilesCanBeCreated(): void
     {
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         $subject->createFile('testfile.txt', '/');
+        self::assertFileExists($this->baseDirectory . '/testfile.txt');
         self::assertTrue($subject->fileExists('/testfile.txt'));
     }
 
     /**
      * @test
-     * @see http://phpmagazin.de/vfsStream-1.1.0-nutzt-PHP-5.4-M%C3%B6glichkeiten-064406.html
      */
     public function createdFilesAreEmpty(): void
     {
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         $subject->createFile('testfile.txt', '/');
-        self::assertTrue($subject->fileExists('/testfile.txt'));
+        self::assertSame('', file_get_contents($this->baseDirectory . '/testfile.txt'));
         $fileData = $subject->getFileContents('/testfile.txt');
         self::assertEquals(0, strlen($fileData));
     }
@@ -767,43 +584,27 @@ class LocalDriverTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped('createdFilesHaveCorrectRights() tests not available on Windows');
         }
-
-        // No one will use this as his default file create mask so we hopefully don't get any false positives
-        $testpattern = '0646';
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = $testpattern;
-
-        $this->addToMount(
-            [
-                'someDir' => [],
-            ]
-        );
-        /** @var LocalDriver $subject */
-        [$basedir, $subject] = $this->prepareRealTestEnvironment();
-        mkdir($basedir . '/someDir');
+        // No one will use this as his default file create mask, we hopefully don't get any false positives
+        $testPattern = '0646';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = $testPattern;
+        mkdir($this->baseDirectory . '/someDir');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->createFile('testfile.txt', '/someDir');
-        self::assertEquals((int)$testpattern, (int)(decoct(fileperms($basedir . '/someDir/testfile.txt') & 0777)));
+        self::assertEquals((int)$testPattern, (int)(decoct(fileperms($this->baseDirectory . '/someDir/testfile.txt') & 0777)));
     }
 
-    /**********************************
-     * File and directory listing
-     **********************************/
     /**
      * @test
      */
     public function getFileReturnsCorrectIdentifier(): void
     {
-        $root = vfsStream::setup('root');
-        $subFolder = vfsStream::newDirectory('fileadmin');
-        $root->addChild($subFolder);
-        // Load fixture files and folders from disk
-        vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024 * 1024);
-
-        $subject = $this->createDriver(['basePath' => 'vfs://root/fileadmin']);
-
-        $subdirFileInfo = $subject->getFileInfoByIdentifier('Dummy.html');
-        self::assertEquals('/Dummy.html', $subdirFileInfo['identifier']);
-        $rootFileInfo = $subject->getFileInfoByIdentifier('LocalDriverFilenameFilter.php');
-        self::assertEquals('/LocalDriverFilenameFilter.php', $rootFileInfo['identifier']);
+        copy(__DIR__ . '/Fixtures/Dummy.html', $this->baseDirectory . '/Dummy.html');
+        copy(__DIR__ . '/Fixtures/LocalDriverFilenameFilter.php', $this->baseDirectory . '/LocalDriverFilenameFilter.php');
+        $subject = $this->getDefaultInitializedSubject();
+        $fileInfo = $subject->getFileInfoByIdentifier('Dummy.html');
+        self::assertEquals('/Dummy.html', $fileInfo['identifier']);
+        $fileInfo = $subject->getFileInfoByIdentifier('LocalDriverFilenameFilter.php');
+        self::assertEquals('/LocalDriverFilenameFilter.php', $fileInfo['identifier']);
     }
 
     /**
@@ -813,7 +614,7 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314516809);
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         $subject->getFileInfoByIdentifier('/some/file/at/a/random/path');
     }
 
@@ -822,7 +623,7 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFilesInFolderReturnsEmptyArrayForEmptyDirectory(): void
     {
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         $fileList = $subject->getFilesInFolder('/');
         self::assertEmpty($fileList);
     }
@@ -832,17 +633,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFileListReturnsAllFilesInDirectory(): void
     {
-        $dirStructure = [
-            'aDir' => [],
-            'file1' => 'asdfg',
-            'file2' => 'fdsa',
-        ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver(
-            [],
-            // Mocked because finfo() can not deal with vfs streams and throws warnings
-            ['getMimeTypeOfFile']
-        );
+        mkdir($this->baseDirectory . '/aDir');
+        file_put_contents($this->baseDirectory . '/file1', 'asdfg');
+        file_put_contents($this->baseDirectory . '/file2', 'fdsa');
+        $subject = $this->getDefaultInitializedSubject();
         $fileList = $subject->getFilesInFolder('/');
         self::assertEquals(['/file1', '/file2'], array_keys($fileList));
     }
@@ -852,24 +646,15 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFileListReturnsAllFilesInSubdirectoryIfRecursiveParameterIsSet(): void
     {
-        $dirStructure = [
-            'aDir' => [
-                'file3' => 'asdfgh',
-                'subdir' => [
-                    'file4' => 'asklfjklasjkl',
-                ],
-            ],
-            'file1' => 'asdfg',
-            'file2' => 'fdsa',
-        ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver(
-            [],
-            // Mocked because finfo() can not deal with vfs streams and throws warnings
-            ['getMimeTypeOfFile']
-        );
+        mkdir($this->baseDirectory . '/aDir');
+        file_put_contents($this->baseDirectory . '/aDir/file3', 'asdfgh');
+        mkdir($this->baseDirectory . '/aDir/subDir');
+        file_put_contents($this->baseDirectory . '/aDir/subDir/file4', 'asklfjklasjkl');
+        file_put_contents($this->baseDirectory . '/file1', 'asdfg');
+        file_put_contents($this->baseDirectory . '/file2', 'fdsa');
+        $subject = $this->getDefaultInitializedSubject();
         $fileList = $subject->getFilesInFolder('/', 0, 0, true);
-        self::assertEquals(['/file1', '/file2', '/aDir/file3', '/aDir/subdir/file4'], array_keys($fileList));
+        self::assertEquals(['/file1', '/file2', '/aDir/file3', '/aDir/subDir/file4'], array_keys($fileList));
     }
 
     /**
@@ -879,8 +664,8 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314349666);
-        $this->addToMount(['somefile' => '']);
-        $subject = $this->createDriver();
+        file_put_contents($this->baseDirectory . '/somefile', '');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->getFilesInFolder('somedir/');
     }
 
@@ -889,21 +674,17 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFileInFolderCallsConfiguredCallbackFunctionWithGivenItemName(): void
     {
-        $dirStructure = [
-            'file2' => 'fdsa',
-        ];
-        // register static callback to self
+        file_put_contents($this->baseDirectory . '/file2', 'fdsa');
         $callback = [
             [
                 static::class,
                 'callbackStaticTestFunction',
             ],
         ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver();
         // the callback function will throw an exception used to check if it was called with correct $itemName
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1336159604);
+        $subject = $this->getDefaultInitializedSubject();
         $subject->getFilesInFolder('/', 0, 0, false, $callback);
     }
 
@@ -911,8 +692,6 @@ class LocalDriverTest extends UnitTestCase
      * Static callback function used to test if the filter callbacks work
      * As it is static we are using an exception to test if it is really called and works
      *
-     * @static
-     * @param string $itemName
      * @throws \InvalidArgumentException
      * @see getFileListCallsConfiguredCallbackFunction
      */
@@ -928,16 +707,9 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFileListFiltersItemsWithGivenFilterMethods(): void
     {
-        $dirStructure = [
-            'fileA' => 'asdfg',
-            'fileB' => 'fdsa',
-        ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver(
-            [],
-            // Mocked because finfo() can not deal with vfs streams and throws warnings
-            ['getMimeTypeOfFile']
-        );
+        file_put_contents($this->baseDirectory . '/fileA', 'asdfg');
+        file_put_contents($this->baseDirectory . '/fileB', 'fdsa');
+        $subject = $this->getDefaultInitializedSubject();
         $filterCallbacks = [
             [
                 LocalDriverFilenameFilter::class,
@@ -953,13 +725,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFolderListReturnsAllDirectoriesInDirectory(): void
     {
-        $dirStructure = [
-            'dir1' => [],
-            'dir2' => [],
-            'file' => 'asdfg',
-        ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/dir1');
+        mkdir($this->baseDirectory . '/dir2');
+        file_put_contents($this->baseDirectory . '/file', 'asdfg');
+        $subject = $this->getDefaultInitializedSubject();
         $fileList = $subject->getFoldersInFolder('/');
         self::assertEquals(['/dir1/', '/dir2/'], array_keys($fileList));
     }
@@ -969,33 +738,22 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFolderListReturnsHiddenFoldersByDefault(): void
     {
-        $dirStructure = [
-            '.someHiddenDir' => [],
-            'aDir' => [],
-            'file1' => '',
-        ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver();
-
+        mkdir($this->baseDirectory . '/.someHiddenDir');
+        mkdir($this->baseDirectory . '/aDir');
+        file_put_contents($this->baseDirectory . '/file1', '');
+        $subject = $this->getDefaultInitializedSubject();
         $fileList = $subject->getFoldersInFolder('/');
-
         self::assertEquals(['/.someHiddenDir/', '/aDir/'], array_keys($fileList));
     }
 
     /**
-     * Checks if the folder names . and .. are ignored when listing subdirectories
+     * Checks if the folder names '.' and '..' are ignored when listing subdirectories
      *
      * @test
      */
     public function getFolderListLeavesOutNavigationalEntries(): void
     {
-        // we have to add .. and . manually, as these are not included in vfsStream directory listings (as opposed
-        // to normal filelistings)
-        $this->addToMount([
-            '..' => [],
-            '.' => [],
-        ]);
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         $fileList = $subject->getFoldersInFolder('/');
         self::assertEmpty($fileList);
     }
@@ -1005,20 +763,17 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFolderListFiltersItemsWithGivenFilterMethods(): void
     {
-        $dirStructure = [
-            'folderA' => [],
-            'folderB' => [],
-        ];
-        $this->addToMount($dirStructure);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/folderA');
+        mkdir($this->baseDirectory . '/folderB');
+        $subject = $this->getDefaultInitializedSubject();
         $filterCallbacks = [
             [
                 LocalDriverFilenameFilter::class,
                 'filterFilename',
             ],
         ];
-        $folderList = $subject->getFoldersInFolder('/', 0, 0, $filterCallbacks);
-        self::assertNotContains('folderA', array_keys($folderList));
+        $folderList = $subject->getFoldersInFolder('/', 0, 0, false, $filterCallbacks);
+        self::assertNotContains('/folderA/', array_values($folderList));
     }
 
     /**
@@ -1026,10 +781,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFolderListFailsIfDirectoryDoesNotExist(): void
     {
+        file_put_contents($this->baseDirectory . 'somefile', '');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314349666);
-        $subject = $this->createDriver();
-        vfsStream::create([$this->basedir => ['somefile' => '']]);
+        $subject = $this->getDefaultInitializedSubject();
         $subject->getFoldersInFolder('somedir/');
     }
 
@@ -1038,11 +793,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function hashReturnsCorrectHashes(): void
     {
-        $contents = '68b329da9893e34099c7d8ad5cb9c940';
         $expectedMd5Hash = '8c67dbaf0ba22f2e7fbc26413b86051b';
         $expectedSha1Hash = 'a60cd808ba7a0bcfa37fa7f3fb5998e1b8dbcd9d';
-        $this->addToMount(['hashFile' => $contents]);
-        $subject = $this->createDriver();
+        file_put_contents($this->baseDirectory . '/hashFile', '68b329da9893e34099c7d8ad5cb9c940');
+        $subject = $this->getDefaultInitializedSubject();
         self::assertEquals($expectedSha1Hash, $subject->hash('/hashFile', 'sha1'));
         self::assertEquals($expectedMd5Hash, $subject->hash('/hashFile', 'md5'));
     }
@@ -1054,23 +808,23 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1304964032);
-        $subject = $this->createDriver();
+        file_put_contents($this->baseDirectory . '/hashFile', '68b329da9893e34099c7d8ad5cb9c940');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->hash('/hashFile', StringUtility::getUniqueId('uri_'));
     }
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Resource\Driver\LocalDriver::getFileForLocalProcessing
      */
     public function getFileForLocalProcessingCreatesCopyOfFileByDefault(): void
     {
-        $fileContents = 'asdfgh';
-        $this->addToMount([
-            'someDir' => [
-                'someFile' => $fileContents,
-            ],
-        ]);
-        $subject = $this->createDriver([], ['copyFileToTemporaryPath']);
+        mkdir($this->baseDirectory . '/someDir');
+        file_put_contents($this->baseDirectory . '/someDir/someFile', 'asdfgh');
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, ['copyFileToTemporaryPath'], [$driverConfiguration]);
+        $subject->processConfiguration();
         $subject->expects(self::once())->method('copyFileToTemporaryPath');
         $subject->getFileForLocalProcessing('/someDir/someFile');
     }
@@ -1080,15 +834,11 @@ class LocalDriverTest extends UnitTestCase
      */
     public function getFileForLocalProcessingReturnsOriginalFilepathForReadonlyAccess(): void
     {
-        $fileContents = 'asdfgh';
-        $this->addToMount([
-            'someDir' => [
-                'someFile' => $fileContents,
-            ],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/someDir');
+        file_put_contents($this->baseDirectory . '/someDir/someFile', 'asdfgh');
+        $subject = $this->getDefaultInitializedSubject();
         $filePath = $subject->getFileForLocalProcessing('/someDir/someFile', false);
-        self::assertEquals($filePath, $this->getUrlInMount('someDir/someFile'));
+        self::assertEquals($filePath, $this->baseDirectory . '/someDir/someFile');
     }
 
     /**
@@ -1096,17 +846,16 @@ class LocalDriverTest extends UnitTestCase
      */
     public function filesCanBeCopiedToATemporaryPath(): void
     {
-        $fileContents = 'asdfgh';
-        $this->addToMount([
-            'someDir' => [
-                'someFile.ext' => $fileContents,
-            ],
-        ]);
-        $subject = $this->createDriver();
-        $filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile.ext'));
-        $this->testFilesToDelete[] = $filePath;
+        mkdir($this->baseDirectory . '/someDir');
+        file_put_contents($this->baseDirectory . '/someDir/someFile.ext', 'asdfgh');
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
+        $filePath = $subject->_call('copyFileToTemporaryPath', '/someDir/someFile.ext');
         self::assertStringContainsString(Environment::getVarPath() . '/transient/', $filePath);
-        self::assertEquals($fileContents, file_get_contents($filePath));
+        self::assertEquals('asdfgh', file_get_contents($filePath));
     }
 
     /**
@@ -1114,11 +863,9 @@ class LocalDriverTest extends UnitTestCase
      */
     public function permissionsAreCorrectlyRetrievedForAllowedFile(): void
     {
-        /** @var LocalDriver $subject */
-        [$basedir, $subject] = $this->prepareRealTestEnvironment();
-        touch($basedir . '/someFile');
-        chmod($basedir . '/someFile', 448);
-        clearstatcache();
+        file_put_contents($this->baseDirectory . '/someFile', '');
+        chmod($this->baseDirectory . '/someFile', 448);
+        $subject = $this->getDefaultInitializedSubject();
         self::assertEquals(['r' => true, 'w' => true], $subject->getPermissions('/someFile'));
     }
 
@@ -1127,11 +874,9 @@ class LocalDriverTest extends UnitTestCase
      */
     public function permissionsAreCorrectlyRetrievedForAllowedFolder(): void
     {
-        /** @var LocalDriver $subject */
-        [$basedir, $subject] = $this->prepareRealTestEnvironment();
-        mkdir($basedir . '/someFolder');
-        chmod($basedir . '/someFolder', 448);
-        clearstatcache();
+        mkdir($this->baseDirectory . '/someFolder');
+        chmod($this->baseDirectory . '/someFolder', 448);
+        $subject = $this->getDefaultInitializedSubject();
         self::assertEquals(['r' => true, 'w' => true], $subject->getPermissions('/someFolder'));
     }
 
@@ -1140,7 +885,7 @@ class LocalDriverTest extends UnitTestCase
      */
     public function isWithinRecognizesFilesWithinFolderAndInOtherFolders(): void
     {
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         self::assertTrue($subject->isWithin('/someFolder/', '/someFolder/test.jpg'));
         self::assertTrue($subject->isWithin('/someFolder/', '/someFolder/subFolder/test.jpg'));
         self::assertFalse($subject->isWithin('/someFolder/', '/someFolderWithALongName/test.jpg'));
@@ -1151,14 +896,10 @@ class LocalDriverTest extends UnitTestCase
      */
     public function isWithinAcceptsFileAndFolderObjectsAsContent(): void
     {
-        $subject = $this->createDriver();
+        $subject = $this->getDefaultInitializedSubject();
         self::assertTrue($subject->isWithin('/someFolder/', '/someFolder/test.jpg'));
         self::assertTrue($subject->isWithin('/someFolder/', '/someFolder/subfolder/'));
     }
-
-    /**********************************
-     * Copy/move file
-     **********************************/
 
     /**
      * @test
@@ -1166,16 +907,11 @@ class LocalDriverTest extends UnitTestCase
     public function filesCanBeCopiedWithinStorage(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
-        $this->addToMount([
-            'someFile' => $fileContents,
-            'targetFolder' => [],
-        ]);
-        $subject = $this->createDriver(
-            [],
-            ['getMimeTypeOfFile']
-        );
+        file_put_contents($this->baseDirectory . '/someFile', $fileContents);
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->copyFileWithinStorage('/someFile', '/targetFolder/', 'someFile');
-        self::assertFileEquals($this->getUrlInMount('/someFile'), $this->getUrlInMount('/targetFolder/someFile'));
+        self::assertFileEquals($this->baseDirectory . '/someFile', $this->baseDirectory . '/targetFolder/someFile');
     }
 
     /**
@@ -1184,14 +920,12 @@ class LocalDriverTest extends UnitTestCase
     public function filesCanBeMovedWithinStorage(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
-        $this->addToMount([
-            'targetFolder' => [],
-            'someFile' => $fileContents,
-        ]);
-        $subject = $this->createDriver();
+        file_put_contents($this->baseDirectory . '/someFile', $fileContents);
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $newIdentifier = $subject->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
-        self::assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/file')));
-        self::assertFileDoesNotExist($this->getUrlInMount('/someFile'));
+        self::assertEquals($fileContents, file_get_contents($this->baseDirectory . '/targetFolder/file'));
+        self::assertFileDoesNotExist($this->baseDirectory . '/someFile');
         self::assertEquals('/targetFolder/file', $newIdentifier);
     }
 
@@ -1201,62 +935,43 @@ class LocalDriverTest extends UnitTestCase
     public function fileMetadataIsChangedAfterMovingFile(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
-        $this->addToMount([
-            'targetFolder' => [],
-            'someFile' => $fileContents,
-        ]);
-        $subject = $this->createDriver(
-            [],
-            // Mocked because finfo() can not deal with vfs streams and throws warnings
-            ['getMimeTypeOfFile']
-        );
+        file_put_contents($this->baseDirectory . '/someFile', $fileContents);
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $newIdentifier = $subject->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
         $fileMetadata = $subject->getFileInfoByIdentifier($newIdentifier);
         self::assertEquals($newIdentifier, $fileMetadata['identifier']);
     }
 
-    public function renamingFiles_dataProvider(): array
+    /**
+     * @test
+     */
+    public function renamingFilesChangesFilenameOnDiskInRootFolder(): void
     {
-        return [
-            'file in subfolder' => [
-                [
-                    'targetFolder' => ['file' => ''],
-                ],
-                '/targetFolder/file',
-                'newFile',
-                '/targetFolder/newFile',
-            ],
-            'file in rootfolder' => [
-                [
-                    'fileInRoot' => '',
-                ],
-                '/fileInRoot',
-                'newFile',
-                '/newFile',
-            ],
-        ];
+        file_put_contents($this->baseDirectory . '/file', '');
+        $subject = $this->getDefaultInitializedSubject();
+        $newIdentifier = $subject->renameFile('/file', 'newFile');
+        self::assertFileDoesNotExist($this->baseDirectory . '/file');
+        self::assertFalse($subject->fileExists('/file'));
+        self::assertFileExists($this->baseDirectory . '/newFile');
+        self::assertTrue($subject->fileExists('/newFile'));
+        self::assertEquals('/newFile', $newIdentifier);
     }
 
     /**
      * @test
-     * @dataProvider renamingFiles_dataProvider
-     * @param array $filesystemStructure
-     * @param string $oldFileIdentifier
-     * @param string $newFileName
-     * @param string $expectedNewIdentifier
      */
-    public function renamingFilesChangesFilenameOnDisk(
-        array $filesystemStructure,
-        string $oldFileIdentifier,
-        string $newFileName,
-        string $expectedNewIdentifier
-    ): void {
-        $this->addToMount($filesystemStructure);
-        $subject = $this->createDriver();
-        $newIdentifier = $subject->renameFile($oldFileIdentifier, $newFileName);
-        self::assertFalse($subject->fileExists($oldFileIdentifier));
-        self::assertTrue($subject->fileExists($newIdentifier));
-        self::assertEquals($expectedNewIdentifier, $newIdentifier);
+    public function renamingFilesChangesFilenameOnDiskInSubFolder(): void
+    {
+        mkdir($this->baseDirectory . '/targetFolder');
+        file_put_contents($this->baseDirectory . '/targetFolder/file', '');
+        $subject = $this->getDefaultInitializedSubject();
+        $newIdentifier = $subject->renameFile('/targetFolder/file', 'newFile');
+        self::assertFileDoesNotExist($this->baseDirectory . '/targetFolder/file');
+        self::assertFalse($subject->fileExists('/targetFolder/file'));
+        self::assertFileExists($this->baseDirectory . '/targetFolder/newFile');
+        self::assertTrue($subject->fileExists('/targetFolder/newFile'));
+        self::assertEquals('/targetFolder/newFile', $newIdentifier);
     }
 
     /**
@@ -1266,62 +981,42 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(ExistingTargetFileNameException::class);
         $this->expectExceptionCode(1320291063);
-        $this->addToMount([
-            'targetFolder' => ['file' => '', 'newFile' => ''],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/targetFolder');
+        file_put_contents($this->baseDirectory . '/targetFolder/file', '');
+        file_put_contents($this->baseDirectory . '/targetFolder/newFile', '');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->renameFile('/targetFolder/file', 'newFile');
     }
 
     /**
-     * We use this data provider for testing move methods because there are some issues with the
-     *
-     * @return array
+     * @test
      */
-    public function renamingFolders_dataProvider(): array
+    public function renamingFoldersChangesFolderNameOnDiskInRootFolder(): void
     {
-        return [
-            'folder in root folder' => [
-                [
-                    'someFolder' => [],
-                ],
-                '/someFolder/',
-                'newFolder',
-                '/newFolder/',
-            ],
-            'file in subfolder' => [
-                [
-                    'subfolder' => [
-                        'someFolder' => [],
-                    ],
-                ],
-                '/subfolder/someFolder/',
-                'newFolder',
-                '/subfolder/newFolder/',
-            ],
-        ];
+        mkdir($this->baseDirectory . '/someFolder');
+        $subject = $this->getDefaultInitializedSubject();
+        $mapping = $subject->renameFolder('/someFolder/', 'newFolder');
+        self::assertFileDoesNotExist($this->baseDirectory . '/someFolder');
+        self::assertFalse($subject->folderExists('/someFolder/'));
+        self::assertFileExists($this->baseDirectory . '/newFolder');
+        self::assertTrue($subject->folderExists('/newFolder/'));
+        self::assertEquals('/newFolder/', $mapping['/someFolder/']);
     }
 
     /**
      * @test
-     * @dataProvider renamingFolders_dataProvider
-     * @param array $filesystemStructure
-     * @param string $oldFolderIdentifier
-     * @param string $newFolderName
-     * @param string $expectedNewIdentifier
      */
-    public function renamingFoldersChangesFolderNameOnDisk(
-        array $filesystemStructure,
-        string $oldFolderIdentifier,
-        string $newFolderName,
-        string $expectedNewIdentifier
-    ): void {
-        $this->addToMount($filesystemStructure);
-        $subject = $this->createDriver();
-        $mapping = $subject->renameFolder($oldFolderIdentifier, $newFolderName);
-        self::assertFalse($subject->folderExists($oldFolderIdentifier));
-        self::assertTrue($subject->folderExists($expectedNewIdentifier));
-        self::assertEquals($expectedNewIdentifier, $mapping[$oldFolderIdentifier]);
+    public function renamingFoldersChangesFolderNameOnDiskInSubFolder(): void
+    {
+        mkdir($this->baseDirectory . '/subFolder');
+        mkdir($this->baseDirectory . '/subFolder/someFolder');
+        $subject = $this->getDefaultInitializedSubject();
+        $mapping = $subject->renameFolder('/subFolder/someFolder/', 'newFolder');
+        self::assertFileDoesNotExist($this->baseDirectory . '/subFolder/someFolder');
+        self::assertFalse($subject->folderExists('/subFolder/someFolder'));
+        self::assertFileExists($this->baseDirectory . '/subFolder/newFolder');
+        self::assertTrue($subject->folderExists('/subFolder/newFolder'));
+        self::assertEquals('/subFolder/newFolder/', $mapping['/subFolder/someFolder/']);
     }
 
     /**
@@ -1329,14 +1024,11 @@ class LocalDriverTest extends UnitTestCase
      */
     public function renameFolderReturnsCorrectMappingInformationForAllFiles(): void
     {
-        $fileContents = 'asdfg';
-        $this->addToMount([
-            'sourceFolder' => [
-                'subFolder' => ['file' => $fileContents],
-                'file2' => 'asdfg',
-            ],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file2', 'asdfg');
+        mkdir($this->baseDirectory . '/sourceFolder/subFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/subFolder/file', 'asdfg');
+        $subject = $this->getDefaultInitializedSubject();
         $mappingInformation = $subject->renameFolder('/sourceFolder/', 'newFolder');
         self::assertIsArray($mappingInformation);
         self::assertEquals('/newFolder/', $mappingInformation['/sourceFolder/']);
@@ -1352,19 +1044,20 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1334160746);
-        $this->addToMount([
-            'sourceFolder' => [
-                'file' => 'asdfg',
-            ],
-        ]);
-        $subject = $this->createDriver([], ['createIdentifierMap']);
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', 'asdfg');
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, ['createIdentifierMap'], [$driverConfiguration]);
+        $subject->processConfiguration();
         $subject->expects(self::atLeastOnce())->method('createIdentifierMap')->will(
             self::throwException(
                 new FileOperationErrorException('testing', 1476045666)
             )
         );
         $subject->renameFolder('/sourceFolder/', 'newFolder');
-        self::assertFileExists($this->getUrlInMount('/sourceFolder/file'));
+        self::assertFileExists($this->baseDirectory . '/sourceFolder/file');
     }
 
     /**
@@ -1372,11 +1065,8 @@ class LocalDriverTest extends UnitTestCase
      */
     public function isFolderEmptyReturnsTrueForEmptyFolder(): LocalDriver
     {
-        // This also prepares the next few tests, so add more info than required for this test
-        $this->addToMount([
-            'emptyFolder' => [],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/emptyFolder');
+        $subject = $this->getDefaultInitializedSubject();
         self::assertTrue($subject->isFolderEmpty('/emptyFolder/'));
         return $subject;
     }
@@ -1386,12 +1076,9 @@ class LocalDriverTest extends UnitTestCase
      */
     public function isFolderEmptyReturnsFalseIfFolderHasFile(): void
     {
-        $this->addToMount([
-            'folderWithFile' => [
-                'someFile' => '',
-            ],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/folderWithFile');
+        file_put_contents($this->baseDirectory . '/folderWithFile/someFile', '');
+        $subject = $this->getDefaultInitializedSubject();
         self::assertFalse($subject->isFolderEmpty('/folderWithFile/'));
     }
 
@@ -1400,35 +1087,26 @@ class LocalDriverTest extends UnitTestCase
      */
     public function isFolderEmptyReturnsFalseIfFolderHasSubfolder(): void
     {
-        $this->addToMount([
-            'folderWithSubfolder' => [
-                'someFolder' => [],
-            ],
-        ]);
-        $subject = $this->createDriver();
-        self::assertFalse($subject->isFolderEmpty('/folderWithSubfolder/'));
+        mkdir($this->baseDirectory . '/folderWithSubFolder');
+        mkdir($this->baseDirectory . '/folderWithSubFolder/someFolder');
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertFalse($subject->isFolderEmpty('/folderWithSubFolder/'));
     }
 
-    /**********************************
-     * Copy/move folder
-     **********************************/
     /**
      * @test
      */
     public function foldersCanBeMovedWithinStorage(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
-        $this->addToMount([
-            'sourceFolder' => [
-                'file' => $fileContents,
-            ],
-            'targetFolder' => [],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', $fileContents);
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
-        self::assertFileExists($this->getUrlInMount('/targetFolder/someFolder/'));
-        self::assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/someFolder/file')));
-        self::assertFileDoesNotExist($this->getUrlInMount('/sourceFolder'));
+        self::assertFileExists($this->baseDirectory . '/targetFolder/someFolder/');
+        self::assertEquals($fileContents, file_get_contents($this->baseDirectory . '/targetFolder/someFolder/file'));
+        self::assertFileDoesNotExist($this->baseDirectory . '/sourceFolder');
     }
 
     /**
@@ -1436,21 +1114,15 @@ class LocalDriverTest extends UnitTestCase
      */
     public function moveFolderWithinStorageReturnsCorrectMappingInformationForAllFiles(): void
     {
-        $fileContents = 'asdfg';
-        $this->addToMount([
-            'targetFolder' => [],
-            'sourceFolder' => [
-                'subFolder' => ['file' => $fileContents],
-                'file' => 'asdfg',
-            ],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/targetFolder');
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', 'asdfg');
+        mkdir($this->baseDirectory . '/sourceFolder/subFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/subFolder/file', 'asdfg');
+        $subject = $this->getDefaultInitializedSubject();
         $mappingInformation = $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'sourceFolder');
         self::assertEquals('/targetFolder/sourceFolder/file', $mappingInformation['/sourceFolder/file']);
-        self::assertEquals(
-            '/targetFolder/sourceFolder/subFolder/file',
-            $mappingInformation['/sourceFolder/subFolder/file']
-        );
+        self::assertEquals('/targetFolder/sourceFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);
         self::assertEquals('/targetFolder/sourceFolder/subFolder/', $mappingInformation['/sourceFolder/subFolder/']);
     }
 
@@ -1459,15 +1131,12 @@ class LocalDriverTest extends UnitTestCase
      */
     public function folderCanBeRenamedWhenMoving(): void
     {
-        $this->addToMount([
-            'sourceFolder' => [
-                'file' => StringUtility::getUniqueId('content_'),
-            ],
-            'targetFolder' => [],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', StringUtility::getUniqueId('content_'));
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolder');
-        self::assertFileExists($this->getUrlInMount('/targetFolder/newFolder/'));
+        self::assertFileExists($this->baseDirectory . '/targetFolder/newFolder/');
     }
 
     /**
@@ -1475,15 +1144,12 @@ class LocalDriverTest extends UnitTestCase
      */
     public function copyFolderWithinStorageCopiesSingleFileToNewFolderName(): void
     {
-        $this->addToMount([
-            'sourceFolder' => [
-                'file' => StringUtility::getUniqueId('name_'),
-            ],
-            'targetFolder' => [],
-        ]);
-        $subject = $this->createDriver();
+        mkdir($this->baseDirectory . '/sourceFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/file', StringUtility::getUniqueId('name_'));
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
-        self::assertTrue(is_file($this->getUrlInMount('/targetFolder/newFolderName/file')));
+        self::assertTrue(is_file($this->baseDirectory . '/targetFolder/newFolderName/file'));
     }
 
     /**
@@ -1491,12 +1157,12 @@ class LocalDriverTest extends UnitTestCase
      */
     public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName(): void
     {
-        [$basePath, $subject] = $this->prepareRealTestEnvironment();
-        GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
-        GeneralUtility::mkdir_deep($basePath . '/targetFolder');
-
+        mkdir($this->baseDirectory . '/sourceFolder');
+        mkdir($this->baseDirectory . '/sourceFolder/subFolder');
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
-        self::assertDirectoryExists($basePath . '/targetFolder/newFolderName/subFolder');
+        self::assertDirectoryExists($this->baseDirectory . '/targetFolder/newFolderName/subFolder');
     }
 
     /**
@@ -1504,65 +1170,33 @@ class LocalDriverTest extends UnitTestCase
      */
     public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName(): void
     {
-        [$basePath, $subject] = $this->prepareRealTestEnvironment();
-        GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
-        GeneralUtility::mkdir_deep($basePath . '/targetFolder');
-        file_put_contents($basePath . '/sourceFolder/subFolder/file', StringUtility::getUniqueId('content_'));
-        GeneralUtility::fixPermissions($basePath . '/sourceFolder/subFolder/file');
-
+        mkdir($this->baseDirectory . '/sourceFolder');
+        mkdir($this->baseDirectory . '/sourceFolder/subFolder');
+        file_put_contents($this->baseDirectory . '/sourceFolder/subFolder/file', StringUtility::getUniqueId('content_'));
+        mkdir($this->baseDirectory . '/targetFolder');
+        $subject = $this->getDefaultInitializedSubject();
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
-        self::assertTrue(is_file($basePath . '/targetFolder/newFolderName/subFolder/file'));
-    }
-
-    ///////////////////////
-    // Tests concerning sanitizeFileName
-    ///////////////////////
-
-    /**
-     * Set up data for sanitizeFileName tests
-     */
-    public function setUpCharacterStrings(): void
-    {
-        // Generate string containing all characters for the iso8859-1 charset, charcode greater than 127
-        $this->iso88591GreaterThan127 = '';
-        for ($i = 0xA0; $i <= 0xFF; $i++) {
-            $this->iso88591GreaterThan127 .= chr($i);
-        }
-
-        // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
-        // without U+0080 to U+009F: control characters
-        // Based on http://www.utf8-chartable.de/unicode-utf8-table.pl
-        $this->utf8Latin1Supplement = '';
-        for ($i = 0xA0; $i <= 0xBF; $i++) {
-            $this->utf8Latin1Supplement .= chr(0xC2) . chr($i);
-        }
-        for ($i = 0x80; $i <= 0xBF; $i++) {
-            $this->utf8Latin1Supplement .= chr(0xC3) . chr($i);
-        }
-
-        // Generate string containing all characters for the utf-8 Latin-1 Extended-A (U+0100 to U+017F)
-        $this->utf8Latin1ExtendedA = '';
-        for ($i = 0x80; $i <= 0xBF; $i++) {
-            $this->utf8Latin1ExtendedA .= chr(0xC4) . chr($i);
-        }
-        for ($i = 0x80; $i <= 0xBF; $i++) {
-            $this->utf8Latin1ExtendedA .= chr(0xC5) . chr($i);
-        }
+        self::assertTrue(is_file($this->baseDirectory . '/targetFolder/newFolderName/subFolder/file'));
     }
 
     /**
-     * Data provider for sanitizeFileNameUTF8FilesystemDataProvider
-     *
      * Every array splits into:
      * - String value fileName
      * - String value charset (none = '', utf-8, latin1, etc.)
      * - Expected result (cleaned fileName)
-     *
-     * @return array
      */
     public function sanitizeFileNameUTF8FilesystemDataProvider(): array
     {
-        $this->setUpCharacterStrings();
+        // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
+        // without U+0080 to U+009F: control characters
+        // Based on http://www.utf8-chartable.de/unicode-utf8-table.pl
+        $utf8Latin1Supplement = '';
+        for ($i = 0xA0; $i <= 0xBF; $i++) {
+            $utf8Latin1Supplement .= chr(0xC2) . chr($i);
+        }
+        for ($i = 0x80; $i <= 0xBF; $i++) {
+            $utf8Latin1Supplement .= chr(0xC3) . chr($i);
+        }
         return [
             // Characters ordered by ASCII table
             'allowed characters utf-8 (ASCII part)' => [
@@ -1575,7 +1209,7 @@ class LocalDriverTest extends UnitTestCase
                 '_____________________________',
             ],
             'utf-8 (Latin-1 Supplement)' => [
-                $this->utf8Latin1Supplement,
+                $utf8Latin1Supplement,
                 '________________________________ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ',
             ],
             'utf-8 but not in NFC (Canonical Composition)' => [
@@ -1596,31 +1230,46 @@ class LocalDriverTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sanitizeFileNameUTF8FilesystemDataProvider
-     * @param string $fileName
-     * @param string $expectedResult
      */
     public function sanitizeFileNameUTF8Filesystem(string $fileName, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
-        self::assertEquals(
-            $expectedResult,
-            $this->createDriver()->sanitizeFileName($fileName)
-        );
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName));
     }
 
     /**
-     * Data provider for sanitizeFileNameNonUTF8Filesystem
-     *
      * Every array splits into:
      * - String value fileName
      * - String value charset (none = '', utf-8, latin1, etc.)
      * - Expected result (cleaned fileName)
-     *
-     * @return array
      */
     public function sanitizeFileNameNonUTF8FilesystemDataProvider(): array
     {
-        $this->setUpCharacterStrings();
+        // Generate string containing all characters for the iso8859-1 charset, charcode greater than 127
+        $iso88591GreaterThan127 = '';
+        for ($i = 0xA0; $i <= 0xFF; $i++) {
+            $iso88591GreaterThan127 .= chr($i);
+        }
+        // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
+        // without U+0080 to U+009F: control characters
+        // Based on http://www.utf8-chartable.de/unicode-utf8-table.pl
+        $utf8Latin1Supplement = '';
+        for ($i = 0xA0; $i <= 0xBF; $i++) {
+            $utf8Latin1Supplement .= chr(0xC2) . chr($i);
+        }
+        for ($i = 0x80; $i <= 0xBF; $i++) {
+            $utf8Latin1Supplement .= chr(0xC3) . chr($i);
+        }
+        // Generate string containing all characters for the utf-8 Latin-1 Extended-A (U+0100 to U+017F)
+        $utf8Latin1ExtendedA = '';
+        for ($i = 0x80; $i <= 0xBF; $i++) {
+            $utf8Latin1ExtendedA .= chr(0xC4) . chr($i);
+        }
+        for ($i = 0x80; $i <= 0xBF; $i++) {
+            $utf8Latin1ExtendedA .= chr(0xC5) . chr($i);
+        }
+
         return [
             // Characters ordered by ASCII table
             'allowed characters iso-8859-1' => [
@@ -1649,18 +1298,18 @@ class LocalDriverTest extends UnitTestCase
             'iso-8859-1 (code > 127)' => [
                 // http://de.wikipedia.org/wiki/ISO_8859-1
                 // chr(0xA0) = NBSP (no-break space) => gets trimmed
-                $this->iso88591GreaterThan127,
+                $iso88591GreaterThan127,
                 'iso-8859-1',
                 '_centpound_yen____c_a_____R_____-23_u___1o__1_41_23_4_AAAAAEAAAECEEEEIIIIDNOOOOOExOEUUUUEYTHssaaaaaeaaaeceeeeiiiidnoooooe_oeuuuueythy',
             ],
             'utf-8 (Latin-1 Supplement)' => [
                 // chr(0xC2) . chr(0x0A) = NBSP (no-break space) => gets trimmed
-                $this->utf8Latin1Supplement,
+                $utf8Latin1Supplement,
                 'utf-8',
                 '_centpound__yen______c_a_______R_______-23__u_____1o__1_41_23_4_AAAAAEAAAECEEEEIIIIDNOOOOOExOEUUUUEYTHssaaaaaeaaaeceeeeiiiidnoooooe_oeuuuueythy',
             ],
             'utf-8 (Latin-1 Extended A)' => [
-                $this->utf8Latin1ExtendedA,
+                $utf8Latin1ExtendedA,
                 'utf-8',
                 'AaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKk__LlLlLlL_l_LlNnNnNn_n____OOooOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzs',
             ],
@@ -1695,17 +1344,12 @@ class LocalDriverTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sanitizeFileNameNonUTF8FilesystemDataProvider
-     * @param string $fileName
-     * @param string $charset
-     * @param string $expectedResult
      */
     public function sanitizeFileNameNonUTF8Filesystem(string $fileName, string $charset, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 0;
-        self::assertEquals(
-            $expectedResult,
-            $this->createDriver()->sanitizeFileName($fileName, $charset)
-        );
+        $subject = $this->getDefaultInitializedSubject();
+        self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName, $charset));
     }
 
     /**
@@ -1715,9 +1359,9 @@ class LocalDriverTest extends UnitTestCase
     {
         $this->expectException(InvalidFileNameException::class);
         $this->expectExceptionCode(1320288991);
-
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
-        $this->createDriver()->sanitizeFileName('');
+        $subject = $this->getDefaultInitializedSubject();
+        $subject->sanitizeFileName('');
     }
 
     /**
@@ -1730,12 +1374,15 @@ class LocalDriverTest extends UnitTestCase
         $closure = static function () {
             throw new \Exception('I was called!', 1463073434);
         };
-
         $filterMethods = [
             $closure,
         ];
-
-        $this->createDriver()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
+        $subject->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
     }
 
     /**
@@ -1743,11 +1390,7 @@ class LocalDriverTest extends UnitTestCase
      */
     public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfName(): void
     {
-        $dummyObject = $this
-            ->getMockBuilder(LocalDriver::class)
-            ->addMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $dummyObject = $this->getMockBuilder(\stdClass::class)->addMethods(['dummy'])->getMock();
         $method = [
             $dummyObject,
             'dummy',
@@ -1756,6 +1399,11 @@ class LocalDriverTest extends UnitTestCase
         $filterMethods = [
             $method,
         ];
-        $this->createDriver()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+        $driverConfiguration = [
+            'basePath' => $this->baseDirectory,
+        ];
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
+        $subject->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
     }
 }

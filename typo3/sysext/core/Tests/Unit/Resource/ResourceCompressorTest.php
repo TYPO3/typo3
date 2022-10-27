@@ -17,42 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
-use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ResourceCompressorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 
-    /**
-     * @var ResourceCompressor|MockObject|AccessibleObjectInterface
-     */
-    protected $subject;
-
-    protected string $basedir = 'basedir';
-    protected ?string $mountDir;
-    protected array $vfsContents = [];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->mountDir = StringUtility::getUniqueId('mount-');
-        $this->basedir = StringUtility::getUniqueId('base-');
-        vfsStream::setup($this->basedir);
-        // Add an entry for the mount directory to the VFS contents
-        $this->vfsContents = [$this->mountDir => []];
-        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
-    }
-
-    /**
-     * @return array
-     */
     public function cssFixStatementsDataProvider(): array
     {
         return [
@@ -94,13 +65,12 @@ class ResourceCompressorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider cssFixStatementsDataProvider
-     * @param string $input
-     * @param string $expected
      */
     public function cssFixStatementsMovesStatementsToTopIfNeeded(string $input, string $expected): void
     {
-        $this->subject->_call('initialize');
-        $result = $this->subject->_call('cssFixStatements', $input);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->_call('initialize');
+        $result = $subject->_call('cssFixStatements', $input);
         $resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
         self::assertEquals($expected, $resultWithReadableLinefeed);
     }
@@ -118,12 +88,13 @@ class ResourceCompressorTest extends UnitTestCase
                 'compress' => true,
             ],
         ];
-        $this->subject->expects(self::once())
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->expects(self::once())
             ->method('compressCssFile')
             ->with($fileName)
             ->willReturn($compressedFileName);
 
-        $result = $this->subject->compressCssFiles($testFileFixture);
+        $result = $subject->compressCssFiles($testFileFixture);
 
         self::assertArrayHasKey($compressedFileName, $result);
         self::assertArrayHasKey('compress', $result[$compressedFileName]);
@@ -143,12 +114,13 @@ class ResourceCompressorTest extends UnitTestCase
                 'compress' => true,
             ],
         ];
-        $this->subject->expects(self::once())
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->expects(self::once())
             ->method('compressJsFile')
             ->with($fileName)
             ->willReturn($compressedFileName);
 
-        $result = $this->subject->compressJsFiles($testFileFixture);
+        $result = $subject->compressJsFiles($testFileFixture);
 
         self::assertArrayHasKey($compressedFileName, $result);
         self::assertArrayHasKey('compress', $result[$compressedFileName]);
@@ -169,11 +141,12 @@ class ResourceCompressorTest extends UnitTestCase
                 'media' => 'all',
             ],
         ];
-        $this->subject->expects(self::once())
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->expects(self::once())
             ->method('createMergedCssFile')
             ->willReturn($concatenatedFileName);
 
-        $result = $this->subject->concatenateCssFiles($testFileFixture);
+        $result = $subject->concatenateCssFiles($testFileFixture);
 
         self::assertArrayHasKey($concatenatedFileName, $result);
         self::assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
@@ -206,14 +179,15 @@ class ResourceCompressorTest extends UnitTestCase
                 'media' => 'screen',
             ],
         ];
-        $this->subject->expects(self::exactly(2))
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->expects(self::exactly(2))
             ->method('createMergedCssFile')
             ->will(self::onConsecutiveCalls(
                 self::returnValue('merged_' . $allFileName),
                 self::returnValue('merged_' . $screenFileName1)
             ));
 
-        $result = $this->subject->concatenateCssFiles($testFileFixture);
+        $result = $subject->concatenateCssFiles($testFileFixture);
 
         self::assertEquals([
             'merged_' . $allFileName,
@@ -249,13 +223,14 @@ class ResourceCompressorTest extends UnitTestCase
                 'media' => 'screen',
             ],
         ];
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
         // Replace mocked method getFilenameFromMainDir by passthrough callback
-        $this->subject->method('getFilenameFromMainDir')->willReturnArgument(0);
-        $this->subject->expects(self::once())
+        $subject->method('getFilenameFromMainDir')->willReturnArgument(0);
+        $subject->expects(self::once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen3FileName, $screen1FileName, $screen2FileName]));
 
-        $this->subject->concatenateCssFiles($testFileFixture);
+        $subject->concatenateCssFiles($testFileFixture);
     }
 
     /**
@@ -283,13 +258,14 @@ class ResourceCompressorTest extends UnitTestCase
                 'media' => 'screen',
             ],
         ];
-        $this->subject->method('getFilenameFromMainDir')->willReturnArgument(0);
-        $this->subject->expects(self::once())
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->method('getFilenameFromMainDir')->willReturnArgument(0);
+        $subject->expects(self::once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen1FileName, $screen3FileName]))
             ->willReturn('merged_screen');
 
-        $result = $this->subject->concatenateCssFiles($testFileFixture);
+        $result = $subject->concatenateCssFiles($testFileFixture);
         self::assertEquals([
             $screen2FileName,
             'merged_screen',
@@ -312,20 +288,18 @@ class ResourceCompressorTest extends UnitTestCase
                 'section' => 'top',
             ],
         ];
-        $this->subject->expects(self::once())
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->expects(self::once())
             ->method('createMergedJsFile')
             ->willReturn($concatenatedFileName);
 
-        $result = $this->subject->concatenateJsFiles($testFileFixture);
+        $result = $subject->concatenateJsFiles($testFileFixture);
 
         self::assertArrayHasKey($concatenatedFileName, $result);
         self::assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
         self::assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
     }
 
-    /**
-     * @return array
-     */
     public function concatenateJsFileAsyncDataProvider(): array
     {
         return [
@@ -435,24 +409,20 @@ class ResourceCompressorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider concatenateJsFileAsyncDataProvider
-     * @param string $input
-     * @param bool $expected
      */
     public function concatenateJsFileAddsAsyncPropertyIfAllFilesAreAsync(array $input, bool $expected): void
     {
         $concatenatedFileName = 'merged_foo.js';
-        $this->subject->expects(self::once())
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject->expects(self::once())
             ->method('createMergedJsFile')
             ->willReturn($concatenatedFileName);
 
-        $result = $this->subject->concatenateJsFiles($input);
+        $result = $subject->concatenateJsFiles($input);
 
         self::assertSame($expected, $result[$concatenatedFileName]['async']);
     }
 
-    /**
-     * @return array
-     */
     public function calcStatementsDataProvider(): array
     {
         return [
@@ -478,180 +448,13 @@ class ResourceCompressorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider calcStatementsDataProvider
-     * @param string $input
-     * @param string $expected
      */
     public function calcFunctionMustRetainWhitespaces(string $input, string $expected): void
     {
-        $this->subject->_call('initialize');
-        $result = $this->subject->_call('compressCssString', $input);
-        self::assertSame($expected, trim($result));
-    }
-
-    /**
-     * @return array
-     */
-    public function compressCssFileContentDataProvider(): array
-    {
-        $path = __DIR__ . '/ResourceCompressorTest/Fixtures/';
-        return [
-            // File. Tests:
-            // - Stripped comments and white-space.
-            // - Retain white-space in selectors. (http://drupal.org/node/472820)
-            // - Retain pseudo-selectors. (http://drupal.org/node/460448)
-            0 => [
-                $path . 'css_input_without_import.css',
-                $path . 'css_input_without_import.css.optimized.css',
-            ],
-            // File. Tests:
-            // - Retain comment hacks.
-            2 => [
-                $path . 'comment_hacks.css',
-                $path . 'comment_hacks.css.optimized.css',
-            ], /*
-            // File. Tests:
-            // - Any @charset declaration at the beginning of a file should be
-            //   removed without breaking subsequent CSS.*/
-            6 => [
-                $path . 'charset_sameline.css',
-                $path . 'charset.css.optimized.css',
-            ],
-            7 => [
-                $path . 'charset_newline.css',
-                $path . 'charset.css.optimized.css',
-            ],
-        ];
-    }
-
-    /**
-     * Tests optimizing a CSS asset group.
-     *
-     * @test
-     * @dataProvider compressCssFileContentDataProvider
-     * @param string $cssFile
-     * @param string $expected
-     */
-    public function compressCssFileContent(string $cssFile, string $expected): void
-    {
-        $cssContent = file_get_contents($cssFile);
-        $this->subject->_call('initialize');
-        $compressedCss = $this->subject->_call('compressCssString', $cssContent);
-        // we have to fix relative paths, if we aren't working on a file in our target directory
-        $relativeFilename = str_replace(Environment::getPublicPath() . '/', '', $cssFile);
-        if (!str_contains($relativeFilename, $this->subject->_get('targetDirectory'))) {
-            $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, PathUtility::dirname($relativeFilename) . '/');
-        }
-        self::assertStringEqualsFile($expected, $compressedCss, 'Group of file CSS assets optimized correctly.');
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilenamesFromMainDirInBackendContextDataProvider(): array
-    {
-        return [
-            // Get filename using EXT:
-            [
-                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            // Get filename using relative path
-            [
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            [
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            [
-                'typo3temp/assets/compressed/.htaccess',
-                '../typo3temp/assets/compressed/.htaccess',
-            ],
-            // Get filename using absolute path
-            [
-                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            // Get filename using docroot relative path
-            [
-                '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilenamesFromMainDirInBackendContextInSubfolderDataProvider(): array
-    {
-        $subfolderFake = basename(Environment::getPublicPath());
-        return [
-            // Get filename using absolute path
-            [
-                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            // Get filename using docroot relative path
-            [
-                '/' . $subfolderFake . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilenamesFromMainDirInFrontendContextDataProvider(): array
-    {
-        return [
-            // Get filename using EXT:
-            [
-                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            // Get filename using relative path
-            [
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
-            ],
-            [
-                'typo3temp/assets/compressed/.htaccess',
-                'typo3temp/assets/compressed/.htaccess',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider getFilenamesFromMainDirInFrontendContextDataProvider
-     * @param string $filename input that will be fired on the extension
-     * @param string $expected
-     */
-    public function getFilenamesFromMainDirInFrontendContext(string $filename, string $expected): void
-    {
-        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
-        // like '.../bin/phpunit' in testing context, but we want .../index.php as entry
-        // script point here to fake the frontend call.
-        $fePath = Environment::getPublicPath();
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            $fePath . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
         $subject->_call('initialize');
-        $subject->_set('rootPath', $fePath . '/');
-        $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
-        self::assertSame($expected, $relativeToRootPath);
+        $result = $subject->_call('compressCssString', $input);
+        self::assertSame($expected, trim($result));
     }
 
     /**
@@ -669,7 +472,8 @@ class ResourceCompressorTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->concatenateJsFiles($testFileFixture);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $result = $subject->concatenateJsFiles($testFileFixture);
 
         self::assertArrayNotHasKey($concatenatedFileName, $result);
         self::assertTrue($result[$fileName]['nomodule']);
@@ -690,7 +494,8 @@ class ResourceCompressorTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->concatenateJsFiles($testFileFixture);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $result = $subject->concatenateJsFiles($testFileFixture);
 
         self::assertArrayNotHasKey($concatenatedFileName, $result);
         self::assertTrue($result[$fileName]['defer']);

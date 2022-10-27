@@ -17,518 +17,239 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
-use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
+use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
-use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class ResourceStorageTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        mkdir($this->instancePath . '/resource-storage-test');
+    }
+
     protected function tearDown(): void
     {
-        // cleanup manually created folders
-        foreach (glob(Environment::getPublicPath() . '/fileadmin/*') as $folderToRemove) {
-            GeneralUtility::rmdir($folderToRemove, true);
-        }
+        GeneralUtility::rmdir($this->instancePath . '/resource-storage-test', true);
         parent::tearDown();
     }
 
     /**
      * @test
      */
-    public function getNestedProcessingFolderTest(): void
+    public function addFileFailsIfFileDoesNotExist(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-        $subject->setEvaluatePermissions(false);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/adirectory');
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/_processed_/');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/adirectory/bar.txt', 'myData');
-        clearstatcache();
-        $subject->addFileMount('/adirectory/', ['read_only' => false]);
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/adirectory/bar.txt');
-
-        $rootProcessingFolder = $subject->getProcessingFolder();
-        $processingFolder = $subject->getProcessingFolder($file);
-
-        self::assertInstanceOf(Folder::class, $processingFolder);
-        self::assertNotEquals($rootProcessingFolder, $processingFolder);
-
-        for ($i = ResourceStorage::PROCESSING_FOLDER_LEVELS; $i>0; $i--) {
-            $processingFolder = $processingFolder->getParentFolder();
-        }
-        self::assertEquals($rootProcessingFolder, $processingFolder);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1319552745);
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $folder = new Folder($subject, 'someName', 'someName');
+        $subject->addFile('/some/random/file', $folder);
     }
 
     /**
-     * @param string $targetDirectory
-     * @param string $fileMountFolder
-     * @param bool $isFileMountReadOnly
-     * @param bool $checkWriteAccess
-     * @param bool $expectedResult
      * @test
-     * @dataProvider isWithinFileMountBoundariesDataProvider
      */
-    public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($targetDirectory, $fileMountFolder, $isFileMountReadOnly, $checkWriteAccess, $expectedResult): void
+    public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $fileName = 'bar.txt';
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory);
-        if ($fileMountFolder !== $targetDirectory) {
-            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/' . $fileMountFolder);
-        }
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory . '/' . $fileName, 'myData');
-        clearstatcache();
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $file = new File(
+            [
+                'identifier' => 'myIdentifier',
+                'name' => 'myName',
+            ],
+            $subject,
+        );
+        $subject->markAsPermanentlyOffline();
+        self::assertNull($subject->getPublicUrl($file));
+    }
 
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+    /**
+     * @return array<string, array{0: 'read'|'write', 1: array<string, bool>, 2: bool}>
+     */
+    public function checkFolderPermissionsFilesystemPermissionsDataProvider(): array
+    {
+        return [
+            'read action on readable/writable folder' => [
+                'read',
+                ['r' => true, 'w' => true],
+                true,
+            ],
+            'read action on unreadable folder' => [
+                'read',
+                ['r' => false, 'w' => true],
+                false,
+            ],
+            'write action on read-only folder' => [
+                'write',
+                ['r' => true, 'w' => false],
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkFolderPermissionsFilesystemPermissionsDataProvider
+     * @param 'read'|'write' $action
+     */
+    public function checkFolderPermissionsRespectsFilesystemPermissions(string $action, array $permissionsFromDriver, bool $expectedResult): void
+    {
+        $localDriver = $this->getMockBuilder(LocalDriver::class)
+            ->setConstructorArgs([['basePath' => $this->instancePath . '/resource-storage-test']])
+            ->onlyMethods(['getPermissions'])
+            ->getMock();
+        $localDriver->method('getPermissions')->willReturn($permissionsFromDriver);
+        $mockedResourceFactory = $this->createMock(ResourceFactory::class);
+        $mockedFolder = $this->createMock(Folder::class);
+        // Let all other checks pass
+        $subject = $this->getMockBuilder(ResourceStorage::class)
+            ->onlyMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
+            ->setConstructorArgs([$localDriver, [], new NoopEventDispatcher()])
+            ->getMock();
+        $subject->method('isWritable')->willReturn(true);
+        $subject->method('isBrowsable')->willReturn(true);
+        $subject->method('checkUserActionPermission')->willReturn(true);
+        $subject->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
+        $subject->setDriver($localDriver);
+        self::assertSame($expectedResult, $subject->checkFolderActionPermission($action, $mockedFolder));
+    }
+
+    /**
+     * @test
+     */
+    public function checkUserActionPermissionsAlwaysReturnsTrueIfNoUserPermissionsAreSet(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        self::assertTrue($subject->checkUserActionPermission('read', 'folder'));
+    }
+
+    /**
+     * @test
+     */
+    public function checkUserActionPermissionReturnsFalseIfPermissionIsSetToZero(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $subject->setUserPermissions(['readFolder' => true, 'writeFile' => true]);
+        self::assertTrue($subject->checkUserActionPermission('read', 'folder'));
+    }
+
+    /**
+     * @return array<string, array{0: array<string, bool>, 1: string, string}>
+     */
+    public function checkUserActionPermission_arbitraryPermissionDataProvider(): array
+    {
+        return [
+            'all lower cased' => [
+                ['readFolder' => true],
+                'read',
+                'folder',
+            ],
+            'all upper case' => [
+                ['readFolder' => true],
+                'READ',
+                'FOLDER',
+            ],
+            'mixed case' => [
+                ['readFolder' => true],
+                'ReaD',
+                'FoLdEr',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkUserActionPermission_arbitraryPermissionDataProvider
+     */
+    public function checkUserActionPermissionAcceptsArbitrarilyCasedArguments(array $permissions, string $action, string $type): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $subject->setUserPermissions($permissions);
+        self::assertTrue($subject->checkUserActionPermission($action, $type));
+    }
+
+    /**
+     * @test
+     */
+    public function userActionIsDisallowedIfPermissionIsSetToFalse(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(true);
-
-        // read_only = true -> no write access for user, so checking for second argument true should assert false
-        $subject->addFileMount('/' . $fileMountFolder . '/', ['read_only' => $isFileMountReadOnly]);
-        self::assertSame($expectedResult, $subject->isWithinFileMountBoundaries($file, $checkWriteAccess));
-    }
-
-    /**
-     * @return array
-     */
-    public function isWithinFileMountBoundariesDataProvider(): array
-    {
-        return [
-            'Access to file in ro file mount denied for write request' => [
-                '$targetDirectory' => 'fooBaz',
-                '$fileMountFolder' => 'fooBaz',
-                '$isFileMountReadOnly' => true,
-                '$checkWriteAccess' => true,
-                '$expectedResult' => false,
-            ],
-            'Access to file in ro file mount allowed for read request' => [
-                '$targetDirectory' => 'fooBaz',
-                '$fileMountFolder' => 'fooBaz',
-                '$isFileMountReadOnly' => true,
-                '$checkWriteAccess' => false,
-                '$expectedResult' => true,
-            ],
-            'Access to file in rw file mount allowed for write request' => [
-                '$targetDirectory' => 'fooBaz',
-                '$fileMountFolder' => 'fooBaz',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => true,
-                '$expectedResult' => true,
-            ],
-            'Access to file in rw file mount allowed for read request' => [
-                '$targetDirectory' => 'fooBaz',
-                '$fileMountFolder' => 'fooBaz',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => false,
-                '$expectedResult' => true,
-            ],
-            'Access to file not in file mount denied for write request' => [
-                '$targetDirectory' => 'fooBaz',
-                '$fileMountFolder' => 'barBaz',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => true,
-                '$expectedResult' => false,
-            ],
-            'Access to file not in file mount denied for read request' => [
-                '$targetDirectory' => 'fooBaz',
-                '$fileMountFolder' => 'barBaz',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => false,
-                '$expectedResult' => false,
-            ],
-        ];
+        $subject->setUserPermissions(['readFolder' => false]);
+        self::assertFalse($subject->checkUserActionPermission('read', 'folder'));
     }
 
     /**
      * @test
      */
-    public function getProcessingRootFolderTest(): void
+    public function userActionIsDisallowedIfPermissionIsNotSet(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-        $processingFolder = $subject->getProcessingFolder();
-
-        self::assertInstanceOf(Folder::class, $processingFolder);
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $subject->setEvaluatePermissions(true);
+        $subject->setUserPermissions(['readFolder' => true]);
+        self::assertFalse($subject->checkUserActionPermission('write', 'folder'));
     }
 
     /**
      * @test
      */
-    public function getRoleReturnsDefaultForRegularFolders(): void
+    public function metaDataEditIsNotAllowedWhenWhenNoFileMountsAreSet(): void
     {
-        $folderIdentifier = StringUtility::getUniqueId();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-        $folder = new Folder($subject, '/foo/' . $folderIdentifier . '/', $folderIdentifier);
-
-        $role = $subject->getRole($folder);
-
-        self::assertSame(FolderInterface::ROLE_DEFAULT, $role);
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $subject->setEvaluatePermissions(true);
+        self::assertFalse($subject->checkFileActionPermission('editMeta', new File(['identifier' => '/foo/bar.jpg'], $subject)));
     }
 
     /**
      * @test
      */
-    public function replaceFileFailsIfLocalFileDoesNotExist(): void
+    public function getEvaluatePermissionsWhenSetFalse(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
-        clearstatcache();
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1325842622);
-        $subject->replaceFile($file, Environment::getPublicPath() . '/' . StringUtility::getUniqueId());
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $subject->setEvaluatePermissions(false);
+        self::assertFalse($subject->getEvaluatePermissions());
     }
 
     /**
      * @test
      */
-    public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
+    public function getEvaluatePermissionsWhenSetTrue(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1325689164);
-        $subject->createFolder('newFolder', new Folder($subject, '/foo/', 'foo'));
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['name' => 'testing'], new NoopEventDispatcher());
+        $subject->setEvaluatePermissions(true);
+        self::assertTrue($subject->getEvaluatePermissions());
     }
 
     /**
      * @test
      */
-    public function deleteFileMovesFileToRecyclerFolderIfAvailable(): void
+    public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_recycler_');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
-        clearstatcache();
-
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-        $subject->deleteFile($file);
-
-        self::assertFileExists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt');
-        self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
-    }
-
-    /**
-     * @test
-     */
-    public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
-        clearstatcache();
-
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-        $subject->deleteFile($file);
-
-        self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
-    }
-
-    public function searchFilesFindsFilesInFolderDataProvider(): array
-    {
-        return [
-            'Finds foo recursive by name' => [
-                'foo',
-                '/bar/',
-                true,
-                [],
-                [
-                    '/bar/bla/foo.txt',
-                ],
-            ],
-            'Finds foo not recursive by name' => [
-                'foo',
-                '/bar/bla/',
-                false,
-                [],
-                [
-                    '/bar/bla/foo.txt',
-                ],
-            ],
-            'Finds nothing when not recursive for top level folder' => [
-                'foo',
-                '/bar/',
-                false,
-                [],
-                [],
-            ],
-            'Finds foo by description' => [
-                'fodescrip',
-                '/bar/',
-                true,
-                [],
-                [
-                    '/bar/bla/foo.txt',
-                ],
-            ],
-            'Finds foo by translated description' => [
-                'fotranslated',
-                '/bar/',
-                true,
-                [],
-                [
-                    '/bar/bla/foo.txt',
-                ],
-            ],
-            'Finds blupp by name' => [
-                'blupp',
-                '/bar/',
-                false,
-                [],
-                [
-                    '/bar/blupp.txt',
-                ],
-            ],
-            'Finds only blupp by title for non recursive' => [
-                'title',
-                '/bar/',
-                false,
-                [],
-                [
-                    '/bar/blupp.txt',
-                ],
-            ],
-            'Finds foo and blupp by title for recursive' => [
-                'title',
-                '/bar/',
-                true,
-                [],
-                [
-                    '/bar/blupp.txt',
-                    '/bar/bla/foo.txt',
-                ],
-            ],
-            'Finds foo, baz and blupp with no folder' => [
-                'title',
-                null,
-                true,
-                [],
-                [
-                    '/baz/bla/baz.txt',
-                    '/bar/blupp.txt',
-                    '/bar/bla/foo.txt',
-                ],
-            ],
-            'Finds nothing for not existing' => [
-                'baz',
-                '/bar/',
-                true,
-                [],
-                [],
-            ],
-            'Finds nothing in root, when not recursive' => [
-                'title',
-                '/',
-                false,
-                [],
-                [],
-            ],
-            'Finds nothing, when not recursive and no folder given' => [
-                'title',
-                null,
-                false,
-                [],
-                [],
-            ],
-            'Filter is applied to result' => [
-                'title',
-                null,
-                true,
-                [
-                    static function ($itemName) {
-                        return str_contains($itemName, 'blupp') ? true : -1;
-                    },
-                ],
-                [
-                    '/bar/blupp.txt',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider searchFilesFindsFilesInFolderDataProvider
-     * @param string $searchTerm
-     * @param string $searchFolder
-     * @param bool $recursive
-     * @param array $filters
-     * @param string[] $expectedIdentifiers
-     * @throws \TYPO3\TestingFramework\Core\Exception
-     */
-    public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers): void
-    {
-        try {
-            $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-            $this->importCSVDataSet(__DIR__ . '/Fixtures/FileSearch.csv');
-            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-            $this->setUpBackendUser(1);
-            $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-            $subject->setFileAndFolderNameFilters($filters);
-
-            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/bar/bla');
-            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/baz/bla');
-            file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/bla/foo.txt', 'myData');
-            file_put_contents(Environment::getPublicPath() . '/fileadmin/baz/bla/baz.txt', 'myData');
-            file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/blupp.txt', 'myData');
-            clearstatcache();
-
-            $folder = $searchFolder ? GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:' . $searchFolder) : null;
-            $search = FileSearchDemand::createForSearchTerm($searchTerm);
-            if ($recursive) {
-                $search = $search->withRecursive();
-            }
-
-            $result = $subject->searchFiles($search, $folder);
-            $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
-            self::assertSame($expectedFiles, iterator_to_array($result));
-
-            // Check if search also works for non hierarchical storages/drivers
-            // This is a hack, as capabilities is not settable from the outside
-            $objectReflection = new \ReflectionObject($subject);
-            $property = $objectReflection->getProperty('capabilities');
-            $property->setAccessible(true);
-            $property->setValue($subject, $subject->getCapabilities() & 7);
-            $result = $subject->searchFiles($search, $folder);
-            $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
-            self::assertSame($expectedFiles, iterator_to_array($result));
-        } finally {
-            GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/bar', true);
-            GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/baz', true);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function copyFolderThrowsErrorWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
-    {
-        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        $folderToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
-
-        $this->expectException(InvalidTargetFolderException::class);
-        $this->expectExceptionCode(1422723059);
-        $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
-    }
-
-    /**
-     * @test
-     */
-    public function copyFolderGeneratesNewFolderNameWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
-    {
-        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        $folderToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
-
-        $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
-
-        $newFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo_01');
-        self::assertInstanceOf(Folder::class, $newFolder);
-    }
-
-    /**
-     * @test
-     */
-    public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
-    {
-        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
-
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
-
-        $this->expectException(ExistingTargetFileNameException::class);
-        $this->expectExceptionCode(1320291064);
-        $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
-    }
-
-    /**
-     * @test
-     */
-    public function copyFileGeneratesNewFileNameWhenFileAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
-    {
-        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
-        file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
-
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-
-        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
-
-        $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
-
-        $newFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/bar_01.txt');
-        self::assertInstanceOf(File::class, $newFile);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1325952534);
+        $folderMock = $this->createMock(Folder::class);
+        $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
+        $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
+        $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
+        $subject->method('checkFolderActionPermission')->willReturn(true);
+        $subject->_set('driver', $mockedDriver);
+        $subject->deleteFolder($folderMock);
     }
 }

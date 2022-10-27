@@ -1,10 +1,7 @@
 
-
-@import "import1.css";
-@import "import2.css";
-@import url("http://example.com/style.css");
-@import url("//example.com/style.css");
-
+/* moved by compressor */
+@import "../../../typo3/sysext/core/Tests/Functional/Resource/Fixtures/ResourceCompressor/import1.css";@import "../../../typo3/sysext/core/Tests/Functional/Resource/Fixtures/ResourceCompressor/import2.css";@import url("http://example.com/style.css");@import url("//example.com/style.css");
+/* moved by compressor */
 body {
   margin: 0;
   padding: 0;
@@ -29,4 +26,3 @@ textarea, select {
   font: 1em/160% Verdana, sans-serif;
   color: #494949;
 }
-

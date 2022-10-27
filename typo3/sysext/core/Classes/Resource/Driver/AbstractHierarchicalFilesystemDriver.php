@@ -46,10 +46,8 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     protected function canonicalizeAndCheckFilePath($filePath)
     {
         $filePath = PathUtility::getCanonicalPath($filePath);
-
-        // filePath must be valid
-        // Special case is required by vfsStream in Unit Test context
-        if (!$this->isPathValid($filePath) && !str_starts_with($filePath, 'vfs://')) {
+        // $filePath must be valid
+        if (!$this->isPathValid($filePath)) {
             throw new InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
         }
         return $filePath;
