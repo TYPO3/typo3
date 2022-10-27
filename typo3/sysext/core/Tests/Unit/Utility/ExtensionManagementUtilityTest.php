@@ -374,6 +374,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function addToAllTCAtypesAddsToPaletteIdentifier(): void
+    {
+        $table = StringUtility::getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = $this->generateTCAForTable($table);
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldX, --palette--;;newpalette', '', 'after:palette:paletteC');
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldX, --palette--;;newpalette, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldX, --palette--;;newpalette, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+    }
+
+    /**
      * Tests whether fields can be added to a palette before existing elements.
      *
      * @test
@@ -1603,6 +1615,29 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionManagementUtility::addPlugin(['label', $extKey], 'list_type', $extKey);
         self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
+    }
+
+    /**
+     * @test
+     */
+    public function addPluginAsContentTypeAddsIconAndDefaultItem(): void
+    {
+        $extKey = 'felogin';
+        $expectedTCA = [
+            [
+                'label',
+                'felogin',
+                'content-form-login',
+                'default',
+            ],
+        ];
+        $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = [];
+        $GLOBALS['TCA']['tt_content']['types']['header'] = ['showitem' => 'header,header_link'];
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
+        ExtensionManagementUtility::addPlugin(['label', $extKey, 'content-form-login'], 'CType', $extKey);
+        self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
+        self::assertEquals([$extKey => 'content-form-login'], $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']);
+        self::assertEquals($GLOBALS['TCA']['tt_content']['types']['header'], $GLOBALS['TCA']['tt_content']['types']['felogin']);
     }
 
     public function addTcaSelectItemGroupAddsGroupDataProvider(): array
