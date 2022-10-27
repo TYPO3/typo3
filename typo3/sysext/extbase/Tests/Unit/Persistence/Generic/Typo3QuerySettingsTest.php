@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -30,8 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3QuerySettingsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected ?Typo3QuerySettings $subject = null;
 
     /**
@@ -42,7 +39,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
         parent::setUp();
         $this->subject = new Typo3QuerySettings(
             new Context(),
-            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+            $this->createMock(ConfigurationManagerInterface::class)
         );
     }
 
