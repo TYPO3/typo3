@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -32,8 +30,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
@@ -107,9 +103,6 @@ class BackendTest extends UnitTestCase
             ->getMock();
         $object = new \stdClass();
 
-        $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
-        GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
-
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
@@ -135,9 +128,6 @@ class BackendTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $object = new \stdClass();
-
-        $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
-        GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
 
         $proxy->expects(self::once())->method('_loadRealInstance')->willReturn($object);
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
