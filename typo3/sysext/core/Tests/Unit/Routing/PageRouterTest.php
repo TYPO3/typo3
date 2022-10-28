@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\PageRouter;
@@ -31,8 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageRouterTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -45,7 +41,7 @@ class PageRouterTest extends UnitTestCase
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         $request = new ServerRequest($incomingUrl, 'GET');
         $subject = new PageRouter(new Site('lotus-flower', 13, []));
-        $subject->matchRequest($request, null);
+        $subject->matchRequest($request);
     }
 
     /**
@@ -67,9 +63,9 @@ class PageRouterTest extends UnitTestCase
         ]);
         $language = $site->getDefaultLanguage();
 
-        $pageSlugCandidateProvider = $this->prophesize(PageSlugCandidateProvider::class);
-        $pageSlugCandidateProvider->getCandidatesForPath('/mr-magpie/bloom', $language)->willReturn([$pageRecord]);
-        GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider->reveal());
+        $pageSlugCandidateProvider = $this->createMock(PageSlugCandidateProvider::class);
+        $pageSlugCandidateProvider->method('getCandidatesForPath')->with('/mr-magpie/bloom', $language)->willReturn([$pageRecord]);
+        GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider);
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
@@ -98,9 +94,9 @@ class PageRouterTest extends UnitTestCase
             ],
         ]);
         $language = $site->getDefaultLanguage();
-        $pageSlugCandidateProvider = $this->prophesize(PageSlugCandidateProvider::class);
-        $pageSlugCandidateProvider->getCandidatesForPath(Argument::cetera())->willReturn([$pageRecord]);
-        GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider->reveal());
+        $pageSlugCandidateProvider = $this->createMock(PageSlugCandidateProvider::class);
+        $pageSlugCandidateProvider->method('getCandidatesForPath')->with(self::anything())->willReturn([$pageRecord]);
+        GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider);
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/');
