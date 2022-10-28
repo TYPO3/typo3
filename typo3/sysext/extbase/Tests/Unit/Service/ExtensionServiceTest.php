@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -37,13 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $mockConfigurationManager;
-
+    protected ConfigurationManagerInterface&MockObject $mockConfigurationManager;
     protected ExtensionService $extensionService;
 
     /**
@@ -102,25 +94,23 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * Setup and return a mocked database connection that allows
      * the QueryBuilder to work.
-     *
-     * @return ObjectProphecy<Connection>
      */
-    protected function getMockDatabaseConnection(): ObjectProphecy
+    protected function getMockDatabaseConnection(): MockObject&Connection
     {
-        $connection = $this->prophesize(Connection::class);
-        $connection->getDatabasePlatform()->willReturn(new MockPlatform());
-        $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
-        $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+        $connection = $this->createMock(Connection::class);
+        $connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $connection->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connection));
+        $connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
 
         $queryBuilder = new QueryBuilder(
-            $connection->reveal(),
+            $connection,
             null,
-            new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
+            new \Doctrine\DBAL\Query\QueryBuilder($connection)
         );
 
-        $connectionPool = $this->prophesize(ConnectionPool::class);
-        $connectionPool->getQueryBuilderForTable('tt_content')->willReturn($queryBuilder);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+        $connectionPool = $this->createMock(ConnectionPool::class);
+        $connectionPool->method('getQueryBuilderForTable')->with('tt_content')->willReturn($queryBuilder);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool);
 
         return $connection;
     }
@@ -330,12 +320,12 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPageTypeByFormatReturnsZeroIfNoMappingIsSet(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerProphecy->getConfiguration(
+        $configurationManagerMock = $this->createMock(ConfigurationManager::class);
+        $configurationManagerMock->method('getConfiguration')->with(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'extension'
         )->willReturn([]);
-        $this->extensionService->injectConfigurationManager($configurationManagerProphecy->reveal());
+        $this->extensionService->injectConfigurationManager($configurationManagerMock);
 
         $result = $this->extensionService->getTargetPageTypeByFormat('extension', 'json');
 
@@ -347,8 +337,8 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPageTypeByFormatReturnsMappedPageTypeFromConfiguration(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerProphecy->getConfiguration(
+        $configurationManagerMock = $this->createMock(ConfigurationManager::class);
+        $configurationManagerMock->method('getConfiguration')->with(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'extension'
         )->willReturn([
@@ -358,7 +348,7 @@ class ExtensionServiceTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->extensionService->injectConfigurationManager($configurationManagerProphecy->reveal());
+        $this->extensionService->injectConfigurationManager($configurationManagerMock);
 
         $result = $this->extensionService->getTargetPageTypeByFormat('extension', 'json');
 

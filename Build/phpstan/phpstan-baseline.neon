@@ -2261,11 +2261,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Service/CacheServiceTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Configuration\\\\ConfigurationManagerInterface\\:\\:expects\\(\\)\\.$#"
-			count: 8
-			path: ../../typo3/sysext/extbase/Tests/Unit/Service/ExtensionServiceTest.php
-
-		-
 			message: "#^Offset 'defaultContentRende…' does not exist on array\\{\\}\\.$#"
 			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php

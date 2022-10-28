@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Service;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -31,24 +29,18 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ExtensionServiceTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     protected ExtensionService $extensionService;
-
-    /** @var ObjectProphecy<FrontendConfigurationManager> */
-    protected ObjectProphecy $frontendConfigurationManager;
-
-    /** @var ObjectProphecy<ContainerInterface> */
-    protected ObjectProphecy $containerProphecy;
+    protected FrontendConfigurationManager&MockObject $frontendConfigurationManager;
+    protected ContainerInterface&MockObject $containerMock;
 
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $this->frontendConfigurationManager = $this->prophesize(FrontendConfigurationManager::class);
-        $this->containerProphecy = $this->prophesize(ContainerInterface::class);
+        $this->frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
+        $this->containerMock = $this->createMock(ContainerInterface::class);
         $this->extensionService = new ExtensionService();
     }
 
@@ -57,9 +49,9 @@ class ExtensionServiceTest extends FunctionalTestCase
      */
     public function getPluginNameByActionDetectsPluginNameFromGlobalExtensionConfigurationArray(): void
     {
-        $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn([]);
-        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
+        $this->frontendConfigurationManager->method('getConfiguration')->with(self::anything())->willReturn([]);
+        $this->containerMock->method('get')->with(self::anything())->willReturn($this->frontendConfigurationManager);
+        $configurationManager = new ConfigurationManager($this->containerMock);
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $pluginName = $this->extensionService->getPluginNameByAction('BlogExample', 'Blog', 'testForm');
@@ -74,9 +66,9 @@ class ExtensionServiceTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_single_plugin.csv');
 
-        $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
-        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
+        $this->frontendConfigurationManager->method('getConfiguration')->with(self::anything())->willReturn(['view' => ['defaultPid' => 'auto']]);
+        $this->containerMock->method('get')->with(self::anything())->willReturn($this->frontendConfigurationManager);
+        $configurationManager = new ConfigurationManager($this->containerMock);
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $expectedResult = 321;
@@ -89,9 +81,9 @@ class ExtensionServiceTest extends FunctionalTestCase
      */
     public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined(): void
     {
-        $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
-        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
+        $this->frontendConfigurationManager->method('getConfiguration')->with(self::anything())->willReturn(['view' => ['defaultPid' => 'auto']]);
+        $this->containerMock->method('get')->with(self::anything())->willReturn($this->frontendConfigurationManager);
+        $configurationManager = new ConfigurationManager($this->containerMock);
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $result = $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
@@ -104,9 +96,9 @@ class ExtensionServiceTest extends FunctionalTestCase
     public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_two_plugins.csv');
-        $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
-        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
+        $this->frontendConfigurationManager->method('getConfiguration')->with(self::anything())->willReturn(['view' => ['defaultPid' => 'auto']]);
+        $this->containerMock->method('get')->with(self::anything())->willReturn($this->frontendConfigurationManager);
+        $configurationManager = new ConfigurationManager($this->containerMock);
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $this->expectException(Exception::class);
