@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
 
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration as ExtbasePropertyMappingConfiguration;
@@ -32,29 +32,15 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PropertyMappingConfigurationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /** @var PropertyMappingConfiguration */
-    protected $propertyMappingConfiguration;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ExtbasePropertyMappingConfiguration */
-    protected $extbasePropertyMappingConfiguration;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|FileUpload */
-    protected $fileUpload;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|FormDefinition */
-    protected $rootForm;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ProcessingRule */
-    protected $processingRule;
+    protected PropertyMappingConfiguration $propertyMappingConfiguration;
+    protected ExtbasePropertyMappingConfiguration&MockObject $extbasePropertyMappingConfiguration;
+    protected FileUpload&MockObject $fileUpload;
+    protected FormDefinition&MockObject $rootForm;
+    protected ProcessingRule&MockObject $processingRule;
 
     public function setUp(): void
     {
@@ -99,7 +85,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('getIdentifier')
             ->willReturn('foobar');
 
-        $this->propertyMappingConfiguration = new PropertyMappingConfiguration($this->prophesize(ValidatorResolver::class)->reveal());
+        $this->propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class));
     }
 
     /**
@@ -125,7 +111,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->with(UploadedFileReferenceConverter::class);
 
         // Property Mapping Configuration
-        $propertyMappingConfiguration = new PropertyMappingConfiguration($this->prophesize(ValidatorResolver::class)->reveal());
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class));
         $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
@@ -159,9 +145,12 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         $mimeTypeValidator = new MimeTypeValidator();
         $mimeTypeValidator->setOptions(['allowedMimeTypes' => []]);
-        $validatorResolver = $this->prophesize(ValidatorResolver::class);
-        $validatorResolver->createValidator(MimeTypeValidator::class, ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']])->willReturn($mimeTypeValidator);
-        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver->reveal());
+        $validatorResolver = $this->createMock(ValidatorResolver::class);
+        $validatorResolver->method('createValidator')->with(
+            MimeTypeValidator::class,
+            ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']]
+        )->willReturn($mimeTypeValidator);
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver);
         $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
