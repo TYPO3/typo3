@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Configuration\TypoScript\ConditionMatching;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -37,16 +35,8 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Functional test for the ConditionMatcher of EXT:frontend
- */
 class ConditionMatcherTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * Sets up this test case.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -395,9 +385,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function genericGetVariablesSucceedsWithNamespaceSession(): void
     {
-        $prophecy = $this->prophesize(FrontendUserAuthentication::class);
-        $prophecy->getSessionData(Argument::exact('foo'))->willReturn(['bar' => 1234567]);
-        $GLOBALS['TSFE']->fe_user = $prophecy->reveal();
+        $frontendUserAuthenticationMock = $this->createMock(FrontendUserAuthentication::class);
+        $frontendUserAuthenticationMock->method('getSessionData')->with('foo')->willReturn(['bar' => 1234567]);
+        $GLOBALS['TSFE']->fe_user = $frontendUserAuthenticationMock;
 
         self::assertTrue($this->getConditionMatcher()->match('[session("foo|bar") == 1234567]'));
     }
