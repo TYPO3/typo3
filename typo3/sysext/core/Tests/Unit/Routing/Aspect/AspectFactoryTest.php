@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Aspect;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
@@ -29,48 +27,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AspectFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    protected ?AspectFactory $subject;
-
-    /** @var ObjectProphecy<SiteLanguage> */
-    protected ObjectProphecy $languageProphecy;
-
-    /** @var ObjectProphecy<Site> */
-    protected ObjectProphecy $siteProphecy;
-
-    protected ?string $persistedMockClass;
-    protected ?string $aspectMockClass;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->languageProphecy = $this->prophesize(
-            SiteLanguage::class
-        );
-        $this->siteProphecy = $this->prophesize(
-            Site::class
-        );
-        $this->persistedMockClass = $this->getMockClass(
-            PersistedMappableAspectInterface::class
-        );
-        $this->aspectMockClass = $this->getMockClass(
-            AspectInterface::class
-        );
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] = [
-            'Persisted' => $this->persistedMockClass,
-            'Aspect' => $this->aspectMockClass,
+            'Persisted' => $this->getMockClass(PersistedMappableAspectInterface::class),
+            'Aspect' => $this->getMockClass(AspectInterface::class),
         ];
-        $contextMock = $this->getMockBuilder(Context::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->subject = new AspectFactory($contextMock);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->subject, $this->languageProphecy, $this->persistedMockClass, $this->aspectMockClass);
-        parent::tearDown();
     }
 
     /**
@@ -78,12 +41,14 @@ class AspectFactoryTest extends UnitTestCase
      */
     public function createAspectsThrowsExceptionOnMissingType(): void
     {
+        $contextMock = $this->createMock(Context::class);
+        $aspectFactory = new AspectFactory($contextMock);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1538079481);
-        $this->subject->createAspects(
+        $aspectFactory->createAspects(
             ['a' => []],
-            $this->languageProphecy->reveal(),
-            $this->siteProphecy->reveal()
+            $this->createMock(SiteLanguage::class),
+            $this->createMock(Site::class)
         );
     }
 
@@ -92,12 +57,14 @@ class AspectFactoryTest extends UnitTestCase
      */
     public function createAspectsThrowsExceptionOnUnregisteredType(): void
     {
+        $contextMock = $this->createMock(Context::class);
+        $aspectFactory = new AspectFactory($contextMock);
         $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionCode(1538079482);
-        $this->subject->createAspects(
+        $aspectFactory->createAspects(
             ['a' => ['type' => 'Undefined']],
-            $this->languageProphecy->reveal(),
-            $this->siteProphecy->reveal()
+            $this->createMock(SiteLanguage::class),
+            $this->createMock(Site::class)
         );
     }
 
@@ -173,10 +140,12 @@ class AspectFactoryTest extends UnitTestCase
      */
     public function aspectsAreCreatedAndSorted(array $settings, array $expectation): void
     {
-        $aspects = $this->subject->createAspects(
+        $contextMock = $this->createMock(Context::class);
+        $aspectFactory = new AspectFactory($contextMock);
+        $aspects = $aspectFactory->createAspects(
             $settings,
-            $this->languageProphecy->reveal(),
-            $this->siteProphecy->reveal()
+            $this->createMock(SiteLanguage::class),
+            $this->createMock(Site::class)
         );
         self::assertSame(array_keys($aspects), array_keys($expectation));
         array_walk($aspects, static function ($aspect, $key) use ($expectation) {
