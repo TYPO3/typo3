@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -29,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ClosureFinisherTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -45,11 +41,11 @@ class ClosureFinisherTest extends UnitTestCase
             'closure' => $closure,
         ]);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())->willReturn($formRuntimeProphecy->reveal());
+        $finisherContextMock = $this->createMock(FinisherContext::class);
+        $formRuntimeProphecy = $this->createMock(FormRuntime::class);
+        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeProphecy);
 
-        $revealedFinisherContext = $finisherContextProphecy->reveal();
+        $revealedFinisherContext = $finisherContextMock;
 
         $mockClosureFinisher->_set('finisherContext', $revealedFinisherContext);
         $closure = $mockClosureFinisher->_call('parseOption', 'closure');
