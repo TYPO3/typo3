@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class Typo3DatabaseBackendTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -39,11 +35,9 @@ class Typo3DatabaseBackendTest extends UnitTestCase
      */
     public function setCacheCalculatesCacheTableName(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('test');
-
+        $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontend);
 
         self::assertEquals('cache_test', $subject->getCacheTable());
     }
@@ -53,11 +47,9 @@ class Typo3DatabaseBackendTest extends UnitTestCase
      */
     public function setCacheCalculatesTagsTableName(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('test');
-
+        $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontend);
 
         self::assertEquals('cache_test_tags', $subject->getTagsTable());
     }
@@ -78,11 +70,9 @@ class Typo3DatabaseBackendTest extends UnitTestCase
      */
     public function setThrowsExceptionIfDataIsNotAString(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('test');
-
+        $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontend);
 
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1236518298);
@@ -161,68 +151,76 @@ class Typo3DatabaseBackendTest extends UnitTestCase
      */
     public function flushRemovesAllCacheEntries(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('test');
-
+        $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontend);
 
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->truncate('cache_test')->shouldBeCalled()->willReturn(0);
-        $connectionProphet->truncate('cache_test_tags')->shouldBeCalled()->willReturn(0);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->expects(self::exactly(2))
+            ->method('truncate')
+            ->withConsecutive(['cache_test'], ['cache_test_tags'])
+            ->willReturn(0);
 
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
 
         // Two instances are required as there are different tables being cleared
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         $subject->flush();
     }
 
     public function flushByTagCallsDeleteOnConnection(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('test');
-
+        $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontend);
 
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->delete('cache_test')->shouldBeCalled()->willReturn(0);
-        $connectionProphet->delete('cache_test_tags')->shouldBeCalled()->willReturn(0);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->expects(self::exactly(2))
+            ->method('delete')
+            ->willReturnMap(
+                [
+                    ['cache_test', 0],
+                    ['cache_test_tags', 0],
+                ]
+            );
 
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
 
         // Two instances are required as there are different tables being cleared
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         $subject->flushByTag('Tag');
     }
 
     public function flushByTagsCallsDeleteOnConnection(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('test');
-
+        $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontend);
 
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->delete('cache_test')->shouldBeCalled()->willReturn(0);
-        $connectionProphet->delete('cache_test_tags')->shouldBeCalled()->willReturn(0);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->expects(self::exactly(2))
+            ->method('delete')
+            ->willReturnMap(
+                [
+                    ['cache_test', 0],
+                    ['cache_test_tags', 0],
+                ]
+            );
 
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
 
         // Two instances are required as there are different tables being cleared
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionMock);
 
-        $subject->flushByTag(['Tag1', 'Tag2']);
+        $subject->flushByTags(['Tag1', 'Tag2']);
     }
 
     /**
@@ -235,6 +233,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $this->expectExceptionCode(1236518288);
         $subject->flushByTag('Tag');
     }
+
     /**
      * @test
      */

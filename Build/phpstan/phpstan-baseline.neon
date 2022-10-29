@@ -1426,11 +1426,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Fixtures/ConcreteBackendFixture.php
 
 		-
-			message: "#^Parameter \\#1 \\$tag of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\Typo3DatabaseBackend\\:\\:flushByTag\\(\\) expects string, array\\<int, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Typo3DatabaseBackendTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\Typo3DatabaseBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Typo3DatabaseBackendTest.php
