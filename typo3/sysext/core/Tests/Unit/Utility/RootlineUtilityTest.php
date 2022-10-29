@@ -32,9 +32,6 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class RootlineUtilityTest extends UnitTestCase
 {
     use ProphecyTrait;

@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CoreUpdateServiceTest extends UnitTestCase
 {
     /**

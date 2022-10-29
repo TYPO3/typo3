@@ -22,9 +22,6 @@ use TYPO3\CMS\Extbase\Tests\Fixture\DummyClass;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DebuggerUtilityTest extends UnitTestCase
 {
     /**

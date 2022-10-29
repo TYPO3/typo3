@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class BooleanConverterTest extends UnitTestCase
 {
     protected BooleanConverter $converter;

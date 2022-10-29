@@ -30,9 +30,6 @@ use TYPO3\CMS\FrontendLogin\Redirect\RedirectModeHandler;
 use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class RedirectHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

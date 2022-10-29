@@ -28,9 +28,6 @@ use TYPO3\CMS\Core\Resource\AbstractRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractRepositoryTest extends UnitTestCase
 {
     use ProphecyTrait;

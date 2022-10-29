@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Log\Processor\WebProcessor;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class WebProcessorTest extends UnitTestCase
 {
     /**

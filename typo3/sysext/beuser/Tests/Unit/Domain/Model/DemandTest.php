@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case for class \TYPO3\CMS\Beuser\Domain\Model\Demand
- */
 class DemandTest extends UnitTestCase
 {
     protected Demand $subject;

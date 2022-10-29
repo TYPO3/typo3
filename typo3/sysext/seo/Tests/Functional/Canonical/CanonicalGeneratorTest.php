@@ -23,9 +23,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScrip
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class CanonicalGeneratorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;

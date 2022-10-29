@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class VariableFrontendTest extends FunctionalTestCase
 {
     protected array $configurationToUseInTestInstance = [

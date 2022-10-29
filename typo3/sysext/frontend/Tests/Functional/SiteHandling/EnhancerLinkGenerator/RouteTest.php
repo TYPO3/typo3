@@ -30,9 +30,6 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\TestSetDataProviderTrait;
 
-/**
- * Test case
- */
 class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     use TestSetDataProviderTrait;

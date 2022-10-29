@@ -25,8 +25,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for the APCu cache backend.
- *
  * NOTE: If you want to execute these tests you need to enable apc in
  * cli context (apc.enable_cli = 1) and disable slam defense (apc.slam_defense = 0)
  */

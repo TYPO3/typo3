@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class OpenDocumentServiceTest extends UnitTestCase
 {
     protected OpenDocumentService $subject;

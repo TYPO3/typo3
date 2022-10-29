@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class IntrospectionProcessorTest extends UnitTestCase
 {
     /**

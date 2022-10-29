@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
  * @todo When further defining the method parameter types test bench errors occur
  */
 class ArrayUtilityTest extends UnitTestCase

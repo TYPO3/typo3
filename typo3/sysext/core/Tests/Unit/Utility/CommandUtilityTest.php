@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CommandUtilityTest extends UnitTestCase
 {
     /**

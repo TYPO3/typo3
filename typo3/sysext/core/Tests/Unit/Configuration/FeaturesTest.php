@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class FeaturesTest extends UnitTestCase
 {
     /**

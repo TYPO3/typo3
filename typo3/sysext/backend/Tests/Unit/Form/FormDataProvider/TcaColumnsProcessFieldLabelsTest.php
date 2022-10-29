@@ -22,9 +22,6 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 {
     use ProphecyTrait;

@@ -33,9 +33,6 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TypeConverterRegistryTest extends UnitTestCase
 {
     private ?TypeConverterRegistry $subject;

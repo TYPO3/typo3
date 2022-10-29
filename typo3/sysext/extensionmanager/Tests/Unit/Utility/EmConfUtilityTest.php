@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class EmConfUtilityTest extends UnitTestCase
 {
     /**

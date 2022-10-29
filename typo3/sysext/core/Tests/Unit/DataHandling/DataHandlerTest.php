@@ -37,9 +37,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DataHandlerTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;

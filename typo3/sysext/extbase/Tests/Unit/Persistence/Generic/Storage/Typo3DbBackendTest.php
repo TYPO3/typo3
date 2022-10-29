@@ -46,9 +46,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class Typo3DbBackendTest extends UnitTestCase
 {
     use ProphecyTrait;

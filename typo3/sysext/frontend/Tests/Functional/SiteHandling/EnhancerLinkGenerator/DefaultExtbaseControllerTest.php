@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator
 
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-/**
- * Test case
- */
 class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     /**

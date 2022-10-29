@@ -33,9 +33,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValu
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-/**
- * Test case for build URLs with TypoLink via Frontend Request.
- */
 class TypoLinkGeneratorTest extends AbstractTestCase
 {
     protected array $pathsToProvideInTestInstance = [

@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class MiddlewareStackResolverTest extends UnitTestCase
 {
     use ProphecyTrait;

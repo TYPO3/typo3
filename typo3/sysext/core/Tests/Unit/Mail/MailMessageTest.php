@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
  * @todo Defining the method parameter types results in test bench errors
  */
 class MailMessageTest extends UnitTestCase

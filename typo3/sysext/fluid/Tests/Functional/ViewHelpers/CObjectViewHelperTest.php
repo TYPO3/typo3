@@ -23,9 +23,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
-/**
- * Test case
- */
 class CObjectViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;

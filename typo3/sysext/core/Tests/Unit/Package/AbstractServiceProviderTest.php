@@ -30,9 +30,6 @@ use TYPO3\CMS\Core\Tests\Unit\Package\Mocks\Package2ServiceProviderMock;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMakeInstanceInjectLoggerFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractServiceProviderTest extends UnitTestCase
 {
     use ProphecyTrait;

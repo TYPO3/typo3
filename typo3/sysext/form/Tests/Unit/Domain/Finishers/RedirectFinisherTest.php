@@ -32,9 +32,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class RedirectFinisherTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;

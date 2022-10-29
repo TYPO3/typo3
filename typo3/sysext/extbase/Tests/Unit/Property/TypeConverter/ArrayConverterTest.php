@@ -23,9 +23,6 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ArrayConverterTest extends UnitTestCase
 {
     protected ArrayConverter $converter;

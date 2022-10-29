@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaInputPlaceholdersTest extends UnitTestCase
 {
     use ProphecyTrait;

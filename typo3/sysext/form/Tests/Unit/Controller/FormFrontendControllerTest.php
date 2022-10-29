@@ -30,9 +30,6 @@ use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class FormFrontendControllerTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;

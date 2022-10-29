@@ -21,9 +21,6 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PropertyMappingConfigurationBuilderTest extends UnitTestCase
 {
     protected PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder;

@@ -32,9 +32,6 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkTagSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\UrlSoftReferenceParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 abstract class AbstractSoftReferenceParserTest extends UnitTestCase
 {
     use ProphecyTrait;

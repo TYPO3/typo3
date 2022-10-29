@@ -23,9 +23,6 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class MethodCallMatcherTest extends UnitTestCase
 {
     /**

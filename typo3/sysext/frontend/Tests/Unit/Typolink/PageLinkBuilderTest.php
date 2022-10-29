@@ -23,9 +23,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PageLinkBuilderTest extends UnitTestCase
 {
     /**

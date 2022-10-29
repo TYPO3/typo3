@@ -33,9 +33,6 @@ use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ExtensionStatusTest extends UnitTestCase
 {
     use ProphecyTrait;

@@ -23,9 +23,6 @@ use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class FormEditorControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

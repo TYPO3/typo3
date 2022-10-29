@@ -29,9 +29,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Unit\Http\Fixtures\MiddlewareFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class MiddlewareDispatcherTest extends UnitTestCase
 {
     use ProphecyTrait;

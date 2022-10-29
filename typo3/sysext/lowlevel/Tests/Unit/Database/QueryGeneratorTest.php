@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Lowlevel\Tests\Unit\Database;
 use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class QueryGeneratorTest extends UnitTestCase
 {
     /**

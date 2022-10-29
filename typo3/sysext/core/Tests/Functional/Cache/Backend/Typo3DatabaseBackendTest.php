@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class Typo3DatabaseBackendTest extends FunctionalTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;

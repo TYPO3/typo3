@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PageAccessFailureReasonsTest extends UnitTestCase
 {
     /**

@@ -34,9 +34,6 @@ use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class MailerTest extends UnitTestCase
 {
     use ProphecyTrait;

@@ -31,9 +31,6 @@ use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractTypolinkBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

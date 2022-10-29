@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AuthenticationServiceTest extends UnitTestCase
 {
     use ProphecyTrait;

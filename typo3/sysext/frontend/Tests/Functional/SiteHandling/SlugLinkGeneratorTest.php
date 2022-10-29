@@ -27,9 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScrip
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
-/**
- * Test case for frontend requests having site handling configured
- */
 class SlugLinkGeneratorTest extends AbstractTestCase
 {
     protected function setUp(): void

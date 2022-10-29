@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
  * @todo Defining the method parameter types further leads to test bench errors
  */
 class PathUtilityTest extends UnitTestCase

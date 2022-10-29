@@ -24,9 +24,6 @@ use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ListOfFieldsContainerTest extends UnitTestCase
 {
     use ProphecyTrait;

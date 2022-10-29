@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class SiteResolvingTest extends UnitTestCase
 {
     use ProphecyTrait;

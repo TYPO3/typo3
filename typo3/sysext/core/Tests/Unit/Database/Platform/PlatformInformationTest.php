@@ -25,9 +25,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PlatformInformationTest extends UnitTestCase
 {
     use ProphecyTrait;

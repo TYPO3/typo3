@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PageTsConfigMergedTest extends UnitTestCase
 {
     protected PageTsConfigMerged $subject;

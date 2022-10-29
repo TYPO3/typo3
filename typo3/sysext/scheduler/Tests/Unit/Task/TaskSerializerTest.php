@@ -23,9 +23,6 @@ use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Tests\Unit\Task\Fixtures\TestTask;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TaskSerializerTest extends UnitTestCase
 {
     public static function dataIsDeserializedDataProvider(): array

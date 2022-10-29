@@ -21,9 +21,6 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class TcaGroupTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];

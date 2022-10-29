@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class RendererRegistryTest extends UnitTestCase
 {
     /**

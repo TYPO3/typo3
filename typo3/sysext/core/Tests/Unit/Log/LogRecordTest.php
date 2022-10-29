@@ -22,9 +22,6 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class LogRecordTest extends UnitTestCase
 {
     /**

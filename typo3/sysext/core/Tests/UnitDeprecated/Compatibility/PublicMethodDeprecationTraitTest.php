@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility;
 use TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility\Fixtures\PublicMethodDeprecationTraitTextFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PublicMethodDeprecationTraitTest extends UnitTestCase
 {
     /**

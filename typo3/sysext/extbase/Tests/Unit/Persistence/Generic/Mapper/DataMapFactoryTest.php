@@ -28,9 +28,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DataMapFactoryTest extends UnitTestCase
 {
     public function setRelationsDataProvider(): iterable

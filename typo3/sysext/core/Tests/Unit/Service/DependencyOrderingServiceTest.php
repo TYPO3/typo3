@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Service;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DependencyOrderingServiceTest extends UnitTestCase
 {
     /**

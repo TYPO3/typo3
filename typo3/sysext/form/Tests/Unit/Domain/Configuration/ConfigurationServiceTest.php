@@ -25,9 +25,6 @@ use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ConfigurationServiceTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;

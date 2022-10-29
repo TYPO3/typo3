@@ -24,9 +24,6 @@ use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
 use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class MetaTagManagerRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

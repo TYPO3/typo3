@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ObjectStorageTest extends UnitTestCase
 {
     /**

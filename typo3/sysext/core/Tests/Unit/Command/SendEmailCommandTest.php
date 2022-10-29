@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class SendEmailCommandTest extends UnitTestCase
 {
     use ProphecyTrait;

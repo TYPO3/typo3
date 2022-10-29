@@ -21,9 +21,6 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaSlugTest extends UnitTestCase
 {
     protected TcaSlug $subject;

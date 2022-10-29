@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-/**
- * Test case for frontend requests having site handling configured
- */
 class SlugSiteRequestTest extends AbstractTestCase
 {
     protected array $configurationToUseInTestInstance = [

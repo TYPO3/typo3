@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class SimpleLockStrategyTest extends UnitTestCase
 {
     /**

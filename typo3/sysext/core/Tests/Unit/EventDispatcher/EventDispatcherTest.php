@@ -25,9 +25,6 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class EventDispatcherTest extends UnitTestCase
 {
     use ProphecyTrait;

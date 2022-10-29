@@ -30,9 +30,6 @@ use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 {
     /**

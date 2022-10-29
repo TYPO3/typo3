@@ -34,9 +34,6 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableV
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\TestSetDataProviderTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-/**
- * Test case
- */
 class RouteTest extends AbstractEnhancerSiteRequestTest
 {
     use TestSetDataProviderTrait;

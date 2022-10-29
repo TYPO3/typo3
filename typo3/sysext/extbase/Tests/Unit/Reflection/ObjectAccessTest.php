@@ -27,9 +27,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ObjectAccessTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

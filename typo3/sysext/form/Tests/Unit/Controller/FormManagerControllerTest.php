@@ -30,9 +30,6 @@ use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class FormManagerControllerTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;

@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CachingFrameworkGarbageCollectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

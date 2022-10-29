@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Seo\Tests\Unit\MetaTag;
 use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TwitterCardMetaTagManagerTest extends UnitTestCase
 {
     /**

@@ -25,7 +25,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInvalidTypeHin
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
  * @see test for reflection
  * @link second test for reflection
  * @link second test for reflection with second value

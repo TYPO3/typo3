@@ -28,9 +28,6 @@ use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase;
 
-/**
- * Test case
- */
 class AbstractNodeTest extends FolderStructureTestCase
 {
     /**

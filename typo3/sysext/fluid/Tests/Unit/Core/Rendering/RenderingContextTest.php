@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
-/**
- * Test case
- */
 class RenderingContextTest extends UnitTestCase
 {
     /**

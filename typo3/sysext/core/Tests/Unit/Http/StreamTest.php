@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
- *
  * Adapted from https://github.com/phly/http/
  */
 class StreamTest extends UnitTestCase

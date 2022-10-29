@@ -27,9 +27,6 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-/**
- * Test case
- */
 class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     /**

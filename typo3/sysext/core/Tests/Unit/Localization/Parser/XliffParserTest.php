@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
 use TYPO3\CMS\Core\Localization\Parser\XliffParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class XliffParserTest extends UnitTestCase
 {
     /**

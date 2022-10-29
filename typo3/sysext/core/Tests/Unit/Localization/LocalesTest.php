@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class LocalesTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

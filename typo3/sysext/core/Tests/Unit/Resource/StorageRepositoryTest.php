@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class StorageRepositoryTest extends UnitTestCase
 {
     use ProphecyTrait;

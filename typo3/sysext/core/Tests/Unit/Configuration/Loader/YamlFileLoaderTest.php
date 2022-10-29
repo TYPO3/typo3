@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case for the YAML file loader class
- */
 class YamlFileLoaderTest extends UnitTestCase
 {
     /**

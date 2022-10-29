@@ -26,9 +26,6 @@ use TYPO3\CMS\Seo\HrefLang\HrefLangGenerator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class HrefLangGeneratorTest extends UnitTestCase
 {
     protected MockObject&AccessibleObjectInterface&HrefLangGenerator $subject;

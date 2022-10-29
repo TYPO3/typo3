@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Model;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CorrelationIdTest extends UnitTestCase
 {
     public function canBeParsedDataProvider(): array

@@ -28,9 +28,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class IconTest extends UnitTestCase
 {
     use ProphecyTrait;

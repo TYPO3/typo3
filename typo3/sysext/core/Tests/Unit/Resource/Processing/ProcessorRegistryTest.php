@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case.
- */
 class ProcessorRegistryTest extends UnitTestCase
 {
     use ProphecyTrait;

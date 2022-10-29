@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DatabaseUniqueUidNewRowTest extends UnitTestCase
 {
     protected DatabaseUniqueUidNewRow $subject;

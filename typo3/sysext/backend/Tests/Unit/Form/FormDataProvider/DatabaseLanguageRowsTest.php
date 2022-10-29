@@ -27,9 +27,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DatabaseLanguageRowsTest extends UnitTestCase
 {
     use ProphecyTrait;

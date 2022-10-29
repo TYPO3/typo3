@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TypoScriptServiceTest extends UnitTestCase
 {
     /**

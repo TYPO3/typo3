@@ -22,9 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class FormSelectTreeAjaxControllerTest extends UnitTestCase
 {
     use ProphecyTrait;

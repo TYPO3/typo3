@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
 use TYPO3\CMS\Scheduler\CronCommand\CronCommand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CronCommandTest extends UnitTestCase
 {
     /**

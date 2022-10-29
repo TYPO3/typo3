@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class EvaluateDisplayConditionsTest extends UnitTestCase
 {
     use ProphecyTrait;

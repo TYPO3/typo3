@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case for public URL transformation methods
- */
 class PathUtilityPublicPathsTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;

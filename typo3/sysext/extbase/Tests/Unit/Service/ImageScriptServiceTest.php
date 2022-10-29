@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ImageScriptServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

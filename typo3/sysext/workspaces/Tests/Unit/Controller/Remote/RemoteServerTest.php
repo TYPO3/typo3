@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class RemoteServerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

@@ -36,9 +36,6 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class BackendUserAuthenticationTest extends UnitTestCase
 {
     use ProphecyTrait;

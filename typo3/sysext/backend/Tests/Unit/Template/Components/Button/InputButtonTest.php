@@ -21,9 +21,6 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case for InputButton
- */
 class InputButtonTest extends UnitTestCase
 {
     /**

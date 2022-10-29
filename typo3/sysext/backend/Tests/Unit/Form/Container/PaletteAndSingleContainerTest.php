@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class PaletteAndSingleContainerTest extends UnitTestCase
 {
     use ProphecyTrait;

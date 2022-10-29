@@ -22,9 +22,6 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaInlineExpandCollapseStateTest extends UnitTestCase
 {
     use ProphecyTrait;

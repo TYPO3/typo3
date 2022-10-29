@@ -22,9 +22,6 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class YamlSourceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

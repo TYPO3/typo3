@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractFormElementTest extends UnitTestCase
 {
     public function formatValueDataProvider(): array

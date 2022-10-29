@@ -22,9 +22,6 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class IntegerConverterTest extends UnitTestCase
 {
     /**

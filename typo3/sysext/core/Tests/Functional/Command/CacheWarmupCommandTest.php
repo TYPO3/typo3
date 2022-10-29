@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Test case
- */
 class CacheWarmupCommandTest extends AbstractCommandTest
 {
     /**

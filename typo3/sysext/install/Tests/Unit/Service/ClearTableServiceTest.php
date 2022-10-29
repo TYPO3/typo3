@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 use TYPO3\CMS\Install\Service\ClearTableService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ClearTableServiceTest extends UnitTestCase
 {
     /**

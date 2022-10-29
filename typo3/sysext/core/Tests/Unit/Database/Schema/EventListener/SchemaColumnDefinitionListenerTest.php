@@ -30,9 +30,6 @@ use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class SchemaColumnDefinitionListenerTest extends UnitTestCase
 {
     use ProphecyTrait;

@@ -33,9 +33,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class PageRepositoryTest extends FunctionalTestCase
 {
     use ProphecyTrait;

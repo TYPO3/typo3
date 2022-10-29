@@ -27,9 +27,6 @@ use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DefaultTcaSchemaTest extends UnitTestCase
 {
     protected ?DefaultTcaSchema $subject;

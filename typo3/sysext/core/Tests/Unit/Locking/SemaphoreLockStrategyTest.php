@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case
- *
  * @requires function sem_get
  */
 class SemaphoreLockStrategyTest extends UnitTestCase

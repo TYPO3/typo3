@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ConstraintTest extends UnitTestCase
 {
     protected Constraint $subject;

@@ -24,9 +24,6 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ListenerProviderTest extends UnitTestCase
 {
     use ProphecyTrait;

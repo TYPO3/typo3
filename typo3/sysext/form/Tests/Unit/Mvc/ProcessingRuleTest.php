@@ -26,9 +26,6 @@ use TYPO3\CMS\Form\Tests\Unit\Mvc\Fixtures\AnotherTestValidator;
 use TYPO3\CMS\Form\Tests\Unit\Mvc\Fixtures\TestValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class ProcessingRuleTest extends UnitTestCase
 {
     /**
