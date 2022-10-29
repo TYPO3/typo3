@@ -34,6 +34,7 @@ class FileBackendTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         GeneralUtility::rmdir($this->instancePath . '/Foo/', true);
+        parent::tearDown();
     }
 
     /**
@@ -658,10 +659,10 @@ class FileBackendTest extends FunctionalTestCase
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
         $subject = $this->getMockBuilder(FileBackend::class)->onlyMethods(['isCacheFileExpired'])->disableOriginalConstructor()->getMock();
-        $subject->expects(self::exactly(2))->method('isCacheFileExpired')->will(self::onConsecutiveCalls(
-            true,
-            false
-        ));
+        $subject->expects(self::exactly(2))->method('isCacheFileExpired')->willReturnMap([
+            [$this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest1', false],
+            [$this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest2', true],
+        ]);
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data';
@@ -670,8 +671,8 @@ class FileBackendTest extends FunctionalTestCase
         self::assertFileExists($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest1');
         self::assertFileExists($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest2');
         $subject->collectGarbage();
-        self::assertFileDoesNotExist($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest2');
         self::assertFileExists($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest1');
+        self::assertFileDoesNotExist($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest2');
     }
 
     /**
