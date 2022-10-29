@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
@@ -40,13 +38,8 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the TYPO3\CMS\Core\Cache\CacheManager
- */
 class CacheManagerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -443,18 +436,18 @@ class CacheManagerTest extends UnitTestCase
         ];
         $manager->_set('cacheGroups', $cacheGroups);
 
-        $frontend = $this->prophesize(FrontendFixture::class);
+        $frontendMock = $this->createMock(FrontendFixture::class);
 
         $caches = [
-            $cacheIdentifier => $frontend->reveal(),
+            $cacheIdentifier => $frontendMock,
         ];
         $manager->_set('caches', $caches);
 
-        $frontend->flushByTags(Argument::any())->shouldNotBeCalled();
+        $frontendMock->expects(self::never())->method('flushByTags');
 
         $configuration = [
             $cacheIdentifier => [
-                'frontend' => $frontend,
+                'frontend' => $frontendMock,
                 'backend' => BackendFixture::class,
                 'options' => [],
                 'groups' => ['group1', 'group2'],
@@ -478,19 +471,19 @@ class CacheManagerTest extends UnitTestCase
         ];
         $manager->_set('cacheGroups', $cacheGroups);
 
-        $frontend = $this->prophesize(FrontendFixture::class);
+        $frontendMock = $this->createMock(FrontendFixture::class);
 
         $caches = [
-            $cacheIdentifier => $frontend->reveal(),
+            $cacheIdentifier => $frontendMock,
         ];
         $manager->_set('caches', $caches);
 
         $tags = ['tag1', 'tag2'];
-        $frontend->flushByTags($tags)->shouldBeCalled();
+        $frontendMock->expects(self::once())->method('flushByTags')->with($tags);
 
         $configuration = [
             $cacheIdentifier => [
-                'frontend' => $frontend,
+                'frontend' => $frontendMock,
                 'backend' => BackendFixture::class,
                 'options' => [],
                 'groups' => ['group1', 'group2'],
