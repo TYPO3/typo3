@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -32,8 +30,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FileHandlingUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var array List of created fake extensions
      */
@@ -108,13 +104,12 @@ class FileHandlingUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1337280417);
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->includeLLFile(Argument::any())->willReturn('');
-        $languageServiceProphecy->getLL(Argument::any())->willReturn('');
-        $languageServiceProphecy->getLLL(Argument::any())->willReturn('');
-        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($languageServiceProphecy->reveal());
-        $fileHandlerMock->injectLanguageServiceFactory($languageServiceFactoryProphecy->reveal());
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn('');
+        $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
+        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
+        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
+        $fileHandlerMock->injectLanguageServiceFactory($languageServiceFactoryMock);
         $fileHandlerMock->initializeObject();
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
