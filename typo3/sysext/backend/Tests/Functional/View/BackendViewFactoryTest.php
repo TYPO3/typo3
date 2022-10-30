@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -25,8 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BackendViewFactoryTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected array $testExtensionsToLoad = [
         'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_a',
         'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_b',
