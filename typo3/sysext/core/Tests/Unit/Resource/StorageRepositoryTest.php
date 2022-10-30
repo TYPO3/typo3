@@ -17,21 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StorageRepositoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**********************************
-     * Drivers
-     **********************************/
     /**
      * @test
      */
@@ -45,7 +39,7 @@ class StorageRepositoryTest extends UnitTestCase
             StorageRepository::class,
             ['dummy'],
             [
-                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NoopEventDispatcher(),
                 $registry,
             ]
         );
@@ -53,35 +47,9 @@ class StorageRepositoryTest extends UnitTestCase
         self::assertInstanceOf(AbstractDriver::class, $obj);
     }
 
-    /***********************************
-     * Storage AutoDetection
-     ***********************************/
-
-    /**
-     * @param array $storageConfiguration
-     * @param string $path
-     * @param int $expectedStorageId
-     * @test
-     * @dataProvider storageDetectionDataProvider
-     */
-    public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId): void
-    {
-        $subject = new StorageRepository(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            $this->prophesize(DriverRegistry::class)->reveal()
-        );
-        $mock = \Closure::bind(static function (StorageRepository $storageRepository) use (&$path, $storageConfiguration) {
-            $storageRepository->localDriverStorageCache = $storageConfiguration;
-            return $storageRepository->findBestMatchingStorageByLocalPath($path);
-        }, null, StorageRepository::class);
-        self::assertSame($expectedStorageId, $mock($subject));
-    }
-
-    /**
-     * @return array
-     */
     public function storageDetectionDataProvider(): array
     {
+        $asRelativePathClosure = fn ($value) => new LocalPath($value, LocalPath::TYPE_RELATIVE);
         return [
             'NoLocalStoragesReturnDefaultStorage' => [
                 [],
@@ -89,45 +57,57 @@ class StorageRepositoryTest extends UnitTestCase
                 0,
             ],
             'NoMatchReturnsDefaultStorage' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin2/public/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'fileadmin2/public/']),
                 'my/dummy/Image.png',
                 0,
             ],
             'MatchReturnsTheMatch' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'other/public/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'other/public/']),
                 'fileadmin/dummy/Image.png',
                 1,
             ],
             'TwoFoldersWithSameStartReturnsCorrect' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
                 'fileadmin/dummy/Image.png',
                 1,
             ],
             'NestedStorageReallyReturnsTheBestMatching' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
                 'fileadmin/public/Image.png',
                 2,
             ],
             'CommonPrefixButWrongPath' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads/bogus/dummy.png',
                 0,
             ],
             'CommonPrefixRightPath' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads/test/dummy.png',
                 2,
             ],
             'FindStorageFromWindowsPath' => [
-                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
+                array_map($asRelativePathClosure, [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads\\test\\dummy.png',
                 2,
             ],
         ];
     }
 
-    private function asRelativePath(string $value): LocalPath
+    /**
+     * @test
+     * @dataProvider storageDetectionDataProvider
+     */
+    public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, string $path, int $expectedStorageId): void
     {
-        return new LocalPath($value, LocalPath::TYPE_RELATIVE);
+        $subject = new StorageRepository(
+            new NoopEventDispatcher(),
+            $this->createMock(DriverRegistry::class)
+        );
+        $mock = \Closure::bind(static function (StorageRepository $storageRepository) use (&$path, $storageConfiguration) {
+            $storageRepository->localDriverStorageCache = $storageConfiguration;
+            return $storageRepository->findBestMatchingStorageByLocalPath($path);
+        }, null, StorageRepository::class);
+        self::assertSame($expectedStorageId, $mock($subject));
     }
 }
