@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\ResetPasswordController;
@@ -43,8 +41,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ResetPasswordControllerTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected ResetPasswordController $subject;
     protected ServerRequestInterface $request;
 
@@ -60,10 +56,10 @@ class ResetPasswordControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $passwordResetProphecy = $this->prophesize(PasswordReset::class);
-        $passwordResetProphecy->isEnabled()->willReturn(true);
-        $passwordResetProphecy->isValidResetTokenFromRequest(Argument::any())->willReturn(true);
-        $passwordResetProphecy->resetPassword(Argument::any(), Argument::any())->willReturn(true);
+        $passwordResetMock = $this->createMock(PasswordReset::class);
+        $passwordResetMock->method('isEnabled')->willReturn(true);
+        $passwordResetMock->method('isValidResetTokenFromRequest')->with(self::anything())->willReturn(true);
+        $passwordResetMock->method('resetPassword')->with(self::anything(), self::anything())->willReturn(true);
 
         $this->subject = new ResetPasswordController(
             $this->get(Context::class),
@@ -71,7 +67,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
             $this->get(Features::class),
             $this->get(UriBuilder::class),
             $this->get(PageRenderer::class),
-            $passwordResetProphecy->reveal(),
+            $passwordResetMock,
             $this->get(Typo3Information::class),
             $this->get(AuthenticationStyleInformation::class),
             new ExtensionConfiguration(),
