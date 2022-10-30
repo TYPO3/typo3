@@ -5,6 +5,9 @@
     use new features of TYPO3 that may be activated on new installations but upgrading installations
     can still use the old behaviour.
 </p>
+
+<f:render partial="Settings/ConfigurationNotWritable" arguments="{_all}"/>
+
 <p>
     <strong>Available features:</strong>
 </p>
@@ -26,6 +29,7 @@
                                 name="install[values][{feature.name}]"
                                 id="t3-install-tool-features-{feature.name}"
                                 {f:if(condition: '{feature.value} == 1', then: 'checked="checked"')}
+                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                             />
                             <label class="form-check-label" for="t3-install-tool-features-{feature.name}">
                                 <span class="form-check-label-text" style="margin-top: -4px; padding-left: 12px;">

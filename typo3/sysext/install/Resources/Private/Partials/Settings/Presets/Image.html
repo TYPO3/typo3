@@ -34,11 +34,13 @@
                                 name="install[values][{feature.name}][additionalSearchPath]"
                                 value="{feature.additionalSearchPath}"
                                 class="form-control t3js-presets-image-executable"
+                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                         />
                         <div class="input-group-btn">
                             <button
                                 class="btn btn-default t3js-presets-image-executable-trigger"
                                 type="button"
+                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                             >
                                 Find executables in this directory
                             </button>

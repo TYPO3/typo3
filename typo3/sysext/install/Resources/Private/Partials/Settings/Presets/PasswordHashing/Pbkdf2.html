@@ -7,7 +7,7 @@
         id="t3-install-tool-configuration-passwordHashing-pbkdf2"
         name="install[values][{feature.name}][enable]"
         value="{preset.name}"
-        {f:if(condition:'{preset.isAvailable}', then:'', else:'disabled="disabled"')}
+        {f:if(condition: '{preset.isAvailable} && {isWritable}', then:'', else:'disabled="disabled"')}
         {f:if(condition: preset.isActive, then:'checked="checked"')}
     />
     <label for="t3-install-tool-configuration-passwordHashing-pbkdf2" class="t3-install-tool-configuration-radio-label">

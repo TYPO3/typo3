@@ -5,6 +5,8 @@
     backend administrative users have access to this module when the system is running in development mode.
 </p>
 
+<f:render partial="Settings/ConfigurationNotWritable" arguments="{_all}"/>
+
 <f:if condition="{systemMaintainerIsDevelopmentContext}">
     <div class="typo3-message alert alert-info">
         <div class="message-body">
@@ -24,6 +26,7 @@
                 style="width:100%;"
                 multiple
                 tabindex=""
+                {f:if(condition: '!{isWritable}', then: 'disabled')}
             >
             </select>
         </div>

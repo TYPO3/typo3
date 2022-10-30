@@ -44,7 +44,7 @@
                                 <f:then>
                                     <div class="form-group">
                                         <p class="form-text">{item.description -> f:format.raw()}</p>
-                                        <select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-select t3js-localConfiguration-pathValue">
+                                        <select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-select t3js-localConfiguration-pathValue" {f:if(condition: '!{isWritable}', then: 'disabled')}>
                                             <f:for each="{item.allowedValues}" key="optionKey" as="optionLabel">
                                                 <option value="{optionKey}" {f:if(condition: '{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
                                             </f:for>
@@ -62,6 +62,7 @@
                                                 id="{sectionName}_{item.key}"
                                                 data-path="{sectionName}/{item.key}"
                                                 {f:if(condition: item.checked, then:'checked="checked"')}
+                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             />
                                             <label class="form-check-label" for="{sectionName}_{item.key}">
                                                 <span class="form-check-label-text">{item.description -> f:format.raw()}</span>
@@ -80,6 +81,7 @@
                                                 data-path="{sectionName}/{item.key}"
                                                 class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
                                                 autocomplete="off"
+                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             />
                                         </div>
                                     </f:if>
@@ -95,6 +97,7 @@
                                                 data-path="{sectionName}/{item.key}"
                                                 class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
                                                 autocomplete="new-password"
+                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             />
                                         </div>
                                     </f:if>
@@ -111,6 +114,7 @@
                                                 class="t3-
                                                 install-form-input-text form-control t3js-localConfiguration-pathValue"
                                                 autocomplete="off"
+                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             />
                                         </div>
                                     </f:if>
@@ -125,6 +129,7 @@
                                                 cols="60"
                                                 data-path="{sectionName}/{item.key}"
                                                 class="form-control t3js-localConfiguration-pathValue"
+                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             >{item.value}</textarea>
                                         </div>
                                     </f:if>

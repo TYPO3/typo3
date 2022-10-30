@@ -277,7 +277,8 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(CommentAwareAstBuilder::class),
             $container->get(LosslessTokenizer::class),
             $container->get(AstTraverser::class),
-            $container->get(FormProtectionFactory::class)
+            $container->get(FormProtectionFactory::class),
+            $container->get(ConfigurationManager::class),
         );
     }
 

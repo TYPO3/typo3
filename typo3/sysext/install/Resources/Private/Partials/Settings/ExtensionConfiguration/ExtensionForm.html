@@ -59,6 +59,7 @@
                                                                 value="{configurationItem.value}"
                                                                 {f:if(condition: '{configurationItem.typeIntPlusMin} || {configurationItem.typeIntPlusMin == 0}', then: 'min="{configurationItem.typeIntPlusMin}"')}
                                                                 {f:if(condition: configurationItem.typeIntPlusMax, then: 'max="{configurationItem.typeIntPlusMax}"')}
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             >
                                                         </f:case>
                                                         <f:case value="int">
@@ -70,6 +71,7 @@
                                                                 value="{configurationItem.value}"
                                                                 {f:if(condition: '{configurationItem.typeIntMin} || {configurationItem.typeIntMin == 0}', then: 'min="{configurationItem.typeIntMin}"')}
                                                                 {f:if(condition: '{configurationItem.typeIntMax} || {configurationItem.typeIntMax == 0}', then: 'max="{configurationItem.typeIntMax}"')}
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             >
                                                         </f:case>
                                                         <f:case value="string">
@@ -79,6 +81,7 @@
                                                                 type="text"
                                                                 name="{configurationItem.name}"
                                                                 value="{configurationItem.value}"
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             />
                                                         </f:case>
                                                         <f:case value="color">
@@ -88,6 +91,7 @@
                                                                 id="em-{extensionKey}-{configurationItem.name}"
                                                                 name="{configurationItem.name}"
                                                                 value="{configurationItem.value}"
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             />
                                                         </f:case>
                                                         <f:case value="wrap">
@@ -97,6 +101,7 @@
                                                                 id="em-{extensionKey}-{configurationItem.name}"
                                                                 name="{configurationItem.name}"
                                                                 value="{configurationItem.value}"
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             />
                                                         </f:case>
                                                         <f:case value="offset">
@@ -106,6 +111,7 @@
                                                                 id="em-{extensionKey}-{configurationItem.name}"
                                                                 name="{configurationItem.name}"
                                                                 value="{configurationItem.value}"
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             />
                                                         </f:case>
                                                         <f:case value="options">
@@ -113,6 +119,7 @@
                                                                 class="form-select"
                                                                 id="em-{extensionKey}-{configurationItem.name}"
                                                                 name="{configurationItem.name}"
+                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                             >
                                                                 <f:for each="{configurationItem.labelValueArray}" as="labelAndValue">
                                                                     <option value="{labelAndValue.value}" {f:if(condition: '{labelAndValue.value} == {configurationItem.value}', then: 'selected')}>
@@ -135,6 +142,7 @@
                                                                     class="form-check-input"
                                                                     value="{configurationItem.trueValue}"
                                                                     {f:if(condition: '{configurationItem.value} == {configurationItem.trueValue}', then: 'checked')}
+                                                                    {f:if(condition: '!{isWritable}', then: 'disabled')}
                                                                 />
                                                             </div>
                                                         </f:case>
@@ -153,7 +161,9 @@
                         </f:for>
                     </div>
 
-                    <button type="submit" class="btn btn-default" name="save">Save "{extensionKey}" configuration</button>
+                    <f:if condition="{isWritable}">
+                        <button type="submit" class="btn btn-default" name="save">Save "{extensionKey}" configuration</button>
+                    </f:if>
 
                 </form>
 

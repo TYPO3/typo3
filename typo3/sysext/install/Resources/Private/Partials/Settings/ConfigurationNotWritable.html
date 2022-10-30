@@ -1,0 +1,12 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:if condition="!{isWritable}">
+    <div class="callout callout-warning">
+        <div class="callout-body">
+            The configuration file system/settings.php is not writable by TYPO3. Changing any configuration is
+            therefore not possible.
+        </div>
+    </div>
+</f:if>
+
+</html>
