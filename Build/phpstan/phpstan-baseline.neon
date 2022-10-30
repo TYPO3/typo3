@@ -2321,11 +2321,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Fixtures/LatestCompatibleExtensionObjectStorageFixture.php
 
 		-
-			message: "#^PHPDoc tag @throws with type TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\Exception is not subtype of Throwable$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Report/ExtensionStatusTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$dependencies of method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Extension\\:\\:setDependencies\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Dependency\\>&SplObjectStorage, SplObjectStorage\\<object, mixed\\> given\\.$#"
 			count: 12
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/DependencyUtilityTest.php
