@@ -142,6 +142,7 @@ class FileController
         $includeMessages = (bool)($request->getQueryParams()['includeMessages'] ?? false);
         $errors = $this->fileProcessor->getErrorMessages();
         if (!$includeMessages && !empty($errors)) {
+            $errors = array_map('htmlspecialchars', $errors);
             return (new HtmlResponse('<t3err>' . implode(',', $errors) . '</t3err>'))->withStatus(500, '(AJAX)');
         }
         $flatResult = [];
