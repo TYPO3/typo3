@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  *
  * As workspaces cannot be fully overlaid within ONE query, this query does the following:
  * - In live context, only fetch published records
- * - In a workspace, fetch all LIVE records and all workspace records which do not have "-1" (= all new placeholders get fetched as well)
+ * - In a workspace, fetch all LIVE records and all workspace records which do not have "1" (= all new placeholders get fetched as well)
  *
  * This means, that all records which are fetched need to run through either
  * - BackendUtility::getRecordWSOL() (when having one or a few records)
@@ -38,17 +38,21 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class WorkspaceRestriction implements QueryRestrictionInterface
 {
-    /**
-     * @var int
-     */
-    protected $workspaceId;
+    protected int $workspaceId;
 
     /**
-     * @param int $workspaceId
+     * Used to also query records within a workspace, which is useful for DB queries
+     * that check for a specific field (e.g. "slug") which might have changed within a workspace.
+     * Please note that some duplicates might be shown and the "reduce" logic needs to be
+     * added after querying. Setting this flag might also be a problem when using the DB query
+     * with limit and offset settings.
      */
-    public function __construct(int $workspaceId = 0)
+    protected bool $includeAllVersionedRecords;
+
+    public function __construct(int $workspaceId = 0, bool $includeAllVersionedRecords = false)
     {
-        $this->workspaceId = (int)$workspaceId;
+        $this->workspaceId = $workspaceId;
+        $this->includeAllVersionedRecords = $includeAllVersionedRecords;
     }
 
     /**
@@ -77,19 +81,31 @@ class WorkspaceRestriction implements QueryRestrictionInterface
             }
             // Always filter out versioned records that have an "offline" record
             // But include moved records AND newly created records (t3ver_oid=0)
-            $constraints[] = $expressionBuilder->andX(
-                $workspaceIdExpression,
-                $expressionBuilder->orX(
-                    $expressionBuilder->eq(
-                        $tableAlias . '.t3ver_oid',
-                        0
-                    ),
-                    $expressionBuilder->eq(
-                        $tableAlias . '.t3ver_state',
-                        VersionState::MOVE_POINTER
+            if ($this->includeAllVersionedRecords === false) {
+                $constraints[] = $expressionBuilder->andX(
+                    $workspaceIdExpression,
+                    $expressionBuilder->orX(
+                        $expressionBuilder->eq(
+                            $tableAlias . '.t3ver_oid',
+                            0
+                        ),
+                        $expressionBuilder->eq(
+                            $tableAlias . '.t3ver_state',
+                            VersionState::MOVE_POINTER
+                        )
                     )
-                )
-            );
+                );
+            } else {
+                // Include live records plus records from the given workspace
+                // but never include versioned records marked as deleted
+                $constraints[] = $expressionBuilder->andX(
+                    $workspaceIdExpression,
+                    $expressionBuilder->neq(
+                        't3ver_state',
+                        VersionState::DELETE_PLACEHOLDER
+                    )
+                );
+            }
         }
         return $expressionBuilder->andX(...$constraints);
     }

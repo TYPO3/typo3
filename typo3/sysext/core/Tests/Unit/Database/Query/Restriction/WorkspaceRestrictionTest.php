@@ -72,4 +72,29 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         self::assertSame('', (string)$expression);
     }
+
+    /**
+     * @test
+     */
+    public function buildExpressionQueriesAllVersionedRecordsWithinAWorkspaceAsWell(): void
+    {
+        $GLOBALS['TCA']['aTable']['ctrl'] = [
+            'versioningWS' => true,
+        ];
+        $subject = new WorkspaceRestriction(42, true);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
+        self::assertSame('("aTable"."t3ver_wsid" IN (0, 42)) AND ("t3ver_state" <> 2)', (string)$expression);
+    }
+    /**
+     * @test
+     */
+    public function buildExpressionQueriesAllVersionedRecordsWithinLiveStillRemovesDeletedState(): void
+    {
+        $GLOBALS['TCA']['aTable']['ctrl'] = [
+            'versioningWS' => true,
+        ];
+        $subject = new WorkspaceRestriction(0, true);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
+        self::assertSame('("aTable"."t3ver_wsid" = 0) AND ("t3ver_state" <> 2)', (string)$expression);
+    }
 }
