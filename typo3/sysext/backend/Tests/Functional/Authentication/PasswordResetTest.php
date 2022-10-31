@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Authentication;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
@@ -27,12 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PasswordResetTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var LoggerInterface|object
-     */
-    protected $logger;
+    protected object $logger;
 
     public function setUp(): void
     {
@@ -137,9 +131,9 @@ class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'does-not-exist@example.com';
         $subject = new PasswordReset();
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $loggerProphecy->warning()->withArguments(['Password reset requested for email but no valid users'])->shouldBeCalled();
-        $subject->setLogger($loggerProphecy->reveal());
+        $loggerMock = $this->createMock(LoggerInterface::class);
+        $loggerMock->expects(self::atLeastOnce())->method('warning')->with('Password reset requested for email but no valid users');
+        $subject->setLogger($loggerMock);
         $context = new Context();
         $request = new ServerRequest();
         $subject->initiateReset($request, $context, $emailAddress);
@@ -195,9 +189,9 @@ class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $subject = new PasswordReset();
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $loggerProphecy->warning()->withArguments(['Password reset not possible. Valid user for token not found.'])->shouldBeCalled();
-        $subject->setLogger($loggerProphecy->reveal());
+        $loggerMock = $this->createMock(LoggerInterface::class);
+        $loggerMock->expects(self::exactly(2))->method('warning')->with('Password reset not possible. Valid user for token not found.');
+        $subject->setLogger($loggerMock);
 
         $context = new Context();
         $request = new ServerRequest();
@@ -206,9 +200,6 @@ class PasswordResetTest extends FunctionalTestCase
 
         // Now with a password
         $request = $request->withParsedBody(['password' => 'str0NGpassw0RD!', 'passwordrepeat' => 'str0NGpassw0RD!']);
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $loggerProphecy->warning()->withArguments(['Password reset not possible. Valid user for token not found.'])->shouldBeCalled();
-        $subject->setLogger($loggerProphecy->reveal());
         $subject->resetPassword($request, $context);
     }
 }
