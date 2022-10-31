@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Element\MfaInfoElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -29,8 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaInfoElementTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -40,10 +36,10 @@ class MfaInfoElementTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->enablecolumns = ['deleted' => true];
         $GLOBALS['BE_USER']->setBeUserByUid(1);
 
-        // Default LANG prophecy just returns incoming value as label if calling ->sL()
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        // Default LANG mock just returns incoming value as label if calling ->sL()
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
     }
 
     /**
