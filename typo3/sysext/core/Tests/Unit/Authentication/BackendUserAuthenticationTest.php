@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -42,47 +40,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendUserAuthenticationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    protected array $defaultFilePermissions = [
-        // File permissions
-        'addFile' => false,
-        'readFile' => false,
-        'writeFile' => false,
-        'copyFile' => false,
-        'moveFile' => false,
-        'renameFile' => false,
-        'deleteFile' => false,
-        // Folder permissions
-        'addFolder' => false,
-        'readFolder' => false,
-        'writeFolder' => false,
-        'copyFolder' => false,
-        'moveFolder' => false,
-        'renameFolder' => false,
-        'deleteFolder' => false,
-        'recursivedeleteFolder' => false,
-    ];
-
-    /////////////////////////////////////////
-    // Tests concerning the form protection
-    /////////////////////////////////////////
     /**
      * @test
      */
     public function logoffCleansFormProtectionIfBackendUserIsLoggedIn(): void
     {
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $connection = $this->prophesize(Connection::class);
-        $connection->delete('sys_lockedrecords', Argument::cetera())->willReturn(1);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('delete')->with('sys_lockedrecords', self::anything())->willReturn(1);
 
-        $connectionPool = $this->prophesize(ConnectionPool::class);
-        $connectionPool->getConnectionForTable(Argument::cetera())->willReturn($connection->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
 
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
-        $formProtection = $this->prophesize(BackendFormProtection::class);
-        $formProtection->clean()->shouldBeCalled();
+        $formProtectionMock = $this->createMock(BackendFormProtection::class);
+        $formProtectionMock->expects(self::once())->method('clean');
 
         $formProtectionFactory = new FormProtectionFactory(
             $this->createMock(FlashMessageService::class),
@@ -90,12 +63,12 @@ class BackendUserAuthenticationTest extends UnitTestCase
             $this->createMock(Registry::class)
         );
         GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
-        GeneralUtility::addInstance(BackendFormProtection::class, $formProtection->reveal());
+        GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionMock);
 
-        $sessionBackend = $this->prophesize(SessionBackendInterface::class);
-        $sessionBackend->remove(Argument::cetera())->willReturn(true);
+        $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
+        $sessionBackendMock->method('remove')->with(self::anything())->willReturn(true);
         $userSessionManager = new UserSessionManager(
-            $sessionBackend->reveal(),
+            $sessionBackendMock,
             86400,
             new IpLocker(0, 0)
         );
@@ -117,9 +90,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject->logoff();
     }
 
-    /**
-     * @return array
-     */
     public function getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider(): array
     {
         return [
@@ -170,7 +140,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
     }
 
     /**
-     * @param array $userTsConfiguration
      * @test
      * @dataProvider getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider
      */
@@ -194,8 +163,26 @@ class BackendUserAuthenticationTest extends UnitTestCase
                     ],
                 ],
             ]);
-
-        $expectedPermissions = array_merge($this->defaultFilePermissions, $userTsConfiguration);
+        $defaultFilePermissions = [
+            // File permissions
+            'addFile' => false,
+            'readFile' => false,
+            'writeFile' => false,
+            'copyFile' => false,
+            'moveFile' => false,
+            'renameFile' => false,
+            'deleteFile' => false,
+            // Folder permissions
+            'addFolder' => false,
+            'readFolder' => false,
+            'writeFolder' => false,
+            'copyFolder' => false,
+            'moveFolder' => false,
+            'renameFolder' => false,
+            'deleteFolder' => false,
+            'recursivedeleteFolder' => false,
+        ];
+        $expectedPermissions = array_merge($defaultFilePermissions, $userTsConfiguration);
         array_walk(
             $expectedPermissions,
             static function (&$value) {
@@ -206,9 +193,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
-    /**
-     * @return array
-     */
     public function getFilePermissionsFromStorageDataProvider(): array
     {
         $defaultPermissions = [
@@ -306,14 +290,10 @@ class BackendUserAuthenticationTest extends UnitTestCase
     }
 
     /**
-     * @param array $defaultPermissions
-     * @param int $storageUid
-     * @param array $storagePermissions
-     * @param array $expectedPermissions
      * @test
      * @dataProvider getFilePermissionsFromStorageDataProvider
      */
-    public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions): void
+    public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, int $storageUid, array $storagePermissions, array $expectedPermissions): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
@@ -379,9 +359,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
 
-    /**
-     * @return array
-     */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider(): array
     {
         return [
@@ -490,10 +467,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $permissionValue
-     * @param array $expectedPermissions
-     *
      * @dataProvider getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions): void
@@ -584,15 +557,8 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider jsConfirmationsWithUnsetBits
-     *
-     * @param int $jsConfirmation
-     * @param int $typeChangeAllowed
-     * @param int $copyMovePasteAllowed
-     * @param int $deleteAllowed
-     * @param int $feEditAllowed
-     * @param int $otherAllowed
      */
-    public function jsConfirmationAllowsUnsettingBitsInValue($jsConfirmation, $typeChangeAllowed, $copyMovePasteAllowed, $deleteAllowed, $feEditAllowed, $otherAllowed): void
+    public function jsConfirmationAllowsUnsettingBitsInValue(int $jsConfirmation, bool $typeChangeAllowed, bool $copyMovePasteAllowed, bool $deleteAllowed, bool $feEditAllowed, bool $otherAllowed): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->onlyMethods(['getTSConfig'])
@@ -609,9 +575,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($otherAllowed, $subject->jsConfirmation(JsConfirmation::OTHER));
     }
 
-    /**
-     * @return array
-     */
     public function jsConfirmationsWithUnsetBits(): array
     {
         return [
@@ -670,8 +633,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
      *  - admin flag
      *  - groups for user
      *  - expected SQL fragment
-     *
-     * @return array
      */
     public function getPagePermissionsClauseWithValidUserDataProvider(): array
     {
@@ -709,10 +670,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getPagePermissionsClauseWithValidUserDataProvider
-     * @param int $perms
-     * @param bool $admin
-     * @param array $groups
-     * @param string $expected
      */
     public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, array $groups, string $expected): void
     {
@@ -721,22 +678,21 @@ class BackendUserAuthenticationTest extends UnitTestCase
         // of GeneralUtility::addInstance will influence other tests
         // as the ConnectionPool is never used!
         if (!$admin) {
-            $connectionProphecy = $this->prophesize(Connection::class);
-            $connectionProphecy->getDatabasePlatform()->willReturn(new MockPlatform());
-            $connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
-                return '`' . str_replace('.', '`.`', $args[0]) . '`';
-            });
+            $connectionMock = $this->createMock(Connection::class);
+            $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
+            $connectionMock->method('quoteIdentifier')->with(self::anything())
+                ->willReturnCallback(fn ($identifier) => '`' . str_replace('.', '`.`', $identifier) . '`');
 
-            $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-            $queryBuilderProphecy->expr()->willReturn(
-                new ExpressionBuilder($connectionProphecy->reveal())
+            $queryBuilderMock = $this->createMock(QueryBuilder::class);
+            $queryBuilderMock->method('expr')->willReturn(
+                new ExpressionBuilder($connectionMock)
             );
 
-            $databaseProphecy = $this->prophesize(ConnectionPool::class);
-            $databaseProphecy->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphecy->reveal());
+            $connectionPoolMock = $this->createMock(ConnectionPool::class);
+            $connectionPoolMock->method('getQueryBuilderForTable')->with('pages')->willReturn($queryBuilderMock);
             // Shift previously added instance
             GeneralUtility::makeInstance(ConnectionPool::class);
-            GeneralUtility::addInstance(ConnectionPool::class, $databaseProphecy->reveal());
+            GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
         }
 
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -756,8 +712,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider checkAuthModeReturnsExpectedValueDataProvider
-     * @param string $theValue
-     * @param bool $expectedResult
      */
     public function checkAuthModeReturnsExpectedValue(string $theValue, bool $expectedResult): void
     {
