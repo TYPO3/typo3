@@ -135,6 +135,7 @@ class FileController
         $this->main();
         $errors = $this->fileProcessor->getErrorMessages();
         if (!empty($errors)) {
+            $errors = array_map('htmlspecialchars', $errors);
             return (new HtmlResponse('<t3err>' . implode(',', $errors) . '</t3err>'))->withStatus(500, '(AJAX)');
         }
         $flatResult = [];
