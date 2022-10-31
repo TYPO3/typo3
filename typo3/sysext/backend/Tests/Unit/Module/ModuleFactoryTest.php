@@ -17,27 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Module;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ModuleFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected ModuleFactory $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcherProphecy->dispatch(Argument::any())->willReturnArgument();
         $this->subject = new ModuleFactory(
-            $this->prophesize(IconRegistry::class)->reveal(),
-            $eventDispatcherProphecy->reveal()
+            $this->createMock(IconRegistry::class),
+            new NoopEventDispatcher()
         );
     }
 
