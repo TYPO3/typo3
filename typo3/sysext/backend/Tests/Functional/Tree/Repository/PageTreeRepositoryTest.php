@@ -237,4 +237,89 @@ class PageTreeRepositoryTest extends FunctionalTestCase
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
         self::assertEquals($expected, $actual[0]);
     }
+
+    public function fetchFilteredTreeDataProvider(): \Generator
+    {
+        yield 'Third level find by title' => [
+            'Sub Area 2',
+            0,
+            2,
+            [
+                'uid' => 2,
+                'title' => 'Main Area',
+                '_children' => [
+                    [
+                        'uid' => 21,
+                        'title' => 'Main Area Sub 2',
+                        '_children' => [
+                            [
+                                'uid' => 31,
+                                'title' => 'Sub Area 2',
+                                '_children' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Second level find by UID' => [
+            '2',
+            0,
+            1,
+            [
+                'uid' => 1,
+                'title' => 'Home',
+                '_children' => [
+                    [
+                        'uid' => 2,
+                        'title' => 'Main Area',
+                        '_children' => [
+                            [
+                                'uid' => 21,
+                                'title' => 'Main Area Sub 2',
+                                '_children' => [
+                                    [
+                                        'uid' => 31,
+                                        'title' => 'Sub Area 2',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Second level find by UID in workspace' => [
+            '20',
+            1,
+            2,
+            [
+                'uid' => 2,
+                'title' => 'Main Area',
+                '_children' => [
+                    [
+                        'uid' => 20,
+                        'title' => 'Main Area Sub 1 Modified',
+                        '_children' => [],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider fetchFilteredTreeDataProvider
+     */
+    public function fetchFilteredTreeShowsResults(string $search, int $workspaceId, int $entryPoint, array $expectedResult): void
+    {
+        $pageTreeRepository = new PageTreeRepository($workspaceId);
+        $pageTreeRepository->fetchFilteredTree($search, [$entryPoint], '');
+        $actual = $pageTreeRepository->getTree($entryPoint, null, [$entryPoint]);
+        $actual = $this->sortTreeArray([$actual]);
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+        self::assertEquals($expectedResult, $actual[0]);
+    }
 }
