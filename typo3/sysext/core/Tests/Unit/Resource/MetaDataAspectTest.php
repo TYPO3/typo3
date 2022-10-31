@@ -18,9 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
@@ -28,39 +25,26 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\MetaDataAspect;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class MetaDataAspectTest extends UnitTestCase
 {
-    use ProphecyTrait;
+    protected bool $resetSingletonInstances = true;
+    protected ResourceStorage&MockObject $storageMock;
 
-    /**
-     * @var ResourceStorage|MockObject
-     */
-    protected $storageMock;
-
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
-        $metaDataRepository = new MetaDataRepository($eventDispatcher->reveal());
+        $metaDataRepository = new MetaDataRepository(new NoopEventDispatcher());
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepository);
         $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->method('getUid')->willReturn(12);
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
-        $this->resetSingletonInstances = true;
-
         GeneralUtility::purgeInstances();
         parent::tearDown();
     }
@@ -150,18 +134,16 @@ class MetaDataAspectTest extends UnitTestCase
 
         $file = new File(['uid' => 12], $this->storageMock);
 
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionProphecy->insert(Argument::cetera())->willReturn(1);
-        $connectionProphecy->lastInsertId(Argument::cetera())->willReturn(5);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getConnectionForTable(Argument::cetera())->willReturn($connectionProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('insert')->with(self::anything())->willReturn(1);
+        $connectionMock->method('lastInsertId')->with(self::anything())->willReturn('5');
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->onlyMethods(['findByFileUid', 'getTableFields', 'update'])
-            ->setConstructorArgs([$eventDispatcher->reveal()])
+            ->setConstructorArgs([new NoopEventDispatcher()])
             ->getMock();
         $metaDataRepositoryMock->method('findByFileUid')->willReturn([]);
         $metaDataRepositoryMock->method('getTableFields')->willReturn(['title' => 'sometype']);
@@ -213,9 +195,6 @@ class MetaDataAspectTest extends UnitTestCase
         self::assertSame(['foo' => 'bar', 'testproperty' => 'testvalue'], $metaDataAspectMock->get());
     }
 
-    /**
-     * @return array
-     */
     public function propertyDataProvider(): array
     {
         return [
