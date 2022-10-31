@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Controller\MfaSetupController;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,8 +37,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaSetupControllerTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected MfaSetupController $subject;
     protected ServerRequest $request;
 
@@ -70,7 +67,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
             $this->get(AuthenticationStyleInformation::class),
             $this->get(PageRenderer::class),
             $this->get(ExtensionConfiguration::class),
-            $this->prophesize(Logger::class)->reveal(),
+            new NullLogger(),
             $this->get(BackendViewFactory::class),
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
