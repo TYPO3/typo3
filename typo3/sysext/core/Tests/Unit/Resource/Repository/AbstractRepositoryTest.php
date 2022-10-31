@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
 use Doctrine\DBAL\Result;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -30,34 +29,21 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractRepositoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var AbstractRepository
-     */
-    protected $subject;
-
-    protected function createDatabaseMock(): \Prophecy\Prophecy\ObjectProphecy
+    protected function createDatabaseMock(): QueryBuilder&MockObject
     {
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
 
-        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-        $queryBuilderProphet->expr()->willReturn(
-            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $queryBuilderMock->method('expr')->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionMock)
         );
 
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getQueryBuilderForTable')->with(self::anything())->willReturn($queryBuilderMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
-        return $queryBuilderProphet;
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
+        return $queryBuilderMock;
     }
 
     /**
@@ -67,7 +53,8 @@ class AbstractRepositoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1316779798);
-        $this->subject->findByUid('asdf');
+        $subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
+        $subject->findByUid('asdf');
     }
 
     /**
@@ -75,16 +62,17 @@ class AbstractRepositoryTest extends UnitTestCase
      */
     public function findByUidAcceptsNumericUidInString(): void
     {
-        $statementProphet = $this->prophesize(Result::class);
-        $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn(['uid' => 123]);
+        $statementMock = $this->createMock(Result::class);
+        $statementMock->expects(self::once())->method('fetchAssociative')->willReturn(['uid' => 123]);
 
-        $queryBuilderProphet = $this->createDatabaseMock();
-        $queryBuilderProphet->select('*')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->from('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(Argument::cetera())->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
-        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderMock = $this->createDatabaseMock();
+        $queryBuilderMock->expects(self::once())->method('select')->with('*')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::once())->method('from')->with('')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::once())->method('where')->with(self::anything())->willReturn($queryBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->with(self::anything())->willReturnArgument(0);
+        $queryBuilderMock->expects(self::once())->method('executeQuery')->willReturn($statementMock);
 
-        $this->subject->findByUid('123');
+        $subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
+        $subject->findByUid('123');
     }
 }
