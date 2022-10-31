@@ -1187,4 +1187,70 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
+
+    public function pageIsRenderedForVersionedPageDataProvider(): \Generator
+    {
+        yield 'Live page with logged-in user' => [
+            'url' => 'https://website.local/en-en/welcome',
+            'pageTitle' => 'EN: Welcome',
+            'Online Page ID' => 1100,
+            'Workspace ID' => 0,
+            'Backend User ID' => 1,
+            'statusCode' => 200,
+        ];
+        yield 'Live page with logged-in user accessed even though versioned page slug was changed' => [
+            'url' => 'https://website.local/en-en/welcome',
+            'pageTitle' => 'EN: Welcome to ACME Inc',
+            'Online Page ID' => 1100,
+            'Workspace ID' => 1,
+            'Backend User ID' => 1,
+            'statusCode' => 200,
+        ];
+        yield 'Versioned page with logged-in user and modified slug' => [
+            'url' => 'https://website.local/en-en/welcome-modified',
+            'pageTitle' => 'EN: Welcome to ACME Inc',
+            'Online Page ID' => 1100,
+            'Workspace ID' => 1,
+            'Backend User ID' => 1,
+            'statusCode' => 200,
+        ];
+        yield 'Versioned page without logged-in user renders 404' => [
+            'url' => 'https://website.local/en-en/welcome-modified',
+            'pageTitle' => null,
+            'Online Page ID' => null,
+            'Workspace ID' => 1,
+            'Backend User ID' => 0,
+            'statusCode' => 404,
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider pageIsRenderedForVersionedPageDataProvider
+     */
+    public function pageIsRenderedForVersionedPage(string $url, ?string $expectedPageTitle, ?int $expectedPageId, int $workspaceId, int $backendUserId, int $expectedStatusCode): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
+                $this->buildLanguageConfiguration('FR', '/fr-fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
+            ]
+        );
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest($url)),
+            (new InternalRequestContext())
+                ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
+                ->withBackendUserId($backendUserId)
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedPageId, $responseStructure->getScopePath('page/uid'));
+        self::assertSame($expectedPageTitle, $responseStructure->getScopePath('page/title'));
+    }
 }
