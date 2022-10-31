@@ -1,9 +1,11 @@
 "pages"
-,"uid","pid","sorting","title"
-,1,0,256,"Home"
-,2,1,32,"Main Area"
-,20,2,64,"Main Area Sub 1"
-,21,2,128,"Main Area Sub 2"
-,30,21,64,"Sub Area 1"
-,31,21,128,"Sub Area 2"
-,3,0,512,"Home 2"
+,"uid","pid","sorting","title","t3ver_wsid","t3ver_oid","t3ver_state"
+,1,0,256,"Home",0,0,0
+,2,1,32,"Main Area",0,0,0
+,20,2,64,"Main Area Sub 1",0,0,0
+,21,2,128,"Main Area Sub 2",0,0,0
+,30,21,64,"Sub Area 1",0,0,0
+,31,21,128,"Sub Area 2",0,0,0
+,3,0,512,"Home 2",0,0,0
+,1003,2,512,"Main Area Sub 1 Modified",1,20,0
+,1004,2,512,"Main Area Sub 1 Modified in WS2",2,20,0

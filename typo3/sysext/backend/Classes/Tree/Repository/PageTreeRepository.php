@@ -534,9 +534,22 @@ class PageTreeRepository
 
         $searchParts = $expressionBuilder->orX();
         if (is_numeric($searchFilter) && $searchFilter > 0) {
-            $searchParts->add(
-                $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT))
-            );
+            // Ensure that the LIVE id is also found
+            if ($this->currentWorkspace > 0) {
+                $uidFilter = $expressionBuilder->or(
+                    $expressionBuilder->and(
+                        $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT)),
+                        $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    ),
+                    $expressionBuilder->and(
+                        $expressionBuilder->eq('t3ver_oid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT)),
+                        $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->currentWorkspace, Connection::PARAM_INT)),
+                    )
+                );
+            } else {
+                $uidFilter = $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT));
+            }
+            $searchParts = $searchParts->with($uidFilter);
         }
         $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
 
