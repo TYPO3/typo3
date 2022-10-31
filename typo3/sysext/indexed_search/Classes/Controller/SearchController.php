@@ -476,7 +476,7 @@ class SearchController extends ActionController
         $resultData = $row;
         $resultData['headerOnly'] = $headerOnly;
         $resultData['CSSsuffix'] = ($specRowConf['CSSsuffix'] ?? false) ? '-' . $specRowConf['CSSsuffix'] : '';
-        if ($this->multiplePagesType($row['item_type'])) {
+        if ($this->multiplePagesType($row['item_type']) && isset($row['static_page_arguments'])) {
             $dat = json_decode($row['static_page_arguments'], true);
             if (is_array($dat) && is_string($dat['key'] ?? null) && $dat['key'] !== '') {
                 $pp = explode('-', $dat['key']);
