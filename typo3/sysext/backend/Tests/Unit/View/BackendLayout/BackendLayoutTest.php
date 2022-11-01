@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendLayoutTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -52,9 +48,9 @@ class BackendLayoutTest extends UnitTestCase
      */
     public function objectIsCreated(): void
     {
-        $backendLayoutView = $this->prophesize(BackendLayoutView::class);
-        $backendLayoutView->parseStructure(Argument::any())->willReturn([]);
-        GeneralUtility::setSingletonInstance(BackendLayoutView::class, $backendLayoutView->reveal());
+        $backendLayoutView = $this->createMock(BackendLayoutView::class);
+        $backendLayoutView->method('parseStructure')->with(self::anything())->willReturn([]);
+        GeneralUtility::setSingletonInstance(BackendLayoutView::class, $backendLayoutView);
 
         $identifier = StringUtility::getUniqueId('identifier');
         $title = StringUtility::getUniqueId('title');
