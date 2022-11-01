@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -33,29 +31,18 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LoginControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function checkRedirectRedirectsIfLoginIsInProgressAndUserWasFound(): void
     {
-        $GLOBALS['LANG'] = ($this->prophesize(LanguageService::class))->reveal();
-        $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $authenticationProphecy->getTSConfig()->willReturn([
-            'auth.' => [
-                'BE.' => [
-                    'redirectToURL' => 'http://example.com',
-                ],
-            ],
-        ]);
-        $authenticationProphecy->writeUC()->willReturn();
-        $authenticationProphecy->getSessionData('formProtectionSessionToken')->willReturn('foo');
-        $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($this->createMock(BackendFormProtection::class));
@@ -64,7 +51,7 @@ class LoginControllerTest extends UnitTestCase
             ['isLoginInProgress', 'redirectToUrl'],
             [
                 new Typo3Information(),
-                $this->createMock(EventDispatcherInterface::class),
+                new NoopEventDispatcher(),
                 $this->createMock(PageRenderer::class),
                 $this->createMock(UriBuilder::class),
                 new Features(),
@@ -83,8 +70,8 @@ class LoginControllerTest extends UnitTestCase
         $loginControllerMock->expects(self::once())->method('redirectToUrl');
         $loginControllerMock->_call(
             'checkRedirect',
-            $this->prophesize(ServerRequest::class)->reveal(),
-            $this->prophesize(PageRenderer::class)->reveal()
+            new ServerRequest(),
+            $this->createMock(PageRenderer::class)
         );
     }
 
@@ -93,7 +80,7 @@ class LoginControllerTest extends UnitTestCase
      */
     public function checkRedirectDoesNotRedirectIfNoUserIsFound(): void
     {
-        $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $loginControllerMock = $this->getAccessibleMock(
             LoginController::class,
             ['redirectToUrl'],
@@ -107,8 +94,8 @@ class LoginControllerTest extends UnitTestCase
         $loginControllerMock->expects(self::never())->method('redirectToUrl');
         $loginControllerMock->_call(
             'checkRedirect',
-            $this->prophesize(ServerRequest::class)->reveal(),
-            $this->prophesize(PageRenderer::class)->reveal()
+            new ServerRequest(),
+            $this->createMock(PageRenderer::class)
         );
     }
 }
