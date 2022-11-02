@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\TestSanitizerBuilder;
@@ -318,7 +317,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ->withInstructions(
                 [
                     $this->createTypoLinkInstruction($instructions, $linkText),
-                    (new TypoScriptInstruction(TemplateService::class))
+                    (new TypoScriptInstruction())
                         ->withTypoScript([
                             'config.' => [
                                 'ATagParams' => $globalATagParams,
@@ -678,7 +677,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
 
     private function createRecordLinksInstruction(array $typoLink): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'config.' => [
                     'recordLinks.' => [
@@ -692,7 +691,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
 
     private function createParseFuncInstruction(array $parseFunc): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'lib.' => [
                     'parseFunc.' => array_replace_recursive(

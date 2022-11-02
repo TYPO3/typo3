@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
@@ -440,7 +439,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    (new TypoScriptInstruction(TemplateService::class))
+                    (new TypoScriptInstruction())
                         ->withTypoScript([
                             'config.' => [
                                 'typolinkLinkAccessRestrictedPages' => $loginPageId,
@@ -490,7 +489,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    (new TypoScriptInstruction(TemplateService::class))
+                    (new TypoScriptInstruction())
                         ->withTypoScript([
                             'config.' => [
                                 'typolinkLinkAccessRestrictedPages' => 'NONE',

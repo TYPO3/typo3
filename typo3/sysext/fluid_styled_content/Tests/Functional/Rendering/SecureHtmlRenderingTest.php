@@ -18,7 +18,6 @@ namespace TYPO3\CMS\FluidStyledContent\Tests\Functional\Rendering;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
@@ -289,7 +288,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 
     private function createDefaultInstruction(): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'config.' => [
                     'no_cache' => 1,
@@ -308,7 +307,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     private function createTextContentObjectWithDefaultParseFuncRteInstruction(string $value): TypoScriptInstruction
     {
         // default configuration as shipped in ext:fluid_styled_content
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'page.' => [
                     '10' => 'TEXT',
@@ -325,7 +324,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         // basically considered "insecure setup"
         // + no explicit htmlSanitize
         // + no HTMLparser + HTMLparser.htmlSpecialChars
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'page.' => [
                     '10' => 'TEXT',
@@ -363,7 +362,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 
     private function createDisableHtmlSanitizeInstruction(): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'lib.' => [
                     'parseFunc_RTE.' => [
@@ -375,7 +374,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 
     private function createFluidTemplateContentObject(string $type, string $payload): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'page.' => [
                     '10' => 'FLUIDTEMPLATE',

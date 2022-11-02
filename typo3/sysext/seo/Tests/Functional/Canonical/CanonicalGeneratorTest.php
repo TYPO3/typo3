@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
 
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -152,7 +151,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
 
     private function buildPageTypoScript(): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction(TemplateService::class))
+        return (new TypoScriptInstruction())
             ->withTypoScript([
                 'page' => 'PAGE',
                 'page.' => [
