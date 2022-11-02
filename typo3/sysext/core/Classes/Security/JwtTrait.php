@@ -56,38 +56,13 @@ trait JwtTrait
 
     private static function encodeHashSignedJwt(array $payload, Key $key, SecretIdentifier $identifier = null): string
     {
-        // @todo work-around until https://github.com/firebase/php-jwt/pull/446/files is merged
-        $errorLevel = self::ignoreJwtPhp82Deprecations();
-
         $keyId = $identifier !== null ? json_encode($identifier) : null;
-        try {
-            $jwt = JWT::encode($payload, $key->getKeyMaterial(), self::getDefaultSigningAlgorithm(), $keyId);
-        } catch(\Exception $e) {
-            throw $e;
-        } finally {
-            if (is_int($errorLevel)) {
-                error_reporting($errorLevel);
-            }
-        }
-
-        return $jwt;
+        return JWT::encode($payload, $key->getKeyMaterial(), self::getDefaultSigningAlgorithm(), $keyId);
     }
 
     private static function decodeJwt(string $jwt, Key $key, bool $associative = false): \stdClass|array
     {
-        // @todo work-around until https://github.com/firebase/php-jwt/pull/446/files is merged
-        $errorLevel = self::ignoreJwtPhp82Deprecations();
-
-        try {
-            $payload = JWT::decode($jwt, $key);
-        } catch(\Exception $e) {
-            throw $e;
-        } finally {
-            if (is_int($errorLevel)) {
-                error_reporting($errorLevel);
-            }
-        }
-
+        $payload = JWT::decode($jwt, $key);
         return $associative ? json_decode(json_encode($payload), true) : $payload;
     }
 
@@ -102,15 +77,5 @@ trait JwtTrait
             return null;
         }
         return $header->{$property} ?? null;
-    }
-
-    private static function ignoreJwtPhp82Deprecations(): ?int
-    {
-        $php82 = version_compare(PHP_VERSION, '8.1.999', '>');
-        if (!$php82) {
-            return null;
-        }
-        $errorLevel = error_reporting();
-        return error_reporting($errorLevel ^ E_DEPRECATED);
     }
 }
