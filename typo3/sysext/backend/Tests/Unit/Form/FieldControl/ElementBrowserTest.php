@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldControl;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FieldControl\ElementBrowser;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -25,15 +24,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ElementBrowserTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function renderTrimsAllowedValuesFromConfigSection(): void
     {
-        $nodeFactory = $this->prophesize(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
+        $nodeFactory = $this->createMock(NodeFactory::class);
+        $elementBrowser = new ElementBrowser($nodeFactory, [
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'tableName' => 'tt_content',
@@ -58,8 +55,8 @@ class ElementBrowserTest extends UnitTestCase
      */
     public function renderTrimsAllowedValues(): void
     {
-        $nodeFactory = $this->prophesize(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
+        $nodeFactory = $this->createMock(NodeFactory::class);
+        $elementBrowser = new ElementBrowser($nodeFactory, [
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'tableName' => 'tt_content',
@@ -84,8 +81,8 @@ class ElementBrowserTest extends UnitTestCase
      */
     public function renderResolvesEntryPoint(array $config, string $expected): void
     {
-        $nodeFactory = $this->prophesize(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
+        $nodeFactory = $this->createMock(NodeFactory::class);
+        $elementBrowser = new ElementBrowser($nodeFactory, [
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'effectivePid' => 123,
