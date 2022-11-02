@@ -31,9 +31,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class FormProtectionFactoryTest extends UnitTestCase
 {
     protected FormProtectionFactory $subject;

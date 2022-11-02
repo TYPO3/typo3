@@ -40,6 +40,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendUserAuthenticationTest extends UnitTestCase
 {
+    public function tearDown(): void
+    {
+        FormProtectionFactory::purgeInstances();
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
