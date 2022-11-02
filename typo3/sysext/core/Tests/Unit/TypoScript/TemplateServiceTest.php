@@ -18,9 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -37,31 +34,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TemplateServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected ?TemplateService $templateService;
-
-    /**
-     * @var MockObject|AccessibleObjectInterface|TemplateService
-     */
-    protected $templateServiceMock;
-
+    protected MockObject&AccessibleObjectInterface&TemplateService $templateServiceMock;
     protected ?PackageManager $backupPackageManager;
+    protected MockObject&PackageManager $packageManagerMock;
 
-    /** @var ObjectProphecy<PackageManager> */
-    protected ObjectProphecy $packageManagerProphecy;
-
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['SIM_ACCESS_TIME'] = time();
         $GLOBALS['ACCESS_TIME'] = time();
-        $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $frontendController = $this->prophesize(TypoScriptFrontendController::class);
-        $frontendController->getSite()->willReturn(new Site('dummy', 13, [
+        $this->packageManagerMock = $this->createMock(PackageManager::class);
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $frontendControllerMock->method('getSite')->willReturn(new Site('dummy', 13, [
             'base' => 'https://example.com',
             'settings' => [
                 'random' => 'value',
@@ -80,15 +65,12 @@ class TemplateServiceTest extends UnitTestCase
         ]));
         $this->templateService = new TemplateService(
             new Context(),
-            $this->packageManagerProphecy->reveal(),
-            $frontendController->reveal()
+            $this->packageManagerMock,
+            $frontendControllerMock
         );
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
-    /**
-     * Tear down
-     */
     public function tearDown(): void
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
@@ -100,12 +82,12 @@ class TemplateServiceTest extends UnitTestCase
      */
     public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested(): void
     {
-        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getQueryBuilderForTable')->with(self::anything())->willReturn($queryBuilderMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
-        $this->packageManagerProphecy->getActivePackages()->shouldNotBeCalled();
+        $this->packageManagerMock->expects(self::never())->method('getActivePackages');
 
         $this->templateService->runThroughTemplates([], 0);
         self::assertNotContains(
@@ -119,10 +101,10 @@ class TemplateServiceTest extends UnitTestCase
      */
     public function extensionStaticsAreProcessedIfExplicitlyRequested(): void
     {
-        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getQueryBuilderForTable')->with(self::anything())->willReturn($queryBuilderMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         $mockPackage = $this->getMockBuilder(Package::class)
             ->onlyMethods(['getPackagePath', 'getPackageKey'])
@@ -138,7 +120,7 @@ class TemplateServiceTest extends UnitTestCase
         $mockPackageManager->method('isPackageActive')->willReturn(true);
         $mockPackageManager->method('getPackage')->willReturn($mockPackage);
         ExtensionManagementUtility::setPackageManager($mockPackageManager);
-        $this->packageManagerProphecy->getActivePackages()->willReturn(['core' => $mockPackage]);
+        $this->packageManagerMock->method('getActivePackages')->willReturn(['core' => $mockPackage]);
 
         $this->templateService->setProcessExtensionStatics(true);
         $this->templateService->runThroughTemplates([], 0);
