@@ -17,25 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SuggestWizardControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound(): void
     {
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getParsedBody()->willReturn([
+        $request = (new ServerRequest())->withParsedBody([
             'value' => 'theSearchValue',
             'table' => 'aTable',
             'field' => 'aField',
@@ -63,13 +59,13 @@ class SuggestWizardControllerTest extends UnitTestCase
                 ],
             ],
         ];
-        $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
-        $flexFormToolsProphecy->parseDataStructureByIdentifier($dataStructureIdentifier)->willReturn($dataStructure);
+        $flexFormToolsMock = $this->createMock(FlexFormTools::class);
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsMock);
+        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier)->willReturn($dataStructure);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal());
+        (new SuggestWizardController())->searchAction($request);
     }
 
     /**
@@ -78,8 +74,7 @@ class SuggestWizardControllerTest extends UnitTestCase
     public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound(): void
     {
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getParsedBody()->willReturn([
+        $request = (new ServerRequest())->withParsedBody([
             'value' => 'theSearchValue',
             'table' => 'aTable',
             'field' => 'aField',
@@ -107,13 +102,13 @@ class SuggestWizardControllerTest extends UnitTestCase
                 ],
             ],
         ];
-        $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
-        $flexFormToolsProphecy->parseDataStructureByIdentifier($dataStructureIdentifier)->willReturn($dataStructure);
+        $flexFormToolsMock = $this->createMock(FlexFormTools::class);
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsMock);
+        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier)->willReturn($dataStructure);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal());
+        (new SuggestWizardController())->searchAction($request);
     }
 
     /**
