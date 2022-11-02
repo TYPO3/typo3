@@ -17,24 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormSelectTreeAjaxControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function fetchDataActionThrowsExceptionIfTcaOfTableDoesNotExist(): void
     {
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386729);
-        (new FormSelectTreeAjaxController())->fetchDataAction($requestProphecy->reveal());
+        (new FormSelectTreeAjaxController())->fetchDataAction(new ServerRequest());
     }
 
     /**
@@ -42,14 +38,13 @@ class FormSelectTreeAjaxControllerTest extends UnitTestCase
      */
     public function fetchDataActionThrowsExceptionIfTcaOfTableFieldDoesNotExist(): void
     {
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $requestProphecy->getQueryParams()->shouldBeCalled()->willReturn([
+        $serverRequest = (new ServerRequest())->withQueryParams([
             'tableName' => 'aTable',
             'fieldName' => 'aField',
         ]);
         $GLOBALS['TCA']['aTable']['columns'] = [];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386990);
-        (new FormSelectTreeAjaxController())->fetchDataAction($requestProphecy->reveal());
+        (new FormSelectTreeAjaxController())->fetchDataAction($serverRequest);
     }
 }
