@@ -213,6 +213,9 @@ services:
         method: 'warmupCaches'
         event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
 
+  TYPO3\CMS\Core\Locking\ResourceMutex:
+    public: true
+
   TYPO3\CMS\Core\Page\PageRenderer:
     arguments:
       $assetsCache: '@cache.assets'

@@ -45,9 +45,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
-use TYPO3\CMS\Core\Locking\LockFactory;
-use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Locking\ResourceMutex;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
@@ -453,9 +451,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected ?LanguageService $languageService = null;
 
     /**
-     * @var LockingStrategyInterface[]
+     * @internal Internal locking. May move to a middleware soon.
      */
-    protected array $locks = [];
+    public ?ResourceMutex $lock = null;
+
     protected ?PageRenderer $pageRenderer = null;
 
     /**
@@ -1345,6 +1344,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // obviously the page id.
         if (!$this->no_cache) {
             $this->newHash = $this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList);
+            $this->lock = GeneralUtility::makeInstance(ResourceMutex::class);
             if ($this->shouldAcquireCacheData($request)) {
                 // Try to get a page cache row.
                 $this->getTimeTracker()->push('Cache Row');
@@ -1357,7 +1357,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // a page cache entry, which we can use.
                     // To handle the second case - if our process had to wait for another one creating the content for us - we
                     // simply query the page cache again to see if there is a page cache now.
-                    $hadToWaitForLock = $this->acquireLock($this->newHash);
+                    $hadToWaitForLock = $this->lock->acquireLock('pages', $this->newHash);
                     // From this point on we're the only one working on that page.
                     if ($hadToWaitForLock) {
                         // Query the cache again to see if the data is there meanwhile: We did not get the lock
@@ -1383,7 +1383,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->getTimeTracker()->pull();
             } else {
                 // User forced page cache rebuilding. Get a lock for the page content so other processes can't interfere.
-                $this->acquireLock($this->newHash);
+                $this->lock->acquireLock('pages', $this->newHash);
             }
         }
 
@@ -2709,76 +2709,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Acquire the page specific lock
-     *
-     * The schematics here is:
-     * - First acquire an access lock. This is using the type of the requested lock as key.
-     *   Since the number of types is rather limited we can use the type as key as it will only
-     *   eat up a limited number of lock resources on the system (files, semaphores)
-     * - Second, we acquire the actual lock (named page lock). We can be sure we are the only process at this
-     *   very moment, hence we either get the lock for the given key or we get an error as we request a non-blocking mode.
-     *
-     * Interleaving two locks is extremely important, because the actual page lock uses a hash value as key (see callers
-     * of this function). If we would simply employ a normal blocking lock, we would get a potentially unlimited
-     * (number of pages at least) number of different locks. Depending on the available locking methods on the system
-     * we might run out of available resources. (e.g. maximum limit of semaphores is a system setting and applies
-     * to the whole system)
-     * We therefore must make sure that page locks are destroyed again if they are not used anymore, such that
-     * we never use more locking resources than parallel requests to different pages (hashes).
-     * In order to ensure this, we need to guarantee that no other process is waiting on a page lock when
-     * the process currently having the lock on the page lock is about to release the lock again.
-     * This can only be achieved by using a non-blocking mode, such that a process is never put into wait state
-     * by the kernel, but only checks the availability of the lock. The access lock is our guard to be sure
-     * that no two processes are at the same time releasing/destroying a page lock, whilst the other one tries to
-     * get a lock for this page lock.
-     * The only drawback of this implementation is that we basically have to poll the availability of the page lock.
-     *
-     * Note that the access lock resources are NEVER deleted/destroyed, otherwise the whole thing would be broken.
-     *
-     * @param string $key
-     * @return bool True if we did not get the lock immediately and had to wait
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @internal
-     */
-    protected function acquireLock(string $key): bool
-    {
-        $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
-        $this->locks['accessLock'] = $lockFactory->createLocker('pages');
-        $this->locks['pageLock'] = $lockFactory->createLocker(
-            $key,
-            LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
-        );
-        $hadToWaitForLock = false;
-        do {
-            if (!$this->locks['accessLock']->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "pages".', 1294586098);
-            }
-            try {
-                $locked = $this->locks['pageLock']->acquire(
-                    LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
-                );
-            } catch (LockAcquireWouldBlockException $e) {
-                // Somebody else has the lock, we keep waiting.
-                // First release the access lock, it will be acquired in next iteration again.
-                $this->locks['accessLock']->release();
-                // Mark "We had to wait".
-                $hadToWaitForLock = true;
-                // Now lets make a short break (20ms) until we try again, since
-                // the page generation by the lock owner will take a while.
-                usleep(20000);
-                continue;
-            }
-            $this->locks['accessLock']->release();
-            if ($locked) {
-                break;
-            }
-            throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1460975877);
-        } while (true);
-        return $hadToWaitForLock;
-    }
-
-    /**
      * Release the page specific lock.
      *
      * @throws \InvalidArgumentException
@@ -2787,16 +2717,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function releaseLocks(): void
     {
-        if ($this->locks['accessLock'] ?? false) {
-            if (!$this->locks['accessLock']->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "pages".', 1460975902);
-            }
-            $this->locks['pageLock']->release();
-            $this->locks['pageLock']->destroy();
-            $this->locks['pageLock'] = null;
-            $this->locks['accessLock']->release();
-            $this->locks['accessLock'] = null;
-        }
+        $this->lock?->releaseLock('pages');
     }
 
     /**

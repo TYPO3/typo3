@@ -137,6 +137,10 @@ class LockFactoryTest extends UnitTestCase
         $this->expectException(LockCreateException::class);
         $this->expectExceptionCode(1425990190);
 
-        $this->mockFactory->createLocker('id', 32);
+        $this->mockFactory->_set('lockingStrategy', []);
+        $this->mockFactory->createLocker(
+            'id',
+            LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+        );
     }
 }

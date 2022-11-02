@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -24,21 +26,20 @@ use TYPO3\CMS\Core\SingletonInterface;
 class LockFactory implements SingletonInterface
 {
     /**
-     * @var bool[]
+     * @var array<class-string, bool>
      */
-    protected $lockingStrategy = [
+    protected array $lockingStrategy = [
         SemaphoreLockStrategy::class => true,
         FileLockStrategy::class => true,
         SimpleLockStrategy::class => true,
     ];
 
     /**
-     * Add a locking method
+     * Add a locking method.
      *
-     * @param string $className
-     * @throws \InvalidArgumentException
+     * @param class-string $className
      */
-    public function addLockingStrategy($className)
+    public function addLockingStrategy(string $className): void
     {
         $interfaces = class_implements($className);
         if (isset($interfaces[LockingStrategyInterface::class])) {
@@ -49,11 +50,11 @@ class LockFactory implements SingletonInterface
     }
 
     /**
-     * Remove a locking method
+     * Remove a locking method.
      *
-     * @param string $className
+     * @param class-string $className
      */
-    public function removeLockingStrategy($className)
+    public function removeLockingStrategy(string $className): void
     {
         unset($this->lockingStrategy[$className]);
     }
@@ -62,11 +63,11 @@ class LockFactory implements SingletonInterface
      * Get best matching locking method
      *
      * @param string $id ID to identify this lock in the system
-     * @param int $capabilities LockingStrategyInterface::LOCK_CAPABILITY_* elements combined with bit-wise OR
+     * @param int-mask-of<LockingStrategyInterface::LOCK_CAPABILITY_*> $capabilities LockingStrategyInterface::LOCK_CAPABILITY_* elements combined with bit-wise OR
      * @return LockingStrategyInterface Class name for a locking method
      * @throws LockCreateException if no locker could be created with the requested capabilities
      */
-    public function createLocker($id, $capabilities = LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE)
+    public function createLocker(string $id, int $capabilities = LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE): LockingStrategyInterface
     {
         $queue = new \SplPriorityQueue();
 
