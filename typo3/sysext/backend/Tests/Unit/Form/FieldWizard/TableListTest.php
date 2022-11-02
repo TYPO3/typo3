@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldWizard;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FieldWizard\TableList;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -30,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TableListTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      * @dataProvider renderResolvesEntryPointDataProvider
@@ -39,19 +35,16 @@ class TableListTest extends UnitTestCase
     public function renderResolvesEntryPoint(array $config, array $expected): void
     {
         $GLOBALS['TCA'] = [];
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturn('');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->with(self::anything())->willReturn('icon html');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
 
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconProphecy->render(Argument::any())->willReturn('icon html');
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-
-        $nodeFactory = $this->prophesize(NodeFactory::class);
-        $tableList = new TableList($nodeFactory->reveal(), [
+        $nodeFactory = $this->createMock(NodeFactory::class);
+        $tableList = new TableList($nodeFactory, [
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'effectivePid' => 123,
