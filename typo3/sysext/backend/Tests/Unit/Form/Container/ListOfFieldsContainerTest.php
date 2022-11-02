@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Container\ListOfFieldsContainer;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -26,16 +24,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ListOfFieldsContainerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function renderDelegatesShowitemField(): void
     {
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerProphecy->render(Argument::cetera())->shouldBeCalled()->willReturn('');
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
 
         $input = [
             'tableName' => 'aTable',
@@ -58,8 +54,8 @@ class ListOfFieldsContainerTest extends UnitTestCase
             'aField;;',
         ];
 
-        $nodeFactoryProphecy->create($expected)->willReturn($paletteAndSingleContainerProphecy->reveal());
-        (new ListOfFieldsContainer($nodeFactoryProphecy->reveal(), $input))->render();
+        $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
+        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
     }
 
     /**
@@ -67,9 +63,9 @@ class ListOfFieldsContainerTest extends UnitTestCase
      */
     public function renderDelegatesShowitemFieldAndRemovesDuplicates(): void
     {
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerProphecy->render(Argument::cetera())->shouldBeCalled()->willReturn('');
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
 
         $input = [
             'tableName' => 'aTable',
@@ -92,8 +88,8 @@ class ListOfFieldsContainerTest extends UnitTestCase
             'bField;bLabel;',
         ];
 
-        $nodeFactoryProphecy->create($expected)->willReturn($paletteAndSingleContainerProphecy->reveal());
-        (new ListOfFieldsContainer($nodeFactoryProphecy->reveal(), $input))->render();
+        $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
+        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
     }
 
     /**
@@ -101,9 +97,9 @@ class ListOfFieldsContainerTest extends UnitTestCase
      */
     public function renderDelegatesPaletteFields(): void
     {
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerProphecy->render(Argument::cetera())->shouldBeCalled()->willReturn('');
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
 
         $input = [
             'tableName' => 'aTable',
@@ -134,8 +130,8 @@ class ListOfFieldsContainerTest extends UnitTestCase
             'bField;bLabel;',
         ];
 
-        $nodeFactoryProphecy->create($expected)->willReturn($paletteAndSingleContainerProphecy->reveal());
-        (new ListOfFieldsContainer($nodeFactoryProphecy->reveal(), $input))->render();
+        $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
+        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
     }
 
     /**
@@ -143,9 +139,9 @@ class ListOfFieldsContainerTest extends UnitTestCase
      */
     public function renderRemovesNotExistingTypesField(): void
     {
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerProphecy->render(Argument::cetera())->shouldBeCalled()->willReturn('');
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
 
         $input = [
             'tableName' => 'aTable',
@@ -172,7 +168,7 @@ class ListOfFieldsContainerTest extends UnitTestCase
             'aField;;',
         ];
 
-        $nodeFactoryProphecy->create($expected)->willReturn($paletteAndSingleContainerProphecy->reveal());
-        (new ListOfFieldsContainer($nodeFactoryProphecy->reveal(), $input))->render();
+        $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
+        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
     }
 }
