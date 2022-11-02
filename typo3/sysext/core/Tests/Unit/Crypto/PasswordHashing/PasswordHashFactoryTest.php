@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -28,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PasswordHashFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -88,9 +85,9 @@ class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getThrowsExceptionIfClassThatHandlesAHashIsNotAvailable(): void
     {
-        $phpassProphecy = $this->prophesize(PhpassPasswordHash::class);
-        GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassProphecy->reveal());
-        $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        $phpassPasswordHashMock = $this->createMock(PhpassPasswordHash::class);
+        $phpassPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533818591);
         (new PasswordHashFactory())->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.', 'BE');
@@ -101,11 +98,8 @@ class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getThrowsExceptionIfClassThatHandlesAHashSaysNoToHash(): void
     {
-        $phpassProphecy = $this->prophesize(PhpassPasswordHash::class);
-        GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassProphecy->reveal());
-        $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
-        $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(false);
+        GeneralUtility::addInstance(PhpassPasswordHash::class, new PhpassPasswordHash());
+        $hash = 'FOO$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533818591);
         (new PasswordHashFactory())->get($hash, 'BE');
@@ -133,13 +127,10 @@ class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getReturnsInstanceOfHashClassThatHandlesHash(): void
     {
-        $phpassProphecy = $this->prophesize(PhpassPasswordHash::class);
-        $phpassRevelation = $phpassProphecy->reveal();
-        GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassRevelation);
-        $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        $phpassPasswordHash = new PhpassPasswordHash();
+        GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassPasswordHash);
         $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
-        $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(true);
-        self::assertSame($phpassRevelation, (new PasswordHashFactory())->get($hash, 'BE'));
+        self::assertSame($phpassPasswordHash, (new PasswordHashFactory())->get($hash, 'BE'));
     }
 
     /**
@@ -223,10 +214,10 @@ class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotAvailable(): void
     {
+        $argon2iPasswordHashMock = $this->createMock(Argon2iPasswordHash::class);
+        $argon2iPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iPasswordHash::class;
-        $argonProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonProphecy->reveal());
-        $argonProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argon2iPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533822084);
         (new PasswordHashFactory())->getDefaultHashInstance('BE');
