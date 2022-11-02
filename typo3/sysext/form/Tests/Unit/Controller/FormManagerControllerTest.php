@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -32,7 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormManagerControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     protected bool $resetSingletonInstances = true;
 

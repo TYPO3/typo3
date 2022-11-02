@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -25,12 +26,10 @@ use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * List utility test
- */
 class ListUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var ListUtility
      */

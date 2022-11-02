@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -27,7 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConfigurationServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();

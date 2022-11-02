@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
@@ -27,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormDefinitionArrayConverterTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     protected bool $resetSingletonInstances = true;
 

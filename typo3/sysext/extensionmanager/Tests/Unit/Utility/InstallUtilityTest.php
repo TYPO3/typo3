@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -37,7 +38,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class InstallUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var string
      */

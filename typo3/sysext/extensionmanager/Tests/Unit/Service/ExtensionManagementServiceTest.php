@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -29,12 +30,10 @@ use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class ExtensionManagementServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $managementService;
     protected $dependencyUtilityProphecy;
     protected $installUtilityProphecy;
