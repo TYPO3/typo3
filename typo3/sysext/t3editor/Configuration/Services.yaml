@@ -11,3 +11,6 @@ services:
     tags:
       - name: event.listener
         identifier: 'typo3-t3editor/initialize-t3editor-in-edit-file-form'
+
+  TYPO3\CMS\T3editor\Controller\CodeCompletionController:
+    tags: ['backend.controller']

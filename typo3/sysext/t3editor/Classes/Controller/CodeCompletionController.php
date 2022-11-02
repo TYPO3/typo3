@@ -22,22 +22,33 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Code completion for t3editor
+ *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class CodeCompletionController
 {
+    public function __construct(
+        private readonly SysTemplateRepository $sysTemplateRepository,
+        private readonly TreeBuilder $treeBuilder,
+        private readonly LossyTokenizer $lossyTokenizer,
+        private readonly IncludeTreeTraverser $treeTraverser,
+    ) {
+    }
+
     /**
      * Loads all templates up to a given page id (walking the rootline) and
-     * cleans parts that are not required for the t3editor codecompletion.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * cleans parts that are not required for the t3editor code-completion.
      */
     public function loadCompletions(ServerRequestInterface $request): ResponseInterface
     {
@@ -51,39 +62,35 @@ class CodeCompletionController
             return new HtmlResponse($this->getLanguageService()->sL('LLL:EXT:t3editor/Resources/Private/Language/locallang.xlf:pageIDInteger'), 500);
         }
         // Fetch the templates
-        return new JsonResponse($this->getMergedTemplates($pageId));
+        return new JsonResponse($this->getMergedTemplates($pageId, $request));
     }
 
     /**
      * Gets merged templates by walking the rootline to a given page id.
+     * This is loaded once via ajax when a t3editor in typoscript mode is fired.
+     * JS then knows the object types and can auto-complete on CTRL+space.
      *
-     * @todo oliver@typo3.org: Refactor this method and comment what's going on there
-     * @param int $pageId
      * @return array Setup part of merged template records
      */
-    protected function getMergedTemplates($pageId)
+    protected function getMergedTemplates(int $pageId, ServerRequestInterface $request): array
     {
-        $tsParser = GeneralUtility::makeInstance(TemplateService::class);
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-        // This generates the constants/config + hierarchy info for the template.
-        $tsParser->runThroughTemplates($rootLine);
-        // ts-setup & ts-constants of the currently edited template should not be included
-        // therefore we have to delete the last template from the stack
-        array_pop($tsParser->config);
-        array_pop($tsParser->constants);
-        $tsParser->generateConfig();
-        $result = $this->treeWalkCleanup($tsParser->setup);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
+        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->lossyTokenizer, $site);
+        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $this->treeTraverser->addVisitor($setupAstBuilderVisitor);
+        $this->treeTraverser->traverse($setupIncludeTree);
+        $setupAst = $setupAstBuilderVisitor->getAst();
+        $result = $this->treeWalkCleanup($setupAst->toArray());
         return $result;
     }
 
     /**
-     * Walks through a tree of TypoScript configuration and cleans it up.
-     *
-     * @TODO oliver@typo3.org: Define and comment why this is necessary and exactly happens below
-     * @param array $treeBranch TypoScript configuration or sub branch of it
-     * @return array Cleaned TypoScript branch
+     * Walks through a tree of TypoScript configuration and prepares it for JS.
      */
-    private function treeWalkCleanup(array $treeBranch)
+    private function treeWalkCleanup(array $treeBranch): array
     {
         $cleanedTreeBranch = [];
         foreach ($treeBranch as $key => $value) {
