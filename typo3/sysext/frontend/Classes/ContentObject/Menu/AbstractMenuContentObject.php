@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
@@ -134,7 +135,7 @@ abstract class AbstractMenuContentObject
     protected $menuArr;
 
     /**
-     * @var string
+     * @var string Unused
      */
     protected $hash;
 
@@ -405,26 +406,7 @@ abstract class AbstractMenuContentObject
         }
         // Setting number of menu items
         $frontendController->register['count_menuItems'] = count($this->menuArr);
-        $this->hash = md5(
-            json_encode($this->menuArr) .
-            json_encode($this->mconf) .
-            json_encode($frontendController->config['rootLine'] ?? []) .
-            json_encode($this->MP_array)
-        );
-        // Get the cache timeout:
-        if ($this->conf['cache_period'] ?? false) {
-            $cacheTimeout = $this->conf['cache_period'];
-        } else {
-            $cacheTimeout = $frontendController->get_cache_timeout();
-        }
-        $cache = $this->getCache();
-        $cachedData = $cache->get($this->hash);
-        if (!is_array($cachedData)) {
-            $this->generate();
-            $cache->set($this->hash, $this->result, ['ident_MENUDATA'], (int)$cacheTimeout);
-        } else {
-            $this->result = $cachedData;
-        }
+        $this->generate();
         // End showAccessRestrictedPages
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
             // RESTORING where_groupAccess
@@ -1756,26 +1738,17 @@ abstract class AbstractMenuContentObject
         return GeneralUtility::makeInstance(Context::class)->getAspect('language');
     }
 
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    protected function getCache()
+    protected function getCache(): FrontendInterface
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    protected function getRuntimeCache()
+    protected function getRuntimeCache(): FrontendInterface
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
