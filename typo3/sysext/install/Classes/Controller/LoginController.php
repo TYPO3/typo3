@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Install\Service\EnableFileService;
@@ -40,6 +41,8 @@ class LoginController extends AbstractController
     public function showEnableInstallToolFileAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
+        $path = str_replace(Environment::getPublicPath() . '/', '', EnableFileService::getBestLocationForInstallToolEnableFile());
+        $view->assign('enableInstallToolPath', $path);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Login/ShowEnableInstallToolFile'),

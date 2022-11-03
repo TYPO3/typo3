@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class EnableFileService
 {
     /**
-     * @var string Relative path to ENABLE_INSTALL_TOOL file
+     * @var string file name of the ENABLE_INSTALL_TOOL file
      */
-    public const INSTALL_TOOL_ENABLE_FILE_PATH = 'typo3conf/ENABLE_INSTALL_TOOL';
+    public const INSTALL_TOOL_ENABLE_FILE_PATH = 'ENABLE_INSTALL_TOOL';
 
     /**
      * @var string Relative path to  FIRST_INSTALL file
@@ -39,10 +39,7 @@ class EnableFileService
      */
     public const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
 
-    /**
-     * @return bool
-     */
-    public static function isFirstInstallAllowed()
+    public static function isFirstInstallAllowed(): bool
     {
         $files = self::getFirstInstallFilePaths();
         if (!empty($files)) {
@@ -53,10 +50,8 @@ class EnableFileService
 
     /**
      * Creates the INSTALL_TOOL_ENABLE file
-     *
-     * @return bool
      */
-    public static function createInstallToolEnableFile()
+    public static function createInstallToolEnableFile(): bool
     {
         $installEnableFilePath = self::getInstallToolEnableFilePath();
         if (!is_file($installEnableFilePath)) {
@@ -71,20 +66,16 @@ class EnableFileService
 
     /**
      * Removes the INSTALL_TOOL_ENABLE file
-     *
-     * @return bool
      */
-    public static function removeInstallToolEnableFile()
+    public static function removeInstallToolEnableFile(): bool
     {
         return unlink(self::getInstallToolEnableFilePath());
     }
 
     /**
      * Removes the FIRST_INSTALL file
-     *
-     * @return bool
      */
-    public static function removeFirstInstallFile()
+    public static function removeFirstInstallFile(): bool
     {
         $result = true;
         $files = self::getFirstInstallFilePaths();
@@ -96,20 +87,16 @@ class EnableFileService
 
     /**
      * Checks if the install tool file exists
-     *
-     * @return bool
      */
-    public static function installToolEnableFileExists()
+    public static function installToolEnableFileExists(): bool
     {
         return @is_file(self::getInstallToolEnableFilePath());
     }
 
     /**
      * Checks if the install tool file exists
-     *
-     * @return bool
      */
-    public static function checkInstallToolEnableFile()
+    public static function checkInstallToolEnableFile(): bool
     {
         if (!self::installToolEnableFileExists()) {
             return false;
@@ -126,10 +113,8 @@ class EnableFileService
 
     /**
      * Checks if the install tool file should be kept
-     *
-     * @return bool
      */
-    public static function isInstallToolEnableFilePermanent()
+    public static function isInstallToolEnableFilePermanent(): bool
     {
         if (self::installToolEnableFileExists()) {
             $content = (string)@file_get_contents(self::getInstallToolEnableFilePath());
@@ -142,10 +127,8 @@ class EnableFileService
 
     /**
      * Checks if the lifetime of the install tool file is expired
-     *
-     * @return bool
      */
-    public static function installToolEnableFileLifetimeExpired()
+    public static function installToolEnableFileLifetimeExpired(): bool
     {
         if (time() - @filemtime(self::getInstallToolEnableFilePath()) > self::INSTALL_TOOL_ENABLE_FILE_LIFETIME) {
             return true;
@@ -171,22 +154,37 @@ class EnableFileService
         }
     }
 
-    /**
-     * Returns the path to the INSTALL_TOOL_ENABLE file
-     *
-     * @return string
-     */
-    protected static function getInstallToolEnableFilePath()
+    public static function getBestLocationForInstallToolEnableFile(): string
     {
-        return Environment::getPublicPath() . '/' . self::INSTALL_TOOL_ENABLE_FILE_PATH;
+        $possibleLocations = [
+            'default' => Environment::getVarPath() . '/transient/' . self::INSTALL_TOOL_ENABLE_FILE_PATH,
+            'permanent' => Environment::getConfigPath() . '/' . self::INSTALL_TOOL_ENABLE_FILE_PATH,
+        ];
+        return Environment::isComposerMode() ? $possibleLocations['default'] : $possibleLocations['permanent'];
+    }
+
+    /**
+     * Returns the absolute path to the INSTALL_TOOL_ENABLE file
+     */
+    protected static function getInstallToolEnableFilePath(): string
+    {
+        $possibleLocations = [
+            'default' => Environment::getVarPath() . '/transient/' . self::INSTALL_TOOL_ENABLE_FILE_PATH,
+            'permanent' => Environment::getConfigPath() . '/' . self::INSTALL_TOOL_ENABLE_FILE_PATH,
+            'legacy' => Environment::getLegacyConfigPath() . self::INSTALL_TOOL_ENABLE_FILE_PATH,
+        ];
+        foreach ($possibleLocations as $location) {
+            if (@is_file($location)) {
+                return $location;
+            }
+        }
+        return self::getBestLocationForInstallToolEnableFile();
     }
 
     /**
      * Returns the paths to the FIRST_INSTALL files
-     *
-     * @return array
      */
-    protected static function getFirstInstallFilePaths()
+    protected static function getFirstInstallFilePaths(): array
     {
         $files = scandir(Environment::getPublicPath() . '/');
         $files = is_array($files) ? $files : [];

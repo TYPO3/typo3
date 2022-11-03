@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Install\Report;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +55,7 @@ class SecurityStatusReport implements StatusProviderInterface
      */
     protected function getInstallToolProtectionStatus()
     {
-        $enableInstallToolFile = Environment::getPublicPath() . '/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
+        $enableInstallToolFile = EnableFileService::getBestLocationForInstallToolEnableFile();
         $value = $this->getLanguageService()->getLL('status_disabled');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;

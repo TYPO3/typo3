@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\EnableFileService;
 
 class AbstractCest
 {
-    public const ENABLE_INSTALL_TOOL_FILEPATH = 'typo3conf/ENABLE_INSTALL_TOOL';
     public const ADDITIONAL_CONFIGURATION_FILEPATH = 'typo3conf/system/additional.php';
     public const INSTALL_TOOL_PASSWORD = 'temporary password';
 
@@ -43,7 +43,7 @@ class AbstractCest
         $I->amGoingTo('clean up created files');
         unlink(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
 
-        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->dontSeeFileFound($this->getEnableInstallToolFilePath());
         $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
     }
 
@@ -51,7 +51,7 @@ class AbstractCest
     {
         $password = $this->setInstallToolPassword($I);
 
-        $I->writeToFile(AbstractCest::ENABLE_INSTALL_TOOL_FILEPATH, '');
+        $I->writeToFile($this->getEnableInstallToolFilePath(), '');
         $I->reloadPage();
         $I->waitForElementVisible('#t3-install-form-password');
         $I->fillField('#t3-install-form-password', $password);
@@ -72,5 +72,10 @@ class AbstractCest
             '<?php' . PHP_EOL . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'installToolPassword\'] = \'' . $hashedPassword . '\';'
         );
         return $password;
+    }
+
+    protected function getEnableInstallToolFilePath(): string
+    {
+        return Environment::getVarPath() . '/transient/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
     }
 }
