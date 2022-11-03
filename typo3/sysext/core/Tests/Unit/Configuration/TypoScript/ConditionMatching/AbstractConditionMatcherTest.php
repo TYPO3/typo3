@@ -17,13 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -38,50 +35,29 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test cases
- */
 class AbstractConditionMatcherTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $backupEnvironment = true;
-
-    /**
-     * @var AbstractConditionMatcher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $conditionMatcher;
-
+    protected bool $resetSingletonInstances = true;
+    protected ConditionMatcher $conditionMatcher;
     protected ?\ReflectionMethod $evaluateExpressionMethod;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        require_once 'Fixtures/ConditionMatcherUserFuncs.php';
 
-        $this->resetSingletonInstances = true;
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $coreCacheProphecy = $this->prophesize(PhpFrontend::class);
-        $coreCacheProphecy->require(Argument::any())->willReturn(false);
-        $coreCacheProphecy->set(Argument::any(), Argument::any())->willReturn(null);
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
-        $cacheFrontendProphecy->get('backendUtilityBeGetRootLine')->willReturn([]);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('core')->willReturn($coreCacheProphecy->reveal());
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('core'));
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
 
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $corePackageProphecy = $this->prophesize(PackageInterface::class);
-        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
-        $packageManagerProphecy->getActivePackages()->willReturn([
-            $corePackageProphecy->reveal(),
+        $packageManagerMock = $this->createMock(PackageManager::class);
+        $corePackageMock = $this->createMock(PackageInterface::class);
+        $corePackageMock->method('getPackagePath')->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
+        $packageManagerMock->method('getActivePackages')->willReturn([
+            $corePackageMock,
         ]);
-        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerMock);
 
         $this->initConditionMatcher();
     }
@@ -100,9 +76,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->conditionMatcher->setLogger(new NullLogger());
     }
 
-    /**
-     * @return array
-     */
     public function requestFunctionDataProvider(): array
     {
         return [
@@ -135,8 +108,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * @test
      * @dataProvider requestFunctionDataProvider
-     * @param string $expression
-     * @param bool $expected
      */
     public function checkConditionMatcherForRequestFunction(string $expression, bool $expected): void
     {
@@ -154,9 +125,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function datesFunctionDataProvider(): array
     {
         return [
@@ -173,9 +141,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * @test
      * @dataProvider datesFunctionDataProvider
-     * @param string $format
-     * @param int $expressionValue
-     * @param bool $expected
      */
     public function checkConditionMatcherForDateFunction(string $format, int $expressionValue, bool $expected): void
     {
@@ -231,8 +196,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
     /**
      * Data provider with matching applicationContext conditions.
-     *
-     * @return array
      */
     public function matchingApplicationContextConditionsDataProvider(): array
     {
@@ -273,8 +236,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
     /**
      * Data provider with not matching applicationContext conditions.
-     *
-     * @return array
      */
     public function notMatchingApplicationContextConditionsDataProvider(): array
     {
@@ -315,8 +276,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
     /**
      * Data provider for evaluateConditionCommonEvaluatesIpAddressesCorrectly
-     *
-     * @return array
      */
     public function evaluateConditionCommonDevIpMaskDataProvider(): array
     {
@@ -390,9 +349,9 @@ class AbstractConditionMatcherTest extends UnitTestCase
     {
         $this->initConditionMatcher();
         $expressionProperty = new \ReflectionProperty(AbstractConditionMatcher::class, 'expressionLanguageResolver');
-        $resolverProphecy = $this->prophesize(Resolver::class);
-        $resolverProphecy->evaluate(Argument::cetera())->shouldNotBeCalled();
-        $expressionProperty->setValue($this->conditionMatcher, $resolverProphecy->reveal());
+        $resolverMock = $this->createMock(Resolver::class);
+        $resolverMock->expects(self::never())->method('evaluate')->withAnyParameters();
+        $expressionProperty->setValue($this->conditionMatcher, $resolverMock);
         self::assertFalse($this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ELSE']));
     }
 }

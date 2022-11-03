@@ -1466,11 +1466,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\AbstractConditionMatcherTest\\:\\:\\$conditionMatcher \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\AbstractConditionMatcher&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Backend\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\ConditionMatcher\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$packageManifest of method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Core\\\\ClassLoadingInformationGeneratorTest\\:\\:createPackageMock\\(\\) expects array, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Core/ClassLoadingInformationGeneratorTest.php
