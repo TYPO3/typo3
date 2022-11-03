@@ -17,24 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaInlineTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<BackendUserAuthentication> */
-    protected ObjectProphecy $beUserProphecy;
+    protected BackendUserAuthentication&MockObject $beUserMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
+        $this->beUserMock = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $this->beUserMock;
     }
 
     /**
@@ -56,12 +52,13 @@ class TcaInlineTest extends UnitTestCase
             'inlineFirstPid' => 0,
         ];
 
-        $this->beUserProphecy
-            ->check(
+        $this->beUserMock
+            ->expects(self::atLeastOnce())
+            ->method('check')
+            ->with(
                 'tables_modify',
                 $input['processedTca']['columns']['aField']['config']['foreign_table']
             )
-            ->shouldBeCalled()
             ->willReturn(false);
 
         $expected = $input;
@@ -88,12 +85,13 @@ class TcaInlineTest extends UnitTestCase
             'inlineFirstPid' => 0,
         ];
 
-        $this->beUserProphecy
-            ->check(
+        $this->beUserMock
+            ->expects(self::never())
+            ->method('check')
+            ->with(
                 'tables_modify',
                 $input['processedTca']['columns']['aField']['config']['foreign_table']
-            )
-            ->shouldNotBeCalled();
+            );
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['type'] = 'input';
@@ -120,12 +118,13 @@ class TcaInlineTest extends UnitTestCase
             'inlineResolveExistingChildren' => false,
         ];
 
-        $this->beUserProphecy
-            ->check(
+        $this->beUserMock
+            ->expects(self::atLeastOnce())
+            ->method('check')
+            ->with(
                 'tables_modify',
                 $input['processedTca']['columns']['aField']['config']['foreign_table']
             )
-            ->shouldBeCalled()
             ->willReturn(true);
 
         $expected = $input;

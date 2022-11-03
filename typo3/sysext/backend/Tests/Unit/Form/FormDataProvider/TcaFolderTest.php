@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -26,8 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaFolderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -74,13 +71,12 @@ class TcaFolderTest extends UnitTestCase
             ],
         ];
 
-        $folderProphecy = $this->prophesize(Folder::class);
+        $folderMock = $this->createMock(Folder::class);
 
-        $resourceFactoryProphecy = $this->prophesize(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryProphecy->reveal());
-        $resourceFactoryProphecy->retrieveFileOrFolderObject('1:/aFolder/anotherFolder/')
-            ->shouldBeCalled()
-            ->willReturn($folderProphecy->reveal());
+        $resourceFactoryMock = $this->createMock(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
+        $resourceFactoryMock->expects(self::atLeastOnce())->method('retrieveFileOrFolderObject')
+            ->with('1:/aFolder/anotherFolder/')->willReturn($folderMock);
 
         $expected = $input;
         $expected['databaseRow']['aField'] = [

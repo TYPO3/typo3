@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
@@ -32,22 +30,20 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<BackendUserAuthentication> */
-    protected ObjectProphecy $beUserProphecy;
+    protected BackendUserAuthentication&MockObject $beUserMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
+        $this->beUserMock = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $this->beUserMock;
         $GLOBALS['BE_USER']->user['uid'] = 42;
     }
 
@@ -56,7 +52,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
      */
     public function addDataSetsUserPermissionsOnPageForAdminUser(): void
     {
-        $this->beUserProphecy->isAdmin()->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(true);
 
         $result = (new DatabaseUserPermissionCheck())->addData([]);
 
@@ -71,8 +67,8 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $input = [
             'tableName' => 'tt_content',
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(false);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(false);
 
         $this->expectException(AccessDeniedTableModifyException::class);
         $this->expectExceptionCode(1437683248);
@@ -95,9 +91,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms(['uid' => 42, 'pid' => 321])->willReturn(Permission::NOTHING);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with(['uid' => 42, 'pid' => 321])->willReturn(Permission::NOTHING);
 
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437679657);
@@ -122,10 +118,10 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::any())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
         $eventDispatcher = new MockEventDispatcher();
         GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
@@ -149,9 +145,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::NOTHING);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::NOTHING);
 
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
@@ -182,11 +178,13 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->check('pagetypes_select', $input['databaseRow']['doktype'])->willReturn(false);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::ALL);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->withConsecutive(
+            ['tables_modify', $input['tableName']],
+            ['pagetypes_select', $input['databaseRow']['doktype']]
+        )->willReturnOnConsecutiveCalls([true, false]);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::ALL);
 
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
@@ -217,11 +215,13 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->check('pagetypes_select', $input['databaseRow']['doktype'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->withConsecutive(
+            ['tables_modify', $input['tableName']],
+            ['pagetypes_select', $input['databaseRow']['doktype']]
+        )->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
         $eventDispatcher = new MockEventDispatcher();
         GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
@@ -245,9 +245,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 0,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
         $eventDispatcher = new MockEventDispatcher();
@@ -272,9 +272,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 0,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437679856);
@@ -300,10 +300,10 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(false);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::ALL);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(false);
 
         $this->expectException(AccessDeniedEditInternalsException::class);
         $this->expectExceptionCode(1437687404);
@@ -329,9 +329,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::NOTHING);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::NOTHING);
 
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437745759);
@@ -359,9 +359,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::NOTHING);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::NOTHING);
 
         $this->expectException(AccessDeniedPageNewException::class);
         $this->expectExceptionCode(1437745640);
@@ -389,10 +389,10 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::ALL);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
         $this->expectException(AccessDeniedListenerException::class);
         $this->expectExceptionCode(1662727149);
@@ -423,10 +423,10 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
         $eventDispatcher = new MockEventDispatcher();
         $eventDispatcher->addListener(static function (ModifyEditFormUserAccessEvent $event) {
@@ -454,13 +454,12 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $result = (new DatabaseUserPermissionCheck())->addData($input);
 
@@ -482,13 +481,12 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
                 'pid' => 321,
             ],
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $result = (new DatabaseUserPermissionCheck())->addData($input);
 
@@ -507,13 +505,12 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             'databaseRow' => [],
             'parentPageRow' => null,
         ];
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $result = (new DatabaseUserPermissionCheck())->addData($input);
 
@@ -533,14 +530,13 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             'parentPageRow' => null,
         ];
 
-        $this->beUserProphecy->isAdmin()->willReturn(false);
-        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserMock->method('isAdmin')->willReturn(false);
+        $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
 
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437745221);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         (new DatabaseUserPermissionCheck())->addData($input);
     }

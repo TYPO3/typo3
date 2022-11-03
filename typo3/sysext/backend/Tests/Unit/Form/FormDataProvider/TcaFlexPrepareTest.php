@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -30,16 +28,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaFlexPrepareTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
         // Suppress cache foo in xml helpers of GeneralUtility
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with(self::anything())->willReturn($cacheFrontendMock);
 
         $eventDispatcher = new MockEventDispatcher();
         GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);

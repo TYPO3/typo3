@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -29,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaCheckboxItemsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
@@ -386,9 +382,9 @@ class TcaCheckboxItemsTest extends UnitTestCase
      */
     public function addDataKeepExistingItems(array $input, array $expectedResult): void
     {
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         self::assertSame($expectedResult, (new TcaCheckboxItems())->addData($input));
     }
@@ -414,9 +410,9 @@ class TcaCheckboxItemsTest extends UnitTestCase
             'tableName' => 'foo',
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499337);
@@ -446,9 +442,9 @@ class TcaCheckboxItemsTest extends UnitTestCase
             'tableName' => 'foo',
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499338);
@@ -478,10 +474,10 @@ class TcaCheckboxItemsTest extends UnitTestCase
             'tableName' => 'foo',
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
 
-        $languageService->sL('aLabel')->shouldBeCalled()->willReturn('translated');
+        $languageService->expects(self::atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
@@ -522,9 +518,9 @@ class TcaCheckboxItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config'] = [
@@ -605,18 +601,18 @@ class TcaCheckboxItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        $flashMessage = $this->prophesize(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        $flashMessageService = $this->prophesize(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $flashMessage = $this->createMock(FlashMessage::class);
+        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
+        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
-        $flashMessageQueue->enqueue($flashMessage)->shouldNotBeCalled();
+        $flashMessageQueue->expects(self::never())->method('enqueue');
 
         (new TcaCheckboxItems())->addData($input);
     }
@@ -670,17 +666,17 @@ class TcaCheckboxItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $languageService->sL(Argument::cetera())->willReturn('');
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $flashMessage = $this->prophesize(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        $flashMessageService = $this->prophesize(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $GLOBALS['LANG'] = $languageService;
+        $flashMessage = $this->createMock(FlashMessage::class);
+        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
+        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
-        $flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
+        $flashMessageQueue->expects(self::atLeastOnce())->method('enqueue');
 
         (new TcaCheckboxItems())->addData($input);
     }
@@ -719,11 +715,9 @@ class TcaCheckboxItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('aLabel')->willReturnArgument(0);
-
-        $languageService->sL('labelOverride')->shouldBeCalled()->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->expects(self::atLeastOnce())->method('sL')->withConsecutive(['aLabel'], ['labelOverride'])->willReturnArgument(0);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -27,8 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaGroupTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -80,20 +77,20 @@ class TcaGroupTest extends UnitTestCase
             ],
         ];
 
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
-        $clipboardProphecy = $this->prophesize(Clipboard::class);
-        GeneralUtility::addInstance(Clipboard::class, $clipboardProphecy->reveal());
-        $clipboardProphecy->initializeClipboard()->shouldBeCalled();
-        $clipboardProphecy->elFromTable('aForeignTable')->shouldBeCalled()->willReturn([]);
+        $clipboardMock = $this->createMock(Clipboard::class);
+        GeneralUtility::addInstance(Clipboard::class, $clipboardMock);
+        $clipboardMock->expects(self::atLeastOnce())->method('initializeClipboard');
+        $clipboardMock->expects(self::atLeastOnce())->method('elFromTable')->with('aForeignTable')->willReturn([]);
 
-        $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
-        $relationHandlerProphecy->start('1,2', 'aForeignTable', 'mmTableName', 42, 'aTable', $aFieldConfig)->shouldBeCalled();
-        $relationHandlerProphecy->getFromDB()->shouldBeCalled();
-        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
-        $relationHandlerProphecy->getResolvedItemArray()->shouldBeCalled()->willReturn([
+        $relationHandlerMock = $this->createMock(RelationHandler::class);
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
+        $relationHandlerMock->expects(self::atLeastOnce())->method('start')
+            ->with('1,2', 'aForeignTable', 'mmTableName', 42, 'aTable', $aFieldConfig);
+        $relationHandlerMock->expects(self::atLeastOnce())->method('getFromDB');
+        $relationHandlerMock->expects(self::atLeastOnce())->method('processDeletePlaceholder');
+        $relationHandlerMock->expects(self::atLeastOnce())->method('getResolvedItemArray')->willReturn([
             [
                 'table' => 'aForeignTable',
                 'uid' => 1,

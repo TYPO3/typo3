@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected TcaColumnsProcessFieldDescriptions $subject;
 
     protected function setUp(): void
@@ -49,9 +46,9 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('foo')->shouldBeCalled()->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('foo')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
         $expected = $input;
         self::assertSame($expected, $this->subject->addData($input));
@@ -79,9 +76,9 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('aNewDescription')->shouldBeCalled()->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aNewDescription')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['description'] = 'aNewDescription';
@@ -112,9 +109,9 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('aDescriptionOverride')->shouldBeCalled()->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aDescriptionOverride')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['description'] = 'aDescriptionOverride';
@@ -147,9 +144,9 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('aDescriptionOverride')->shouldBeCalled()->willReturnArgument(0);
-        $languageService = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aDescriptionOverride')->willReturnArgument(0);
+        $languageService = $languageServiceMock;
         $languageService->lang = 'fr';
         $GLOBALS['LANG'] = $languageService;
 

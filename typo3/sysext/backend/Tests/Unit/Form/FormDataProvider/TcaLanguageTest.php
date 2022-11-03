@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -29,15 +27,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaLanguageTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
-        // Default LANG prophecy just returns incoming value as label if calling ->sL()
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        // Default LANG mock just returns incoming value as label if calling ->sL()
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
     }
 
     protected function tearDown(): void
@@ -549,8 +545,8 @@ class TcaLanguageTest extends UnitTestCase
      */
     public function addDataAddsAllSiteLanguagesFromAllSites(array $config): void
     {
-        $siteFinder = $this->prophesize(SiteFinder::class);
-        $siteFinder->getAllSites()->willReturn([
+        $siteFinder = $this->createMock(SiteFinder::class);
+        $siteFinder->method('getAllSites')->willReturn([
             new Site('site-1', 1, [
                'base' => '/',
                'languages' => [
@@ -583,7 +579,7 @@ class TcaLanguageTest extends UnitTestCase
                ],
             ]),
         ]);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinder);
 
         $input = $this->getDefaultResultArray([], [], [], $config);
 

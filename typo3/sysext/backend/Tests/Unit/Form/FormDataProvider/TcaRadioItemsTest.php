@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -29,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaRadioItemsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * Tear down
      */
@@ -58,9 +54,9 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438594829);
@@ -90,9 +86,9 @@ class TcaRadioItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         self::assertSame($expected, (new TcaRadioItems())->addData($input));
@@ -119,9 +115,9 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607163);
@@ -151,9 +147,9 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607164);
@@ -183,9 +179,9 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607165);
@@ -216,10 +212,10 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
 
-        $languageService->sL('aLabel')->shouldBeCalled()->willReturn('translated');
+        $languageService->expects(self::atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
@@ -260,9 +256,9 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config'] = [
@@ -338,18 +334,18 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        $flashMessage = $this->prophesize(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        $flashMessageService = $this->prophesize(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $flashMessage = $this->createMock(FlashMessage::class);
+        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
+        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
-        $flashMessageQueue->enqueue($flashMessage)->shouldNotBeCalled();
+        $flashMessageQueue->expects(self::never())->method('enqueue')->with($flashMessage);
 
         (new TcaRadioItems())->addData($input);
     }
@@ -403,17 +399,17 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $languageService->sL(Argument::cetera())->willReturn('');
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $flashMessage = $this->prophesize(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        $flashMessageService = $this->prophesize(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $GLOBALS['LANG'] = $languageService;
+        $flashMessage = $this->createMock(FlashMessage::class);
+        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
+        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
-        $flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
+        $flashMessageQueue->expects(self::atLeastOnce())->method('enqueue')->with($flashMessage);
 
         (new TcaRadioItems())->addData($input);
     }
@@ -453,11 +449,10 @@ class TcaRadioItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('aLabel')->willReturnArgument(0);
-
-        $languageService->sL('labelOverride')->shouldBeCalled()->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->expects(self::atLeastOnce())->method('sL')
+            ->withConsecutive(['aLabel'], ['labelOverride'])->willReturnArgument(0);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';

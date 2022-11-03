@@ -17,16 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaRecordTitleTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected string $timeZone;
 
     public function setUp(): void
@@ -242,9 +238,9 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = 'NEW56017ee37d10e587251374';
@@ -379,11 +375,10 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
             ->willReturn(' min| hrs| days| yrs| min| hour| day| year');
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['EXEC_TIME'] = 978912061;
 
         $expected = $input;
@@ -779,9 +774,9 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = $expectedTitle;
@@ -856,9 +851,9 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0)->shouldBeCalled();
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->expects(self::atLeastOnce())->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes';
@@ -895,9 +890,9 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = 'foo, baz';

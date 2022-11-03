@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UserTsConfigTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected UserTsConfig $subject;
 
     protected function setUp(): void
@@ -40,9 +37,9 @@ class UserTsConfigTest extends UnitTestCase
     public function addDataSetsUserTypoScriptInResult(): void
     {
         $expected = ['foo'];
-        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserAuthenticationProphecy->getTSConfig()->willReturn($expected);
-        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
+        $backendUserAuthenticationMock = $this->createMock(BackendUserAuthentication::class);
+        $backendUserAuthenticationMock->method('getTSConfig')->willReturn($expected);
+        $GLOBALS['BE_USER'] = $backendUserAuthenticationMock;
         $result = $this->subject->addData([]);
         self::assertEquals($expected, $result['userTsConfig']);
     }

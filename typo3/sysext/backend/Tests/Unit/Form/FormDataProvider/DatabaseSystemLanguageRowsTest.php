@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -28,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseSystemLanguageRowsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -45,38 +42,39 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
      */
     public function addDataSetsDefaultLanguageAndAllEntries(): void
     {
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->withAnyParameters()->willReturnArgument(0);
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteLanguageMinusOne = $this->prophesize(SiteLanguage::class);
-        $siteLanguageMinusOne->getLanguageId()->willReturn(-1);
-        $siteLanguageMinusOne->getTitle()->willReturn('All');
-        $siteLanguageMinusOne->getFlagIdentifier()->willReturn('flags-multiple');
-        $siteLanguageMinusOne->getDirection()->willReturn('');
-        $siteLanguageZero = $this->prophesize(SiteLanguage::class);
-        $siteLanguageZero->getLanguageId()->willReturn(0);
-        $siteLanguageZero->getTitle()->willReturn('English');
-        $siteLanguageZero->getFlagIdentifier()->willReturn('empty-empty');
-        $siteLanguageZero->getDirection()->willReturn('ltr');
-        $siteLanguageOne = $this->prophesize(SiteLanguage::class);
-        $siteLanguageOne->getLanguageId()->willReturn(1);
-        $siteLanguageOne->getTitle()->willReturn('Dutch');
-        $siteLanguageOne->getFlagIdentifier()->willReturn('flag-nl');
-        $siteLanguageOne->getTwoLetterIsoCode()->willReturn('NL');
-        $siteLanguageOne->getDirection()->willReturn('rtl');
+        $siteLanguageMinusOne = new SiteLanguage(
+            -1,
+            '',
+            new Uri('/'),
+            ['title' => 'All', 'flag' => 'flags-multiple', 'direction' => '']
+        );
+        $siteLanguageZero = new SiteLanguage(
+            0,
+            '',
+            new Uri('/en/'),
+            ['title' => 'English', 'flag' => 'empty-empty', 'direction' => 'ltr']
+        );
+        $siteLanguageOne = new SiteLanguage(
+            1,
+            '',
+            new Uri('/nl/'),
+            ['title' => 'Dutch', 'flag' => 'flag-nl', 'direction' => 'rtl', 'iso-639-1' => 'NL']
+        );
         $siteLanguages = [
-            $siteLanguageMinusOne->reveal(),
-            $siteLanguageZero->reveal(),
-            $siteLanguageOne->reveal(),
+            $siteLanguageMinusOne,
+            $siteLanguageZero,
+            $siteLanguageOne,
         ];
-        $siteProphecy->getAvailableLanguages(Argument::cetera())->willReturn($siteLanguages);
+        $siteMock = $this->createMock(Site::class);
+        $siteMock->method('getAvailableLanguages')->withAnyParameters()->willReturn($siteLanguages);
         $input = [
             'effectivePid' => 42,
-            'site' => $siteProphecy->reveal(),
+            'site' => $siteMock,
         ];
         $expected = [
             'systemLanguageRows' => [

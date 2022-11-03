@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaText;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Richtext;
@@ -27,16 +26,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaTextTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function addDataSetsRichtextConfigurationAndTransformsContent(): void
     {
-        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $beUserProphecy->isRTE()->willReturn(true);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->createMock(BackendUserAuthentication::class);
+        $beUserMock->method('isRTE')->willReturn(true);
+        $GLOBALS['BE_USER'] = $beUserMock;
 
         $input = [
             'tableName' => 'aTable',
@@ -79,13 +76,14 @@ class TcaTextTest extends UnitTestCase
             ],
         ];
 
-        $richtextConfigurationProphecy = $this->prophesize(Richtext::class);
-        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationProphecy->reveal());
-        $rteHtmlParserProphecy = $this->prophesize(RteHtmlParser::class);
-        GeneralUtility::addInstance(RteHtmlParser::class, $rteHtmlParserProphecy->reveal());
+        $richtextConfigurationMock = $this->createMock(Richtext::class);
+        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationMock);
+        $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
+        GeneralUtility::addInstance(RteHtmlParser::class, $rteHtmlParserMock);
 
-        $richtextConfigurationProphecy
-            ->getConfiguration(
+        $richtextConfigurationMock
+            ->method('getConfiguration')
+            ->with(
                 'aTable',
                 'aField',
                 42,
@@ -96,8 +94,9 @@ class TcaTextTest extends UnitTestCase
                 ]
             )
             ->willReturn([ 'aConfig' => 'option']);
-        $rteHtmlParserProphecy
-            ->transformTextForRichTextEditor(
+        $rteHtmlParserMock
+            ->method('transformTextForRichTextEditor')
+            ->with(
                 'notProcessedContent',
                 []
             )
@@ -111,9 +110,9 @@ class TcaTextTest extends UnitTestCase
      */
     public function addDataDoesNotTransformsContentWhenRichtextIsNotSet(): void
     {
-        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $beUserProphecy->isRTE()->willReturn(true);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->createMock(BackendUserAuthentication::class);
+        $beUserMock->method('isRTE')->willReturn(true);
+        $GLOBALS['BE_USER'] = $beUserMock;
 
         $input = [
             'tableName' => 'aTable',
@@ -143,9 +142,9 @@ class TcaTextTest extends UnitTestCase
      */
     public function addDataDoesNotTransformsContentWhenRichtextIsDisabledInConfiguration(): void
     {
-        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $beUserProphecy->isRTE()->willReturn(true);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->createMock(BackendUserAuthentication::class);
+        $beUserMock->method('isRTE')->willReturn(true);
+        $GLOBALS['BE_USER'] = $beUserMock;
 
         $input = [
             'tableName' => 'aTable',
@@ -166,11 +165,12 @@ class TcaTextTest extends UnitTestCase
             ],
         ];
 
-        $richtextConfigurationProphecy = $this->prophesize(Richtext::class);
-        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationProphecy->reveal());
+        $richtextConfigurationMock = $this->createMock(Richtext::class);
+        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationMock);
 
-        $richtextConfigurationProphecy
-            ->getConfiguration(
+        $richtextConfigurationMock
+            ->method('getConfiguration')
+            ->with(
                 'aTable',
                 'aField',
                 42,
@@ -192,9 +192,9 @@ class TcaTextTest extends UnitTestCase
      */
     public function addDataDoesNotTransformsContentWhenRichtextIsDisabledForUser(): void
     {
-        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $beUserProphecy->isRTE()->willReturn(false);
-        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+        $beUserMock = $this->createMock(BackendUserAuthentication::class);
+        $beUserMock->method('isRTE')->willReturn(false);
+        $GLOBALS['BE_USER'] = $beUserMock;
 
         $input = [
             'tableName' => 'aTable',

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\ApplicationContext;
@@ -29,14 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteDatabaseEditRowTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     public function setUp(): void
     {
         $this->backupEnvironment = true;
         parent::setUp();
         Environment::initialize(
-            $this->prophesize(ApplicationContext::class)->reveal(),
+            $this->createMock(ApplicationContext::class),
             true,
             false,
             '',
@@ -57,8 +54,8 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'command' => 'new',
             'foo' => 'bar',
         ];
-        $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
-        self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
+        $siteConfigurationMock = $this->createMock(SiteConfiguration::class);
+        self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationMock))->addData($input));
     }
 
     /**
@@ -72,8 +69,8 @@ class SiteDatabaseEditRowTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
-        self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
+        $siteConfigurationMock = $this->createMock(SiteConfiguration::class);
+        self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationMock))->addData($input));
     }
 
     /**
@@ -87,10 +84,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886234);
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
-        (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteConfigurationMock = $this->createMock(SiteConfiguration::class);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
+        (new SiteDatabaseEditRow($siteConfigurationMock))->addData($input);
     }
 
     /**
@@ -113,13 +110,13 @@ class SiteDatabaseEditRowTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteFinderProphecy->getSiteByRootPageId(23)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getIdentifier()->willReturn('testident');
-        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
-        $siteConfiguration->load('testident')->willReturn($rowData);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
+        $siteMock = $this->createMock(Site::class);
+        $siteFinderMock->method('getSiteByRootPageId')->with(23)->willReturn($siteMock);
+        $siteMock->method('getIdentifier')->willReturn('testident');
+        $siteConfiguration = $this->createMock(SiteConfiguration::class);
+        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
 
         $expected = $input;
         $expected['databaseRow'] = [
@@ -130,7 +127,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'foo' => 'bar',
         ];
 
-        self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
+        self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration))->addData($input));
     }
 
     /**
@@ -148,17 +145,17 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $rowData = [
             'foo' => 'bar',
         ];
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteFinderProphecy->getSiteByRootPageId(5)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getIdentifier()->willReturn('testident');
-        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
-        $siteConfiguration->load('testident')->willReturn($rowData);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
+        $siteMock = $this->createMock(Site::class);
+        $siteFinderMock->method('getSiteByRootPageId')->with(5)->willReturn($siteMock);
+        $siteMock->method('getIdentifier')->willReturn('testident');
+        $siteConfiguration = $this->createMock(SiteConfiguration::class);
+        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
-        (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input);
+        (new SiteDatabaseEditRow($siteConfiguration))->addData($input);
     }
 
     /**
@@ -176,17 +173,17 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $rowData = [
             'foo' => 'bar',
         ];
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteFinderProphecy->getSiteByRootPageId(5)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getIdentifier()->willReturn('testident');
-        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
-        $siteConfiguration->load('testident')->willReturn($rowData);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
+        $siteMock = $this->createMock(Site::class);
+        $siteFinderMock->method('getSiteByRootPageId')->with(5)->willReturn($siteMock);
+        $siteMock->method('getIdentifier')->willReturn('testident');
+        $siteConfiguration = $this->createMock(SiteConfiguration::class);
+        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
-        (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input);
+        (new SiteDatabaseEditRow($siteConfiguration))->addData($input);
     }
 
     /**
@@ -208,13 +205,13 @@ class SiteDatabaseEditRowTest extends UnitTestCase
                 ],
             ],
         ];
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteFinderProphecy->getSiteByRootPageId(5)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getIdentifier()->willReturn('testident');
-        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
-        $siteConfiguration->load('testident')->willReturn($rowData);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
+        $siteMock = $this->createMock(Site::class);
+        $siteFinderMock->method('getSiteByRootPageId')->with(5)->willReturn($siteMock);
+        $siteMock->method('getIdentifier')->willReturn('testident');
+        $siteConfiguration = $this->createMock(SiteConfiguration::class);
+        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
 
         $expected = $input;
         $expected['databaseRow'] = [
@@ -223,6 +220,6 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'pid' => 0,
         ];
 
-        self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
+        self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration))->addData($input));
     }
 }

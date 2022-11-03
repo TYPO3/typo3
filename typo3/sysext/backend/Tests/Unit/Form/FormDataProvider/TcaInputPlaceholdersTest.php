@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -27,14 +25,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaInputPlaceholdersTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $languageService = $this->prophesize(LanguageService::class);
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService->method('sL')->withAnyParameters()->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageService;
     }
 
     /**
@@ -161,16 +157,15 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
-        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
-        $formDataCompilerProphecy->compile([
+        $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
+        $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
             'command' => 'edit',
             'vanillaUid' => 42,
             'tableName' => 'aForeignTable',
             'inlineCompileExistingChildren' => false,
             'columnsToProcess' => ['aForeignField'],
         ])
-            ->shouldBeCalled()
             ->willReturn($aForeignTableInput);
 
         $expected = $input;
@@ -252,7 +247,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $sysFileProphecyResult = [
+        $sysFileMockResult = [
             'tableName' => 'sys_file',
             'databaseRow' => [
                 'sha1' => 'aSha1Value',
@@ -268,20 +263,19 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
-        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
-        $formDataCompilerProphecy->compile([
+        $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
+        $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
             'command' => 'edit',
             'vanillaUid' => 3,
             'tableName' => 'sys_file',
             'inlineCompileExistingChildren' => false,
             'columnsToProcess' => ['sha1'],
         ])
-            ->shouldBeCalled()
-            ->willReturn($sysFileProphecyResult);
+            ->willReturn($sysFileMockResult);
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileProphecyResult['databaseRow']['sha1'];
+        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMockResult['databaseRow']['sha1'];
 
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
@@ -317,7 +311,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $sysFileMetadataProphecyResult = [
+        $sysFileMetadataMockResult = [
             'tableName' => 'sys_file_metadata',
             'databaseRow' => [
                 'title' => 'aTitle',
@@ -333,20 +327,19 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
-        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
-        $formDataCompilerProphecy->compile([
+        $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
+        $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
             'command' => 'edit',
             'vanillaUid' => 2,
             'tableName' => 'sys_file_metadata',
             'inlineCompileExistingChildren' => false,
             'columnsToProcess' => ['title'],
         ])
-            ->shouldBeCalled()
-            ->willReturn($sysFileMetadataProphecyResult);
+            ->willReturn($sysFileMetadataMockResult);
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataProphecyResult['databaseRow']['title'];
+        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataMockResult['databaseRow']['title'];
 
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
@@ -389,7 +382,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $sysFileProphecyResult = [
+        $sysFileMockResult = [
             'tableName' => 'sys_file',
             'databaseRow' => [
                 'metadata' => '7',
@@ -408,7 +401,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $sysFileMetadataProphecyResult = [
+        $sysFileMetadataMockResult = [
             'tableName' => 'sys_file_metadata',
             'databaseRow' => [
                 'title' => 'aTitle',
@@ -424,32 +417,30 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        $sysFileFormDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
-        GeneralUtility::addInstance(FormDataCompiler::class, $sysFileFormDataCompilerProphecy->reveal());
-        $sysFileFormDataCompilerProphecy->compile([
+        $sysFileFormDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $sysFileFormDataCompilerMock);
+        $sysFileFormDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
             'command' => 'edit',
             'vanillaUid' => 3,
             'tableName' => 'sys_file',
             'inlineCompileExistingChildren' => false,
             'columnsToProcess' => ['metadata'],
         ])
-            ->shouldBeCalled()
-            ->willReturn($sysFileProphecyResult);
+            ->willReturn($sysFileMockResult);
 
-        $sysFileMetaDataFormDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
-        GeneralUtility::addInstance(FormDataCompiler::class, $sysFileMetaDataFormDataCompilerProphecy->reveal());
-        $sysFileMetaDataFormDataCompilerProphecy->compile([
+        $sysFileMetaDataFormDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $sysFileMetaDataFormDataCompilerMock);
+        $sysFileMetaDataFormDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
             'command' => 'edit',
             'vanillaUid' => 7,
             'tableName' => 'sys_file_metadata',
             'inlineCompileExistingChildren' => false,
             'columnsToProcess' => ['title'],
         ])
-            ->shouldBeCalled()
-            ->willReturn($sysFileMetadataProphecyResult);
+            ->willReturn($sysFileMetadataMockResult);
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataProphecyResult['databaseRow']['title'];
+        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataMockResult['databaseRow']['title'];
 
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
@@ -478,9 +469,9 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $localizedString;
 
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL($labelString)->shouldBeCalled()->willReturn($localizedString);
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->expects(self::atLeastOnce())->method('sL')->with($labelString)->willReturn($localizedString);
 
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }

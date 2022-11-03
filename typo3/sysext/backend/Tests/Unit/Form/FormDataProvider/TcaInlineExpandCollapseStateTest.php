@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaInlineExpandCollapseStateTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -54,8 +51,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                 ],
             ],
         ];
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->uc = [
             'inlineView' => json_encode($inlineState),
         ];
@@ -99,8 +95,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                 ],
             ],
         ];
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->uc = [
             'inlineView' => json_encode($inlineState),
         ];
@@ -334,8 +329,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
      */
     public function addDataAddsCorrectIsInlineChildExpanded(array $input, bool $expectedIsInlineChildExpanded): void
     {
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
         $expected = $input;
         $expected['isInlineChildExpanded'] = $expectedIsInlineChildExpanded;

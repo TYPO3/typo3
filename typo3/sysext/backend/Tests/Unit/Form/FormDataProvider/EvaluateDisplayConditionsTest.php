@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -25,8 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class EvaluateDisplayConditionsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -3907,8 +3904,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             ],
         ];
 
-        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
         $expected = $input;
         if ($expectedResult) {
@@ -3951,8 +3947,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             ];
         }
 
-        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
         $expected = $input;
         if ($expectedResult) {
@@ -3983,9 +3978,9 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             ],
         ];
 
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-        $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(true);
+        $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserMock;
+        $backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(true);
 
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']['displayCond']);
@@ -4012,9 +4007,9 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             ],
         ];
 
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-        $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);
+        $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserMock;
+        $backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(false);
 
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']);

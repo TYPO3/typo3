@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -25,8 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteResolvingTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -34,20 +31,20 @@ class SiteResolvingTest extends UnitTestCase
      */
     public function addDataAddsSiteObjectOfDefaultLanguageRow(): void
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteProphecyRevelation = $siteProphecy->reveal();
-        $siteFinderProphecy->getSiteByPageId(23)->willReturn($siteProphecyRevelation);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteMock = $this->createMock(Site::class);
+        $siteMockRevelation = $siteMock;
+        $siteFinderMock->method('getSiteByPageId')->with(23)->willReturn($siteMockRevelation);
         $input = [
             'defaultLanguagePageRow' => [
                 'uid' => 23,
             ],
             'effectivePid' => 42,
-            'site' => $siteProphecyRevelation,
+            'site' => $siteMockRevelation,
         ];
         $expected = $input;
-        $expected['site'] = $siteProphecy->reveal();
-        self::assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
+        $expected['site'] = $siteMock;
+        self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
     }
 
     /**
@@ -55,16 +52,16 @@ class SiteResolvingTest extends UnitTestCase
      */
     public function addDataAddsSiteObjectOfEffectivePid(): void
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteProphecyRevelation = $siteProphecy->reveal();
-        $siteFinderProphecy->getSiteByPageId(42)->willReturn($siteProphecyRevelation);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteMock = $this->createMock(Site::class);
+        $siteMockRevelation = $siteMock;
+        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteMockRevelation);
         $input = [
             'effectivePid' => 42,
-            'site' => $siteProphecyRevelation,
+            'site' => $siteMockRevelation,
         ];
         $expected = $input;
-        $expected['site'] = $siteProphecy->reveal();
-        self::assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
+        $expected['site'] = $siteMock;
+        self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
     }
 }
