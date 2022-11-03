@@ -105351,4 +105351,4 @@ class LinkImage extends Plugin {
 };
 
 class CKEditor5 extends ClassicEditor {}
-CKEditor5.builtinPlugins = Object.values(CKEditor5Plugins);export{CKEditor5,CKEditor5Plugins,index$3 as Clipboard,index$7 as Core,index$5 as Engine,index$1 as Essentials,index as Link,utils as LinkUtils,index$4 as Typing,index$6 as UI,index$8 as Utils,index$2 as Widget,WordCount};
+CKEditor5.builtinPlugins = Object.values(CKEditor5Plugins);export{CKEditor5,CKEditor5Plugins,index$3 as Clipboard,index$7 as Core,index$5 as Engine,index$1 as Essentials,index as Link,LinkActionsView,utils as LinkUtils,index$4 as Typing,index$6 as UI,index$8 as Utils,index$2 as Widget,WordCount};

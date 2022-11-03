@@ -40,7 +40,6 @@ editor:
         - selectAll
         - '|'
         - link
-        - unlink
         - SoftHyphen
         - insertTable
         - tableColumn

@@ -15,7 +15,7 @@ import LinkBrowser from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import {Engine} from '@typo3/ckeditor5-bundle';
-import {Typo3LinkCommand, Typo3LinkDict, Typo3UnlinkCommand, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix} from '@typo3/rte-ckeditor/plugin/typo3-link';
+import {Typo3LinkCommand, Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix} from '@typo3/rte-ckeditor/plugin/typo3-link';
 import type {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 
 /**

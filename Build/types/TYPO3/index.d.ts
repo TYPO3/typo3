@@ -144,6 +144,7 @@ declare module '@typo3/ckeditor5-bundle' {
   export * as Widget from '@ckeditor/ckeditor5-widget';
 
   // single or prefixed exports
+  export { default as LinkActionsView } from '@ckeditor/ckeditor5-link/src/ui/linkactionsview';
   export { default as WordCount } from '@ckeditor/ckeditor5-word-count/src/wordcount';
 }
 

@@ -186,6 +186,7 @@ class RichTextElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $html);
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/rte-ckeditor/ckeditor5.js');
+        $resultArray['stylesheetFiles'][] = PathUtility::getPublicResourceWebPath('EXT:rte_ckeditor/Resources/Public/Css/editor.css');
 
         return $resultArray;
     }

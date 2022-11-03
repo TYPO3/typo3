@@ -1,17 +1,13 @@
-import {UI, Core, Engine, Typing, Link, LinkUtils, Widget, Utils} from '@typo3/ckeditor5-bundle';
-import {DoubleClickObserver} from '@typo3/rte-ckeditor/observer/double-click-observer';
-import {default as modalObject, ModalElement} from '@typo3/backend/modal';
-import type {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
-
-// @todo in general: implement label translation handling via `editor.t()`
-// @todo functionality: icons taken from @ckeditor/ckeditor5-link/theme/icons - add rollup SVG loader
+import { UI, Core, Engine, Typing, Link, LinkUtils, LinkActionsView, Widget, Utils } from '@typo3/ckeditor5-bundle';
+import { default as modalObject, ModalElement } from '@typo3/backend/modal';
+import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
+import type AttributeElement from '@ckeditor/ckeditor5-engine/src/view/attributeelement';
 const linkIcon = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184z"/></svg>';
-const unlinkIcon = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184zm4.919 10.562-1.414 1.414a.75.75 0 1 1-1.06-1.06l1.414-1.415-1.415-1.414a.75.75 0 0 1 1.061-1.06l1.414 1.414 1.414-1.415a.75.75 0 0 1 1.061 1.061l-1.414 1.414 1.414 1.415a.75.75 0 0 1-1.06 1.06l-1.415-1.414z"/></svg>';
 
 export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel'];
 
 export function addLinkPrefix(attribute: string): string {
-  const capitalizedAttribute = attribute.charAt(0).toUpperCase() +  attribute.slice(1);
+  const capitalizedAttribute = attribute.charAt(0).toUpperCase() + attribute.slice(1);
   return 'link' + capitalizedAttribute;
 }
 
@@ -25,6 +21,23 @@ export interface Typo3LinkDict {
   linkText?: string;
 }
 
+export class Typo3TextView extends UI.View {
+  declare public text: string | undefined;
+  constructor(locale?: Utils.Locale) {
+    super(locale);
+    this.set('text', undefined);
+    const bind = this.bindTemplate;
+    this.setTemplate({
+      tag: 'span',
+      attributes: {
+        class: ['ck', 'ck-linktext'],
+        title: bind.to( 'text' ),
+      },
+      children: [{ text: bind.to('text') }]
+    });
+  }
+}
+
 /**
  * Inspired by @ckeditor/ckeditor5-link/src/linkcommand.js
  */
@@ -36,8 +49,8 @@ export class Typo3LinkCommand extends Core.Command {
 
     // A check for any integration that allows linking elements (e.g. `LinkImage`).
     // Currently the selection reads attributes from text nodes only. See #7429 and #7465.
-    if (LinkUtils.isLinkableElement( selectedElement, model.schema)) {
-      this.value = selectedElement.getAttribute( 'linkHref' );
+    if (LinkUtils.isLinkableElement(selectedElement, model.schema)) {
+      this.value = selectedElement.getAttribute('linkHref');
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
     } else {
       this.value = selection.getAttribute('linkHref');
@@ -55,7 +68,7 @@ export class Typo3LinkCommand extends Core.Command {
         const position = selection.getFirstPosition();
 
         // When selection is inside text with `linkHref` attribute.
-        if (selection.hasAttribute( 'linkHref')) {
+        if (selection.hasAttribute('linkHref')) {
           // Then update `linkHref` value.
           const linkRange = Typing.findAttributeRange(position, 'linkHref', selection.getAttribute('linkHref') as string, model);
           writer.setAttribute('linkHref', href, linkRange);
@@ -93,8 +106,8 @@ export class Typo3LinkCommand extends Core.Command {
         const allowedRanges = [];
 
         for (const element of selection.getSelectedBlocks()) {
-          if ( model.schema.checkAttribute( element, 'linkHref')) {
-            allowedRanges.push( writer.createRangeOn(element));
+          if (model.schema.checkAttribute(element, 'linkHref')) {
+            allowedRanges.push(writer.createRangeOn(element));
           }
         }
 
@@ -109,7 +122,7 @@ export class Typo3LinkCommand extends Core.Command {
           }
         }
         for (const range of rangesToUpdate) {
-          writer.setAttribute( 'linkHref', href, range);
+          writer.setAttribute('linkHref', href, range);
         }
       }
     });
@@ -136,7 +149,7 @@ export class Typo3UnlinkCommand extends Core.Command {
     const selectedElement = selection.getSelectedElement();
 
     if (LinkUtils.isLinkableElement(selectedElement, model.schema)) {
-      this.value = selectedElement.getAttribute( 'linkHref' );
+      this.value = selectedElement.getAttribute('linkHref');
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
     } else {
       this.value = selection.getAttribute('linkHref');
@@ -148,7 +161,7 @@ export class Typo3UnlinkCommand extends Core.Command {
     const model = this.editor.model;
     const selection = model.document.selection;
 
-    model.change( writer => {
+    model.change(writer => {
       // Get ranges to unlink.
       const rangesToUnlink = selection.isCollapsed
         ? [Typing.findAttributeRange(
@@ -184,53 +197,53 @@ export class Typo3LinkEditing extends Core.Plugin {
     // linkTitle <=> title
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkTitle',
-      view: (value, {writer}) => {
-        const linkElement = writer.createAttributeElement( 'a', { title: value }, { priority: 5 } );
-        writer.setCustomProperty( 'linkTitle', true, linkElement );
+      view: (value, { writer }) => {
+        const linkElement = writer.createAttributeElement('a', { title: value }, { priority: 5 });
+        writer.setCustomProperty('linkTitle', true, linkElement);
         return linkElement;
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true }},
+      view: { name: 'a', attributes: { title: true } },
       model: { key: 'linkTitle', value: (viewElement) => viewElement.getAttribute('title') }
     });
     // linkClass <=> class
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkClass',
-      view: (value: string, {writer}) => {
-        const linkElement = writer.createAttributeElement( 'a', { class: value }, { priority: 5 } );
-        writer.setCustomProperty( 'linkClass', true, linkElement );
+      view: (value: string, { writer }) => {
+        const linkElement = writer.createAttributeElement('a', { class: value }, { priority: 5 });
+        writer.setCustomProperty('linkClass', true, linkElement);
         return linkElement;
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true }},
+      view: { name: 'a', attributes: { title: true } },
       model: { key: 'linkClass', value: (viewElement) => viewElement.getAttribute('class') }
     });
     // linkTarget <=> target
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkTarget',
-      view: (value, {writer}) => {
-        const linkElement = writer.createAttributeElement( 'a', { target: value }, { priority: 5 } );
-        writer.setCustomProperty( 'linkTarget', true, linkElement );
+      view: (value, { writer }) => {
+        const linkElement = writer.createAttributeElement('a', { target: value }, { priority: 5 });
+        writer.setCustomProperty('linkTarget', true, linkElement);
         return linkElement;
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true }},
+      view: { name: 'a', attributes: { title: true } },
       model: { key: 'linkTarget', value: (viewElement) => viewElement.getAttribute('target') }
     });
     // linkRel <=> rel
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkRel',
-      view: (value, {writer}) => {
-        const linkElement = writer.createAttributeElement( 'a', { rel: value }, { priority: 5 } );
-        writer.setCustomProperty( 'linkRel', true, linkElement );
+      view: (value, { writer }) => {
+        const linkElement = writer.createAttributeElement('a', { rel: value }, { priority: 5 });
+        writer.setCustomProperty('linkRel', true, linkElement);
         return linkElement;
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true }},
+      view: { name: 'a', attributes: { title: true } },
       model: { key: 'linkRel', value: (viewElement) => viewElement.getAttribute('rel') }
     });
 
@@ -240,21 +253,91 @@ export class Typo3LinkEditing extends Core.Plugin {
   }
 }
 
+export class Typo3LinkActionsView extends LinkActionsView {
+  _createPreviewButton() {
+    const textView = new Typo3TextView(this.locale);
+    const t = this.t;
+
+    // @ts-ignore
+    textView.bind('text').to(this, 'href', href => {
+      return href || t('This link has no URL');
+    });
+
+    return textView;
+  }
+}
+
+const VISUAL_SELECTION_MARKER_NAME = 'link-ui';
+
 export class Typo3LinkUI extends Core.Plugin {
   static readonly pluginName = 'Typo3LinkUI';
+  static readonly requires = [UI.ContextualBalloon];
+
+  balloon: UI.ContextualBalloon;
+  actionsView: Typo3LinkActionsView;
 
   init() {
     const editor = this.editor as EditorWithUI;
-    editor.editing.view.addObserver(DoubleClickObserver);
     editor.editing.view.addObserver(Engine.ClickObserver);
 
+    this.actionsView = this.createActionsView();
+    this.balloon = editor.plugins.get(UI.ContextualBalloon);
+
     this.createToolbarLinkButtons();
+    this.enableUserBalloonInteractions();
+
+    // Renders a fake visual selection marker on an expanded selection.
+    editor.conversion.for('editingDowncast').markerToHighlight({
+      model: VISUAL_SELECTION_MARKER_NAME,
+      view: {
+        classes: ['ck-fake-link-selection']
+      }
+    });
+
+    // Renders a fake visual selection marker on a collapsed selection.
+    editor.conversion.for('editingDowncast').markerToElement({
+      model: VISUAL_SELECTION_MARKER_NAME,
+      view: {
+        name: 'span',
+        classes: ['ck-fake-link-selection', 'ck-fake-link-selection_collapsed']
+      }
+    });
+  }
+
+  private createActionsView(): Typo3LinkActionsView {
+    const editor = this.editor;
+    const actionsView = new Typo3LinkActionsView(editor.locale);
+    const linkCommand = editor.commands.get('link');
+    const unlinkCommand = editor.commands.get('unlink');
+
+    actionsView.bind('href').to(linkCommand, 'value');
+    actionsView.editButtonView.bind('isEnabled').to(linkCommand);
+    actionsView.unlinkButtonView.bind('isEnabled').to(unlinkCommand);
+
+    // Execute unlink command after clicking on the "Edit" button.
+    this.listenTo(actionsView, 'edit', () => {
+      const element = this.getSelectedLinkElement();
+      this.openLinkBrowser(this.editor as EditorWithUI, element);
+    });
+
+    // Execute unlink command after clicking on the "Unlink" button.
+    this.listenTo(actionsView, 'unlink', () => {
+      editor.execute('unlink');
+      this.hideUI();
+    });
+
+    // Close the panel on esc key press when the **actions have focus**.
+    actionsView.keystrokes.set('Esc', (data, cancel) => {
+      this.hideUI();
+      cancel();
+    });
+
+    return actionsView;
   }
 
   private createToolbarLinkButtons() {
     const editor = this.editor as EditorWithUI;
     const linkCommand = editor.commands.get('link') as Typo3LinkCommand;
-    const unlinkCommand = editor.commands.get('unlink') as Typo3UnlinkCommand;
     const t = editor.t;
 
     // Handle the `Ctrl+K` keystroke and show the panel.
@@ -262,7 +345,7 @@ export class Typo3LinkUI extends Core.Plugin {
       // Prevent focusing the search bar in FF, Chrome and Edge. See https://github.com/ckeditor/ckeditor5/issues/4811.
       cancel();
       if (linkCommand.isEnabled) {
-        this.showUI() ;
+        this.showUI();
       }
     });
 
@@ -280,46 +363,167 @@ export class Typo3LinkUI extends Core.Plugin {
       this.listenTo(linkButton, 'execute', () => this.showUI());
       return linkButton;
     });
-    editor.ui.componentFactory.add('unlink', locale => {
-      const unlinkButton = new UI.ButtonView(locale);
-      unlinkButton.isEnabled = true;
-      unlinkButton.label = t( 'Unlink');
-      unlinkButton.icon = unlinkIcon;
-      unlinkButton.tooltip = true;
-      unlinkButton.isToggleable = true;
-      unlinkButton.bind('isEnabled').to(unlinkCommand, 'isEnabled');
-      unlinkButton.bind('isOn').to(unlinkCommand, 'value', value => !!value);
-      this.listenTo(unlinkButton, 'execute', () => unlinkCommand.execute());
-      return unlinkButton;
+  }
+
+  private enableUserBalloonInteractions() {
+    const viewDocument = this.editor.editing.view.document;
+
+    this.listenTo(viewDocument, 'click', () => {
+      const parentLink = this.getSelectedLinkElement();
+      if (parentLink) {
+        this.showUI();
+      }
+    });
+
+    this.editor.keystrokes.set('Esc', (data, cancel) => {
+      if (this.isUIVisible()) {
+        this.hideUI();
+        cancel();
+      }
     });
   }
 
-  private showUI() {
-    const element = this.getSelectedLinkElement();
-    this.openLinkBrowser(this.editor as EditorWithUI, element);
+  private addActionsView(): void {
+    if (this.areActionsInPanel()) {
+      return;
+    }
+
+    this.balloon.add({
+      view: this.actionsView,
+      position: this.getBalloonPositionData()
+    });
   }
 
-  private getSelectedLinkElement() {
+  private hideUI(): void {
+    if (!this.isUIInPanel()) {
+      return;
+    }
+
+    const editor = this.editor as EditorWithUI;
+    this.stopListening(editor.ui, 'update');
+    this.stopListening(this.balloon, 'change:visibleView');
+    editor.editing.view.focus();
+    this.balloon.remove(this.actionsView);
+    this.hideFakeVisualSelection();
+  }
+
+  private showUI(): void {
+    if (!this.getSelectedLinkElement()) {
+      this.showFakeVisualSelection();
+      const element = this.getSelectedLinkElement();
+      this.openLinkBrowser(this.editor as EditorWithUI, element);
+    } else {
+      this.addActionsView();
+      this.balloon.showStack('main');
+    }
+
+    this.startUpdatingUI();
+  }
+
+  private startUpdatingUI(): void {
+    const editor = this.editor as EditorWithUI;
+    const viewDocument = editor.editing.view.document;
+
+    let prevSelectedLink = this.getSelectedLinkElement();
+    let prevSelectionParent = getSelectionParent();
+
+    const update = () => {
+      const selectedLink = this.getSelectedLinkElement();
+      const selectionParent = getSelectionParent();
+
+      if ((prevSelectedLink && !selectedLink) ||
+        (!prevSelectedLink && selectionParent !== prevSelectionParent)) {
+        this.hideUI();
+      }
+      else if (this.isUIVisible()) {
+        this.balloon.updatePosition(this.getBalloonPositionData());
+      }
+
+      prevSelectedLink = selectedLink;
+      prevSelectionParent = selectionParent;
+    };
+
+    function getSelectionParent() {
+      return viewDocument.selection.focus.getAncestors()
+        .reverse()
+        .find(node => node.is('element'));
+    }
+
+    this.listenTo(editor.ui, 'update', update);
+    this.listenTo(this.balloon, 'change:visibleView', update);
+  }
+
+  private areActionsInPanel(): Boolean {
+    return this.balloon.hasView(this.actionsView);
+  }
+
+  private areActionsVisible(): Boolean {
+    return this.balloon.visibleView === this.actionsView;
+  }
+
+  private isUIInPanel(): Boolean {
+    return this.areActionsInPanel();
+  }
+
+  private isUIVisible(): Boolean {
+    return this.areActionsVisible();
+  }
+
+  private getBalloonPositionData(): any {
+    const view = this.editor.editing.view;
+    const model = this.editor.model;
+    const viewDocument = view.document;
+    let target = null;
+
+    if (model.markers.has(VISUAL_SELECTION_MARKER_NAME)) {
+      // There are cases when we highlight selection using a marker (#7705, #4721).
+      const markerViewElements = Array.from(this.editor.editing.mapper.markerNameToElements(VISUAL_SELECTION_MARKER_NAME));
+      const newRange = view.createRange(
+        view.createPositionBefore(markerViewElements[0]),
+        view.createPositionAfter(markerViewElements[markerViewElements.length - 1])
+      );
+
+      target = view.domConverter.viewRangeToDom(newRange);
+    } else {
+      // Make sure the target is calculated on demand at the last moment because a cached DOM range
+      // (which is very fragile) can desynchronize with the state of the editing view if there was
+      // any rendering done in the meantime. This can happen, for instance, when an inline widget
+      // gets unlinked.
+      target = () => {
+        const targetLink = this.getSelectedLinkElement();
+
+        return targetLink ?
+          // When selection is inside link element, then attach panel to this element.
+          view.domConverter.mapViewToDom(targetLink) :
+          // Otherwise attach panel to the selection.
+          view.domConverter.viewRangeToDom(viewDocument.selection.getFirstRange());
+      };
+    }
+
+    return { target };
+  }
+
+  private getSelectedLinkElement(): AttributeElement | null {
     const view = this.editor.editing.view;
     const selection = view.document.selection;
     const selectedElement = selection.getSelectedElement();
 
     // The selection is collapsed or some widget is selected (especially inline widget).
     if (selection.isCollapsed || selectedElement && Widget.isWidget(selectedElement)) {
-      return this.findLinkElementAncestor(selection.getFirstPosition() );
+      return this.findLinkElementAncestor(selection.getFirstPosition());
     } else {
       // The range for fully selected link is usually anchored in adjacent text nodes.
       // Trim it to get closer to the actual link element.
       const range = selection.getFirstRange().getTrimmed();
-      const startLink = this.findLinkElementAncestor(range.start );
-      const endLink = this.findLinkElementAncestor(range.end );
+      const startLink = this.findLinkElementAncestor(range.start);
+      const endLink = this.findLinkElementAncestor(range.end);
 
-      if (!startLink || startLink != endLink ) {
+      if (!startLink || startLink != endLink) {
         return null;
       }
 
       // Check if the link element is fully selected.
-      if (view.createRangeIn(startLink ).getTrimmed().isEqual(range )) {
+      if (view.createRangeIn(startLink).getTrimmed().isEqual(range)) {
         return startLink;
       } else {
         return null;
@@ -327,8 +531,51 @@ export class Typo3LinkUI extends Core.Plugin {
     }
   }
 
+  private showFakeVisualSelection(): void {
+    const model = this.editor.model;
+
+    model.change(writer => {
+      const range = model.document.selection.getFirstRange();
+
+      if (model.markers.has(VISUAL_SELECTION_MARKER_NAME)) {
+        writer.updateMarker(VISUAL_SELECTION_MARKER_NAME, { range });
+      } else {
+        if (range.start.isAtEnd) {
+          const startPosition = range.start.getLastMatchingPosition(
+            ({ item }) => !model.schema.isContent(item),
+            {
+              startPosition: null,
+              boundaries: range
+            }
+          );
+
+          writer.addMarker(VISUAL_SELECTION_MARKER_NAME, {
+            usingOperation: false,
+            affectsData: false,
+            range: writer.createRange(startPosition, range.end)
+          });
+        } else {
+          writer.addMarker(VISUAL_SELECTION_MARKER_NAME, {
+            usingOperation: false,
+            affectsData: false,
+            range
+          });
+        }
+      }
+    });
+  }
+
+  private hideFakeVisualSelection() {
+    const model = this.editor.model;
+    if (model.markers.has(VISUAL_SELECTION_MARKER_NAME)) {
+      model.change(writer => {
+        writer.removeMarker(VISUAL_SELECTION_MARKER_NAME);
+      });
+    }
+  }
+
   private findLinkElementAncestor(position: any) {
-    return position.getAncestors().find((ancestor: any) => LinkUtils.isLinkElement(ancestor) );
+    return position.getAncestors().find((ancestor: any) => LinkUtils.isLinkElement(ancestor));
   }
 
   private openLinkBrowser(editor: EditorWithUI, element: any): void {
@@ -342,7 +589,7 @@ export class Typo3LinkUI extends Core.Plugin {
       ['target', 'class', 'title', 'rel'].forEach((attrName) => {
         const attrValue = element.getAttribute(attrName);
         if (attrValue) {
-          additionalParameters += '&P[curUrl][' + attrName + ']=' +  encodeURIComponent(attrValue);
+          additionalParameters += '&P[curUrl][' + attrName + ']=' + encodeURIComponent(attrValue);
         }
       });
     }

@@ -30,7 +30,8 @@ class CKEditor5Migrator
         'indent' => ['indent', 'outdent'],
         'blocks' => ['blockQuote'], // `CreateDiv` missing
         'align' => ['alignment'], // + separate `alignment: { options: ['left', 'right', 'center', 'justify'] }`
-        'links' => ['link', 'unlink'],
+        'links' => ['link'],
+        'unlink' => [],
         'clipboard' => [], // @todo no sure yet how/whether this is visualized https://ckeditor.com/docs/ckeditor5/latest/api/clipboard.html
         'cleanup' => ['removeFormat'], // CopyFormat dropped: https://github.com/ckeditor/ckeditor5/issues/1901
         'undo' => ['undo', 'redo'],
@@ -81,13 +82,18 @@ class CKEditor5Migrator
 
     /**
      * CE4: https://ckeditor.com/latest/samples/toolbarconfigurator/index.html#basic
+     * CE5: https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
      */
     protected function migrateToolbar(): void
     {
         if (!isset($this->configuration['toolbar']) && !isset($this->configuration['toolbarGroups'])) {
             return;
         }
-        $toolbar = ['items' => [], 'shouldNotGroupWhenFull' => true];
+        $toolbar = [
+            'items' => [],
+            'removeItems' => [],
+            'shouldNotGroupWhenFull' => true,
+        ];
 
         if (is_array($this->configuration['toolbar'] ?? null)) {
             $toolbarItems = array_filter(
@@ -154,6 +160,8 @@ class CKEditor5Migrator
     {
         // new configuration is set, discard any legacy values
         if (isset($this->configuration['toolbar']['removeItems'])) {
+            // discard legacy configuration if new configuration exists
+            unset($this->configuration['removeButtons']);
             return;
         }
         if (!isset($this->configuration['removeButtons'])) {
@@ -178,7 +186,6 @@ class CKEditor5Migrator
 
         // remove legacy configuration after migration
         unset($this->configuration['removeButtons']);
-
         $this->configuration['toolbar']['removeItems'] = $removeItems;
     }
 
@@ -186,6 +193,8 @@ class CKEditor5Migrator
     {
         // new definition is in place, no migration is done
         if (isset($this->configuration['heading']['options'])) {
+            // discard legacy configuration if new configuration exists
+            unset($this->configuration['format_tags']);
             return;
         }
         // migrate format_tags to custom buttons
@@ -221,6 +230,8 @@ class CKEditor5Migrator
                         ];
                 }
             }
+
+            // remove legacy configuration after migration
             unset($this->configuration['format_tags']);
             $this->configuration['heading']['options'] = $allowedHeadings;
         }
@@ -230,6 +241,8 @@ class CKEditor5Migrator
     {
         // new definition is in place, no migration is done
         if (isset($this->configuration['style']['definitions'])) {
+            // discard legacy configuration if new configuration exists
+            unset($this->configuration['stylesSet']);
             return;
         }
         // Migrate 'stylesSet' to 'styles' => 'definitions'
@@ -251,6 +264,8 @@ class CKEditor5Migrator
                 }
                 $styleDefinitions[] = $definition;
             }
+
+            // remove legacy configuration after migration
             unset($this->configuration['stylesSet']);
             $this->configuration['style']['definitions'] = $styleDefinitions;
         }

@@ -74,4 +74,5 @@ export * as Typing from '@ckeditor/ckeditor5-typing/src/index.js'
 export * as Widget from '@ckeditor/ckeditor5-widget/src/index.js';
 
 // single or prefixed exports
+export { default as LinkActionsView } from '@ckeditor/ckeditor5-link/src/ui/linkactionsview';
 export { default as WordCount } from '@ckeditor/ckeditor5-word-count/src/wordcount.js';

@@ -1,0 +1,14 @@
+.ck.ck-linktext {
+    max-width: 300px;
+    overflow: hidden;
+    align-items: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    user-select: none;
+    border: 1px solid transparent !important;
+    line-height: var(--ck-ui-component-min-height) !important;
+}
+
+.ck.ck-word-count {
+    margin-top: .5rem;
+}

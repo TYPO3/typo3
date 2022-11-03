@@ -26,7 +26,6 @@ editor:
         - '|'
         - findAndReplace
         - link
-        - unlink
         - SoftHyphen
         - '|'
         - removeFormat
