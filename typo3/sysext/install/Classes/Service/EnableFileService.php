@@ -35,7 +35,7 @@ class EnableFileService
     public const FIRST_INSTALL_FILE_PATH = 'FIRST_INSTALL';
 
     /**
-     * @var string Maximum age of ENABLE_INSTALL_TOOL file before it gets removed (in seconds)
+     * @var int Maximum age of ENABLE_INSTALL_TOOL file before it gets removed (in seconds)
      */
     public const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
 

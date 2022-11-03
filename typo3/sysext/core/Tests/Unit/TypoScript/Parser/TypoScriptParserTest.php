@@ -37,18 +37,12 @@ class TypoScriptParserTest extends UnitTestCase
      */
     protected $typoScriptParser;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->typoScriptParser = $this->getAccessibleMock(TypoScriptParser::class, ['dummy']);
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
@@ -243,10 +237,6 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider executeValueModifierDataProvider
-     * @param string $modifierName
-     * @param string $currentValue
-     * @param string $modifierArgument
-     * @param string $expected
      */
     public function executeValueModifierReturnsModifiedResult(
         string $modifierName,
@@ -308,10 +298,6 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider executeGetEnvModifierDataProvider
-     * @param string $modifierName
-     * @param string $currentValue
-     * @param string $modifierArgument
-     * @param string $expected
      */
     public function executeGetEnvModifierReturnsModifiedResult(
         array $environmentVariables,
@@ -358,9 +344,6 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider executeValueModifierInvalidDataProvider
-     * @param string $modifierName
-     * @param string $currentValue
-     * @param string $modifierArgument
      */
     public function executeValueModifierThrowsException(
         string $modifierName,
@@ -398,8 +381,6 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidConditionsDataProvider
-     * @param string $condition
-     * @param bool $isValid
      */
     public function invalidConditionsAreReported(string $condition, bool $isValid): void
     {
@@ -427,9 +408,6 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
-    /**
-     * @return array
-     */
     public function doubleSlashCommentsDataProvider(): array
     {
         return [
@@ -442,7 +420,6 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider doubleSlashCommentsDataProvider
-     * @param string $typoScript
      */
     public function doubleSlashCommentsAreValid(string $typoScript): void
     {
@@ -450,9 +427,6 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertEmpty($this->typoScriptParser->errors);
     }
 
-    /**
-     * @return array
-     */
     public function includeFileDataProvider(): array
     {
         return [
@@ -474,7 +448,6 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider includeFileDataProvider
-     * @param string $typoScript
      */
     public function includeFilesWithConditions(string $typoScript): void
     {
@@ -495,9 +468,6 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertStringNotContainsString('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
     }
 
-    /**
-     * @return array
-     */
     public function importFilesDataProvider(): array
     {
         return [
@@ -703,8 +673,6 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @test
      * @dataProvider importFilesDataProvider
-     * @param string $typoScript
-     * @param string $expected
      */
     public function importFiles(string $typoScript, string $expected): void
     {
@@ -713,8 +681,6 @@ test.TYPO3Forever.TypoScript = 1
     }
 
     /**
-     * @param string $typoScript
-     * @param array $expected
      * @dataProvider typoScriptIsParsedToArrayDataProvider
      * @test
      */
@@ -1202,9 +1168,6 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @test
      * @dataProvider parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider
-     * @param string $key
-     * @param string $expectedKeySegment
-     * @param string $expectedRemainingKey
      */
     public function parseNextKeySegmentReturnsCorrectNextKeySegment(
         string $key,

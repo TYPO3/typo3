@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -37,11 +39,9 @@ class MenuContentObjectFactory implements SingletonInterface
     /**
      * Gets a typo script string like 'TMENU' and returns an object of this type
      *
-     * @param string $type
-     * @return AbstractMenuContentObject Menu object
      * @throws Exception\NoSuchMenuTypeException
      */
-    public function getMenuObjectByType($type = ''): AbstractMenuContentObject
+    public function getMenuObjectByType(string $type = ''): AbstractMenuContentObject
     {
         $upperCasedClassName = strtoupper($type);
         if (array_key_exists($upperCasedClassName, $this->menuTypeToClassMapping)) {
@@ -60,16 +60,9 @@ class MenuContentObjectFactory implements SingletonInterface
      *
      * @param string $type Menu type to be used in TypoScript
      * @param string $className Class rendering the menu
-     * @throws \InvalidArgumentException
      */
-    public function registerMenuType($type, $className)
+    public function registerMenuType(string $type, string $className)
     {
-        if (!is_string($type) || !is_string($className)) {
-            throw new \InvalidArgumentException(
-                'type and className must be strings',
-                1363429303
-            );
-        }
         $this->menuTypeToClassMapping[strtoupper($type)] = $className;
     }
 }

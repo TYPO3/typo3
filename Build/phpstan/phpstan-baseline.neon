@@ -1586,11 +1586,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailMessageTest.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectedString$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailMessageTest.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getHost\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
@@ -1636,11 +1631,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Collection/FileCollectionRegistryTest.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectedMergedProperties$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/FileReferenceTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<ad9195e2487eea33c8a2abd5cf33cba4\\>, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
@@ -1679,11 +1669,6 @@ parameters:
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'TYPO3\\\\\\\\CMS\\\\\\\\Core\\\\\\\\Tests\\\\\\\\Unit\\\\\\\\Tree\\\\\\\\TableConfiguration\\\\\\\\Fixtures\\\\\\\\TreeDataProviderFixture' and TYPO3\\\\CMS\\\\Core\\\\Tree\\\\TableConfiguration\\\\DatabaseTreeDataProvider will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/TreeDataProviderFactoryTest.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$modifierName$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/TypoScript/Parser/TypoScriptParserTest.php
 
 		-
 			message: "#^Static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:callUserFunction\\(\\) invoked with 4 parameters, 2\\-3 required\\.$#"
@@ -2781,11 +2766,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/CategoryMenuUtility.php
 
 		-
-			message: "#^Result of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/MenuContentObjectFactory.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:\\$I \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/TextMenuContentObject.php
@@ -2888,16 +2868,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$content of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:wrap\\(\\) expects string, int given\\.$#"
 			count: 3
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin\\:\\:\\$LLtestPrefix \\(string\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin\\:\\:\\$LLtestPrefixAlt \\(string\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
 
 		-
@@ -3046,12 +3016,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Offset 'INTincScript' does not exist on array\\{\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param for parameter \\$content with type mixed is not subtype of native type string\\.$#"
+			message: "#^Offset non\\-falsy\\-string does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
@@ -3059,21 +3024,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:prefixComment\\(\\) expects array, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param for parameter \\$oTarget with type mixed is not subtype of native type string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$type of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\MenuContentObjectFactory\\:\\:registerMenuType\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/MenuContentObjectFactoryTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$className of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\MenuContentObjectFactory\\:\\:registerMenuType\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/MenuContentObjectFactoryTest.php
 
 		-
 			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Middleware\\\\PageArgumentValidatorTest\\:\\:\\$subject with type TYPO3\\\\CMS\\\\Frontend\\\\Middleware\\\\PageResolver\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
@@ -3086,7 +3036,12 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
 
 		-
-			message: "#^Variable \\$language in PHPDoc tag @var does not exist\\.$#"
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
 
@@ -3106,7 +3061,12 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
 
 		-
-			message: "#^Variable \\$language in PHPDoc tag @var does not exist\\.$#"
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
 
@@ -3331,11 +3291,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyPublicMatcher.php
 
 		-
-			message: "#^PHPDoc tag @var for constant TYPO3\\\\CMS\\\\Install\\\\Service\\\\EnableFileService\\:\\:INSTALL_TOOL_ENABLE_FILE_LIFETIME with type string is incompatible with value 3600\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/EnableFileService.php
-
-		-
 			message: "#^Offset string on array\\{\\} on left side of \\?\\? does not exist\\.$#"
 			count: 2
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
@@ -3496,11 +3451,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
 
 		-
-			message: "#^Parameter \\#1 \\$tag of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:flushByTag\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
-
-		-
 			message: "#^Parameter \\#2 \\$parentUid of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\RelationHandler\\:\\:writeForeignField\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
@@ -3513,10 +3463,5 @@ parameters:
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
-
-		-
-			message: "#^Variable \\$column in isset\\(\\) always exists and is not nullable\\.$#"
-			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 

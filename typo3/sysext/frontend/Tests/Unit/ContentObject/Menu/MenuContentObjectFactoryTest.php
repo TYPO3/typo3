@@ -85,26 +85,4 @@ class MenuContentObjectFactoryTest extends UnitTestCase
         $factory->registerMenuType($uniqueMenuType, $selfClassName);
         self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType($uniqueMenuType));
     }
-
-    /**
-     * @test
-     */
-    public function registerMenuTypeThrowsExceptionIfTypeIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1363429303);
-        $factory = new MenuContentObjectFactory();
-        $factory->registerMenuType([], 'foo');
-    }
-
-    /**
-     * @test
-     */
-    public function registerMenuTypeThrowsExceptionIfClassNameIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1363429303);
-        $factory = new MenuContentObjectFactory();
-        $factory->registerMenuType('foo', []);
-    }
 }

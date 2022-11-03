@@ -718,7 +718,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider roundDataProvider
      * @test
      */
-    public function round(float $expect, $content, array $conf): void
+    public function round(float $expect, mixed $content, array $conf): void
     {
         self::assertSame(
             $expect,
@@ -821,11 +821,8 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @dataProvider numberFormatDataProvider
      * @test
-     * @param string $expects
-     * @param mixed $content
-     * @param array $conf
      */
-    public function numberFormat(string $expects, $content, array $conf): void
+    public function numberFormat(string $expects, mixed $content, array $conf): void
     {
         self::assertSame(
             $expects,
@@ -965,9 +962,6 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider calcAgeDataProvider
-     * @param string $expect
-     * @param int $timestamp
-     * @param string $labels
      */
     public function calcAge(string $expect, int $timestamp, string $labels): void
     {
@@ -996,9 +990,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @param string $content
-     * @param array $configuration
-     * @param string $expectation
      * @dataProvider stdWrapReturnsExpectationDataProvider
      * @test
      */
@@ -1109,8 +1100,6 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider getDataWithTypeGpDataProvider
-     * @param string $key
-     * @param string $expectedValue
      */
     public function getDataWithTypeGp(string $key, string $expectedValue): void
     {
@@ -2187,9 +2176,6 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @test
      * @dataProvider _parseFuncParsesNestedTagsProperlyDataProvider
-     * @param string $value
-     * @param array $configuration
-     * @param string $expectedResult
      */
     public function parseFuncParsesNestedTagsProperly(string $value, array $configuration, string $expectedResult): void
     {
@@ -2653,10 +2639,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @param array $settings
-     * @param string $linkText
-     * @param string $mailAddress
-     * @param string $expected
      * @dataProvider typoLinkEncodesMailAddressForSpamProtectionDataProvider
      * @test
      */
@@ -3425,7 +3407,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param int $times Times the cache is expected to be called (0 or 1).
      * @param string|null $cached Return from cacheFrontend mock.
      */
-    public function getFromCache($expect, array $conf, string $cacheKey, int $times, ?string $cached): void
+    public function getFromCache(string|bool $expect, array $conf, string $cacheKey, int $times, ?string $cached): void
     {
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -3527,7 +3509,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param mixed $expect The expected string.
      * @param string $fields Field names divides by //.
      */
-    public function getFieldVal($expect, string $fields): void
+    public function getFieldVal(mixed $expect, string $fields): void
     {
         $data = [
             'string1' => 'string 1',
@@ -3790,8 +3772,8 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider fourTypesOfStdWrapHookObjectProcessorsDataProvider
-     * @param string $stdWrapMethod : The method to cover.
-     * @param string $hookObjectCall : The expected hook object call.
+     * @param string $stdWrapMethod The method to cover.
+     * @param string $hookObjectCall The expected hook object call.
      */
     public function fourTypesOfStdWrapHookObjectProcessors(
         string $stdWrapMethod,
@@ -4094,9 +4076,6 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider stdWrapBrTagDataProvider
-     * @param string $input
-     * @param string $expected
-     * @param array $config
      */
     public function stdWrap_brTag(string $input, string $expected, array $config): void
     {
@@ -4371,7 +4350,7 @@ class ContentObjectRendererTest extends UnitTestCase
         array $conf,
         int $times,
         ?array $with,
-        $will
+        string|bool|null $will
     ): void {
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -4443,7 +4422,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_cacheStore(
         ?array $confCache,
         int $timesCCK,
-        $key,
+        mixed $key,
         int $times
     ): void {
         $content = StringUtility::getUniqueId('content');
@@ -4846,7 +4825,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param array $conf The given configuration.
      * @param int $now Fictive execution time.
      */
-    public function stdWrap_date(string $expected, $content, array $conf, int $now): void
+    public function stdWrap_date(string $expected, mixed $content, array $conf, int $now): void
     {
         $GLOBALS['EXEC_TIME'] = $now;
         self::assertEquals(
@@ -4940,7 +4919,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param bool $expectArray If cast to array is expected.
      * @param mixed $confDebugFunc The configuration for $conf['debugFunc'].
      */
-    public function stdWrap_debugFunc(bool $expectArray, $confDebugFunc): void
+    public function stdWrap_debugFunc(bool $expectArray, mixed $confDebugFunc): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $content = StringUtility::getUniqueId('content');
@@ -5618,7 +5597,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider stdWrap_ifDataProvider
      * @param string $expect The expected output.
      * @param bool $stop Expect stop further rendering.
-     * @param mixed $content The given content.
+     * @param string $content The given content.
      * @param array $conf
      * @param int $times Times checkIf is called (0 or 1).
      * @param bool|null $will Return of checkIf (null if not called).
@@ -5714,7 +5693,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param mixed $content The given input.
      * @param array $conf The given configuration.
      */
-    public function stdWrap_ifBlank($expect, $content, array $conf): void
+    public function stdWrap_ifBlank(mixed $expect, mixed $content, array $conf): void
     {
         $result = $this->subject->stdWrap_ifBlank($content, $conf);
         self::assertSame($expect, $result);
@@ -5768,7 +5747,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param mixed $content The given content.
      * @param array $conf The given configuration.
      */
-    public function stdWrap_ifEmpty($expect, $content, array $conf): void
+    public function stdWrap_ifEmpty(mixed $expect, mixed $content, array $conf): void
     {
         $result = $this->subject->stdWrap_ifEmpty($content, $conf);
         self::assertSame($expect, $result);
@@ -5809,7 +5788,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param mixed $content The given input.
      * @param array $conf The given configuration.
      */
-    public function stdWrap_ifNull($expect, $content, array $conf): void
+    public function stdWrap_ifNull(mixed $expect, mixed $content, array $conf): void
     {
         $result = $this->subject->stdWrap_ifNull($content, $conf);
         self::assertSame($expect, $result);
@@ -5974,7 +5953,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param mixed $expect The expected output.
      * @param string $content The given input.
      */
-    public function stdWrap_insertDataAndInputExamples($expect, string $content): void
+    public function stdWrap_insertDataAndInputExamples(mixed $expect, string $content): void
     {
         self::assertSame($expect, $this->subject->stdWrap_insertData($content));
     }
@@ -6028,7 +6007,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param int $expect The expected output.
      * @param mixed $content The given input.
      */
-    public function stdWrap_intval(int $expect, $content): void
+    public function stdWrap_intval(int $expect, mixed $content): void
     {
         self::assertSame($expect, $this->subject->stdWrap_intval($content));
     }
@@ -6499,7 +6478,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $content
      * @param array $conf Property: setCurrent
      */
-    public function stdWrap_override($expect, string $content, array $conf): void
+    public function stdWrap_override(mixed $expect, string $content, array $conf): void
     {
         self::assertSame(
             $expect,
@@ -6641,7 +6620,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $frontend->expects(self::once())->method('uniqueHash')
             ->with()->willReturn($uniqueHash);
-        $frontend->config = [];
+        $frontend->config = ['INTincScript' => []];
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             null,
@@ -6873,7 +6852,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $content The given content.
      * @param array $conf The given configuration.
      */
-    public function stdWrap_prioriCalc($expect, string $content, array $conf): void
+    public function stdWrap_prioriCalc(mixed $expect, string $content, array $conf): void
     {
         $result = $this->subject->stdWrap_prioriCalc($content, $conf);
         self::assertSame($expect, $result);
@@ -7017,7 +6996,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param bool $stop Expect stop further rendering.
      * @param mixed $content The given input.
      */
-    public function stdWrap_required($expect, bool $stop, $content): void
+    public function stdWrap_required(mixed $expect, bool $stop, mixed $content): void
     {
         $subject = $this->subject;
         $subject->_set('stdWrapRecursionLevel', 1);
@@ -7263,10 +7242,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @param string $key
-     * @param array $configuration
-     * @param string|null $defaultValue
-     * @param string|null $expected
      * @dataProvider stdWrap_stdWrapValueDataProvider
      * @test
      */
@@ -7445,7 +7420,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param array $conf The given configuration.
      * @param int $now Fictive execution time.
      */
-    public function stdWrap_strftime(string $expect, $content, array $conf, int $now): void
+    public function stdWrap_strftime(string $expect, mixed $content, array $conf, int $now): void
     {
         // Save current timezone and set to UTC to make the system under test
         // behave the same in all server timezone settings
@@ -7523,7 +7498,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $content The given input.
      * @param array $conf The given configuration.
      */
-    public function stdWrap_strtotime($expect, string $content, array $conf): void
+    public function stdWrap_strtotime(mixed $expect, string $content, array $conf): void
     {
         // Set exec_time to a hard timestamp
         $GLOBALS['EXEC_TIME'] = 1417392000;
@@ -7628,10 +7603,8 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider stdWrap_trimDataProvider
-     * @param string $expect
-     * @param mixed $content The given content.
      */
-    public function stdWrap_trim(string $expect, $content): void
+    public function stdWrap_trim(string $expect, mixed $content): void
     {
         $result = $this->subject->stdWrap_trim($content);
         self::assertSame($expect, $result);
@@ -7893,7 +7866,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $content The given content.
      * @param mixed $wrapAlignConf The given input.
      */
-    public function stdWrap_wrapAlign(string $expect, string $content, $wrapAlignConf): void
+    public function stdWrap_wrapAlign(string $expect, string $content, mixed $wrapAlignConf): void
     {
         $conf = [];
         if ($wrapAlignConf !== null) {
@@ -8124,12 +8097,8 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getGlobalDataProvider
-     * @param mixed $expected
-     * @param string $key
-     * @param array|null $globals
-     * @param array|null $source
      */
-    public function getGlobalReturnsExpectedResult($expected, string $key, ?array $globals, ?array $source): void
+    public function getGlobalReturnsExpectedResult(mixed $expected, string $key, ?array $globals, ?array $source): void
     {
         if (isset($globals['HTTP_SERVER_VARS'])) {
             // Note we can't simply $GLOBALS = $globals, since phpunit backupGlobals works on existing array keys.

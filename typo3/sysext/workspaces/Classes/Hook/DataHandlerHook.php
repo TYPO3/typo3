@@ -1224,7 +1224,7 @@ class DataHandlerHook
     protected function flushWorkspaceCacheEntriesByWorkspaceId(int $workspaceId): void
     {
         $workspacesCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('workspaces_cache');
-        $workspacesCache->flushByTag($workspaceId);
+        $workspacesCache->flushByTag((string)$workspaceId);
     }
 
     /*******************************

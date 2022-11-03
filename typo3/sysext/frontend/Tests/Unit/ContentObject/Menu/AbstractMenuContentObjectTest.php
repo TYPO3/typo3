@@ -205,9 +205,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertEquals('OVERLAID', $result[0]['title']);
     }
 
-    /**
-     * @return array
-     */
     public function sectionIndexFiltersDataProvider(): array
     {
         return [
@@ -249,8 +246,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sectionIndexFiltersDataProvider
-     * @param int $expectedAmount
-     * @param array $dataRow
      */
     public function sectionIndexFilters(int $expectedAmount, array $dataRow): void
     {
@@ -277,9 +272,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertCount($expectedAmount, $result);
     }
 
-    /**
-     * @return array
-     */
     public function sectionIndexQueriesWithDifferentColPosDataProvider(): array
     {
         return [
@@ -317,9 +309,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sectionIndexQueriesWithDifferentColPosDataProvider
-     * @param array $configuration
-     * @param string $colPosFromStdWrapValue
-     * @param string $whereClausePrefix
      */
     public function sectionIndexQueriesWithDifferentColPos(array $configuration, string $colPosFromStdWrapValue, string $whereClausePrefix): void
     {
@@ -359,9 +348,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     ////////////////////////////////////
     // Tests concerning menu item states
     ////////////////////////////////////
-    /**
-     * @return array
-     */
     public function ifsubHasToCheckExcludeUidListDataProvider(): array
     {
         return [
@@ -396,9 +382,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider ifsubHasToCheckExcludeUidListDataProvider
-     * @param array $menuItems
-     * @param string $excludeUidList
-     * @param bool $expectedResult
      */
     public function ifsubHasToCheckExcludeUidList(array $menuItems, string $excludeUidList, bool $expectedResult): void
     {
@@ -436,9 +419,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->_call('isItemState', 'IFSUB', 0));
     }
 
-    /**
-     * @return array
-     */
     public function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider(): array
     {
         return [
@@ -599,15 +579,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider
-     * @param array $expected
-     * @param array $mconf
-     * @param array $page
-     * @param mixed $oTarget
-     * @param string|int $addParams
-     * @param string|int $typeOverride
-     * @param int|string|null $overrideId
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, string $oTarget, $addParams = '', $typeOverride = '', $overrideId = null): void
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, string $oTarget, string|int $addParams = '', string|int $typeOverride = '', int|string|null $overrideId = null): void
     {
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['createLink'])
