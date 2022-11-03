@@ -20,6 +20,8 @@ import Notification from '../notification';
 import Viewport from '../viewport';
 import SecurityUtility from '@typo3/core/security-utility';
 import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
+import '@typo3/backend/element/spinner-element';
+import {Sizes} from '../enum/icon-types';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
@@ -39,7 +41,7 @@ enum Identifiers {
 }
 
 /**
- * Module =TYPO3/CMS/Backend/Toolbar/ShortcutMenu
+ * Module: @typo3/backend/toolbar/shortcut-menu
  * shortcut menu logic to add new shortcut, remove a shortcut
  * and edit a shortcut
  */
@@ -65,47 +67,39 @@ class ShortcutMenu {
     confirmationText: string,
     shortcutButton: HTMLElement,
   ): void {
-    if (typeof confirmationText !== 'undefined') {
-      const modal = Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText);
-      modal.addEventListener('confirm.button.ok', (e: Event): void => {
-        const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
-        const $existingIcon = $toolbarItemIcon.clone();
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_create)).post({
+      routeIdentifier: routeIdentifier,
+      arguments: routeArguments,
+      displayName: displayName,
+    }).then((): void => {
+      this.refreshMenu();
 
-        Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
-          $toolbarItemIcon.replaceWith(spinner);
-        });
+      if (typeof shortcutButton !== 'object') {
+        // @todo: when does this happen?
+        console.warn(`Expected argument shortcutButton to be an object, got ${typeof shortcutButton}`);
+        return;
+      }
 
-        (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_create)).post({
-          routeIdentifier: routeIdentifier,
-          arguments: routeArguments,
-          displayName: displayName,
-        }).then((): void => {
-          this.refreshMenu();
-          $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
-          if (typeof shortcutButton === 'object') {
-            const isDropdownItem = $(shortcutButton).hasClass('dropdown-item');
-            const securityUtility = new SecurityUtility();
-            Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
-              $(shortcutButton).html(icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : ''));
-            });
-            $(shortcutButton).addClass(isDropdownItem ? 'disabled' : 'active');
-            // @todo using plain `disabled` HTML attr would have been better, since it disables events, mouse cursor, etc.
-            // (however, it might make things more complicated in Bootstrap's `button-variant` mixin)
-            $(shortcutButton).attr('data-dispatch-disabled', 'disabled');
-            $(shortcutButton).attr('title', TYPO3.lang['labels.alreadyBookmarked']);
-          }
-        });
-        modal.hideModal();
+      const isDropdownItem = $(shortcutButton).hasClass('dropdown-item');
+      const securityUtility = new SecurityUtility();
+      Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
+        $(shortcutButton).html(icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : ''));
       });
-      modal.addEventListener('confirm.button.cancel', (): void => modal.hideModal());
-    }
+      $(shortcutButton).addClass(isDropdownItem ? 'disabled' : 'active');
+      // @todo using plain `disabled` HTML attr would have been better, since it disables events, mouse cursor, etc.
+      //       (however, it might make things more complicated in Bootstrap's `button-variant` mixin)
+      $(shortcutButton).attr('data-dispatch-disabled', 'disabled');
+      $(shortcutButton).attr('title', TYPO3.lang['labels.alreadyBookmarked']);
+    }).catch((): void => {
+      Notification.error(TYPO3.lang['bookmark.failedTitle'], TYPO3.lang['bookmark.failedMessage']);
+    });
   }
 
   private initializeEvents = (): void => {
     $(Identifiers.containerSelector).on('click', Identifiers.shortcutDeleteSelector, (evt: JQueryEventObject): void => {
       evt.preventDefault();
       evt.stopImmediatePropagation();
-      this.deleteShortcut($(evt.currentTarget).closest(Identifiers.shortcutItemSelector));
+      this.deleteShortcut($(evt.currentTarget).closest(Identifiers.shortcutItemSelector).data('shortcutid'));
     }).on('click', Identifiers.shortcutFormGroupSelector, (evt: JQueryEventObject): void => {
       evt.preventDefault();
       evt.stopImmediatePropagation();
@@ -141,13 +135,13 @@ class ShortcutMenu {
   /**
    * Removes an existing short by sending an AJAX call
    *
-   * @param {JQuery} $shortcutRecord
+   * @param shortcutId number
    */
-  private deleteShortcut($shortcutRecord: JQuery): void {
+  private deleteShortcut(shortcutId: number): void {
     const modal = Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete'])
     modal.addEventListener('confirm.button.ok', (): void => {
       (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_remove)).post({
-        shortcutId: $shortcutRecord.data('shortcutid'),
+        shortcutId,
       }).then((): void => {
         // a reload is used in order to restore the original behaviour
         // e.g. remove groups that are now empty because the last one in the group
@@ -196,8 +190,17 @@ class ShortcutMenu {
    * Reloads the menu after an update
    */
   private refreshMenu(): void {
+    const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
+    const $existingIcon = $toolbarItemIcon.clone();
+
+    const spinner = document.createElement('typo3-backend-spinner');
+    spinner.setAttribute('size', Sizes.small);
+    $toolbarItemIcon.replaceWith(spinner);
+
     (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_list)).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
       $(Identifiers.toolbarMenuSelector, Identifiers.containerSelector).html(await response.resolve());
+    }).finally((): void => {
+      $('typo3-backend-spinner', Identifiers.containerSelector).replaceWith($existingIcon);
     });
   }
 }

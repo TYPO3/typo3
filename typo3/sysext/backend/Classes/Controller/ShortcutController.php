@@ -54,21 +54,25 @@ class ShortcutController
     public function addAction(ServerRequestInterface $request): ResponseInterface
     {
         $result = 'success';
+        $responseCode = 201;
         $parsedBody = $request->getParsedBody();
         $routeIdentifier = $parsedBody['routeIdentifier'] ?? '';
         $arguments = $parsedBody['arguments'] ?? '';
         if ($routeIdentifier === '') {
             $result = 'missingRoute';
+            $responseCode = 400;
         } elseif ($this->shortcutRepository->shortcutExists($routeIdentifier, $arguments)) {
             $result = 'alreadyExists';
+            $responseCode = 200;
         } else {
             $shortcutName = $parsedBody['displayName'] ?? '';
             $success = $this->shortcutRepository->addShortcut($routeIdentifier, $arguments, $shortcutName);
             if (!$success) {
                 $result = 'failed';
+                $responseCode = 500;
             }
         }
-        return new HtmlResponse($result);
+        return new JsonResponse(['result' => $result], $responseCode);
     }
 
     /**

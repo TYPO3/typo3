@@ -1302,14 +1302,17 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.confirmBookmarksDelete" resname="toolbarItems.confirmBookmarksDelete">
 				<source>Do you really want to remove this bookmark?</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.createBookmark" resname="toolbarItems.createBookmark">
-				<source>Create bookmark</source>
-			</trans-unit>
 			<trans-unit id="toolbarItems.bookmarkSavedTitle" resname="toolbarItems.bookmarkSavedTitle">
 				<source>Bookmark saved</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.bookmarkSavedMessage" resname="toolbarItems.bookmarkSavedMessage">
 				<source>The bookmark was saved.</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.bookmarkFailedTitle" resname="toolbarItems.bookmarkFailedTitle">
+				<source>Bookmark creation failed</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.bookmarkFailedMessage" resname="toolbarItems.bookmarkFailedMessage">
+				<source>The bookmark couldn't get created</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.help" resname="toolbarItems.help">
 				<source>Help</source>

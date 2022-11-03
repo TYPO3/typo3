@@ -54,37 +54,43 @@ class ShortcutControllerTest extends FunctionalTestCase
      * @dataProvider addShortcutTestDataProvide
      * @test
      */
-    public function addShortcutTest(array $parsedBody, string $expectedResponseBody): void
+    public function addShortcutTest(array $parsedBody, string $expectedResponseBody, int $expectedResponseStatus): void
     {
         $request = $this->request->withParsedBody($parsedBody);
-        self::assertEquals($expectedResponseBody, $this->subject->addAction($request)->getBody());
+        $response = $this->subject->addAction($request);
+        self::assertEquals($expectedResponseBody, $response->getBody());
+        self::assertEquals($expectedResponseStatus, $response->getStatusCode());
     }
 
     public function addShortcutTestDataProvide(): \Generator
     {
         yield 'No route defined' => [
             [],
-            'missingRoute',
+            json_encode(['result' => 'missingRoute'], JSON_THROW_ON_ERROR),
+            400,
         ];
         yield 'Existing data as parsed body' => [
             [
                 'routeIdentifier' => 'web_layout',
                 'arguments' => '{"id":"123"}',
             ],
-            'alreadyExists',
+            json_encode(['result' => 'alreadyExists'], JSON_THROW_ON_ERROR),
+            200,
         ];
         yield 'Invalid route identifier' => [
             [
                 'routeIdentifier' => 'invalid_route_identifier',
             ],
-            'failed',
+            json_encode(['result' => 'failed'], JSON_THROW_ON_ERROR),
+            500,
         ];
         yield 'New data as parsed body' => [
             [
                 'routeIdentifier' => 'web_list',
                 'arguments' => '{"id":"123","GET":{"clipBoard":"1"}}',
             ],
-            'success',
+            json_encode(['result' => 'success'], JSON_THROW_ON_ERROR),
+            201,
         ];
     }
 }
