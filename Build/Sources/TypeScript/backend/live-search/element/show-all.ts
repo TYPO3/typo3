@@ -14,6 +14,7 @@
 import {customElement} from 'lit/decorators';
 import {html, LitElement, TemplateResult} from 'lit';
 import {lll} from '@typo3/core/lit-helper';
+import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-backend-live-search-show-all')
 export class ResultItem extends LitElement {
@@ -35,14 +36,9 @@ export class ResultItem extends LitElement {
   private dispatchItemChosenEvent(e: PointerEvent): void {
     e.preventDefault();
 
-    const searchField = (document.getElementById('backend-live-search').querySelector('input[type="search"]')) as HTMLInputElement;
+    const searchField = (document.querySelector('typo3-backend-live-search').querySelector('input[type="search"]')) as HTMLInputElement;
+    TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent(searchField.value));
 
-    document.dispatchEvent(new CustomEvent('live-search:item-chosen', {
-      detail: {
-        callback: (): void => {
-          TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent(searchField.value));
-        }
-      }
-    }));
+    Modal.dismiss();
   }
 }

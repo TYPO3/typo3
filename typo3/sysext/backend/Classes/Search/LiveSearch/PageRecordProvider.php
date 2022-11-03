@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
@@ -170,12 +171,31 @@ final class PageRecordProvider implements SearchProviderInterface
                 // intended fall-thru, perhaps broken data in database or pages without (=deleted) site config
             }
 
+            $actions = [
+                (new ResultItemAction('open_page_details'))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
+                    ->setIcon($this->iconFactory->getIcon('actions-list', Icon::SIZE_SMALL))
+                    ->setUrl($this->getShowLink($row)),
+            ];
+
+            $pageLanguage = (int)($row['sys_language_uid'] ?? 0);
+            $previewUrl = PreviewUriBuilder::create($pageLanguage === 0 ? (int)$row['uid'] : (int)$row['l10n_parent'])
+                ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
+                ->withLanguage($pageLanguage)
+                ->buildUri();
+            if ($previewUrl !== null) {
+                $actions[] = (new ResultItemAction('preview_page'))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setIcon($this->iconFactory->getIcon('actions-file-view', Icon::SIZE_SMALL))
+                    ->setUrl((string)$previewUrl);
+            }
+
             $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle('pages', $row))
                 ->setTypeLabel($this->languageService->sL($GLOBALS['TCA']['pages']['ctrl']['title']))
                 ->setIcon($icon)
-                ->setActionUrl($this->getShowLink($row))
+                ->setActions(...$actions)
                 ->setExtraData([
                     'breadcrumb' => BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0),
                     'flagIcon' => $flagIconData,
@@ -346,7 +366,7 @@ final class PageRecordProvider implements SearchProviderInterface
                 && $backendUser->check('tables_select', 'pages')
             )
         ) {
-            $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
+            $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['uid']]);
         }
         return $showLink;
     }

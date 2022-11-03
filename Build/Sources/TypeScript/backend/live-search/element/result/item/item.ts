@@ -17,32 +17,37 @@ import '@typo3/backend/element/icon-element';
 
 export interface ResultItemInterface {
   provider: string;
-  actionUrl: string;
+  actions: ResultItemActionInterface[];
   icon: { [key: string]: string };
   itemTitle: string;
   typeLabel: string;
   extraData: { [key: string]: any }
 }
 
+export interface ResultItemActionInterface {
+  identifier: string;
+  icon: { [key: string]: string };
+  label: string;
+  url: string;
+}
+
 @customElement('typo3-backend-live-search-result-item')
-export class ResultItem extends LitElement {
-  @property({type: String}) provider: string;
-  @property({type: String}) actionUrl: string;
+export class Item extends LitElement {
+  @property({type: Object, attribute: false}) resultItem: ResultItemInterface;
+
+  private parentContainer: HTMLElement;
+  private resultItemContainer: HTMLElement;
 
   public connectedCallback() {
+    this.parentContainer = this.closest('typo3-backend-live-search-result-container');
+    this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
+
     super.connectedCallback();
 
-    this.addEventListener('click', (e: PointerEvent): void => {
-      e.preventDefault();
-      this.dispatchItemChosenEvent();
-    });
-    this.addEventListener('keyup', (e: KeyboardEvent): void => {
-      e.preventDefault();
-
-      // Trigger item selection when pressing ENTER or SPACE
-      if (['Enter', ' '].includes(e.key)) {
-        this.dispatchItemChosenEvent();
-      }
+    this.addEventListener('focus', (e: Event): void => {
+      const target = e.target as HTMLElement;
+      target.parentElement.querySelector('.active')?.classList.remove('active');
+      target.classList.add('active');
     });
   }
 
@@ -52,16 +57,6 @@ export class ResultItem extends LitElement {
   }
 
   protected render(): TemplateResult {
-    return html``;
-  }
-
-  private dispatchItemChosenEvent(): void {
-    document.dispatchEvent(new CustomEvent('live-search:item-chosen', {
-      detail: {
-        callback: (): void => {
-          TYPO3.Backend.ContentContainer.setUrl(this.actionUrl);
-        }
-      }
-    }));
+    return html`<div class="livesearch-expand-action" @click="${(e: Event): void => { e.stopPropagation(); this.focus(); }}"><typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon></div>`;
   }
 }

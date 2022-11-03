@@ -25,8 +25,8 @@ import {SeverityEnum} from '@typo3/backend/enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {SearchOptionItem} from '@typo3/backend/live-search/element/search-option-item';
 import BrowserSession from '@typo3/backend/storage/browser-session';
-import {ResultContainer, componentName as resultContainerComponentName} from '@typo3/backend/live-search/element/result-container';
-import {ResultItemInterface} from '@typo3/backend/live-search/element/result-item';
+import {ResultContainer, componentName as resultContainerComponentName} from '@typo3/backend/live-search/element/result/result-container';
+import {ResultItemInterface} from '@typo3/backend/live-search/element/result/item/item';
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',
@@ -46,6 +46,7 @@ interface SearchOption {
  */
 class LiveSearch {
   private renderers: { [key: string]: Function } = {};
+  private invokeHandlers: { [key: string]: Function } = {};
   private searchTerm: string = '';
   private searchOptions: { [key: string]: string[] } = {};
 
@@ -59,14 +60,14 @@ class LiveSearch {
     this.renderers[type] = callback;
   }
 
+  public addInvokeHandler(type: string, action: string, callback: Function): void {
+    this.invokeHandlers[type + '_' + action] = callback;
+  }
+
   private registerEvents(): void {
     new RegularEvent('click', (): void => {
       this.openSearchModal();
     }).delegateTo(document, Identifiers.toolbarItem);
-
-    new RegularEvent('live-search:item-chosen', (): void => {
-      Modal.dismiss();
-    }).bindTo(document);
 
     new RegularEvent('typo3:live-search:trigger-open', (): void => {
       if (Modal.currentModal) {
@@ -108,6 +109,11 @@ class LiveSearch {
       });
       searchField.focus();
       searchField.select();
+
+      const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
+      new RegularEvent('live-search:item-chosen', (): void => {
+        Modal.dismiss();
+      }).bindTo(searchResultContainer);
 
       new RegularEvent('hide.bs.dropdown', (): void => {
         const activeSearchOptions = Array.from(modal.querySelectorAll(Identifiers.searchOptionDropdown + ' typo3-backend-live-search-option-item'))
@@ -170,7 +176,7 @@ class LiveSearch {
     e.preventDefault();
 
     // Select first available result item
-    const firstSearchResultItem = document.getElementById('backend-live-search').querySelector('typo3-backend-live-search-result-item') as HTMLElement|null;
+    const firstSearchResultItem = document.querySelector('typo3-backend-live-search').querySelector('typo3-backend-live-search-result-item') as HTMLElement|null;
     firstSearchResultItem?.focus();
   }
 
@@ -180,6 +186,7 @@ class LiveSearch {
 
     const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
     searchResultContainer.renderers = this.renderers;
+    searchResultContainer.invokeHandlers = this.invokeHandlers;
 
     searchResultContainer.results = searchResults;
     searchResultContainer.loading = false;

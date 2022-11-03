@@ -29,7 +29,10 @@ final class ResultItem implements \JsonSerializable
     private string $itemTitle = '';
     private string $typeLabel = '';
     private ?Icon $icon = null;
-    private string $actionUrl = '';
+    /**
+     * @var ResultItemAction[]
+     */
+    private array $actions = [];
     private array $extraData = [];
 
     /**
@@ -60,9 +63,9 @@ final class ResultItem implements \JsonSerializable
         return $this;
     }
 
-    public function setActionUrl(string $actionUrl): self
+    public function setActions(ResultItemAction ...$action): self
     {
-        $this->actionUrl = $actionUrl;
+        $this->actions = $action;
 
         return $this;
     }
@@ -83,7 +86,7 @@ final class ResultItem implements \JsonSerializable
                 'identifier' => $this->icon?->getIdentifier(),
                 'overlay' => $this->icon?->getOverlayIcon()?->getIdentifier(),
             ],
-            'actionUrl' => $this->actionUrl,
+            'actions' => $this->actions,
             'extraData' => $this->extraData,
         ];
     }

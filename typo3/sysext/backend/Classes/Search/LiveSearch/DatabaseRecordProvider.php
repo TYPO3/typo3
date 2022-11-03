@@ -174,6 +174,15 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 continue;
             }
 
+            $actions = [];
+            $editLink = $this->getEditLink($tableName, $row);
+            if ($editLink !== '') {
+                $actions[] = (new ResultItemAction('edit_record'))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit'))
+                    ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
+                    ->setUrl($editLink);
+            }
+
             $extraData = [];
             if (!($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] ?? false)) {
                 $extraData['breadcrumb'] = BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0);
@@ -184,7 +193,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 ->setItemTitle(BackendUtility::getRecordTitle($tableName, $row))
                 ->setTypeLabel($this->languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
                 ->setIcon($icon)
-                ->setActionUrl($this->getEditLink($tableName, $row))
+                ->setActions(...$actions)
                 ->setExtraData($extraData)
             ;
         }

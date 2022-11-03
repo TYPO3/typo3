@@ -76,7 +76,7 @@ class SearchCest
         $I->fillField(self::$searchField, 'fileadmin');
 
         $I->canSee('fileadmin', self::$searchResultItem);
-        $I->click('Show All', '#backend-live-search');
+        $I->click('Show All', 'typo3-backend-live-search');
         $I->waitForElementNotVisible(self::$searchResultContainer);
 
         $I->switchToContentFrame();

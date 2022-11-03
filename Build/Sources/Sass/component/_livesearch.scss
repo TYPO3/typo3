@@ -1,13 +1,56 @@
 //
 // Livesearch
 //
-typo3-backend-live-search-result-list {
+typo3-backend-live-search {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+typo3-backend-live-search-result-container {
+    // Variables
+    --livesearch-item-opacity: .5;
+    --livesearch-preamble-delimiter-border-width: 1px;
+    --livesearch-preamble-delimiter-border-color: #{$gray-300};
+    display: flex;
+    flex-direction: row;
+    margin: calc(var(--bs-modal-padding) * -1);
+    height: 100%;
+    overflow: auto;
+}
+
+typo3-backend-live-search-result-item-container,
+typo3-backend-live-search-result-item-detail-container {
+    flex-grow: 1;
+    flex-basis: 50%;
+    overflow: auto;
+    padding: var(--bs-modal-padding);
+}
+
+typo3-backend-live-search-result-list,
+typo3-backend-live-search-result-action-list {
     display: flex;
     flex-direction: column;
     gap: 1px;
 }
 
-typo3-backend-live-search-result-item {
+typo3-backend-live-search-result-item-detail-container {
+    .livesearch-detail-preamble {
+        text-align: center;
+        padding-bottom: 1em;
+        margin-bottom: 1em;
+        border-bottom: var(--livesearch-preamble-delimiter-border-width) solid var(--livesearch-preamble-delimiter-border-color);
+
+        .livesearch-detail-preamble-type {
+            opacity: var(--livesearch-item-opacity);
+        }
+    }
+}
+
+typo3-backend-live-search-result-item,
+typo3-backend-live-search-result-item-action {
+    display: flex;
+    gap: 1.5em;
     font-size: var(--typo3-component-font-size);
     line-height: var(--typo3-component-line-height);
     padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
@@ -17,7 +60,8 @@ typo3-backend-live-search-result-item {
     cursor: pointer;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &.active {
         z-index: 1;
         outline-offset: -1px;
     }
@@ -27,14 +71,28 @@ typo3-backend-live-search-result-item {
         outline: 1px solid tint-color($primary, 85%);
     }
 
-    &:focus {
+    &:focus,
+    &.active {
         background-color: tint-color($primary, 95%);
         outline: 1px solid tint-color($primary, 20%);
+    }
+
+    .livesearch-expand-action {
+        flex: 0;
+        align-items: center;
+        margin: calc(var(--typo3-list-item-padding-y) * -1) calc(var(--typo3-list-item-padding-x) * -1);
+        padding: var(--typo3-list-item-padding-y) calc(var(--typo3-list-item-padding-x) / 2);
+        border-left: 1px solid transparent;
+
+        &:hover {
+            border-left: 1px solid tint-color($primary, 85%);
+        }
     }
 
     & > * {
         display: flex;
         gap: .5em;
+        flex: 1;
 
         .livesearch-result-item-icon {
             display: flex;
@@ -48,14 +106,14 @@ typo3-backend-live-search-result-item {
             flex-grow: 1;
 
             small {
-                opacity: .5;
+                opacity: var(--livesearch-item-opacity);
             }
         }
 
         .livesearch-result-item-type {
             flex-shrink: 0;
             flex-grow: 0;
-            opacity: .5;
+            opacity: var(--livesearch-item-opacity);
         }
     }
 }
