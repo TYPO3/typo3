@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,8 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class OnTheFlyTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected OnTheFly $subject;
 
     protected function setUp(): void
@@ -51,9 +47,9 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileReturnsIncomingData(): void
     {
-        $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
-        $formDataProviderProphecy->addData(Argument::cetera())->willReturnArgument(0);
+        $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
+        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
+        $formDataProviderMock->method('addData')->withAnyParameters()->willReturnArgument(0);
         $providerList = [
             FormDataProviderInterface::class,
         ];
@@ -71,15 +67,16 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
+        $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
+        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
 
         $providerList = [
             FormDataProviderInterface::class,
         ];
         $this->subject->setProviderList($providerList);
         $providerResult = ['foo'];
-        $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
+        $formDataProviderMock->expects(self::atLeastOnce())->method('addData')->with(self::anything())
+            ->willReturn($providerResult);
 
         self::assertEquals($providerResult, $this->subject->compile([]));
     }
@@ -89,8 +86,6 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        $formDataProviderProphecy = $this->prophesize(\stdClass::class);
-        GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
         $providerList = [
             \stdClass::class,
         ];

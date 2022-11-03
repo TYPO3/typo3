@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -27,16 +25,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class OrderedProviderListTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function compileReturnsIncomingData(): void
     {
-        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
+        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
 
         $input = ['foo'];
 
@@ -50,14 +46,15 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
+        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
 
-        $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
+        $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
+        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
         $providerResult = ['foo'];
-        $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
+        $formDataProviderMock->expects(self::atLeastOnce())->method('addData')->with(self::anything())
+            ->willReturn($providerResult);
 
         $subject = new OrderedProviderList();
         $subject->setProviderList([
@@ -71,9 +68,9 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileDoesNotCallDisabledDataProvider(): void
     {
-        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
+        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
 
         $subject = new OrderedProviderList();
         $subject->setProviderList([
@@ -90,12 +87,9 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
-
-        $formDataProviderProphecy = $this->prophesize(\stdClass::class);
-        GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
+        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
+        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1485299408);
