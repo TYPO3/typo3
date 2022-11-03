@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\EventDispatcher;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -26,21 +25,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ListenerProviderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<ContainerInterface> */
-    protected ObjectProphecy $containerProphecy;
-
+    protected ContainerInterface&MockObject $containerMock;
     protected ?ListenerProvider $listenerProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->containerProphecy = $this->prophesize(ContainerInterface::class);
-
+        $this->containerMock = $this->createMock(ContainerInterface::class);
         $this->listenerProvider = new ListenerProvider(
-            $this->containerProphecy->reveal()
+            $this->containerMock
         );
     }
 
@@ -77,7 +70,7 @@ class ListenerProviderTest extends UnitTestCase
         $event = new \stdClass();
         $event->invoked = 0;
 
-        $this->containerProphecy->get('listener')->willReturn($listener);
+        $this->containerMock->method('get')->with('listener')->willReturn($listener);
         $this->listenerProvider->addListener(\stdClass::class, 'listener', $method);
 
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
@@ -94,10 +87,10 @@ class ListenerProviderTest extends UnitTestCase
     public function associatesToEventParentClass($listener, string $method = null): void
     {
         $extendedEvent = new class () extends \stdClass {
-            public $invoked = 0;
+            public int $invoked = 0;
         };
 
-        $this->containerProphecy->get('listener')->willReturn($listener);
+        $this->containerMock->method('get')->with('listener')->willReturn($listener);
         $this->listenerProvider->addListener(\stdClass::class, 'listener', $method);
         foreach ($this->listenerProvider->getListenersForEvent($extendedEvent) as $listener) {
             $listener($extendedEvent);
@@ -113,7 +106,7 @@ class ListenerProviderTest extends UnitTestCase
     public function associatesToImplementedInterfaces($listener, string $method = null): void
     {
         $eventImplementation = new class () implements \IteratorAggregate {
-            public $invoked = 0;
+            public int $invoked = 0;
 
             public function getIterator(): \Traversable
             {
@@ -121,7 +114,7 @@ class ListenerProviderTest extends UnitTestCase
             }
         };
 
-        $this->containerProphecy->get('listener')->willReturn($listener);
+        $this->containerMock->method('get')->with('listener')->willReturn($listener);
         $this->listenerProvider->addListener(\IteratorAggregate::class, 'listener', $method);
         foreach ($this->listenerProvider->getListenersForEvent($eventImplementation) as $listener) {
             $listener($eventImplementation);
@@ -140,12 +133,14 @@ class ListenerProviderTest extends UnitTestCase
 
         $event = new \stdClass();
         $event->sequence = '';
-        $this->containerProphecy->get('listener1')->willReturn(static function (object $event): void {
-            $event->sequence .= 'a';
-        });
-        $this->containerProphecy->get('listener2')->willReturn(static function (object $event): void {
-            $event->sequence .= 'b';
-        });
+        $this->containerMock->method('get')->willReturnOnConsecutiveCalls(
+            static function (object $event): void {
+                $event->sequence .= 'a';
+            },
+            static function (object $event): void {
+                $event->sequence .= 'b';
+            }
+        );
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
             $listener($event);
         }
@@ -162,7 +157,7 @@ class ListenerProviderTest extends UnitTestCase
         $this->expectExceptionCode(1549988537);
 
         $event = new \stdClass();
-        $this->containerProphecy->get('listener')->willReturn(new \stdClass());
+        $this->containerMock->method('get')->with('listener')->willReturn(new \stdClass());
         $this->listenerProvider->addListener(\stdClass::class, 'listener');
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
             $listener($event);
