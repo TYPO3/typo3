@@ -66,6 +66,16 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
 
 		-
+			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<'class'\\|'disabled'\\|'title'\\|'value', mixed\\>\\}\\> and array\\{\\} will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
+
+		-
+			message: "#^Offset 'title' on array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
+
+		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/FieldWizard/LocalizationStateSelector.php
@@ -89,21 +99,6 @@ parameters:
 			message: "#^Variable \\$pidList in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\FileLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, mixed\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/LinkHandler/FileLinkHandler.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\PageLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/LinkHandler/PageLinkHandler.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\LinkHandler\\\\RecordLinkHandler\\:\\:getUrlParameters\\(\\) should return array\\<string\\> but returns array\\<string, array\\|int\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/LinkHandler/RecordLinkHandler.php
 
 		-
 			message: "#^Offset 'config\\.' on array on left side of \\?\\? always exists and is not nullable\\.$#"
@@ -506,6 +501,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
 
 		-
+			message: "#^Offset 'aspects' on array\\<string\\|null\\> on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\:\\:forName\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\) but returns object\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php
@@ -562,6 +562,11 @@ parameters:
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Database\\\\ReferenceIndex\\:\\:setReferenceValue_softreferences\\(\\) should return string but returns false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
+
+		-
+			message: "#^Variable \\$chunk in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
 
@@ -1276,21 +1281,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Offset 'ch' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: non\\-empty\\-array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Offset 'tag' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: non\\-empty\\-array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, tag\\?\\: mixed, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Offset 'values' does not exist on array\\{\\}\\|array\\{attrs\\?\\: mixed, ch\\?\\: non\\-empty\\-array\\<int\\|string, array\\<int, array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\>, values\\?\\: array\\<int, mixed\\>\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
@@ -1303,11 +1293,6 @@ parameters:
 		-
 			message: "#^Template type T of method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstanceForDi\\(\\) is not referenced in a parameter\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 3
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
@@ -3057,11 +3042,6 @@ parameters:
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with int and string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\ContentObjectRendererTest\\:\\:stdWrapBrDataProvider\\(\\) should return array\\<array\\<string\\>\\> but returns array\\<string, array\\<int, string\\|null\\>\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
