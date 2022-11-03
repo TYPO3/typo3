@@ -161,7 +161,8 @@ class NotificationMessage extends LitElement {
       this.parentNode && this.parentNode.removeChild(this);
     };
 
-    if ('animate' in this) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion && 'animate' in this) {
       this.style.overflow = 'hidden';
       this.style.display = 'block';
       this.animate(
