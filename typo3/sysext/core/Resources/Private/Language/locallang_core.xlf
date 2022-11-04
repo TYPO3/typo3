@@ -1312,7 +1312,7 @@ Do you want to refresh it now?</source>
 				<source>Bookmark already exists</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.bookmarkAlreadyExistsMessage" resname="toolbarItems.bookmarkAlreadyExistsMessage">
-				<source>The document is already in your bookmaks.</source>
+				<source>The document is already in your bookmarks.</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.bookmarkFailedTitle" resname="toolbarItems.bookmarkFailedTitle">
 				<source>Bookmark creation failed</source>
