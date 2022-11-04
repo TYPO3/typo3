@@ -17,27 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormDataCompilerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected FormDataCompiler $subject;
-
-    /** @var ObjectProphecy<FormDataGroupInterface> */
-    protected ObjectProphecy $formDataGroupProphecy;
+    protected FormDataGroupInterface&MockObject $formDataGroupMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->formDataGroupProphecy = $this->prophesize(FormDataGroupInterface::class);
-        $this->subject = new FormDataCompiler($this->formDataGroupProphecy->reveal());
+        $this->formDataGroupMock = $this->createMock(FormDataGroupInterface::class);
+        $this->subject = new FormDataCompiler($this->formDataGroupMock);
     }
 
     /**
@@ -116,7 +110,7 @@ class FormDataCompilerTest extends UnitTestCase
             'vanillaUid' => 123,
             'command' => 'edit',
         ];
-        $this->formDataGroupProphecy->compile(Argument::cetera())->willReturnArgument(0);
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnArgument(0);
         $result = $this->subject->compile($input);
         self::assertEquals('pages', $result['tableName']);
         self::assertEquals(123, $result['vanillaUid']);
@@ -128,8 +122,8 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->will(static function ($arguments) {
-            $result = $arguments[0];
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function ($arguments) {
+            $result = $arguments;
             $result['databaseRow'] = 'newData';
             return $result;
         });
@@ -142,7 +136,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn(null);
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn(null);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1446664764);
         $this->subject->compile([]);
@@ -153,7 +147,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfRenderDataIsNotEmpty(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn([
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn([
             'renderData' => [ 'foo' ],
         ]);
         $this->expectException(\RuntimeException::class);
@@ -166,8 +160,8 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->will(static function ($arguments) {
-            $result = $arguments[0];
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function ($arguments) {
+            $result = $arguments;
             unset($result['tableName']);
             return $result;
         });
@@ -181,8 +175,8 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->will(static function ($arguments) {
-            $result = $arguments[0];
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function ($arguments) {
+            $result = $arguments;
             $result['newKey'] = 'newData';
             return $result;
         });
