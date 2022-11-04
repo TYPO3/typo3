@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\NodeExpansion;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldControl;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -30,24 +28,23 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FieldControlTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function renderMergesResultOfSingleControls(): void
     {
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconProphecy->render()->shouldBeCalled()->willReturn('');
-        $iconFactoryProphecy->getIcon(Argument::cetera())->shouldBeCalled()->willReturn($iconProphecy->reveal());
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('');
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')->with(self::anything())
+            ->willReturn($iconMock);
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $data = [
             'renderData' => [
                 'fieldControl' => [
@@ -62,8 +59,8 @@ class FieldControlTest extends UnitTestCase
             ],
         ];
 
-        $aControlProphecy = $this->prophesize(AbstractNode::class);
-        $aControlProphecy->render()->willReturn(
+        $aControlMock = $this->createMock(AbstractNode::class);
+        $aControlMock->method('render')->willReturn(
             [
                 'iconIdentifier' => 'actions-open',
                 'title' => 'aTitle',
@@ -77,10 +74,9 @@ class FieldControlTest extends UnitTestCase
         $aControlNodeFactoryInput = $data;
         $aControlNodeFactoryInput['renderData']['fieldControlOptions'] = [];
         $aControlNodeFactoryInput['renderType'] = 'aControl';
-        $nodeFactoryProphecy->create($aControlNodeFactoryInput)->willReturn($aControlProphecy->reveal());
 
-        $anotherControlProphecy = $this->prophesize(AbstractNode::class);
-        $anotherControlProphecy->render()->willReturn(
+        $anotherControlMock = $this->createMock(AbstractNode::class);
+        $anotherControlMock->method('render')->willReturn(
             [
                 'iconIdentifier' => 'actions-close',
                 'title' => 'aTitle',
@@ -93,7 +89,9 @@ class FieldControlTest extends UnitTestCase
         $anotherControlNodeFactoryInput = $data;
         $anotherControlNodeFactoryInput['renderData']['fieldControlOptions'] = [];
         $anotherControlNodeFactoryInput['renderType'] = 'anotherControl';
-        $nodeFactoryProphecy->create($anotherControlNodeFactoryInput)->willReturn($anotherControlProphecy->reveal());
+
+        $nodeFactoryMock->method('create')->withConsecutive([$aControlNodeFactoryInput], [$anotherControlNodeFactoryInput])
+            ->willReturnOnConsecutiveCalls($aControlMock, $anotherControlMock);
 
         $expected = [
             'additionalJavaScriptPost' => [
@@ -111,7 +109,7 @@ class FieldControlTest extends UnitTestCase
             'inlineData' => [],
             'html' => '\n<a class="btn btn-default">\n...>\n</a>',
         ];
-        $result = (new FieldControl($nodeFactoryProphecy->reveal(), $data))->render();
+        $result = (new FieldControl($nodeFactoryMock, $data))->render();
         // We're not interested in testing the html merge here
         $expected['html'] = $result['html'];
 
