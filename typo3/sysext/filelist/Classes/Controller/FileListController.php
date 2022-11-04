@@ -516,12 +516,7 @@ class FileListController implements LoggerAwareInterface
         }
 
         // New folder button
-        if ($this->folderObject && $this->folderObject->checkActionPermission('write')
-            && ($this->folderObject->getStorage()->checkUserActionPermission(
-                'add',
-                'File'
-            ) || $this->folderObject->checkActionPermission('add'))
-        ) {
+        if ($this->folderObject && $this->folderObject->checkActionPermission('write') && $this->folderObject->checkActionPermission('add')) {
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                     'file_newfolder',
@@ -531,9 +526,27 @@ class FileListController implements LoggerAwareInterface
                     ]
                 ))
                 ->setShowLabelText(true)
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new'))
-                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+                ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder'))
+                ->setIcon($this->iconFactory->getIcon('actions-folder-add', Icon::SIZE_SMALL));
             $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+        }
+
+        // New file button
+        if ($this->folderObject && $this->folderObject->checkActionPermission('write')
+            && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
+        ) {
+            $newButton = $buttonBar->makeLinkButton()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute(
+                    'file_create',
+                    [
+                        'target' => $this->folderObject->getCombinedIdentifier(),
+                        'returnUrl' => $this->filelist->listURL(),
+                    ]
+                ))
+                ->setShowLabelText(true)
+                ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file'))
+                ->setIcon($this->iconFactory->getIcon('actions-file-add', Icon::SIZE_SMALL));
+            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
 
         // Add paste button if clipboard is initialized
@@ -569,7 +582,7 @@ class FileListController implements LoggerAwareInterface
                         ->setShowLabelText(true)
                         ->setTitle($pastButtonTitle)
                         ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
-                    $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+                    $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
                 }
             }
         }

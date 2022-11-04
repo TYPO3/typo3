@@ -20,8 +20,14 @@ return [
 
     // Create a new folder
     'file_newfolder' => [
-        'path' => '/file/new',
+        'path' => '/file/create-folder',
         'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFolderController::class . '::mainAction',
+    ],
+
+    // Create a new file
+    'file_create' => [
+        'path' => '/file/create-file',
+        'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFileController::class . '::mainAction',
     ],
 
     // Rename a file

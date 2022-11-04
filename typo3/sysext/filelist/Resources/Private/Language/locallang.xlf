@@ -117,6 +117,12 @@
 			<trans-unit id="download" resname="download">
 				<source>Download</source>
 			</trans-unit>
+			<trans-unit id="actions.create_folder" resname="actions.create_folder">
+				<source>Create Folder</source>
+			</trans-unit>
+			<trans-unit id="actions.create_file" resname="actions.create_file">
+				<source>Create File</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -16,6 +16,9 @@ services:
   TYPO3\CMS\Filelist\Controller\File\CreateFolderController:
     tags: [ 'backend.controller' ]
 
+  TYPO3\CMS\Filelist\Controller\File\CreateFileController:
+    tags: [ 'backend.controller' ]
+
   TYPO3\CMS\Filelist\Controller\File\EditFileController:
     tags: [ 'backend.controller' ]
 

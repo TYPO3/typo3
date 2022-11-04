@@ -36,9 +36,9 @@ class FileOperationsCest extends AbstractFileCest
 
         // Create file
         $I->amGoingTo('create a file with content');
-        $I->click('.module-docheader .btn[title="New"]');
+        $I->click('.module-docheader .btn[title="Create File"]');
         $I->wait(0.2);
-        $I->see('New file or folder', 'h1');
+        $I->see('Create File', 'h1');
         $I->fillField('#newfile', $fileName);
         $I->wait(0.2);
         $I->click('Create file');

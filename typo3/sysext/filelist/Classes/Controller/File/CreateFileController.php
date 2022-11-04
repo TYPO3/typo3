@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Filelist\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,20 +27,18 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Display forms for creating folders (1 to 10).
+ * Display form to create a new file.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-class CreateFolderController
+class CreateFileController
 {
-    protected int $folderNumber = 10;
-    protected int $number = 1;
-
     /**
      * Set with the target path inputted in &target
      */
@@ -62,9 +59,9 @@ class CreateFolderController
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
-        protected readonly UriBuilder $uriBuilder,
         protected readonly ResourceFactory $resourceFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
     ) {
     }
 
@@ -72,38 +69,38 @@ class CreateFolderController
     {
         $this->view = $this->moduleTemplateFactory->create($request);
         $this->initialize($request);
-        $hasPermissions = $this->folderObject->checkActionPermission('add');
+        $hasPermission = $this->folderObject->getStorage()->checkUserActionPermission('add', 'File');
         $assigns = [
-            'hasPermissions' => $hasPermissions,
             'target' => $this->target,
-            'confirmTitle' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm'),
-            'confirmText' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.redraw'),
-            'selfUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_newfolder', [
-                'target' => $this->target,
-                'returnUrl' => $this->returnUrl,
-                'number' => 'AMOUNT',
-            ]),
+            'hasPermission' => $hasPermission,
             'returnUrl' => $this->returnUrl,
         ];
 
-        // Making the selector box for the number of concurrent folder-creations
-        $this->number = MathUtility::forceIntegerInRange($this->number, 1, 10);
-        for ($a = 1; $a <= $this->folderNumber; $a++) {
-            $options = [];
-            $options['value'] = $a;
-            $options['selected'] = ($this->number == $a ? ' selected="selected"' : '');
-            $assigns['options'][] = $options;
-        }
-        // Making the number of new-folder boxes needed:
-        for ($a = 0; $a < $this->number; $a++) {
-            $folder = [];
-            $folder['this'] = $a;
-            $folder['next'] = $a + 1;
-            $assigns['folders'][] = $folder;
+        if ($hasPermission) {
+            // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
+            $fileExtList = [];
+            $onlineMediaFileExt = $this->onlineMediaHelperRegistry->getSupportedFileExtensions();
+            $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
+            foreach ($onlineMediaFileExt as $fileExt) {
+                if ($fileNameVerifier->isValid('.' . $fileExt)) {
+                    $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
+                }
+            }
+            $assigns['fileExtList'] = $fileExtList;
+
+            // Create a list of allowed file extensions with a text format "*.txt, *.css" etc.
+            $fileExtList = [];
+            $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
+            foreach ($textFileExt as $fileExt) {
+                if ($fileNameVerifier->isValid('.' . $fileExt)) {
+                    $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
+                }
+            }
+            $assigns['txtFileExtList'] = $fileExtList;
         }
 
         $this->view->assignMultiple($assigns);
-        return $this->view->renderResponse('File/CreateFolder');
+        return $this->view->renderResponse('File/CreateFile');
     }
 
     protected function initialize(ServerRequestInterface $request): void
@@ -111,7 +108,6 @@ class CreateFolderController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        $this->number = (int)($parsedBody['number'] ?? $queryParams['number'] ?? 1);
         $this->target = $parsedBody['target'] ?? $queryParams['target'] ?? '';
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // create the folder object
@@ -122,17 +118,16 @@ class CreateFolderController
         if (!$this->folderObject instanceof Folder) {
             $title = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
             $message = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
-            throw new \RuntimeException($title . ': ' . $message, 1294586845);
+            throw new \RuntimeException($title . ': ' . $message, 1667565756);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
             throw new InsufficientFolderAccessPermissionsException(
                 'You are not allowed to access folders outside your storages',
-                1375889838
+                1667565757
             );
         }
 
         $this->view->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
-
         if ($this->returnUrl) {
             $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
             $backButton = $buttonBar->makeLinkButton()
@@ -144,7 +139,6 @@ class CreateFolderController
         }
 
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/create-folder.js');
     }
 
     protected function getLanguageService(): LanguageService

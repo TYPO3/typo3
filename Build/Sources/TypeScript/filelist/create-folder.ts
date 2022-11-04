@@ -57,8 +57,6 @@ class CreateFolder {
   private registerEvents(): void {
     const inputElementSelectors = [
       'input[type="text"][name^="data[newfolder]"]',
-      'input[type="text"][name^="data[newfile]"]',
-      'input[type="text"][name^="data[newMedia]"]'
     ];
     new RegularEvent('change', (): void => {
       this.changed = true;

@@ -96,7 +96,7 @@ class FileStorageTreeFilterCest
     {
         // Create a new folder
         $I->switchToContentFrame();
-        $addButtonLink = '.btn-toolbar [title="New"]';
+        $addButtonLink = '.btn-toolbar [title="Create Folder"]';
         $I->waitForElement($addButtonLink, 30);
         $I->click($addButtonLink);
         $I->wait(5);

@@ -63,8 +63,13 @@ class FileProvider extends AbstractProvider
             'callbackAction' => 'uploadFile',
         ],
         'new' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
-            'iconIdentifier' => 'actions-document-new',
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder',
+            'iconIdentifier' => 'actions-folder-add',
+            'callbackAction' => 'createFile',
+        ],
+        'newFile' => [
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file',
+            'iconIdentifier' => 'actions-file-add',
             'callbackAction' => 'createFile',
         ],
         'downloadFile' => [
@@ -174,9 +179,10 @@ class FileProvider extends AbstractProvider
                 $canRender = $this->canShowInfo();
                 break;
 
-                //just for folders
-            case 'upload':
+                // just for folders
             case 'new':
+            case 'newFile':
+            case 'upload':
                 $canRender = $this->canCreateNew();
                 break;
             case 'newFileMount':
@@ -505,6 +511,9 @@ class FileProvider extends AbstractProvider
                 break;
             case 'new':
                 $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_newfolder'));
+                break;
+            case 'newFile':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_create'));
                 break;
         }
 
