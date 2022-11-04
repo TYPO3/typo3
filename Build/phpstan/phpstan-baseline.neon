@@ -61,7 +61,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
 
 		-
-			message: "#^Offset 'arguments' on array\\{arguments\\: string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			message: "#^Offset 'arguments' on array\\{arguments\\: non\\-empty\\-string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
 
