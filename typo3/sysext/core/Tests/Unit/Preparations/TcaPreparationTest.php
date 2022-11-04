@@ -126,13 +126,15 @@ class TcaPreparationTest extends UnitTestCase
                 ],
             ],
         ];
-        yield 'category field with oneToOne relationship' => [
+        yield 'category field with oneToOne relationship and custom foreign_table_* options' => [
             [
                 'aTable' => [
                     'columns' => [
                         'aField' => [
                             'config' => [
                                 'type' => 'category',
+                                'foreign_table' => 'some_table',
+                                'foreign_table_where' => ' AND sys_category.pid IN (###PAGE_TSCONFIG_IDLIST###)',
                                 'relationship' => 'oneToOne',
                                 'minitems' => 1,
                             ],
@@ -151,7 +153,7 @@ class TcaPreparationTest extends UnitTestCase
                                 'size' => 20,
                                 'default' => 0,
                                 'foreign_table' => 'sys_category',
-                                'foreign_table_where' => ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
+                                'foreign_table_where' => ' AND sys_category.pid IN (###PAGE_TSCONFIG_IDLIST###)',
                                 'maxitems' => 1,
                             ],
                             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',

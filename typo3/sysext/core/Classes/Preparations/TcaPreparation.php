@@ -86,12 +86,12 @@ class TcaPreparation
                     $fieldConfig['label'] = 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories';
                 }
 
+                // Force foreign_table for type category
+                $fieldConfig['config']['foreign_table'] = 'sys_category';
+
                 // Initialize default column configuration and merge it with already defined
                 $fieldConfig['config']['size'] ??= 20;
-
-                // Force foreign_table_* fields for type category
-                $fieldConfig['config']['foreign_table'] = 'sys_category';
-                $fieldConfig['config']['foreign_table_where'] = ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
+                $fieldConfig['config']['foreign_table_where'] ??= ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
 
                 // In case no relationship is given, fall back to "manyToMany"
                 if (empty($fieldConfig['config']['relationship'])) {
