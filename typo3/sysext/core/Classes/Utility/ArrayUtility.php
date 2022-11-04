@@ -680,6 +680,8 @@ class ArrayUtility
      * The values in $keepItems can be optionally evaluated by a custom callback function.
      *
      * Example (arguments used to call this function):
+     *
+     * ```
      * $array = array(
      * array('aa' => array('first', 'second'),
      * array('bb' => array('third', 'fourth'),
@@ -687,11 +689,15 @@ class ArrayUtility
      * );
      * $keepItems = array('third');
      * $getValueFunc = function($value) { return $value[0]; }
+     * ```
      *
      * Returns:
+     *
+     * ```
      * array(
      * array('bb' => array('third', 'fourth'),
      * )
+     * ```
      *
      * @param array $array $array The initial array to be filtered/reduced
      * @param array|string|null $keepItems The items which are allowed/kept in the array - accepts array or csv string

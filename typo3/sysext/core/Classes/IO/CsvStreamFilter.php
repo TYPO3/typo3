@@ -31,10 +31,13 @@ class CsvStreamFilter extends \php_user_filter
      * Implicitly handles stream filter when writing CSV data - example:
      *
      * @example
+     *
+     * ```
      * $resource = fopen('file.csv', 'w');
      * $modifier = CsvUtility::applyStreamFilter($resource);
      * fputcsv($resource, $modifier($fieldValues));
      * fclose($resource);
+     * ```
      *
      * @param resource $in
      * @param resource $out

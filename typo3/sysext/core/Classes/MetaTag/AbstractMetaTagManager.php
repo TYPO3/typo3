@@ -56,6 +56,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      *
      * Example:
      *
+     * ```
      * $handledProperties = [
      *       'og:title' => [],
      *       'og:image' => [
@@ -77,6 +78,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      *          ]
      *       ]
      *];
+     * ```
      *
      * @var array
      */

@@ -32,9 +32,11 @@ use TYPO3\CMS\Core\SingletonInterface;
  * For most use-cases, the current main context is fetched via GeneralUtility::makeInstance(Context::class),
  * however, if custom settings for a single use-case is necessary, it is recommended to clone the base context:
  *
+ * ```
  * $mainContext = GeneralUtility::makeInstance(Context::class);
  * $customContext = clone $mainContext;
  * $customContext->setAspect(GeneralUtility::makeInstance(VisibilityAspect::class, true, true, false))
+ * ```
  *
  * ... which in turn can be injected in the various places where TYPO3 uses contexts.
  *

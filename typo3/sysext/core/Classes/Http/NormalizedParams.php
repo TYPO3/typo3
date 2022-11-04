@@ -27,7 +27,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * of the native PSR-7 request object parameters (->getServerParams() / $GLOBALS['_SERVER']).
  *
  * An instance of this class is available as PSR-7 ServerRequestInterface attribute:
+ *
+ * ```
  * $normalizedParams = $request->getAttribute('normalizedParams')
+ * ```
  *
  * This class substitutes the old GeneralUtility::getIndpEnv() method.
  */

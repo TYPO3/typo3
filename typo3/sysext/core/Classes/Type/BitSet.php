@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Type;
  *
  * The functionality is best described by an example:
  *
+ * ```
  * define('PERMISSIONS_NONE', 0b0); // 0
  * define('PERMISSIONS_PAGE_SHOW', 0b1); // 1
  * define('PERMISSIONS_PAGE_EDIT', 0b10); // 2
@@ -34,9 +35,11 @@ namespace TYPO3\CMS\Core\Type;
  * $bitSet = new \TYPO3\CMS\Core\Type\BitSet(PERMISSIONS_PAGE_SHOW | PERMISSIONS_PAGE_EDIT);
  * $bitSet->get(PERMISSIONS_PAGE_SHOW); // true
  * $bitSet->get(PERMISSIONS_PAGE_DELETE); // false
+ * ```
  *
  * Another example shows how to possibly extend the class:
  *
+ * ```
  * class Permissions extends \TYPO3\CMS\Core\Type\BitSet
  * {
  *     public const NONE = 0b0; // 0
@@ -57,6 +60,7 @@ namespace TYPO3\CMS\Core\Type;
  * $permissions->isGranted(Permissions::PAGE_SHOW); // false
  * $permissions->grant(Permissions::PAGE_SHOW);
  * $permissions->isGranted(Permissions::PAGE_SHOW); // true
+ * ```
  */
 class BitSet
 {

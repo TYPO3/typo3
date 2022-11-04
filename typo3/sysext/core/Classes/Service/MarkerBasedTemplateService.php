@@ -242,6 +242,7 @@ class MarkerBasedTemplateService
      * Repeated subpart contents are of course elements in the array, so every subpart value must contain an array with its
      * markers.
      *
+     * ```
      * $markersAndSubparts = array (
      *    '###SINGLEMARKER1###' => 'value 1',
      *    '###SUBPARTMARKER1###' => array(
@@ -255,6 +256,8 @@ class MarkerBasedTemplateService
      *    '###SUBPARTMARKER2###' => array(
      *    ),
      * )
+     * ```
+     *
      * Subparts can be nested, so below the 'SINGLEMARKER2' it is possible to have another subpart marker with an array as the
      * value, which in its turn contains the elements of the sub-subparts.
      * Empty arrays for Subparts will cause the subtemplate to be cleared.

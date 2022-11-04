@@ -55,9 +55,11 @@ namespace TYPO3\CMS\Core\Mail;
  *
  * How do I use it?
  *
+ * ```
  * $address_string = 'My Group: "Richard" <richard@localhost> (A comment), ted@example.com (Ted Bloggs), Barney;';
  * $structure = Mail_RFC822::parseAddressList($address_string, 'example.com', TRUE)
  * print_r($structure);
+ * ```
  * @version $Revision: 294749 $
  * @license BSD
  */

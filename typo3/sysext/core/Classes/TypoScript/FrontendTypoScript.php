@@ -50,17 +50,21 @@ final class FrontendTypoScript
      *
      * This is a "flattened" array of all settings, as example, consider these settings TypoScript:
      *
+     * ```
      * mySettings {
      *     foo = fooValue
      *     bar = barValue
      * }
+     * ```
      *
      * This will result in this array:
      *
+     * ```
      * $flatSettings = [
      *     'mySettings.foo' => 'fooValue',
      *     'mySettings.bar' => 'barValue',
      * ];
+     * ```
      */
     public function getFlatSettings(): array
     {

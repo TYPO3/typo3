@@ -26,7 +26,9 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  *
  * It requires a PSR-7 ServerRequestInterface request object. Typical usage:
  *
+ * ```
  *     ApplicationType::fromRequest($request)->isFrontend()
+ * ```
  *
  * Note the final request object is given to your controller by the frontend and
  * backend RequestHandler's. This request should be used in code calling this class.
@@ -38,10 +40,12 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  *
  * Classes that may be called from CLI without request object thus use this helper like:
  *
+ * ```
  *     // Do something special if this is a frontend request.
  *     if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
  *         && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
  *     ) {
+ * ```
  *
  * Important: $GLOBALS['TYPO3_REQUEST'] is NOT available before the RequestHandler has been
  * called. This especially means the question "Is this a frontend or backend request?"

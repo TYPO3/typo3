@@ -355,6 +355,7 @@ class HtmlParser
      * Initializing the $tags array to allow a list of tags (in this case <B>,<I>,<U> and <A>), set it like this:		 $tags = array_flip(explode(',','b,a,i,u'))
      * If the value of the $tags[$tagname] entry is an array, advanced processing of the tags is initialized. These are the options:
      *
+     * ```
      * $tags[$tagname] = Array(
      * 'overrideAttribs' => ''		If set, this string is preset as the attributes of the tag
      * 'allowedAttribs' =>   '0' (zero) = no attributes allowed, '[commalist of attributes]' = only allowed attributes. If blank, all attributes are allowed.
@@ -377,6 +378,7 @@ class HtmlParser
      * 'rmTagIfNoAttrib' => '',	Boolean. If set, then the tag is removed if no attributes happened to be there.
      * 'nesting' => '',	Boolean/'global'. If set TRUE, then this tag must have starting and ending tags in the correct order. Any tags not in this order will be discarded. Thus '</B><B><I></B></I></B>' will be converted to '<B><I></B></I>'. Is the value 'global' then true nesting in relation to other tags marked for 'global' nesting control is preserved. This means that if <B> and <I> are set for global nesting then this string '</B><B><I></B></I></B>' is converted to '<B></B>'
      * )
+     * ```
      *
      * @param string $content Is the HTML-content being processed. This is also the result being returned.
      * @param array $tags Is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.

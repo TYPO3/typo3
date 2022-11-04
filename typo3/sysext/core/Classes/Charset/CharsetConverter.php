@@ -307,6 +307,7 @@ class CharsetConverter implements SingletonInterface
      * The binary representation of the character's integer value is thus simply spread across the bytes
      * and the number of high bits set in the lead byte announces the number of bytes in the multibyte sequence:
      *
+     * ```
      * bytes | bits | representation
      *     1 |    7 | 0vvvvvvv
      *     2 |   11 | 110vvvvv 10vvvvvv
@@ -314,6 +315,8 @@ class CharsetConverter implements SingletonInterface
      *     4 |   21 | 11110vvv 10vvvvvv 10vvvvvv 10vvvvvv
      *     5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
      *     6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
+     *
+     * ```
      *
      * @param int $unicodeInteger UNICODE integer
      * @return string UTF-8 multibyte character string

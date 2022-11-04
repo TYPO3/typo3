@@ -92,6 +92,7 @@ class Message implements MessageInterface
      * The keys represent the header name as it will be sent over the wire, and
      * each value is an array of strings associated with the header.
      *
+     * ```
      *     // Represent the headers as a string
      *     foreach ($message->getHeaders() as $name => $values) {
      *         echo $name . ": " . implode(", ", $values);
@@ -103,6 +104,7 @@ class Message implements MessageInterface
      *             header(sprintf('%s: %s', $name, $value), false);
      *         }
      *     }
+     * ```
      *
      * While header names are not case-sensitive, getHeaders() will preserve the
      * exact case in which headers were originally specified.

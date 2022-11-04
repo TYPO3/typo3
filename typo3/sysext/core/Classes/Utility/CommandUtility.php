@@ -27,7 +27,10 @@ use TYPO3\CMS\Core\Core\Environment;
  * or FALSE
  *
  * This class is meant to be used without instance:
+ *
+ * ```
  * $cmd = CommandUtility::getCommand ('awstats','perl');
+ * ```
  *
  * The data of this class is cached.
  * That means if a program is found once it don't have to be searched again.

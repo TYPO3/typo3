@@ -64,18 +64,25 @@ class DependencyOrderingService
      * Builds the dependency graph for the given dependencies
      *
      * The dependencies have to specified in the following structure:
+     *
+     * ```
      * $dependencies = [
      *   'someKey' => [
      *      'before' => ['someKeyA', 'someKeyB']
      *      'after' => ['someKeyC']
      *   ]
      * ]
+     * ```
      *
      * We interpret a dependency like
+     *
+     * ```
      *   'A' => [
      *     'before' => ['B'],
      *     'after' => ['C', 'D']
      *   ]
+     * ```
+     *
      * as
      *   - A depends on C
      *   - A depends on D

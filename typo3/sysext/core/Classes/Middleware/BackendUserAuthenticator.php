@@ -38,10 +38,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * In derivative classes, the Context API can be used to detect, if a backend user is logged in
  * like this:
  *
+ * ```
  * $response = $handler->handle($request);
  * if ($this->context->getAspect('backend.user')->isLoggedIn()) {
  *     return $this->applyHeadersToResponse($response);
  * }
+ * ```
  *
  * @internal this class might get merged again with the subclasses
  */
