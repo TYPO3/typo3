@@ -71,7 +71,15 @@ class ShortcutMenu {
       routeIdentifier: routeIdentifier,
       arguments: routeArguments,
       displayName: displayName,
-    }).then((): void => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
+      const jsonResponse = await response.resolve();
+      if (jsonResponse.result === 'success') {
+        Notification.success(TYPO3.lang['bookmark.savedTitle'], TYPO3.lang['bookmark.savedMessage']);
+      } else if (jsonResponse.result === 'alreadyExists') {
+        Notification.info(TYPO3.lang['bookmark.alreadyExistsTitle'], TYPO3.lang['bookmark.alreadyExistsMessage']);
+      }
+
+      // Always reload the bookmark menu, could be out-of-sync in the "alreadyExists" case
       this.refreshMenu();
 
       if (typeof shortcutButton !== 'object') {
