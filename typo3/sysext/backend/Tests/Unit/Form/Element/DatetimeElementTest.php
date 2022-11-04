@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\Element\DatetimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -31,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatetimeElementTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var string Selected timezone backup
      */
@@ -106,25 +101,17 @@ class DatetimeElementTest extends UnitTestCase
                 'itemFormElValue' => $input,
             ],
         ];
-        $abstractNode = $this->prophesize(AbstractNode::class);
-        $abstractNode->render(Argument::cetera())->willReturn([
-            'additionalJavaScriptPost' => [],
-            'additionalHiddenFields' => [],
-            'stylesheetFiles' => [],
-        ]);
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconProphecy->render()->willReturn('');
-        $iconFactoryProphecy->getIcon(Argument::cetera())->willReturn($iconProphecy->reveal());
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $nodeFactoryProphecy->create(Argument::cetera())->willReturn($abstractNode->reveal());
-        $fieldInformationProphecy = $this->prophesize(FieldInformation::class);
-        $fieldInformationProphecy->render(Argument::cetera())->willReturn(['html' => '']);
-        $nodeFactoryProphecy->create(Argument::cetera())->willReturn($fieldInformationProphecy->reveal());
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $subject = new DatetimeElement($nodeFactoryProphecy->reveal(), $data);
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->willReturn('');
+        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $fieldInformationMock = $this->createMock(FieldInformation::class);
+        $fieldInformationMock->method('render')->willReturn(['html' => '']);
+        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $subject = new DatetimeElement($nodeFactoryMock, $data);
         $result = $subject->render();
         self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
     }

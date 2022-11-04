@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Element\InputHiddenElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -29,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InputHiddenElementTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -42,8 +39,8 @@ class InputHiddenElementTest extends UnitTestCase
                 'itemFormElValue' => 'bar',
             ],
         ];
-        GeneralUtility::addInstance(IconFactory::class, $this->prophesize(IconFactory::class)->reveal());
-        $subject = new InputHiddenElement($this->prophesize(NodeFactory::class)->reveal(), $data);
+        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
+        $subject = new InputHiddenElement($this->createMock(NodeFactory::class), $data);
         $result = $subject->render();
         $additionalHiddenFieldsResult = array_pop($result['additionalHiddenFields']);
         self::assertStringContainsString('name="foo"', $additionalHiddenFieldsResult);
