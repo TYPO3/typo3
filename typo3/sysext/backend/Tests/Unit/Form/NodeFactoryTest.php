@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Element\SelectSingleElement;
 use TYPO3\CMS\Backend\Form\Element\SelectTreeElement;
 use TYPO3\CMS\Backend\Form\Element\UnknownElement;
@@ -33,8 +32,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class NodeFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -293,11 +290,10 @@ class NodeFactoryTest extends UnitTestCase
      */
     public function createReturnsInstanceOfUnknownElementIfTypeIsNotRegistered(): void
     {
-        $unknownElementProphecy = $this->prophesize(UnknownElement::class);
-        $unknownElementRevelation = $unknownElementProphecy->reveal();
-        GeneralUtility::addInstance(UnknownElement::class, $unknownElementRevelation);
+        $unknownElementMock = $this->createMock(UnknownElement::class);
+        GeneralUtility::addInstance(UnknownElement::class, $unknownElementMock);
         $subject = new NodeFactory();
-        self::assertSame($unknownElementRevelation, $subject->create(['renderType' => 'foo']));
+        self::assertSame($unknownElementMock, $subject->create(['renderType' => 'foo']));
     }
 
     /**
@@ -309,11 +305,10 @@ class NodeFactoryTest extends UnitTestCase
             'type' => 'select',
             'renderType' => 'selectTree',
         ];
-        $selectTreeElementProphecy = $this->prophesize(SelectTreeElement::class);
-        $selectTreeElementRevelation = $selectTreeElementProphecy->reveal();
-        GeneralUtility::addInstance(SelectTreeElement::class, $selectTreeElementRevelation);
+        $selectTreeElementMock = $this->createMock(SelectTreeElement::class);
+        GeneralUtility::addInstance(SelectTreeElement::class, $selectTreeElementMock);
         $subject = new NodeFactory();
-        self::assertSame($selectTreeElementRevelation, $subject->create($data));
+        self::assertSame($selectTreeElementMock, $subject->create($data));
     }
 
     /**
@@ -331,10 +326,9 @@ class NodeFactoryTest extends UnitTestCase
             ],
         ];
         $subject = new NodeFactory();
-        $selectSingleElementProphecy = $this->prophesize(SelectSingleElement::class);
-        $selectSingleElementRevelation = $selectSingleElementProphecy->reveal();
-        GeneralUtility::addInstance(SelectSingleElement::class, $selectSingleElementRevelation);
-        self::assertSame($selectSingleElementRevelation, $subject->create($data));
+        $selectSingleElementMock = $this->createMock(SelectSingleElement::class);
+        GeneralUtility::addInstance(SelectSingleElement::class, $selectSingleElementMock);
+        self::assertSame($selectSingleElementMock, $subject->create($data));
     }
 
     /**
