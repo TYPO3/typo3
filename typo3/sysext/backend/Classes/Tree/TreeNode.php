@@ -26,21 +26,21 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Node Identifier
      *
-     * @var string
+     * @var string|int
      */
     protected $id = '';
 
     /**
      * Parent Node
      *
-     * @var \TYPO3\CMS\Backend\Tree\TreeNode|null
+     * @var TreeNode|null
      */
     protected $parentNode;
 
     /**
      * Child Nodes
      *
-     * @var \TYPO3\CMS\Backend\Tree\TreeNodeCollection|null
+     * @var TreeNodeCollection|null
      */
     protected $childNodes;
 
@@ -54,7 +54,7 @@ class TreeNode implements ComparableNodeInterface
      */
     public function __construct(array $data = [])
     {
-        if (!empty($data)) {
+        if ($data !== []) {
             $this->dataFromArray($data);
         }
     }
@@ -62,7 +62,7 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Sets the child nodes collection
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $childNodes
+     * @param TreeNodeCollection $childNodes
      */
     public function setChildNodes(TreeNodeCollection $childNodes)
     {
@@ -83,7 +83,7 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Returns child nodes collection
      *
-     * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection
+     * @return TreeNodeCollection
      */
     public function getChildNodes()
     {
@@ -106,7 +106,7 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Sets the identifier
      *
-     * @param string $id
+     * @param string|int $id
      */
     public function setId($id)
     {
@@ -116,7 +116,7 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Returns the identifier
      *
-     * @return string
+     * @return string|int
      */
     public function getId()
     {
@@ -126,9 +126,9 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Sets the parent node
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode|null $parentNode
+     * @param TreeNode|null $parentNode
      */
-    public function setParentNode(\TYPO3\CMS\Backend\Tree\TreeNode $parentNode = null)
+    public function setParentNode(TreeNode $parentNode = null)
     {
         $this->parentNode = $parentNode;
     }
@@ -136,7 +136,7 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Returns the parent node
      *
-     * @return \TYPO3\CMS\Backend\Tree\TreeNode
+     * @return TreeNode
      */
     public function getParentNode()
     {
@@ -146,10 +146,10 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Compares a node if it's identical to another node by the id property.
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $other
+     * @param TreeNode $other
      * @return bool
      */
-    public function equals(\TYPO3\CMS\Backend\Tree\TreeNode $other)
+    public function equals(TreeNode $other)
     {
         return $this->id == $other->getId();
     }
@@ -162,7 +162,7 @@ class TreeNode implements ComparableNodeInterface
      * -1 if its smaller than the other one
      * 0 if its equal
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $other
+     * @param TreeNode $other
      * @return int See description above
      */
     public function compareTo($other)

@@ -35,7 +35,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     protected $levelMaximum = 4;
 
     /**
-     * @var \TYPO3\CMS\Backend\Tree\TreeNode
+     * @var TreeNode
      */
     protected $treeData;
 
@@ -136,7 +136,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     /**
      * Gets the expanded state of a given node
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @param TreeNode $node
      * @return bool
      */
     protected function isExpanded(TreeNode $node)
