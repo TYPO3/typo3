@@ -65,8 +65,11 @@ Another possibility is that cookies might be disabled in your web browser.</sour
 			<trans-unit id="change_password_header" resname="change_password_header">
 				<source>Change your password</source>
 			</trans-unit>
-			<trans-unit id="change_password_message" resname="change_password_message">
-				<source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+			<trans-unit id="change_password_description" resname="change_password_description">
+				<source>Please enter your new password twice.</source>
+			</trans-unit>
+			<trans-unit id="password_requirement" resname="password_requirement">
+				<source>Ensure that your new password matches the following requirements:</source>
 			</trans-unit>
 			<trans-unit id="change_password_nolinkprefix_message" resname="change_password_nolinkprefix_message">
 				<source>Error: there is no prefix for the link. Please set one of the following in your typoscript: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>

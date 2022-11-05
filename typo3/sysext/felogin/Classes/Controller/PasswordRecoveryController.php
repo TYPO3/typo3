@@ -18,10 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,7 +49,8 @@ class PasswordRecoveryController extends AbstractLoginFormController
     public function __construct(
         protected RecoveryService $recoveryService,
         protected FrontendUserRepository $userRepository,
-        protected RecoveryConfiguration $recoveryConfiguration
+        protected RecoveryConfiguration $recoveryConfiguration,
+        protected readonly Features $features,
     ) {
     }
 
@@ -127,7 +132,15 @@ class PasswordRecoveryController extends AbstractLoginFormController
             return $response;
         }
 
-        $this->view->assign('hash', $hash);
+        $passwordRequirements = null;
+        if ($this->features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
+            $passwordRequirements = $this->getPasswordPolicyValidator()->getRequirements();
+        }
+
+        $this->view->assignMultiple([
+            'hash' => $hash,
+            'passwordRequirements' => $passwordRequirements,
+        ]);
 
         return $this->htmlResponse();
     }
@@ -139,7 +152,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * Used validators are configured via TypoScript settings.
      *
      * @throws NoSuchArgumentException
-     * @todo: Refactor all password checks to validators
      */
     public function validateHashAndPasswords()
     {
@@ -172,7 +184,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
         $this->validateNewPassword($originalResult);
 
-        // todo: check if calling $this->errorAction is necessary here
         // if an error exists, forward with all messages to the change password form
         if ($originalResult->hasErrors()) {
             return (new ForwardResponse('showChangePassword'))
@@ -228,14 +239,42 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $originalResult->addError(new Error($this->getTranslation('password_must_match_repeated'), 1554912163));
         }
 
-        // Resolve validators from TypoScript configuration
-        $validators = GeneralUtility::makeInstance(ValidatorResolverService::class)
-            ->resolve($this->settings['passwordValidators']);
+        $hash = $this->request->getArgument('hash');
+        $userData = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
 
-        // Call each validator on new password
-        foreach ($validators ?? [] as $validator) {
-            $result = $validator->validate($newPass);
-            $originalResult->merge($result);
+        if ($this->features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
+            // Validate against password policy
+            $passwordPolicyValidator = $this->getPasswordPolicyValidator();
+            $contextData = new ContextData(
+                loginMode: 'FE',
+                currentPasswordHash: $userData['password']
+            );
+            $contextData->setData('currentUsername', $userData['username']);
+            $contextData->setData('currentFirstname', $userData['first_name']);
+            $contextData->setData('currentLastname', $userData['last_name']);
+            if (!$passwordPolicyValidator->isValidPassword($newPass, $contextData)) {
+                foreach ($passwordPolicyValidator->getValidationErrors() as $validationError) {
+                    $validationResult = new Result();
+                    $validationResult->addError(new Error($validationError, 1667647475));
+                    $originalResult->merge($validationResult);
+                }
+            }
+        } else {
+            // @deprecated since v12, will be removed in v13.
+            // Resolve validators from TypoScript configuration
+            $validators = GeneralUtility::makeInstance(ValidatorResolverService::class)
+                ->resolve($this->settings['passwordValidators'] ?? []);
+
+            // Call each validator on new password
+            foreach ($validators ?? [] as $validator) {
+                $result = $validator->validate($newPass);
+                $originalResult->merge($result);
+
+                trigger_error(
+                    'settings.passwordValidators will be removed in TYPO3 v13.0. Please use password policies instead.',
+                    E_USER_DEPRECATED
+                );
+            }
         }
 
         // Set the result from all validators
@@ -327,5 +366,15 @@ class PasswordRecoveryController extends AbstractLoginFormController
         $sessionManager = GeneralUtility::makeInstance(SessionManager::class);
         $sessionBackend = $sessionManager->getSessionBackend('FE');
         $sessionManager->invalidateAllSessionsByUserId($sessionBackend, $userId);
+    }
+
+    protected function getPasswordPolicyValidator(): PasswordPolicyValidator
+    {
+        $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy'] ?? 'default';
+        return GeneralUtility::makeInstance(
+            PasswordPolicyValidator::class,
+            PasswordPolicyAction::UPDATE_USER_PASSWORD,
+            is_string($passwordPolicy) ? $passwordPolicy : ''
+        );
     }
 }

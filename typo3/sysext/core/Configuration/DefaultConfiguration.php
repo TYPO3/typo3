@@ -76,6 +76,7 @@ return [
             'security.backend.enforceReferrer' => true,
             'security.backend.enforceContentSecurityPolicy' => false,
             'security.frontend.enforceContentSecurityPolicy' => false,
+            'security.usePasswordPolicyForFrontendUsers' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

@@ -17,8 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\PasswordPolicy\Validator;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract password validator class, which all TYPO3 password validators must extend.
@@ -102,6 +106,18 @@ abstract class AbstractPasswordValidator
 
     protected function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'];
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request instanceof ServerRequestInterface && ApplicationType::fromRequest($request)->isFrontend()) {
+            $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+            return $languageServiceFactory->createFromSiteLanguage($request->getAttribute('language')
+                ?? $request->getAttribute('site')->getDefaultLanguage());
+        }
+
+        if (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
+            return $GLOBALS['LANG'];
+        }
+
+        $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+        return $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }
 }

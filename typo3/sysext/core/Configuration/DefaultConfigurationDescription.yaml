@@ -210,6 +210,11 @@ SYS:
               security.frontend.enforceContentSecurityPolicy:
                 type: bool
                 description: 'If on, HTTP Content-Security-Policy header will be applied for each HTTP frontend request.'
+              security.usePasswordPolicyForFrontendUsers:
+                type: bool
+                description: 'If on, the configured password policy in `$GLOBALS[TYPO3_CONF_VARS][FE][passwordPolicy]`
+                  will be used for frontend user password validation. This applies to the new password in the password
+                  recovery function and the password field in `fe_users` table. It is recommended to enable this option.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in system/settings.php.'
