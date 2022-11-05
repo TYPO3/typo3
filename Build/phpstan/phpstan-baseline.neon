@@ -436,16 +436,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int\\<0, 4\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Tree/TreeNodeTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int\\<0, 9\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Tree/TreeNodeTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$pageId of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getLabelFromItemListMerged\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
@@ -1581,11 +1571,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:getSortValue\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeNode.php
@@ -2234,11 +2219,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:updateProperties\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/DatabaseTreeDataProviderTest.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Tree\\\\TableConfiguration\\\\Fixtures\\\\TreeDataProviderFixture has an unused parameter \\$configuration\\.$#"

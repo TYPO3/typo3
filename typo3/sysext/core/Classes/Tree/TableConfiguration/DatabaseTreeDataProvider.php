@@ -98,11 +98,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected $nodeSortValues = [];
 
     /**
-     * @var array TCEforms compiled TSConfig array
-     */
-    protected $generatedTSConfig = [];
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
@@ -322,7 +317,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         parent::initializeTreeData();
         $this->nodeSortValues = array_flip($this->itemWhiteList);
-        $this->columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'] ?? [];
+        $this->columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->lookupField]['config'] ?? [];
         if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] !== $this->getTableName()) {
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet', 1290944650);
         }
@@ -392,7 +387,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getChildrenOf(TreeNode $node, $level): ?TreeNodeCollection
     {
         $nodeData = null;
-        if ($node->getId() !== 0) {
+        if ($node->getId() !== 0 && $node->getId() !== '0') {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->getTableName());
             $queryBuilder->getRestrictions()->removeAll();
@@ -411,7 +406,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         if (empty($nodeData)) {
             $nodeData = [
                 'uid' => 0,
-                $this->getLookupField() => '',
+                $this->lookupField => '',
             ];
         }
         $storage = null;
@@ -464,21 +459,21 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function getChildrenUidsFromParentRelation(array $row)
     {
-        $uid = $row['uid'];
+        $uid = (int)$row['uid'];
         if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline'], true)) {
             if ($this->columnConfiguration['MM'] ?? null) {
                 $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                 // Dummy field for setting "look from other site"
                 $this->columnConfiguration['MM_oppositeField'] = 'children';
-                $dbGroup->start($row[$this->getLookupField()], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
+                $dbGroup->start($row[$this->lookupField], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
                 $relatedUids = $dbGroup->tableArray[$this->getTableName()];
             } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
                 $relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
             } else {
-                $relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
+                $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
             }
         } else {
-            $relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
+            $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
         }
 
         return $relatedUids;
@@ -493,8 +488,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getChildrenUidsFromChildrenRelation(array $row)
     {
         $relatedUids = [];
-        $uid = $row['uid'];
-        $value = $row[$this->getLookupField()];
+        $uid = (int)$row['uid'];
+        $value = $row[$this->lookupField];
         switch ((string)$this->columnConfiguration['type']) {
             case 'inline':
                 // Intentional fall-through

@@ -23,14 +23,14 @@ abstract class AbstractTreeDataProvider
     /**
      * Root Node
      *
-     * @var \TYPO3\CMS\Backend\Tree\TreeNode
+     * @var TreeNode
      */
     protected $rootNode;
 
     /**
      * Returns the root node
      *
-     * @return \TYPO3\CMS\Backend\Tree\TreeNode
+     * @return TreeNode
      */
     abstract public function getRoot();
 }
