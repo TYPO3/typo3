@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -3498,6 +3499,42 @@ class BackendUtility
             }
         }
         return false;
+    }
+
+    /**
+     * Use this function if you have a large set of IDs to find out which ones have a counterpart within a workspace.
+     * Within a workspace, this is one additional query, so use it only if you have a set of > 2 to find out if you
+     * really need to call BackendUtility::workspaceOL() all the time.
+     *
+     * If you have 1000 records, but only have two 2 records which have been modified in a workspace, only 2 items
+     * are returned.
+     *
+     * @return array<int, int> keys contain the live record ID, values the versioned record ID
+     * @internal this method is not public API and might change, as you really should know what you are doing.
+     */
+    public static function getPossibleWorkspaceVersionIdsOfLiveRecordIds(string $table, array $liveRecordIds, int $workspaceId): array
+    {
+        if ($liveRecordIds === [] || $workspaceId === 0 || !self::isTableWorkspaceEnabled($table)) {
+            return [];
+        }
+        $doOverlaysForRecords = [];
+        $connection = self::getConnectionForTable($table);
+        $maxChunk = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        foreach (array_chunk($liveRecordIds, (int)floor($maxChunk / 2)) as $liveRecordIdChunk) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $doOverlaysForRecordsStatement = $queryBuilder
+                ->select('t3ver_oid', 'uid')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->in('t3ver_oid', $queryBuilder->quoteArrayBasedValueListToIntegerList($liveRecordIdChunk))
+                )
+                ->executeQuery();
+            while ($recordWithVersionedRecord = $doOverlaysForRecordsStatement->fetchNumeric()) {
+                $doOverlaysForRecords[(int)$recordWithVersionedRecord[0]] = (int)$recordWithVersionedRecord[1];
+            }
+        }
+        return $doOverlaysForRecords;
     }
 
     /**

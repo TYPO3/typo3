@@ -130,7 +130,7 @@ class TcaSelectItemsTest extends UnitTestCase
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('foreignTable');
 
         $statementProphet = $this->prophesize(Result::class);
-        $statementProphet->fetchAssociative()->shouldBeCalled();
+        $statementProphet->fetchAllAssociative()->shouldBeCalled();
 
         $queryBuilderProphet->select('foreignTable.uid')
             ->shouldBeCalled()
@@ -1006,6 +1006,7 @@ class TcaSelectItemsTest extends UnitTestCase
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         $statementProphet = $this->prophesize(Result::class);
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([]);
 
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1100,6 +1101,7 @@ class TcaSelectItemsTest extends UnitTestCase
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         $statementProphet = $this->prophesize(Result::class);
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([]);
 
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1268,19 +1270,20 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $counter = 0;
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
-            $counter++;
-            if ($counter >= 3) {
-                return false;
-            }
-            return [
-                'uid' => $counter,
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([
+            [
+                'uid' => 1,
                 'pid' => 23,
                 'labelField' => 'aLabel',
                 'aValue' => 'bar,',
-            ];
-        });
+            ],
+            [
+                'uid' => 2,
+                'pid' => 23,
+                'labelField' => 'aLabel',
+                'aValue' => 'bar,',
+            ],
+        ]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'] = [
@@ -1376,18 +1379,23 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $counter = 0;
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
-            $counter++;
-            if ($counter >= 3) {
-                return false;
-            }
-            return [
-                'uid' => $counter,
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([
+            [
+                'uid' => 1,
                 'pid' => 0,
                 'labelField' => 'storageFolderLabel',
-            ];
-        });
+            ],
+            [
+                'uid' => 2,
+                'pid' => 0,
+                'labelField' => 'storageFolderLabel',
+            ],
+            [
+                'uid' => 3,
+                'pid' => 0,
+                'labelField' => 'storageFolderLabel',
+            ],
+        ]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'] = [
@@ -1473,7 +1481,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'pid' => 23,
             'icon' => 'foo.jpg',
         ];
-        $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn($foreignTableRowResultOne, false);
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([$foreignTableRowResultOne]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'] = [
@@ -2164,20 +2172,22 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $counter = 0;
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
-            $counter++;
-            if ($counter >= 3) {
-                return false;
-            }
-            return [
-                'uid' => $counter,
+        $statementProphet->fetchAllAssociative()->willReturn([
+            [
+                'uid' => 1,
                 'pid' => 23,
-                'labelField' => 'aLabel_' . $counter,
+                'labelField' => 'aLabel_1',
                 'aValue' => 'bar,',
                 'dbfield' => 'some data',
-            ];
-        });
+            ],
+            [
+                'uid' => 2,
+                'pid' => 23,
+                'labelField' => 'aLabel_2',
+                'aValue' => 'bar,',
+                'dbfield' => 'some data',
+            ],
+        ]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'] = [
@@ -2284,22 +2294,23 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $counter = 0;
-
         // simulates foreign_table containing two rows
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
-            $counter++;
-            if ($counter >= 3) {
-                return false;
-            }
-            return [
-                'uid' => $counter,
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([
+            [
+                'uid' => 1,
                 'pid' => 23,
                 'labelField' => 'aLabel will be replaced since the label column is not configured',
                 'aValue' => 'bar, irrelevant',
                 'dbfield' => 'some random data, irrelevant',
-            ];
-        });
+            ],
+            [
+                'uid' => 2,
+                'pid' => 23,
+                'labelField' => 'aLabel will be replaced since the label column is not configured',
+                'aValue' => 'bar, irrelevant',
+                'dbfield' => 'some random data, irrelevant',
+            ],
+        ]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config'] = [
@@ -2413,21 +2424,21 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $counter = 0;
-
         // simulates foreign_table containing two rows
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
-            $counter++;
-            if ($counter >= 3) {
-                return false;
-            }
-            return [
-                'uid' => $counter,
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([
+            [
+                'uid' => 1,
                 'pid' => 23,
                 'labelField' => 'aLabel will be replaced since the label column is not configured',
                 'randomDbField' => 'bar, irrelevant',
-            ];
-        });
+            ],
+            [
+                'uid' => 2,
+                'pid' => 23,
+                'labelField' => 'aLabel will be replaced since the label column is not configured',
+                'randomDbField' => 'bar, irrelevant',
+            ],
+        ]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config'] = [
@@ -2543,21 +2554,21 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $counter = 0;
-
         // simulates foreign_table containing two rows
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
-            $counter++;
-            if ($counter >= 3) {
-                return false;
-            }
-            return [
-                'uid' => $counter,
+        $statementProphet->fetchAllAssociative()->shouldBeCalled()->willReturn([
+            [
+                'uid' => 1,
                 'pid' => 23,
                 'labelField' => 'aLabel will be replaced since the label column is not configured',
                 'randomDbField' => 'bar, irrelevant',
-            ];
-        });
+            ],
+            [
+                'uid' => 2,
+                'pid' => 23,
+                'labelField' => 'aLabel will be replaced since the label column is not configured',
+                'randomDbField' => 'bar, irrelevant',
+            ],
+        ]);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config'] = [

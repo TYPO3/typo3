@@ -368,8 +368,17 @@ abstract class AbstractItemProvider
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        while ($foreignRow = $queryResult->fetchAssociative()) {
-            BackendUtility::workspaceOL($foreignTable, $foreignRow);
+        $allForeignRows = $queryResult->fetchAllAssociative();
+        // Find all possible versioned records of the current IDs, so we do not need to overlay each record
+        // This way, workspaceOL() does not need to be called for each record.
+        $workspaceId = $this->getBackendUser()->workspace;
+        $doOverlaysForRecords = BackendUtility::getPossibleWorkspaceVersionIdsOfLiveRecordIds($foreignTable, array_column($allForeignRows, 'uid'), $workspaceId);
+
+        foreach ($allForeignRows as $foreignRow) {
+            // Only do workspace overlays when a versioned record exists.
+            if (isset($foreignRow['uid']) && isset($doOverlaysForRecords[(int)$foreignRow['uid']])) {
+                BackendUtility::workspaceOL($foreignTable, $foreignRow, $workspaceId);
+            }
             // Only proceed in case the row was not unset and we don't deal with a delete placeholder
             if (is_array($foreignRow)
                 && !VersionState::cast($foreignRow['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)
