@@ -45,6 +45,11 @@ class TreeNode implements ComparableNodeInterface, \Serializable
     protected $childNodes;
 
     /**
+     * @internal This is part of the category tree performance hack.
+     */
+    protected array $additionalData = [];
+
+    /**
      * Constructor
      *
      * You can move an initial data array to initialize the instance and further objects.
@@ -174,6 +179,14 @@ class TreeNode implements ComparableNodeInterface, \Serializable
     }
 
     /**
+     * @internal This is part of the category tree performance hack
+     */
+    public function getAdditionalData(): array
+    {
+        return $this->additionalData;
+    }
+
+    /**
      * Returns the node in an array representation that can be used for serialization
      *
      * @param bool $addChildNodes
@@ -205,7 +218,7 @@ class TreeNode implements ComparableNodeInterface, \Serializable
      */
     public function dataFromArray($data)
     {
-        $this->setId($data['id']);
+        $this->setId($data['id'] ?? $data['uid']);
         if (isset($data['parentNode']) && $data['parentNode'] !== '') {
             /** @var TreeNode $parentNode */
             $parentNode = GeneralUtility::makeInstance($data['parentNode']['serializeClassName'], $data['parentNode']);
@@ -216,6 +229,8 @@ class TreeNode implements ComparableNodeInterface, \Serializable
             $childNodes = GeneralUtility::makeInstance($data['childNodes']['serializeClassName'], $data['childNodes']);
             $this->setChildNodes($childNodes);
         }
+        // @todo: This is part of the category tree performance hack
+        $this->additionalData = $data;
     }
 
     /**

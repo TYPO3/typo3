@@ -285,7 +285,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $node->setExpanded(true);
             $node->setLabel($this->getLanguageService()->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
         } else {
-            $row = BackendUtility::getRecordWSOL($this->tableName, (int)$basicNode->getId(), '*', '', false) ?? [];
+            if ($basicNode->getAdditionalData() === []) {
+                $row = BackendUtility::getRecordWSOL($this->tableName, (int)$basicNode->getId(), '*', '', false) ?? [];
+            } else {
+                // @todo: This is part of the category tree performance hack
+                $row = $basicNode->getAdditionalData();
+            }
             $node->setLabel(BackendUtility::getRecordTitle($this->tableName, $row) ?: $basicNode->getId());
             $node->setSelected(GeneralUtility::inList($this->getSelectedList(), $basicNode->getId()));
             $node->setExpanded($this->isExpanded($basicNode));
@@ -388,20 +393,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         $nodeData = null;
         if ($node->getId() !== 0 && $node->getId() !== '0') {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($this->getTableName());
-            $queryBuilder->getRestrictions()->removeAll();
-            $nodeData = $queryBuilder->select('*')
-                ->from($this->getTableName())
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($node->getId(), Connection::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
+            if (is_array($this->availableItems[(int)$node->getId()] ?? false)) {
+                // @todo: This is part of the category tree performance hack
+                $nodeData = $this->availableItems[(int)$node->getId()];
+            } else {
+                $nodeData = BackendUtility::getRecord($this->tableName, $node->getId(), '*', '', false);
+            }
         }
         if (empty($nodeData)) {
             $nodeData = [
@@ -414,7 +411,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         if (!empty($children)) {
             $storage = GeneralUtility::makeInstance(TreeNodeCollection::class);
             foreach ($children as $child) {
-                $node = GeneralUtility::makeInstance(TreeNode::class);
+                $node = GeneralUtility::makeInstance(TreeNode::class, $this->availableItems[(int)$child] ?? []);
                 $node->setId($child);
                 if ($level < $this->levelMaximum) {
                     $children = $this->getChildrenOf($node, $level + 1);
@@ -470,7 +467,23 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
                 $relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
             } else {
-                $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
+                // Check available items
+                if ($this->availableItems !== [] && $this->columnConfiguration['type'] === 'category') {
+                    // @todo: This is part of the category tree performance hack
+                    $relatedUids = [];
+                    foreach ($this->availableItems as $item) {
+                        if ((int)$item[$this->lookupField] === $uid) {
+                            $relatedUids[$item['uid']] = $item['sorting'];
+                        }
+                    }
+                    if ($relatedUids !== []) {
+                        // Ensure sorting is kept
+                        asort($relatedUids);
+                        $relatedUids = array_keys($relatedUids);
+                    }
+                } else {
+                    $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
+                }
             }
         } else {
             $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
