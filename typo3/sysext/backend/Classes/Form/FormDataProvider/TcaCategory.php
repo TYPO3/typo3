@@ -86,7 +86,13 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
                 }
 
                 // Fetch the list of all possible "related" items and apply processing
-                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName, []);
+                // @todo: This uses 4th param 'true' as hack to add the full item rows speeding up
+                //        processing of items in the tree class construct below. Simplify the construct:
+                //        The entire $treeDataProvider / $treeRenderer / $tree construct should probably
+                //        vanish and the tree processing could happen here in the data provider? Watch
+                //        out for the permission event in the tree construct when doing this.
+                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName, [], true);
+                // Remove items as configured via TsConfig
                 $dynamicItems = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 $dynamicItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 // Finally, the only data needed for the tree code are the valid uids of the possible records
@@ -94,6 +100,13 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
                     array_values(array_column($dynamicItems, 1)),
                     static fn ($uid) => (int)$uid > 0
                 ));
+                $fullRowsOfDynamicItems = [];
+                foreach ($dynamicItems as $item) {
+                    // @todo: Prepare performance hack for tree calculation below.
+                    if (isset($item['_row'])) {
+                        $fullRowsOfDynamicItems[(int)$item['_row']['uid']] = $item['_row'];
+                    }
+                }
                 // Initialize the tree data provider
                 $treeDataProvider = TreeDataProviderFactory::getDataProvider(
                     $result['processedTca']['columns'][$fieldName]['config'],
@@ -103,7 +116,9 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
                 );
                 $treeDataProvider->setSelectedList(implode(',', $result['databaseRow'][$fieldName]));
                 // Basically the tree data provider fetches all tree nodes again and
-                // then verifies if a given rows' uid is within the item whilelist.
+                // then verifies if a given rows' uid is within the item whitelist.
+                // @todo: Simplify construct, probably remove entirely. See @todo above as well.
+                $treeDataProvider->setAvailableItems($fullRowsOfDynamicItems);
                 $treeDataProvider->setItemWhiteList($uidListOfAllDynamicItems);
                 $treeDataProvider->initializeTreeData();
                 $treeRenderer = GeneralUtility::makeInstance(ArrayTreeRenderer::class);

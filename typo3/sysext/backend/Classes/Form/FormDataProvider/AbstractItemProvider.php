@@ -237,12 +237,13 @@ abstract class AbstractItemProvider
      * Used by TcaSelectItems and TcaSelectTreeItems data providers
      *
      * @param array $result Result array
-     * @param string $fieldName Current handle field name
+     * @param string $fieldName Current handled field name
      * @param array $items Incoming items
+     * @param bool $includeFullRows @internal Hack for category tree to speed up tree processing, adding full db row as _row to item
      * @return array Modified item array
      * @throws \UnexpectedValueException
      */
-    protected function addItemsFromForeignTable(array $result, $fieldName, array $items)
+    protected function addItemsFromForeignTable(array $result, $fieldName, array $items, bool $includeFullRows = false)
     {
         $databaseError = null;
         $queryResult = null;
@@ -265,7 +266,7 @@ abstract class AbstractItemProvider
             );
         }
 
-        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
+        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName, $includeFullRows);
         try {
             $queryResult = $queryBuilder->executeQuery();
         } catch (DBALException $e) {
@@ -320,12 +321,16 @@ abstract class AbstractItemProvider
                     // Else, determine icon based on record type, or a generic fallback
                     $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
                 }
-                // Add the item
-                $items[] = [
-                    $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
-                    $foreignRow['uid'],
-                    $icon,
+                $item = [
+                    0 => $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
+                    1 => $foreignRow['uid'],
+                    2 => $icon,
                 ];
+                if ($includeFullRows) {
+                    // @todo: This is part of the category tree performance hack
+                    $item['_row'] = $foreignRow;
+                }
+                $items[] = $item;
             }
         }
 
@@ -527,16 +532,23 @@ abstract class AbstractItemProvider
      *
      * @param array $result Result array
      * @param string $localFieldName Current handle field name
-     * @return QueryBuilder
+     * @param bool $selectAllFields @internal True to select * all fields of row, otherwise an auto-calculated list.
+     *                              Select * is an optimization hack to speed up category tree calculation.
      */
-    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName): QueryBuilder
+    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName, bool $selectAllFields = false): QueryBuilder
     {
         $backendUser = $this->getBackendUser();
 
         $foreignTableName = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table'];
         $foreignTableClauseArray = $this->processForeignTableClause($result, $foreignTableName, $localFieldName);
 
-        $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
+        if ($selectAllFields) {
+            $fieldList = [$foreignTableName . '.*'];
+        } else {
+            $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
+            $fieldList = GeneralUtility::trimExplode(',', $fieldList, true);
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($foreignTableName);
 
@@ -546,7 +558,7 @@ abstract class AbstractItemProvider
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         $queryBuilder
-            ->select(...GeneralUtility::trimExplode(',', $fieldList, true))
+            ->select(...$fieldList)
             ->from($foreignTableName)
             ->where($foreignTableClauseArray['WHERE']);
 

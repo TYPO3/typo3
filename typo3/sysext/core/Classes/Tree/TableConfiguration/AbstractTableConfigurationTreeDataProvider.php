@@ -74,6 +74,13 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     protected $itemUnselectableList = [];
 
     /**
+     * @todo: This is a hack to speed up category tree calculation. See the comments
+     *        in TcaCategory and AbstractItemProvider FormEngine classes.
+     * @internal
+     */
+    protected array $availableItems = [];
+
+    /**
      * Sets the id of the tree
      *
      * @param string $treeId
@@ -250,5 +257,13 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     public function getItemUnselectableList()
     {
         return $this->itemUnselectableList;
+    }
+
+    /**
+     * @internal See property comment
+     */
+    public function setAvailableItems(array $availableItems)
+    {
+        $this->availableItems = $availableItems;
     }
 }
