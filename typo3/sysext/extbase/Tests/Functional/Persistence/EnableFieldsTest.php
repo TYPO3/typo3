@@ -22,18 +22,12 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-/**
- * Enable fields test
- */
 class EnableFieldsTest extends AbstractDataHandlerActionTestCase
 {
     public const TABLE_Blog = 'tx_blogexample_domain_model_blog';
 
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -1,0 +1,46 @@
+"pages"
+,"uid","pid","sorting","deleted","title","is_siteroot"
+,1,0,256,0,"Root",1
+"sys_template"
+,"uid","pid","title","root","clear","constants","deleted","hidden","sorting","include_static_file","basedOn","includeStaticAfterBasedOn","static_file_mode","config"
+,1,1,"Root TS",1,3,"",0,0,256,"","",0,0,"
+foo.bar = baz
+config.tx_extbase {
+    settings {
+        setting1 = value1
+        setting2 = value2
+    }
+    view {
+        viewSub {
+            key1 = value1
+            key2 = value2
+        }
+    }
+}
+module.tx_currentextensionname {
+    settings {
+        setting1 = overriddenValue1
+        setting3 = additionalValue1
+    }
+    view {
+        viewSub {
+            key1 = overridden1
+            key3 = new key1
+        }
+    }
+    persistence.storagePid = 123
+}
+module.tx_currentextensionname_currentpluginname {
+    settings {
+        setting1 = overriddenValue2
+        setting3 = additionalValue2
+    }
+    view {
+        viewSub {
+            key1 = overridden2
+            key3 = new key2
+        }
+    }
+    persistence.storagePid = 456
+}
+"

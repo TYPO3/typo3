@@ -23,6 +23,8 @@ use ExtbaseTeam\TypeConverterTest\Domain\Model\Cat;
 use ExtbaseTeam\TypeConverterTest\Domain\Model\Countable;
 use ExtbaseTeam\TypeConverterTest\Domain\Model\Dog;
 use ExtbaseTeam\TypeConverterTest\Domain\Model\ExtendedCountableInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -33,13 +35,17 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PropertyMapperTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['extbase'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/',
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/',
+    ];
+
     protected function setUp(): void
     {
-        $this->coreExtensionsToLoad[] = 'extbase';
-        $this->testExtensionsToLoad[] = 'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/';
-        $this->testExtensionsToLoad[] = 'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/';
-
         parent::setUp();
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

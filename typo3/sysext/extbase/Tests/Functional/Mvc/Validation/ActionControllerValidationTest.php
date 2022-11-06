@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 
 use ExtbaseTeam\BlogExample\Controller\BlogController;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -76,7 +77,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $request = new Request($serverRequest);
 
         $request = $request->withControllerActionName('testForward');
@@ -128,7 +130,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $request = new Request($serverRequest);
 
         $request = $request->withControllerActionName('testRelatedObject');
@@ -194,7 +197,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = new Request($serverRequest);
 
         $request = $request->withControllerActionName('testRelatedObject');
@@ -223,6 +227,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
             '__referrer',
             ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $originalArguments = $request->getArguments();
         $isDispatched = false;

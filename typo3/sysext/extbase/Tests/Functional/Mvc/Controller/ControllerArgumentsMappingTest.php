@@ -21,6 +21,7 @@ use ExtbaseTeam\BlogExample\Controller\BlogController;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -66,6 +67,8 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->request = $this->request->withControllerExtensionName(BlogController::class);
         $this->request = $this->request->withControllerName('Blog');
         $this->request = $this->request->withFormat('html');
+        $this->request = $this->request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
 
         $this->controller = $this->get(BlogController::class);
     }

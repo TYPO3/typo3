@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Menus;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -71,7 +72,9 @@ class ActionMenuItemViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($source);
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assignMultiple($variables);

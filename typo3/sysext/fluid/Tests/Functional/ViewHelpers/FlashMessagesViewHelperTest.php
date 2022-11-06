@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -36,7 +37,9 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $context->setRequest(new Request($serverRequest));
         self::assertEmpty((new TemplateView($context))->render());
     }

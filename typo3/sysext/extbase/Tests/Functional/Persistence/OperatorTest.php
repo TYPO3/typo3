@@ -19,26 +19,18 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class OperatorTest extends FunctionalTestCase
 {
-    /**
-     * @var BlogRepository
-     */
-    protected $blogRepository;
-
-    /**
-     * @var PostRepository
-     */
-    protected $postRepository;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
+    protected BlogRepository $blogRepository;
+    protected PostRepository $postRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -51,6 +43,9 @@ class OperatorTest extends FunctionalTestCase
 
         $this->blogRepository = $this->get(BlogRepository::class);
         $this->postRepository = $this->get(PostRepository::class);
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

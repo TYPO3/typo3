@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 
 /**
  * @internal
@@ -42,20 +41,12 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Configuration\BackendConfigurationManager::class => [ static::class, 'getBackendConfigurationManager' ],
             Configuration\ConfigurationManager::class => [ static::class, 'getConfigurationManager' ],
             Reflection\ReflectionService::class => [ static::class, 'getReflectionService' ],
             Service\ExtensionService::class => [ static::class, 'getExtensionService' ],
             Service\ImageService::class => [ static::class, 'getImageService' ],
             Security\Cryptography\HashService::class => [ static::class, 'getHashService' ],
         ];
-    }
-
-    public static function getBackendConfigurationManager(ContainerInterface $container): Configuration\BackendConfigurationManager
-    {
-        return self::new($container, Configuration\BackendConfigurationManager::class, [
-            $container->get(TypoScriptService::class),
-        ]);
     }
 
     public static function getConfigurationManager(ContainerInterface $container): Configuration\ConfigurationManager

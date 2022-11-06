@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -25,25 +29,47 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
+use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * A general purpose configuration manager used in backend mode.
+ * Load TypoScript of a page in backend mode.
+ *
+ * Extbase Backend modules can be configured with Frontend TypoScript. This is of course a very
+ * bad thing, but it is how it is ^^ (we'll get rid of this at some point, promised!)
+ *
+ * First, this means Backend extbase module performance scales with the amount of Frontend
+ * TypoScript. Furthermore, in contrast to Frontend, Backend Modules are not necessarily bound to
+ * pages in the first place - they may not have a page tree und thus no page id at all, like
+ * for instance the ext:beuser module.
+ *
+ * Unfortunately, extbase *still* has to calculate *some* TypoScript in any case, even if there
+ * is no page id at all: The default configuration of extbase Backend modules is the "module."
+ * TypoScript setup top-level key. The base config of this is delivered by extbase extensions that
+ * have Backend Modules using ext_typoscript_setup.typoscript, and/or via TYPO3_CONF_VARS TypoScript
+ * setup defaults. Those have to be loaded in any case, even if there is no page at all in the page
+ * tree.
+ *
+ * The code thus has to hop through quite some loops to "find" some relevant page id it can guess
+ * if none is incoming from the request. It even fakes a default sys_template row to trigger
+ * TypoScript loading of globals and ext_typoscript_setup.typoscript if it couldn't find anything.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class BackendConfigurationManager implements SingletonInterface
 {
-    /**
-     * Default backend storage PID
-     */
-    public const DEFAULT_BACKEND_STORAGE_PID = 0;
-
     /**
      * Storage of the raw TypoScript configuration
      */
@@ -62,24 +88,23 @@ class BackendConfigurationManager implements SingletonInterface
     protected ?string $pluginName = null;
 
     /**
-     * 1st level configuration cache
-     */
-    protected array $configurationCache = [];
-
-    protected array $typoScriptSetupCache = [];
-
-    /**
      * Stores the current page ID
      */
     protected ?int $currentPageId = null;
 
     public function __construct(
-        private readonly TypoScriptService $typoScriptService
+        private readonly TypoScriptService $typoScriptService,
+        private readonly PhpFrontend $typoScriptCache,
+        private readonly FrontendInterface $runtimeCache,
+        private readonly SysTemplateRepository $sysTemplateRepository,
+        private readonly TreeBuilder $treeBuilder,
+        private readonly LossyTokenizer $lossyTokenizer,
+        private readonly ConditionVerdictAwareIncludeTreeTraverser $includeTreeTraverserConditionVerdictAware,
+        private readonly Context $context,
     ) {
     }
 
     /**
-     * @param ContentObjectRenderer $contentObject
      * @todo: See note on getContentObject() below.
      */
     public function setContentObject(ContentObjectRenderer $contentObject): void
@@ -88,7 +113,6 @@ class BackendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @return ContentObjectRenderer
      * @todo: This dependency to ContentObjectRenderer on a singleton object is unfortunate:
      *      The current instance is set through USER cObj and extbase Bootstrap, its null in Backend.
      *      This getter is misused to retrieve current ContentObjectRenderer state by some extensions (eg. ext:form).
@@ -96,7 +120,7 @@ class BackendConfigurationManager implements SingletonInterface
      *      Although the current implementation *always* returns an instance of ContentObjectRenderer, we do not want to
      *      hard-expect consuming classes on that, since this methods needs to be dropped anyways, so potential null return is kept.
      */
-    public function getContentObject(): ?ContentObjectRenderer
+    public function getContentObject(): ContentObjectRenderer
     {
         if ($this->contentObject instanceof ContentObjectRenderer) {
             return $this->contentObject;
@@ -113,8 +137,6 @@ class BackendConfigurationManager implements SingletonInterface
      */
     public function setConfiguration(array $configuration = []): void
     {
-        // reset 1st level cache
-        $this->configurationCache = [];
         $this->extensionName = $configuration['extensionName'] ?? null;
         $this->pluginName = $configuration['pluginName'] ?? null;
         $this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
@@ -132,14 +154,13 @@ class BackendConfigurationManager implements SingletonInterface
      */
     public function getConfiguration(?string $extensionName = null, ?string $pluginName = null): array
     {
-        // 1st level cache
-        $configurationCacheKey = strtolower(($extensionName ?: $this->extensionName) . '_' . ($pluginName ?: $this->pluginName));
-        if (isset($this->configurationCache[$configurationCacheKey])) {
-            return $this->configurationCache[$configurationCacheKey];
-        }
+        // @todo: This class obviously has a dependency to request ... it should get it hand over!
+        /** @var ServerRequestInterface $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+
         $frameworkConfiguration = $this->getExtbaseConfiguration();
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
-            $frameworkConfiguration['persistence']['storagePid'] = $this->getDefaultBackendStoragePid();
+            $frameworkConfiguration['persistence']['storagePid'] = $this->getCurrentPageId($request);
         }
         // only merge $this->configuration and override controller configuration when retrieving configuration of the current plugin
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
@@ -172,9 +193,89 @@ class BackendConfigurationManager implements SingletonInterface
                 $frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
             }
         }
-        // 1st level cache
-        $this->configurationCache[$configurationCacheKey] = $frameworkConfiguration;
         return $frameworkConfiguration;
+    }
+
+    /**
+     * Returns TypoScript Setup array from current Environment.
+     *
+     * @return array the raw TypoScript setup
+     */
+    public function getTypoScriptSetup(): array
+    {
+        // @todo: This class obviously has a dependency to request ... it should get it hand over!
+        /** @var ServerRequestInterface $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+
+        $pageId = $this->getCurrentPageId($request);
+
+        $cacheIdentifier = 'extbase-backend-typoscript-pageId-' . $pageId;
+        $setupArray = $this->runtimeCache->get($cacheIdentifier);
+        if (is_array($setupArray)) {
+            return $setupArray;
+        }
+
+        $site = $request->getAttribute('site');
+
+        $rootLine = [];
+        if ($pageId > 0) {
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
+        } else {
+            $sysTemplateRows[] = [
+                'uid' => 0,
+                'pid' => 0,
+                'title' => 'Fake sys_template row to force extension statics loading',
+                'root' => 1,
+                'clear' => 3,
+                'include_static_file' => '',
+                'basedOn' => '',
+                'includeStaticAfterBasedOn' => 0,
+                'static_file_mode' => false,
+                'constants' => '',
+                'config' => '',
+                'deleted' => 0,
+                'hidden' => 0,
+                'starttime' => 0,
+                'endtime' => 0,
+                'sorting' => 0,
+            ];
+        }
+
+        // We do cache tree and tokens, but don't cache full ast in this backend context for now:
+        // That's a possible improvement to further speed up extbase backend modules, but a bit of
+        // hassle. See the Frontend TypoScript calculation on how to do this.
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
+        $frontendConditionMatcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $pageId, $rootLine);
+        $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
+        $conditionMatcherVisitor->setConditionMatcher($frontendConditionMatcher);
+        $this->includeTreeTraverserConditionVerdictAware->resetVisitors();
+        $this->includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
+        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $this->includeTreeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
+        $this->includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree);
+        $constantsAst = $constantAstBuilderVisitor->getAst();
+        $flatConstants = $constantsAst->flatten();
+
+        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
+        $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
+        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
+        $this->includeTreeTraverserConditionVerdictAware->resetVisitors();
+        $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $setupMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
+        $setupMatcherVisitor->setConditionMatcher($frontendConditionMatcher);
+        $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupMatcherVisitor);
+        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+        $setupAstBuilderVisitor->setFlatConstants($flatConstants);
+        $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
+        $this->includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree);
+        $setupAst = $setupAstBuilderVisitor->getAst();
+
+        $setupArray = $setupAst->toArray();
+
+        $this->runtimeCache->set($cacheIdentifier, $setupArray);
+
+        return $setupArray;
     }
 
     /**
@@ -191,44 +292,10 @@ class BackendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * Returns TypoScript Setup array from current Environment.
-     *
-     * @return array the raw TypoScript setup
-     */
-    public function getTypoScriptSetup(): array
-    {
-        $pageId = $this->getCurrentPageId();
-
-        if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
-            $template = GeneralUtility::makeInstance(TemplateService::class);
-            // do not log time-performance information
-            $template->tt_track = false;
-            // Explicitly trigger processing of extension static files
-            $template->setProcessExtensionStatics(true);
-            // Get the root line
-            $rootline = [];
-            if ($pageId > 0) {
-                try {
-                    $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-                } catch (\RuntimeException $e) {
-                    $rootline = [];
-                }
-            }
-            // This generates the constants/config + hierarchy info for the template.
-            $template->runThroughTemplates($rootline, 0);
-            $template->generateConfig();
-            $this->typoScriptSetupCache[$pageId] = $template->setup;
-        }
-        return $this->typoScriptSetupCache[$pageId];
-    }
-
-    /**
      * Returns the TypoScript configuration found in module.tx_yourextension_yourmodule
      * merged with the global configuration of your extension from module.tx_yourextension
      *
-     * @param string $extensionName
-     * @param string $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
-     * @return array
+     * @param string|null $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
      */
     protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array
     {
@@ -248,21 +315,22 @@ class BackendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * Returns the page uid of the current page.
-     * If no page is selected, we'll return the uid of the first root page.
+     * The full madness to guess a page id:
+     * - First try to get one from the request, accessing POST / GET 'id'
+     * - else, fetch the first page in page tree that has 'is_siteroot' set
+     * - else, fetch the first sys_template record that has 'root' flag set, and use its pid
+     * - else, 0, indicating "there are no 'is_siteroot' pages and no sys_template 'root' records"
      *
      * @return int current page id. If no page is selected current root page id is returned
      */
-    protected function getCurrentPageId(): int
+    protected function getCurrentPageId(ServerRequestInterface $request): int
     {
         if ($this->currentPageId !== null) {
             return $this->currentPageId;
         }
-
-        $this->currentPageId = $this->getCurrentPageIdFromGetPostData() ?: $this->getCurrentPageIdFromCurrentSiteRoot();
+        $this->currentPageId = $this->getCurrentPageIdFromRequest($request) ?: $this->getCurrentPageIdFromCurrentSiteRoot();
         $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
-        $this->currentPageId = $this->currentPageId ?: self::DEFAULT_BACKEND_STORAGE_PID;
-
+        $this->currentPageId = $this->currentPageId ?: 0;
         return $this->currentPageId;
     }
 
@@ -271,9 +339,9 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int the page UID, will be 0 if none has been set
      */
-    protected function getCurrentPageIdFromGetPostData(): int
+    protected function getCurrentPageIdFromRequest(ServerRequestInterface $request): int
     {
-        return (int)GeneralUtility::_GP('id');
+        return (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
 
     /**
@@ -283,15 +351,10 @@ class BackendConfigurationManager implements SingletonInterface
      */
     protected function getCurrentPageIdFromCurrentSiteRoot(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-
         $rootPage = $queryBuilder
             ->select('uid')
             ->from('pages')
@@ -303,13 +366,12 @@ class BackendConfigurationManager implements SingletonInterface
                 $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->orderBy('sorting')
+            ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
-
         if (empty($rootPage)) {
             return 0;
         }
-
         return (int)$rootPage['uid'];
     }
 
@@ -320,15 +382,10 @@ class BackendConfigurationManager implements SingletonInterface
      */
     protected function getCurrentPageIdFromRootTemplate(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_template');
-
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
+        $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-
         $rootTemplate = $queryBuilder
             ->select('pid')
             ->from('sys_template')
@@ -336,25 +393,13 @@ class BackendConfigurationManager implements SingletonInterface
                 $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
             )
             ->orderBy('crdate')
+            ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
-
         if (empty($rootTemplate)) {
             return 0;
         }
-
         return (int)$rootTemplate['pid'];
-    }
-
-    /**
-     * Returns the default backend storage pid
-     *
-     * @return int
-     */
-    public function getDefaultBackendStoragePid(): int
-    {
-        // todo: fallback to parent::getDefaultBackendStoragePid() would make sense here.
-        return $this->getCurrentPageId();
     }
 
     /**
@@ -388,9 +433,6 @@ class BackendConfigurationManager implements SingletonInterface
      * Recursively fetch all children of a given page
      *
      * @param int $pid uid of the page
-     * @param int $depth
-     * @param int $begin
-     * @param string $permsClause
      * @return int[] List of child row $uid's
      */
     protected function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array

@@ -35,11 +35,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class FrontendConfigurationManager implements SingletonInterface
 {
     /**
-     * Default backend storage PID
-     */
-    public const DEFAULT_BACKEND_STORAGE_PID = 0;
-
-    /**
      * Storage of the raw TypoScript configuration
      *
      * @var array
@@ -80,7 +75,6 @@ class FrontendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @param ContentObjectRenderer $contentObject
      * @todo: See note on getContentObject() below.
      */
     public function setContentObject(ContentObjectRenderer $contentObject): void
@@ -89,7 +83,6 @@ class FrontendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @return ContentObjectRenderer
      * @todo: This dependency to ContentObjectRenderer on a singleton object is unfortunate:
      *      The current instance is set through USER cObj and extbase Bootstrap, its null in Backend.
      *      This getter is misused to retrieve current ContentObjectRenderer state by some extensions (eg. ext:form).
@@ -140,7 +133,7 @@ class FrontendConfigurationManager implements SingletonInterface
         }
         $frameworkConfiguration = $this->getExtbaseConfiguration();
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
-            $frameworkConfiguration['persistence']['storagePid'] = $this->getDefaultBackendStoragePid();
+            $frameworkConfiguration['persistence']['storagePid'] = 0;
         }
         // only merge $this->configuration and override controller configuration when retrieving configuration of the current plugin
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
@@ -177,8 +170,6 @@ class FrontendConfigurationManager implements SingletonInterface
 
     /**
      * Returns the TypoScript configuration found in config.tx_extbase
-     *
-     * @return array
      */
     protected function getExtbaseConfiguration(): array
     {
@@ -188,16 +179,6 @@ class FrontendConfigurationManager implements SingletonInterface
             $extbaseConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
         }
         return $extbaseConfiguration;
-    }
-
-    /**
-     * Returns the default backend storage pid
-     *
-     * @return int
-     */
-    public function getDefaultBackendStoragePid(): int
-    {
-        return self::DEFAULT_BACKEND_STORAGE_PID;
     }
 
     /**
@@ -216,9 +197,7 @@ class FrontendConfigurationManager implements SingletonInterface
      * Returns the TypoScript configuration found in plugin.tx_yourextension_yourplugin
      * merged with the global configuration of your extension from plugin.tx_yourextension
      *
-     * @param string $extensionName
-     * @param string $pluginName in FE mode this is the specified plugin name
-     * @return array
+     * @param string|null $pluginName in FE mode this is the specified plugin name
      */
     protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array
     {
@@ -246,9 +225,7 @@ class FrontendConfigurationManager implements SingletonInterface
      * 'Controller2' => array('action3', 'action4')
      * )
      *
-     * @param string $extensionName
      * @param string $pluginName in FE mode this is the specified plugin name
-     * @return array
      */
     protected function getControllerConfiguration(string $extensionName, string $pluginName): array
     {

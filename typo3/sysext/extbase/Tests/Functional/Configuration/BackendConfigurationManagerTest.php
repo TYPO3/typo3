@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BackendConfigurationManagerTest extends FunctionalTestCase
@@ -28,9 +29,146 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function setConfigurationSetsExtensionAndPluginName(): void
+    {
+        $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setConfiguration([
+            'extensionName' => 'SomeExtensionName',
+            'pluginName' => 'SomePluginName',
+        ]);
+        self::assertEquals('SomeExtensionName', (new \ReflectionProperty($subject, 'extensionName'))->getValue($subject));
+        self::assertEquals('SomePluginName', (new \ReflectionProperty($subject, 'pluginName'))->getValue($subject));
+    }
+
+    /**
+     * @test
+     */
+    public function setConfigurationConvertsTypoScriptArrayToPlainArray(): void
+    {
+        $configuration = [
+            'foo' => 'bar',
+            'settings.' => ['foo' => 'bar'],
+            'view.' => ['subkey.' => ['subsubkey' => 'subsubvalue']],
+        ];
+        $expectedResult = [
+            'foo' => 'bar',
+            'settings' => ['foo' => 'bar'],
+            'view' => ['subkey' => ['subsubkey' => 'subsubvalue']],
+        ];
+        $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setConfiguration($configuration);
+        self::assertEquals($expectedResult, (new \ReflectionProperty($subject, 'configuration'))->getValue($subject));
+    }
+
+    /**
+     * @test
+     */
+    public function getConfigurationRecursivelyMergesCurrentExtensionConfigurationWithFrameworkConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        /** @var BackendConfigurationManager $subject */
+        $subject = $this->get(BackendConfigurationManager::class);
+        $expectedResult = [
+            'settings' => [
+                'setting1' => 'overriddenValue1',
+                'setting2' => 'value2',
+                'setting3' => 'additionalValue1',
+            ],
+            'view' => [
+                'viewSub' => [
+                    'key1' => 'overridden1',
+                    'key2' => 'value2',
+                    'key3' => 'new key1',
+                ],
+            ],
+            'persistence' => [
+                'storagePid' => '123',
+                'enableAutomaticCacheClearing' => '1',
+                'updateReferenceIndex' => '0',
+            ],
+            'controllerConfiguration' => [],
+            'mvc' => [
+                'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
+            ],
+            'features' => [
+                'skipDefaultArguments' => 0,
+                'ignoreAllEnableFieldsInBe' => 0,
+                'enableNamespacedArgumentsForBackend' => 0,
+            ],
+        ];
+        self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName'));
+    }
+
+    /**
+     * @test
+     */
+    public function getConfigurationRecursivelyMergesCurrentPluginConfigurationWithFrameworkConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        /** @var BackendConfigurationManager $subject */
+        $subject = $this->get(BackendConfigurationManager::class);
+        $expectedResult = [
+            'settings' => [
+                'setting1' => 'overriddenValue2',
+                'setting2' => 'value2',
+                'setting3' => 'additionalValue2',
+            ],
+            'view' => [
+                'viewSub' => [
+                    'key1' => 'overridden2',
+                    'key2' => 'value2',
+                    'key3' => 'new key2',
+                ],
+            ],
+            'persistence' => [
+                'storagePid' => '456',
+                'enableAutomaticCacheClearing' => '1',
+                'updateReferenceIndex' => '0',
+            ],
+            'controllerConfiguration' => [],
+            'mvc' => [
+                'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
+            ],
+            'features' => [
+                'skipDefaultArguments' => 0,
+                'ignoreAllEnableFieldsInBe' => 0,
+                'enableNamespacedArgumentsForBackend' => 0,
+            ],
+        ];
+        self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName', 'CurrentPluginName'));
+    }
+
+    /**
+     * @test
+     */
+    public function getCurrentPageIdReturnsPageIdFromGet(): void
+    {
+        $request = (new ServerRequest())->withQueryParams(['id' => 123]);
+        $subject = $this->get(BackendConfigurationManager::class);
+        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
+        self::assertEquals(123, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function getCurrentPageIdReturnsPageIdFromPost(): void
+    {
+        $request = (new ServerRequest())->withQueryParams(['id' => 123])->withParsedBody(['id' => 321]);
+        $subject = $this->get(BackendConfigurationManager::class);
+        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
+        self::assertEquals(321, $actualResult);
+    }
+
+    /**
+     * @test
+     */
     public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound(): void
     {
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, null, [new TypoScriptService()]);
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert(
             'sys_template',
             [
@@ -40,7 +178,9 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
                 'root' => 1,
             ]
         );
-        $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
+        $subject = $this->get(BackendConfigurationManager::class);
+        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
         self::assertEquals(123, $actualResult);
     }
 
@@ -49,7 +189,6 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
      */
     public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet(): void
     {
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, null, [new TypoScriptService()]);
         (new ConnectionPool())->getConnectionForTable('pages')->insert(
             'pages',
             [
@@ -58,7 +197,9 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
                 'is_siteroot' => 1,
             ]
         );
-        $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
+        $subject = $this->get(BackendConfigurationManager::class);
+        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
         self::assertEquals(1, $actualResult);
     }
 
@@ -67,10 +208,10 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
      */
     public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound(): void
     {
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, null, [new TypoScriptService()]);
-        $expectedResult = BackendConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
-        $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
-        self::assertEquals($expectedResult, $actualResult);
+        $subject = $this->get(BackendConfigurationManager::class);
+        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
+        self::assertEquals(0, $actualResult);
     }
 
     /**
@@ -81,9 +222,29 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerRecursivePids.csv');
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['admin' => true];
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, null, [new TypoScriptService()]);
-        $expectedResult = [1, 2, 4, 5, 3, 6, 7];
-        $actualResult = $backendConfigurationManager->_call('getRecursiveStoragePids', [1, -6], 4);
-        self::assertEquals($expectedResult, $actualResult);
+        $subject = $this->get(BackendConfigurationManager::class);
+        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getRecursiveStoragePids'));
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, [1, -6], 4);
+        self::assertEquals([1, 2, 4, 5, 3, 6, 7], $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function getContentObjectReturnsInstanceOfContentObjectRenderer(): void
+    {
+        $subject = $this->get(BackendConfigurationManager::class);
+        self::assertInstanceOf(ContentObjectRenderer::class, $subject->getContentObject());
+    }
+
+    /**
+     * @test
+     */
+    public function getContentObjectTheCurrentContentObject(): void
+    {
+        $subject = $this->get(BackendConfigurationManager::class);
+        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
+        $subject->setContentObject($mockContentObject);
+        self::assertSame($mockContentObject, $subject->getContentObject());
     }
 }

@@ -23,6 +23,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -71,6 +73,10 @@ class DeactivateExtensionCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $extensionKey = $input->getArgument('extensionkey');
+
+        // @todo: Extbase BackendConfigurationManager triggered by repository calls needs a Request
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $this->installUtility->uninstall($extensionKey);
 

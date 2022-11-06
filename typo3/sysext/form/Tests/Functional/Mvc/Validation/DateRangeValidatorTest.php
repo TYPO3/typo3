@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator;
@@ -29,6 +31,8 @@ class DateRangeValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

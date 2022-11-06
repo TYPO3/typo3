@@ -39,14 +39,11 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * @var TtContentRepository
-     */
-    protected $contentRepository;
-
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
+
+    protected TtContentRepository $contentRepository;
 
     /**
      * @var array

@@ -29,16 +29,10 @@ class DataMapFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @var DataMapFactory
-     */
-    protected $dataMapFactory;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
+    protected DataMapFactory $dataMapFactory;
+
     protected function setUp(): void
     {
         parent::setUp();

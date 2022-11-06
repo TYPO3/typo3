@@ -20,26 +20,25 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
 use ExtbaseTeam\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class DataMapperTest extends FunctionalTestCase
 {
-    /**
-     * @var PersistenceManager
-     */
-    protected $persistenceManager;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
+    protected PersistenceManager $persistenceManager;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->persistenceManager = $this->get(PersistenceManager::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

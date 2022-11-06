@@ -72,24 +72,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 final class TreeBuilder
 {
     /**
-     * Usually, "extension statics" (auto-loaded files "ext_typoscript_constants.txt" and "ext_typoscript_setup.typoscript")
-     * of *all* extensions are included with sys_template records that have root = 1 set. This can be manipulated using the
-     * 'static_file_mode' value on sys_template records.
-     * Extbase backend modules may depend on loaded extension statics. If now there is no sys_template at all in
-     * a tree, (and the extbase BackendConfigurationManager selects the "first" page as fake base page if there
-     * is no page uid given), the 'ext_typoscript_*' files from extensions are never loaded, and extbase
-     * chokes. Extbase's BackendConfigurationManager thus sets forceProcessExtensionStatics() here to
-     * make sure extension statics are loaded at least once.
-     * The two variables below track that, so extension statics are forced to be loaded if requested by Extbase.
-     * All that is of course hacky and should vanish, probably by obsoleting extbase's BE dependency to
-     * FE TypoScript altogether, since that's an evil misconception.
-     * Note this flag has a logical collision with sys_template records that have static_file_mode = 2, since it still
-     * triggers extension static inclusion *even though* static_file_mode = 2 is set.
-     */
-    private bool $extensionStaticsProcessed = false;
-    private bool $forceProcessExtensionStatics = false;
-
-    /**
      * Used in 'basedOn' includes to prevent endless loop: Each sys_template row can
      * be included only once in 'basedOn'.
      *
@@ -115,25 +97,21 @@ final class TreeBuilder
 
     /**
      * @param 'constants'|'setup' $type
-     * @param bool $forceProcessExtensionStatics @todo: Needed for extbase, we may be able to solve this differently?
      */
     public function getTreeBySysTemplateRowsAndSite(
         string $type,
         array $sysTemplateRows,
         TokenizerInterface $tokenizer,
         ?SiteInterface $site = null,
-        PhpFrontend $cache = null,
-        bool $forceProcessExtensionStatics = false
+        PhpFrontend $cache = null
     ): RootInclude {
         if (!in_array($type, ['constants', 'setup'])) {
             throw new \RuntimeException('type must be either constants or setup', 1653737656);
         }
         $this->tokenizer = $tokenizer;
         $this->cache = $cache;
-        $this->forceProcessExtensionStatics = $forceProcessExtensionStatics;
         $this->type = $type;
         $this->includedSysTemplateUids = [];
-        $this->extensionStaticsProcessed = false;
 
         $includeTree = new RootInclude();
 
@@ -170,17 +148,6 @@ final class TreeBuilder
             $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer);
             $this->cache?->set($identifier, $this->prepareNodeForCache($includeNode));
             $includeTree->addChild($includeNode);
-        }
-
-        if ($this->forceProcessExtensionStatics && !$this->extensionStaticsProcessed) {
-            // Extbase hack: See property description above.
-            if ($this->type === 'constants') {
-                $this->addDefaultTypoScriptFromGlobals($includeTree);
-                $this->addDefaultTypoScriptConstantsFromSite($includeTree, $site);
-            } else {
-                $this->addDefaultTypoScriptFromGlobals($includeTree);
-            }
-            $this->addExtensionStatics($includeTree);
         }
 
         return $includeTree;
@@ -380,7 +347,6 @@ final class TreeBuilder
      */
     private function addExtensionStatics(IncludeInterface $parentNode): void
     {
-        $this->extensionStaticsProcessed = true;
         foreach ($this->packageManager->getActivePackages() as $package) {
             $extensionKey = $package->getPackageKey();
             $extensionKeyWithoutUnderscores = str_replace('_', '', $extensionKey);

@@ -25,10 +25,12 @@ use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -37,21 +39,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RelationTest extends FunctionalTestCase
 {
-    /**
-     * @var Blog
-     */
-    protected $blog;
-
-    /**
-     * @var PersistenceManager
-     */
-    protected $persistentManager;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
+    protected Blog $blog;
+    protected PersistenceManager $persistenceManager;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -66,7 +58,10 @@ class RelationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/categories.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
 
-        $this->persistentManager = $this->get(PersistenceManager::class);
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $this->persistenceManager = $this->get(PersistenceManager::class);
         $this->blog = $this->get(BlogRepository::class)->findByUid(1);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -435,7 +430,7 @@ class RelationTest extends FunctionalTestCase
         $post->addTag($newTag);
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $count = $queryBuilder
@@ -489,7 +484,7 @@ class RelationTest extends FunctionalTestCase
         $post->removeTag($latestTag);
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $countTags = $queryBuilder
@@ -573,7 +568,7 @@ class RelationTest extends FunctionalTestCase
         }
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $countTags = $queryBuilder
@@ -650,7 +645,7 @@ class RelationTest extends FunctionalTestCase
         }
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $countTags = $queryBuilder
@@ -738,7 +733,7 @@ class RelationTest extends FunctionalTestCase
         $post->addTag($latestTag);
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $countTags = $queryBuilder
@@ -812,7 +807,7 @@ class RelationTest extends FunctionalTestCase
         $post->setTitle('newTitle');
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $rawPost2 = $queryBuilder
@@ -923,7 +918,7 @@ class RelationTest extends FunctionalTestCase
         $post->addCategory($newCategory);
 
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         $queryBuilder->resetQueryParts();
         $countCategories = $queryBuilder
@@ -963,7 +958,7 @@ class RelationTest extends FunctionalTestCase
             break;
         }
         $postRepository->update($post);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
 
         // re-fetch Post and Blog
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
@@ -1294,7 +1289,7 @@ class RelationTest extends FunctionalTestCase
     {
         $blogRepository = $this->get(BlogRepository::class);
         $blogRepository->update($this->blog);
-        $this->persistentManager->persistAll();
+        $this->persistenceManager->persistAll();
     }
 
     /**

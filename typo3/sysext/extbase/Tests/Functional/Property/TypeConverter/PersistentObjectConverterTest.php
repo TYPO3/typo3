@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -34,6 +36,9 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/be_users.csv');
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

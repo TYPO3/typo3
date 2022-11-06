@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Pagination;
 
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -35,6 +37,8 @@ class QueryResultPaginatorTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
         $this->postRepository = $this->get(PostRepository::class);
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,6 +29,8 @@ class BooleanValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

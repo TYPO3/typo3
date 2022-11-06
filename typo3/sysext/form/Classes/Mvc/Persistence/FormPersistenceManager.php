@@ -25,6 +25,8 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
@@ -76,8 +78,19 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $this->storageRepository = $storageRepository;
         $this->filePersistenceSlot = $filePersistenceSlot;
         $this->resourceFactory = $resourceFactory;
+        $fakeRequest = false;
+        if (!isset($GLOBALS['TYPO3_REQUEST'])) {
+            // @todo: FormPersistenceManager is sometimes triggered via CLI without request. In this
+            //        case we fake a request so extbase ConfigurationManager still works.
+            $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            $GLOBALS['TYPO3_REQUEST'] = $request;
+            $fakeRequest = true;
+        }
         $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
         $this->typoScriptSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+        if ($fakeRequest) {
+            unset($GLOBALS['TYPO3_REQUEST']);
+        }
         $this->runtimeCache = $cacheManager->getCache('runtime');
     }
 

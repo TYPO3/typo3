@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Model\Renderable;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -35,6 +37,8 @@ final class AbstractRenderableTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->subject = $this->buildAbstractRenderable();
     }
 

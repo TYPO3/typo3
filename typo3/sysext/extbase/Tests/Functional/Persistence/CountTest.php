@@ -19,25 +19,20 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class CountTest extends FunctionalTestCase
 {
-    /**
-     * @var int number of all records
-     */
-    protected $numberOfRecordsInFixture = 14;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
-     * @var PostRepository
+     * @var int number of all records
      */
-    protected $postRepository;
+    protected int $numberOfRecordsInFixture = 14;
+    protected PostRepository $postRepository;
 
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,6 +47,9 @@ class CountTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
 
         $this->postRepository = $this->get(PostRepository::class);
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

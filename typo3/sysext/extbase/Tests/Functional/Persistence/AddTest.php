@@ -20,28 +20,20 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class AddTest extends FunctionalTestCase
 {
-    /**
-     * @var PersistenceManager
-     */
-    protected $persistentManager;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * @var BlogRepository
-     */
-    protected $blogRepository;
+    protected PersistenceManager $persistentManager;
+    protected BlogRepository $blogRepository;
 
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -49,6 +41,9 @@ class AddTest extends FunctionalTestCase
         $this->persistentManager = $this->get(PersistenceManager::class);
         $this->blogRepository = $this->get(BlogRepository::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

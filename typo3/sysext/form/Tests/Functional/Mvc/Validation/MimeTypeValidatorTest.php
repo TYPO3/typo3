@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -35,6 +37,8 @@ class MimeTypeValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         mkdir($this->instancePath . '/tmp');
         file_put_contents($this->instancePath . '/tmp/file.exe', "MZ\x90\x00\x03\x00");
         file_put_contents($this->instancePath . '/tmp/file.zip', "PK\x03\x04");

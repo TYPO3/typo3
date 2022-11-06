@@ -21,6 +21,8 @@ use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -35,19 +37,9 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * @var PostRepository
-     */
-    protected $postRepository;
+    protected PostRepository $postRepository;
+    protected PersistenceManager $persistenceManager;
 
-    /**
-     * @var PersistenceManager
-     */
-    protected $persistenceManager;
-
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -65,6 +57,9 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->get(PostRepository::class);
         $this->persistenceManager = $this->get(PersistenceManager::class);
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

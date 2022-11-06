@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use ExtbaseTeam\ActionControllerTest\Controller\TestController;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -59,6 +60,8 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request = $this->request->withControllerExtensionName('ActionControllerTest');
         $this->request = $this->request->withControllerName('Test');
         $this->request = $this->request->withFormat('html');
+        $this->request = $this->request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
 
         $this->subject = $this->get(TestController::class);
     }

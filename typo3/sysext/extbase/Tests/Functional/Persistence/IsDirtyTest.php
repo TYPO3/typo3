@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use ExtbaseTeam\BlogExample\Domain\Repository\AdministratorRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -27,19 +29,9 @@ class IsDirtyTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * @var BlogRepository
-     */
-    protected $blogRepository;
+    protected BlogRepository $blogRepository;
+    protected AdministratorRepository $adminRepository;
 
-    /**
-     * @var AdministratorRepository
-     */
-    protected $adminRepository;
-
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -57,6 +49,9 @@ class IsDirtyTest extends FunctionalTestCase
 
         $this->blogRepository = $this->get(BlogRepository::class);
         $this->adminRepository = $this->get(AdministratorRepository::class);
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

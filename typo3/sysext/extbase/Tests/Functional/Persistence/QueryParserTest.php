@@ -19,15 +19,14 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Repository\AdministratorRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class QueryParserTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,6 +41,9 @@ class QueryParserTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**

@@ -52,6 +52,8 @@ class RequestBuilderTest extends FunctionalTestCase
         // @todo: Get rid of getIndpEnv var usage in TSFE
         FrameworkState::push();
         FrameworkState::reset();
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     protected function tearDown(): void
