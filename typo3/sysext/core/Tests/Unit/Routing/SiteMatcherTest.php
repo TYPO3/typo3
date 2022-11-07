@@ -71,12 +71,7 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
-        $finderMock = $this
-            ->getMockBuilder(SiteFinder::class)
-            ->onlyMethods(['getAllSites'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $finderMock->method('getAllSites')->willReturn(['main' => $site, 'second' => $secondSite]);
+        $finderMock = $this->createSiteFinderMock($site, $secondSite);
         $subject = new SiteMatcher($finderMock);
 
         $request = new ServerRequest('http://9-5.typo3.test/da/my-page/');
@@ -109,12 +104,14 @@ class SiteMatcherTest extends UnitTestCase
         // Matches english
         self::assertEquals(0, $result->getLanguage()->getLanguageId());
 
+        // @todo this is a random result and needs to be refined
+        // www.example.com is not defined at all, but it actually "matches"...
         $request = new ServerRequest('http://www.example.com/');
         /** @var SiteRouteResult $result */
         $result = $subject->matchRequest($request);
-        // Nothing found, only the empty site, but finds the last site ("second") according to the algorithm
+        // Nothing found, only the empty site, but finds a random site ("main") according to the algorithm
         self::assertNull($result->getLanguage());
-        self::assertEquals('second', $result->getSite()->getIdentifier());
+        self::assertEquals('main', $result->getSite()->getIdentifier());
     }
 
     /**
@@ -169,12 +166,7 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
-        $finderMock = $this
-            ->getMockBuilder(SiteFinder::class)
-            ->onlyMethods(['getAllSites'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $finderMock->method('getAllSites')->willReturn(['main' => $site, 'second' => $secondSite]);
+        $finderMock = $this->createSiteFinderMock($site, $secondSite);
         $subject = new SiteMatcher($finderMock);
 
         $request = new ServerRequest('https://www.example.com/de');
@@ -196,5 +188,87 @@ class SiteMatcherTest extends UnitTestCase
         // No language for this solution
         self::assertEquals($secondSite, $result->getSite());
         self::assertNull($result->getLanguage());
+    }
+
+    public static function bestMatchingUrlIsUsedDataProvider(): \Generator
+    {
+        yield  ['https://example.org/page', '1-main', 'en_US'];
+        yield  ['https://example.org/', '1-main', 'en_US'];
+        yield  ['https://example.org/f', '1-main', 'en_US'];
+        yield  ['https://example.org/fr', '3-fr', 'fr_FR'];
+        yield  ['https://example.org/friendly-page', '1-main', 'en_US'];
+        yield  ['https://example.org/fr/', '3-fr', 'fr_FR'];
+        yield  ['https://example.org/fr/page', '3-fr', 'fr_FR'];
+        yield  ['https://example.org/de', '1-main', 'de_DE'];
+        yield  ['https://example.org/deterministic', '1-main', 'en_US'];
+        yield  ['https://example.org/dk', '2-dk', 'da_DK'];
+        yield  ['https://example.org/dkother', '1-main', 'en_US'];
+    }
+
+    /**
+     * @test
+     * @dataProvider bestMatchingUrlIsUsedDataProvider
+     */
+    public function bestMatchingUrlIsUsed(string $requestUri, string $expectedSite, string $expectedLocale): void
+    {
+        $mainSite = new Site('1-main', 31, [
+            'base' => 'https://example.org/',
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'base' => 'https://example.org/',
+                    'locale' => 'en_US',
+                ],
+                [
+                    'languageId' => 2,
+                    'base' => 'https://example.org/de/',
+                    'locale' => 'de_DE',
+                ],
+            ],
+        ]);
+        $dkSite = new Site('2-dk', 21, [
+            'base' => 'https://example.org/',
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'base' => 'https://example.org/dk/',
+                    'locale' => 'da_DK',
+                ],
+            ],
+        ]);
+        $frSite = new Site('3-fr', 11, [
+            'base' => 'https://example.org/',
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'base' => 'https://example.org/fr/',
+                    'locale' => 'fr_FR',
+                ],
+            ],
+        ]);
+
+        $finderMock = $this->createSiteFinderMock($mainSite, $dkSite, $frSite);
+        $subject = new SiteMatcher($finderMock);
+
+        $request = new ServerRequest($requestUri);
+        /** @var SiteRouteResult $result */
+        $result = $subject->matchRequest($request);
+
+        self::assertSame($expectedSite, $result->getSite()->getIdentifier());
+        self::assertSame($expectedLocale, $result->getLanguage()->getLocale());
+    }
+
+    private function createSiteFinderMock(Site ...$sites): SiteFinder
+    {
+        $finderMock = $this
+            ->getMockBuilder(SiteFinder::class)
+            ->onlyMethods(['getAllSites'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $finderMock->method('getAllSites')->willReturn(array_combine(
+            array_map(static function (Site $site) { return $site->getIdentifier(); }, $sites),
+            $sites
+        ));
+        return $finderMock;
     }
 }
