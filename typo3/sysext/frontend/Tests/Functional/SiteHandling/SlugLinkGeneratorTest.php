@@ -830,6 +830,20 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                     ],
                 ],
             ],
+            'resolved shortcut in translation' => [
+                'https://acme.fr/',
+                1100,
+                '2030',
+                [
+                    [
+                        'title' => 'Shortcut to Research - shows a different page',
+                        'link' => '/acme-dans-votre-region',
+                        'active' => 0,
+                        'current' => 0,
+                    ],
+                ],
+            ],
+
         ];
     }
 
@@ -837,7 +851,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider hierarchicalMenuSetsActiveStateProperlyDataProvider
      */
-    public function hierarchicalMenuSetsActiveStateProperly(string $hostPrefix, int $sourcePageId, string $menuPageIds, array $expectation): void
+    public function hierarchicalMenuSetsActiveStateProperly(string $hostPrefix, int $sourcePageId, string $menuPageIds, array $expectation, int $languageId = 0): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))

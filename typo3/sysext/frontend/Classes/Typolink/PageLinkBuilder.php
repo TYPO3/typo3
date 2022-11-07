@@ -408,6 +408,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (empty($page) || !is_array($page)) {
             return [];
         }
+
+        // If the page repository (= current page) does actually link to a different page
+        // It is needed to also resolve the page translation now, as it might have a different shortcut
+        // page
+        if (isset($configuration['language']) && $configuration['language'] !== 'current') {
+            $page = $pageRepository->getLanguageOverlay('pages', $page, new LanguageAspect($configuration['language'], $configuration['language']));
+        }
+
         $page = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);
 
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;

@@ -905,6 +905,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // about languages - whether we took the correct shortcut or
             // whether a translation of the page overwrites the shortcut
             // target and we need to follow the new target
+            $this->settingLanguage($request);
             $this->originalShortcutPage = $this->page;
             $this->page = $this->sys_page->resolveShortcutPage($this->page, true);
             $this->id = (int)$this->page['uid'];
