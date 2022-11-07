@@ -561,7 +561,7 @@ class HtmlParser
                                             }
                                             if ($params['prefixRelPathWith'] ?? false) {
                                                 $urlParts = parse_url($tagAttrib[0][$attr]);
-                                                if (!$urlParts['scheme'] && $urlParts['path'][0] !== '/') {
+                                                if (is_array($urlParts) && empty($urlParts['scheme']) && !empty($urlParts['path']) && !str_starts_with($urlParts['path'], '/')) {
                                                     // If it is NOT an absolute URL (by http: or starting "/")
                                                     $tagAttrib[0][$attr] = $params['prefixRelPathWith'] . $tagAttrib[0][$attr];
                                                 }
