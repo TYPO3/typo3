@@ -129,4 +129,57 @@ class SiteConfigurationControllerTest extends UnitTestCase
 
         self::assertEquals($expected, $mockedSiteConfigurationController->_call('getDuplicatedEntryPoints', $sites, $rootPages));
     }
+
+    /**
+     * @test
+     */
+    public function languageBaseVariantsAreKept(): void
+    {
+        $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, ['dummy'], [], '', false);
+
+        $currentSiteConfig = [
+            'base' => '//domain1.tld/',
+            'websiteTitle' => 'domain1',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'title' => 'English',
+                    'base' => '/',
+                    'baseVariants' => [
+                        [
+                            'base' => '/en',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $newSiteConfig = $currentSiteConfig;
+        $newSiteConfig['rootPageId'] = 123;
+        $newSiteConfig['websiteTitle'] = 'domain1 renamed';
+        unset($newSiteConfig['languages'][0]['baseVariants']);
+
+        $expected = [
+            'base' => '//domain1.tld/',
+            'rootPageId' => 123,
+            'websiteTitle' => 'domain1 renamed',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'title' => 'English',
+                    'base' => '/',
+                    'baseVariants' => [
+                        [
+                            'base' => '/en',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertEquals(
+            $expected,
+            $mockedSiteConfigurationController->_call('getMergeSiteData', $currentSiteConfig, $newSiteConfig)
+        );
+    }
 }
