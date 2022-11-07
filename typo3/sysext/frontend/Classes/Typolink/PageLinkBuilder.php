@@ -469,7 +469,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // By default, it is assumed to ab an internal link or current domain's linking scheme should be used
         // Use the config option to override this.
-        $useAbsoluteUrl = $conf['forceAbsoluteUrl'] ?? false;
+        // Global option config.forceAbsoluteUrls = 1 overrides any setting for this specific link
+        if ($tsfe->config['config']['forceAbsoluteUrls'] ?? false) {
+            $useAbsoluteUrl = true;
+        } else {
+            $useAbsoluteUrl = $conf['forceAbsoluteUrl'] ?? false;
+        }
         // Check if the current page equal to the site of the target page, now only set the absolute URL
         // Always generate absolute URLs if no current site is set
         if (

@@ -2035,6 +2035,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->absRefPrefix = $normalizedParams->getSitePath();
             }
         }
+        // config.forceAbsoluteUrls will override absRefPrefix
+        if ($this->config['config']['forceAbsoluteUrls'] ?? false) {
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $this->absRefPrefix = $normalizedParams->getSiteUrl();
+        }
+
         // linkVars
         $this->calculateLinkVars($request->getQueryParams());
         // Setting XHTML-doctype from doctype

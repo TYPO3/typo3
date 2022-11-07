@@ -71,7 +71,13 @@ abstract class AbstractTypolinkBuilder
      */
     protected function forceAbsoluteUrl(string $url, array $configuration): string
     {
-        if (!empty($url) && !empty($configuration['forceAbsoluteUrl']) && preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($tsfe->config['config']['forceAbsoluteUrls'] ?? false) {
+            $forceAbsoluteUrl = true;
+        } else {
+            $forceAbsoluteUrl = !empty($configuration['forceAbsoluteUrl']);
+        }
+        if (!empty($url) && $forceAbsoluteUrl && preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
             $urlParts = [
                 'scheme' => $matches[1],
                 'delimiter' => '://',
@@ -92,7 +98,7 @@ abstract class AbstractTypolinkBuilder
                 // absRefPrefix has been prepended to $url beforehand
                 // so we only modify the path if no absRefPrefix has been set
                 // otherwise we would destroy the path
-                if ($this->getTypoScriptFrontendController()->absRefPrefix === '') {
+                if ($tsfe->absRefPrefix === '') {
                     $urlParts['path'] = $normalizedParams->getSitePath() . ltrim($urlParts['path'], '/');
                 }
                 $isUrlModified = true;
