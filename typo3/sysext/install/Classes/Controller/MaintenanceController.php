@@ -583,7 +583,9 @@ class MaintenanceController extends AbstractController
     {
         $view = $this->initializeView($request);
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        $isWritable = $this->configurationManager->canWriteConfiguration();
         $view->assignMultiple([
+            'isWritable' => $isWritable,
             'languagePacksActivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksActivateLanguage'),
             'languagePacksDeactivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksDeactivateLanguage'),
             'languagePacksUpdatePackToken' => $formProtection->generateToken('installTool', 'languagePacksUpdatePack'),
@@ -617,40 +619,49 @@ class MaintenanceController extends AbstractController
         $availableLanguages = $languagePackService->getAvailableLanguages();
         $activeLanguages = $languagePackService->getActiveLanguages();
         $iso = $request->getParsedBody()['install']['iso'];
-        $activateArray = [];
-        foreach ($availableLanguages as $availableIso => $name) {
-            if ($availableIso === $iso && !in_array($availableIso, $activeLanguages, true)) {
-                $activateArray[] = $iso;
-                $dependencies = $this->locales->getLocaleDependencies($availableIso);
-                if (!empty($dependencies)) {
-                    foreach ($dependencies as $dependency) {
-                        if (!in_array($dependency, $activeLanguages, true)) {
-                            $activateArray[] = $dependency;
+
+        if (!$this->configurationManager->canWriteConfiguration()) {
+            $messageQueue->enqueue(new FlashMessage(
+                sprintf('The language %s was not activated as the configuration file is not writable.', $availableLanguages[$iso]),
+                'Language not activated',
+                ContextualFeedbackSeverity::ERROR
+            ));
+        } else {
+            $activateArray = [];
+            foreach ($availableLanguages as $availableIso => $name) {
+                if ($availableIso === $iso && !in_array($availableIso, $activeLanguages, true)) {
+                    $activateArray[] = $iso;
+                    $dependencies = $this->locales->getLocaleDependencies($availableIso);
+                    if (!empty($dependencies)) {
+                        foreach ($dependencies as $dependency) {
+                            if (!in_array($dependency, $activeLanguages, true)) {
+                                $activateArray[] = $dependency;
+                            }
                         }
                     }
                 }
             }
-        }
-        if (!empty($activateArray)) {
-            $activeLanguages = array_merge($activeLanguages, $activateArray);
-            sort($activeLanguages);
-            $this->configurationManager->setLocalConfigurationValueByPath(
-                'EXTCONF/lang',
-                ['availableLanguages' => $activeLanguages]
-            );
-            $activationArray = [];
-            foreach ($activateArray as $activateIso) {
-                $activationArray[] = $availableLanguages[$activateIso] . ' (' . $activateIso . ')';
-            }
-            $messageQueue->enqueue(
-                new FlashMessage(
+            if (!empty($activateArray)) {
+                $activeLanguages = array_merge($activeLanguages, $activateArray);
+                sort($activeLanguages);
+                $this->configurationManager->setLocalConfigurationValueByPath(
+                    'EXTCONF/lang',
+                    ['availableLanguages' => $activeLanguages]
+                );
+                $activationArray = [];
+                foreach ($activateArray as $activateIso) {
+                    $activationArray[] = $availableLanguages[$activateIso] . ' (' . $activateIso . ')';
+                }
+                $messageQueue->enqueue(new FlashMessage(
                     'These languages have been activated: ' . implode(', ', $activationArray)
-                )
-            );
-        } else {
-            $messageQueue->enqueue(
-                new FlashMessage('Language with ISO code "' . $iso . '" not found or already active.', '', ContextualFeedbackSeverity::ERROR)
-            );
+                ));
+            } else {
+                $messageQueue->enqueue(new FlashMessage(
+                    'Language with ISO code "' . $iso . '" not found or already active.',
+                    '',
+                    ContextualFeedbackSeverity::ERROR
+                ));
+            }
         }
         return new JsonResponse([
             'success' => true,
@@ -670,61 +681,64 @@ class MaintenanceController extends AbstractController
         $availableLanguages = $languagePackService->getAvailableLanguages();
         $activeLanguages = $languagePackService->getActiveLanguages();
         $iso = $request->getParsedBody()['install']['iso'];
-        if (empty($iso)) {
-            throw new \RuntimeException('No iso code given', 1520109807);
-        }
-        $otherActiveLanguageDependencies = [];
-        foreach ($activeLanguages as $activeLanguage) {
-            if ($activeLanguage === $iso) {
-                continue;
+
+        if (!$this->configurationManager->canWriteConfiguration()) {
+            $messageQueue->enqueue(new FlashMessage(
+                sprintf('The language %s was not deactivated as the configuration file is not writable.', $availableLanguages[$iso]),
+                'Language not deactivated',
+                ContextualFeedbackSeverity::ERROR
+            ));
+        } else {
+            if (empty($iso)) {
+                throw new \RuntimeException('No iso code given', 1520109807);
             }
-            $dependencies = $this->locales->getLocaleDependencies($activeLanguage);
-            if (in_array($iso, $dependencies, true)) {
-                $otherActiveLanguageDependencies[] = $activeLanguage;
+            $otherActiveLanguageDependencies = [];
+            foreach ($activeLanguages as $activeLanguage) {
+                if ($activeLanguage === $iso) {
+                    continue;
+                }
+                $dependencies = $this->locales->getLocaleDependencies($activeLanguage);
+                if (in_array($iso, $dependencies, true)) {
+                    $otherActiveLanguageDependencies[] = $activeLanguage;
+                }
             }
-        }
-        if (!empty($otherActiveLanguageDependencies)) {
-            // Error: Must disable dependencies first
-            $dependentArray = [];
-            foreach ($otherActiveLanguageDependencies as $dependency) {
-                $dependentArray[] = $availableLanguages[$dependency] . ' (' . $dependency . ')';
-            }
-            $messageQueue->enqueue(
-                new FlashMessage(
+            if (!empty($otherActiveLanguageDependencies)) {
+                // Error: Must disable dependencies first
+                $dependentArray = [];
+                foreach ($otherActiveLanguageDependencies as $dependency) {
+                    $dependentArray[] = $availableLanguages[$dependency] . ' (' . $dependency . ')';
+                }
+                $messageQueue->enqueue(new FlashMessage(
                     'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" can not be deactivated. These'
                     . ' other languages depend on it and need to be deactivated before:'
                     . implode(', ', $dependentArray),
                     '',
                     ContextualFeedbackSeverity::ERROR
-                )
-            );
-        } else {
-            if (in_array($iso, $activeLanguages, true)) {
-                // Deactivate this language
-                $newActiveLanguages = [];
-                foreach ($activeLanguages as $activeLanguage) {
-                    if ($activeLanguage === $iso) {
-                        continue;
-                    }
-                    $newActiveLanguages[] = $activeLanguage;
-                }
-                $this->configurationManager->setLocalConfigurationValueByPath(
-                    'EXTCONF/lang',
-                    ['availableLanguages' => $newActiveLanguages]
-                );
-                $messageQueue->enqueue(
-                    new FlashMessage(
-                        'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has been deactivated'
-                    )
-                );
+                ));
             } else {
-                $messageQueue->enqueue(
-                    new FlashMessage(
+                if (in_array($iso, $activeLanguages, true)) {
+                    // Deactivate this language
+                    $newActiveLanguages = [];
+                    foreach ($activeLanguages as $activeLanguage) {
+                        if ($activeLanguage === $iso) {
+                            continue;
+                        }
+                        $newActiveLanguages[] = $activeLanguage;
+                    }
+                    $this->configurationManager->setLocalConfigurationValueByPath(
+                        'EXTCONF/lang',
+                        ['availableLanguages' => $newActiveLanguages]
+                    );
+                    $messageQueue->enqueue(new FlashMessage(
+                        'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has been deactivated'
+                    ));
+                } else {
+                    $messageQueue->enqueue(new FlashMessage(
                         'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has not been deactivated',
                         '',
                         ContextualFeedbackSeverity::ERROR
-                    )
-                );
+                    ));
+                }
             }
         }
         return new JsonResponse([
