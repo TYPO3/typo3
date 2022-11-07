@@ -141,6 +141,8 @@ entities:
             - self: {id: 2021, title: 'FEGroups Restricted', visitorGroups: 30, slug: '/sysfolder-restricted'}
             - self: {id: 2022, title: 'FEGroups Restricted', hidden: 1, visitorGroups: 30, slug: '/sysfolder-restricted-hidden'}
         - self: {id: 2030, title: 'Cross Site Shortcut', slug: '/cross-site-shortcut', type: *pageShortcut, shortcut: 2100}
+          languageVariants:
+            - self: {id: 2031, title: 'Shortcut to Research - shows a different page', language: 1, type: *pageShortcut, shortcut: 1400, slug: '/other-cross-site-shortcut', l10n_state: '{"starttime":"parent","endtime":"parent","nav_hide":"parent","url":"parent","lastUpdated":"parent","newUntil":"parent","no_search":"parent","shortcut":"custom","shortcut_mode":"parent","content_from_pid":"parent","author":"parent","author_email":"parent","media":"parent","og_image":"parent","twitter_image":"parent"}' }
     - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:
         - self: {id: 2100, title: 'Authors', slug: '/authors'}

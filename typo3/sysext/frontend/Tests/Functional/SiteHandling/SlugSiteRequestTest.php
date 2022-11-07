@@ -1220,16 +1220,22 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public static function crossSiteShortcutsAreRedirectedDataProvider(): array
+    public static function crossSiteShortcutsAreRedirectedDataProvider(): \Generator
     {
-        return [
-            'shortcut is redirected' => [
-                'https://website.local/cross-site-shortcut',
-                307,
-                [
-                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
-                    'location' => ['https://blog.local/authors'],
-                ],
+        yield 'shortcut is redirected' => [
+            'https://website.local/cross-site-shortcut',
+            307,
+            [
+                'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                'location' => ['https://blog.local/authors'],
+            ],
+        ];
+        yield 'shortcut of translated page is redirected to a different page than the original page' => [
+            'https://website.local/fr/other-cross-site-shortcut',
+            307,
+            [
+                'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                'location' => ['https://website.local/fr/acme-dans-votre-region'],
             ],
         ];
     }
@@ -1242,11 +1248,19 @@ final class SlugSiteRequestTest extends AbstractTestCase
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(1000, 'https://website.local/')
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
+            ]
         );
         $this->writeSiteConfiguration(
             'blog-local',
-            $this->buildSiteConfiguration(2000, 'https://blog.local/')
+            $this->buildSiteConfiguration(2000, 'https://blog.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
+            ]
         );
         $this->setUpFrontendRootPage(
             2000,
