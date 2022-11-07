@@ -390,12 +390,9 @@ class SiteConfigurationController
                 }
             }
 
-            // keep root config objects not given via GUI
-            // this way extension authors are able to use their own objects on root level
-            // that are not configurable via GUI
-            // however: we overwrite the full subset of any GUI object to make sure we have a clean state
-            $newSysSiteData = array_merge($currentSiteConfiguration, $newSysSiteData);
-            $newSiteConfiguration = $this->validateFullStructure($newSysSiteData);
+            $newSiteConfiguration = $this->validateFullStructure(
+                $this->getMergeSiteData($currentSiteConfiguration, $newSysSiteData)
+            );
 
             // Persist the configuration
             $siteConfigurationManager = GeneralUtility::makeInstance(SiteConfiguration::class);
@@ -806,6 +803,35 @@ class SiteConfigurationController
         }
 
         return !empty($value) || $value === '0';
+    }
+
+    /**
+     * Method keeps root config objects, which are not given via GUI. This way,
+     * extension authors are able to use their own objects on root level that are
+     * not configurable via GUI. However: We overwrite the full subset of any GUI
+     * object to make sure we have a clean state.
+     *
+     * Additionally, we also keep the baseVariants of languages, since they
+     * can't be modified via the GUI, but are part of the public API.
+     */
+    protected function getMergeSiteData(array $currentSiteConfiguration, array $newSysSiteData): array
+    {
+        $newSysSiteData = array_merge($currentSiteConfiguration, $newSysSiteData);
+
+        // @todo: this should go away, once base variants for languages are managable via the GUI.
+        $existingLanguageConfigurationsWithBaseVariants = [];
+        foreach ($currentSiteConfiguration['languages'] ?? [] as $languageConfiguration) {
+            if (isset($languageConfiguration['baseVariants'])) {
+                $existingLanguageConfigurationsWithBaseVariants[$languageConfiguration['languageId']] = $languageConfiguration['baseVariants'];
+            }
+        }
+        foreach ($newSysSiteData['languages'] ?? [] as $key => $languageConfiguration) {
+            if (isset($existingLanguageConfigurationsWithBaseVariants[$languageConfiguration['languageId']])) {
+                $newSysSiteData['languages'][$key]['baseVariants'] = $existingLanguageConfigurationsWithBaseVariants[$languageConfiguration['languageId']];
+            }
+        }
+
+        return $newSysSiteData;
     }
 
     protected function getLanguageService(): LanguageService
