@@ -61,7 +61,7 @@ Field control options
 
 Available password rules:
 
-- :php:`length`: Defines the amout of characters for the password (Default: :php:`16`).
+- :php:`length`: Defines the amout of characters for the password (minimum: :php:`8` - default: :php:`16`).
 - :php:`random`: Defines the encoding of random bytes. Overrules charater definitions. Available encodings are :php:`hex` and :php:`base64`.
 - :php:`digitCharacters`: Whether digits should be used (Default: :php:`true`)
 - :php:`lowerCaseCharacters`: Whether lowercase characters should be used (Default: :php:`true`)

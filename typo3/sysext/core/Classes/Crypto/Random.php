@@ -74,14 +74,21 @@ class Random
      */
     public function generateRandomPassword(array $passwordRules): string
     {
-        $password = '';
         $passwordLength = (int)($passwordRules['length'] ?? self::DEFAULT_PASSWORD_LEGNTH);
+        if ($passwordLength < 8) {
+            throw new InvalidPasswordRulesException(
+                'Password rules are invalid. Length must be at least 8.',
+                1667557900
+            );
+        }
+
+        $password = '';
 
         if ($passwordRules['random'] ?? false) {
             $password = match ((string)$passwordRules['random']) {
                 'hex' => $this->generateRandomHexString($passwordLength),
                 'base64' => $this->generateRandomBase64String($passwordLength),
-                default => throw new InvalidPasswordRulesException('Invalid value for special option \'random\'. Valid options are: \'hex\' and \'base64\'', 1667557901),
+                default => throw new InvalidPasswordRulesException('Invalid value for special password rule \'random\'. Valid options are: \'hex\' and \'base64\'', 1667557901),
             };
         } else {
             $characters = [];
@@ -103,20 +110,20 @@ class Random
                 $characterSets[] = self::SPECIAL_CHARACTERS;
             }
 
-            if ($passwordLength <= 0 || $characterSets === []) {
+            if ($characterSets === []) {
                 throw new InvalidPasswordRulesException(
-                    'Password rules are invalid. Length must be grater 0 and at least one character set must be allowed.',
-                    1667557900
+                    'Password rules are invalid. At least one character set must be allowed.',
+                    1667557902
                 );
             }
 
             foreach ($characterSets as $characterSet) {
-                $password .= $characterSet[random_int(0, strlen($characterSet))];
+                $password .= $characterSet[random_int(0, strlen($characterSet) - 1)];
             }
 
             $charactersCount = count($characters);
             for ($i = 0; $i < $passwordLength - count($characterSets); $i++) {
-                $password .= $characters[random_int(0, $charactersCount)];
+                $password .= $characters[random_int(0, $charactersCount - 1)];
             }
 
             str_shuffle($password);
