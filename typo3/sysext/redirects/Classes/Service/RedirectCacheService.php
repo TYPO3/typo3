@@ -85,6 +85,8 @@ class RedirectCacheService
         }
         $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
+            // Field "description" is not needed for FE redirect handling. Don't add it to cache.
+            unset($row['description']);
             if ($row['is_regexp']) {
                 $redirects['regexp'][$row['source_path']][$row['uid']] = $row;
             } elseif ($row['respect_query_parameters']) {
