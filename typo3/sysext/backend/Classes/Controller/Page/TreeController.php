@@ -235,7 +235,7 @@ class TreeController
             return $output;
         }
         foreach ($doktypes as $doktype) {
-            if (!$isAdmin && !in_array($doktype, $allowedDoktypes, true)) {
+            if (!isset($doktypeLabelMap[$doktype]) || (!$isAdmin && !in_array($doktype, $allowedDoktypes, true))) {
                 continue;
             }
             $label = htmlspecialchars($this->getLanguageService()->sL($doktypeLabelMap[$doktype]));
