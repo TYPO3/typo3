@@ -16,7 +16,6 @@
  * Contains the TsCodeCompletion class
  */
 
-import $ from 'jquery';
 import '@typo3/t3editor/autocomplete/ts-ref.js';
 
 export default (function() {
@@ -225,7 +224,7 @@ export default (function() {
             // TODO: ignore whole block if wrong whitespaces in this line
             if (TsParser.getOperator(line) === -1) {
               stack.push('{');
-              prefixes.push($.trim(line));
+              prefixes.push(line.trim());
               ignoreLine = true;
             }
           }
@@ -282,7 +281,7 @@ export default (function() {
         } else {
           // ignore comments, ...
           if (!stack.lastElementEquals('/*') && !stack.lastElementEquals('(') && !ignoreLine && !insideCondition) {
-            line = $.trim(line);
+            line = line.trim();
             // check if there is any operator in this line
             var op = TsParser.getOperator(line);
             if (op !== -1) {
@@ -295,9 +294,8 @@ export default (function() {
                 path = prefixes.join('.') + '.' + path;
               }
               // the type or value should be right to the operator
-              var str = line.substring(pos + op.length, line.length);
-              path = $.trim(path);
-              str = $.trim(str);
+              var str = line.substring(pos + op.length, line.length).trim();
+              path = path.trim();
               switch (op) { // set a value or create a new object
                 case '=':
                   //ignore if path is empty or contains whitespace
@@ -357,8 +355,7 @@ export default (function() {
       var i = line.indexOf('<');
 
       if (i !== -1) {
-        var path = line.substring(i + 1, line.length);
-        path = $.trim(path);
+        var path = line.substring(i + 1, line.length).trim();
         if (prefixes.length > 0 && path.substr(0, 1) === '.') {
           path = prefixes.join('.') + path;
         }
@@ -383,7 +380,7 @@ export default (function() {
    * @returns {Object}
    */
   TsParser.getTreeNode = function(path) {
-    path = $.trim(path);
+    path = path.trim();
     if (path.length === 0) {
       return TsParser.tsTree;
     }

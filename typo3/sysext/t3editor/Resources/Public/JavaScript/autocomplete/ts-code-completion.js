@@ -15,7 +15,8 @@
  * Module: @typo3/t3editor/autocomplete/ts-code-completion
  * Contains the TsCodeCompletion class
  */
-import $ from 'jquery';
+import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
+import DocumentService from '@typo3/core/document-service.js';
 import TsRef from '@typo3/t3editor/autocomplete/ts-ref.js';
 import TsParser from '@typo3/t3editor/autocomplete/ts-parser.js';
 import CompletionResult from '@typo3/t3editor/autocomplete/completion-result.js';
@@ -46,17 +47,13 @@ export default (function() {
     if (Number.isNaN(id) || id === 0) {
       return null;
     }
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls['t3editor_codecompletion_loadtemplates'],
-      data: {
-        pageId: id
-      },
-      dataType: 'json',
-      success: function(response) {
-        TsCodeCompletion.extTsObjTree.c = response;
+    new AjaxRequest(TYPO3.settings.ajaxUrls['t3editor_codecompletion_loadtemplates'])
+      .withQueryArguments({pageId: id})
+      .get()
+      .then(async function (response) {
+        TsCodeCompletion.extTsObjTree.c = await response.resolve();
         TsCodeCompletion.resolveExtReferencesRec(TsCodeCompletion.extTsObjTree.c);
-      }
-    });
+      });
   };
 
   /**
@@ -71,7 +68,7 @@ export default (function() {
       // if the childnode has a value and there is a part of a reference operator ('<')
       // and it does not look like a html tag ('>')
       if (childNodes[key].v && childNodes[key].v[0] === '<' && childNodes[key].v.indexOf('>') === -1) {
-        var path = $.trim(childNodes[key].v.replace(/</, ''));
+        var path = childNodes[key].v.replace(/</, '').trim();
         // if there are still whitespaces it's no path
         if (path.indexOf(' ') === -1) {
           childNode = TsCodeCompletion.getExtChildNode(path);
@@ -153,10 +150,10 @@ export default (function() {
     TsCodeCompletion.compResult = null;
   };
 
-  $(function() {
+  DocumentService.ready().then(function () {
     TsCodeCompletion.parser = TsParser.init(TsCodeCompletion.tsRef, TsCodeCompletion.extTsObjTree);
     TsCodeCompletion.tsRef.loadTsrefAsync();
-    TsCodeCompletion.loadExtTemplatesAsync($('input[name="effectivePid"]').first().val());
+    TsCodeCompletion.loadExtTemplatesAsync(document.querySelector('input[name="effectivePid"]')?.value);
   });
 
   return TsCodeCompletion;

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
 
 /**
  * Module: @typo3/t3editor/code-completion/ts-ref
@@ -58,13 +58,12 @@ export default (function() {
    * Load available TypoScript reference
    */
   TsRef.loadTsrefAsync = function() {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls['t3editor_tsref'],
-      success: function(response) {
-        TsRef.doc = response;
+    new AjaxRequest(TYPO3.settings.ajaxUrls['t3editor_tsref'])
+      .get()
+      .then(async function (response) {
+        TsRef.doc = await response.resolve();
         TsRef.buildTree();
-      }
-    });
+      });
   };
 
   /**
