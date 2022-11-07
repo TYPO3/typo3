@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -116,6 +117,20 @@ class ContainerBuilder
         $containerBuilder = new SymfonyContainerBuilder();
 
         $containerBuilder->addCompilerPass(new ServiceProviderCompilationPass($registry, $this->serviceProviderRegistryServiceName));
+
+        $globalConfigDir = Environment::getConfigPath();
+        // If the config folder is outside of the document root, we allow further services per-project
+        // This is usually the case in composer-based installations
+        if (Environment::isComposerMode() && Environment::getPublicPath() !== Environment::getProjectPath()) {
+            if (file_exists($globalConfigDir . '/system/services.php')) {
+                $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator($globalConfigDir . '/system'));
+                $phpFileLoader->load('services.php');
+            }
+            if (file_exists($globalConfigDir . '/system/services.yaml')) {
+                $yamlFileLoader = new YamlFileLoader($containerBuilder, new FileLocator($globalConfigDir . '/system'));
+                $yamlFileLoader->load('services.yaml');
+            }
+        }
 
         $packages = $packageManager->getActivePackages();
         foreach ($packages as $package) {
