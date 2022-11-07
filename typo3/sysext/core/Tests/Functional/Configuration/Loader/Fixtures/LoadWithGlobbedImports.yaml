@@ -1,0 +1,7 @@
+imports:
+  - { resource: "./Glob/*.yaml", glob: true }
+
+options:
+  - option1
+  - option2
+betterthanbefore: 1

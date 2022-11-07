@@ -159,9 +159,17 @@ class YamlFileLoader implements LoggerAwareInterface
             foreach ($content['imports'] as $import) {
                 try {
                     $import = $this->processPlaceholders($import, $content);
-                    $importedContent = $this->loadAndParse($import['resource'], $fileName);
-                    // override the imported content with the one from the current file
-                    $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
+                    $resource = $import['resource'];
+                    if ($import['glob'] ?? false) {
+                        $resource = $this->getStreamlinedFileName($resource, $fileName);
+                        foreach (array_reverse(glob($resource)) as $file) {
+                            $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($this->loadAndParse($file, $fileName), $content);
+                        }
+                    } else {
+                        $importedContent = $this->loadAndParse($resource, $fileName);
+                        // override the imported content with the one from the current file
+                        $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
+                    }
                 } catch (ParseException|YamlParseException|YamlFileLoadingException $exception) {
                     $this->logger->error($exception->getMessage(), ['exception' => $exception]);
                 }

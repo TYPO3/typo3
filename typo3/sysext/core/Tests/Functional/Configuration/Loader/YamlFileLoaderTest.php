@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Configuration\Loader;
 
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -204,5 +206,50 @@ class YamlFileLoaderTest extends FunctionalTestCase
         ];
 
         self::assertSame($expected, $output);
+    }
+
+    /**
+     * Method checking for multiple imports via glob() call
+     *
+     * @test
+     */
+    public function loadWithGlobbedImports(): void
+    {
+        $output = (new YamlFileLoader())->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithGlobbedImports.yaml');
+
+        $expected = [
+            'options' => [
+                'optionBefore',
+                'optionAfterBefore',
+                'option1',
+                'option2',
+            ],
+            'betterthanbefore' => 1,
+        ];
+
+        self::assertSame($expected, $output);
+    }
+
+    /**
+     * Method checking for path traversal imports via glob() call
+     *
+     * @test
+     */
+    public function loadWithGlobbedImportsWithPathTraversalShouldFail(): void
+    {
+        $logger = new class () extends AbstractLogger {
+            public array $logEntries = [];
+
+            public function log($level, \Stringable|string $message, array $context = []): void
+            {
+                $this->logEntries[$level][0] = $message;
+            }
+        };
+        $loader = new YamlFileLoader();
+        $loader->setLogger($logger);
+        $output = $loader->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithGlobbedImportsWithPathTraversal.yaml');
+
+        self::assertEmpty($output);
+        self::assertSame('Referencing a file which is outside of TYPO3s main folder', $logger->logEntries[LogLevel::ERROR][0] ?? '');
     }
 }
