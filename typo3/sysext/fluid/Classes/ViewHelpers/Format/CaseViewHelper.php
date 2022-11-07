@@ -131,7 +131,7 @@ class CaseViewHelper extends AbstractViewHelper
         $mode = $arguments['mode'];
 
         if ($value === null) {
-            $value = $renderChildrenClosure();
+            $value = (string)$renderChildrenClosure();
         }
 
         switch ($mode) {
