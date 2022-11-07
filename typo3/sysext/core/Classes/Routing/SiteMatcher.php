@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Routing;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -146,7 +145,7 @@ class SiteMatcher implements SingletonInterface
                 443,
                 $uri->getPath()
             );
-            $matcher = new UrlMatcher($collection, $context);
+            $matcher = new BestUrlMatcher($collection, $context);
             try {
                 $result = $matcher->match($uri->getPath());
                 return new SiteRouteResult(
@@ -194,23 +193,25 @@ class SiteMatcher implements SingletonInterface
      */
     protected function getRouteCollectionForAllSites(): RouteCollection
     {
-        $groupedRoutes = [];
+        $collection = new RouteCollection();
         foreach ($this->finder->getAllSites() as $site) {
             // Add the site as entrypoint
             // @todo Find a way to test only this basic route against chinese characters, as site languages kicking
             //       always in. Do the rawurldecode() here to to be consistent with language preparations.
+
             $uri = $site->getBase();
             $route = new Route(
                 (rawurldecode($uri->getPath()) ?: '/') . '{tail}',
                 ['site' => $site, 'language' => null, 'tail' => ''],
                 array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
-                ['utf8' => true],
+                ['utf8' => true, 'fallback' => true],
                 // @todo Verify if host should here covered with idn_to_ascii() to be consistent with preparation for languages.
                 $uri->getHost() ?: '',
                 $uri->getScheme() === '' ? [] : [$uri->getScheme()]
             );
             $identifier = 'site_' . $site->getIdentifier();
-            $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
+            $collection->add($identifier, $route);
+
             // Add all languages
             foreach ($site->getAllLanguages() as $siteLanguage) {
                 $uri = $siteLanguage->getBase();
@@ -223,31 +224,7 @@ class SiteMatcher implements SingletonInterface
                     $uri->getScheme() === '' ? [] : [$uri->getScheme()]
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
-                $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
-            }
-        }
-        return $this->createRouteCollectionFromGroupedRoutes($groupedRoutes);
-    }
-
-    /**
-     * As the {tail} parameter is greedy, it needs to be ensured that the one with the
-     * most specific part matches first.
-     *
-     * @param array $groupedRoutes
-     * @return RouteCollection
-     */
-    protected function createRouteCollectionFromGroupedRoutes(array $groupedRoutes): RouteCollection
-    {
-        $collection = new RouteCollection();
-        // Ensure more generic routes containing '-' in host identifier, processed at last
-        krsort($groupedRoutes);
-        foreach ($groupedRoutes as $groupedRoutesPerHost) {
-            krsort($groupedRoutesPerHost);
-            foreach ($groupedRoutesPerHost as $groupedRoutesPerPath) {
-                krsort($groupedRoutesPerPath);
-                foreach ($groupedRoutesPerPath as $identifier => $route) {
-                    $collection->add($identifier, $route);
-                }
+                $collection->add($identifier, $route);
             }
         }
         return $collection;
