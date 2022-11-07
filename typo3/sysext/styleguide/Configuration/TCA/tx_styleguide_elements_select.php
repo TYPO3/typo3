@@ -794,6 +794,29 @@ return [
             ],
         ],
 
+        'category_11' => [
+            'label' => 'category_11',
+            'config' => [
+                'type' => 'category',
+                'relationship' => 'oneToOne',
+            ],
+        ],
+        'category_1n' => [
+            'label' => 'category_1n',
+            'config' => [
+                'type' => 'category',
+                'relationship' => 'oneToMany',
+            ],
+        ],
+        'category_mm' => [
+            'label' => 'category_mm',
+            // TcaPreparation sets exclude by default, but styleguide has no individual exclude fields
+            'exclude' => false,
+            'config' => [
+                'type' => 'category',
+            ],
+        ],
+
         'select_requestUpdate_1' => [
             'label' => 'select_requestUpdate_1',
             'onChange' => 'reload',
@@ -1073,6 +1096,8 @@ return [
                     select_multiplesidebyside_10,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
+                --div--;type=category,
+                    category_11, category_1n, category_mm,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,

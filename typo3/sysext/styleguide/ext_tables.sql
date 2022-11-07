@@ -327,6 +327,10 @@ CREATE TABLE tx_styleguide_elements_select (
     select_tree_5 text,
     select_tree_6 text,
 
+    category_11 text,
+    category_1n text,
+    category_mm text,
+
     flex_1 text,
 
     select_requestUpdate_1 text
