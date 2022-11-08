@@ -22,7 +22,6 @@ function createTypoScriptMode() {
 
       return {
         '_CSS_DEFAULT_STYLE': kw('_CSS_DEFAULT_STYLE'),
-        '_GIFBUILDER': kw('_GIFBUILDER'),
         '_LOCAL_LANG': kw('_LOCAL_LANG'),
         '_offset': kw('_offset'),
         'absRefPrefix': kw('absRefPrefix'),

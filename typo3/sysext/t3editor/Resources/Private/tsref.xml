@@ -3768,7 +3768,6 @@ type=99 reserved for plaintext display ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="_GIFBUILDER" type="TLO_GIFBUILDER"/>
 	</type>
 	<type id="PAGE" extends="cObjArray">
 		<property name="10" type="cObj">
@@ -4054,19 +4053,6 @@ found PAGE object, but it MUST be set and be unique as soon you use more than on
 		</property>
 		<property name="wrap" type="wrap">
 			<description><![CDATA[Wraps the content of the the cObject array]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="TLO_GIFBUILDER" extends="array">
-		<property name="charRangeMap" type="charRangeMap">
-			<description><![CDATA[You can configure some global settings for GIFBUILDER by a top level object named "_GIFBUILDER". One of the available properties of the global GIFBUILDER configuration is "charRangeMap".
-
-.charRangeMap
-
-By this property you can globally configure mapping of font files for certain character ranges. For instance you might need GIFBUILDER to produce gif files with a certain font for latin characters while you need to use another true type font for Japanese glyphs. So what you need is to specify the usage of another font file when characters fall into another range of Unicode values.
-
-In the GIFBUILDER object this is possible with the "splitRendering" option but if you have hundreds of GIFBUILDER objects around your site it is not very efficient to add 5-10 lines of configuration for each time you render text. Therefore this global setting allows you to match the basename of the main font face with an alternative font.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
