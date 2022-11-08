@@ -607,7 +607,7 @@ class WorkspaceService implements SingletonInterface
         }
 
         $rows = $queryBuilder
-            ->select('C.pid AS wspid', 'B.uid AS t3ver_oid', 'C.uid AS uid', 'B.pid AS livepid')
+            ->select('C.pid AS wspid', 'B.uid AS t3ver_oid', 'C.uid AS uid', 'B.pid AS livepid', 'C.t3ver_stage as t3ver_stage')
             ->from($table, 'B')
             ->from($table, 'C')
             ->where(...$constraints)
