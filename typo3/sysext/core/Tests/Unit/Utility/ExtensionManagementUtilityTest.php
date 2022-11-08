@@ -406,6 +406,21 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function addToAllTCAtypesAddsBeforeDiv(): void
+    {
+        $showitemDiv = '--div--;LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:foobar';
+        $table = StringUtility::getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = $this->generateTCAForTable($table);
+        $GLOBALS['TCA'][$table]['types']['typeD']['showitem'] = $showitemDiv . ', ' . $GLOBALS['TCA'][$table]['types']['typeA']['showitem'];
+
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldX', '', 'before:' . $showitemDiv);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1, fieldX', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldX, ' . $showitemDiv . ', fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeD']['showitem']);
+    }
+
+    /**
      * Tests whether fields can be added to a palette before existing elements.
      *
      * @test

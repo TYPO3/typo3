@@ -274,7 +274,7 @@ class ExtensionManagementUtility
                             switch ($positionIdentifier) {
                                 case 'after':
                                 case 'before':
-                                    if (preg_match('/\\b' . $entityName . '\\b/', $palette['showitem']) > 0 || $entityName === 'palette:' . $paletteName) {
+                                    if (preg_match('/\\b' . preg_quote($entityName, '/') . '\\b/', $palette['showitem']) > 0 || $entityName === 'palette:' . $paletteName) {
                                         $newPosition = $positionIdentifier . ':--palette--;;' . $paletteName;
                                     }
                                     break;
@@ -284,7 +284,7 @@ class ExtensionManagementUtility
                                         $fieldExists = true;
                                         continue 2;
                                     }
-                                    if (preg_match('/\\b' . $entityName . '\\b/', $palette['showitem']) > 0) {
+                                    if (preg_match('/\\b' . preg_quote($entityName, '/') . '\\b/', $palette['showitem']) > 0) {
                                         self::addFieldsToPalette($table, $paletteName, $newFieldsString, $position);
                                         // Memorize that we already changed this palette, in case other types also use it
                                         $palettesChanged[$paletteName] = true;
