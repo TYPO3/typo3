@@ -154,7 +154,6 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock->expects(self::once())->method('updateDatabase');
 
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
     }
@@ -165,7 +164,6 @@ class InstallUtilityTest extends UnitTestCase
     public function installCallsLoadExtension(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects(self::once())->method('loadExtension');
         $this->installMock->install($this->extensionKey);
@@ -174,21 +172,8 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsFlushCachesIfClearCacheOnLoadIsSet(): void
+    public function installCallsFlushCaches(): void
     {
-        $this->extensionData['clearcacheonload'] = true;
-        $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects(self::once())->method('flushCaches');
-        $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->install($this->extensionKey);
-    }
-
-    /**
-     * @test
-     */
-    public function installCallsFlushCachesIfClearCacheOnLoadCamelCasedIsSet(): void
-    {
-        $this->extensionData['clearCacheOnLoad'] = true;
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects(self::once())->method('flushCaches');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
@@ -201,7 +186,6 @@ class InstallUtilityTest extends UnitTestCase
     public function installCallsReloadCaches(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects(self::once())->method('reloadCaches');
         $this->installMock->install($this->extensionKey);
@@ -213,7 +197,6 @@ class InstallUtilityTest extends UnitTestCase
     public function installCallsSaveDefaultConfigurationWithExtensionKey(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects(self::once())->method('saveDefaultConfiguration')->with($this->extensionKey);
         $this->installMock->install($this->extensionKey);

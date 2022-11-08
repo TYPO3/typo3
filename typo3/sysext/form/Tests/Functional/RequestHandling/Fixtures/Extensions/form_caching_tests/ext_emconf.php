@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => '',
     'category' => 'misc',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'version' => '1.0.0',
     'constraints' => [
         'depends' => [],

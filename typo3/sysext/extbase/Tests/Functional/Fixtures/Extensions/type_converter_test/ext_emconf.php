@@ -10,7 +10,6 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'author_email' => '',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'version' => '12.1.0',
     'constraints' => [
         'depends' => [

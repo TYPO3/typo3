@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'The Admin Panel displays information about your site in the frontend and contains a range of metrics including debug and caching information.',
     'category' => 'fe',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

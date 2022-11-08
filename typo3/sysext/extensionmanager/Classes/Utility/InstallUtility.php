@@ -152,21 +152,13 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function install(...$extensionKeys)
     {
-        $flushCaches = false;
         foreach ($extensionKeys as $extensionKey) {
             $this->loadExtension($extensionKey);
             $extension = $this->enrichExtensionWithDetails($extensionKey, false);
             $this->saveDefaultConfiguration($extensionKey);
-            if (!empty($extension['clearcacheonload']) || !empty($extension['clearCacheOnLoad'])) {
-                $flushCaches = true;
-            }
         }
 
-        if ($flushCaches) {
-            $this->cacheManager->flushCaches();
-        } else {
-            $this->cacheManager->flushCachesInGroup('system');
-        }
+        $this->cacheManager->flushCaches();
 
         // Load a new container as reloadCaches will load ext_localconf
         $container = $this->bootService->getContainer(false);

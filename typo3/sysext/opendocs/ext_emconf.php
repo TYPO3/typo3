@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Shows opened documents for the TYPO3 backend user.',
     'category' => 'module',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

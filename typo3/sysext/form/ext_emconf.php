@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Flexible TYPO3 frontend form framework that comes with a backend editor interface.',
     'category' => 'misc',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',
