@@ -205,7 +205,7 @@ This will by default add "&MP=2-207" to all links pointing to pages 36,37 and 48
 		<property name="MP_mapRootPoints" type="string">
 			<description><![CDATA[list of PIDs/string
       Defines a list of ID numbers from which the MP-vars are automatically calculated for the branch.
-The result is used just like MP_defaults are used to find MP-vars if none has been specified prior to the call to \TYPO3\CMS\Core\TypoScript\TemplateService::linkData().
+The result is used just like MP_defaults are used to find MP-vars if none has been specified.
 You can specify "root" as a special keyword in the list of IDs and that will create a map-tree for the whole site (but this may be VERY processing intensive if there are many pages!).
 The order of IDs specified may have a significance; Any ID in a branch which is processed already (by a previous ID root point) will not be processed again.]]></description>
 			<default><![CDATA[
@@ -2488,7 +2488,7 @@ Basically this shows that
 
 - the fields "header_layout", "bodytext" and "image" are mapped to non-existing fields in the page-record
 
-- a new field, "sectionIndex_uid" is introduced in the page-record which is detected by the function \TYPO3\CMS\Core\TypoScript\TemplateService->linkData(). If this field is present in a pagerecord, the linkData()-function will prepend a hash-mark and the number of the field.
+- a new field, "sectionIndex_uid" is introduced in the page-record. If this field is present in a page record, the linkData()-function will prepend a hash-mark and the number of the field.
 
 NOTE:
 

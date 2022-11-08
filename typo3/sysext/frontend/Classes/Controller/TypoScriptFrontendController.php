@@ -1431,7 +1431,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
                 // Create top-level setup AST 'types' node from all top-level PAGE objects.
                 // This is essentially a preparation for type-lookup below and should vanish later.
-                // Previously, TemplateService->generateConfig() did that.
                 $typesNode = new ChildNode('types');
                 $gotTypeNumZero = false;
                 foreach ($setupAst->getNextChild() as $setupChild) {

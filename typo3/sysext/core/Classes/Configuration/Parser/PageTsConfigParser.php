@@ -62,7 +62,6 @@ class PageTsConfigParser
             }
             if (!empty($siteSettings)) {
                 // Recursive substitution of site settings (up to 10 nested levels)
-                // note: this code is more or less a duplicate of \TYPO3\CMS\Core\TypoScript\TemplateService::substituteConstants
                 for ($i = 0; $i < 10; $i++) {
                     $beforeSubstitution = $content;
                     $content = preg_replace_callback(

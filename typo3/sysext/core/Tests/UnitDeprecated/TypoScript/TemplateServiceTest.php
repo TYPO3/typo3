@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\TypoScript;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;

@@ -309,6 +309,8 @@ class TemplateService
      */
     protected $frontendController;
 
+    private static bool $deprecationLogged = false;
+
     /**
      * @param Context|null $context
      * @param PackageManager|null $packageManager
@@ -332,6 +334,10 @@ class TemplateService
      */
     public function getProcessExtensionStatics()
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         return $this->processExtensionStatics;
     }
 
@@ -340,6 +346,10 @@ class TemplateService
      */
     public function setProcessExtensionStatics($processExtensionStatics)
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         $this->processExtensionStatics = (bool)$processExtensionStatics;
     }
 
@@ -349,6 +359,10 @@ class TemplateService
      */
     public function setVerbose($verbose)
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         $this->verbose = (bool)$verbose;
     }
 
@@ -372,6 +386,10 @@ class TemplateService
      */
     public function matching($cc)
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         if (is_array($cc['all'])) {
             $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class, null, null, null, $this->absoluteRootLine);
             $matchObj->setRootline((array)($cc['rootLine'] ?? []));
@@ -395,6 +413,10 @@ class TemplateService
      */
     public function start($theRootLine)
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         $cc = [];
         if (is_array($theRootLine)) {
             $constantsData = [];
@@ -478,6 +500,10 @@ class TemplateService
      */
     public function runThroughTemplates($theRootLine, $start_template_uid = 0)
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         $this->constants = [];
         $this->config = [];
         $this->rowSum = [];
@@ -555,6 +581,10 @@ class TemplateService
      */
     public function processTemplate($row, $idList, $pid, $templateID = '', $templateParent = '', $includePath = '')
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         // Adding basic template record information to rowSum array
         $this->rowSum[] = [$row['uid'] ?? null, $row['title'] ?? null, $row['tstamp'] ?? null];
         // Processing "Clear"-flags
@@ -850,6 +880,10 @@ class TemplateService
      */
     public function generateConfig()
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         // Add default TS for all code types
         $this->addDefaultTypoScript();
 
@@ -1037,6 +1071,10 @@ class TemplateService
      */
     public function getRootlineLevel($list)
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         $idx = 0;
         foreach ($this->rootLine as $page) {
             if (GeneralUtility::inList($list, $page['uid'])) {
@@ -1054,6 +1092,10 @@ class TemplateService
      */
     public function getRootId(): int
     {
+        if (!self::$deprecationLogged) {
+            trigger_error(__CLASS__ . ' has been marked as deprecated in TYPO3 v12 and will be removed in v13.', E_USER_DEPRECATED);
+            self::$deprecationLogged = true;
+        }
         return (int)$this->rootId;
     }
 

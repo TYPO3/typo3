@@ -572,8 +572,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Initializes the automatically created mountPointMap coming from the "config.MP_mapRootPoints" setting
      * Can be called many times with overhead only the first time since then the map is generated and cached in memory.
      *
-     * Previously located within TemplateService::getFromMPmap()
-     *
      * @param int $pageId Page id to return MPvar value for.
      * @return string
      */
@@ -637,7 +635,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
     /**
      * Creating mountPointMap for a certain ID root point.
-     * Previously called TemplateService->initMPmap_create()
      *
      * @param array $mountPointMap the exiting mount point map
      * @param int $id Root id from which to start map creation.

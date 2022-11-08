@@ -2202,4 +2202,10 @@ return [
             'Deprecation-98996-DoctrineDBALBackendWorkspaceRestrictionAndFrontendWorkspaceRestriction.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService' => [
+        'restFiles' => [
+            'Deprecation-99020-DeprecateTypoScriptTemplateService.rst',
+            'Breaking-97816-NewTypoScriptParserInFrontend.rst',
+        ],
+    ],
 ];
