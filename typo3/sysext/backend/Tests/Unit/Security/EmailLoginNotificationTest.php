@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -29,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class EmailLoginNotificationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -48,10 +44,10 @@ class EmailLoginNotificationTest extends UnitTestCase
             'email' => 'test@acme.com',
         ];
 
-        $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(MailerInterface::class);
-        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
+        $mailMessage = $this->setUpMailMessageMock();
+        $mailerMock = $this->createMock(MailerInterface::class);
+        $mailerMock->expects(self::once())->method('send')->with($mailMessage);
+        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
@@ -124,15 +120,13 @@ class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
         ];
 
-        $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(MailerInterface::class);
-        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
+        $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
+        $mailerMock = $this->createMock(MailerInterface::class);
+        $mailerMock->expects(self::once())->method('send')->with($mailMessage);
+        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
-
-        $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
     }
 
     /**
@@ -154,15 +148,13 @@ class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
         ];
 
-        $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(MailerInterface::class);
-        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
+        $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
+        $mailerMock = $this->createMock(MailerInterface::class);
+        $mailerMock->expects(self::once())->method('send')->with($mailMessage);
+        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
-
-        $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
     }
 
     /**
@@ -184,15 +176,13 @@ class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
         ];
 
-        $mailMessage = $this->setUpMailMessageProphecy();
-        $mailerProphecy = $this->prophesize(MailerInterface::class);
-        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
-        GeneralUtility::addInstance(MailerInterface::class, $mailerProphecy->reveal());
+        $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
+        $mailerMock = $this->createMock(MailerInterface::class);
+        $mailerMock->expects(self::once())->method('send')->with($mailMessage);
+        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
-
-        $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
     }
 
     /**
@@ -220,18 +210,20 @@ class EmailLoginNotificationTest extends UnitTestCase
         // no additional assertion here as the test would fail due to not mocking the email API
     }
 
-    /**
-     * @return ObjectProphecy<FluidEmail>
-     */
-    protected function setUpMailMessageProphecy(): ObjectProphecy
+    protected function setUpMailMessageMock(string $recipient = ''): FluidEmail&MockObject
     {
-        $mailMessage = $this->prophesize(FluidEmail::class);
-        $mailMessage->to(Argument::any())->willReturn($mailMessage->reveal());
-        $mailMessage->setTemplate(Argument::any())->willReturn($mailMessage->reveal());
-        $mailMessage->from(Argument::any())->willReturn($mailMessage->reveal());
-        $mailMessage->setRequest(Argument::any())->willReturn($mailMessage->reveal());
-        $mailMessage->assignMultiple(Argument::cetera())->willReturn($mailMessage->reveal());
-        GeneralUtility::addInstance(FluidEmail::class, $mailMessage->reveal());
+        $mailMessage = $this->createMock(FluidEmail::class);
+
+        if ($recipient === '') {
+            $mailMessage->method('to')->withAnyParameters()->willReturn($mailMessage);
+        } else {
+            $mailMessage->expects(self::atLeastOnce())->method('to')->with($recipient)->willReturn($mailMessage);
+        }
+        $mailMessage->method('setTemplate')->withAnyParameters()->willReturn($mailMessage);
+        $mailMessage->method('from')->withAnyParameters()->willReturn($mailMessage);
+        $mailMessage->method('setRequest')->withAnyParameters()->willReturn($mailMessage);
+        $mailMessage->method('assignMultiple')->withAnyParameters()->willReturn($mailMessage);
+        GeneralUtility::addInstance(FluidEmail::class, $mailMessage);
         return $mailMessage;
     }
 }
