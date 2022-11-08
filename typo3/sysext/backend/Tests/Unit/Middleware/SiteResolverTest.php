@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Middleware;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -29,17 +28,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteResolverTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
-    public function RequestIsNotModifiedIfPageIdParameterIsNoInteger(): void
+    public function requestIsNotModifiedIfPageIdParameterIsNoInteger(): void
     {
         $incomingUrl = 'http://localhost:8080/typo3/module/file/FilelistList?token=d7d864db2b26c1d0f0537718b16890f336f4af2b&id=9831:/styleguide/';
 
-        $siteMatcherProphecy = $this->prophesize(SiteMatcher::class);
-        $subject = new SiteResolver($siteMatcherProphecy->reveal());
+        $siteMatcherMock = $this->createMock(SiteMatcher::class);
+        $subject = new SiteResolver($siteMatcherMock);
 
         $incomingRequest = new ServerRequest($incomingUrl, 'GET');
         $incomingRequest = $incomingRequest->withQueryParams(['id' => '9831:/styleguide/']);
