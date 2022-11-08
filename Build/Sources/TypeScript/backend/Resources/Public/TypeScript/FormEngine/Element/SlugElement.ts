@@ -88,7 +88,7 @@ class SlugElement {
   }
 
   private registerEvents(): void {
-    const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((selector: string) => `[data-formengine-input-name="${selector}"]`);
+    const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((field: HTMLElement) => `[id="${field.id}"]`);
     const recreateButton: HTMLButtonElement = this.fullElement.querySelector(Selectors.recreateButton);
 
     // Listen on 'listenerFieldNames' for new pages. This is typically the 'title' field
@@ -158,9 +158,9 @@ class SlugElement {
   private sendSlugProposal(mode: ProposalModes): void {
     const input: { [key: string]: string } = {};
     if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
-      for (const [fieldName, selector] of Object.entries(this.getAvailableFieldsForProposalGeneration())) {
-        input[fieldName] = (document.querySelector('[data-formengine-input-name="' + selector + '"]') as HTMLInputElement).value;
-      }
+      Object.entries(this.getAvailableFieldsForProposalGeneration()).forEach((entry: [fieldName: string, field: HTMLInputElement|HTMLSelectElement]) => {
+        input[entry[0]] = entry[1].value;
+      });
       if (this.options.includeUidInValues === true) {
         input.uid = this.options.recordId.toString();
       }
@@ -214,12 +214,16 @@ class SlugElement {
    *
    * @return { [key: string]: string }
    */
-  private getAvailableFieldsForProposalGeneration(): { [key: string]: string } {
-    const availableFields: { [key: string]: string } = {};
+  private getAvailableFieldsForProposalGeneration(): { [key: string]: HTMLElement } {
+    const availableFields: { [key: string]: HTMLElement } = {};
     for (const [fieldName, selector] of Object.entries(this.fieldsToListenOn)) {
-      const field = document.querySelector('[data-formengine-input-name="' + selector + '"]');
+      let field = document.querySelector('[data-formengine-input-name="' + selector + '"]') as HTMLElement;
+      if (field === null) {
+        // Also check for select fields, which do not point to a hidden input field
+        field = document.querySelector('select[name="' + selector + '"]') as HTMLElement;
+      }
       if (field !== null) {
-        availableFields[fieldName] = selector;
+        availableFields[fieldName] = field;
       }
     }
 
