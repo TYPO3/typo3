@@ -17,25 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for TYPO3\CMS\Backend\Configuration\BackendUserConfiguration
- */
 class BackendUserConfigurationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected BackendUserConfiguration $backendUserConfiguration;
-
-    /** @var ObjectProphecy<BackendUserAuthentication> */
-    protected ObjectProphecy $backendUserProphecy;
-
-    protected BackendUserAuthentication $backendUser;
+    protected BackendUserAuthentication&MockObject $backendUserMock;
 
     /**
      * Set up this testcase
@@ -43,9 +33,8 @@ class BackendUserConfigurationTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $this->backendUser = $this->backendUserProphecy->reveal();
-        $this->backendUserConfiguration = new BackendUserConfiguration($this->backendUser);
+        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $this->backendUserConfiguration = new BackendUserConfiguration($this->backendUserMock);
     }
 
     /**
@@ -53,7 +42,7 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     public function getsConfiguration(): void
     {
-        $this->backendUser->uc = [
+        $this->backendUserMock->uc = [
             'key' => 'A',
             'nested' => [
                 'key' => 'B',
@@ -73,7 +62,7 @@ class BackendUserConfigurationTest extends UnitTestCase
             'foo' => 'A',
             'bar' => 'B',
         ];
-        $this->backendUser->uc = $configuration;
+        $this->backendUserMock->uc = $configuration;
 
         self::assertEquals($configuration, $this->backendUserConfiguration->getAll());
     }
@@ -83,9 +72,11 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     public function setsConfiguration(): void
     {
-        $this->backendUser->uc = [
+        $this->backendUserMock->uc = [
             'foo' => 'A',
         ];
+
+        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->set('foo', 'X');
         $this->backendUserConfiguration->set('bar', 'Y');
@@ -98,9 +89,7 @@ class BackendUserConfigurationTest extends UnitTestCase
                 'bar' => 'Z',
             ],
         ];
-
-        $this->backendUserProphecy->writeUC()->shouldHaveBeenCalled();
-        self::assertEquals($expected, $this->backendUser->uc);
+        self::assertEquals($expected, $this->backendUserMock->uc);
     }
 
     /**
@@ -108,12 +97,14 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     public function addsToListConfigurationOption(): void
     {
-        $this->backendUser->uc = [
+        $this->backendUserMock->uc = [
             'foo' => 'A',
             'nested' => [
                 'foo' => '',
             ],
         ];
+
+        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->addToList('foo', 'X');
         $this->backendUserConfiguration->addToList('nested.foo', 'X');
@@ -125,8 +116,7 @@ class BackendUserConfigurationTest extends UnitTestCase
                 'foo' => ',X,Z',
             ],
         ];
-        $this->backendUserProphecy->writeUC()->shouldHaveBeenCalled();
-        self::assertEquals($expected, $this->backendUser->uc);
+        self::assertEquals($expected, $this->backendUserMock->uc);
     }
 
     /**
@@ -134,12 +124,14 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     public function removesFromListConfigurationOption(): void
     {
-        $this->backendUser->uc = [
+        $this->backendUserMock->uc = [
             'foo' => 'A,B',
             'nested' => [
                 'foo' => 'A,B,C',
             ],
         ];
+
+        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->removeFromList('foo', 'B');
         $this->backendUserConfiguration->removeFromList('nested.foo', 'B');
@@ -150,8 +142,7 @@ class BackendUserConfigurationTest extends UnitTestCase
                 'foo' => 'A,C',
             ],
         ];
-        $this->backendUserProphecy->writeUC()->shouldHaveBeenCalled();
-        self::assertEquals($expected, $this->backendUser->uc);
+        self::assertEquals($expected, $this->backendUserMock->uc);
     }
 
     /**
@@ -159,8 +150,8 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     public function clearsConfiguration(): void
     {
+        $this->backendUserMock->expects(self::atLeastOnce())->method('resetUC');
         $this->backendUserConfiguration->clear();
-        $this->backendUserProphecy->resetUC()->shouldHaveBeenCalled();
     }
 
     /**
@@ -168,10 +159,12 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     public function unsetsConfigurationOption(): void
     {
-        $this->backendUser->uc = [
+        $this->backendUserMock->uc = [
             'foo' => 'A',
             'bar' => 'B',
         ];
+
+        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->unsetOption('foo');
         $this->backendUserConfiguration->unsetOption('foo');
@@ -179,7 +172,6 @@ class BackendUserConfigurationTest extends UnitTestCase
         $expected = [
             'bar' => 'B',
         ];
-        $this->backendUserProphecy->writeUC()->shouldHaveBeenCalled();
-        self::assertEquals($expected, $this->backendUser->uc);
+        self::assertEquals($expected, $this->backendUserMock->uc);
     }
 }

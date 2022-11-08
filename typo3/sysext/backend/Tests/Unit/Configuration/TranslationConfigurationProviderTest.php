@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -29,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TranslationConfigurationProviderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected TranslationConfigurationProvider $subject;
 
     protected function setUp(): void
@@ -38,11 +34,10 @@ class TranslationConfigurationProviderTest extends UnitTestCase
         parent::setUp();
 
         $this->subject = new TranslationConfigurationProvider();
-        $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserAuthentication->checkLanguageAccess(Argument::any())->willReturn(true);
-        $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
+        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
+        $backendUserAuthentication->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
+        $GLOBALS['BE_USER'] = $backendUserAuthentication;
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
     }
 
     /**
@@ -50,15 +45,15 @@ class TranslationConfigurationProviderTest extends UnitTestCase
      */
     public function defaultLanguageIsAlwaysReturned(): void
     {
-        $languageService = $this->prophesize(LanguageService::class);
-        $languageService->sL(Argument::cetera())->willReturn('');
-        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $GLOBALS['LANG'] = $languageService;
 
         $pageId = 1;
         $site = new Site('dummy', $pageId, ['base' => 'http://sub.domainhostname.tld/path/']);
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getSiteByPageId($pageId)->willReturn($site);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteFinderMock->method('getSiteByPageId')->with($pageId)->willReturn($site);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
         $languages = $this->subject->getSystemLanguages($pageId);
         self::assertArrayHasKey(0, $languages);
     }
@@ -68,9 +63,9 @@ class TranslationConfigurationProviderTest extends UnitTestCase
      */
     public function getSystemLanguagesAggregatesLanguagesOfAllSitesForRootLevel(): void
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getAllSites()->willReturn($this->getDummySites());
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteFinderMock->method('getAllSites')->willReturn($this->getDummySites());
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
         $languages = $this->subject->getSystemLanguages(0);
         self::assertCount(3, $languages);
     }
@@ -80,9 +75,9 @@ class TranslationConfigurationProviderTest extends UnitTestCase
      */
     public function getSystemLanguagesConcatenatesTitlesOfLanguagesForRootLevel(): void
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getAllSites()->willReturn($this->getDummySites());
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteFinderMock->method('getAllSites')->willReturn($this->getDummySites());
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
         $languages = $this->subject->getSystemLanguages(0);
         self::assertEquals('Deutsch [Site: dummy1], German [Site: dummy2]', $languages[1]['title']);
     }
