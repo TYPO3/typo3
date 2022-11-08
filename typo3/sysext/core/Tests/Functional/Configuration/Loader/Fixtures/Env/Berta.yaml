@@ -1,5 +1,5 @@
 imports:
-    - { resource: Secondfile.yml }
+    - { resource: Secondfile.yaml }
 
 options:
     - option1

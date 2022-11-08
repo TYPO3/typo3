@@ -1,0 +1,7 @@
+imports:
+  - { resource: SecondImportedFile.yaml }
+
+options:
+  - option1
+  - option2
+betterthanbefore: 1

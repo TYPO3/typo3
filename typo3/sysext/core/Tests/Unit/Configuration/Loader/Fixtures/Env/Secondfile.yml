@@ -1,5 +1,0 @@
-imports:
-    - { resource: Env_%env("foo")%.yml }
-
-options:
-    - optionBefore

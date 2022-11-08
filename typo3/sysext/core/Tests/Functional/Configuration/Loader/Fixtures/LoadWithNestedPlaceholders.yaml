@@ -1,0 +1,6 @@
+firstset:
+  myinitialversion: 13
+options:
+  - option1
+  - option2
+betterthanbefore: '%env(foo)%'

@@ -1,0 +1,7 @@
+firstset:
+  myinitialversion: 13
+options:
+  - option1
+  - option2
+betterthanbefore: '%firstset.myinitialversion%'
+muchbetterthanbefore: 'some::%options.0%::option'
