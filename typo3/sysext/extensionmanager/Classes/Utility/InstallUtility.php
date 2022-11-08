@@ -144,8 +144,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Helper function to install an extension
-     * also processes db updates and clears the cache if the extension asks for it
+     * Helper function to install an extension and processes db updates.
      *
      * @param string ...$extensionKeys
      * @throws ExtensionManagerException
