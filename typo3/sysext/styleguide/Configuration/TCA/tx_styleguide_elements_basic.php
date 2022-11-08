@@ -517,6 +517,83 @@ return [
                 'default' => 'somePassword1!',
             ],
         ],
+        'password_4' => [
+            'label' => 'password_4',
+            'description' => 'type=password fieldControl=passwordGenerator random=hex',
+            'config' => [
+                'type' => 'password',
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        'options' => [
+                            'title' => 'Create random hex string',
+                            'passwordRules' => [
+                                'length' => 30,
+                                'random' => 'hex',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'password_5' => [
+            'label' => 'password_5',
+            'description' => 'type=password fieldControl=passwordGenerator random=base64 allowEdit=false',
+            'config' => [
+                'type' => 'password',
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        'options' => [
+                            'title' => 'Create random base64 string',
+                            'allowEdit' => false,
+                            'passwordRules' => [
+                                'length' => 35,
+                                'random' => 'base64',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'password_6' => [
+            'label' => 'password_6',
+            'description' => 'type=password fieldControl=passwordGenerator - all character sets',
+            'config' => [
+                'type' => 'password',
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        'options' => [
+                            'title' => 'Create random password',
+                            'passwordRules' => [
+                                'specialCharacters' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'password_7' => [
+            'label' => 'password_7',
+            'description' => 'type=password fieldControl=passwordGenerator length=8 - only digits',
+            'config' => [
+                'type' => 'password',
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        'options' => [
+                            'title' => 'Create random number',
+                            'passwordRules' => [
+                                'length' => 8,
+                                'lowerCaseCharacters' => false,
+                                'upperCaseCharacters' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
 
         'color_1' => [
             'label' => 'color_1',
@@ -1610,7 +1687,7 @@ backend_layout {
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,
                 --div--;password,
-                    password_1,password_2,password_3,
+                    password_1,password_2,password_3,password_4,password_5,password_6,password_7,
                 --div--;color,
                     color_1,color_2,color_3,
                 --div--;number,

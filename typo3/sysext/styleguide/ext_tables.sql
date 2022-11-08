@@ -110,6 +110,10 @@ CREATE TABLE tx_styleguide_elements_basic (
     password_1 text,
     password_2 text,
     password_3 text,
+    password_4 text,
+    password_5 text,
+    password_6 text,
+    password_7 text,
 
     color_1 text,
     color_2 text,
