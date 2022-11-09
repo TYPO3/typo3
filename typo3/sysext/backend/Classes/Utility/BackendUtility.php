@@ -692,7 +692,6 @@ class BackendUtility
      *
      * @param int $id Page uid for which to create Page TSconfig
      * @return array Page TSconfig
-     * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
     public static function getPagesTSconfig($id)
     {

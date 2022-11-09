@@ -393,7 +393,7 @@ FE:
     items:
         addAllowedPaths:
             type: list
-            description: 'Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with ''/''. If not, then any path where the first part is like this path will match. That is: ''myfolder/ , myarchive'' will match eg. ''myfolder/'', ''myarchive/'', ''myarchive_one/'', ''myarchive_2/'' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in <code>\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser)</code>'
+            description: 'Additional relative paths resources are allowed to be placed. Used in a couple of Frontend related places for images and TypoScript. Should be prepended with ''/''. If not, then any path where the first part is like this path will match. That is: ''myfolder/ , myarchive'' will match eg. ''myfolder/'', ''myarchive/'', ''myarchive_one/'', ''myarchive_2/''. No check is done to see if this directory actually exists in the root of the site.'
         debug:
             type: bool
             description: 'If enabled, the total parsetime of the page is added as HTTP response header "X-TYPO3-Parsetime". This can also be enabled/disabled via the TypoScript option <code>config.debug = 0</code>.'
