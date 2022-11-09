@@ -35,6 +35,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * by TS Setup and returns the content.
  *
  * This class is the main entry point for extbase extensions.
+ *
+ * @todo: Please note that this class will become internal in TYPO3 v13.0
  */
 class Bootstrap
 {
@@ -121,6 +123,8 @@ class Bootstrap
      * If the Framework is not initialized yet, it will be initialized.
      *
      * This is usually used in Frontend plugins.
+     * This method will be marked as internal in the future, use EXTBASEPLUGIN in TypoScript to execute a Extbase plugin
+     * instead.
      *
      * @param string $content The content. Not used
      * @param array $configuration The TS configuration array
@@ -133,7 +137,12 @@ class Bootstrap
         return $this->handleFrontendRequest($request);
     }
 
-    protected function handleFrontendRequest(ServerRequestInterface $request): string
+    /**
+     * Used for any Extbase Plugin in the Frontend, be sure to run $this->initialize() before.
+     *
+     * @internal
+     */
+    public function handleFrontendRequest(ServerRequestInterface $request): string
     {
         $extbaseRequest = $this->extbaseRequestBuilder->build($request);
         if (!$this->isExtbaseRequestCacheable($extbaseRequest)) {

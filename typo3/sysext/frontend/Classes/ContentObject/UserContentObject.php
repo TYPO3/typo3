@@ -41,7 +41,7 @@ class UserContentObject extends AbstractContentObject
             // Come here only if we are not called from $TSFE->processNonCacheableContentPartsAndSubstituteContentMarkers()!
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
         }
-        $tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
+        $tempContent = $this->cObj->callUserFunction($conf['userFunc'] ?? '', $conf, '');
         if ($this->cObj->doConvertToUserIntObject) {
             $this->cObj->doConvertToUserIntObject = false;
             $content = $this->cObj->cObjGetSingle('USER_INT', $conf);

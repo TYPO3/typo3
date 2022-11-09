@@ -73,9 +73,8 @@ class ExtensionUtility
         switch ($pluginType) {
             case self::PLUGIN_TYPE_PLUGIN:
                 $pluginContent = trim('
-tt_content.list.20.' . $pluginSignature . ' = USER
+tt_content.list.20.' . $pluginSignature . ' = EXTBASEPLUGIN
 tt_content.list.20.' . $pluginSignature . ' {
-	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 	extensionName = ' . $extensionName . '
 	pluginName = ' . $pluginName . '
 }');
@@ -85,9 +84,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 tt_content.' . $pluginSignature . ' =< lib.contentElement
 tt_content.' . $pluginSignature . ' {
     templateName = Generic
-    20 = USER
+    20 = EXTBASEPLUGIN
     20 {
-        userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
         extensionName = ' . $extensionName . '
         pluginName = ' . $pluginName . '
     }

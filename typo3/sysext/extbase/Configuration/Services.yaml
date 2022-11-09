@@ -89,6 +89,12 @@ services:
       - name: event.listener
         identifier: 'extbase/add-default-extbase-module-icon'
 
+  # Content Object for Extbase Plugins
+  TYPO3\CMS\Extbase\ContentObject\ExtbasePluginContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'EXTBASEPLUGIN'
+
   # Type Converters
   TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter:
     tags:
