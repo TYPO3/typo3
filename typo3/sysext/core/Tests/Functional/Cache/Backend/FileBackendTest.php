@@ -599,7 +599,9 @@ class FileBackendTest extends FunctionalTestCase
         $subject->set('BackendFileTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special'], -100);
         $subject->set('BackendFileTest3', $data, ['UnitTestTag%test']);
         self::assertSame([], $subject->findIdentifiersByTag('UnitTestTag%special'));
-        self::assertSame(['BackendFileTest3', 'BackendFileTest1'], $subject->findIdentifiersByTag('UnitTestTag%test'));
+        $actualEntries = $subject->findIdentifiersByTag('UnitTestTag%test');
+        self::assertContains('BackendFileTest1', $actualEntries);
+        self::assertContains('BackendFileTest3', $actualEntries);
     }
 
     /**
