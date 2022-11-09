@@ -2076,7 +2076,7 @@ class DataHandler implements LoggerAwareInterface
         }
         if (!$unsetResult) {
             $newVal = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
-            $res['value'] = $this->castReferenceValue(implode(',', $newVal), $tcaFieldConf);
+            $res['value'] = $this->castReferenceValue(implode(',', $newVal), $tcaFieldConf, str_contains($value, 'NEW'));
         } else {
             unset($res['value']);
         }
@@ -3071,7 +3071,7 @@ class DataHandler implements LoggerAwareInterface
             $valueArray = $dbAnalysis->getValueArray();
             // Checking that the number of items is correct:
             $valueArray = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
-            $newValue = $this->castReferenceValue(implode(',', $valueArray), $tcaFieldConf);
+            $newValue = $this->castReferenceValue(implode(',', $valueArray), $tcaFieldConf, ($status === 'new'));
         }
         return $newValue;
     }
@@ -6436,6 +6436,7 @@ class DataHandler implements LoggerAwareInterface
                     continue;
                 }
                 // Load values from the argument array in remapAction:
+                $isNew = false;
                 $field = $remapAction['field'];
                 $id = $remapAction['args'][$remapAction['pos']['id']];
                 $rawId = $id;
@@ -6445,6 +6446,7 @@ class DataHandler implements LoggerAwareInterface
                 $additionalData = $remapAction['additionalData'] ?? [];
                 // The record is new and has one or more new ids (in case of versioning/workspaces):
                 if (str_contains($id, 'NEW')) {
+                    $isNew = true;
                     // Replace NEW...-ID with real uid:
                     $id = $this->substNEWwithIDs[$id] ?? '';
                     // If the new parent record is on a non-live workspace or versionized, it has another new id:
@@ -6493,7 +6495,7 @@ class DataHandler implements LoggerAwareInterface
                     $newValue = implode(',', $this->checkValue_checkMax($tcaFieldConf, $newValue));
                     // The reference casting is only required if
                     // checkValue_group_select_processDBdata() returns an array
-                    $newValue = $this->castReferenceValue($newValue, $tcaFieldConf);
+                    $newValue = $this->castReferenceValue($newValue, $tcaFieldConf, $isNew);
                 }
                 // Update in database (list of children (csv) or number of relations (foreign_field)):
                 if (!empty($field)) {
@@ -8452,9 +8454,10 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int|string $value The value to be casted (e.g. '', '0', '1,2,3')
      * @param array $configuration The TCA configuration of the accordant field
+     * @param bool $isNew is the record new or not
      * @return int|string
      */
-    protected function castReferenceValue($value, array $configuration)
+    protected function castReferenceValue($value, array $configuration, bool $isNew)
     {
         if ((string)$value !== '') {
             return $value;
@@ -8462,6 +8465,10 @@ class DataHandler implements LoggerAwareInterface
 
         if (!empty($configuration['MM']) || !empty($configuration['foreign_field'])) {
             return 0;
+        }
+
+        if (!$isNew && isset($configuration['renderType']) && $configuration['renderType'] === 'selectCheckBox') {
+            return '';
         }
 
         if (array_key_exists('default', $configuration)) {
