@@ -8,6 +8,7 @@ use TYPO3\CMS\Install\Updates\BackendUserLanguageMigration;
 use TYPO3\CMS\Install\Updates\CollectionsExtractionUpdate;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\FeLoginModeExtractionUpdate;
+use TYPO3\CMS\Install\Updates\MigrateSiteSettingsConfigUpdate;
 use TYPO3\CMS\Install\Updates\ShortcutRecordsMigration;
 use TYPO3\CMS\Install\Updates\SvgFilesSanitization;
 use TYPO3\CMS\Install\Updates\SysFileMountIdentifierMigration;
@@ -34,3 +35,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendGroup
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysFileMountIdentifierMigration'] = SysFileMountIdentifierMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendModulePermission'] = BackendModulePermissionMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysTemplateNoWorkspaceMigration'] = SysTemplateNoWorkspaceMigration::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['migrateSiteSettings'] = MigrateSiteSettingsConfigUpdate::class;

@@ -58,6 +58,13 @@ class SiteConfiguration implements SingletonInterface
     protected $configFileName = 'config.yaml';
 
     /**
+     * YAML file name with all settings.
+     *
+     * @internal
+     */
+    protected string $settingsFileName = 'settings.yaml';
+
+    /**
      * Identifier to store all configuration data in cache_core cache.
      *
      * @internal
@@ -148,6 +155,7 @@ class SiteConfiguration implements SingletonInterface
         $sites = [];
         $siteConfiguration = $this->getAllSiteConfigurationFromFiles($useCache);
         foreach ($siteConfiguration as $identifier => $configuration) {
+            $configuration['settings'] = $this->getSiteSettings($identifier, $configuration);
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
                 $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration);
@@ -155,6 +163,28 @@ class SiteConfiguration implements SingletonInterface
         }
         $this->firstLevelCache = $sites;
         return $sites;
+    }
+
+    /**
+     * Returns an array of paths in which a site configuration is found.
+     *
+     * @internal
+     */
+    public function getAllSiteConfigurationPaths(): array
+    {
+        $finder = new Finder();
+        $paths = [];
+        try {
+            $finder->files()->depth(0)->name($this->configFileName)->in($this->configPath . '/*');
+        } catch (\InvalidArgumentException $e) {
+            $finder = [];
+        }
+
+        foreach ($finder as $fileInfo) {
+            $path = $fileInfo->getPath();
+            $paths[basename($path)] = $path;
+        }
+        return $paths;
     }
 
     /**
@@ -206,6 +236,25 @@ class SiteConfiguration implements SingletonInterface
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->configFileName;
         $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
         return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+    }
+
+    protected function getSiteSettings(string $siteIdentifier, array $siteConfiguration): array
+    {
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
+        if (file_exists($fileName)) {
+            $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
+            return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+        }
+        return $siteConfiguration['settings'] ?? [];
+    }
+
+    public function writeSettings(string $siteIdentifier, array $settings): void
+    {
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
+        $yamlFileContents = Yaml::dump($settings, 99, 2);
+        if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
+            throw new SiteConfigurationWriteException('Unable to write site settings in sites/' . $siteIdentifier . '/' . $this->configFileName, 1590487411);
+        }
     }
 
     /**
