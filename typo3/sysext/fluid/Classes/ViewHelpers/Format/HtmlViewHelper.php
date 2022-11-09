@@ -151,10 +151,10 @@ final class HtmlViewHelper extends AbstractViewHelper
 
         /** @var RenderingContext $renderingContext */
         $request = $renderingContext->getRequest();
-        $isBackendRequest = $request instanceof ServerRequestInterface
-            && $request->getAttribute('applicationType')
-            && ApplicationType::fromRequest($request)->isBackend();
+        $isBackendRequest = $request instanceof ServerRequestInterface && ApplicationType::fromRequest($request)->isBackend();
         if ($isBackendRequest) {
+            // @deprecated since v12, remove in v13: Drop simulateFrontendEnvironment() and resetFrontendEnvironment() and throw a \RuntimeException here.
+            trigger_error('Using f:format.html in backend context has been deprecated in TYPO3 v12 and will be removed with v13', E_USER_DEPRECATED);
             $tsfeBackup = self::simulateFrontendEnvironment();
         }
 
