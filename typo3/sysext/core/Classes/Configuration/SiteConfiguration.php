@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -155,10 +156,10 @@ class SiteConfiguration implements SingletonInterface
         $sites = [];
         $siteConfiguration = $this->getAllSiteConfigurationFromFiles($useCache);
         foreach ($siteConfiguration as $identifier => $configuration) {
-            $configuration['settings'] = $this->getSiteSettings($identifier, $configuration);
+            $siteSettings = $this->getSiteSettings($identifier, $configuration);
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration);
+                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration, $siteSettings);
             }
         }
         $this->firstLevelCache = $sites;
@@ -222,7 +223,8 @@ class SiteConfiguration implements SingletonInterface
     }
 
     /**
-     * Load plain configuration
+     * Load plain configuration without additional settings.
+     *
      * This method should only be used in case the original configuration as it exists in the file should be loaded,
      * for example for writing / editing configuration.
      *
@@ -238,14 +240,19 @@ class SiteConfiguration implements SingletonInterface
         return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
     }
 
-    protected function getSiteSettings(string $siteIdentifier, array $siteConfiguration): array
+    /**
+     * Fetch the settings for a specific site and return the parsed Site Settings object.
+     */
+    protected function getSiteSettings(string $siteIdentifier, array $siteConfiguration): SiteSettings
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
         if (file_exists($fileName)) {
             $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-            return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+            $settings = $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+        } else {
+            $settings = $siteConfiguration['settings'] ?? [];
         }
-        return $siteConfiguration['settings'] ?? [];
+        return new SiteSettings($settings);
     }
 
     public function writeSettings(string $siteIdentifier, array $settings): void

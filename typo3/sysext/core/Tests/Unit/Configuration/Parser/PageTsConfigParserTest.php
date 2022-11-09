@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -102,23 +103,29 @@ class PageTsConfigParserTest extends UnitTestCase
 
         $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
         $cache = new NullFrontend('runtime');
-        $site = new Site('dummy', 13, [
+        $site = new Site(
+            'dummy',
+            13,
+            [
             'base' => 'https://example.com',
-            'settings' => [
-                'random' => 'value',
-                'styles' => [
-                    'content' => [
-                        'loginform' => [
-                            'pid' => 123,
-                        ],
-                    ],
-                ],
-                'numberedThings' => [
-                    1 => 'foo',
-                    99 => 'bar',
-                ],
-            ],
-        ]);
+        ],
+            new SiteSettings(
+                [
+                         'random' => 'value',
+                         'styles' => [
+                             'content' => [
+                                 'loginform' => [
+                                     'pid' => 123,
+                                 ],
+                             ],
+                         ],
+                         'numberedThings' => [
+                             1 => 'foo',
+                             99 => 'bar',
+                         ],
+                ]
+            )
+        );
         $subject = new PageTsConfigParser(
             new TypoScriptParser(),
             $cache

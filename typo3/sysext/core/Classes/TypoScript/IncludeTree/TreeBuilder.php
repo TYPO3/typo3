@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -408,8 +407,8 @@ final class TreeBuilder
             return;
         }
         $siteConstants = '';
-        $siteSettings = $site->getConfiguration()['settings'] ?? [];
-        if (empty($siteSettings)) {
+        $siteSettings = $site->getSettings();
+        if ($siteSettings->isEmpty()) {
             return;
         }
         $identifier = 'site-constants-' . sha1(json_encode($siteSettings, JSON_THROW_ON_ERROR));
@@ -420,7 +419,7 @@ final class TreeBuilder
                 return;
             }
         }
-        $siteSettings = ArrayUtility::flattenPlain($siteSettings);
+        $siteSettings = $siteSettings->getAllFlat();
         foreach ($siteSettings as $nodeIdentifier => $value) {
             $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
         }

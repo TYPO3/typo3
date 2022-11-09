@@ -4137,6 +4137,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $retVal = $config[$key] ?? '';
                         }
                         break;
+                    case 'sitesettings':
+                        $siteSettings = $this->getTypoScriptFrontendController()->getSite()->getSettings();
+                        $retVal = $siteSettings->get($key, '');
+                        break;
                 }
             }
 

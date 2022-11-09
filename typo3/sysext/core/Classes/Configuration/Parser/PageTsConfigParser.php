@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * A TS-Config parsing class which performs condition evaluation.
@@ -56,11 +55,9 @@ class PageTsConfigParser
     public function parse(string $content, ConditionMatcherInterface $matcher, ?Site $site = null): array
     {
         if ($site) {
-            $siteSettings = $site->getConfiguration()['settings'] ?? [];
-            if (!empty($siteSettings)) {
-                $siteSettings = ArrayUtility::flattenPlain($siteSettings);
-            }
-            if (!empty($siteSettings)) {
+            $siteSettings = $site->getSettings();
+            if (!$siteSettings->isEmpty()) {
+                $siteSettings = $siteSettings->getAllFlat();
                 // Recursive substitution of site settings (up to 10 nested levels)
                 for ($i = 0; $i < 10; $i++) {
                     $beforeSubstitution = $content;

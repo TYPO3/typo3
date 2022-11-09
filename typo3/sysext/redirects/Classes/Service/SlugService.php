@@ -148,14 +148,14 @@ class SlugService implements LoggerAwareInterface
     protected function initializeSettings(int $pageId): void
     {
         $this->site = $this->siteFinder->getSiteByPageId($pageId);
-        $settings = $this->site->getConfiguration()['settings']['redirects'] ?? [];
-        $this->autoUpdateSlugs = $settings['autoUpdateSlugs'] ?? true;
-        $this->autoCreateRedirects = $settings['autoCreateRedirects'] ?? true;
+        $settings = $this->site->getSettings();
+        $this->autoUpdateSlugs = (bool)$settings->get('redirects.autoUpdateSlugs', true);
+        $this->autoCreateRedirects = (bool)$settings->get('redirects.autoCreateRedirects', true);
         if (!$this->context->getPropertyFromAspect('workspace', 'isLive')) {
             $this->autoCreateRedirects = false;
         }
-        $this->redirectTTL = (int)($settings['redirectTTL'] ?? 0);
-        $this->httpStatusCode = (int)($settings['httpStatusCode'] ?? 307);
+        $this->redirectTTL = (int)$settings->get('redirects.redirectTTL', 0);
+        $this->httpStatusCode = (int)$settings->get('httpStatusCode', 307);
     }
 
     protected function createCorrelationIds(int $pageId, CorrelationId $correlationId): void
