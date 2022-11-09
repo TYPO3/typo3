@@ -98,8 +98,15 @@ class SiteConfigurationController
         $allSites = $this->siteFinder->getAllSites();
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
+        $duplicatedRootPages = [];
         foreach ($allSites as $identifier => $site) {
             $rootPageId = $site->getRootPageId();
+            if (isset($pages[$rootPageId]['siteConfiguration'])) {
+                // rootPage is already used in a site configuration
+                $duplicatedRootPages[$rootPageId][] = $pages[$rootPageId]['siteConfiguration']->getIdentifier();
+                $duplicatedRootPages[$rootPageId][] = $site->getIdentifier();
+                $duplicatedRootPages[$rootPageId] = array_unique($duplicatedRootPages[$rootPageId]);
+            }
             if (isset($pages[$rootPageId])) {
                 $pages[$rootPageId]['siteIdentifier'] = $identifier;
                 $pages[$rootPageId]['siteConfiguration'] = $site;
@@ -116,6 +123,7 @@ class SiteConfigurationController
         $view->assignMultiple([
             'pages' => $pages,
             'unassignedSites' => $unassignedSites,
+            'duplicatedRootPages' => $duplicatedRootPages,
             'duplicatedEntryPoints' => $this->getDuplicatedEntryPoints($allSites, $pages),
         ]);
         return $view->renderResponse('SiteConfiguration/Overview');

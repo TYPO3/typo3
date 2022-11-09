@@ -45,6 +45,12 @@
 			<trans-unit id="overview.duplicatedEntryPoints.listing" resname="overview.duplicatedEntryPoints.listing">
 				<source>The following entry points are used more than once:</source>
 			</trans-unit>
+			<trans-unit id="overview.duplicatedRootPage" resname="overview.duplicatedRootPage">
+				<source>Duplicated root pages</source>
+			</trans-unit>
+			<trans-unit id="overview.duplicatedRootPage.message" resname="overview.duplicatedRootPage.message">
+				<source>The page with ID "%1s" is used in the following site configurations:</source>
+			</trans-unit>
 			<trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title">
 				<source>Renamed identifier</source>
 			</trans-unit>

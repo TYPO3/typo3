@@ -19,6 +19,28 @@
 
     <f:if condition="{pages}">
         <f:then>
+            <f:if condition="{duplicatedRootPages}">
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedRootPage')}" state="1">
+                    <ul>
+                        <f:for each="{duplicatedRootPages}" key="rootPage" as="duplicateSites">
+                            <li>
+                                <strong>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedRootPage.message" arguments="{0: rootPage}" />
+                                </strong>
+                                <f:if condition="{duplicateSites}">
+                                    <ul>
+                                        <f:for each="{duplicateSites}" as="duplicateSite">
+                                            <li>
+                                                {duplicateSite}
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </f:if>
+                            </li>
+                        </f:for>
+                    </ul>
+                </f:be.infobox>
+            </f:if>
             <f:if condition="{duplicatedEntryPoints}">
                 <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints')}" state="1">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints.listing" />
