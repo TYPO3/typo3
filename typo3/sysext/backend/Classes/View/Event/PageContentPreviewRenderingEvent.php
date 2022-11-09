@@ -28,9 +28,9 @@ final class PageContentPreviewRenderingEvent implements StoppableEventInterface
     private ?string $content = null;
 
     public function __construct(
-        private string $table,
+        private readonly string $table,
         private array $record,
-        private PageLayoutContext $context
+        private readonly PageLayoutContext $context
     ) {
     }
 
@@ -42,6 +42,11 @@ final class PageContentPreviewRenderingEvent implements StoppableEventInterface
     public function getRecord(): array
     {
         return $this->record;
+    }
+
+    public function setRecord(array $record): void
+    {
+        $this->record = $record;
     }
 
     public function getPageLayoutContext(): PageLayoutContext

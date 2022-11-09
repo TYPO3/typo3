@@ -72,18 +72,25 @@ class GridColumnItem extends AbstractGridObject
 
     public function getPreview(): string
     {
-        $record = $this->getRecord();
         $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
             ->resolveRendererFor(
                 'tt_content',
-                $record,
+                $this->record,
                 $this->context->getPageId()
             );
         $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
 
-        $event = new PageContentPreviewRenderingEvent('tt_content', $this->record, $this->context);
-        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+        // Dispatch event to allow listeners adding an alternative content type
+        // specific preview or to manipulate the content elements' record data.
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new PageContentPreviewRenderingEvent('tt_content', $this->record, $this->context)
+        );
 
+        // Update the modified record data
+        $this->record = $event->getRecord();
+
+        // Get specific preview from listeners. In case non was added,
+        // fall back to the standard preview rendering workflow.
         $previewContent = $event->getPreviewContent();
         if ($previewContent === null) {
             $previewContent = $previewRenderer->renderPageModulePreviewContent($this);

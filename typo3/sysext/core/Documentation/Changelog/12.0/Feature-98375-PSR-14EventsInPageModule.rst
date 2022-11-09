@@ -33,7 +33,7 @@ in a column that isn't on a Backend Layout.
 Use :php:`ModifyDatabaseQueryForContentEvent` to filter out certain content elements
 from being shown in the Page Module.
 
-Use :php:`PageContentPreviewRenderingEvent` to ship an alternative rendering for a
-specific content type.
+Use :php:`PageContentPreviewRenderingEvent` to ship an alternative rendering for
+a specific content type or to manipulate the content elements' record data.
 
 .. index:: Backend, PHP-API, ext:backend
