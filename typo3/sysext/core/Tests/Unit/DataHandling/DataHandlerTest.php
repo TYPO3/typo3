@@ -1154,14 +1154,15 @@ class DataHandlerTest extends UnitTestCase
      * @param mixed $value
      * @param array $configuration
      * @param int|string $expected
+     * @param bool $isNew
      * @test
      * @dataProvider referenceValuesAreCastedDataProvider
      */
-    public function referenceValuesAreCasted($value, array $configuration, $expected): void
+    public function referenceValuesAreCasted($value, array $configuration, bool $isNew, $expected): void
     {
         self::assertEquals(
             $expected,
-            $this->subject->_call('castReferenceValue', $value, $configuration)
+            $this->subject->_call('castReferenceValue', $value, $configuration, $isNew)
         );
     }
 
@@ -1172,28 +1173,28 @@ class DataHandlerTest extends UnitTestCase
     {
         return [
             'all empty' => [
-                '', [], '',
+                '', [], true, '',
             ],
             'cast zero with MM table' => [
-                '', ['MM' => 'table'], 0,
+                '', ['MM' => 'table'], true, 0,
             ],
             'cast zero with MM table with default value' => [
-                '', ['MM' => 'table', 'default' => 13], 0,
+                '', ['MM' => 'table', 'default' => 13], true, 0,
             ],
             'cast zero with foreign field' => [
-                '', ['foreign_field' => 'table', 'default' => 13], 0,
+                '', ['foreign_field' => 'table', 'default' => 13], true, 0,
             ],
             'cast zero with foreign field with default value' => [
-                '', ['foreign_field' => 'table'], 0,
+                '', ['foreign_field' => 'table'], true, 0,
             ],
             'pass zero' => [
-                '0', [], '0',
+                '0', [], true, '0',
             ],
             'pass value' => [
-                '1', ['default' => 13], '1',
+                '1', ['default' => 13], true, '1',
             ],
             'use default value' => [
-                '', ['default' => 13], 13,
+                '', ['default' => 13], true, 13,
             ],
         ];
     }
