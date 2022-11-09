@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -40,7 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Search provider to query records from database, excluding "pages" table
+ * Search provider to query records from database
  *
  * @internal
  */
@@ -73,25 +74,35 @@ final class DatabaseRecordProvider implements SearchProviderInterface
      */
     public function find(SearchDemand $searchDemand): array
     {
-        $this->pageIdList = $this->getPageIdList();
-
         $result = [];
         $remainingItems = $searchDemand->getLimit();
         if ($remainingItems < 1) {
             return [];
         }
 
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeSearchInDatabaseRecordProviderEvent($this->getPageIdList(), $searchDemand)
+        );
+        $this->pageIdList = $event->getSearchPageIds();
+        $searchDemand = $event->getSearchDemand();
+
         if ($this->queryParser->isValidPageJump($searchDemand->getQuery())) {
             $commandQuery = $this->queryParser->getCommandForPageJump($searchDemand->getQuery());
             $extractedQueryString = $this->queryParser->getSearchQueryValue($commandQuery);
             $tableName = $this->queryParser->getTableNameFromCommand($commandQuery);
 
+            if ($event->isTableIgnored($tableName)) {
+                return [];
+            }
             return $this->findByTable($extractedQueryString, $tableName, $remainingItems);
         }
 
         foreach (array_keys($GLOBALS['TCA']) as $tableName) {
             if ($remainingItems < 1) {
                 break;
+            }
+            if ($event->isTableIgnored($tableName)) {
+                continue;
             }
 
             $tableResult = $this->findByTable($searchDemand->getQuery(), $tableName, $remainingItems);
@@ -108,11 +119,6 @@ final class DatabaseRecordProvider implements SearchProviderInterface
      */
     protected function findByTable(string $queryString, string $tableName, int $limit): array
     {
-        if ($tableName === 'pages') {
-            // Table "pages" is not handled by this search provider
-            return [];
-        }
-
         if (($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ?? false)
             || (
                 !$this->getBackendUser()->check('tables_select', $tableName)

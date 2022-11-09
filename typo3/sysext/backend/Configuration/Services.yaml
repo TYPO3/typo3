@@ -256,6 +256,12 @@ services:
       - name: event.listener
         event: TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent
 
+  TYPO3\CMS\Backend\Search\EventListener\ExcludePagesFromSearchFieldsLookup:
+    tags:
+      -
+        name: event.listener
+        identifier: 'typo3/cms-backend/exclude-pages-from-search-fields-lookup'
+
   TYPO3\CMS\Backend\View\RecordSearchBoxComponent:
     shared: false
     public: true
