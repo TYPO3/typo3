@@ -167,4 +167,28 @@ class StringUtility
     {
         return base64_decode(strtr($value, ['-' => '+', '_' => '/']));
     }
+
+    /**
+     * Explodes a string while respecting escape characters
+     *
+     * e.g.: delimiter: '.'; escapeCharacter: '\'; subject: 'new\.site.child'
+     * result: [new.site, child]
+     * @param string $delimiter
+     * @param string $subject
+     * @param string $escapeCharacter
+     * @return array
+     */
+    public static function explodeEscaped(string $delimiter, string $subject, string $escapeCharacter = '\\'): array
+    {
+        if ($delimiter !== '') {
+            $placeholder = '\\0\\0\\0_esc';
+            $subjectEscaped = str_replace($escapeCharacter . $delimiter, $placeholder, $subject);
+            $escapeParts = explode($delimiter, $subjectEscaped);
+            foreach ($escapeParts as &$part) {
+                $part = str_replace($placeholder, $delimiter, $part);
+            }
+            return $escapeParts;
+        }
+        return [$subject];
+    }
 }

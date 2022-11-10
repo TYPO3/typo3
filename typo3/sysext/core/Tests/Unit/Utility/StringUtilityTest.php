@@ -278,4 +278,57 @@ class StringUtilityTest extends UnitTestCase
     {
         self::assertSame($rawValue, StringUtility::base64urlDecode($encodedValue));
     }
+
+    /**
+     * @return array
+     */
+    public function explodeEscapedDataProvider(): array
+    {
+        return [
+            'no escape' => [
+                'test.test',
+                [
+                    'test',
+                    'test',
+                ],
+            ],
+            'escaped once' => [
+                'test\.test.abc',
+                [
+                    'test.test',
+                    'abc',
+                ],
+            ],
+            'escaped twice' => [
+                'test\.test.abc\.another',
+                [
+                    'test.test',
+                    'abc.another',
+                ],
+            ],
+            'escaped three times at the begining of the key' => [
+                'test\.test.\.abc\.another',
+                [
+                    'test.test',
+                    '.abc.another',
+                ],
+            ],
+            'escape the escape char' => [
+                'test\\\.test.abc',
+                [
+                    'test\.test',
+                    'abc',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider explodeEscapedDataProvider
+     */
+    public function explodeEscapedWorks(string $escaped, array $unescapedExploded): void
+    {
+        self::assertSame($unescapedExploded, StringUtility::explodeEscaped('.', $escaped));
+    }
 }

@@ -515,6 +515,43 @@ class ArrayUtility
     }
 
     /**
+     * Converts a flat representation of an array to a multidimensional array.
+     *
+     * Example:
+     * - array:
+     * array(
+     *   'first.second' => 1
+     * )
+     *
+     * - result:
+     * array(
+     *   'first.' => array(
+     *     'second' => 1
+     *   )
+     * )
+     *
+     * @param array<string, mixed> $input
+     * @param string $delimiter
+     * @return array<string, mixed>
+     */
+    public static function unflatten(array $input, string $delimiter = '.'): array
+    {
+        $output = [];
+        foreach ($input as $key => $value) {
+            $parts = StringUtility::explodeEscaped($delimiter, $key);
+            $nested = &$output;
+            while (count($parts) > 1) {
+                $nested = &$nested[array_shift($parts)];
+                if (!is_array($nested)) {
+                    $nested = [];
+                }
+            }
+            $nested[array_shift($parts)] = $value;
+        }
+        return $output;
+    }
+
+    /**
      * Determine the intersections between two arrays, recursively comparing keys
      * A complete sub array of $source will be preserved, if the key exists in $mask.
      *
