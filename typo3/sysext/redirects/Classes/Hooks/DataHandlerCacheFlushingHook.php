@@ -44,7 +44,7 @@ class DataHandlerCacheFlushingHook
             ($parameters['table'] ?? false) !== 'sys_redirect'
             || !($parameters['uid'] ?? false)
             || (
-                !isset($dataHandler->datamap['sys_redirect'][(int)$parameters['uid']])
+                !isset($dataHandler->datamap['sys_redirect'])
                 && !isset($dataHandler->cmdmap['sys_redirect'][(int)$parameters['uid']])
             )
         ) {
