@@ -25,7 +25,7 @@
                             <f:if condition="{adm:isArray(value: val)}"><f:variable name="typeClass" value="array" /></f:if>
                             <f:switch expression="{typeClass}">
                                 <f:case value="string">
-                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}"><f:if condition="{val}"><f:translate key="{val}" default="{val}" extensionName="adminpanel" languageKey="{languageKey}"/></f:if></pre>
+                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}"><f:if condition="{val} != ''"><f:translate key="{val}" default="{val}" extensionName="adminpanel" languageKey="{languageKey}"/></f:if></pre>
                                 </f:case>
                                 <f:case value="array">
                                     <f:render partial="Data/TableKeyValue" arguments="{data: val, languageKey: languageKey}" />
