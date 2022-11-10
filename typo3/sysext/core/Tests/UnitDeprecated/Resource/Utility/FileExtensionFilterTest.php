@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Resource\Utility;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -29,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FileExtensionFilterTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * Cleans up this test suite.
      */
@@ -67,11 +64,11 @@ class FileExtensionFilterTest extends UnitTestCase
             'values' => $values,
         ];
 
-        $dataHandlerProphecy = $this->prophesize(DataHandler::class);
-        $dataHandlerProphecy->deleteAction()->shouldNotBeCalled();
-        $resourceFactoryProphecy = $this->prophesize(ResourceFactory::class);
-        $resourceFactoryProphecy->getFileReferenceObject()->shouldNotBeCalled();
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryProphecy->reveal());
-        (new FileExtensionFilter())->filterInlineChildren($parameters, $dataHandlerProphecy->reveal());
+        $dataHandlerMock = $this->createMock(DataHandler::class);
+        $dataHandlerMock->expects(self::never())->method('deleteAction');
+        $resourceFactoryMock = $this->createMock(ResourceFactory::class);
+        $resourceFactoryMock->expects(self::never())->method('getFileReferenceObject');
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
+        (new FileExtensionFilter())->filterInlineChildren($parameters, $dataHandlerMock);
     }
 }
