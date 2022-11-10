@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -341,7 +342,9 @@ class FilesControlContainer extends AbstractContainer
         $showByUrl = ($inlineConfiguration['appearance']['fileByUrlAllowed'] ?? true) && $onlineMediaAllowed !== [];
 
         if (($showUpload || $showByUrl) && ($backendUser->uc['edit_docModuleUpload'] ?? false)) {
-            $folder = $backendUser->getDefaultUploadFolder(
+            $defaultUploadFolderResolver = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+            $folder = $defaultUploadFolderResolver->resolve(
+                $backendUser,
                 $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),
                 $this->data['tableName'],
                 $this->data['fieldName']

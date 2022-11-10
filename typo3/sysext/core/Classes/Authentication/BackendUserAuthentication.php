@@ -1607,7 +1607,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Returns a \TYPO3\CMS\Core\Resource\Folder object that is used for uploading
      * files by default.
      * This is used for RTE and its magic images, as well as uploads
-     * in the TCEforms fields.
+     * in the FormEngine fields.
      *
      * The default upload folder for a user is the defaultFolder on the first
      * filestorage/filemount that the user can access and to which files are allowed to be added
@@ -1619,6 +1619,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $table Table name
      * @param string $field Field name
      * @return \TYPO3\CMS\Core\Resource\Folder|bool The default upload folder for this user
+     * @internal use DefaultUploadFolderResolver instead.
      */
     public function getDefaultUploadFolder($pid = null, $table = null, $field = null)
     {
@@ -1662,7 +1663,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
 
-        // HOOK: getDefaultUploadFolder
+        // @deprecated HOOK: getDefaultUploadFolder
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] ?? [])) {
+            trigger_error('The hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'getDefaultUploadFolder\'] will be removed in TYPO3 v13.0. Use the PSR-14 AfterDefaultUploadFolderWasResolvedEvent instead.', E_USER_DEPRECATED);
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] ?? [] as $_funcRef) {
             $_params = [
                 'uploadFolder' => $uploadFolder,
@@ -1686,6 +1690,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @return \TYPO3\CMS\Core\Resource\Folder|null
      * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder()
+     * @internal use DefaultUploadFolderResolver instead.
      */
     public function getDefaultUploadTemporaryFolder()
     {

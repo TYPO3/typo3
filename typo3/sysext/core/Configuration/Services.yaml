@@ -272,6 +272,9 @@ services:
         identifier: 'synchronize-filemounts-after-folder-renamed'
         method: 'synchronizeFilemountsAfterRename'
 
+  TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver:
+    public: true
+
   TYPO3\CMS\Core\Resource\Security\SvgEventListener:
     tags:
       - name: event.listener

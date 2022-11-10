@@ -1,0 +1,4 @@
+"be_users",,,,,,,
+,"uid","pid","username","usergroup","deleted","admin","options","TSconfig"
+,1,0,"admin",,0,1,0,"options.defaultUploadFolder = 1:/admin_upload/"
+,2,0,"admin2",,0,1,0,""

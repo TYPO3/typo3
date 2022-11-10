@@ -1,0 +1,4 @@
+pages,,,,
+,uid,pid,title,deleted,TSconfig
+,1,0,"Rootpage for Tests",0,"options.defaultUploadFolder = 1:/page_upload/"
+,2,0,"Another page for Tests",0,""

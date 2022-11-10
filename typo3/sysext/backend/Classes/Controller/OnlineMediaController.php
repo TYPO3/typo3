@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -37,6 +38,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OnlineMediaController
 {
+    public function __construct(
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly DefaultUploadFolderResolver $uploadFolderResolver,
+        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        protected readonly FlashMessageService $flashMessageService
+    ) {
+    }
+
     /**
      * AJAX endpoint for storing the URL as a sys_file record
      */
@@ -120,25 +129,23 @@ class OnlineMediaController
         $targetFolder = null;
         if ($targetFolderIdentifier) {
             try {
-                $targetFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($targetFolderIdentifier);
+                $targetFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($targetFolderIdentifier);
             } catch (\Exception $e) {
                 $targetFolder = null;
             }
         }
         if ($targetFolder === null) {
-            $targetFolder = $this->getBackendUser()->getDefaultUploadFolder();
+            $targetFolder = $this->uploadFolderResolver->resolve($this->getBackendUser());
         }
-        return GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->transformUrlToFile($url, $targetFolder, $allowedExtensions);
+        return $this->onlineMediaHelperRegistry->transformUrlToFile($url, $targetFolder, $allowedExtensions);
     }
 
     /**
      * Add flash message to message queue
      */
-    protected function addFlashMessage(FlashMessage $flashMessage)
+    protected function addFlashMessage(FlashMessage $flashMessage): void
     {
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 

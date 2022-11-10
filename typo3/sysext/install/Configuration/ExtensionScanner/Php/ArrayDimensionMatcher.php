@@ -987,4 +987,9 @@ return [
             'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'getDefaultUploadFolder\']' => [
+        'restFiles' => [
+            'Deprecation-83608-BackendUsersGetDefaultUploadFolderHook.rst',
+        ],
+    ],
 ];
