@@ -271,28 +271,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   /**
    * @test
    */
-  describe('tests for btrim', () => {
-    const result = FormEngineValidation.btrim(' test ');
-
-    it('works for string with whitespace in begin and end', () => {
-      expect(result).toBe(' test');
-    });
-  });
-
-  /**
-   * @test
-   */
-  describe('tests for ltrim', () => {
-    const result = FormEngineValidation.ltrim(' test ');
-
-    it('works for string with whitespace in begin and end', () => {
-      expect(result).toBe('test ');
-    });
-  });
-
-  /**
-   * @test
-   */
   xdescribe('tests for parseDateTime', () => {
     /* tslint:disable:no-empty */
   });
@@ -352,28 +330,5 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       jasmine.clock().mockDate(baseTime);
       expect(FormEngineValidation.getDate(baseTime)).toBe(1382479200);
     })
-  });
-
-  /**
-   * @test
-   */
-  describe('tests for splitStr', () => {
-    it('works for command and index', () => {
-      expect(FormEngineValidation.splitStr('foo,bar,baz', ',', -1)).toBe('foo');
-      expect(FormEngineValidation.splitStr('foo,bar,baz', ',', 0)).toBe('foo');
-      expect(FormEngineValidation.splitStr('foo,bar,baz', ',', 1)).toBe('foo');
-      expect(FormEngineValidation.splitStr('foo,bar,baz', ',', 2)).toBe('bar');
-      expect(FormEngineValidation.splitStr('foo,bar,baz', ',', 3)).toBe('baz');
-      expect(FormEngineValidation.splitStr(' foo , bar , baz ', ',', 1)).toBe(' foo ');
-      expect(FormEngineValidation.splitStr(' foo , bar , baz ', ',', 2)).toBe(' bar ');
-      expect(FormEngineValidation.splitStr(' foo , bar , baz ', ',', 3)).toBe(' baz ');
-    });
-  });
-
-  /**
-   * @test
-   */
-  xdescribe('tests for split', () => {
-    /* tslint:disable:no-empty */
   });
 });

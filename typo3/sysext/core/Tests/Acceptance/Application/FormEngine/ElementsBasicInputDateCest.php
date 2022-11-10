@@ -70,14 +70,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
             ],
             [
                 'label' => 'inputdatetime_2',
-                'inputValue' => '13-13-2016',
-                'expectedValue' => '13-01-2017',
-                'expectedInternalValue' => '2017-01-13T00:00:00Z',
-                'expectedValueAfterSave' => '2017-01-13T00:00:00+00:00',
-                'comment' => 'inputdatetime_2 dbType=date eval=date month transformation',
-            ],
-            [
-                'label' => 'inputdatetime_2',
                 'inputValue' => '29-02-2016',
                 'expectedValue' => '29-02-2016',
                 'expectedInternalValue' => '2016-02-29T00:00:00Z',

@@ -266,7 +266,7 @@ export default (function() {
     let maxItems: number;
 
     if (!$.isArray(value)) {
-      value = FormEngineValidation.ltrim(value);
+      value = value.trimStart();
     }
 
     $.each(rules, function(k: number, rule: any): void|boolean {
@@ -603,7 +603,7 @@ export default (function() {
    * @param {String} string
    * @returns {Array}
    */
-  FormEngineValidation.trimExplode = function(delimiter: string, string: string): Array<string> {
+  FormEngineValidation.trimExplode = function(delimiter: string, string: string): string[] {
     const result = [];
     const items = string.split(delimiter);
     for (let i = 0; i < items.length; i++) {
@@ -664,34 +664,6 @@ export default (function() {
   };
 
   /**
-   * Trims leading whitespace characters
-   *
-   * @param {String} value
-   * @returns {String}
-   */
-  FormEngineValidation.ltrim = function(value: string): string {
-    const theVal = '' + value;
-    if (!value) {
-      return '';
-    }
-    return theVal.replace(/^\s+/, '');
-  };
-
-  /**
-   * Trims trailing whitespace characters
-   *
-   * @param {String} value
-   * @returns {String}
-   */
-  FormEngineValidation.btrim = function(value: string): string {
-    const theVal = '' + value;
-    if (!value) {
-      return '';
-    }
-    return theVal.replace(/\s+$/, '');
-  };
-
-  /**
    * Parse datetime value
    *
    * @param {String} value
@@ -716,21 +688,7 @@ export default (function() {
    * @returns {*}
    */
   FormEngineValidation.parseDate = function(value: string): number {
-    const today = new Date();
-    let values = FormEngineValidation.split(value);
-
-    if (values.values[1] && values.values[1].length > 2) {
-      const temp = values.values[1];
-      values = FormEngineValidation.splitSingle(temp);
-    }
-
-    const year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
-    const month = (values.values[2]) ? FormEngineValidation.parseInt(values.values[2]) : today.getUTCMonth() + 1;
-    const day = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : today.getUTCDate();
-    const theTime = moment.utc();
-    // eslint-disable-next-line radix
-    theTime.year(parseInt(year)).month(parseInt(month) - 1).date(parseInt(day)).hour(0).minute(0).second(0);
-    FormEngineValidation.lastDate = theTime.unix();
+    FormEngineValidation.lastDate = moment.utc(value, 'DD-MM-YYYY').unix();
 
     return FormEngineValidation.lastDate;
   };
@@ -743,21 +701,8 @@ export default (function() {
    * @returns {*}
    */
   FormEngineValidation.parseTime = function(value: string, type: string): number {
-    const today = new Date();
-    let values = FormEngineValidation.split(value);
-
-    if (values.values[1] && values.values[1].length > 2) {
-      const temp = values.values[1];
-      values = FormEngineValidation.splitSingle(temp);
-    }
-
-    const sec = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : today.getUTCSeconds();
-    const min = (values.values[2]) ? FormEngineValidation.parseInt(values.values[2]) : today.getUTCMinutes();
-    const hour = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : today.getUTCHours();
-    const theTime = moment.utc();
-    theTime.year(1970).month(0).date(1).hour(hour).minute(min).second(type === 'timesec' ? sec : 0);
-
-    FormEngineValidation.lastTime = theTime.unix();
+    const format = type === 'timesec' ? 'hh:mm:ss' : 'hh:mm';
+    FormEngineValidation.lastTime = moment.utc(value, format).year(1970).month(0).date(1).unix();
     if (FormEngineValidation.lastTime < 0) {
       FormEngineValidation.lastTime += 24 * 60 * 60;
     }
@@ -771,10 +716,12 @@ export default (function() {
    * @returns {*}
    */
   FormEngineValidation.parseYear = function(value: string): number {
-    const today = new Date();
-    const values = FormEngineValidation.split(value);
+    let year = parseInt(value, 10);
+    if (isNaN(year)) {
+      year = FormEngineValidation.getYear(new Date());
+    }
 
-    FormEngineValidation.lastYear = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
+    FormEngineValidation.lastYear = year;
     return FormEngineValidation.lastYear;
   };
 
@@ -812,25 +759,6 @@ export default (function() {
     // @todo deprecate
     // eslint-disable-next-line no-eval
     return eval(((foreign == '-') ? '-' : '') + value);
-  };
-
-  /**
-   * Substract timezone offset from client to a timestamp to get UTC-timestamp to be send to server
-   *
-   * @param {Number} timestamp
-   * @param {Number} timeonly
-   * @returns {*}
-   */
-  FormEngineValidation.convertClientTimestampToUTC = function(timestamp: number, timeonly: number): number {
-    const timeObj = new Date(timestamp * 1000);
-    timeObj.setTime((timestamp - timeObj.getTimezoneOffset() * 60) * 1000);
-    if (timeonly) {
-      // only seconds since midnight
-      return FormEngineValidation.getTime(timeObj);
-    } else {
-      // seconds since the "unix-epoch"
-      return FormEngineValidation.getTimestamp(timeObj);
-    }
   };
 
   /**
@@ -891,90 +819,6 @@ export default (function() {
         .closest('.t3js-tabmenu-item')
         .toggleClass('has-validation-error', !isValid);
     });
-  };
-
-  /**
-   *
-   * @param value
-   * @returns {{values: Array, pointer: number}}
-   */
-  FormEngineValidation.splitSingle = function(value: string): {values: Array<string>, pointer: number} {
-    const theVal = '' + value;
-    const result = {
-      values: <Array<string>>[],
-      pointer: 3
-    };
-    result.values[1] = theVal.substr(0, 2);
-    result.values[2] = theVal.substr(2, 2);
-    result.values[3] = theVal.substr(4, 10);
-    return result;
-  };
-
-  /**
-   *
-   * @param theStr1
-   * @param delim
-   * @param index
-   * @returns {*}
-   */
-  FormEngineValidation.splitStr = function(theStr1: string, delim: string, index: number): string {
-    const theStr = '' + theStr1;
-    const lengthOfDelim = delim.length;
-    let sPos = -lengthOfDelim;
-    if (index < 1) {
-      index = 1;
-    }
-    for (let a = 1; a < index; a++) {
-      sPos = theStr.indexOf(delim, sPos + lengthOfDelim);
-      if (sPos == -1) {
-        return null;
-      }
-    }
-    let ePos = theStr.indexOf(delim, sPos + lengthOfDelim);
-    if (ePos == -1) {
-      ePos = theStr.length;
-    }
-    return (theStr.substring(sPos + lengthOfDelim, ePos));
-  };
-
-  /**
-   *
-   * @param value
-   * @returns {{values: Array, valPol: Array, pointer: number, numberMode: number, theVal: string}}
-   */
-  FormEngineValidation.split = function(value: string): {
-    values: Array<string>,
-    valPol: Array<string>,
-    pointer: number,
-    numberMode: number,
-    theVal: string
-  } {
-    const result = {
-      values: <Array<string>>[],
-      valPol: <Array<string>>[],
-      pointer: 0,
-      numberMode: 0,
-      theVal: ''
-    };
-    value += ' ';
-    for (let a = 0; a < value.length; a++) {
-      const theChar = value.substr(a, 1);
-      if (theChar < '0' || theChar > '9') {
-        if (result.numberMode) {
-          result.pointer++;
-          result.values[result.pointer] = result.theVal;
-          result.theVal = '';
-          result.numberMode = 0;
-        }
-        if (theChar == '+' || theChar == '-') {
-          result.valPol[result.pointer + 1] = theChar;
-        }
-      } else {
-        result.theVal += theChar;
-        result.numberMode = 1;
-      }
-    }
-    return result;
   };
 
   FormEngineValidation.registerSubmitCallback = function () {
