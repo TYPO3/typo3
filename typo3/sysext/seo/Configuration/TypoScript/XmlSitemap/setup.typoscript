@@ -8,6 +8,7 @@ seo_sitemap {
     admPanel = 0
     removeDefaultJS = 1
     removeDefaultCss = 1
+    # @deprecated since TYPO3 v12, remove with v13
     removePageCss = 1
     additionalHeaders {
       10.header = Content-Type:application/xml;charset=utf-8

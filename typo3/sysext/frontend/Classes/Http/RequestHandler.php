@@ -392,7 +392,17 @@ class RequestHandler implements RequestHandlerInterface
                         $stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
                     }
                     if (($iCSScode['_CSS_PAGE_STYLE'] ?? false) && empty($controller->config['config']['removePageCss'])) {
-                        $cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
+                        // @deprecated since v12, remove with v13: Entire if().
+                        trigger_error(
+                            'Handling of TypoScript setup property "plugin._CSS_PAGE_STYLE" and "config.removePageCss" have been deprecated'
+                            . ' in TYPO3 v12 and will be removed with v13: Use "includeCSS" or "cssInline" of the "PAGE" object instead.',
+                            E_USER_DEPRECATED
+                        );
+                        if (is_array($iCSScode['_CSS_PAGE_STYLE'])) {
+                            $cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
+                        } else {
+                            $cssPageStyle = $iCSScode['_CSS_PAGE_STYLE'];
+                        }
                         if (isset($iCSScode['_CSS_PAGE_STYLE.'])) {
                             $cssPageStyle = $controller->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);
                         }
