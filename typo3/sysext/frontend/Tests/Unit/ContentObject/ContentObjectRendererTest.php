@@ -2324,7 +2324,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $linkFactory->method('create')->willReturn($linkResult);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
-        self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
+        self::assertSame($expectedResult, $this->subject->_call('http_makelinks', $data, $configuration));
     }
 
     public function invalidHttpMakelinksDataProvider(): array
@@ -2357,7 +2357,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function httpMakelinksReturnsNoLink(string $data, array $configuration, string $expectedResult): void
     {
-        self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
+        self::assertSame($expectedResult, $this->subject->_call('http_makelinks', $data, $configuration));
     }
 
     public function mailtoMakelinksDataProvider(): array
@@ -2436,7 +2436,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $linkFactory->method('create')->willReturn($linkResult);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
-        self::assertSame($expectedResult, $this->subject->mailto_makelinks($data, $configuration));
+        self::assertSame($expectedResult, $this->subject->_call('mailto_makelinks', $data, $configuration));
     }
 
     /**
@@ -2444,7 +2444,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function mailtoMakelinksReturnsNoMailToLink(): void
     {
-        self::assertSame('mailto:', $this->subject->mailto_makelinks('mailto:', []));
+        self::assertSame('mailto:', $this->subject->_call('mailto_makelinks', 'mailto:', []));
     }
 
     /**
@@ -5520,7 +5520,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 [],
                 0,
-                null,
+                false,
             ],
             'if. is empty array' => [
                 $content,
@@ -5528,7 +5528,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => []],
                 0,
-                null,
+                false,
             ],
             'if. is null' => [
                 $content,
@@ -5536,7 +5536,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => null],
                 0,
-                null,
+                false,
             ],
             'if. is false' => [
                 $content,
@@ -5544,7 +5544,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => false],
                 0,
-                null,
+                false,
             ],
             'if. is 0' => [
                 $content,
@@ -5552,7 +5552,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => false],
                 0,
-                null,
+                false,
             ],
             'if. is "0"' => [
                 $content,
@@ -5560,7 +5560,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => '0'],
                 0,
-                null,
+                false,
             ],
             'checkIf returning true' => [
                 $content,
@@ -5600,9 +5600,9 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $content The given content.
      * @param array $conf
      * @param int $times Times checkIf is called (0 or 1).
-     * @param bool|null $will Return of checkIf (null if not called).
+     * @param bool $will Return of checkIf (null if not called).
      */
-    public function stdWrap_if(string $expect, bool $stop, string $content, array $conf, int $times, ?bool $will): void
+    public function stdWrap_if(string $expect, bool $stop, string $content, array $conf, int $times, bool $will): void
     {
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,

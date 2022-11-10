@@ -42,20 +42,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ::
  *
- *    <f:format.html>###PROJECT### is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
+ *    <f:format.html>{$myConstant.project} is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
  *
  * Output::
  *
  *    <p class="bodytext">TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).</p>
  *
- * Depending on TYPO3 setup.
+ * Depending on TYPO3 constants.
  *
  * Custom parseFunc
  * ----------------
  *
  * ::
  *
- *    <f:format.html parseFuncTSPath="lib.parseFunc">###PROJECT### is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
+ *    <f:format.html parseFuncTSPath="lib.parseFunc">TYPO3 is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
  *
  * Output::
  *

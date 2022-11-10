@@ -32,6 +32,7 @@ lib.parseFunc {
     }
     allowTags = {$styles.content.allowTags}
     denyTags = *
+    # @deprecated since TYPO3 v12, remove with v13
     constants = 1
     nonTypoTagStdWrap {
         HTMLparser = 1

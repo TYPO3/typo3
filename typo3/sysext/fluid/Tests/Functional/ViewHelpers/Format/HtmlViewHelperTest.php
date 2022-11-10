@@ -37,7 +37,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
     {
         return [
             'format.html: process lib.parseFunc_RTE by default' => [
-                '<f:format.html>###PROJECT### is a cool CMS</f:format.html>',
+                '<f:format.html>{$project} is a cool CMS</f:format.html>',
                 'TYPO3 is a cool CMS',
             ],
             'format.html: process inline notation with undefined variable returns empty string' => [
@@ -45,7 +45,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 '',
             ],
             'format.html: process specific TS path' => [
-                '<f:format.html parseFuncTSPath="lib.foo">###FOO### is BAR</f:format.html>',
+                '<f:format.html parseFuncTSPath="lib.foo">{$foo} is BAR</f:format.html>',
                 'BAR is BAR',
             ],
             'format.html: specific TS path with current' => [
@@ -61,8 +61,8 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 'Hello Bar',
             ],
             'format.html: specific TS path with data, currentValueKey and a constant' => [
-                '<f:format.html parseFuncTSPath="lib.news" data="{uid: 1, pid: 12, title: \'Greate news\'}" currentValueKey="title">###PROJECT### news:</f:format.html>',
-                'TYPO3 news: Greate news',
+                '<f:format.html parseFuncTSPath="lib.news" data="{uid: 1, pid: 12, title: \'Great news\'}" currentValueKey="title">{$project} news:</f:format.html>',
+                'TYPO3 news: Great news',
             ],
             // table attribute is hard to test. It was only used as parent for CONTENT and RECORD cObj.
             // Further the table will be used in FILES cObj as fallback, if a table was not given in references array.
@@ -135,16 +135,16 @@ class HtmlViewHelperTest extends FunctionalTestCase
                     'pid' => 1,
                     'root' => 1,
                     'clear' => 3,
+                    'constants' => <<<EOT
+project = TYPO3
+foo = BAR
+EOT,
                     'config' => <<<EOT
-constants.PROJECT = TYPO3
-constants.FOO = BAR
 lib.parseFunc_RTE {
     htmlSanitize = 1
-    constants = 1
 }
 lib.foo {
     htmlSanitize = 1
-    constants = 1
 }
 lib.inventor {
     htmlSanitize = 1
@@ -158,7 +158,6 @@ lib.record {
 }
 lib.news {
     htmlSanitize = 1
-    constants = 1
     plainTextStdWrap.noTrimWrap = || |
     plainTextStdWrap.dataWrap = |{CURRENT:1}
 }

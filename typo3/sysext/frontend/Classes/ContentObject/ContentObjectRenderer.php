@@ -2585,11 +2585,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Implements the "if" function in TYPO3 TypoScript
      *
      * @param array $conf TypoScript properties defining what to compare
-     * @return bool
-     * @see stdWrap()
-     * @see _parseFunc()
      */
-    public function checkIf($conf)
+    public function checkIf($conf): bool
     {
         if (!is_array($conf)) {
             return true;
@@ -3081,15 +3078,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * This situation has not become better by having a RTE around...
      *
      * This function is actually just splitting the input content according to the configuration of "external blocks".
-     * This means that before the input string is actually "parsed" it will be splitted into the parts configured to BE parsed
+     * This means that before the input string is actually "parsed" it will be split into the parts configured to BE parsed
      * (while other parts/blocks should NOT be parsed).
-     * Therefore the actual processing of the parseFunc properties goes on in ->_parseFunc()
+     * Therefore, the actual processing of the parseFunc properties goes on in ->parseFuncInternal()
      *
      * @param string $theValue The value to process.
      * @param non-empty-array<string, mixed>|null $conf TypoScript configuration for parseFunc
      * @param non-empty-string|null $ref Reference to get configuration from. Eg. "< lib.parseFunc" which means that the configuration of the object path "lib.parseFunc" will be retrieved and MERGED with what is in $conf!
      * @return string The processed value
-     * @see _parseFunc()
      */
     public function parseFunc($theValue, ?array $conf, ?string $ref = null)
     {
@@ -3110,7 +3106,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $conf['htmlSanitize'] = (bool)($conf['htmlSanitize'] ?? true);
         // Process:
         if ((string)($conf['externalBlocks'] ?? '') === '') {
-            $result = $this->_parseFunc($theValue, $conf);
+            $result = $this->parseFuncInternal($theValue, $conf);
             if ($conf['htmlSanitize']) {
                 $result = $this->stdWrap_htmlSanitize($result, $conf['htmlSanitize.'] ?? []);
             }
@@ -3199,7 +3195,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $parts[$k] = $this->stdWrap($parts[$k], $cfg['stdWrap.']);
                 }
             } else {
-                $parts[$k] = $this->_parseFunc($parts[$k], $conf);
+                $parts[$k] = $this->parseFuncInternal($parts[$k], $conf);
             }
         }
         $result = implode('', $parts);
@@ -3216,9 +3212,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript configuration for parseFunc
      * @return string The processed value
      * @internal
-     * @see parseFunc()
      */
-    public function _parseFunc($theValue, $conf)
+    protected function parseFuncInternal($theValue, $conf)
     {
         if (!empty($conf['if.']) && !$this->checkIf($conf['if.'])) {
             return $theValue;
@@ -3274,6 +3269,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         $tmpConstants = $typoScriptSetupArray['constants.'] ?? null;
                         if (!empty($conf['constants']) && is_array($tmpConstants)) {
+                            // @deprecated since v12, remove with v13: Entire if plus init code above
+                            trigger_error(
+                                'The TypoScript setup "constants" top-level-object and the parseFunc property "constants" have'
+                                . ' been deprecated in TYPO3 v12 and will be removed in v12. Use TypoScript constants / settings'
+                                . ' and access them in setup using "{$myConstant}" instead.',
+                                E_USER_DEPRECATED
+                            );
                             foreach ($tmpConstants as $key => $val) {
                                 if (is_string($val)) {
                                     $data = str_replace('###' . $key . '###', $val, $data);
@@ -3305,7 +3307,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         foreach ($conf['tags.'] as $tag => $tagConfig) {
                             // only match tag `a` in `<a href"...">` but not in `<abbr>`
                             if (preg_match('#<' . $tag . '[\s/>]#', $data)) {
-                                $data = $this->_parseFunc($data, $conf);
+                                $data = $this->parseFuncInternal($data, $conf);
                                 break;
                             }
                         }
@@ -3553,12 +3555,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Will find all strings prefixed with "http://" and "https://" in the $data string and make them into a link,
      * linking to the URL we should have found.
      *
+     * Helper method of parseFuncInternal().
+     *
      * @param string $data The string in which to search for "http://
      * @param array $conf Configuration for makeLinks, see link
      * @return string The processed input string, being returned.
-     * @see _parseFunc()
+     * @internal
      */
-    public function http_makelinks($data, $conf)
+    protected function http_makelinks(string $data, array $conf): string
     {
         $parts = [];
         foreach (['http://', 'https://'] as $scheme) {
@@ -3607,19 +3611,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Will find all strings prefixed with "mailto:" in the $data string and make them into a link,
      * linking to the email address they point to.
      *
+     * Helper method of parseFuncInternal().
+     *
      * @param string $data The string in which to search for "mailto:
      * @param array $conf Configuration for makeLinks, see link
      * @return string The processed input string, being returned.
-     * @see _parseFunc()
+     * @internal
      */
-    public function mailto_makelinks($data, $conf)
+    protected function mailto_makelinks(string $data, array $conf): string
     {
         $conf = (array)$conf;
         $parts = [];
         // split by mailto logic
         $textpieces = explode('mailto:', $data);
         $pieces = count($textpieces);
-        $textstr = $textpieces[0];
+        $textstr = $textpieces[0] ?? '';
         for ($i = 1; $i < $pieces; $i++) {
             $len = strcspn($textpieces[$i], chr(32) . "\t" . CRLF);
             if (trim(substr($textstr, -1)) === '' && $len) {
@@ -4607,9 +4613,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf The TypoScript configuration to pass the function
      * @param mixed $content The content payload to pass the function
      * @return mixed The return content from the function call. Should probably be a string.
-     * @see stdWrap()
-     * @see typoLink()
-     * @see _parseFunc()
      */
     public function callUserFunction($funcName, $conf, $content)
     {
@@ -5676,10 +5679,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Get content length of the current tag that could also contain nested tag contents
      *
-     * @param string $theValue
-     * @param int $pointer
-     * @param string $currentTag
-     * @return int
+     * Helper method of parseFuncInternal().
+     *
+     * @internal
      */
     protected function getContentLengthOfCurrentTag(string $theValue, int $pointer, string $currentTag): int
     {
