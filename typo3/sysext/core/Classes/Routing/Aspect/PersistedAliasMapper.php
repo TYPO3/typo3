@@ -50,12 +50,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *           routeFieldName: 'path_segment'
  *           routeValuePrefix: '/'
  */
-class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface
+class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface, UnresolvedValueInterface
 {
     use AspectTrait;
     use SiteLanguageAccessorTrait;
     use SiteAccessorTrait;
     use ContextAwareTrait;
+    use UnresolvedValueTrait;
 
     /**
      * @var array

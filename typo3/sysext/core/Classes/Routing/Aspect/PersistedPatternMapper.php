@@ -53,12 +53,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal might change its options in the future, be aware that there might be modifications.
  */
-class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface
+class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface, UnresolvedValueInterface
 {
     use AspectTrait;
     use SiteLanguageAccessorTrait;
     use SiteAccessorTrait;
     use ContextAwareTrait;
+    use UnresolvedValueTrait;
 
     protected const PATTERN_RESULT = '#\{(?P<fieldName>[^}]+)\}#';
 

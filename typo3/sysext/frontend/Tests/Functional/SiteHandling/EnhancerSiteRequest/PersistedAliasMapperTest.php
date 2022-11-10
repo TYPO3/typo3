@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerSiteRequest;
 
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ApplicableConjunction;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Permutati
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableItem;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
 class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
@@ -87,6 +89,65 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
+    /**
+     * @param string|TestSet|null $parentSet
+     */
+    public static function fallbackValueIsResolvedDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+            'inArguments' => 'staticArguments',
+        ]);
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance/[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => 'non-existing'])
+                        )
+                    ),
+            )
+            ->withApplicableItems($builder->declareEnhancers())
+            ->withApplicableSet(
+                ApplicableConjunction::create(
+                    AspectDeclaration::create('PersistedAliasMapper')->withConfiguration([
+                            VariableItem::create('aspectName', [
+                                'type' => 'PersistedAliasMapper',
+                                'tableName' => 'pages',
+                                'routeFieldName' => 'slug',
+                                'routeValuePrefix' => '/',
+                                'fallbackValue' => '9999',
+                            ]),
+                    ]),
+                    VariablesContext::create(
+                        Variables::create(['resolveValue' => '9999'])
+                    ),
+                )
+                // @todo check for `fallbackValue = null`, which currently cannot be checked in testing framework
+                // (`Variables::create(['resolveValue' => null])` fails, however it would have to check that a key is not set in the result)
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @test
+     * @dataProvider fallbackValueIsResolvedDataProvider
+     */
+    public function fallbackValueIsResolved(TestSet $testSet): void
+    {
+        $this->assertPageArgumentsEquals($testSet);
+    }
+
+    /**
+     * @return array
+     */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];

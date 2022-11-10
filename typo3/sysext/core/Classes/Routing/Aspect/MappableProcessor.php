@@ -37,7 +37,10 @@ class MappableProcessor
                 (string)($attributes[$variableName] ?? '')
             );
             if ($value === null) {
-                return false;
+                if (!$mapper instanceof UnresolvedValueInterface || !$mapper->hasFallbackValue()) {
+                    return false;
+                }
+                $value = $mapper->getFallbackValue();
             }
             $values[$variableName] = $value;
         }

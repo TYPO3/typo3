@@ -51,9 +51,10 @@ use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
  *               vingt-dix-huit: '2018'
  *               prochain: '2019'
  */
-class StaticValueMapper implements StaticMappableAspectInterface, SiteLanguageAwareInterface, \Countable
+class StaticValueMapper implements StaticMappableAspectInterface, SiteLanguageAwareInterface, UnresolvedValueInterface, \Countable
 {
     use SiteLanguageAwareTrait;
+    use UnresolvedValueTrait;
 
     /**
      * @var array
