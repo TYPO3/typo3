@@ -394,33 +394,33 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // no frontend user given
-            ['https://acme.us/', 1100, 1510, 1500, 0, '/my-acme?pageId=1510&cHash=119c4870e323bb7e8c9fae2941726b0d'],
-            // ['https://acme.us/', 1100, 1511, 1500, 0, '/my-acme?pageId=1511'], // @todo Fails, not expanded to sub-pages
-            ['https://acme.us/', 1100, 1512, 1500, 0, '/my-acme?pageId=1512&cHash=0ced3db0fd4aae0019a99f59cfa58cb0'],
-            ['https://acme.us/', 1100, 1515, 1500, 0, '/my-acme?pageId=1515&cHash=176f16b31d2c731347d411861d8b06dc'],
-            ['https://acme.us/', 1100, 1520, 1500, 0, '/my-acme?pageId=1520&cHash=253d3dccd4794c4a9473226f683bc36a'],
-            // ['https://acme.us/', 1100, 1521, 1500, 0, '/my-acme?pageId=1521'], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1510, 1500, 0, '<a href="/my-acme?pageId=1510&amp;cHash=119c4870e323bb7e8c9fae2941726b0d" data-access-restricted="true">Whitepapers</a>'],
+            // ['https://acme.us/', 1100, 1511, 1500, 0, '<a href="/my-acme?pageId=1511"></a>'], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1512, 1500, 0, '<a href="/my-acme?pageId=1512&amp;cHash=0ced3db0fd4aae0019a99f59cfa58cb0" data-access-restricted="true">Solutions</a>'],
+            ['https://acme.us/', 1100, 1515, 1500, 0, '<a href="/my-acme?pageId=1515&amp;cHash=176f16b31d2c731347d411861d8b06dc" data-access-restricted="true">Research</a>'],
+            ['https://acme.us/', 1100, 1520, 1500, 0, '<a href="/my-acme?pageId=1520&amp;cHash=253d3dccd4794c4a9473226f683bc36a" data-access-restricted="true">Forecasts</a>'],
+            // ['https://acme.us/', 1100, 1521, 1500, 0, '<a href="/my-acme?pageId=1521"></a>'], // @todo Fails, not expanded to sub-pages
             // frontend user 1
-            ['https://acme.us/', 1100, 1510, 1500, 1, '/my-acme/whitepapers'],
-            ['https://acme.us/', 1100, 1511, 1500, 1, '/my-acme/whitepapers/products'],
-            ['https://acme.us/', 1100, 1512, 1500, 1, '/my-acme/whitepapers/solutions'],
-            ['https://acme.us/', 1100, 1515, 1500, 1, '/my-acme?pageId=1515&cHash=176f16b31d2c731347d411861d8b06dc'],
-            ['https://acme.us/', 1100, 1520, 1500, 1, '/my-acme?pageId=1520&cHash=253d3dccd4794c4a9473226f683bc36a'],
-            // ['https://acme.us/', 1100, 1521, 1500, 1, '/my-acme?pageId=1521'], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1510, 1500, 1, '<a href="/my-acme/whitepapers">Whitepapers</a>'],
+            ['https://acme.us/', 1100, 1511, 1500, 1, '<a href="/my-acme/whitepapers/products">Products</a>'],
+            ['https://acme.us/', 1100, 1512, 1500, 1, '<a href="/my-acme/whitepapers/solutions">Solutions</a>'],
+            ['https://acme.us/', 1100, 1515, 1500, 1, '<a href="/my-acme?pageId=1515&amp;cHash=176f16b31d2c731347d411861d8b06dc" data-access-restricted="true">Research</a>'],
+            ['https://acme.us/', 1100, 1520, 1500, 1, '<a href="/my-acme?pageId=1520&amp;cHash=253d3dccd4794c4a9473226f683bc36a" data-access-restricted="true">Forecasts</a>'],
+            // ['https://acme.us/', 1100, 1521, 1500, 1, '<a href="/my-acme?pageId=1521"></a>'], // @todo Fails, not expanded to sub-pages
             // frontend user 2
-            ['https://acme.us/', 1100, 1510, 1500, 2, '/my-acme/whitepapers'],
-            ['https://acme.us/', 1100, 1511, 1500, 2, '/my-acme/whitepapers/products'],
-            ['https://acme.us/', 1100, 1512, 1500, 2, '/my-acme?pageId=1512&cHash=0ced3db0fd4aae0019a99f59cfa58cb0'],
-            ['https://acme.us/', 1100, 1515, 1500, 2, '/my-acme/whitepapers/research'],
-            ['https://acme.us/', 1100, 1520, 1500, 2, '/my-acme/forecasts'],
-            ['https://acme.us/', 1100, 1521, 1500, 2, '/my-acme/forecasts/current-year'],
+            ['https://acme.us/', 1100, 1510, 1500, 2, '<a href="/my-acme/whitepapers">Whitepapers</a>'],
+            ['https://acme.us/', 1100, 1511, 1500, 2, '<a href="/my-acme/whitepapers/products">Products</a>'],
+            ['https://acme.us/', 1100, 1512, 1500, 2, '<a href="/my-acme?pageId=1512&amp;cHash=0ced3db0fd4aae0019a99f59cfa58cb0" data-access-restricted="true">Solutions</a>'],
+            ['https://acme.us/', 1100, 1515, 1500, 2, '<a href="/my-acme/whitepapers/research">Research</a>'],
+            ['https://acme.us/', 1100, 1520, 1500, 2, '<a href="/my-acme/forecasts">Forecasts</a>'],
+            ['https://acme.us/', 1100, 1521, 1500, 2, '<a href="/my-acme/forecasts/current-year">Current Year</a>'],
             // frontend user 3
-            ['https://acme.us/', 1100, 1510, 1500, 3, '/my-acme/whitepapers'],
-            ['https://acme.us/', 1100, 1511, 1500, 3, '/my-acme/whitepapers/products'],
-            ['https://acme.us/', 1100, 1512, 1500, 3, '/my-acme/whitepapers/solutions'],
-            ['https://acme.us/', 1100, 1515, 1500, 3, '/my-acme/whitepapers/research'],
-            ['https://acme.us/', 1100, 1520, 1500, 3, '/my-acme/forecasts'],
-            ['https://acme.us/', 1100, 1521, 1500, 3, '/my-acme/forecasts/current-year'],
+            ['https://acme.us/', 1100, 1510, 1500, 3, '<a href="/my-acme/whitepapers">Whitepapers</a>'],
+            ['https://acme.us/', 1100, 1511, 1500, 3, '<a href="/my-acme/whitepapers/products">Products</a>'],
+            ['https://acme.us/', 1100, 1512, 1500, 3, '<a href="/my-acme/whitepapers/solutions">Solutions</a>'],
+            ['https://acme.us/', 1100, 1515, 1500, 3, '<a href="/my-acme/whitepapers/research">Research</a>'],
+            ['https://acme.us/', 1100, 1520, 1500, 3, '<a href="/my-acme/forecasts">Forecasts</a>'],
+            ['https://acme.us/', 1100, 1521, 1500, 3, '<a href="/my-acme/forecasts/current-year">Current Year</a>'],
         ];
 
         return $this->keysFromTemplate(
@@ -444,9 +444,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             'config.' => [
                                 'typolinkLinkAccessRestrictedPages' => $loginPageId,
                                 'typolinkLinkAccessRestrictedPages_addParams' => '&pageId=###PAGE_ID###',
+                                'typolinkLinkAccessRestrictedPages.' => [
+                                    'ATagParams' => 'data-access-restricted="true"',
+                                ],
                             ],
                         ]),
-                    $this->createTypoLinkUrlInstruction([
+                    $this->createTypoLinkTagInstruction([
                         'parameter' => $targetPageId,
                     ]),
                 ]),

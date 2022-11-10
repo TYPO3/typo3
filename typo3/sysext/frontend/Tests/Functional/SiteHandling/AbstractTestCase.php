@@ -125,6 +125,17 @@ abstract class AbstractTestCase extends FunctionalTestCase
             ]);
     }
 
+    protected function createTypoLinkTagInstruction(array $typoScript): ArrayValueInstruction
+    {
+        return (new ArrayValueInstruction(LinkHandlingController::class))
+            ->withArray([
+                '10' => 'TEXT',
+                '10.' => [
+                    'typolink.' => $typoScript,
+                ],
+            ]);
+    }
+
     protected function createHierarchicalMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
         return (new ArrayValueInstruction(LinkHandlingController::class))

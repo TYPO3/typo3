@@ -194,11 +194,19 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $target = $this->calculateTargetAttribute($page, $conf, $treatAsExternalLink, $target);
 
         // If link is to an access-restricted page which should be redirected, then find new URL
-        $url = $this->modifyUrlForAccessRestrictedPage($url, $page, $linkDetails['pagetype'] ?? '', $conf);
+        $result = new LinkResult($linkResultType, $url);
+        if ($this->shouldModifyUrlForAccessRestrictedPage($conf, $page)) {
+            $url = $this->modifyUrlForAccessRestrictedPage($url, $page, $linkDetails['pagetype'] ?? '');
+            $result = new LinkResult($linkResultType, $url);
+            $additionalAttributes = (string)($tsfe->config['config']['typolinkLinkAccessRestrictedPages.']['ATagParams'] ?? '');
+            if ($additionalAttributes !== '') {
+                $additionalAttributes = GeneralUtility::get_tag_attributes($additionalAttributes);
+                $result = $result->withAttributes($additionalAttributes);
+            }
+        }
 
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title'] ?? '');
-        $result = new LinkResult($linkResultType, $url);
         return $result
             ->withLinkConfiguration($conf)
             ->withTarget($target)
@@ -333,37 +341,47 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     }
 
     /**
+     * Checks if config.typolinkLinkAccessRestrictedPages is set to a specific page target,
+     * and the current link configuration typolink.linkAccessRestrictedPages is not set
+     * (= which would directly link to page that is access restricted).
+     *
+     * Only happens if the target is access restricted.
+     * @see modifyUrlForAccessRestrictedPage
+     */
+    protected function shouldModifyUrlForAccessRestrictedPage(array $conf, array $page): bool
+    {
+        return empty($conf['linkAccessRestrictedPages'])
+            && (($tsfe = $this->getTypoScriptFrontendController())->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
+            && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
+            && !GeneralUtility::makeInstance(RecordAccessVoter::class)->groupAccessGranted('pages', $page, $tsfe->getContext());
+    }
+
+    /**
      * If the target page is access restricted, and globally configured to be linked to a different page (e.g. login page)
      * via config.typolinkLinkAccessRestrictedPages = 123 then the URL is modified.
+     * @see shouldModifyUrlForAccessRestrictedPage
      */
-    protected function modifyUrlForAccessRestrictedPage(string $url, array $page, string $overridePageType, array $conf): string
+    protected function modifyUrlForAccessRestrictedPage(string $url, array $page, string $overridePageType): string
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        if (empty($conf['linkAccessRestrictedPages'])
-            && ($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
-            && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
-            && !GeneralUtility::makeInstance(RecordAccessVoter::class)->groupAccessGranted('pages', $page, $tsfe->getContext())
-        ) {
-            $thePage = $tsfe->sys_page->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
-            $addParams = str_replace(
-                [
-                    '###RETURN_URL###',
-                    '###PAGE_ID###',
-                ],
-                [
-                    rawurlencode($url),
-                    $page['uid'],
-                ],
-                $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
-            );
-            $url = $this->contentObjectRenderer->createUrl(
-                [
-                    'parameter' => $thePage['uid'] . ($overridePageType ? ',' . $overridePageType : ''),
-                    'additionalParams' => $addParams,
-                ]
-            );
-        }
-        return $url;
+        $thePage = $tsfe->sys_page->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
+        $addParams = str_replace(
+            [
+                '###RETURN_URL###',
+                '###PAGE_ID###',
+            ],
+            [
+                rawurlencode($url),
+                $page['uid'],
+            ],
+            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
+        );
+        return $this->contentObjectRenderer->createUrl(
+            [
+                'parameter' => $thePage['uid'] . ($overridePageType ? ',' . $overridePageType : ''),
+                'additionalParams' => $addParams,
+            ]
+        );
     }
 
     /**
