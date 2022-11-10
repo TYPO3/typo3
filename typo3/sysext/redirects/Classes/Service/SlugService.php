@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -40,6 +41,8 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
+use TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEvent;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
@@ -98,6 +101,7 @@ class SlugService implements LoggerAwareInterface
         protected readonly LinkService $linkService,
         protected readonly RedirectCacheService $redirectCacheService,
         protected readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -187,7 +191,14 @@ class SlugService implements LoggerAwareInterface
                 'disable_hitcount' => 0,
                 'creation_type' => 0,
             ];
-            // @todo Add a pre-create event here, which can be used to change the record before it is persisted.
+
+            $record = $this->eventDispatcher->dispatch(
+                new ModifyAutoCreateRedirectRecordBeforePersistingEvent(
+                    slugRedirectChangeItem: $changeItem,
+                    source: $source,
+                    redirectRecord: $record,
+                )
+            )->getRedirectRecord();
             // @todo Use dataHandler to create records
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('sys_redirect');
@@ -195,7 +206,13 @@ class SlugService implements LoggerAwareInterface
             $id = (int)$connection->lastInsertId('sys_redirect');
             $record['uid'] = $id;
             $this->getRecordHistoryStore()->addRecord('sys_redirect', $id, $record, $this->correlationIdRedirectCreation);
-            // @todo Add a post-create event here, thus extensions can trigger stuff based on the created redirect.
+            $this->eventDispatcher->dispatch(
+                new AfterAutoCreateRedirectHasBeenPersistedEvent(
+                    slugRedirectChangeItem: $changeItem,
+                    source: $source,
+                    redirectRecord: $record,
+                )
+            );
             if (!in_array($source->getHost(), $sourceHosts)) {
                 $sourceHosts[] = $source->getHost();
             }

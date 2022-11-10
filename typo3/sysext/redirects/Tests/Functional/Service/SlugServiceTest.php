@@ -17,17 +17,23 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
+use TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEvent;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
@@ -403,6 +409,103 @@ class SlugServiceTest extends FunctionalTestCase
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
     }
 
+    /**
+     * @test
+     */
+    public function modifyAutoCreateRedirectRecordBeforePersistingIsTriggered(): void
+    {
+        $newPageSlug = '/test-new';
+        $eventOverrideSource = '/overridden-new';
+        $this->buildBaseSiteWithLanguages();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_ModifyAutoCreateRedirectRecordBeforePersistingEvent.csv');
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'modify-auto-create-redirect-record-before-persisting',
+            static function (ModifyAutoCreateRedirectRecordBeforePersistingEvent $event) use (
+                &$modifyAutoCreateRedirectRecordBeforePersisting,
+                $eventOverrideSource
+            ) {
+                $modifyAutoCreateRedirectRecordBeforePersisting = $event;
+                $event->setRedirectRecord(
+                    array_replace(
+                        $event->getRedirectRecord(),
+                        [
+                            'source_path' => $eventOverrideSource,
+                        ],
+                    )
+                );
+            }
+        );
+        $listenerProvider = $container->get(ListenerProvider::class);
+        $listenerProvider->addListener(ModifyAutoCreateRedirectRecordBeforePersistingEvent::class, 'modify-auto-create-redirect-record-before-persisting');
+        $this->createSubject();
+
+        /** @var SlugRedirectChangeItem $changeItem */
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        self::assertInstanceOf(ModifyAutoCreateRedirectRecordBeforePersistingEvent::class, $modifyAutoCreateRedirectRecordBeforePersisting);
+        self::assertSame($eventOverrideSource, $modifyAutoCreateRedirectRecordBeforePersisting->getRedirectRecord()['source_path']);
+
+        $this->assertSlugsAndRedirectsExists(
+            slugs: [
+                '/',
+                $newPageSlug,
+            ],
+            redirects: [
+                ['source_host' => '*', 'source_path' => $eventOverrideSource, 'target' => 't3://page?uid=2&_language=0'],
+            ],
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterAutoCreteRedirectHasBeenPersistedIsTriggered(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSiteWithLanguages();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_AfterAutoCreateRedirectHasBeenPersistedEvent.csv');
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-auto-create-redirect-has-been-persisted',
+            static function (AfterAutoCreateRedirectHasBeenPersistedEvent $event) use (
+                &$afterAutoCreateRedirectHasBeenPersisted
+            ) {
+                $afterAutoCreateRedirectHasBeenPersisted = $event;
+            }
+        );
+        $listenerProvider = $container->get(ListenerProvider::class);
+        $listenerProvider->addListener(AfterAutoCreateRedirectHasBeenPersistedEvent::class, 'after-auto-create-redirect-has-been-persisted');
+        $this->createSubject();
+
+        /** @var SlugRedirectChangeItem $changeItem */
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        self::assertInstanceOf(AfterAutoCreateRedirectHasBeenPersistedEvent::class, $afterAutoCreateRedirectHasBeenPersisted);
+        self::assertSame(1, $afterAutoCreateRedirectHasBeenPersisted->getRedirectRecord()['uid'] ?? null);
+
+        $this->assertSlugsAndRedirectsExists(
+            slugs: [
+                '/',
+                $newPageSlug,
+            ],
+            redirects: [
+                ['uid' => 1, 'source_host' => '*', 'source_path' => '/en/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ],
+            withRedirectUid: true,
+        );
+    }
+
     protected function buildBaseSite(): void
     {
         $configuration = [
@@ -457,17 +560,18 @@ class SlugServiceTest extends FunctionalTestCase
     {
         GeneralUtility::makeInstance(SiteMatcher::class)->refresh();
         $this->subject = new SlugService(
-            GeneralUtility::makeInstance(Context::class),
-            GeneralUtility::makeInstance(SiteFinder::class),
-            GeneralUtility::makeInstance(PageRepository::class),
-            GeneralUtility::makeInstance(LinkService::class),
-            GeneralUtility::makeInstance(RedirectCacheService::class),
-            $this->get(SlugRedirectChangeItemFactory::class),
+            context: GeneralUtility::makeInstance(Context::class),
+            siteFinder: GeneralUtility::makeInstance(SiteFinder::class),
+            pageRepository: GeneralUtility::makeInstance(PageRepository::class),
+            linkService: GeneralUtility::makeInstance(LinkService::class),
+            redirectCacheService: GeneralUtility::makeInstance(RedirectCacheService::class),
+            slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
+            eventDispatcher: $this->get(EventDispatcherInterface::class),
         );
         $this->subject->setLogger(new NullLogger());
     }
 
-    protected function assertSlugsAndRedirectsExists(array $slugs, array $redirects): void
+    protected function assertSlugsAndRedirectsExists(array $slugs, array $redirects, bool $withRedirectUid = false): void
     {
         $pageRecords = $this->getAllRecords('pages');
         self::assertCount(count($slugs), $pageRecords);
@@ -483,6 +587,14 @@ class SlugServiceTest extends FunctionalTestCase
                 'source_path' => $record['source_path'],
                 'target' => $record['target'],
             ];
+            if ($withRedirectUid) {
+                $combination = [
+                    'uid' => $record['uid'],
+                    'source_host' => $record['source_host'],
+                    'source_path' => $record['source_path'],
+                    'target' => $record['target'],
+                ];
+            }
             self::assertContains($combination, $redirects, 'wrong redirect found');
         }
     }
