@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class MfaController extends AbstractMfaController
 {
     use PageRendererBackendSetupTrait;

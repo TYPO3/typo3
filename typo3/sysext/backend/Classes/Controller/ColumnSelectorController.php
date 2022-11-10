@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
+#[Controller]
 class ColumnSelectorController
 {
     private const PSEUDO_FIELDS = ['_REF_', '_PATH_'];

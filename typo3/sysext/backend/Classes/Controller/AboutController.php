@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class AboutController
 {
     public function __construct(

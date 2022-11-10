@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class ShortcutController
 {
     public function __construct(

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class LogoutController
 {
     public function __construct(

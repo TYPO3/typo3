@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class MfaConfigurationController extends AbstractMfaController
 {
     protected array $allowedActions = ['overview', 'setup', 'activate', 'deactivate', 'unlock', 'edit', 'save'];

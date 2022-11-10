@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
+#[Controller]
 class RecordListDownloadController
 {
     private const DOWNLOAD_FORMATS = [

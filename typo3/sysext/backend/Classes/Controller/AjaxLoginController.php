@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Core\Environment;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
  * This is the ajax handler for backend login after timeout.
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class AjaxLoginController
 {
     public function __construct(

@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 
 /**
  * '/empty' routing target returns dummy content.
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class DummyController
 {
     public function __construct(protected readonly ModuleTemplateFactory $moduleTemplateFactory)

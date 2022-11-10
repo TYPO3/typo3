@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
@@ -74,6 +75,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * call the DataHandler if records should be created or updated and
  * execute FormEngine for record rendering.
  */
+#[Controller]
 class EditDocumentController
 {
     protected const DOCUMENT_CLOSE_MODE_DEFAULT = 0;

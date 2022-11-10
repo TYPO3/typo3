@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
@@ -54,6 +55,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class LoginController
 {
     use PageRendererBackendSetupTrait;

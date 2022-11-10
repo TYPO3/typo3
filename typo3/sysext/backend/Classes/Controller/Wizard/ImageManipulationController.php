@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Wizard for rendering image manipulation view
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class ImageManipulationController
 {
     public function __construct(protected readonly BackendViewFactory $backendViewFactory)

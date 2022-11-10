@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
+#[Controller]
 class ClipboardController
 {
     private const ALLOWED_ACTIONS = ['getClipboardData'];

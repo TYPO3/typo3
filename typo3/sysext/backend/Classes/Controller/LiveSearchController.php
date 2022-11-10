@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Http\Response;
  * Returns the results for any live searches, e.g. in the toolbar
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class LiveSearchController
 {
     private const LIMIT = 50;
