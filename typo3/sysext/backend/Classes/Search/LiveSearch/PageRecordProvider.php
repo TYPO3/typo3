@@ -66,11 +66,6 @@ final class PageRecordProvider implements SearchProviderInterface
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
 
-    public function getRendererComponent(): string
-    {
-        return '@typo3/backend/live-search/element/provider/page-provider-result-item.js';
-    }
-
     public function getFilterLabel(): string
     {
         return $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:liveSearch.pageRecordProvider.filterLabel');

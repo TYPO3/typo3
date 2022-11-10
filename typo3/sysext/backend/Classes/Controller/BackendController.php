@@ -27,7 +27,6 @@ use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -65,7 +64,6 @@ class BackendController
         protected readonly PageRenderer $pageRenderer,
         protected readonly ModuleProvider $moduleProvider,
         protected readonly ToolbarItemsRegistry $toolbarItemsRegistry,
-        protected readonly SearchProviderRegistry $searchProviderRegistry,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
