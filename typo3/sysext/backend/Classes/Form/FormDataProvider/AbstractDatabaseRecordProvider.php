@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -60,7 +61,7 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
                 (int)$uid
             );
         }
-        return $row;
+        return BackendUtility::convertDatabaseRowValuesToPhp($tableName, $row);
     }
 
     /**

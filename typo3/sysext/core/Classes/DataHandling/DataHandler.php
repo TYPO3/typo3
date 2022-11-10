@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\JsonType;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -7708,6 +7709,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $id = (int)$id;
         if (is_array($GLOBALS['TCA'][$table]) && $id) {
+            $tcaTableColumns = $GLOBALS['TCA'][$table]['columns'] ?? [];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
 
@@ -7719,11 +7721,21 @@ class DataHandler implements LoggerAwareInterface
                 ->fetchAssociative();
 
             if (!empty($row)) {
+                $row = BackendUtility::convertDatabaseRowValuesToPhp($table, $row);
                 // Traverse array of values that was inserted into the database and compare with the actually stored value:
                 $errors = [];
                 foreach ($fieldArray as $key => $value) {
+                    $tcaColumnConfig = $tcaTableColumns[$key]['config'] ?? [];
+                    $columnType = $tcaColumnConfig['type'] ?? '';
+                    $columnDbType = $tcaColumnConfig['dbType'] ?? '';
                     if (!$this->checkStoredRecords_loose || $value || $row[$key]) {
-                        if (is_float($row[$key])) {
+                        // @todo Check explicitly for one type is fishy. However needed to avoid array to string
+                        //       conversion errors. Find a better way do handle this.
+                        if ($columnType === 'user' && $columnDbType === 'json') {
+                            if ($row[$key] !== $value) {
+                                $errors[] = $key;
+                            }
+                        } elseif (is_float($row[$key])) {
                             // if the database returns the value as double, compare it as double
                             if ((float)$value !== (float)$row[$key]) {
                                 $errors[] = $key;
@@ -8281,6 +8293,7 @@ class DataHandler implements LoggerAwareInterface
             ->fetchAssociative();
         // If the current record exists (which it should...), begin comparison:
         if (is_array($currentRecord)) {
+            $currentRecord = BackendUtility::convertDatabaseRowValuesToPhp($table, $currentRecord);
             $tableDetails = $connection->getSchemaInformation()->introspectTable($table);
             $columnRecordTypes = [];
             foreach ($currentRecord as $columnName => $_) {
@@ -8288,6 +8301,8 @@ class DataHandler implements LoggerAwareInterface
                 $type = $tableDetails->getColumn($columnName)->getType();
                 if ($type instanceof IntegerType) {
                     $columnRecordTypes[$columnName] = 'int';
+                } elseif ($type instanceof JsonType) {
+                    $columnRecordTypes[$columnName] = 'json';
                 }
             }
             // Unset the fields which are similar:
@@ -8336,7 +8351,16 @@ class DataHandler implements LoggerAwareInterface
         // No NULL values are allowed, this is the regular behaviour.
         // Thus, check whether strings are the same or whether integer values are empty ("0" or "").
         if (!$allowNull) {
-            $result = (string)$submittedValue === (string)$storedValue || $storedType === 'int' && (int)$storedValue === (int)$submittedValue;
+            switch($storedType) {
+                case 'json':
+                    $result = $submittedValue === $storedValue;
+                    break;
+                case 'int':
+                    $result = (int)$storedValue === (int)$submittedValue;
+                    break;
+                default:
+                    $result = (string)$submittedValue === (string)$storedValue;
+            }
         // Null values are allowed, but currently there's a real (not NULL) value.
         // Thus, ensure no NULL value was submitted and fallback to the regular behaviour.
         } elseif ($storedValue !== null) {

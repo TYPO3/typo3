@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Utility;
 
 use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Types\Type;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -3404,6 +3405,31 @@ class BackendUtility
 
         // Return unique field list
         return array_values(array_unique($fieldList));
+    }
+
+    /**
+     * Gets the raw database row values and calls the php converter of doctrine to get the PHP value.
+     * Currently only handles the combination of type=user and dbType=json and takes care of decoding the value.
+     *
+     * @internal
+     */
+    public static function convertDatabaseRowValuesToPhp(string $table, array $row): array
+    {
+        $tableTca = $GLOBALS['TCA'][$table] ?? [];
+        if (!$tableTca) {
+            return $row;
+        }
+        $platform = static::getConnectionForTable($table)->getDatabasePlatform();
+        foreach ($row as $field => $value) {
+            if (($tableTca['columns'][$field]['config']['type'] ?? '') === 'user') {
+                $dbType = $GLOBALS['TCA'][$table]['columns'][$field]['config']['dbType'] ?? '';
+                // @todo Only handle a specific dbType for now.
+                if ($dbType === 'json') {
+                    $row[$field] = Type::getType($dbType)->convertToPHPValue($value, $platform);
+                }
+            }
+        }
+        return $row;
     }
 
     /**
