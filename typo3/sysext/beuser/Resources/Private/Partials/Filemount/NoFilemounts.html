@@ -1,0 +1,28 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<div class="callout callout-info">
+    <div class="media">
+        <div class="media-left">
+            <core:icon identifier="content-info" size="small" />
+        </div>
+        <div class="media-body">
+            <div class="callout-body">
+                <p><f:translate key="filemount.none" /></p>
+                <p>
+                    <be:link.newRecord
+                        table="sys_filemounts"
+                        returnUrl="{f:be.uri(route: 'system_BeuserTxBeuser')}"
+                        class="btn btn-primary"
+                    >
+                        <f:translate key="filemount.create" />
+                    </be:link.newRecord>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

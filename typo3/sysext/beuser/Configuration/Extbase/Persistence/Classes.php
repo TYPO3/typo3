@@ -49,4 +49,7 @@ return [
             ],
         ],
     ],
+    \TYPO3\CMS\Beuser\Domain\Model\FileMount::class => [
+        'tableName' => 'sys_filemounts',
+    ],
 ];

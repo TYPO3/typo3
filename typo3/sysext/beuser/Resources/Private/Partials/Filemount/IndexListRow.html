@@ -1,0 +1,68 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+        xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+        xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
+
+<f:section name="list_row">
+    <tr>
+        <td class="col-icon">
+            <a href="#" class="t3js-contextmenutrigger" data-table="sys_filemounts" data-uid="{fileMount.uid}" title="{f:if(condition: '{fileMount.title}', then: '{fileMount.title} ')}(id={fileMount.uid})">
+                <bu:spriteIconForRecord table="sys_filemounts" object="{fileMount}" />
+            </a>
+        </td>
+        <td class="col-title">{fileMount.title}</td>
+        <td>{fileMount.description}</td>
+        <td>
+            <a href="{be:moduleLink(route: 'file_FilelistList', query: 'id={fileMount.storage.uid}:/')}'">
+                {fileMount.storage.name} <code>[{fileMount.storage.uid}]</code>
+            </a>
+        </td>
+        <td>
+            <a href="{be:moduleLink(route: 'file_FilelistList', query: 'id={fileMount.storage.uid}:{fileMount.path}')}'">
+                {fileMount.storage.configuration.basePath}{fileMount.path}
+            </a>
+        </td>
+        <td>
+            <div class="btn-group" role="group">
+                <f:if condition="{fileMount.readOnly} == true">
+                    <core:icon identifier="actions-check-square-alt" />
+                </f:if>
+            </div>
+        </td>
+        <td class="col-control">
+            <div class="btn-group" role="group">
+                <be:link.editRecord class="btn btn-default" table="sys_filemounts" uid="{fileMount.uid}" title="{f:translate(key:'edit')}">
+                    <core:icon identifier="actions-open" />
+                </be:link.editRecord>
+
+                <f:if condition="{fileMount.hidden} == true">
+                    <f:then>
+                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_filemounts][{fileMount.uid}][hidden]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" /></a>
+                    </f:then>
+                    <f:else>
+                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_filemounts][{fileMount.uid}][hidden]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
+                    </f:else>
+                </f:if>
+
+                <a
+                    class="btn btn-default t3js-modal-trigger"
+                    href="{be:moduleLink(route:'tce_db', query:'cmd[sys_filemounts][{fileMount.uid}][delete]=1', currentUrlParameterName:'redirect')}"
+                    title="{f:translate(key:'delete')}"
+                    data-severity="warning"
+                    data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                    data-bs-content="{f:translate(key:'filemount.confirm.deletion',arguments:'{0:fileMount.title}')}"
+                    data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                >
+                    <core:icon identifier="actions-edit-delete" />
+                </a>
+            </div>
+            <div class="btn-group" role="group">
+                <a class="btn btn-default" href="#" title="{f:translate(key:'info')}" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="sys_filemounts,{fileMount.uid}">
+                    <core:icon identifier="actions-document-info" />
+                </a>
+            </div>
+        </td>
+    </tr>
+
+</f:section>
+</html>

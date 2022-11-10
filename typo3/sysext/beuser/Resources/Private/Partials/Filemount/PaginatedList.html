@@ -1,0 +1,29 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<div class="table-fit">
+    <table id="typo3-filemount-list" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="col-icon"></th>
+                <th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.title" /></th>
+                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description" /></th>
+                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage" /> (Uid)</th>
+                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.identifier" /></th>
+                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.read_only" /></th>
+                <th class="col-control"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <f:for each="{paginator.paginatedItems}" as="fileMount">
+                <f:render partial="Filemount/IndexListRow" section="list_row" arguments="{fileMount: fileMount}" />
+            </f:for>
+        </tbody>
+    </table>
+</div>
+
+<f:render partial="SimplePagination" arguments="{paginator:paginator, pagination:pagination}" />
+<f:render partial="Filemount/TotalFilemounts" arguments="{_all}" />
+
+</html>

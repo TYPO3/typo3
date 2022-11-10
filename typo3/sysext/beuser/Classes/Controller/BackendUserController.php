@@ -29,6 +29,7 @@ use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -64,7 +65,8 @@ class BackendUserController extends ActionController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly BackendUriBuilder $backendUriBuilder,
         protected readonly IconFactory $iconFactory,
-        protected readonly PageRenderer $pageRenderer
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly FileMountRepository $fileMountRepository
     ) {
     }
 
@@ -78,7 +80,7 @@ class BackendUserController extends ActionController
         $moduleData = $request->getAttribute('moduleData');
         if (
             isset($arguments['action'])
-            && in_array((string)$arguments['action'], ['index', 'groups', 'online'])
+            && in_array((string)$arguments['action'], ['index', 'groups', 'online', 'filemounts'])
             && (string)$moduleData->get('defaultAction') !== (string)$arguments['action']
         ) {
             $moduleData->set('defaultAction', (string)$arguments['action']);
@@ -86,7 +88,7 @@ class BackendUserController extends ActionController
         } elseif (
             !isset($arguments['action'])
             && $moduleData->has('defaultAction')
-            && in_array((string)$moduleData->get('defaultAction'), ['index', 'groups', 'online'])
+            && in_array((string)$moduleData->get('defaultAction'), ['index', 'groups', 'online', 'filemounts'])
         ) {
             $request = $request->withControllerActionName((string)$moduleData->get('defaultAction'));
         }
@@ -481,6 +483,38 @@ class BackendUserController extends ActionController
         return $this->redirect('groups');
     }
 
+    protected function filemountsAction(int $currentPage = 1): ResponseInterface
+    {
+        /** @var QueryResultInterface $filemounts */
+        $filemounts = $this->fileMountRepository->findAll();
+
+        $this->addMainMenu('filemounts');
+
+        $paginator = new QueryResultPaginator($filemounts, $currentPage, 50);
+        $pagination = new SimplePagination($paginator);
+        $this->moduleTemplate->assignMultiple(
+            [
+                'paginator' => $paginator,
+                'pagination' => $pagination,
+                'totalAmountOfFilemounts' => $filemounts->count(),
+            ]
+        );
+
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $addFilemountButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.create'))
+            ->setShowLabelText(true)
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['sys_filemounts' => [0 => 'new']],
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
+            ]));
+        $buttonBar->addButton($addFilemountButton);
+
+        return $this->moduleTemplate->renderResponse('BackendUser/Filemounts');
+    }
+
     /**
      * Create an array with the uids of online users as the keys
      * [
@@ -550,6 +584,12 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('onlineUsers', 'beuser'))
             ->setHref($this->uriBuilder->uriFor('online'))
             ->setActive($currentAction === 'online')
+        );
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+            ->setTitle(LocalizationUtility::translate('filemounts', 'beuser'))
+            ->setHref($this->uriBuilder->uriFor('filemounts'))
+            ->setActive($currentAction === 'filemounts')
         );
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }

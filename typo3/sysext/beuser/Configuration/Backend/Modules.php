@@ -44,6 +44,7 @@ return [
                 'removeGroupFromCompareList',
                 'removeAllGroupsFromCompareList',
                 'compareGroups',
+                'filemounts',
             ],
         ],
     ],
