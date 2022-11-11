@@ -71,7 +71,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Accessing the data in TypoScript
  * --------------------------------
  *
- * ::
+ * .. code-block:: typoscript
  *
  *    lib.customHeader = COA
  *    lib.customHeader {
