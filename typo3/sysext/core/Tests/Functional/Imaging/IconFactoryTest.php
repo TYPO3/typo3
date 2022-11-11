@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
@@ -30,8 +29,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class IconFactoryTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected IconFactory $subject;
     protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
     protected string $registeredIconIdentifier = 'actions-close';
@@ -248,14 +245,14 @@ class IconFactoryTest extends FunctionalTestCase
      */
     public function getIconForResourceReturnsCorrectMarkupForFileResources(): void
     {
-        $resourceProphecy = $this->prophesize(File::class);
-        $resourceProphecy->isMissing()->willReturn(false);
-        $resourceProphecy->getExtension()->willReturn('pdf');
-        $resourceProphecy->getMimeType()->willReturn('');
+        $resourceMock = $this->createMock(File::class);
+        $resourceMock->method('isMissing')->willReturn(false);
+        $resourceMock->method('getExtension')->willReturn('pdf');
+        $resourceMock->method('getMimeType')->willReturn('');
 
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
-            $this->subject->getIconForResource($resourceProphecy->reveal())->render()
+            $this->subject->getIconForResource($resourceMock)->render()
         );
     }
 

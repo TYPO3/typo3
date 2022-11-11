@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -26,8 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class Typo3DatabaseBackendTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
@@ -46,11 +43,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsPreviouslySetEntry(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myData');
         self::assertSame('myData', $subject->get('myIdentifier'));
@@ -61,11 +58,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsPreviouslySetEntryWithNewContentIfSetWasCalledMultipleTimes(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myData');
         $subject->set('myIdentifier', 'myNewData');
@@ -77,11 +74,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function setInsertsDataWithTagsIntoCacheTable(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myData', ['aTag', 'anotherTag']);
 
@@ -97,12 +94,12 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function setStoresCompressedContent(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myCachedContent');
 
@@ -124,11 +121,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsFalseIfNoCacheEntryExists(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertFalse($subject->get('myIdentifier'));
     }
@@ -138,8 +135,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsFalseForExpiredCacheEntry(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push an expired row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -155,7 +152,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertFalse($subject->get('myIdentifier'));
     }
@@ -165,8 +162,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsNotExpiredCacheEntry(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push a row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -182,7 +179,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
     }
@@ -192,8 +189,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsUnzipsNotExpiredCacheEntry(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push a compressed row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -210,7 +207,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // Content comes back uncompressed
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
@@ -221,8 +218,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function getReturnsEmptyStringUnzipped(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push a compressed row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -239,7 +236,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // Content comes back uncompressed
         self::assertSame('', $subject->get('myIdentifier'));
@@ -250,11 +247,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function hasReturnsFalseIfNoCacheEntryExists(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertFalse($subject->has('myIdentifier'));
     }
@@ -264,8 +261,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function hasReturnsFalseForExpiredCacheEntry(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push an expired row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -281,7 +278,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertFalse($subject->has('myIdentifier'));
     }
@@ -291,8 +288,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function hasReturnsNotExpiredCacheEntry(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push a row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -308,7 +305,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertTrue($subject->has('myIdentifier'));
     }
@@ -318,11 +315,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function removeReturnsFalseIfNoEntryHasBeenRemoved(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertFalse($subject->remove('myIdentifier'));
     }
@@ -332,8 +329,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function removeReturnsTrueIfAnEntryHasBeenRemoved(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Push a row into db
         (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
@@ -349,7 +346,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         self::assertTrue($subject->remove('myIdentifier'));
     }
@@ -359,8 +356,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function removeRemovesCorrectEntriesFromDatabase(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Add one cache row to remove and another one that shouldn't be removed
         $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
@@ -376,7 +373,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // Add a couple of tags
         $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
@@ -554,8 +551,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -563,7 +560,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(true);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // idA should be expired after EXEC_TIME manipulation, idB should stay
         $subject->set('idA', 'dataA', [], 60);
@@ -586,8 +583,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -595,7 +592,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(true);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
@@ -618,8 +615,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -627,7 +624,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(true);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
@@ -665,8 +662,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageWorksWithEmptyTableWithNonMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -674,7 +671,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->collectGarbage();
     }
@@ -684,8 +681,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithNonMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -693,7 +690,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // idA should be expired after EXEC_TIME manipulation, idB should stay
         $subject->set('idA', 'dataA', [], 60);
@@ -713,8 +710,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithNonMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -722,7 +719,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
@@ -742,8 +739,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithNonMysql(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -751,7 +748,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
@@ -789,11 +786,11 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     public function flushLeavesCacheAndTagsTableEmpty(): void
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->set('idA', 'dataA', ['tagA', 'tagB']);
 
@@ -813,8 +810,8 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      */
     protected function getSubjectObject($returnMockObject = false, $isConnectionMysql = true): Typo3DatabaseBackend
     {
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         if (!$returnMockObject) {
             $subject = new Typo3DatabaseBackend('Testing');
@@ -825,7 +822,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 ->getMock();
             $subject->expects(self::once())->method('isConnectionMysql')->willReturn($isConnectionMysql);
         }
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setCache($frontendMock);
 
         $subject->set('idA', 'dataA', ['tagA', 'tagB']);
         $subject->set('idB', 'dataB', ['tagB', 'tagC']);

@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,8 +26,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IconForRecordViewHelperTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected bool $initializeDatabase = false;
 
     /**
@@ -37,19 +33,19 @@ class IconForRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderRendersIconCallingIconFactoryAccordingToGivenArguments(): void
     {
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconProphecy->render(Argument::any())->willReturn('icon html');
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->willReturn('icon html');
+        $iconMock->expects(self::atLeastOnce())->method('render')->with('inline');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIconForRecord')
+            ->with('tt_content', ['uid' => 123], Icon::SIZE_LARGE);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<core:iconForRecord table="tt_content" row="{uid: 123}" size="large" alternativeMarkupIdentifier="inline" />'
         );
         (new TemplateView($context))->render();
-
-        $iconFactoryProphecy->getIconForRecord('tt_content', ['uid' => 123], Icon::SIZE_LARGE)->shouldHaveBeenCalled();
-        $iconProphecy->render('inline')->shouldHaveBeenCalled();
     }
 }

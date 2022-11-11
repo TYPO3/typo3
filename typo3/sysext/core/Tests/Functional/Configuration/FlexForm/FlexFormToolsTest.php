@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Configuration\FlexForm;
 
 use Doctrine\DBAL\Result;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -47,8 +45,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FlexFormToolsTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -58,12 +54,12 @@ class FlexFormToolsTest extends FunctionalTestCase
     {
         parent::setUp();
         // Underlying static GeneralUtility::xml2array() uses caches that have to be mocked here
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheProphecy->set(Argument::cetera())->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
+        $cacheMock->method('get')->with(self::anything())->willReturn(false);
+        $cacheMock->method('set')->with(self::anything())->willReturn(false);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
     }
 
     /**
@@ -519,33 +515,31 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_ds' => null,
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(42, 1)->willReturn(42);
-        $expressionBuilderProphecy->eq('uid', 42)->shouldBeCalled()->willReturn('uid = 42');
-        $queryBuilderProphecy->where('uid = 42')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->with(42, 1)->willReturn('42');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->with('uid', 42)->willReturn('uid = 42');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->with('uid = 42')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
 
         // Error case that is tested here: Do not return a valid parent row from db -> exception should be thrown
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderProphecy);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
         $this->expectException(InvalidParentRowException::class);
         $this->expectExceptionCode(1463833794);
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
@@ -580,40 +574,37 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_ds' => null,
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
-        $queryBuilderProphecy->createNamedParameter(1, 1)->willReturn(1);
-        $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
-        $expressionBuilderProphecy->eq('uid', 1)->shouldBeCalled()->willReturn('uid = 1');
-        $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->where('uid = 1')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderProphecy);
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->withConsecutive([2, 1], [1, 1])->willReturnOnConsecutiveCalls('2', '1');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->withConsecutive(['uid', 2], ['uid', 1])
+            ->willReturnOnConsecutiveCalls('uid = 2', 'uid = 1');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->withConsecutive(['uid = 2'], ['uid = 1'])
+            ->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
         // First db call returns $secondRow, second returns $thirdRow, which points back to $initialRow -> exception
-        $statementProphecy->fetchOne()->willReturn(1);
-        $statementProphecy->fetchAssociative()->willReturn($secondRow, $thirdRow);
+        $statementMock->method('fetchOne')->willReturn(1);
+        $statementMock->method('fetchAssociative')->willReturn($secondRow, $thirdRow);
 
         $this->expectException(InvalidParentRowLoopException::class);
         $this->expectExceptionCode(1464110956);
@@ -649,40 +640,37 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_ds' => null,
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
-        $queryBuilderProphecy->createNamedParameter(1, 1)->willReturn(1);
-        $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
-        $expressionBuilderProphecy->eq('uid', 1)->shouldBeCalled()->willReturn('uid = 1');
-        $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->where('uid = 1')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->withConsecutive([2, 1], [1, 1])->willReturnOnConsecutiveCalls('2', '1');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->withConsecutive(['uid', 2], ['uid', 1])
+            ->willReturnOnConsecutiveCalls('uid = 2', 'uid = 1');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->withConsecutive(['uid = 2'], ['uid = 1'])
+            ->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
         // First db call returns $secondRow, second returns $thirdRow. $thirdRow has pid 0 and still no ds -> exception
-        $statementProphecy->fetchAssociative()->willReturn($secondRow, $thirdRow);
+        $statementMock->method('fetchOne')->willReturn(1);
+        $statementMock->method('fetchAssociative')->willReturn($secondRow, $thirdRow);
 
         $this->expectException(InvalidParentRowRootException::class);
         $this->expectExceptionCode(1464112555);
@@ -791,40 +779,37 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_ds' => '<T3DataStructure>...',
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
-        $queryBuilderProphecy->createNamedParameter(1, 1)->willReturn(1);
-        $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
-        $expressionBuilderProphecy->eq('uid', 1)->shouldBeCalled()->willReturn('uid = 1');
-        $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->where('uid = 1')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->withConsecutive([2, 1], [1, 1])->willReturnOnConsecutiveCalls('2', '1');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->withConsecutive(['uid', 2], ['uid', 1])
+            ->willReturnOnConsecutiveCalls('uid = 2', 'uid = 1');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->withConsecutive(['uid = 2'], ['uid = 1'])
+            ->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
         // First db call returns $secondRow, second returns $thirdRow. $thirdRow resolves ds
-        $statementProphecy->fetchAssociative()->willReturn($secondRow, $thirdRow);
+        $statementMock->method('fetchOne')->willReturn(1);
+        $statementMock->method('fetchAssociative')->willReturn($secondRow, $thirdRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":1,"fieldName":"tx_templavoila_ds"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -854,36 +839,34 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_ds' => '<T3DataStructure>...',
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
-        $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
-        $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->with(2, 1)->willReturn('2');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->with('uid', 2)->willReturn('uid = 2');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->with('uid = 2')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
 
         // First db call returns $secondRow. $secondRow resolves DS and does not look further up
-        $statementProphecy->fetchAssociative()->willReturn($secondRow);
+        $statementMock->expects(self::atLeastOnce())->method('fetchOne')->willReturn(1);
+        $statementMock->method('fetchAssociative')->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_ds"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -916,37 +899,35 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_next_ds' => 'anotherDataStructure',
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->addSelect('tx_templavoila_next_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
-        $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
-        $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('addSelect')->with('tx_templavoila_next_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->with(2, 1)->willReturn('2');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->with('uid', 2)->willReturn('uid = 2');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->with('uid = 2')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
         // First db call returns $secondRow. $secondRow resolves DS and does not look further up
-        $statementProphecy->fetchAssociative()->willReturn($secondRow);
+        $statementMock->expects(self::atLeastOnce())->method('fetchOne')->willReturn(1);
+        $statementMock->method('fetchAssociative')->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_next_ds"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -1000,37 +981,35 @@ class FlexFormToolsTest extends FunctionalTestCase
             'tx_templavoila_next_ds' => '42',
         ];
 
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('uid', 'pid', 'tx_templavoila_ds')->shouldBeCalled();
-        $queryBuilderProphecy->addSelect('tx_templavoila_next_ds')->shouldBeCalled();
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
-        $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
-        $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('addSelect')->with('tx_templavoila_next_ds');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->with(2, 1)->willReturn('2');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->with('uid', 2)->willReturn('uid = 2');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->with('uid = 2')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
         // First db call returns $secondRow. $secondRow resolves DS and does not look further up
-        $statementProphecy->fetchAssociative()->willReturn($secondRow);
+        $statementMock->expects(self::atLeastOnce())->method('fetchOne')->willReturn(1);
+        $statementMock->method('fetchAssociative')->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -1162,31 +1141,29 @@ class FlexFormToolsTest extends FunctionalTestCase
      */
     public function parseDataStructureByIdentifierResolvesRecordSyntaxPointer(): void
     {
-        // Prophecies and revelations for a lot of the database stack classes
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
-        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Result::class);
+        // Mocks for a lot of the database stack classes
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $queryRestrictionContainerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
+        $statementMock = $this->createMock(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         // Simulate method call flow on database objects and verify correct query is built
-        $connectionPoolProphecy->getQueryBuilderForTable('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryRestrictionContainerProphecy->add(Argument::cetera())->shouldBeCalled();
-        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
-        $queryBuilderProphecy->select('dataprot')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->from('aTableName')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->createNamedParameter(42, 1)->willReturn(42);
-        $expressionBuilderProphecy->eq('uid', 42)->shouldBeCalled()->willReturn('uid = 42');
-        $queryBuilderProphecy->where('uid = 42')->shouldBeCalled()->willReturn($queryBuilderRevelation);
-        $queryBuilderProphecy->executeQuery()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->fetchOne()->willReturn('
+        $connectionPoolMock->expects(self::atLeastOnce())->method('getQueryBuilderForTable')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('removeAll')->willReturn($queryRestrictionContainerMock);
+        $queryRestrictionContainerMock->expects(self::atLeastOnce())->method('add')->with(self::anything());
+        $queryBuilderMock->expects(self::atLeastOnce())->method('getRestrictions')->willReturn($queryRestrictionContainerMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('select')->with('dataprot')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
+        $queryBuilderMock->method('createNamedParameter')->with(42, 1)->willReturn('42');
+        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->with('uid', 42)->willReturn('uid = 42');
+        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->with('uid = 42')->willReturn($queryBuilderMock);
+        $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
+        $statementMock->method('fetchOne')->willReturn('
             <T3DataStructure>
                 <sheets></sheets>
             </T3DataStructure>

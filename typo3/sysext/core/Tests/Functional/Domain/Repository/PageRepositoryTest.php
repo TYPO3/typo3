@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -35,8 +33,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PageRepositoryTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -368,10 +364,9 @@ class PageRepositoryTest extends FunctionalTestCase
     public function isGetPageHookCalled(): void
     {
         // Create a hook mock object
-        $getPageHookProphet = $this->prophesize(\stdClass::class);
-        $getPageHookProphet->willImplement(PageRepositoryGetPageHookInterface::class);
-        $getPageHookProphet->getPage_preProcess(42, false, Argument::type(PageRepository::class))->shouldBeCalled();
-        $getPageHookMock = $getPageHookProphet->reveal();
+        $getPageHookMock = $this->createMock(PageRepositoryGetPageHookInterface::class);
+        $getPageHookMock->expects(self::atLeastOnce())->method('getPage_preProcess')
+            ->with(42, false, new PageRepository());
         $className = get_class($getPageHookMock);
 
         // Register hook mock object

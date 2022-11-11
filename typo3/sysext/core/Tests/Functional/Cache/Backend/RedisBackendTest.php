@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -36,8 +35,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class RedisBackendTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected bool $initializeDatabase = false;
 
     /**
@@ -66,13 +63,13 @@ class RedisBackendTest extends FunctionalTestCase
         $env = getenv('typo3TestingRedisPort');
         $backendOptions['port'] = is_string($env) ? (int)$env : 6379;
 
-        $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('pages');
+        $frontendMock = $this->createMock(FrontendInterface::class);
+        $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $GLOBALS['TYPO3_CONF_VARS']['LOG'] = 'only needed for logger initialisation';
         $subject = new RedisBackend('Testing', $backendOptions);
-        $subject->setLogger($this->prophesize(LoggerInterface::class)->reveal());
-        $subject->setCache($frontendProphecy->reveal());
+        $subject->setLogger($this->createMock(LoggerInterface::class));
+        $subject->setCache($frontendMock);
         $subject->initializeObject();
         $subject->flush();
         return $subject;

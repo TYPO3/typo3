@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Icon\IconState;
@@ -29,8 +27,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IconViewHelperTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected bool $initializeDatabase = false;
 
     /**
@@ -38,11 +34,13 @@ class IconViewHelperTest extends FunctionalTestCase
      */
     public function renderCallsIconFactoryWithDefaultSizeAndDefaultStateAndReturnsResult(): void
     {
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-        $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+            ->with('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))
+            ->willReturn($iconMock);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="default" />');
@@ -54,11 +52,13 @@ class IconViewHelperTest extends FunctionalTestCase
      */
     public function renderCallsIconFactoryWithGivenSizeAndReturnsResult(): void
     {
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-        $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+            ->with('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))
+            ->willReturn($iconMock);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" />');
@@ -70,11 +70,13 @@ class IconViewHelperTest extends FunctionalTestCase
      */
     public function renderCallsIconFactoryWithGivenStateAndReturnsResult(): void
     {
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-        $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+            ->with('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))
+            ->willReturn($iconMock);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="disabled" />');
@@ -86,11 +88,13 @@ class IconViewHelperTest extends FunctionalTestCase
      */
     public function renderCallsIconFactoryWithGivenOverlayAndReturnsResult(): void
     {
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconFactoryProphecy->getIcon('myIdentifier', Argument::any(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-        $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+            ->with('myIdentifier', self::anything(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))
+            ->willReturn($iconMock);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');

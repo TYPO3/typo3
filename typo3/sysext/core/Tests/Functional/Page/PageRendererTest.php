@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\NullLogger;
@@ -43,8 +41,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PageRendererTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
     protected bool $initializeDatabase = false;
 
     protected function createPageRenderer(): PageRenderer
@@ -452,12 +448,12 @@ class PageRendererTest extends FunctionalTestCase
      */
     public function pageRendererMergesRequireJsPackagesOnConsecutiveCalls(): void
     {
-        $sessionBackend = $this->prophesize(SessionBackendInterface::class);
-        $sessionBackend->update(Argument::cetera())->willReturn([]);
+        $sessionBackend = $this->createMock(SessionBackendInterface::class);
+        $sessionBackend->method('update')->with(self::anything())->willReturn([]);
         $userSessionManager = new UserSessionManager(
-            $sessionBackend->reveal(),
+            $sessionBackend,
             86400,
-            $this->prophesize(IpLocker::class)->reveal()
+            $this->createMock(IpLocker::class)
         );
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);
