@@ -17,22 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteConfigurationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     protected ?SiteConfiguration $siteConfiguration;
@@ -52,17 +48,10 @@ class SiteConfigurationTest extends UnitTestCase
             GeneralUtility::mkdir_deep($this->fixturePath);
         }
         $this->testFilesToDelete[] = $basePath;
-        $coreCacheProphecy = $this->prophesize(PhpFrontend::class);
-        $coreCacheProphecy->require(Argument::any())->willReturn(false);
-        $coreCacheProphecy->set(Argument::any(), Argument::any())->willReturn(null);
-        $coreCacheProphecy->remove(Argument::any(), Argument::any())->willReturn(null);
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
-
         $this->siteConfiguration = new SiteConfiguration(
             $this->fixturePath,
-            $eventDispatcher->reveal(),
-            $coreCacheProphecy->reveal()
+            new NoopEventDispatcher(),
+            new NullFrontend('test')
         );
     }
 
