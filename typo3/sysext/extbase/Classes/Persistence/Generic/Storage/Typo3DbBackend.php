@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -82,18 +81,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         try {
             $connection = $this->connectionPool->getConnectionForTable($tableName);
-
-            $types = [];
-            $platform = $connection->getDatabasePlatform();
-            if ($platform instanceof PostgreSQLPlatform) {
-                // postgres needs to set proper PARAM_LOB and others to update fields.
-                $tableDetails = $connection->createSchemaManager()->listTableDetails($tableName);
-                foreach ($fieldValues as $columnName => $columnValue) {
-                    $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
-                }
-            }
-
-            $connection->insert($tableName, $fieldValues, $types);
+            $connection->insert($tableName, $fieldValues);
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230766, $e);
         }
@@ -127,19 +115,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
         try {
             $connection = $this->connectionPool->getConnectionForTable($tableName);
-
-            $types = [];
-            $platform = $connection->getDatabasePlatform();
-            if ($platform instanceof PostgreSQLPlatform) {
-                // postgres needs to set proper PARAM_LOB and others to update fields.
-                $tableDetails = $connection->createSchemaManager()->listTableDetails($tableName);
-                foreach ($fieldValues as $columnName => $columnValue) {
-                    $columnName = (string)$columnName;
-                    $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
-                }
-            }
-
-            $connection->update($tableName, $fieldValues, ['uid' => $uid], $types);
+            $connection->update($tableName, $fieldValues, ['uid' => $uid]);
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230767, $e);
         }

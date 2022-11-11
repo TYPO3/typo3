@@ -50,6 +50,7 @@ class ConnectionTest extends UnitTestCase
             ->onlyMethods(
                 [
                     'connect',
+                    'ensureDatabaseValueTypes',
                     'executeQuery',
                     'executeUpdate',
                     'executeStatement',
@@ -196,18 +197,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
-        // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
-        if (method_exists(Connection::class, 'executeStatement')) {
-            $this->connection->expects(self::once())
-                ->method('executeStatement')
-                ->with($expectedQuery, $expectedValues, $expectedTypes)
-                ->willReturn(1);
-        } else {
-            $this->connection->expects(self::once())
-                ->method('executeUpdate')
-                ->with($expectedQuery, $expectedValues, $expectedTypes)
-                ->willReturn(1);
-        }
+        $this->connection->expects(self::once())
+            ->method('executeStatement')
+            ->with($expectedQuery, $expectedValues, $expectedTypes)
+            ->willReturn(1);
 
         $this->connection->insert(...$args);
     }

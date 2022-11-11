@@ -68,7 +68,9 @@ class ClearCacheService
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach (self::legacyDatabaseCacheTables as $tableName) {
             $connection = $connectionPool->getConnectionForTable($tableName);
-            $connection->truncate($tableName);
+            if ($connection->createSchemaManager()->tablesExist($tableName)) {
+                $connection->truncate($tableName);
+            }
         }
 
         // Flush all caches defined in TYPO3_CONF_VARS, but not the ones defined by extensions in ext_localconf.php

@@ -24,9 +24,12 @@ use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Result;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Schema\SchemaInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterface
@@ -196,6 +199,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function insert($tableName, array $data, array $types = []): int
     {
+        $this->ensureDatabaseValueTypes($tableName, $data, $types);
         return parent::insert(
             $this->quoteIdentifier($tableName),
             $this->quoteColumnValuePairs($data),
@@ -219,6 +223,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     {
         $query = GeneralUtility::makeInstance(BulkInsertQuery::class, $this, $tableName, $columns);
         foreach ($data as $values) {
+            $this->ensureDatabaseValueTypes($tableName, $values, $types);
             $query->addValues($values, $types);
         }
 
@@ -287,6 +292,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function update($tableName, array $data, array $identifier, array $types = []): int
     {
+        $this->ensureDatabaseValueTypes($tableName, $data, $types);
         return parent::update(
             $this->quoteIdentifier($tableName),
             $this->quoteColumnValuePairs($data),
@@ -437,5 +443,38 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     public function getExpressionBuilder()
     {
         return $this->_expr;
+    }
+
+    /**
+     * This method ensures that data values a properly converted to their database equivalent.
+     * Additionally, it adds the proper types to the type-array, if this has no manual preset types.
+     * Note: Types are *only* added if not given externally.
+     *
+     * @internal Should be private, but mocked in tests currently.
+     */
+    protected function ensureDatabaseValueTypes(string $tableName, array &$data, array &$types): void
+    {
+        // If types are incoming already (meaning they're hand over to insert() for instance), don't auto-set them.
+        $setAllTypes = $types === [];
+        $tableDetails = $this->getSchemaInformation()->introspectTable($tableName);
+        array_walk($data, function (&$value, $key) use ($tableDetails, $setAllTypes, &$types) {
+            if ($tableDetails->hasColumn($key)) {
+                $type = $tableDetails->getColumn($key)->getType();
+                if ($setAllTypes) {
+                    $types[$key] = $type->getBindingType();
+                }
+                $value = $this->convertToDatabaseValue($value, $type->getName());
+            }
+        });
+    }
+
+    /**
+     * @internal May vanish anytime, currently used core-internal at some places.
+     */
+    public function getSchemaInformation(): SchemaInformation
+    {
+        /** @var PhpFrontend $coreCache */
+        $coreCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
+        return new SchemaInformation($this, $coreCache);
     }
 }

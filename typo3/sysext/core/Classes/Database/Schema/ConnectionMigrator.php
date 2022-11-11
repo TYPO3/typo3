@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\ClearCacheService;
 
 /**
  * Handling schema migrations per connection.
@@ -182,7 +183,7 @@ class ConnectionMigrator
                 $result[$statement] = $e->getPrevious()->getMessage();
             }
         }
-
+        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
         return $result;
     }
 

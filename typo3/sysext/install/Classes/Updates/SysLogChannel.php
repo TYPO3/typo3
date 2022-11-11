@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\ClearCacheService;
 
 class SysLogChannel implements UpgradeWizardInterface
 {
@@ -60,9 +61,9 @@ END;
         }
 
         // Ensure the level field is a varchar, otherwise we are in trouble when logging into TYPO3 Backend.
-        $schema = $this->sysLogTable->createSchemaManager();
-        $table = $schema->listTableDetails('sys_log');
+        $table = $this->sysLogTable->getSchemaInformation()->introspectTable('sys_log');
         if (!$table->getColumn('level')->getType() instanceof StringType) {
+            $schema = $this->sysLogTable->createSchemaManager();
             $schema->alterTable(new TableDiff(
                 'sys_log',
                 [],
@@ -73,6 +74,7 @@ END;
                 [],
                 $table
             ));
+            GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
         }
 
         $statement = $this->sysLogTable->prepare('UPDATE sys_log SET level = ? WHERE type = ?');

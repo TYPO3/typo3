@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -676,28 +675,11 @@ class DataHandlerHook
         // Execute swapping:
         $sqlErrors = [];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-
-        $platform = $connection->getDatabasePlatform();
-        $tableDetails = null;
-        if ($platform instanceof PostgreSQLPlatform) {
-            // postgres needs to set proper PARAM_LOB and others to update fields.
-            $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
-        }
-
         try {
-            $types = [];
-
-            if ($platform instanceof PostgreSQLPlatform) {
-                foreach ($curVersion as $columnName => $columnValue) {
-                    $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
-                }
-            }
-
             $connection->update(
                 $table,
                 $swapVersion,
-                ['uid' => (int)$id],
-                $types
+                ['uid' => (int)$id]
             );
         } catch (DBALException $e) {
             $sqlErrors[] = $e->getPrevious()->getMessage();
@@ -705,18 +687,10 @@ class DataHandlerHook
 
         if (empty($sqlErrors)) {
             try {
-                $types = [];
-                if ($platform instanceof PostgreSQLPlatform) {
-                    foreach ($curVersion as $columnName => $columnValue) {
-                        $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
-                    }
-                }
-
                 $connection->update(
                     $table,
                     $curVersion,
-                    ['uid' => (int)$swapWith],
-                    $types
+                    ['uid' => (int)$swapWith]
                 );
             } catch (DBALException $e) {
                 $sqlErrors[] = $e->getPrevious()->getMessage();

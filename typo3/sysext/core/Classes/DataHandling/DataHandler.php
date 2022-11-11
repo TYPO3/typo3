@@ -7557,23 +7557,11 @@ class DataHandler implements LoggerAwareInterface
             unset($fieldArray['uid']);
             if (!empty($fieldArray)) {
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
-
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-
-                $types = [];
-                $platform = $connection->getDatabasePlatform();
-                if ($platform instanceof PostgreSQLPlatform) {
-                    // postgres needs to set proper PARAM_LOB and others to update fields.
-                    $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
-                    foreach ($fieldArray as $columnName => $columnValue) {
-                        $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
-                    }
-                }
-
-                // Execute the UPDATE query:
                 $updateErrorMessage = '';
                 try {
-                    $connection->update($table, $fieldArray, ['uid' => (int)$id], $types);
+                    // Execute the UPDATE query:
+                    $connection->update($table, $fieldArray, ['uid' => (int)$id]);
                 } catch (DBALException $e) {
                     $updateErrorMessage = $e->getPrevious()->getMessage();
                 }
@@ -7647,21 +7635,11 @@ class DataHandler implements LoggerAwareInterface
                     $fieldArray['uid'] = $suggestedUid;
                 }
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
-                $typeArray = [];
-                if (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'])
-                    && array_key_exists($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'], $fieldArray)
-                ) {
-                    $typeArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = Connection::PARAM_LOB;
-                }
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
                 $insertErrorMessage = '';
                 try {
                     // Execute the INSERT query:
-                    $connection->insert(
-                        $table,
-                        $fieldArray,
-                        $typeArray
-                    );
+                    $connection->insert($table, $fieldArray);
                 } catch (DBALException $e) {
                     $insertErrorMessage = $e->getPrevious()->getMessage();
                 }
@@ -8303,7 +8281,7 @@ class DataHandler implements LoggerAwareInterface
             ->fetchAssociative();
         // If the current record exists (which it should...), begin comparison:
         if (is_array($currentRecord)) {
-            $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
+            $tableDetails = $connection->getSchemaInformation()->introspectTable($table);
             $columnRecordTypes = [];
             foreach ($currentRecord as $columnName => $_) {
                 $columnRecordTypes[$columnName] = '';

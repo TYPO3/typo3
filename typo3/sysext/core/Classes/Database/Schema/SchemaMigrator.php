@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\ClearCacheService;
 
 /**
  * Helper methods to handle SQL files and transform them into individual statements
@@ -146,7 +147,7 @@ class SchemaMigrator
                 }
             }
         }
-
+        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
         return $result;
     }
 

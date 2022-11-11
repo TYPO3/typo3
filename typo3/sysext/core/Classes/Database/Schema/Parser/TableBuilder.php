@@ -94,12 +94,7 @@ class TableBuilder
         // been established yet so the types would not be available
         // when building tables/columns.
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        foreach ($connectionPool->getCustomDoctrineTypes() as $type => $className) {
-            if (!Type::hasType($type)) {
-                Type::addType($type, $className);
-            }
-        }
+        $connectionPool->registerDoctrineTypes();
         $this->platform = $platform ?: GeneralUtility::makeInstance(MySQLPlatform::class);
     }
 
@@ -377,8 +372,7 @@ class TableBuilder
                 $doctrineType = SetType::TYPE;
                 break;
             case JsonDataType::class:
-                // JSON is not supported in Doctrine 2.5, mapping to the more generic TEXT type
-                $doctrineType = Types::TEXT;
+                $doctrineType = Types::JSON;
                 break;
             case YearDataType::class:
                 // The YEAR data type is MySQL specific and offers little to no benefit.

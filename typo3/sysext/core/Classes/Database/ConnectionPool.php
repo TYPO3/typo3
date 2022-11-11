@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as PDOMySqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as PDOPgSqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as PDOSqliteDriver;
@@ -27,8 +28,11 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaIndexDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
+use TYPO3\CMS\Core\Database\Schema\Types\DateType;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
+use TYPO3\CMS\Core\Database\Schema\Types\TimeType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -54,11 +58,20 @@ class ConnectionPool
     protected static $connections = [];
 
     /**
-     * @var array
+     * @var array<non-empty-string,class-string>
      */
-    protected $customDoctrineTypes = [
+    protected array $customDoctrineTypes = [
         EnumType::TYPE => EnumType::class,
         SetType::TYPE => SetType::class,
+    ];
+
+    /**
+     * @var array<non-empty-string,class-string>
+     */
+    protected array $overrideDoctrineTypes = [
+        Types::DATE_MUTABLE => DateType::class,
+        Types::DATETIME_MUTABLE => DateTimeType::class,
+        Types::TIME_MUTABLE => TimeType::class,
     ];
 
     /**
@@ -177,6 +190,8 @@ class ConnectionPool
      */
     protected function getDatabaseConnection(array $connectionParams): Connection
     {
+        $this->registerDoctrineTypes();
+
         // Default to UTF-8 connection charset
         if (empty($connectionParams['charset'])) {
             $connectionParams['charset'] = 'utf8';
@@ -188,15 +203,13 @@ class ConnectionPool
         $conn = DriverManager::getConnection($connectionParams);
         $conn->prepareConnection($connectionParams['initCommands'] ?? '');
 
-        // Register custom data types
-        foreach ($this->customDoctrineTypes as $type => $className) {
-            if (!Type::hasType($type)) {
-                Type::addType($type, $className);
-            }
-        }
-
         // Register all custom data types in the type mapping
         foreach ($this->customDoctrineTypes as $type => $className) {
+            $conn->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
+        }
+
+        // Register all override data types in the type mapping
+        foreach ($this->overrideDoctrineTypes as $type => $className) {
             $conn->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
         }
 
@@ -253,21 +266,34 @@ class ConnectionPool
     }
 
     /**
-     * Returns the list of custom Doctrine data types implemented by TYPO3.
-     * This method is needed by the Schema parser to register the types as it
-     * does not require a database connection and thus the types don't get
-     * registered automatically.
+     * Register custom and override Doctrine data types implemented by TYPO3.
+     * This method is needed by Schema parser to register the types as it does
+     * not require a database connection and thus the types don't get registered
+     * automatically.
      *
      * @internal
      */
-    public function getCustomDoctrineTypes(): array
+    public function registerDoctrineTypes(): void
     {
-        return $this->customDoctrineTypes;
+        // Register custom data types
+        foreach ($this->customDoctrineTypes as $type => $className) {
+            if (!Type::hasType($type)) {
+                Type::addType($type, $className);
+            }
+        }
+        // Override data types
+        foreach ($this->overrideDoctrineTypes as $type => $className) {
+            if (!Type::hasType($type)) {
+                Type::addType($type, $className);
+                continue;
+            }
+            Type::overrideType($type, $className);
+        }
     }
 
     /**
      * Reset internal list of connections.
-     * Currently primarily used in functional tests to close connections and start
+     * Currently, primarily used in functional tests to close connections and start
      * new ones in between single tests.
      */
     public function resetConnections(): void
