@@ -191,7 +191,6 @@ class DashboardController
     protected function preparePageRenderer(): void
     {
         $this->pageRenderer->loadJavaScriptModule('muuri');
-        $this->pageRenderer->loadJavaScriptModule('web-animate');
         $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/grid.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-content-collector.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-selector.js');
