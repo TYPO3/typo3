@@ -51,7 +51,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    <f:cObject typoscriptObjectPath="lib.someLibObject" />
  *
- * Rendered :ts:`lib.someLibObject`.
+ * Rendered :typoscript:`lib.someLibObject`.
  *
  * Specify cObject data & current value
  * ------------------------------------
@@ -60,7 +60,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" currentValueKey="title" />
  *
- * Rendered :ts:`lib.customHeader`. Data and current value will be available in TypoScript.
+ * Rendered :typoscript:`lib.customHeader`. Data and current value will be available in TypoScript.
  *
  * Inline notation
  * ---------------
@@ -69,12 +69,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    {article -> f:cObject(typoscriptObjectPath: 'lib.customHeader')}
  *
- * Rendered :ts:`lib.customHeader`. Data will be available in TypoScript.
+ * Rendered :typoscript:`lib.customHeader`. Data will be available in TypoScript.
  *
  * Accessing the data in TypoScript
  * --------------------------------
  *
- * ::
+ * .. code-block:: typoscript
  *
  *    lib.customHeader = COA
  *    lib.customHeader {
@@ -84,8 +84,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *        20.current = 1
  *    }
  *
- * When passing an object with ``{data}``, the properties of the object are accessible with :ts:`.field` in
- * TypoScript. If only a single value is passed or the ``currentValueKey`` is specified, :ts:`.current = 1`
+ * When passing an object with ``{data}``, the properties of the object are accessible with :typoscript:`.field` in
+ * TypoScript. If only a single value is passed or the ``currentValueKey`` is specified, :typoscript:`.current = 1`
  * can be used in the TypoScript.
  */
 final class CObjectViewHelper extends AbstractViewHelper
