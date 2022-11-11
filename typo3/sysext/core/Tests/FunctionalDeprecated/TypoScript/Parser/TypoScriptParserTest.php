@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\Parser;
+namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript\Parser;
 
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;

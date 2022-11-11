@@ -20,12 +20,14 @@ namespace TYPO3\CMS\Info\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -59,23 +61,30 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
 
         if ((int)$moduleData->get('tsconf_parts') === 99) {
             $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
-            /** @var array<string, string> $TSparts */
-            $TSparts = GeneralUtility::makeInstance(PageTsConfigLoader::class)->collect($rootLine);
+
+            $tsConfigTreeBuilder = GeneralUtility::makeInstance(TsConfigTreeBuilder::class);
+            $pageTsConfigTree = $tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
+            // @todo: This is a bit dusty. It would be better to render the full tree similar to
+            //        tstemplate Template Analyzer. For now, we simply create an array with the
+            //        to-string'ed content and render this.
+            $TSparts = [];
+            foreach ($pageTsConfigTree->getNextChild() as $child) {
+                $lineStream = $child->getLineStream();
+                if ($lineStream instanceof LineStream) {
+                    $TSparts[$child->getName()] = (string)$lineStream;
+                }
+            }
+
             $lines = [];
             $pUids = [];
 
             foreach ($TSparts as $key => $value) {
-                $line = [];
-                if ($key === 'global') {
-                    $title = $this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_global');
-                    $line['title'] = $title;
-                } elseif ($key === 'default') {
-                    $title = $this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default');
-                    $line['title'] = $title;
-                } else {
-                    // Remove the "page_" prefix
-                    [, $pageId] = explode('_', $key, 3);
-                    $pageId = (int)$pageId;
+                $title = $key;
+                $line = [
+                    'title' => $key,
+                ];
+                if (str_starts_with($key, 'pagesTsConfig-page-')) {
+                    $pageId = (int)explode('-', $key)[2];
                     $pUids[] = $pageId;
                     $row = BackendUtility::getRecordWSOL('pages', $pageId);
                     $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);

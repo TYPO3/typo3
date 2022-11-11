@@ -15,11 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Configuration\Loader;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageTsConfigLoaderTest extends UnitTestCase
@@ -69,17 +70,15 @@ class PageTsConfigLoaderTest extends UnitTestCase
     public function loadExternalInclusionsCorrectlyAndKeepLoadingOrder(): void
     {
         $expected = [
+            'global' => '',
             'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'],
             'page_13_includes_0' => 'Show_me = more
 ',
             'page_13' => 'waiting for = love',
             'page_27' => '',
         ];
-        $rootLine = [['uid' => 13, 'TSconfig' => 'waiting for = love', 'tsconfig_includes' => 'EXT:core/Tests/Unit/Configuration/Loader/Fixtures/included.typoscript'], ['uid' => 27, 'TSconfig' => '']];
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $event = new ModifyLoadedPageTsConfigEvent($expected, $rootLine);
-        $eventDispatcherMock->method('dispatch')->with(self::isInstanceOf(ModifyLoadedPageTsConfigEvent::class))->willReturn($event);
-        $subject = new PageTsConfigLoader($eventDispatcherMock);
+        $rootLine = [['uid' => 13, 'TSconfig' => 'waiting for = love', 'tsconfig_includes' => 'EXT:core/Tests/UnitDeprecated/Configuration/Loader/Fixtures/included.typoscript'], ['uid' => 27, 'TSconfig' => '']];
+        $subject = new PageTsConfigLoader(new NoopEventDispatcher());
         $result = $subject->collect($rootLine);
         self::assertSame($expected, $result);
     }
@@ -90,16 +89,14 @@ class PageTsConfigLoaderTest extends UnitTestCase
     public function invalidExternalFileIsNotLoaded(): void
     {
         $expected = [
+            'global' => '',
             'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'],
             'page_13' => 'waiting for = love',
             'page_27' => '',
         ];
         $expectedString = implode("\n[GLOBAL]\n", $expected);
-        $rootLine = [['uid' => 13, 'TSconfig' => 'waiting for = love', 'tsconfig_includes' => 'EXT:core/Tests/Unit/Configuration/Loader/Fixtures/me_does_not_exist.typoscript'], ['uid' => 27, 'TSconfig' => '']];
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $event = new ModifyLoadedPageTsConfigEvent($expected, $rootLine);
-        $eventDispatcherMock->method('dispatch')->with(self::isInstanceOf(ModifyLoadedPageTsConfigEvent::class))->willReturn($event);
-        $subject = new PageTsConfigLoader($eventDispatcherMock);
+        $rootLine = [['uid' => 13, 'TSconfig' => 'waiting for = love', 'tsconfig_includes' => 'EXT:core/Tests/UnitDeprecated/Configuration/Loader/Fixtures/me_does_not_exist.typoscript'], ['uid' => 27, 'TSconfig' => '']];
+        $subject = new PageTsConfigLoader(new NoopEventDispatcher());
         $result = $subject->collect($rootLine);
         self::assertSame($expected, $result);
 

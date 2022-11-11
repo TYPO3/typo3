@@ -50,6 +50,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return [
             'middlewares' => [ static::class, 'configureMiddlewares' ],
             'backend.routes' => [ static::class, 'configureBackendRoutes' ],
+            // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
             'globalPageTsConfig' => [ static::class, 'configureGlobalPageTsConfig' ],
             'backend.modules' => [ static::class, 'configureBackendModules' ],
             'icons' => [ static::class, 'configureIcons' ],
@@ -110,6 +111,9 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return $routes;
     }
 
+    /**
+     * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
+     */
     public static function configureGlobalPageTsConfig(ContainerInterface $container, ArrayObject $tsConfigFiles, string $path = null): ArrayObject
     {
         $path = $path ?? static::getPackagePath();

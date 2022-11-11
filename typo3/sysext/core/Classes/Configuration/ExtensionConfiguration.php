@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExis
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -249,7 +248,7 @@ class ExtensionConfiguration
     {
         $rawConfigurationString = $this->getDefaultConfigurationRawString($extensionKey);
         $typoScriptStringFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
-        $typoScriptTree = $typoScriptStringFactory->parseFromString($rawConfigurationString, new LossyTokenizer(), new AstBuilder(new NoopEventDispatcher()));
+        $typoScriptTree = $typoScriptStringFactory->parseFromString($rawConfigurationString, new AstBuilder(new NoopEventDispatcher()));
         return GeneralUtility::removeDotsFromTS($typoScriptTree->toArray());
     }
 

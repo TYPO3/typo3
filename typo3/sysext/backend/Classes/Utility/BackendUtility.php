@@ -20,7 +20,7 @@ use Doctrine\DBAL\Types\Type;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -28,7 +28,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -55,8 +54,11 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\TypoScript\PageTsConfig;
+use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -687,27 +689,40 @@ class BackendUtility
      * TypoScript related
      *
      *******************************************/
+
     /**
-     * Returns the Page TSconfig for page with id, $id
-     *
-     * @param int $id Page uid for which to create Page TSconfig
-     * @return array Page TSconfig
+     * Returns the PageTsConfig for page with uid $pageUid
      */
-    public static function getPagesTSconfig($id)
+    public static function getPagesTSconfig($pageUid): array
     {
-        $id = (int)$id;
-        $rootLine = self::BEgetRootLine($id, '', true);
+        $runtimeCache = static::getRuntimeCache();
+        $pageTsConfig = $runtimeCache->get('pageTsConfig-' . $pageUid);
+        if ($pageTsConfig instanceof PageTsConfig) {
+            return $pageTsConfig->getPageTsConfigArray();
+        }
+
+        $pageUid = (int)$pageUid;
+        $rootLine = self::BEgetRootLine($pageUid, '', true);
         // Order correctly
         ksort($rootLine);
 
         try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($id);
-        } catch (SiteNotFoundException $exception) {
-            $site = null;
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageUid);
+        } catch (SiteNotFoundException) {
+            $site = new NullSite();
         }
-        $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, GeneralUtility::makeInstance(Context::class), $id, $rootLine);
-        $tsConfig = GeneralUtility::makeInstance(PageTsConfig::class);
-        return $tsConfig->getWithUserOverride($id, $rootLine, $site, $matcher, static::getBackendUserAuthentication());
+
+        $conditionMatcher = GeneralUtility::makeInstance(BackendConditionMatcher::class, GeneralUtility::makeInstance(Context::class), $pageUid, $rootLine);
+        $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
+        $pageTsConfig = $pageTsConfigFactory->create(
+            $rootLine,
+            $site,
+            $conditionMatcher,
+            static::getBackendUserAuthentication()?->getUserTsConfig()
+        );
+
+        $runtimeCache->set('pageTsConfig-' . $pageUid, $pageTsConfig);
+        return $pageTsConfig->getPageTsConfigArray();
     }
 
     /*******************************************

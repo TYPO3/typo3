@@ -5407,4 +5407,11 @@ return [
             'Deprecation-99170-ConfigbaseURLAndBaseTagFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPagesTSconfig' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+        ],
+    ],
 ];

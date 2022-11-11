@@ -732,9 +732,7 @@ class ExtensionManagementUtility
      */
     public static function addPageTSConfig(string $content): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= '
-[GLOBAL]
-' . $content;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= chr(10) . $content;
     }
 
     /**
@@ -746,9 +744,7 @@ class ExtensionManagementUtility
      */
     public static function addUserTSConfig(string $content): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
-[GLOBAL]
-' . $content;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= chr(10) . $content;
     }
 
     /**

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript;
 
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
@@ -38,6 +39,7 @@ final class TypoScriptStringFactory
 {
     public function __construct(
         private readonly ContainerInterface $container,
+        private readonly TokenizerInterface $tokenizer,
     ) {
     }
 
@@ -46,11 +48,15 @@ final class TypoScriptStringFactory
      *
      * @param non-empty-string $name A name used as cache identifier, [a-z,A-Z,-] only
      */
-    public function parseFromStringWithIncludesAndConditions(string $name, string $typoScript, TokenizerInterface $tokenizer, ConditionMatcherInterface $conditionMatcher, ?PhpFrontend $cache = null): RootNode
+    public function parseFromStringWithIncludesAndConditions(string $name, string $typoScript, ConditionMatcherInterface $conditionMatcher): RootNode
     {
+        /** @var CacheManager $cacheManager */
+        $cacheManager = $this->container->get(CacheManager::class);
+        /** @var PhpFrontend $cache */
+        $cache = $cacheManager->getCache('typoscript');
         /** @var StringTreeBuilder $stringTreeBuilder */
         $stringTreeBuilder = $this->container->get(StringTreeBuilder::class);
-        $includeTree = $stringTreeBuilder->getTreeFromString($name, $typoScript, $tokenizer, $cache);
+        $includeTree = $stringTreeBuilder->getTreeFromString($name, $typoScript, $this->tokenizer, $cache);
         $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
         $conditionMatcherVisitor->setConditionMatcher($conditionMatcher);
         $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
@@ -64,13 +70,13 @@ final class TypoScriptStringFactory
 
     /**
      * Parse a single string *not* supporting imports, conditions and caching.
-     * Used in install tool context only.
+     * Detail method used in install tool and in a couple of other special cases.
      *
      * @internal
      */
-    public function parseFromString(string $typoScript, TokenizerInterface $tokenizer, AstBuilderInterface $astBuilder): RootNode
+    public function parseFromString(string $typoScript, AstBuilderInterface $astBuilder): RootNode
     {
-        $lineStream = $tokenizer->tokenize($typoScript);
+        $lineStream = $this->tokenizer->tokenize($typoScript);
         return $astBuilder->build($lineStream, new RootNode());
     }
 }

@@ -32,8 +32,7 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 /**
  * The TypoScript parser.
  *
- * @deprecated This class should not be used anymore, last core usages will be removed during v12.
- *             Using methods or properties of this class will start logging deprecation messages.
+ * @deprecated This class should not be used anymore. Switch to the new parser construct instead.
  */
 class TypoScriptParser
 {
@@ -149,6 +148,11 @@ class TypoScriptParser
      * @var int
      */
     public $lineNumberOffset = 0;
+
+    public function __construct()
+    {
+        trigger_error('Class ' . __CLASS__ . ' will be removed with TYPO3 v13.0. Use the new parser structure instead.', E_USER_DEPRECATED);
+    }
 
     /**
      * Start parsing the input TypoScript text piece. The result is stored in $this->setup

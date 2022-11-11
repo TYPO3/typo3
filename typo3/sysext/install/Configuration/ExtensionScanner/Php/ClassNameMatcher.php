@@ -2208,4 +2208,29 @@ return [
             'Breaking-97816-NewTypoScriptParserInFrontend.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser' => [
+        'restFiles' => [
+            'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader' => [
+        'restFiles' => [
+            'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\PageTsConfig' => [
+        'restFiles' => [
+            'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser' => [
+        'restFiles' => [
+            'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent' => [
+        'restFiles' => [
+            'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+        ],
+    ],
 ];

@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TestTyposcriptPagetsconfigfactory\EventListener\ModifyLoadedPageTsConfig:
+    tags:
+      - name: event.listener
+        identifier: 'typo3tests-test-typoscript-pagetsconfigfactory-event/modify-loaded-page-tsconfig'
+
+  # @deprecated since v12, remove along with 'legacy' event class in v13.
+  TYPO3Tests\TestTyposcriptPagetsconfigfactory\EventListener\LegacyModifyLoadedPageTsConfig:
+    tags:
+      - name: event.listener
+        identifier: 'typo3tests-test-typoscript-pagetsconfigfactory-event/legacy-modify-loaded-page-tsconfig'

@@ -1,0 +1,15 @@
+"be_users"
+,"uid","pid","username","admin","usergroup","TSconfig"
+,1,0,"user1",0,,
+,2,0,"user2",0,,"loadedFromUser = loadedFromUser"
+,3,0,"user3",0,"1",
+,4,0,"user4",0,"1,2",
+,5,0,"user5",1,,"isHttps = off
+[request.getNormalizedParams().isHttps()]
+  isHttps = on
+[end]
+"
+"be_groups"
+,"uid","pid","title","TSconfig"
+,1,0,"group1","loadedFromUserGroup = loadedFromUserGroup"
+,2,0,"group2","loadedFromUserGroup = loadedFromUserGroupOverride"

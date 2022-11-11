@@ -34,6 +34,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * Currently, this accumulated information of the pages is NOT cached, as it would need to be tagged with any
  * page, also including external files.
+ *
+ * @deprecated since TYPO3 v12, will be removed with v13. Use PageTsConfigFactory instead.
+ *             When removing, also remove entries in core ServiceProvider, AbstractServiceProvider and Services.yaml.
  */
 class PageTsConfigLoader
 {
@@ -42,6 +45,7 @@ class PageTsConfigLoader
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
+        trigger_error('Class ' . __CLASS__ . ' will be removed with TYPO3 v13.0. Use PageTsConfigFactory instead.', E_USER_DEPRECATED);
         $this->eventDispatcher = $eventDispatcher;
     }
 

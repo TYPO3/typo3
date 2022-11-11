@@ -26,6 +26,9 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
  * Main entry point for fetching PageTsConfig for frontend and backend.
+ *
+ * @deprecated since TYPO3 v12, will be removed with v13. Use PageTsConfigFactory instead.
+ *             When removing, also remove entries in core Services.yaml and usage in TypoScriptFrontendController.
  */
 class PageTsConfig
 {
@@ -35,6 +38,7 @@ class PageTsConfig
 
     public function __construct(FrontendInterface $cache, PageTsConfigLoader $loader, PageTsConfigParser $parser)
     {
+        trigger_error('Class ' . __CLASS__ . ' will be removed with TYPO3 v13.0. Use PageTsConfigFactory instead.', E_USER_DEPRECATED);
         $this->cache = $cache;
         $this->loader = $loader;
         $this->parser = $parser;

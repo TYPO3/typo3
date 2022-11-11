@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\TypoScript\Parser;
 
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -466,34 +466,34 @@ class TypoScriptParserTest extends UnitTestCase
         return [
             'Found include file as single file is imported' => [
                 // Input TypoScript
-                '@import "EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript"'
+                '@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript"'
                 ,
                 // Expected
                 '
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
 test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
 ',
             ],
             'Found include file is imported' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
 test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
 ',
             ],
             'Not found file is not imported' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/notfoundfile.typoscript"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/notfoundfile.typoscript"
 '
                 ,
                 // Expected
@@ -501,138 +501,138 @@ test.Core.TypoScript = 1
 bennilove = before
 
 ###
-### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/Unit/TypoScript/Fixtures/notfoundfile.typoscript".
+### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/notfoundfile.typoscript".
 ###
 ',
             ],
             'All files with glob are imported' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript*"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript*"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
 test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
 ',
             ],
             'Specific file with typoscript ending is imported' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 ',
             ],
             'All files in folder are imported, sorted by name' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
 test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
 
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
 
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 ',
             ],
             'All files ending with typoscript in folder are imported' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/*typoscript"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/*typoscript"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
 test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
 
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
 
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 ',
             ],
             'All typoscript files in folder are imported' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/*.typoscript"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/*.typoscript"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' begin ###
 test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/ext_typoscript_setup.typoscript\' end ###
 
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
 
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 ',
             ],
             'All typoscript files in folder with glob are not imported due to recursion level=0' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/**/*.typoscript"
+@import "EXT:core/Tests/UnitDeprecated/**/*.typoscript"
 '
                 ,
                 // Expected
@@ -640,24 +640,24 @@ test.TYPO3Forever.TypoScript = 1
 bennilove = before
 
 ###
-### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/Unit/**/*.typoscript".
+### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/UnitDeprecated/**/*.typoscript".
 ###
 ',
             ],
             'TypoScript file ending is automatically added' => [
                 // Input TypoScript
                 'bennilove = before
-@import "EXT:core/Tests/Unit/TypoScript/Fixtures/setup"
+@import "EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup"
 '
                 ,
                 // Expected
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
+### @import \'EXT:core/Tests/UnitDeprecated/TypoScript/Fixtures/setup.typoscript\' end ###
 ',
             ],
         ];

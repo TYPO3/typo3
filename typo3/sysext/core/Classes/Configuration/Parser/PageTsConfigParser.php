@@ -27,6 +27,9 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
  *
  * This class does parsing of a compiled TSconfig string, and applies matching() based on the
  * Context (FE or BE) in it, allowing to be fully agnostic to the outside world.
+ *
+ * @deprecated since TYPO3 v12, will be removed with v13. Use PageTsConfigFactory instead.
+ *             When removing, also remove entries in core Services.yaml.
  */
 class PageTsConfigParser
 {
@@ -35,6 +38,7 @@ class PageTsConfigParser
 
     public function __construct(TypoScriptParser $typoScriptParser, FrontendInterface $cache)
     {
+        trigger_error('Class ' . __CLASS__ . ' will be removed with TYPO3 v13.0. Use PageTsConfigFactory instead.', E_USER_DEPRECATED);
         $this->typoScriptParser = $typoScriptParser;
         $this->cache = $cache;
     }

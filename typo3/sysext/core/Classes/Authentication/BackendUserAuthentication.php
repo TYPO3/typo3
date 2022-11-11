@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -46,7 +45,8 @@ use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\UserTsConfig;
+use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -111,15 +111,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public $workspaceRec = [];
 
-    /**
-     * @var array Parsed user TSconfig
-     */
-    protected $userTS = [];
+    protected ?UserTsConfig $userTsConfig = null;
 
     /**
-     * @var bool True if the user TSconfig was parsed and needs to be cached.
+     * True if the user TSconfig was parsed and needs to be cached.
+     * @todo: Should vanish, see todo below.
      */
-    protected $userTSUpdated = false;
+    protected bool $userTSUpdated = false;
 
     /**
      * Contains last error message
@@ -968,9 +966,19 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @return array Parsed and merged user TSconfig array
      */
-    public function getTSConfig()
+    public function getTSConfig(): array
     {
-        return $this->userTS;
+        return $this->getUserTsConfig()?->getUserTsConfigArray() ?? [];
+    }
+
+    /**
+     * Return the full UserTsConfig object instead of just the array as in getTSConfig()
+     *
+     * @internal for now until API stabilized
+     */
+    public function getUserTsConfig(): ?UserTsConfig
+    {
+        return $this->userTsConfig;
     }
 
     /**
@@ -1058,7 +1066,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Generally this is required initialization of a backend user.
      *
      * @internal
-     * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
     public function fetchGroupData()
     {
@@ -1133,8 +1140,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 }
             }
 
-            // Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
-            // Finally this is the list of group_uid's in the order they are parsed (including subgroups!)
+            // Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.
+            // Finally, this is the list of group_uid's in the order they are parsed (including subgroups)
             // and without duplicates (duplicates are presented with their last entrance in the list,
             // which thus reflects the order of the TypoScript in TSconfig)
             $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
@@ -1214,43 +1221,28 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * This method parses the UserTSconfig from the current user and all their groups.
-     * If the contents are the same, parsing is skipped. No matching is applied here currently.
+     * Parse userTsConfig from current user and its groups and set it as $this->userTS.
      */
     protected function prepareUserTsConfig(): void
     {
-        $collectedUserTSconfig = [
-            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'],
-        ];
-        // Default TSconfig for admin-users
-        if ($this->isAdmin()) {
-            $collectedUserTSconfig[] = 'admPanel.enable.all = 1';
-        }
-        // Setting defaults for sys_note author / email
-        $collectedUserTSconfig[] = '
-TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
-TCAdefaults.sys_note.email = ' . $this->user['email'];
-
-        // Loop through all groups and add their 'TSconfig' fields
-        foreach ($this->userGroupsUID as $groupId) {
-            $collectedUserTSconfig['group_' . $groupId] = $this->userGroups[$groupId]['TSconfig'] ?? '';
-        }
-
-        $collectedUserTSconfig[] = $this->user['TSconfig'];
-        // Check external files
-        $collectedUserTSconfig = TypoScriptParser::checkIncludeLines_array($collectedUserTSconfig);
-        // Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
-        $userTS_text = implode("\n[GLOBAL]\n", $collectedUserTSconfig);
-        // Parsing the user TSconfig (or getting from cache)
-        $hash = md5('userTS:' . $userTS_text);
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-        if (!($this->userTS = $cache->get($hash))) {
-            $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $conditionMatcher = GeneralUtility::makeInstance(ConditionMatcher::class);
-            $parseObj->parse($userTS_text, $conditionMatcher);
-            $this->userTS = $parseObj->setup;
-            $cache->set($hash, $this->userTS, ['UserTSconfig'], 0);
-            // Ensure to update UC later
+        $tsConfigFactory = GeneralUtility::makeInstance(UserTsConfigFactory::class);
+        $this->userTsConfig = $tsConfigFactory->create($this);
+        if (!empty($this->getUserTsConfig()->getUserTsConfigArray()['setup.']['override.'])) {
+            // @todo: This logic is ugly. userTsConfig "setup.override." is used to force options
+            //        in the user settings module, along with "setup.fields." and "setup.default.".
+            //        See the docs about this.
+            //        The fun part is, this is merged into user UC. As such, whenever these setup
+            //        options are used, user UC has to be updated. The toggle below triggers this
+            //        and initiates an update query of this users UC.
+            //        Before v12, this was only triggered if userTsConfig could not be fetched from
+            //        cache, but this was flawed, too: When two users had the same userTsConfig, UC
+            //        of one user would be updated, but not UC of the other user if caches were not
+            //        cleared in between their two calls.
+            //        This toggle and UC overriding should vanish altogether: It would be better if
+            //        userTsConfig no longer overlays UC, instead the settings / setup module
+            //        controller should look at userTsConfig "setup." on the fly when rendering, and
+            //        consumers that access user setup / settings values should get values overloaded
+            //        on the fly as well using some helper or a late init logic or similar.
             $this->userTSUpdated = true;
         }
     }

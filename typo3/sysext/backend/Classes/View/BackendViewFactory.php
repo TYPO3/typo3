@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewInterface as CoreViewInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -69,8 +70,15 @@ final class BackendViewFactory
 
         // @todo: This assumes the pageId is *always* given as 'id' in request.
         // @todo: It would be cool if a middleware adds final pageTS - already overlayed by userTS - as attribute to request, to use it here.
+        $pageTs = [];
         $pageId = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
-        $pageTs = BackendUtility::getPagesTSconfig($pageId);
+        if (MathUtility::canBeInterpretedAsInteger($pageId)) {
+            // Some BE controllers misuse the 'id' argument for something else than the page-uid (especially filelist module).
+            // We check if 'id' is an integer here to skip pageTsConfig calculation if that is the case.
+            // @todo: Mid-term, misuses should vanish, making 'id' a Backend convention. Affected is
+            //        at least ext:filelist, plus record linking modals that use 'pid'.
+            $pageTs = BackendUtility::getPagesTSconfig((int)$pageId);
+        }
 
         $templatePaths = [
             'templateRootPaths' => [],

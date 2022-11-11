@@ -58,9 +58,6 @@
 			<trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail">
 				<source>Invalid format of the email address in the from header</source>
 			</trans-unit>
-			<trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig">
-				<source>Invalid TSconfig in the task configuration!</source>
-			</trans-unit>
 			<trans-unit id="tasks.error.invalidPageUid" resname="tasks.error.invalidPageUid">
 				<source>The given page id %d is invalid!</source>
 			</trans-unit>

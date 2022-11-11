@@ -23,7 +23,8 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
@@ -326,19 +327,12 @@ class ValidatorTask extends AbstractTask
      */
     protected function loadModTSconfig(): void
     {
-        $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $parseObj->parse($this->configuration);
-        if (!empty($parseObj->errors)) {
-            $parseErrorMessage = $this->getLanguageService()->sL($this->languageFile . ':tasks.error.invalidTSconfig') . '<br />';
-            foreach ($parseObj->errors as $errorInfo) {
-                $parseErrorMessage .= $errorInfo[0] . '<br />';
-            }
-            throw new \Exception($parseErrorMessage, 1295476989);
-        }
         $modTs = BackendUtility::getPagesTSconfig($this->page)['mod.']['linkvalidator.'] ?? [];
-        $overrideTs = $parseObj->setup['mod.']['linkvalidator.'] ?? [];
-        if (is_array($overrideTs) && $overrideTs !== []) {
-            ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);
+
+        if (!empty($this->configuration)) {
+            $typoScriptStringFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
+            $overrideTs = $typoScriptStringFactory->parseFromString($this->configuration, GeneralUtility::makeInstance(AstBuilder::class));
+            ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs->toArray()['mod.']['linkvalidator.'] ?? []);
         }
 
         if (empty($modTs['mail.']['fromemail'])) {

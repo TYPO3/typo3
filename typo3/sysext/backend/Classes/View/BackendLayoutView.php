@@ -21,12 +21,10 @@ use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,8 +45,6 @@ class BackendLayoutView implements SingletonInterface
         private readonly DataProviderCollection $dataProviderCollection,
         private readonly TypoScriptStringFactory $typoScriptStringFactory,
         private readonly BackendConditionMatcher $conditionMatcher,
-        private readonly TokenizerInterface $tokenizer,
-        private readonly PhpFrontend $typoScriptCache,
     ) {
         $this->dataProviderCollection->add('default', DefaultDataProvider::class);
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {
@@ -346,9 +342,7 @@ class BackendLayoutView implements SingletonInterface
         $typoScriptTree = $this->typoScriptStringFactory->parseFromStringWithIncludesAndConditions(
             'backend-layout',
             $backendLayout->getConfiguration(),
-            $this->tokenizer,
-            $this->conditionMatcher,
-            $this->typoScriptCache
+            $this->conditionMatcher
         );
 
         $backendLayoutData = [];

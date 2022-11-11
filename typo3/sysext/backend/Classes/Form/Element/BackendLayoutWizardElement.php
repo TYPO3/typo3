@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -198,11 +197,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         if (!empty($this->data['parameterArray']['itemFormElValue'])) {
             // Parse the TypoScript a-like syntax in case we already have a config (e.g. database value or default from TCA)
             $typoScriptStringFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
-            $typoScriptTree = $typoScriptStringFactory->parseFromString(
-                $this->data['parameterArray']['itemFormElValue'],
-                new LossyTokenizer(),
-                new AstBuilder(new NoopEventDispatcher())
-            );
+            $typoScriptTree = $typoScriptStringFactory->parseFromString($this->data['parameterArray']['itemFormElValue'], new AstBuilder(new NoopEventDispatcher()));
             $typoScriptArray = $typoScriptTree->toArray();
             if (is_array($typoScriptArray['backend_layout.'] ?? false)) {
                 // Only evaluate, in case the "backend_layout." array exists on root level

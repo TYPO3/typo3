@@ -17,9 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\TypoScript\PageTsConfig;
+use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Builds a TypoLink to a database record
@@ -29,9 +37,9 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $pageTsConfig = $tsfe->getPagesTSconfig();
-        $configurationKey = $linkDetails['identifier'] . '.';
         $request = $this->contentObjectRenderer->getRequest();
+        $pageTsConfig = $this->getPageTsConfig($tsfe, $request);
+        $configurationKey = $linkDetails['identifier'] . '.';
         $typoScriptArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
         $configuration = $typoScriptArray['config.']['recordLinks.'] ?? [];
         $linkHandlerConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'] ?? [];
@@ -97,5 +105,28 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $localContentObjectRenderer->start($record, $databaseTable, $request);
         $localContentObjectRenderer->parameters = $this->contentObjectRenderer->parameters;
         return $localContentObjectRenderer->createLink($linkText, $typoScriptConfiguration);
+    }
+
+    /**
+     * Helper method to calculate pageTsConfig in frontend scope, we can't use BackendUtility::getPagesTSconfig() here.
+     */
+    protected function getPageTsConfig(TypoScriptFrontendController $tsfe, ServerRequestInterface $request): array
+    {
+        $id = $tsfe->id;
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+        $pageTsConfig = $runtimeCache->get('pageTsConfig-' . $id);
+        if ($pageTsConfig instanceof PageTsConfig) {
+            return $pageTsConfig->getPageTsConfigArray();
+        }
+        $conditionMatcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, GeneralUtility::makeInstance(Context::class), $tsfe->id, $tsfe->rootLine);
+        $site = $request->getAttribute('site') ?? new NullSite();
+        $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
+        $pageTsConfig = $pageTsConfigFactory->create(
+            $tsfe->rootLine,
+            $site,
+            $conditionMatcher
+        );
+        $runtimeCache->set('pageTsConfig-' . $id, $pageTsConfig);
+        return $pageTsConfig->getPageTsConfigArray();
     }
 }

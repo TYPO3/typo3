@@ -57,14 +57,17 @@ services:
   TYPO3\CMS\Core\Http\MiddlewareDispatcher:
     autoconfigure: false
 
+  # @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
   TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader:
     public: true
 
+  # @deprecated since v12, will be removed with v13 together with class PageTsConfigParser.
   TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser:
     public: true
     arguments:
       $cache: '@cache.hash'
 
+  # @deprecated since v12, will be removed with v13 together with class PageTsConfig.
   TYPO3\CMS\Core\Configuration\PageTsConfig:
     public: true
     arguments:
@@ -324,6 +327,9 @@ services:
   TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder:
     public: true
 
+  TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder:
+    public: true
+
   TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor:
     public: true
     # Ast builder visitor creates state and should not be re-used
@@ -336,6 +342,16 @@ services:
 
   TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface:
     alias: TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer
+
+  TYPO3\CMS\Core\TypoScript\PageTsConfigFactory:
+    public: true
+    arguments:
+      $cache: '@cache.typoscript'
+
+  TYPO3\CMS\Core\TypoScript\UserTsConfigFactory:
+    public: true
+    arguments:
+      $cache: '@cache.typoscript'
 
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here

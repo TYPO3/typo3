@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
 /**
  * @internal
@@ -99,6 +100,7 @@ class ServiceProvider extends AbstractServiceProvider
             TypoScript\AST\Traverser\AstTraverser::class => [ static::class, 'getAstTraverser' ],
             TypoScript\AST\CommentAwareAstBuilder::class => [ static::class, 'getCommentAwareAstBuilder' ],
             TypoScript\Tokenizer\LosslessTokenizer::class => [ static::class, 'getLosslessTokenizer'],
+            // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
             'globalPageTsConfig' => [ static::class, 'getGlobalPageTsConfig' ],
             'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
@@ -110,6 +112,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Console\CommandRegistry::class => [ static::class, 'configureCommands' ],
             Imaging\IconRegistry::class => [ static::class, 'configureIconRegistry' ],
+            // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
             Configuration\Loader\PageTsConfigLoader::class => [ static::class, 'configurePageTsConfigLoader' ],
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
@@ -326,11 +329,17 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets'), $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString()]);
     }
 
+    /**
+     * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
+     */
     public static function getGlobalPageTsConfig(ContainerInterface $container): ArrayObject
     {
         return new ArrayObject();
     }
 
+    /**
+     * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
+     */
     public static function configurePageTsConfigLoader(ContainerInterface $container, PageTsConfigLoader $configLoader): PageTsConfigLoader
     {
         $cache = $container->get('cache.core');
@@ -480,7 +489,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getTypoScriptStringFactory(ContainerInterface $container): TypoScript\TypoScriptStringFactory
     {
-        return new TypoScript\TypoScriptStringFactory($container);
+        return new TypoScript\TypoScriptStringFactory($container, new LossyTokenizer());
     }
 
     public static function getTypoScriptService(ContainerInterface $container): TypoScript\TypoScriptService

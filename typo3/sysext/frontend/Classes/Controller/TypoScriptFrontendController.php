@@ -2543,9 +2543,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *******************************************/
     /**
      * Returns the pages TSconfig array based on the current ->rootLine
+     *
+     * @deprecated since TYPO3 v12, will be removed in v13. Frontend should typically not depend on Backend TsConfig.
+     *             If really needed, use PageTsConfigFactory, see usage in DatabaseRecordLinkBuilder.
+     *             Remove together with class PageTsConfig.
      */
     public function getPagesTSconfig(): array
     {
+        trigger_error('Method getPagesTSconfig() is deprecated since TYPO3 v12 and will be removed with TYPO3 v13.0.', E_USER_DEPRECATED);
         if (!is_array($this->pagesTSconfig)) {
             $matcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine);
             $this->pagesTSconfig = GeneralUtility::makeInstance(PageTsConfig::class)

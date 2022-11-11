@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -47,7 +46,6 @@ class TypoScriptStringFactoryTest extends FunctionalTestCase
         $result = $subject->parseFromStringWithIncludesAndConditions(
             'testing',
             '@import \'EXT:core/Tests/Functional/TypoScript/Fixtures/SimpleCondition.typoscript\'',
-            new LossyTokenizer(),
             new BackendConditionMatcher()
         );
         self::assertEquals($expected, $result);
@@ -64,11 +62,7 @@ class TypoScriptStringFactoryTest extends FunctionalTestCase
         $expected->addChild($fooNode);
         /** @var TypoScriptStringFactory $subject */
         $subject = $this->get(TypoScriptStringFactory::class);
-        $result = $subject->parseFromString(
-            'foo = bar',
-            new LossyTokenizer(),
-            new AstBuilder(new NoopEventDispatcher())
-        );
+        $result = $subject->parseFromString('foo = bar', new AstBuilder(new NoopEventDispatcher()));
         self::assertEquals($expected, $result);
     }
 }
