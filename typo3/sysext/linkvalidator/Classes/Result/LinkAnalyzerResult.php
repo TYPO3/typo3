@@ -36,77 +36,28 @@ use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
  */
 class LinkAnalyzerResult
 {
-    /**
-     * @var LinkAnalyzer
-     */
-    protected $linkAnalyzer;
-
-    /**
-     * @var BrokenLinkRepository
-     */
-    protected $brokenLinkRepository;
-
-    /**
-     * @var PagesRepository
-     */
-    protected $pagesRepository;
-
-    /**
-     * @var ConnectionPool
-     */
-    protected $connectionPool;
-
-    /**
-     * @var array
-     */
-    protected $brokenLinks = [];
-
-    /**
-     * @var array
-     */
-    protected $newBrokenLinkCounts = [];
-
-    /**
-     * @var array
-     */
-    protected $oldBrokenLinkCounts = [];
-
-    /**
-     * @var bool
-     */
-    protected $differentToLastResult = false;
+    protected array $brokenLinks = [];
+    protected array $newBrokenLinkCounts = [];
+    protected array $oldBrokenLinkCounts = [];
+    protected bool $differentToLastResult = false;
 
     /**
      * Save localized pages to reduce database requests
      *
      * @var array<string, int>
      */
-    protected $localizedPages = [];
+    protected array $localizedPages = [];
 
     public function __construct(
-        LinkAnalyzer $linkAnalyzer,
-        BrokenLinkRepository $brokenLinkRepository,
-        ConnectionPool $connectionPool,
-        PagesRepository $pagesRepository
+        private readonly LinkAnalyzer $linkAnalyzer,
+        private readonly BrokenLinkRepository $brokenLinkRepository,
+        private readonly ConnectionPool $connectionPool,
+        private readonly PagesRepository $pagesRepository
     ) {
-        $this->linkAnalyzer = $linkAnalyzer;
-        $this->brokenLinkRepository = $brokenLinkRepository;
-        $this->connectionPool = $connectionPool;
-        $this->pagesRepository = $pagesRepository;
     }
 
     /**
      * Call LinkAnalyzer with provided task configuration and process result values
-     *
-     * @param int    $page
-     * @param int    $depth
-     * @param array  $pageRow
-     * @param array  $modTSconfig
-     * @param array  $searchFields
-     * @param array  $linkTypes
-     * @param string $languages
-     *
-     * @return $this
      */
     public function getResultForTask(
         int $page,
@@ -213,7 +164,6 @@ class LinkAnalyzerResult
      * Process the link counts (old and new) and ensures that all link types are available in the array
      *
      * @param array<int, string> $linkTypes list of link types
-     * @return LinkAnalyzerResult
      */
     protected function processLinkCounts(array $linkTypes): self
     {
@@ -236,12 +186,10 @@ class LinkAnalyzerResult
      * Process broken link values and assign them to new variables which are used in the templates
      * shipped by the core but can also be used in custom templates. The raw data is untouched and
      * can also still be used in custom templates.
-     *
-     * @return LinkAnalyzerResult
      */
     protected function processBrokenLinks(): self
     {
-        foreach ($this->brokenLinks as $key => &$brokenLink) {
+        foreach ($this->brokenLinks as &$brokenLink) {
             $fullRecord = BackendUtility::getRecord($brokenLink['table_name'], $brokenLink['record_uid']);
 
             if ($fullRecord !== null) {
@@ -274,10 +222,6 @@ class LinkAnalyzerResult
 
     /**
      * Get localized page id and store it in the local property localizedPages
-     *
-     * @param int $parentId
-     * @param int $languageId
-     * @return int
      */
     protected function getLocalizedPageId(int $parentId, int $languageId): int
     {

@@ -134,7 +134,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property email.
      *
      * @param string $email Email address to which an email report is sent
-     * @return ValidatorTask
      */
     public function setEmail(string $email): self
     {
@@ -156,7 +155,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property emailOnBrokenLinkOnly
      *
      * @param bool $emailOnBrokenLinkOnly Only send an email, if new broken links were found
-     * @return ValidatorTask
      */
     public function setEmailOnBrokenLinkOnly(bool $emailOnBrokenLinkOnly): self
     {
@@ -178,7 +176,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property page
      *
      * @param int $page UID of the start page for this task.
-     * @return ValidatorTask
      */
     public function setPage(int $page): self
     {
@@ -200,7 +197,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property languages
      *
      * @param string $languages Languages to fetch broken links
-     * @return ValidatorTask
      */
     public function setLanguages(string $languages): self
     {
@@ -222,7 +218,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property depth
      *
      * @param int $depth Level of pages the task should check
-     * @return ValidatorTask
      */
     public function setDepth(int $depth): self
     {
@@ -244,7 +239,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property emailTemplateName
      *
      * @param string $emailTemplateName Template name to be used for the email
-     * @return ValidatorTask
      */
     public function setEmailTemplateName(string $emailTemplateName): self
     {
@@ -266,7 +260,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property configuration
      *
      * @param string $configuration specific TSconfig for this task
-     * @return ValidatorTask
      */
     public function setConfiguration(string $configuration): self
     {
@@ -285,9 +278,7 @@ class ValidatorTask extends AbstractTask
             return false;
         }
 
-        $this
-            ->setCliArguments()
-            ->loadModTSconfig();
+        $this->setCliArguments()->loadModTSconfig();
 
         $successfullyExecuted = true;
         $linkAnalyzerResult = $this->getLinkAnalyzerResult();
@@ -309,8 +300,6 @@ class ValidatorTask extends AbstractTask
     /**
      * Validate all broken links for pages set in the task configuration
      * and return the analyzers result as object.
-     *
-     * @return LinkAnalyzerResult
      */
     protected function getLinkAnalyzerResult(): LinkAnalyzerResult
     {
@@ -336,10 +325,8 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Load and merge linkvalidator TSconfig from task configuration with page TSconfig
-     *
-     * @return ValidatorTask
      */
-    protected function loadModTSconfig(): self
+    protected function loadModTSconfig(): void
     {
         $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
         $parseObj->parse($this->configuration);
@@ -355,6 +342,7 @@ class ValidatorTask extends AbstractTask
         if (is_array($overrideTs) && $overrideTs !== []) {
             ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);
         }
+
         if (empty($modTs['mail.']['fromemail'])) {
             $modTs['mail.']['fromemail'] = MailUtility::getSystemFromAddress();
         }
@@ -363,8 +351,6 @@ class ValidatorTask extends AbstractTask
         }
 
         $this->modTSconfig = $modTs;
-
-        return $this;
     }
 
     /**
@@ -404,8 +390,7 @@ class ValidatorTask extends AbstractTask
     /**
      * Build and send report email when broken links were found
      *
-     * @param LinkAnalyzerResult $linkAnalyzerResult
-     * @return bool TRUE if mail was sent, FALSE if or not
+     * @return bool TRUE if mail was sent, FALSE if not
      */
     protected function reportEmail(LinkAnalyzerResult $linkAnalyzerResult): bool
     {
@@ -478,8 +463,6 @@ class ValidatorTask extends AbstractTask
     /**
      * Returns the most important properties of the LinkValidator task as a
      * comma separated string that will be displayed in the scheduler module.
-     *
-     * @return string
      */
     public function getAdditionalInformation(): string
     {
@@ -505,8 +488,6 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Simulate cli call with setting the required options to the $_SERVER['argv']
-     *
-     * @return ValidatorTask
      */
     protected function setCliArguments(): self
     {
@@ -528,8 +509,6 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Get FluidEmail with template from the task configuration
-     *
-     * @return FluidEmail
      */
     protected function getFluidEmail(): FluidEmail
     {
@@ -557,9 +536,6 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Check if both template files (html and txt) exist under at least one template path
-     *
-     * @param array $templatePaths
-     * @return bool
      */
     protected function templateFilesExist(array $templatePaths): bool
     {

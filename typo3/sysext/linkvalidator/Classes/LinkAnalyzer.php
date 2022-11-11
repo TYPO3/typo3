@@ -449,7 +449,7 @@ class LinkAnalyzer
      *
      * @return array array with the number of links found
      */
-    public function getLinkCounts()
+    public function getLinkCounts(): array
     {
         return $this->brokenLinkRepository->getNumberOfBrokenLinksForRecordsOnPages($this->pids, $this->searchFields);
     }
