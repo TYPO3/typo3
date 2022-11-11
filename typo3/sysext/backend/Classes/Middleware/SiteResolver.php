@@ -35,37 +35,33 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class SiteResolver implements MiddlewareInterface
 {
-    /**
-     * @var SiteMatcher
-     */
-    protected $siteMatcher;
-
-    public function __construct(SiteMatcher $siteMatcher)
-    {
-        $this->siteMatcher = $siteMatcher;
+    public function __construct(
+        private readonly SiteMatcher $siteMatcher
+    ) {
     }
 
     /**
-     * Resolve the site information by checking the page ID ("id" parameter) which is typically used in BE modules
-     * of type "web".
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
+     * Resolve the site information by checking the page ID ("id" parameter) which is typically
+     * used in BE modules of type "web".
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $pageId = ($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
-        // Check if we have a numeric _GET/_POST parameter for "id", then a site information can be resolved based.
-        if (MathUtility::canBeInterpretedAsInteger($pageId)) {
-            $pageId = (int)$pageId;
-            $rootLine = null;
-            if ($pageId > 0) {
-                $rootLine = BackendUtility::BEgetRootLine($pageId);
-            }
-            $site = $this->siteMatcher->matchByPageId($pageId, $rootLine);
-            $request = $request->withAttribute('site', $site);
+        if (!MathUtility::canBeInterpretedAsInteger($pageId)) {
+            // @todo: The "filelist" module abuses "id" to carry a storage like "1:/" around. This
+            //        should be changed. To *always* have a site attribute attached to the request,
+            //        we for now resolve to zero here, leading to NullSite object.
+            //        Change "filelist" module to no longer abuse "id" GET argument and throw an
+            //        exception here if $pageUid can not be resolved to an int.
+            $pageId = 0;
         }
+        $pageId = (int)$pageId;
+        $rootLine = null;
+        if ($pageId > 0) {
+            $rootLine = BackendUtility::BEgetRootLine($pageId);
+        }
+        $site = $this->siteMatcher->matchByPageId($pageId, $rootLine);
+        $request = $request->withAttribute('site', $site);
         return $handler->handle($request);
     }
 }

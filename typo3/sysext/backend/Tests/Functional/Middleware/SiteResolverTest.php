@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Middleware;
+namespace TYPO3\CMS\Backend\Tests\Functional\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,36 +23,31 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Middleware\SiteResolver;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SiteResolverTest extends UnitTestCase
+class SiteResolverTest extends FunctionalTestCase
 {
     /**
      * @test
      */
-    public function requestIsNotModifiedIfPageIdParameterIsNoInteger(): void
+    public function requestHasNullSiteAttributeIfIdParameterIsNoInteger(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1668696350);
         $incomingUrl = 'http://localhost:8080/typo3/module/file/FilelistList?token=d7d864db2b26c1d0f0537718b16890f336f4af2b&id=9831:/styleguide/';
-
-        $siteMatcherMock = $this->createMock(SiteMatcher::class);
-        $subject = new SiteResolver($siteMatcherMock);
-
+        $subject = $this->get(SiteResolver::class);
         $incomingRequest = new ServerRequest($incomingUrl, 'GET');
         $incomingRequest = $incomingRequest->withQueryParams(['id' => '9831:/styleguide/']);
         $requestHandler = new class () implements RequestHandlerInterface {
-            public ServerRequestInterface $incomingRequest;
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                return new JsonResponse([], $request === $this->incomingRequest ? 200 : 500);
-            }
-            public function setIncomingRequest(ServerRequestInterface $incomingRequest): void
-            {
-                $this->incomingRequest = $incomingRequest;
+                if ($request->getAttribute('site') instanceof NullSite) {
+                    throw new \RuntimeException('testing', 1668696350);
+                }
+                return new JsonResponse();
             }
         };
-        $requestHandler->setIncomingRequest($incomingRequest);
-        $response = $subject->process($incomingRequest, $requestHandler);
-        self::assertEquals(200, $response->getStatusCode());
+        $subject->process($incomingRequest, $requestHandler);
     }
 }
