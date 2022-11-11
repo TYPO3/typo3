@@ -1171,11 +1171,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
 
 		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/CommandUtility.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Classes/Utility/ExtensionManagementUtility.php

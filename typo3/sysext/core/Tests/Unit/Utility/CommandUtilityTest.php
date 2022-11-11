@@ -203,4 +203,21 @@ class CommandUtilityTest extends UnitTestCase
         $actualQuoted = $commandUtilityMock->_call('unQuoteFilenames', $source);
         self::assertEquals($expectedQuoted, $actualQuoted);
     }
+
+    /**
+     * Test to ensure that, the error isn't happening
+     * Error: Typed static property TYPO3\CMS\Core\Utility\CommandUtility::$paths must not be
+     * accessed before initialization
+     *
+     * @test
+     */
+    public function getCommandWithPhpReturnsPathToPhpExecutable(): void
+    {
+        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
+        $command = $commandUtilityMock->_call('getCommand', 'php');
+
+        self::assertIsString($command);
+        self::assertNotEmpty($command);
+        self::assertStringContainsString('php', $command);
+    }
 }

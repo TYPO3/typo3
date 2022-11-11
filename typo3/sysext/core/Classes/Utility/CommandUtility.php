@@ -73,9 +73,9 @@ class CommandUtility
      *
      * The key is a path. The value is either the same path, or false if the path is not valid.
      *
-     * @var array<string, string|false>
+     * @var array<string, string|false>|null
      */
-    protected static array $paths;
+    protected static ?array $paths = null;
 
     /**
      * Wrapper function for php exec function
