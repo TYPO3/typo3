@@ -15,43 +15,24 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Localization;
+namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\PageTsConfig;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TcaSystemLanguageCollectorTest extends UnitTestCase
+class TcaSystemLanguageCollectorTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
-
-    protected bool $resetSingletonInstances = true;
-
     public function setUp(): void
     {
         parent::setUp();
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
-
-        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['BE_USER']->groupData = ['allowed_languages' => ''];
-
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $user = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($user);
     }
 
     /**
@@ -59,8 +40,8 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
      */
     public function populateAvailableSiteLanguagesTest(): void
     {
-        $siteFinder = $this->prophesize(SiteFinder::class);
-        $siteFinder->getAllSites()->willReturn([
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteFinderMock->method('getAllSites')->willReturn([
             new Site('site-1', 1, [
                 'base' => '/',
                 'languages' => [
@@ -93,8 +74,7 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
                 ],
             ]),
         ]);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
-
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
         $expectedItems = [
             0 => [
                 0 => 'English [Site: site-1], English [Site: site-2]',
@@ -107,11 +87,8 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
                 2 => 'flags-de',
             ],
         ];
-
         $fieldInformation = ['items' => []];
-
         (new TcaSystemLanguageCollector(new Locales()))->populateAvailableSiteLanguages($fieldInformation);
-
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 
@@ -120,21 +97,6 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
      */
     public function populateAvailableSiteLanguagesWithoutSiteTest(): void
     {
-        $languageService = $this->prophesize(LanguageService::class);
-        $languageService->sL(Argument::cetera())->willReturn('');
-        $GLOBALS['LANG'] = $languageService->reveal();
-
-        $siteFinder = $this->prophesize(SiteFinder::class);
-        $siteFinder->getAllSites()->willReturn([]);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
-        $siteFinder->getSiteByPageId(0)->willThrow(SiteNotFoundException::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
-        $conditionMatcher = $this->prophesize(ConditionMatcher::class);
-        GeneralUtility::addInstance(ConditionMatcher::class, $conditionMatcher->reveal());
-        $tsConfig = $this->prophesize(PageTsConfig::class);
-        $tsConfig->getWithUserOverride(Argument::cetera())->willReturn([]);
-        GeneralUtility::addInstance(PageTsConfig::class, $tsConfig->reveal());
-
         $expectedItems = [
             0 => [
                 0 => 'Default',
@@ -142,11 +104,8 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
                 2 => '',
             ],
         ];
-
         $fieldInformation = ['items' => []];
-
         (new TcaSystemLanguageCollector(new Locales()))->populateAvailableSiteLanguages($fieldInformation);
-
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 }
