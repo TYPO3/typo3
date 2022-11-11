@@ -19,8 +19,11 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -79,7 +82,7 @@ class ExtensionConfiguration
      * @throws ExtensionConfigurationExtensionNotConfiguredException If the extension configuration does not exist
      * @throws ExtensionConfigurationPathDoesNotExistException If a requested path in the extension configuration does not exist
      */
-    public function get(string $extension, string $path = '')
+    public function get(string $extension, string $path = ''): mixed
     {
         $hasBeenSynchronized = false;
         if (!$this->hasConfiguration($extension)) {
@@ -145,7 +148,7 @@ class ExtensionConfiguration
      * @param mixed|null $value The value. If null, unset the path
      * @internal
      */
-    public function set(string $extension, $value = null): void
+    public function set(string $extension, mixed $value = null): void
     {
         if (empty($extension)) {
             throw new \RuntimeException('extension name must not be empty', 1509715852);
@@ -170,13 +173,12 @@ class ExtensionConfiguration
      * writing and loading system/settings.php many times.
      *
      * @param array $configuration Configuration of all extensions
-     * @param bool $skipWriteIfLocalConfiguationDoesNotExist
      * @internal
      */
-    public function setAll(array $configuration, bool $skipWriteIfLocalConfiguationDoesNotExist = false): void
+    public function setAll(array $configuration, bool $skipWriteIfLocalConfigurationDoesNotExist = false): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-        if ($skipWriteIfLocalConfiguationDoesNotExist === false || @file_exists($configurationManager->getSystemConfigurationFileLocation())) {
+        if ($skipWriteIfLocalConfigurationDoesNotExist === false || @file_exists($configurationManager->getSystemConfigurationFileLocation())) {
             $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS', $configuration);
         }
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] = $configuration;
@@ -189,10 +191,9 @@ class ExtensionConfiguration
      * Used when entering the install tool, during installation and if calling ->get()
      * with an extension or path that is not yet found in LocalConfiguration
      *
-     * @param bool $skipWriteIfLocalConfiguationDoesNotExist
      * @internal
      */
-    public function synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions(bool $skipWriteIfLocalConfiguationDoesNotExist = false): void
+    public function synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions(bool $skipWriteIfLocalConfigurationDoesNotExist = false): void
     {
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
         $fullConfiguration = [];
@@ -211,7 +212,7 @@ class ExtensionConfiguration
         }
         // Write new config if changed. Loose array comparison to not write if only array key order is different
         if ($fullConfiguration != $currentLocalConfiguration) {
-            $this->setAll($fullConfiguration, $skipWriteIfLocalConfiguationDoesNotExist);
+            $this->setAll($fullConfiguration, $skipWriteIfLocalConfigurationDoesNotExist);
         }
     }
 
@@ -221,7 +222,6 @@ class ExtensionConfiguration
      *
      * Used public by extension manager when updating extension
      *
-     * @param string $extensionKey The extension to sync
      * @internal
      */
     public function synchronizeExtConfTemplateWithLocalConfiguration(string $extensionKey): void
@@ -244,32 +244,22 @@ class ExtensionConfiguration
      *
      * Poor man version of getDefaultConfigurationFromExtConfTemplateAsValuedArray() which ignores
      * comments and returns ext_conf_template as array where nested keys have no dots.
-     *
-     * @param string $extensionKey
-     * @return array
      */
     protected function getExtConfTablesWithoutCommentsAsNestedArrayWithoutDots(string $extensionKey): array
     {
         $rawConfigurationString = $this->getDefaultConfigurationRawString($extensionKey);
-        $typoScriptParser = GeneralUtility::makeInstance(TypoScriptParser::class);
-        // we are parsing constants, so we need the instructions from comments
-        $typoScriptParser->regComments = true;
-        $typoScriptParser->parse($rawConfigurationString);
-        // setup contains the parsed constants string
-        $parsedTemplate = $typoScriptParser->setup;
-        return $this->removeCommentsAndDotsRecursive($parsedTemplate);
+        $typoScriptStringFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
+        $typoScriptTree = $typoScriptStringFactory->parseFromString($rawConfigurationString, new LossyTokenizer(), new AstBuilder(new NoopEventDispatcher()));
+        return GeneralUtility::removeDotsFromTS($typoScriptTree->toArray());
     }
 
     /**
      * Helper method of ext_conf_template.txt parsing.
      *
-     * Return content of an extensions ext_conf_template.txt file if
+     * Return content of an extensions' ext_conf_template.txt file if
      * the file exists, empty string if file does not exist.
-     *
-     * @param string $extensionKey Extension key
-     * @return string
      */
-    public function getDefaultConfigurationRawString(string $extensionKey): string
+    protected function getDefaultConfigurationRawString(string $extensionKey): string
     {
         $rawString = '';
         $extConfTemplateFileLocation = GeneralUtility::getFileAbsFileName(
@@ -281,53 +271,8 @@ class ExtensionConfiguration
         return $rawString;
     }
 
-    /**
-     * @param string $extension
-     * @return bool
-     */
     protected function hasConfiguration(string $extension): bool
     {
         return isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]);
-    }
-
-    /**
-     * Helper method of ext_conf_template.txt parsing.
-     *
-     * "Comments" from the "TypoScript" parser below are identified by two (!) dots at the end of array keys
-     * and all array keys have a single dot at the end, if they have sub arrays. This is cleaned here.
-     *
-     * Incoming array:
-     * [
-     *  'automaticInstallation' => '1',
-     *  'automaticInstallation..' => '# cat=basic/enabled; ...'
-     *  'FE.' => [
-     *      'enabled' = '1',
-     *      'enabled..' => '# cat=basic/enabled; ...'
-     *  ]
-     * ]
-     * Output array:
-     * [
-     *  'automaticInstallation' => '1',
-     *  'FE' => [
-     *      'enabled' => '1',
-     * ]
-     *
-     * @param array $config Incoming configuration
-     * @return array
-     */
-    protected function removeCommentsAndDotsRecursive(array $config): array
-    {
-        $cleanedConfig = [];
-        foreach ($config as $key => $value) {
-            if (substr($key, -2) === '..') {
-                continue;
-            }
-            if (substr($key, -1) === '.') {
-                $cleanedConfig[rtrim($key, '.')] = $this->removeCommentsAndDotsRecursive($value);
-            } else {
-                $cleanedConfig[$key] = $value;
-            }
-        }
-        return $cleanedConfig;
     }
 }

@@ -15,14 +15,25 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Backend layout element
+ * Backend layout element. This is used when editing backend_layout records.
+ * It renders the layout wizard to manage rows and columns and shows the pseudo TypoScript result.
+ *
+ * Note this element does not support fancy TypoScript features like @import
+ * lines and special ":=" value manipulation functions. When backend_layouts want to use
+ * these, they shouldn't use table record based backend_layouts, but register backend layouts
+ * using the BackendLayout/DataProviderInterface to store them in files, which obsoletes
+ * table record based backend_layouts and with it this FormEngine element class.
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendLayoutWizardElement extends AbstractFormElement
@@ -38,29 +49,15 @@ class BackendLayoutWizardElement extends AbstractFormElement
         ],
     ];
 
-    /**
-     * @var array
-     */
-    protected $rows = [];
+    protected array $rows = [];
+    protected int $colCount = 0;
+    protected int $rowCount = 0;
 
-    /**
-     * @var int
-     */
-    protected $colCount = 0;
-
-    /**
-     * @var int
-     */
-    protected $rowCount = 0;
-
-    /**
-     * @return array
-     */
-    public function render()
+    public function render(): array
     {
         $lang = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
-        $this->init();
+        $this->initializeWizard();
 
         $row = $this->data['databaseRow'];
         $tca = $this->data['processedTca'];
@@ -191,10 +188,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         return $resultArray;
     }
 
-    /**
-     * Initialize wizard
-     */
-    protected function init()
+    protected function initializeWizard(): void
     {
         // Initialize default values
         $rows = [[['colspan' => 1, 'rowspan' => 1, 'spanned' => 0, 'name' => '0x0']]];
@@ -202,12 +196,17 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $rowCount = 1;
 
         if (!empty($this->data['parameterArray']['itemFormElValue'])) {
-            // load TS parser in case we already have a config (e.g. database value or default from TCA)
-            $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $parser->parse($this->data['parameterArray']['itemFormElValue']);
-            if (is_array($parser->setup['backend_layout.'] ?? false)) {
+            // Parse the TypoScript a-like syntax in case we already have a config (e.g. database value or default from TCA)
+            $typoScriptStringFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
+            $typoScriptTree = $typoScriptStringFactory->parseFromString(
+                $this->data['parameterArray']['itemFormElValue'],
+                new LossyTokenizer(),
+                new AstBuilder(new NoopEventDispatcher())
+            );
+            $typoScriptArray = $typoScriptTree->toArray();
+            if (is_array($typoScriptArray['backend_layout.'] ?? false)) {
                 // Only evaluate, in case the "backend_layout." array exists on root level
-                $data = $parser->setup['backend_layout.'];
+                $data = $typoScriptArray['backend_layout.'];
                 $rows = [];
                 $colCount = $data['colCount'];
                 $rowCount = $data['rowCount'];

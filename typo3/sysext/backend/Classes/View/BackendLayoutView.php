@@ -15,17 +15,19 @@
 
 namespace TYPO3\CMS\Backend\View;
 
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,61 +37,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendLayoutView implements SingletonInterface
 {
-    /**
-     * @var DataProviderCollection
-     */
-    protected $dataProviderCollection;
+    protected array $selectedCombinedIdentifier = [];
+    protected array $selectedBackendLayout = [];
 
     /**
-     * @var array
+     * Create this object and initialize data providers.
      */
-    protected $selectedCombinedIdentifier = [];
-
-    /**
-     * @var array
-     */
-    protected $selectedBackendLayout = [];
-
-    /**
-     * Creates this object and initializes data providers.
-     */
-    public function __construct()
-    {
-        $this->initializeDataProviderCollection();
-    }
-
-    /**
-     * Initializes data providers
-     */
-    protected function initializeDataProviderCollection()
-    {
-        $dataProviderCollection = GeneralUtility::makeInstance(DataProviderCollection::class);
-        $dataProviderCollection->add('default', DefaultDataProvider::class);
-
+    public function __construct(
+        private readonly DataProviderCollection $dataProviderCollection,
+        private readonly TypoScriptStringFactory $typoScriptStringFactory,
+        private readonly BackendConditionMatcher $conditionMatcher,
+        private readonly TokenizerInterface $tokenizer,
+        private readonly PhpFrontend $typoScriptCache,
+    ) {
+        $this->dataProviderCollection->add('default', DefaultDataProvider::class);
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {
             $dataProviders = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'];
             foreach ($dataProviders as $identifier => $className) {
-                $dataProviderCollection->add($identifier, $className);
+                $this->dataProviderCollection->add($identifier, $className);
             }
         }
-
-        $this->setDataProviderCollection($dataProviderCollection);
-    }
-
-    /**
-     * @param DataProviderCollection $dataProviderCollection
-     */
-    public function setDataProviderCollection(DataProviderCollection $dataProviderCollection)
-    {
-        $this->dataProviderCollection = $dataProviderCollection;
-    }
-
-    /**
-     * @return DataProviderCollection
-     */
-    public function getDataProviderCollection()
-    {
-        return $this->dataProviderCollection;
     }
 
     /**
@@ -118,7 +85,7 @@ class BackendLayoutView implements SingletonInterface
             ->setFieldName($parameters['field'])
             ->setPageTsConfig($pageTsConfig);
 
-        $backendLayoutCollections = $this->getDataProviderCollection()->getBackendLayoutCollections($dataProviderContext);
+        $backendLayoutCollections = $this->dataProviderCollection->getBackendLayoutCollections($dataProviderContext);
         foreach ($backendLayoutCollections as $backendLayoutCollection) {
             $combinedIdentifierPrefix = '';
             if ($backendLayoutCollection->getIdentifier() !== 'default') {
@@ -365,10 +332,10 @@ class BackendLayoutView implements SingletonInterface
         if (empty($selectedCombinedIdentifier)) {
             $selectedCombinedIdentifier = 'default';
         }
-        $backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
+        $backendLayout = $this->dataProviderCollection->getBackendLayout($selectedCombinedIdentifier, $pageId);
         // If backend layout is not found available anymore, use default
         if ($backendLayout === null) {
-            $backendLayout = $this->getDataProviderCollection()->getBackendLayout('default', $pageId);
+            $backendLayout = $this->dataProviderCollection->getBackendLayout('default', $pageId);
         }
 
         if ($backendLayout instanceof BackendLayout) {
@@ -384,13 +351,17 @@ class BackendLayoutView implements SingletonInterface
      */
     public function parseStructure(BackendLayout $backendLayout): array
     {
-        $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $conditionMatcher = GeneralUtility::makeInstance(ConditionMatcher::class);
-        $parser->parse(TypoScriptParser::checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
+        $typoScriptTree = $this->typoScriptStringFactory->parseFromStringWithIncludesAndConditions(
+            'backend-layout',
+            $backendLayout->getConfiguration(),
+            $this->tokenizer,
+            $this->conditionMatcher,
+            $this->typoScriptCache
+        );
 
         $backendLayoutData = [];
         $backendLayoutData['config'] = $backendLayout->getConfiguration();
-        $backendLayoutData['__config'] = $parser->setup;
+        $backendLayoutData['__config'] = $typoScriptTree->toArray();
         $backendLayoutData['__items'] = [];
         $backendLayoutData['__colPosList'] = [];
         $backendLayoutData['usedColumns'] = [];

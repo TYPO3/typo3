@@ -309,6 +309,12 @@ services:
   TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface:
     alias: TYPO3\CMS\Core\TypoScript\AST\AstBuilder
 
+  TYPO3\CMS\Core\TypoScript\AST\AstBuilder:
+    public: true
+
+  TYPO3\CMS\Core\TypoScript\IncludeTree\StringTreeBuilder:
+    public: true
+
   TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository:
     public: true
 

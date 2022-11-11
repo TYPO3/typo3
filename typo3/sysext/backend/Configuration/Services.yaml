@@ -70,6 +70,10 @@ services:
   TYPO3\CMS\Backend\View\AuthenticationStyleInformation:
     public: true
 
+  TYPO3\CMS\Backend\View\BackendLayoutView:
+    arguments:
+      $typoScriptCache: '@cache.typoscript'
+
   TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry:
     arguments:
       - !tagged_iterator livesearch.provider

@@ -22,7 +22,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 /**
  * A mock event dispatcher that does nothing but records what events are passed.
  *
- * Use in tests for classes that depend in an event dispatcher
+ * Use in tests for classes that depend on an event dispatcher
  * but interaction with the dispatcher is not what's being tested,
  * or where "event X is triggered" is the behavior being tested.
  */

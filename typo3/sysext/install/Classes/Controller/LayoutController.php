@@ -153,7 +153,7 @@ class LayoutController extends AbstractController
     /**
      * Synchronize TYPO3_CONF_VARS['EXTENSIONS'] with possibly new defaults from extensions
      * ext_conf_template.txt files. This make LocalConfiguration the only source of truth for
-     * extension configuration and it is always up to date, also if an extension has been
+     * extension configuration, and it is always up-to-date, also if an extension has been
      * updated.
      *
      * @return ResponseInterface

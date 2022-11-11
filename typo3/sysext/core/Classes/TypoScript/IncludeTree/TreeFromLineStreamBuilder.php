@@ -40,12 +40,12 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Helper class of TreeBuilder: This class gets a node with a LineStream - a node
+ * Helper class of TreeBuilder classes: This class gets a node with a LineStream - a node
  * created from a sys_template 'constants' or 'setup' field, or created from a
- * file import. It then looks for conditions and imports in the attached LineStream
+ * file import or a string. It then looks for conditions and imports in the attached LineStream
  * and splits the node into child nodes if needed.
  *
- * So while "TreeBuilder" is all about creating includes from sys_template records
+ * So while SysTemplateTreeBuilder is all about creating includes from sys_template records
  * in correct order, this class takes care of conditions and @import within single
  * source streams.
  *
@@ -56,7 +56,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class TreeFromLineStreamBuilder
 {
-    // 'constants' or 'setup'.
+    /** @var 'constants'|'setup'|'other' */
     private string $type;
     private TokenizerInterface $tokenizer;
 
@@ -67,8 +67,9 @@ final class TreeFromLineStreamBuilder
 
     public function buildTree(IncludeInterface $node, string $type, TokenizerInterface $tokenizer): void
     {
-        if (!in_array($type, ['constants', 'setup'])) {
-            throw new \RuntimeException('type must be either constants or setup', 1652741356);
+        if (!in_array($type, ['constants', 'setup', 'other'], true)) {
+            // Type "constants" and "setup" trigger the weird addStaticMagicFromGlobals() resolving, while "other" ignores it.
+            throw new \RuntimeException('type must be either "constants", "setup" or "other"', 1652741356);
         }
         $this->type = $type;
         $this->tokenizer = $tokenizer;
@@ -469,7 +470,9 @@ final class TreeFromLineStreamBuilder
      */
     private function addStaticMagicFromGlobals(IncludeInterface $parentNode, string $identifier): void
     {
-        if (!str_starts_with($identifier, 'EXT:')) {
+        if (!in_array($this->type, ['constants', 'setup'], true) || !str_starts_with($identifier, 'EXT:')) {
+            // This magic method is relevant for Frontend TypoScript only, indicated by
+            // $this->type being either "constants" or "setup".
             return;
         }
         $includeStaticFileWithoutExt = substr($identifier, 4);

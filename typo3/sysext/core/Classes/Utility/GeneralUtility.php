@@ -1003,7 +1003,7 @@ class GeneralUtility
      * @param array $ts TypoScript configuration array
      * @return array TypoScript configuration array without dots at the end of all keys
      */
-    public static function removeDotsFromTS(array $ts)
+    public static function removeDotsFromTS(array $ts): array
     {
         $out = [];
         foreach ($ts as $key => $value) {

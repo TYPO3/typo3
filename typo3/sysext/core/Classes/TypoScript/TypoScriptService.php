@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript;
 
 /**
- * Utilities to manage and convert TypoScript
- * Also contains the functionality in TypoScript called "optionSplit"
+ * Helper class to manage and convert TypoScript into differently shaped arrays.
+ * Also contains the functionality in TypoScript called "optionSplit".
+ *
+ * @internal
  */
 class TypoScriptService
 {
@@ -31,7 +33,9 @@ class TypoScriptService
      *
      * @param array $typoScriptArray The TypoScript array (e.g. array('foo' => 'TEXT', 'foo.' => array('bar' => 'baz')))
      * @return array e.g. array('foo' => array('_typoScriptNodeValue' => 'TEXT', 'bar' => 'baz'))
-     * @internal
+     * @internal Avoid using this method. This has been invented for Extbase, which decided to move TypoScript
+     *           arrays around in just another different way.
+     * @todo: Usages should be removed mid-term to work on the TypoScript object tree directly.
      */
     public function convertTypoScriptArrayToPlainArray(array $typoScriptArray): array
     {
@@ -63,6 +67,9 @@ class TypoScriptService
      *
      * @param array $plainArray A TypoScript Array with Extbase Syntax (without dot but with _typoScriptNodeValue)
      * @return array Array with TypoScript as usual (with dot)
+     * @internal Avoid using this method. This has been invented for Extbase, which decided to move TypoScript
+     *           arrays around in just another different way.
+     * @todo: Usages should be removed mid-term to work on the TypoScript object tree directly.
      */
     public function convertPlainArrayToTypoScriptArray(array $plainArray): array
     {
@@ -90,9 +97,9 @@ class TypoScriptService
      * for creating menus in TYPO3.
      *
      * @param array $originalConfiguration A TypoScript array
-     * @param int $splitCount The number of items for which to generated individual TypoScript arrays
+     * @param int $splitCount The number of items for which to generate individual TypoScript arrays
      * @return array The individualized TypoScript array.
-     * @internal
+     * @todo: This method is a sign of bad abstraction. It should be modelled differently and located elsewhere.
      */
     public function explodeConfigurationForOptionSplit(array $originalConfiguration, int $splitCount): array
     {
