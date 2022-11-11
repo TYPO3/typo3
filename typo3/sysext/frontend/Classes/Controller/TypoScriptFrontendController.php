@@ -90,19 +90,14 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 
 /**
- * Class for the built TypoScript based frontend. Instantiated in
- * \TYPO3\CMS\Frontend\Http\RequestHandler as the global object TSFE.
+ * Main controller class of the TypoScript based frontend.
  *
- * Main frontend class, instantiated in \TYPO3\CMS\Frontend\Http\RequestHandler
- * as the global object TSFE.
+ * This is prepared in Frontend middlewares and the content rendering is
+ * ultimately called in \TYPO3\CMS\Frontend\Http\RequestHandler.
  *
- * This class has a lot of functions and internal variable which are used from
- * \TYPO3\CMS\Frontend\Http\RequestHandler
- *
- * The class is instantiated as $GLOBALS['TSFE'] in \TYPO3\CMS\Frontend\Http\RequestHandler.
- *
- * The use of this class should be inspired by the order of function calls as
- * found in \TYPO3\CMS\Frontend\Http\RequestHandler.
+ * When calling a Frontend page, an instance of this object is available
+ * as $GLOBALS['TSFE'], even though the core development strives to get
+ * rid of this in the future.
  */
 class TypoScriptFrontendController implements LoggerAwareInterface
 {

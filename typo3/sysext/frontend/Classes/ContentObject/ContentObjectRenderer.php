@@ -54,7 +54,6 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -79,13 +78,11 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 
 /**
- * This class contains all main TypoScript features.
- * This includes the rendering of TypoScript content objects (cObjects).
- * Is the backbone of TypoScript Template rendering.
+ * This class contains all main TypoScript features, is the backbone of TypoScript
+ * rendering, include stdWrap and TypoScript content objects, usually referred to as "cObj".
  *
- * There are lots of functions you can use from your include-scripts.
- * The class is normally instantiated and referred to as "cObj".
- * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
+ * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this
+ * class that instantiates the object and calls the main method.
  */
 class ContentObjectRenderer implements LoggerAwareInterface
 {
@@ -622,32 +619,23 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return string cObject output
      * @throws \UnexpectedValueException
      */
-    public function cObjGetSingle($name, $conf, $TSkey = '__')
+    public function cObjGetSingle(string $name, $conf, $TSkey = '__')
     {
-        $content = '';
         $timeTracker = $this->getTimeTracker();
         $name = trim($name);
         if ($timeTracker->LR) {
             $timeTracker->push($TSkey, $name);
         }
-        // Checking if the COBJ is a reference to another object. (eg. name of 'some.object =< styles.something')
-        if (isset($name[0]) && $name[0] === '<') {
-            $key = trim(substr($name, 1));
-            $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
-            // $name and $conf is loaded with the referenced values.
-            $confOverride = is_array($conf) ? $conf : [];
-            $typoScriptSetupArray = $this->getRequest()->getAttribute('frontend.typoscript')->getSetupArray();
-            [$name, $conf] = $cF->getVal($key, $typoScriptSetupArray);
-            $conf = array_replace_recursive($conf, $confOverride);
-            // Getting the cObject
-            $timeTracker->incStackPointer();
-            $content .= $this->cObjGetSingle($name, $conf, $key);
-            $timeTracker->decStackPointer();
-        } else {
-            $contentObject = $this->getContentObject($name);
-            if ($contentObject) {
-                $content .= $this->render($contentObject, $conf);
-            }
+        $fullConfigArray = [
+            'tempKey' => $name,
+            'tempKey.' => is_array($conf) ? $conf : [],
+        ];
+        // Resolve '=<' operator if needed
+        $fullConfigArray = $this->mergeTSRef($fullConfigArray, 'tempKey');
+        $contentObject = $this->getContentObject($fullConfigArray['tempKey']);
+        $content = '';
+        if ($contentObject) {
+            $content = $this->render($contentObject, $fullConfigArray['tempKey.']);
         }
         if ($timeTracker->LR) {
             $timeTracker->pull($content);
@@ -659,15 +647,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Returns a new content object of type $name.
      *
      * @param string $name
-     * @return AbstractContentObject|null
      * @throws ContentRenderingException
      */
-    public function getContentObject($name)
+    public function getContentObject($name): ?AbstractContentObject
     {
         $contentObjectFactory = $this->container
             ? $this->container->get(ContentObjectFactory::class)
             : GeneralUtility::makeInstance(ContentObjectFactory::class);
-
         return $contentObjectFactory->getContentObject($name, $this->getRequest(), $this);
     }
 
@@ -687,7 +673,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @throws \Exception
      * @return string
      */
-    public function render(AbstractContentObject $contentObject, $configuration = [])
+    public function render(AbstractContentObject $contentObject, $configuration = []): string
     {
         $content = '';
 
@@ -4774,32 +4760,51 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Resolves a TypoScript reference value to the full set of properties BUT overridden with any local properties set.
+     * Resolve a TypoScript reference value to the full set of properties BUT overridden with any local properties set.
      * So the reference is resolved but overlaid with local TypoScript properties of the reference value.
      *
-     * @param array $confArr The TypoScript array
-     * @param string $prop The property name: If this value is a reference (eg. " < plugins.tx_something") then the reference will be retrieved and inserted at that position (into the properties only, not the value...) AND overlaid with the old properties if any.
-     * @return array The modified TypoScript array
+     * In short: This parses the "=<" operator for a couple of special properties like "parseFunc" and "tt_content.*".
+     *
+     * Note the "=<" operator is not a general TypoScript language construct, but applied here for a couple
+     * of special objects only.
+     *
+     * @param array $typoScriptArray The TypoScript array: ['someProperty' => 'somePropertyValue', 'someProperty.' => [ 'someSubProperty' => 'someSubValue', ... ]
+     * @param string $propertyName The property name: If this value in $typoScriptArray[$prop] is a reference (eg. "< lib.contentElement"), then
+     *                             the reference will be retrieved and inserted at that position and overlaid with given local properties if any.
+     * @return array The modified TypoScript array with resolved "=<" reference operator
+     * @internal
+     * @todo: It would be better if this method would get the setup object tree to resolve a
+     *        ReferenceChildNode only once per node. This would however mean the object tree
+     *        is moved around in the entire rendering chain, which is quite hard to achieve.
      */
-    public function mergeTSRef($confArr, $prop)
+    public function mergeTSRef(array $typoScriptArray, string $propertyName): array
     {
-        if ($confArr[$prop][0] === '<') {
-            $key = trim(substr($confArr[$prop], 1));
-            $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
-            // $name and $conf is loaded with the referenced values.
-            $old_conf = $confArr[$prop . '.'] ?? null;
-            $setupArray = [];
-            $frontendTypoScript = $this->getRequest()->getAttribute('frontend.typoscript');
-            if ($frontendTypoScript && $frontendTypoScript->hasSetup()) {
-                $setupArray = $frontendTypoScript->getSetupArray();
-            }
-            $conf = $cF->getVal($key, $setupArray)[1];
-            if (is_array($old_conf) && !empty($old_conf)) {
-                $conf = array_replace_recursive($conf, $old_conf);
-            }
-            $confArr[$prop . '.'] = $conf;
+        if (!isset($typoScriptArray[$propertyName]) || !str_starts_with($typoScriptArray[$propertyName], '<')) {
+            return $typoScriptArray;
         }
-        return $confArr;
+        $frontendTypoScript = $this->getRequest()->getAttribute('frontend.typoscript');
+        if (!$frontendTypoScript || !$frontendTypoScript->hasSetup()) {
+            return $typoScriptArray;
+        }
+        $fullTypoScriptArray = $frontendTypoScript->getSetupArray();
+        $dottedSourceIdentifier = trim(substr($typoScriptArray[$propertyName], 1));
+        $dottedSourceIdentifierArray = StringUtility::explodeEscaped('.', $dottedSourceIdentifier);
+        $overrideConfig = $typoScriptArray[$propertyName . '.'] ?? [];
+        $resolvedValue = $dottedSourceIdentifier;
+        $resolvedConfig = $fullTypoScriptArray;
+        foreach ($dottedSourceIdentifierArray as $identifierPart) {
+            if (!isset($resolvedConfig[$identifierPart . '.'])) {
+                $resolvedValue = $dottedSourceIdentifier;
+                $resolvedConfig = $overrideConfig;
+                break;
+            }
+            $resolvedValue = $resolvedConfig[$identifierPart] ?? $resolvedValue;
+            $resolvedConfig = $resolvedConfig[$identifierPart . '.'];
+        }
+        $resolvedConfig = array_replace_recursive($resolvedConfig, $overrideConfig);
+        $typoScriptArray[$propertyName] = $resolvedValue;
+        $typoScriptArray[$propertyName . '.'] = $resolvedConfig;
+        return $typoScriptArray;
     }
 
     /***********************************************

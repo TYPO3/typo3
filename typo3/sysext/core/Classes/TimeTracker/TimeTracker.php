@@ -47,7 +47,7 @@ class TimeTracker implements SingletonInterface
 
     /**
      * Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle().
-     * This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
+     * This determines whether the TypoScript parsing activity is logged. But it also slows down the rendering.
      */
     public bool $LR = true;
 
