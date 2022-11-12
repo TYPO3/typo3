@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Mailer\Transport\NullTransport;
@@ -36,8 +34,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class MailerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     protected $subject;
@@ -73,13 +69,12 @@ class MailerTest extends UnitTestCase
         $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
         $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs'];
 
-        $transportFactory = $this->prophesize(TransportFactory::class);
-        $transportFactory->get(Argument::any())->willReturn($this->prophesize(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
+        $transportFactory = $this->createMock(TransportFactory::class);
+        $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
+            ->willReturn($this->createMock(SendmailTransport::class));
+        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
-
-        $transportFactory->get($settings)->shouldHaveBeenCalled();
     }
 
     /**
@@ -89,13 +84,12 @@ class MailerTest extends UnitTestCase
     {
         $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs']);
 
-        $transportFactory = $this->prophesize(TransportFactory::class);
-        $transportFactory->get(Argument::any())->willReturn($this->prophesize(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
+        $transportFactory = $this->createMock(TransportFactory::class);
+        $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
+            ->willReturn($this->createMock(SendmailTransport::class));
+        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
-
-        $transportFactory->get($settings)->shouldHaveBeenCalled();
     }
 
     public static function wrongConfigurationProvider(): array

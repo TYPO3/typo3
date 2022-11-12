@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail\Event;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -28,17 +26,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AfterMailerSentMessageEventTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $transportFactory = $this->prophesize(TransportFactory::class);
-        $transportFactory->get(Argument::any())->willReturn($this->prophesize(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
+        $transportFactory = $this->createMock(TransportFactory::class);
+        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
+        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
     }
 
     /**
