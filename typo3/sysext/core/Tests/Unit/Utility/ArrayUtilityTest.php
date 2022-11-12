@@ -3449,7 +3449,6 @@ class ArrayUtilityTest extends UnitTestCase
                         'baz' => [
                             'foo' => [
                                 'bamboo' => 5,
-                                'fooAndBoo' => [],
                             ],
                         ],
                     ],
@@ -3600,20 +3599,34 @@ class ArrayUtilityTest extends UnitTestCase
                 $expectedResult,
                 [new ArrayUtilityFilterRecursiveCallbackFixture(), 'callbackViaInstanceMethod'],
             ],
+            'only keep2 key is kept' => [
+                $input,
+                ['keep2' => 'keep'],
+                static fn ($key): bool => $key === 'keep2',
+                ARRAY_FILTER_USE_KEY,
+            ],
+            'keys baz, keep1 and empty arrays are removed' => [
+                $input,
+                ['foo' => 'remove', 'keep2' => 'keep'],
+                static fn ($value, $key): bool => $value !== [] && !in_array($key, ['baz', 'keep1'], true),
+                ARRAY_FILTER_USE_BOTH,
+            ],
         ];
     }
 
     /**
      * @test
      * @dataProvider filterRecursiveSupportsCallableCallbackDataProvider
-     * @param array    $input
-     * @param array    $expectedResult
-     * @param callable $callback
      * @see https://forge.typo3.org/issues/84485
+     *
+     * @param array $input
+     * @param array $expectedResult
+     * @param callable $callback
+     * @param 0|ARRAY_FILTER_USE_KEY|ARRAY_FILTER_USE_BOTH $mode
      */
-    public function filterRecursiveSupportsCallableCallback(array $input, array $expectedResult, callable $callback): void
+    public function filterRecursiveSupportsCallableCallback(array $input, array $expectedResult, callable $callback, int $mode = 0): void
     {
-        $result = ArrayUtility::filterRecursive($input, $callback);
+        $result = ArrayUtility::filterRecursive($input, $callback, $mode);
         self::assertEquals($expectedResult, $result);
     }
 
