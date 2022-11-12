@@ -17,11 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -30,25 +28,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class IconTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected ?Icon $subject;
     protected string $iconIdentifier = 'actions-close';
     protected string $overlayIdentifier = 'overlay-readonly';
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $containerProphecy->has(Argument::cetera())->willReturn(false);
-        $iconFactory = new IconFactory($eventDispatcherProphecy->reveal(), new IconRegistry($cacheFrontendProphecy->reveal(), 'BackendIcons'), $containerProphecy->reveal());
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $containerMock);
         $this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier, IconState::cast(IconState::STATE_DISABLED));
     }
 
