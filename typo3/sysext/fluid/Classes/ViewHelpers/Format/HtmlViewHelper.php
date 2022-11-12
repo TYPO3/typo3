@@ -64,8 +64,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Data argument
  * --------------
  *
- * If you work with TypoScript "field" property, you should add the current record as "data"
- * to the ViewHelper to allow processing the "field" and "dataWrap" properties correctly.
+ * If you work with TypoScript :typoscript:`field` property, you should add the current record as `data`
+ * to the ViewHelper to allow processing the `field` and `dataWrap` properties correctly.
  *
  * ::
  *
@@ -78,26 +78,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Current argument
  * -----------------
  *
- * Use the current argument to set the current value of the content object.
+ * Use the `current` argument to set the current value of the content object.
  *
  * ::
  *
  *    <f:format.html current="{strContent}" parseFuncTSPath="lib.info">I'm gone</f:format.html>
  *
- * After "setContentToCurrent = 1" you may have this Output::
+ * After `setContentToCurrent = 1` you may have this output::
  *
  *    Thanks Kasper for this great CMS
  *
  * CurrentValueKey argument
  * -------------------------
  *
- * Use the currentValueKey argument to define a value of data object as the current value.
+ * Use the `currentValueKey` argument to define a value of data object as the current value.
  *
  * ::
  *
  *    <f:format.html data="{contentRecord}" currentValueKey="header" parseFuncTSPath="lib.content">Content: </f:format.html>
  *
- * After "dataWrap = |{CURRENT:1}" you may have this Output::
+ * After `dataWrap = |{CURRENT:1}` you may have this Output::
  *
  *    Content: How to install TYPO3 in under 2 minutes ;-)
  *

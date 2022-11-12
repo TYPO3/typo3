@@ -34,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *       .foo { color: black; }
  *    </f:asset.css>
  *
- * See also :ref:`_changelog-Feature-90522-IntroduceAssetCollector`
+ * See also :ref:`changelog-Feature-90522-IntroduceAssetCollector`
  */
 final class CssViewHelper extends AbstractTagBasedViewHelper
 {
