@@ -78,7 +78,7 @@ class DateTimePicker {
     }
 
     let userLocale = PersistentStorage.get('lang');
-    if (userLocale === '') {
+    if (!userLocale) {
       userLocale = 'default';
     } else if (userLocale === 'ch') {
       // Fix our made up locale "ch"
