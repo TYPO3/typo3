@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,8 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExtensionConfigurationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -86,10 +82,14 @@ class ExtensionConfigurationTest extends UnitTestCase
      */
     public function setRemovesFullExtensionConfiguration(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/foo'])->shouldBeCalled();
+        $configurationManagerMock = $this->createMock(ConfigurationManager::class);
+        GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerMock);
+        $configurationManagerMock->expects(self::once())->method('removeLocalConfigurationKeysByPath')->with(['EXTENSIONS/foo']);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo'] = [
+            'bar' => 'baz',
+        ];
         (new ExtensionConfiguration())->set('foo');
+        self::assertFalse(isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo']));
     }
 
     /**
@@ -97,10 +97,15 @@ class ExtensionConfigurationTest extends UnitTestCase
      */
     public function setWritesFullExtensionConfig(): void
     {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
-        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXTENSIONS/foo', ['bar' => 'baz'])->shouldBeCalled();
-        (new ExtensionConfiguration())->set('foo', ['bar' => 'baz']);
+        $value = ['bar' => 'baz'];
+        $configurationManagerMock = $this->createMock(ConfigurationManager::class);
+        GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerMock);
+        $configurationManagerMock->expects(self::once())->method('setLocalConfigurationValueByPath')->with('EXTENSIONS/foo', $value);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo'] = [
+            'bar' => 'fizz',
+            'bee' => 'boo',
+        ];
+        (new ExtensionConfiguration())->set('foo', $value);
+        self::assertSame($value, $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo']);
     }
 }
