@@ -15,13 +15,19 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher;
+namespace TYPO3\CMS\Core\EventDispatcher;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * An event dispatcher that does nothing. Useful for testing.
+ *
+ * Also used in scopes like the install tool where classes have dependencies
+ * to EventDispatcherInterface but should not actively dispatch events.
+ */
 final class NoopEventDispatcher implements EventDispatcherInterface
 {
-    public function dispatch(object $event)
+    public function dispatch(object $event): object
     {
         return $event;
     }
