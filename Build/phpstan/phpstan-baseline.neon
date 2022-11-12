@@ -1431,11 +1431,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
 
 		-
-			message: "#^Result of method TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\FlexForm\\\\FlexFormTools\\:\\:traverseFlexFormXMLData_recurse\\(\\) \\(void\\) is used\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\ProviderConfigurationLoader constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend, TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php

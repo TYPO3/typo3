@@ -17,44 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FlexFormToolsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    protected bool $resetSingletonInstances = true;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected object $nullDispatcher;
-
-    /**
-     * Set up
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-        // Underlying static GeneralUtility::xml2array() uses caches that have to be mocked here
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheProphecy->set(Argument::cetera())->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-
-        $this->nullDispatcher = new MockEventDispatcher();
-    }
-
     /**
      * @test
      */
@@ -71,7 +40,7 @@ class FlexFormToolsTest extends UnitTestCase
         ];
         $editData = [];
         $subject = $this->getMockBuilder(FlexFormTools::class)
-            ->setConstructorArgs([$this->nullDispatcher])
+            ->setConstructorArgs([new MockEventDispatcher()])
             ->onlyMethods(['executeCallBackMethod'])
             ->getMock();
         $subject->expects(self::never())->method('executeCallBackMethod');
@@ -99,10 +68,8 @@ class FlexFormToolsTest extends UnitTestCase
             ],
         ];
         $editData2 = [];
-        $subject = $this->createMock(FlexFormTools::class);
-        self::assertEquals(
-            $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA),
-            $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA)
-        );
+        $flexFormTools = new FlexFormTools(new NoopEventDispatcher());
+        $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
+        $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA);
     }
 }
