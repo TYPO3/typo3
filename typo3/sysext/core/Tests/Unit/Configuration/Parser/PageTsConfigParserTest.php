@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Parser;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -31,8 +30,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageTsConfigParserTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -40,18 +37,19 @@ class PageTsConfigParserTest extends UnitTestCase
     {
         $input = 'mod.web_layout = disabled';
         $expectedParsedTsConfig = ['mod' => ['web_layout' => 'disabled']];
-        $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
-        $typoScriptParserProphecy = $this->prophesize(TypoScriptParser::class);
-        $typoScriptParserProphecy->parse($input, $matcherProphecy)->shouldBeCalled()->will(function () use ($expectedParsedTsConfig) {
+        $matcherMock = $this->createMock(ConditionMatcherInterface::class);
+        $typoScriptParserMock = $this->createMock(TypoScriptParser::class);
+        $parseClosure = function () use ($expectedParsedTsConfig) {
             /** @var TypoScriptParser $this */
             $this->setup = $expectedParsedTsConfig;
-        });
+        };
+        $typoScriptParserMock->expects(self::once())->method('parse')->with($input, $matcherMock)->willReturnCallback(\Closure::bind($parseClosure, $typoScriptParserMock));
         $cache = new NullFrontend('runtime');
         $subject = new PageTsConfigParser(
-            $typoScriptParserProphecy->reveal(),
+            $typoScriptParserMock,
             $cache
         );
-        $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal());
+        $parsedTsConfig = $subject->parse($input, $matcherMock);
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 
@@ -63,10 +61,10 @@ class PageTsConfigParserTest extends UnitTestCase
         $cachedSection = 'mod.web_layout = disabled';
         $input = 'mod.web_layout = disabled';
         $expectedParsedTsConfig = ['mod' => ['web_layout' => 'disabled']];
-        $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
-        $matcherProphecy->match($cachedSection)->shouldBeCalled()->willReturn('matched');
-        $typoScriptParserProphecy = $this->prophesize(TypoScriptParser::class);
-        $typoScriptParserProphecy->parse($input, $matcherProphecy)->shouldNotBecalled();
+        $matcherMock = $this->createMock(ConditionMatcherInterface::class);
+        $matcherMock->expects(self::once())->method('match')->with($cachedSection)->willReturn(true);
+        $typoScriptParserMock = $this->createMock(TypoScriptParser::class);
+        $typoScriptParserMock->expects(self::never())->method('parse')->with($input, $matcherMock);
         $cache = new VariableFrontend('runtime', new TransientMemoryBackend('nothing', ['logger' => new NullLogger()]));
         $cache->set(
             '1d0a3029a36cc56a82bfdb0642fcd912',
@@ -78,10 +76,10 @@ class PageTsConfigParserTest extends UnitTestCase
             1 => 'fb3c41ea55f42a993fc143a54e09bbdd', ]
         );
         $subject = new PageTsConfigParser(
-            $typoScriptParserProphecy->reveal(),
+            $typoScriptParserMock,
             $cache
         );
-        $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal());
+        $parsedTsConfig = $subject->parse($input, $matcherMock);
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 
@@ -101,28 +99,28 @@ class PageTsConfigParserTest extends UnitTestCase
             ],
         ];
 
-        $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
+        $matcherMock = $this->createMock(ConditionMatcherInterface::class);
         $cache = new NullFrontend('runtime');
         $site = new Site(
             'dummy',
             13,
             [
-            'base' => 'https://example.com',
-        ],
+                'base' => 'https://example.com',
+            ],
             new SiteSettings(
                 [
-                         'random' => 'value',
-                         'styles' => [
-                             'content' => [
-                                 'loginform' => [
-                                     'pid' => 123,
-                                 ],
-                             ],
-                         ],
-                         'numberedThings' => [
-                             1 => 'foo',
-                             99 => 'bar',
-                         ],
+                    'random' => 'value',
+                    'styles' => [
+                        'content' => [
+                            'loginform' => [
+                                'pid' => 123,
+                            ],
+                        ],
+                    ],
+                    'numberedThings' => [
+                        1 => 'foo',
+                        99 => 'bar',
+                    ],
                 ]
             )
         );
@@ -130,7 +128,7 @@ class PageTsConfigParserTest extends UnitTestCase
             new TypoScriptParser(),
             $cache
         );
-        $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal(), $site);
+        $parsedTsConfig = $subject->parse($input, $matcherMock, $site);
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 
@@ -151,7 +149,7 @@ class PageTsConfigParserTest extends UnitTestCase
             ],
         ];
 
-        $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
+        $matcherMock = $this->createMock(ConditionMatcherInterface::class);
         $cache = new VariableFrontend('runtime', new TransientMemoryBackend('nothing', ['logger' => new NullLogger()]));
 
         $site = new Site('dummy', 13, [
@@ -166,7 +164,7 @@ class PageTsConfigParserTest extends UnitTestCase
             new TypoScriptParser(),
             $cache
         );
-        $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal(), $site);
+        $parsedTsConfig = $subject->parse($input, $matcherMock, $site);
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
 
         $site2 = new Site('dummy2', 14, [
@@ -181,7 +179,7 @@ class PageTsConfigParserTest extends UnitTestCase
             new TypoScriptParser(),
             $cache
         );
-        $parsedTsConfig2 = $subject2->parse($input, $matcherProphecy->reveal(), $site2);
+        $parsedTsConfig2 = $subject2->parse($input, $matcherMock, $site2);
         self::assertEquals($expectedParsedTsConfig2, $parsedTsConfig2);
     }
 }
