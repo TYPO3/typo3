@@ -918,12 +918,17 @@ class ArrayUtility
     /**
      * Recursively filter an array
      *
-     * @param array $array
-     * @param callable|null $callback
-     * @return array the filtered array
-     * @see https://secure.php.net/manual/en/function.array-filter.php
+     * Example:
+     * filterRecursive(
+     *   ['a' => ['b' =>  null]],
+     *   static fn ($item) => $item !== null,
+     *   ARRAY_FILTER_USE_BOTH
+     * )
+     *
+     * @param 0|ARRAY_FILTER_USE_KEY|ARRAY_FILTER_USE_BOTH $mode
+     * @see https://www.php.net/manual/en/function.array-filter.php
      */
-    public static function filterRecursive(array $array, callable $callback = null): array
+    public static function filterRecursive(array $array, callable $callback = null, int $mode = 0): array
     {
         $callback = $callback ?: static function ($value) {
             return (bool)$value;
@@ -931,15 +936,10 @@ class ArrayUtility
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $array[$key] = self::filterRecursive($value, $callback);
-            }
-
-            if (!$callback($value)) {
-                unset($array[$key]);
+                $array[$key] = self::filterRecursive($value, $callback, $mode);
             }
         }
-
-        return $array;
+        return array_filter($array, $callback, $mode);
     }
 
     /**
