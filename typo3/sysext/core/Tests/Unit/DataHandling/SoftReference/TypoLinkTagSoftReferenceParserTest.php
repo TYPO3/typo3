@@ -178,19 +178,17 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
      */
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
-        $fileObject = $this->prophesize(File::class);
-        $fileObject->getUid()->willReturn(42)->shouldBeCalledTimes(1);
+        $fileObject = $this->createMock(File::class);
+        $fileObject->expects(self::once())->method('getUid')->willReturn(42);
 
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        $resourceFactory->getFileObject('42')->willReturn($fileObject->reveal());
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);
         // For `t3://file?identifier=42` handling
-        $resourceFactory->getFileObjectFromCombinedIdentifier('42')->willReturn($fileObject->reveal());
-        // For `file:23` handling
-        $resourceFactory->retrieveFileOrFolderObject('42')->willReturn($fileObject->reveal());
-        // For `fileadmin/download.jpg` handling
-        $resourceFactory->retrieveFileOrFolderObject('fileadmin/download.jpg')->willReturn($fileObject->reveal());
+        $resourceFactory->method('getFileObjectFromCombinedIdentifier')->with('42')->willReturn($fileObject);
+        // For `file:42` handling
+        $resourceFactory->method('retrieveFileOrFolderObject')->with('42')->willReturn($fileObject);
 
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
         $subject = $this->getParserByKey('typolink_tag');
         $subject->setParserKey('typolink_tag', $softrefConfiguration);
@@ -234,11 +232,12 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
      */
     public function findRefReturnsNullWithFolder(array $softrefConfiguration): void
     {
-        $folderObject = $this->prophesize(Folder::class);
+        $folderObject = $this->createMock(Folder::class);
 
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        $resourceFactory->getFolderObjectFromCombinedIdentifier('1:/foo/bar/baz')->willReturn($folderObject->reveal())->shouldBeCalledTimes(1);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory->expects(self::once())->method('getFolderObjectFromCombinedIdentifier')
+            ->with('1:/foo/bar/baz')->willReturn($folderObject);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
         $result = $this->getParserByKey('typolink_tag')->parse(
             'tt_content',

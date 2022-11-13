@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\DataHandling\SoftReference\EmailSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\ExtensionPathSoftReferenceParser;
@@ -30,24 +28,21 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkTagSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\UrlSoftReferenceParser;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 abstract class AbstractSoftReferenceParserTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     protected function getParserByKey($softrefKey): SoftReferenceParserInterface
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $runtimeCache = $this->prophesize(FrontendInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
+        $runtimeCache = $this->createMock(FrontendInterface::class);
 
-        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal(), $logger->reveal());
+        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache, new NullLogger());
         $softReferenceParserFactory->addParser(new SubstituteSoftReferenceParser(), 'substitute');
         $softReferenceParserFactory->addParser(new NotifySoftReferenceParser(), 'notify');
-        $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser($eventDispatcher->reveal()), 'typolink');
+        $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser(new NoopEventDispatcher()), 'typolink');
         $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(), 'typolink_tag');
         $softReferenceParserFactory->addParser(new ExtensionPathSoftReferenceParser(), 'ext_fileref');
         $softReferenceParserFactory->addParser(new EmailSoftReferenceParser(), 'email');
