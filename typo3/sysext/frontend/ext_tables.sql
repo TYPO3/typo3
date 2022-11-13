@@ -13,6 +13,7 @@ CREATE TABLE cache_treelist (
 
 #
 # Table structure for table 'fe_groups'
+# @deprecated field TSconfig since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
 #
 CREATE TABLE fe_groups (
 	title varchar(50) DEFAULT '' NOT NULL,
@@ -38,6 +39,7 @@ CREATE TABLE fe_sessions (
 
 #
 # Table structure for table 'fe_users'
+# @deprecated field TSconfig since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
 #
 CREATE TABLE fe_users (
 	username varchar(255) DEFAULT '' NOT NULL,

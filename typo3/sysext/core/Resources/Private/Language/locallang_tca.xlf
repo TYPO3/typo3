@@ -48,9 +48,6 @@
 			<trans-unit id="TSconfig" resname="TSconfig">
 				<source>TSconfig</source>
 			</trans-unit>
-			<trans-unit id="TSconfig_title" resname="TSconfig_title">
-				<source>TSconfig QuickReference</source>
-			</trans-unit>
 			<trans-unit id="be_users.username" resname="be_users.username">
 				<source>Username</source>
 			</trans-unit>

@@ -476,9 +476,6 @@ FE:
             'strict': 'Cookies sent by TYPO3 are only available for the current site, never shared to other third-party packages'
             'none': 'Allow cookies set by TYPO3 to be sent to other sites as well, please note - this only works with HTTPS connections'
           description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Frontend.'
-        defaultUserTSconfig:
-            type: multiline
-            description: 'Enter lines of default frontend user/group TSconfig.'
         defaultTypoScript_constants:
             type: multiline
             description: 'Enter lines of default TypoScript, constants-field.'

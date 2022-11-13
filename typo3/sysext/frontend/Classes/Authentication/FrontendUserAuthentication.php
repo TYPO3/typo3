@@ -124,11 +124,13 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     ];
 
     /**
-     * Used to accumulate the TSconfig data of the user
-     * @var array
+     * @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
      */
     protected $TSdataArray = [];
 
+    /**
+     * @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
+     */
     protected array $userTS = [];
 
     /**
@@ -273,7 +275,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function fetchGroupData(ServerRequestInterface $request)
     {
-        $this->TSdataArray = [];
         $this->userTS = [];
         $this->userGroups = [];
         $this->groupData = [
@@ -281,7 +282,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             'uid' => [],
             'pid' => [],
         ];
-        // Setting default configuration:
+        // @deprecated since v12, remove next two lines in v13 together with fe_users & fe_groups TSconfig TCA
+        $this->TSdataArray = [];
         $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
 
         $groupDataArr = [];
@@ -307,9 +309,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['title'][$groupId] = $groupData['title'] ?? '';
             $this->groupData['uid'][$groupId] = $groupData['uid'] ?? 0;
             $this->groupData['pid'][$groupId] = $groupData['pid'] ?? 0;
-            $this->TSdataArray[] = $groupData['TSconfig'] ?? '';
             $this->userGroups[$groupId] = $groupData;
+            // @deprecated since v12, remove next line in v13 together with fe_users & fe_groups TSconfig TCA
+            $this->TSdataArray[] = $groupData['TSconfig'] ?? '';
         }
+        // @deprecated since v12, remove next line in v13 together with fe_users & fe_groups TSconfig TCA
         $this->TSdataArray[] = $this->user['TSconfig'] ?? '';
         // Sort information
         ksort($this->groupData['title']);
@@ -365,9 +369,15 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * The TSconfig will be cached in $this->userTS.
      *
      * @return array TSconfig array for the fe_user
+     * @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
      */
     public function getUserTSconf()
     {
+        trigger_error(
+            __CLASS__ . '->' . __METHOD__ . ' is deprecated since TYPO3 v12 and will be removed with v13: Database field TSconfig'
+            . ' will be removed in tables fe_users and fe_groups. Use an extension specific field for such configuration instead.',
+            E_USER_DEPRECATED
+        );
         if ($this->userTS === [] && !empty($this->TSdataArray)) {
             // Parsing the user TS (or getting from cache)
             $this->TSdataArray = TypoScriptParser::checkIncludeLines_array($this->TSdataArray);

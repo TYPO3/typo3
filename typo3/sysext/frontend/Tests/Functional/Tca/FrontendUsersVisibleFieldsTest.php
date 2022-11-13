@@ -44,7 +44,6 @@ class FrontendUsersVisibleFieldsTest extends FunctionalTestCase
         'email',
         'www',
         'image',
-        'TSconfig',
         'starttime',
         'endtime',
         'tx_extbase_type',

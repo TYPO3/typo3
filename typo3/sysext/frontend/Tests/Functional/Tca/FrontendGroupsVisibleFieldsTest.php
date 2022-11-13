@@ -29,7 +29,6 @@ class FrontendGroupsVisibleFieldsTest extends FunctionalTestCase
         'title',
         'description',
         'subgroup',
-        'TSconfig',
         'tx_extbase_type',
     ];
 

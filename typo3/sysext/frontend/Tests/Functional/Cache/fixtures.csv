@@ -20,6 +20,6 @@
 ,14,2,"On page 2",0,4,2
 ,15,2,"On page 2",0,4,4
 ,16,2,"On page 2",0,4,5
-"fe_groups",,,,,,
-,"uid","pid","title","description","subgroup","TSconfig"
-,1,2,"Test fe group on page 2","Test only",,
+"fe_groups"
+,"uid","pid","title","description"
+,1,2,"Test fe group on page 2","Test only"

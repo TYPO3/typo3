@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * A provider for resolving fe_groups / be_groups, including nested sub groups.
  *
  * When fetching subgroups, the current group (parent group) is handed in recursive.
- * Duplicates are suppressed: If a sub group is including in multiple parent groups,
+ * Duplicates are suppressed: If a subgroup is including in multiple parent groups,
  * it will be resolved only once.
  *
  * @internal this is not part of TYPO3 Core API.

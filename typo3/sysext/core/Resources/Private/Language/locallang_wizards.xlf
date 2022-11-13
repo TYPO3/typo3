@@ -6,36 +6,6 @@
 			<trans-unit id="rte_undoLastChange" resname="rte_undoLastChange">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="tsprop" resname="tsprop">
-				<source>TypoScript property lookup</source>
-			</trans-unit>
-			<trans-unit id="tsprop_TSref" resname="tsprop_TSref">
-				<source>TSref online</source>
-			</trans-unit>
-			<trans-unit id="tsprop_tsconfig" resname="tsprop_tsconfig">
-				<source>TSconfig online</source>
-			</trans-unit>
-			<trans-unit id="tsprop_title" resname="tsprop_title">
-				<source>Object title</source>
-			</trans-unit>
-			<trans-unit id="tsprop_prefix" resname="tsprop_prefix">
-				<source>Object prefix</source>
-			</trans-unit>
-			<trans-unit id="tsprop_mixer_indent" resname="tsprop_mixer_indent">
-				<source>Indent +2</source>
-			</trans-unit>
-			<trans-unit id="tsprop_mixer_outdent" resname="tsprop_mixer_outdent">
-				<source>Outdent -2</source>
-			</trans-unit>
-			<trans-unit id="tsprop_mixer_wrap" resname="tsprop_mixer_wrap">
-				<source>Wrap</source>
-			</trans-unit>
-			<trans-unit id="tsprop_mixer_transfer" resname="tsprop_mixer_transfer">
-				<source>Transfer &amp; Close</source>
-			</trans-unit>
-			<trans-unit id="tsprop_addToList" resname="tsprop_addToList">
-				<source>Add to list...</source>
-			</trans-unit>
 			<trans-unit id="table_title" resname="table_title">
 				<source>Table wizard</source>
 			</trans-unit>

@@ -238,6 +238,7 @@ return [
                 'cols' => 48,
             ],
         ],
+        // @deprecated since v12, remove in v13 together with API in FrontendUserAuthentication, also remove in 'types' array below
         'TSconfig' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig',

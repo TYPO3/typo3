@@ -946,4 +946,9 @@ return [
             'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'defaultUserTSconfig\']' => [
+        'restFiles' => [
+            'Deprecation-99075-Fe_usersAndFe_groupsTSconfig.rst',
+        ],
+    ],
 ];

@@ -5372,4 +5372,11 @@ return [
             'Deprecation-97536-LinkResultFactory.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99075-Fe_usersAndFe_groupsTSconfig.rst',
+        ],
+    ],
 ];
