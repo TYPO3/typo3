@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkTagSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\UrlSoftReferenceParser;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 abstract class AbstractSoftReferenceParserTest extends UnitTestCase
