@@ -7,7 +7,7 @@ call_user_func(static function () {
     $contentTypeName = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'Form',
         'Formframework',
-        'Form',
+        'LLL:EXT:form/Resources/Private/Language/locallang.xlf:form_new_wizard_title',
         'content-form',
         'forms'
     );
