@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
@@ -28,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TreeDataProviderFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -96,8 +94,8 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
         if (isset($tcaConfiguration['type']) && $tcaConfiguration['type'] !== 'folder' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
-            $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
-            GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider->reveal());
+            $treeDataProvider = $this->createMock(DatabaseTreeDataProvider::class);
+            GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider);
         }
 
         $this->expectException(\InvalidArgumentException::class);
@@ -112,8 +110,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     public function configuredDataProviderClassIsInstantiated(): void
     {
         $dataProviderMockClassName = TreeDataProviderFixture::class;
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher->reveal());
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $tcaConfiguration = [
             'treeConfig' => ['dataProvider' => $dataProviderMockClassName],
@@ -130,8 +127,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor(): void
     {
         $dataProviderMockClassName = TreeDataProviderWithConfigurationFixture::class;
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher->reveal());
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $tcaConfiguration = [
             'treeConfig' => [
