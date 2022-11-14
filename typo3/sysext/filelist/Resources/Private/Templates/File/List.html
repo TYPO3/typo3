@@ -145,16 +145,15 @@
                                 <f:if condition="{columnSelector}">
                                     <div class="col">
                                         <typo3-backend-column-selector-button
+                                            class="btn btn-default btn-sm"
                                             url="{columnSelector.url}"
                                             target="{listUrl}"
                                             title="{columnSelector.title}"
                                             ok="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')}"
                                             close="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
                                             error="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')}">
-                                            <button type="button" class="btn btn-default btn-sm" title="{columnSelector.title}">
                                                 <core:icon identifier="actions-options" size="small" />
                                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns" />
-                                            </button>
                                         </typo3-backend-column-selector-button>
                                     </div>
                                 </f:if>

@@ -1961,18 +1961,17 @@ class DatabaseRecordList
         return '
             <div class="float-end me-2 p-0">
                 <typo3-backend-column-selector-button
+                    class="btn btn-default btn-sm"
                     url="' . htmlspecialchars($columnSelectorUrl) . '"
                     target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
                     title="' . htmlspecialchars($columnSelectorTitle) . '"
                     ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
                     close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
                     error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
-                >
-                    <button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($columnSelectorTitle) . '">' .
-                        $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' ' .
-                        htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns')) .
-                    '</button>
-                </typo3-backend-column-selector-button>
+                >'
+                    . $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' '
+                    . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns')) .
+                '</typo3-backend-column-selector-button>
             </div>';
     }
 

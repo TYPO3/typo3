@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, TemplateResult, LitElement} from 'lit';
+import {html, css, TemplateResult, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
@@ -39,6 +39,7 @@ enum SelectorActions {
  *
  * @example
  * <typo3-backend-column-selector-button
+ *    class="btn btn-default"
  *    url="/url/to/column/selector/form"
  *    target="/url/to/go/after/column/selection"
  *    title="Show columns"
@@ -46,11 +47,13 @@ enum SelectorActions {
  *    close="Cancel"
  *    close="Error"
  * >
- *   <button>Show columns/button>
+ *   Show columns
  * </typo3-backend-column-selector-button>
  */
 @customElement('typo3-backend-column-selector-button')
 class ColumnSelectorButton extends LitElement {
+  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+
   @property({type: String}) url: string;
   @property({type: String}) target: string;
   @property({type: String}) title: string = 'Show columns';
@@ -138,6 +141,21 @@ class ColumnSelectorButton extends LitElement {
       e.preventDefault();
       this.showColumnSelectorModal();
     });
+    this.addEventListener('keydown', (e: KeyboardEvent): void => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.showColumnSelectorModal();
+      }
+    })
+  }
+
+  public connectedCallback(): void {
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'button');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
   }
 
   protected render(): TemplateResult {
