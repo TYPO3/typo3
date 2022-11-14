@@ -79,22 +79,12 @@ class ContextMenu {
   }
 
   constructor() {
-    $(document).on('click contextmenu', '.t3js-contextmenutrigger', (e: JQueryEventObject): void => {
-      const $me = $(e.currentTarget);
-      // if there is an other "inline" onclick setting, context menu is not triggered
-      // usually this is the case for the foldertree
-      if ($me.prop('onclick') && e.type === 'click') {
-        return;
-      }
-      e.preventDefault();
-      this.show(
-        $me.data('table'),
-        $me.data('uid'),
-        $me.data('context'),
-        $me.data('iteminfo'),
-        $me.data('parameters'),
-        e.target
-      );
+    document.addEventListener('click', (event: PointerEvent) => {
+      this.handleTriggerEvent(event);
+    });
+
+    document.addEventListener('contextmenu', (event: PointerEvent) => {
+      this.handleTriggerEvent(event);
     });
 
     // register mouse movement inside the document
@@ -107,11 +97,11 @@ class ContextMenu {
    * @param {string} table Table from where info should be fetched
    * @param {number} uid The UID of the item
    * @param {string} context Context of the item
-   * @param {string} enDisItems Items to disable / enable
-   * @param {string} addParams Additional params
+   * @param {string} unusedParam1
+   * @param {string} unusedParam2
    * @param {Element} eventSource Source Element
    */
-  public show(table: string, uid: number|string, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
+  public show(table: string, uid: number|string, context: string, unusedParam1: string, unusedParam2: string, eventSource: Element = null): void {
     this.hideAll();
 
     this.record = {table: table, uid: uid};
@@ -129,12 +119,6 @@ class ContextMenu {
     }
     if (typeof context !== 'undefined') {
       parameters += (parameters.length > 0 ? '&' : '') + 'context=' + context;
-    }
-    if (typeof enDisItems !== 'undefined') {
-      parameters += (parameters.length > 0 ? '&' : '') + 'enDisItems=' + enDisItems;
-    }
-    if (typeof addParams !== 'undefined') {
-      parameters += (parameters.length > 0 ? '&' : '') + 'addParams=' + addParams;
     }
     this.fetch(parameters);
   }
@@ -177,6 +161,70 @@ class ContextMenu {
         }, 500).bindTo(contextMenu);
       });
     }
+  }
+
+  private handleTriggerEvent(event: PointerEvent): void
+  {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+
+    const contextTarget = event.target.closest('[data-contextmenu-trigger]');
+    if (contextTarget instanceof HTMLElement) {
+      this.handleContextMenuEvent(event, contextTarget);
+      return;
+    }
+
+    const contextLegacyTarget = event.target.closest('.t3js-contextmenutrigger');
+    if (contextLegacyTarget instanceof HTMLElement) {
+      // @deprecated since v12, will be removed in v13.
+      console.warn('Using the contextmenu trigger .t3js-contextmenutrigger is deprecated. Please use [data-contextmenu-trigger="click"] instead and prefix your config with "data-contextmenu-".');
+      this.handleLegacyContextMenuEvent(event, contextLegacyTarget);
+      return;
+    }
+
+    const contextMenu = event.target.closest('.context-menu');
+    if (!contextMenu) {
+      this.hideAll();
+    }
+  }
+
+  private handleContextMenuEvent(event: PointerEvent, element: HTMLElement): void
+  {
+    const contextTrigger: String = element.dataset.contextmenuTrigger;
+    if (contextTrigger === 'click' || contextTrigger === event.type) {
+      event.preventDefault();
+      this.show(
+        element.dataset.contextmenuTable ?? '',
+        element.dataset.contextmenuUid ?? '',
+        element.dataset.contextmenuContext ?? '',
+        '',
+        '',
+        element
+      );
+    }
+  }
+
+  /**
+   * @deprecated since v12, will be removed in v13.
+   */
+  private handleLegacyContextMenuEvent(event: PointerEvent, element: HTMLElement): void
+  {
+    // if there is an other "inline" onclick setting, context menu is not triggered
+    // usually this is the case for the foldertree
+    if (element.getAttribute('onclick') && event.type === 'click') {
+      return;
+    }
+
+    event.preventDefault();
+    this.show(
+      element.dataset.table ?? '',
+      element.dataset.uid ?? '',
+      element.dataset.context ?? '',
+      '',
+      '',
+      element
+    );
   }
 
   /**

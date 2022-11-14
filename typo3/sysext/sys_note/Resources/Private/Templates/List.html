@@ -9,9 +9,15 @@
             <div class="note note-category-{note.category}">
                 <div class="note-header">
                     <div class="note-header-bar">
-                        <span class="note-icon t3js-contextmenutrigger" data-table="sys_note" data-uid="{note.uid}">
+                        <a
+                            href="#"
+                            class="note-icon"
+                            data-contextmenu-trigger="click"
+                            data-contextmenu-table="sys_note"
+                            data-contextmenu-uid="{note.uid}"
+                        >
                             <core:icon identifier="sysnote-type-{note.category}" />
-                        </span>
+                        </a>
                         <span class="note-author">
                             <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:author" />:
                             <f:if condition="{note.authorDisabled} || {note.authorDeleted} || !{note.authorUsername}">

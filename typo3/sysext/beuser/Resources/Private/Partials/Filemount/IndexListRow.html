@@ -6,7 +6,13 @@
 <f:section name="list_row">
     <tr>
         <td class="col-icon">
-            <a href="#" class="t3js-contextmenutrigger" data-table="sys_filemounts" data-uid="{fileMount.uid}" title="{f:if(condition: '{fileMount.title}', then: '{fileMount.title} ')}(id={fileMount.uid})">
+            <a
+                href="#"
+                data-contextmenu-trigger="click"
+                data-contextmenu-table="sys_filemounts"
+                data-contextmenu-uid="{fileMount.uid}"
+                title="{f:if(condition: '{fileMount.title}', then: '{fileMount.title} ')}(id={fileMount.uid})"
+            >
                 <bu:spriteIconForRecord table="sys_filemounts" object="{fileMount}" />
             </a>
         </td>

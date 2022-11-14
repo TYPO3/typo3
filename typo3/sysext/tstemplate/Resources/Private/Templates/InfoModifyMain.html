@@ -22,7 +22,12 @@
 
     <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
     <h3>
-        <a href="#" class="t3js-contextmenutrigger" data-table="sys_template" data-uid="{templateRecord.uid}">
+        <a
+            href="#"
+            data-contextmenu-trigger="click"
+            data-contextmenu-table="sys_template"
+            data-contextmenu-uid="{templateRecord.uid}"
+        >
             <core:iconForRecord table="sys_template" row="{templateRecord}"/>
         </a> {templateRecord.title}
     </h3>

@@ -19,7 +19,13 @@
                     <f:for each="{compareUserList}" as="compareUser">
                         <tr>
                             <td>
-                                <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" title="id={compareUser.uid}">
+                                <a
+                                    href="#"
+                                    data-contextmenu-trigger="click"
+                                    data-contextmenu-table="be_users"
+                                    data-contextmenu-uid="{compareUser.uid}"
+                                    title="id={compareUser.uid}"
+                                >
                                     <be:avatar backendUser="{compareUser.uid}" showIcon="TRUE" />
                                 </a>
                             </td>

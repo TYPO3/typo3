@@ -35,7 +35,13 @@
                 <f:for each="{groups.all}" as="group">
                     <tr>
                         <td class="col-title col-responsive nowrap">
-                            <a href="#" class="t3js-contextmenutrigger" data-table="be_groups" data-uid="{group.row.uid}" title="id={group.row.uid}">
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="be_groups"
+                                data-contextmenu-uid="{group.row.uid}"
+                                title="id={group.row.uid}"
+                            >
                                 <core:iconForRecord table="be_groups" row="{group.row}"/>
                             </a>
                             <be:link.editRecord table="be_groups" uid="{group.row.uid}">
@@ -57,7 +63,13 @@
             <f:for each="{dbMounts}" as="item">
                 <tr>
                     <td class="col-icon">
-                        <a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{item.uid}" title="id={item.uid}">
+                        <a
+                            href="#"
+                            data-contextmenu-trigger="click"
+                            data-contextmenu-table="pages"
+                            data-contextmenu-uid="{item.uid}"
+                            title="id={item.uid}"
+                        >
                             <core:iconForRecord table="pages" row="{item}"/>
                         </a>
                     </td>
@@ -74,7 +86,13 @@
             <f:for each="{fileMounts}" as="item">
                 <tr>
                     <td class="col-icon">
-                        <a href="#" class="t3js-contextmenutrigger" data-table="sys_filemounts" data-uid="{item.uid}" title="id={item.uid}">
+                        <a
+                            href="#"
+                            data-contextmenu-trigger="click"
+                            data-contextmenu-table="sys_filemounts"
+                            data-contextmenu-uid="{item.uid}"
+                            title="id={item.uid}"
+                        >
                             <core:iconForRecord table="sys_filemounts" row="{item}"/>
                         </a>
                     </td>
@@ -109,7 +127,13 @@
             <f:for each="{categories}" as="item">
                 <tr>
                     <td class="col-icon">
-                        <a href="#" class="t3js-contextmenutrigger" data-table="sys_category" data-uid="{item.uid}" title="id={item.uid}">
+                        <a
+                            href="#"
+                            data-contextmenu-trigger="click"
+                            data-contextmenu-table="sys_category"
+                            data-contextmenu-uid="{item.uid}"
+                            title="id={item.uid}"
+                        >
                             <core:iconForRecord table="sys_category" row="{item}"/>
                         </a>
                     </td>
@@ -124,7 +148,13 @@
     <f:if condition="{workspaces}">
         <f:if condition="{workspaces.record.uid}">
             <strong><f:translate key="information.defaultWorkspace" />:</strong>
-            <a href="#" class="t3js-contextmenutrigger" data-table="sys_workspace" data-uid="{workspaces.record.uid}" title="id={workspaces.record.uid}">
+            <a
+                href="#"
+                data-contextmenu-trigger="click"
+                data-contextmenu-table="sys_workspace"
+                data-contextmenu-uid="{workspaces.record.uid}"
+                title="id={workspaces.record.uid}"
+            >
                 <core:iconForRecord table="sys_workspaces" row="{workspaces.record}"/>
                 {workspaces.record.title}
             </a>

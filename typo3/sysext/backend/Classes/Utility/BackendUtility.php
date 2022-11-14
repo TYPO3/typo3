@@ -2030,11 +2030,13 @@ class BackendUtility
      */
     public static function wrapClickMenuOnIcon($content, $table, $uid = 0, $context = ''): string
     {
-        $tagParameters = self::getClickMenuOnIconTagParameters((string)$table, $uid, (string)$context);
-        return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $content . '</a>';
+        $attributes = self::getContextMenuAttributes((string)$table, $uid, (string)$context, 'click');
+        return '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $content . '</a>';
     }
 
     /**
+     * @deprecated since v12, will be removed in v13. Use BackendUtility::getContextMenuAttributes instead.
+     *
      * @param string $table Table name/File path. If the icon is for a database
      * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
      * the absolute filepath
@@ -2045,11 +2047,30 @@ class BackendUtility
      */
     public static function getClickMenuOnIconTagParameters(string $table, $uid = 0, string $context = ''): array
     {
+        return self::getContextMenuAttributes(
+            $table,
+            $uid,
+            $context,
+            'click'
+        );
+    }
+
+    /**
+     * @param string $table Table name/File path. If the icon is for a database
+     * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
+     * the absolute filepath
+     * @param int|string $uid If icon is for database record this is the UID for the
+     * record from $table or identifier for sys_file record
+     * @param string $context Set tree if menu is called from tree view
+     * @param string $trigger Set the trigger the context menu is attached to. Possible options (click/contextmenu)
+     */
+    public static function getContextMenuAttributes(string $table, $uid = 0, string $context = '', string $trigger = 'click'): array
+    {
         return [
-            'class' => 't3js-contextmenutrigger',
-            'data-table' => $table,
-            'data-uid' => (string)$uid,
-            'data-context' => $context,
+            'data-contextmenu-trigger' => $trigger,
+            'data-contextmenu-table' => $table,
+            'data-contextmenu-uid' => $uid,
+            'data-contextmenu-context' => $context,
         ];
     }
 

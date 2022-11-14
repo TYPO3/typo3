@@ -5,7 +5,13 @@
         <f:if condition="{it.isFirst}">
             <f:then>
                 <td>
-                    <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{onlineUser.backendUser.uid}" title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})">
+                    <a
+                        href="#"
+                        data-contextmenu-trigger="click"
+                        data-contextmenu-table="be_users"
+                        data-contextmenu-uid="{onlineUser.backendUser.uid}"
+                        title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})"
+                    >
                         <be:avatar backendUser="{onlineUser.backendUser.uid}" showIcon="true" />
                     </a>
                 </td>

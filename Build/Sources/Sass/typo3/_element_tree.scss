@@ -309,6 +309,6 @@ span.dragIcon {
 
 //
 // Info Pagetree Overview
-[id=InfoModuleController] a.t3js-contextmenutrigger {
+[id=InfoModuleController] a[data-contextmenu-trigger] {
     margin-right: 4px;
 }

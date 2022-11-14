@@ -738,8 +738,8 @@ class FileQueueItem {
       if (data.upload[0].icon) {
         this.$iconCol
           .html(
-            '<a href="#" class="t3js-contextmenutrigger" data-uid="'
-            + combinedIdentifier + '" data-table="sys_file">'
+            '<a href="#" data-contextmenu-trigger="click" data-contextmenu-uid="'
+            + combinedIdentifier + '" data-contextmenu-table="sys_file">'
             + data.upload[0].icon + '&nbsp;</span></a>',
           );
       }

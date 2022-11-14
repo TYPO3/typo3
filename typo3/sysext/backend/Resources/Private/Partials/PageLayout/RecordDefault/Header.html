@@ -32,9 +32,10 @@
                     </f:if>
                     <button aria-haspopup="true"
                             aria-controls="contentMenu0" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:advancedFunctions')}"
-                            class="btn btn-default btn-borderless btn-sm t3js-contextmenutrigger"
-                            data-table="tt_content"
-                            data-uid="{item.record.uid}">
+                            class="btn btn-default btn-borderless btn-sm"
+                            data-contextmenu-trigger="click"
+                            data-contextmenu-table="tt_content"
+                            data-contextmenu-uid="{item.record.uid}">
                         <core:icon identifier="actions-menu-alternative" />
                     </button>
                 </div>

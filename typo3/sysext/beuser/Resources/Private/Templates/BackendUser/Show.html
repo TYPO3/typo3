@@ -23,7 +23,13 @@
         <tr>
             <th>{f:translate(key:'realName')}</th>
             <td>
-                <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{data.user.uid}" title="id={data.user.uid}">
+                <a
+                    href="#"
+                    data-contextmenu-trigger="click"
+                    data-contextmenu-table="be_users"
+                    data-contextmenu-uid="{data.user.uid}"
+                    title="id={data.user.uid}"
+                >
                     <be:avatar backendUser="{data.user.uid}" showIcon="true"/>
                 </a>
                 {data.user.realName}

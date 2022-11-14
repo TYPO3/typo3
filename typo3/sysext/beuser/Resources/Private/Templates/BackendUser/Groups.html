@@ -16,7 +16,13 @@
                 <f:for each="{compareGroupList}" as="compareGroup">
                     <tr>
                         <td class="col-icon">
-                            <a href="#" class="t3js-contextmenutrigger" data-table="be_usergroup" data-uid="{compareGroup.uid}" title="id={compareGroup.uid}">
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="be_usergroup"
+                                data-contextmenu-uid="{compareGroup.uid}"
+                                title="id={compareGroup.uid}"
+                            >
                                 <core:iconForRecord table="be_groups" row="{compareGroup}"/>
                             </a>
                         </td>
