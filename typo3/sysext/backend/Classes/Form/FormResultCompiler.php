@@ -213,7 +213,7 @@ class FormResultCompiler
         }
 
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
+        $dateFormat = ['dd-MM-yyyy', 'HH:mm dd-MM-yyyy'];
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');

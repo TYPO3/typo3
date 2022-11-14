@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import moment from 'moment';
+import {DateTime} from 'luxon';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {SeverityEnum} from './enum/severity';
 import {MessageUtility} from './utility/message-utility';
@@ -55,11 +55,6 @@ interface UploadedFile {
   path: string;
 }
 
-interface InternalFile extends File {
-  lastModified: any;
-  lastModifiedDate: any;
-}
-
 interface DragUploaderOptions {
   /**
    * CSS selector for the element where generated messages are inserted. (required)
@@ -73,7 +68,7 @@ interface DragUploaderOptions {
 
 interface FileConflict {
   original: UploadedFile;
-  uploaded: InternalFile;
+  uploaded: File;
   action: Action;
 }
 
@@ -300,7 +295,7 @@ class DragUploaderPlugin {
 
     // Check for each file if is already exist before adding it to the queue
     const ajaxCalls: Promise<void>[] = [];
-    Array.from(files).forEach((file: InternalFile) => {
+    Array.from(files).forEach((file: File) => {
       const request = new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments({
         fileName: file.name,
         fileTarget: this.target,
@@ -427,16 +422,12 @@ class DragUploaderPlugin {
         ),
         $('<td />').html(
           this.askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
-          '<br>' + moment.unix(this.askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm'),
+          '<br>' + DateTime.fromSeconds(this.askForOverride[i].original.mtime).toLocaleString(DateTime.DATETIME_MED)
         ),
         $('<td />').html(
           this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +
           '<br>' +
-          moment(
-            this.askForOverride[i].uploaded.lastModified
-              ? this.askForOverride[i].uploaded.lastModified
-              : this.askForOverride[i].uploaded.lastModifiedDate,
-          ).format('YYYY-MM-DD HH:mm'),
+          DateTime.fromMillis(this.askForOverride[i].uploaded.lastModified).toLocaleString(DateTime.DATETIME_MED)
         ),
         $('<td />').append(
           $('<select />', {class: 'form-select t3js-actions', 'data-override': i}).append(
@@ -547,7 +538,7 @@ class FileQueueItem {
   private readonly $row: JQuery;
   private readonly $progress: JQuery;
   private readonly $progressContainer: JQuery;
-  private readonly file: InternalFile;
+  private readonly file: File;
   private readonly override: Action;
   private readonly $selector: JQuery;
   private $iconCol: JQuery;
@@ -557,7 +548,7 @@ class FileQueueItem {
   private $progressMessage: JQuery;
   private dragUploader: DragUploaderPlugin;
 
-  constructor(dragUploader: DragUploaderPlugin, file: InternalFile, override: Action) {
+  constructor(dragUploader: DragUploaderPlugin, file: File, override: Action) {
     this.dragUploader = dragUploader;
     this.file = file;
     this.override = override;

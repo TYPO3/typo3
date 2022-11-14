@@ -551,8 +551,6 @@ module.exports = function (grunt) {
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
           'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
-          'moment.js': 'moment/min/moment-with-locales.min.js',
-          'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
           'nprogress.js': 'nprogress/nprogress.js',
           'sortablejs.js': 'sortablejs/dist/sortable.umd.js',
           'tablesort.js': 'tablesort/dist/tablesort.min.js',
@@ -634,6 +632,7 @@ module.exports = function (grunt) {
           'require.js': 'requirejs/require.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
           'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
+          'luxon.js': 'luxon/build/es6/luxon.js',
           '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
         }
       }
@@ -651,6 +650,7 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js": ["<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/luxon.js": ["<%= paths.core %>Public/JavaScript/Contrib/luxon.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/taboverride.js": ["<%= paths.core %>Public/JavaScript/Contrib/taboverride.js"],

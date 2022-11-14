@@ -12,7 +12,7 @@
  */
 
 import flatpickr from 'flatpickr/flatpickr.min';
-import moment from 'moment';
+import {DateTime} from 'luxon';
 import PersistentStorage from './storage/persistent';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
@@ -34,15 +34,19 @@ class DateTimePicker {
    * Format the value for the hidden field that is passed on to the backend, i.e. most likely DataHandler.
    * The format for that is the timestamp for time fields, and a full-blown ISO-8601 timestamp for all date-related fields.
    *
-   * @param {moment} date
+   * @param {DateTime} date
    * @param {string} type
    * @returns {string}
    */
-  private static formatDateForHiddenField(date: any, type: string): string {
+  private static formatDateForHiddenField(date: DateTime, type: string): string {
     if (type === 'time' || type === 'timesec') {
-      date.year(1970).month(0).date(1);
+      date = date.set({
+        year: 1970,
+        month: 1,
+        day: 1
+      });
     }
-    return date.format();
+    return date.toISO({suppressMilliseconds: true});
   }
 
   /**
@@ -116,11 +120,11 @@ class DateTimePicker {
 
       if (target.value !== '') {
         const type = target.dataset.dateType;
-        const date = moment.utc(target.value, target._flatpickr.config.dateFormat);
-        if (date.isValid()) {
+        const date = DateTime.fromFormat(target.value, target._flatpickr.config.dateFormat, {zone: 'utc'});
+        if (date.isValid) {
           hiddenField.value = DateTimePicker.formatDateForHiddenField(date, type);
         } else {
-          target.value = DateTimePicker.formatDateForHiddenField(moment.utc(hiddenField.value), type);
+          target.value = DateTimePicker.formatDateForHiddenField(DateTime.fromISO(hiddenField.value, {zone: 'utc'}), type);
         }
       } else {
         hiddenField.value = '';
@@ -183,10 +187,10 @@ class DateTimePicker {
       enableSeconds: false,
       enableTime: false,
       formatDate: (date: Date, format: string) => {
-        return moment(date).format(format);
+        return DateTime.fromJSDate(date).toFormat(format);
       },
       parseDate: (datestr: string, format: string): Date => {
-        return moment(datestr, format, true).toDate();
+        return DateTime.fromFormat(datestr, format).toJSDate();
       },
       maxDate: '',
       minDate: '',
@@ -216,7 +220,7 @@ class DateTimePicker {
         options.noCalendar = true;
         break;
       case 'year':
-        options.dateFormat = 'Y';
+        options.dateFormat = 'yyyy';
         break;
       default:
     }

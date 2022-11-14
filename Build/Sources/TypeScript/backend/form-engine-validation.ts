@@ -17,7 +17,7 @@
  * @internal
  */
 import $ from 'jquery';
-import moment from 'moment';
+import {DateTime} from 'luxon';
 import Md5 from '@typo3/backend/hashing/md5';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
@@ -148,13 +148,14 @@ export default (function() {
    */
   FormEngineValidation.formatValue = function(type: string, value: string|number, config: Object): string {
     let theString = '';
-    let parsedInt: number, theTime: Date;
+    let parsedInt: number;
+    let theTime: Date;
     switch (type) {
       case 'date':
         // poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
         if (value.toString().indexOf('-') > 0) {
-          const date = moment.utc(value);
-          theString = date.format('DD-MM-YYYY');
+          const date = DateTime.fromISO(value.toString(), {zone: 'utc'});
+          theString = date.toFormat('dd-MM-yyyy');
         } else {
           // @ts-ignore
           parsedInt = value * 1;
@@ -179,19 +180,19 @@ export default (function() {
       case 'timesec':
         let dateValue;
         if (value.toString().indexOf('-') > 0) {
-          dateValue = moment.utc(value);
+          dateValue = DateTime.fromISO(value.toString(), {zone: 'utc'});
         } else {
           // eslint-disable-next-line radix
           parsedInt = typeof value === 'number' ? value : parseInt(value);
           if (!parsedInt && value.toString() !== '0') {
             return '';
           }
-          dateValue = moment.unix(parsedInt).utc();
+          dateValue = DateTime.fromSeconds(parsedInt, {zone: 'utc'});
         }
         if (type === 'timesec') {
-          theString = dateValue.format('HH:mm:ss');
+          theString = dateValue.toFormat('HH:mm:ss');
         } else {
-          theString = dateValue.format('HH:mm');
+          theString = dateValue.toFormat('HH:mm');
         }
         break;
       case 'password':
@@ -672,8 +673,8 @@ export default (function() {
   FormEngineValidation.parseDateTime = function(value: string): number {
     const index = value.indexOf(' ');
     if (index !== -1) {
-      const dateVal = FormEngineValidation.parseDate(value.substr(index, value.length));
-      FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0, index), 'time');
+      const dateVal = FormEngineValidation.parseDate(value.substring(index + 1));
+      FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substring(0, index), 'time');
     } else {
       // only date, no time
       FormEngineValidation.lastTime = FormEngineValidation.parseDate(value);
@@ -688,7 +689,7 @@ export default (function() {
    * @returns {*}
    */
   FormEngineValidation.parseDate = function(value: string): number {
-    FormEngineValidation.lastDate = moment.utc(value, 'DD-MM-YYYY').unix();
+    FormEngineValidation.lastDate = DateTime.fromFormat(value, 'dd-MM-yyyy', {zone: 'utc'}).toUnixInteger();
 
     return FormEngineValidation.lastDate;
   };
@@ -701,8 +702,12 @@ export default (function() {
    * @returns {*}
    */
   FormEngineValidation.parseTime = function(value: string, type: string): number {
-    const format = type === 'timesec' ? 'hh:mm:ss' : 'hh:mm';
-    FormEngineValidation.lastTime = moment.utc(value, format).year(1970).month(0).date(1).unix();
+    const format = type === 'timesec' ? 'HH:mm:ss' : 'HH:mm';
+    FormEngineValidation.lastTime = DateTime.fromFormat(value, format, {zone: 'utc'}).set({
+      year: 1970,
+      month: 1,
+      day: 1
+    }).toUnixInteger();
     if (FormEngineValidation.lastTime < 0) {
       FormEngineValidation.lastTime += 24 * 60 * 60;
     }

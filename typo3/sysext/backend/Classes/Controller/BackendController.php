@@ -130,7 +130,7 @@ class BackendController
         $pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
         $pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
         $pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
-        $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
+        $dateFormat = ['dd-MM-yyyy', 'HH:mm dd-MM-yyyy'];
         // Needed for FormEngine manipulation (date picker)
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
