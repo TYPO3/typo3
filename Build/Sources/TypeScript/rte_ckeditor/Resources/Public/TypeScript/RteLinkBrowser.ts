@@ -123,10 +123,7 @@ class RteLinkBrowser {
     if (selection && selection.getSelectedText() === '') {
       selection.selectElement(selection.getStartElement());
     }
-    const originalLinkText = this.CKEditor.extractSelectedHtml(true) as string;
-    if (originalLinkText) {
-      linkElement.setHtml(originalLinkText);
-    } else if (selection && selection.getSelectedText()) {
+    if (selection && selection.getSelectedText()) {
       linkElement.setText(selection.getSelectedText());
     } else {
       linkElement.setText(linkElement.getAttribute('href'));
