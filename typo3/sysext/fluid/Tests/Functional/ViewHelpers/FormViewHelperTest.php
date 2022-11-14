@@ -106,7 +106,7 @@ class FormViewHelperTest extends FunctionalTestCase
         $request = $this->createRequest();
         $context->setRequest($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $expected = '<form action="foobar" method="post">';
+        $expected = '<form method="post" action="foobar">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
 
@@ -160,7 +160,7 @@ class FormViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<form action="" method="post">' . chr(10) . '<div>';
+        $expected = '<form method="post" action="">' . chr(10) . '<div>';
         self::assertStringContainsString($expected, $view->render());
     }
 
@@ -178,7 +178,7 @@ class FormViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<form action="" method="post">' . chr(10) . '<div class="hidden">';
+        $expected = '<form method="post" action="">' . chr(10) . '<div class="hidden">';
         self::assertStringContainsString($expected, $view->render());
     }
 
@@ -201,7 +201,7 @@ class FormViewHelperTest extends FunctionalTestCase
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<form action="" method="post">
+        $expected = '<form method="post" action="">
 <div>
 <input type="hidden" name="prefix[myObjectName][__identity]" value="123" />
 

@@ -130,7 +130,7 @@ class FormViewHelper extends AbstractFormViewHelper
         $this->registerArgument('requestToken', 'mixed', 'whether to add that request token to the form');
         $this->registerArgument('signingType', 'string', 'which signing type to be used on the request token (falls back to "nonce")');
         $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
-        $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
+        $this->registerTagAttribute('method', 'string', 'Transfer type (get or post)', false, 'post');
         $this->registerTagAttribute('name', 'string', 'Name of form');
         $this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
         $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
@@ -152,6 +152,8 @@ class FormViewHelper extends AbstractFormViewHelper
         }
 
         $this->setFormActionUri();
+
+        // Force 'method="get"' or 'method="post"', defaulting to "post".
         if (isset($this->arguments['method']) && strtolower($this->arguments['method']) === 'get') {
             $this->tag->addAttribute('method', 'get');
         } else {
