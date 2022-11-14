@@ -26,13 +26,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * is not related for language handling of content, but rather of labels for plugins.
  *
  * Usually this is injected into $GLOBALS['LANG'] when in backend or CLI context, and
- * populated by the current backend user. Don't rely on $GLOBAL['LANG'] in frontend, as it is only
+ * populated by the current backend user. Do not rely on $GLOBAL['LANG'] in frontend, as it is only
  * available in certain circumstances!
  * In Frontend, this is also used to translate "labels", see TypoScriptFrontendController->sL()
  * for that.
  *
  * As TYPO3 internally does not match the proper ISO locale standard, the "locale" here
- * is actually a list of supported language keys, (see Locales class), whereas "english"
+ * is actually a list of supported language keys, (see Locales class), whereas "English"
  * has the language key "default".
  */
 class LanguageService
@@ -52,7 +52,7 @@ class LanguageService
     public $debugKey = false;
 
     /**
-     * List of language dependencies for actual language. This is used for local variants of a language
+     * List of language dependencies for an actual language. This setting is used for local variants of a language
      * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
      *
      * @var array
@@ -81,7 +81,11 @@ class LanguageService
 
     /**
      * Initializes the language to fetch XLF labels for.
-     * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
+     *
+     * ```
+     * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+     *     ->createFromUserPreferences($GLOBALS['BE_USER']);
+     * ```
      *
      * @throws \RuntimeException
      * @param string $languageKey The language key (two character string from backend users profile)
@@ -102,7 +106,7 @@ class LanguageService
     }
 
     /**
-     * Debugs localization key.
+     * Debugs the localization key.
      *
      * @param string $value value to debug
      * @return string
@@ -153,8 +157,12 @@ class LanguageService
      * Main and most often used method.
      *
      * Resolve strings like these:
+     *
+     * ```
      *      'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'
-     * This looks up the given .xlf file path in the 'core' extension for label 'labels.depth_0'
+     * ```
+     *
+     * This looks up the given .xlf file path in the 'core' extension for label labels.depth_0
      *
      * @param string $input Label key/reference
      * @return string
@@ -194,7 +202,7 @@ class LanguageService
 
     /**
      * Includes locallang file (and possibly additional localized version if configured for)
-     * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = TRUE).
+     * Read language labels will be merged with $LOCAL_LANG (if $setGlobal === true).
      *
      * @param string $fileRef $fileRef is a file-reference
      * @return array returns the loaded label file
@@ -212,7 +220,7 @@ class LanguageService
      * Includes a locallang file (and possibly additional localized version if configured for),
      * and then puts everything into "default", so "default" is kept as fallback
      *
-     * @param string $fileRef $fileRef is a file-reference
+     * @param string $fileRef a file-reference
      * @return array
      */
     protected function includeLanguageFileRaw($fileRef)
@@ -234,7 +242,7 @@ class LanguageService
      * Includes a locallang file and returns the $LOCAL_LANG array found inside.
      *
      * @param string $fileRef Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
-     * @return array value of $LOCAL_LANG found in the included file, empty if non found
+     * @return array value of $LOCAL_LANG found in the included file, empty if none found
      */
     protected function readLLfile($fileRef): array
     {
