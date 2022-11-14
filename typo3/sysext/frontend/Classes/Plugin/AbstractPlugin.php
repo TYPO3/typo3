@@ -411,7 +411,7 @@ class AbstractPlugin
             $conf['no_cache'] = true;
         }
         $conf['parameter'] = $altPageId ?: ($this->pi_tmpPageId ?: 'current');
-        $conf['additionalParams'] = $this->conf['parent.']['addParams'] . HttpUtility::buildQueryString($urlParameters, '&', true) . $this->pi_moreParams;
+        $conf['additionalParams'] = ($this->conf['parent.']['addParams'] ?? '') . HttpUtility::buildQueryString($urlParameters, '&', true) . $this->pi_moreParams;
         return $this->cObj->typoLink((string)$str, $conf);
     }
 
