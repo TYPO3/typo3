@@ -298,7 +298,7 @@
 				<source>Available filemounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.confirm.deletion">
-			    <source>Are you sure, that you wand to delete the filemount "%s"?</source>
+			    <source>Are you sure, that you want to delete the filemount "%s"?</source>
 			</trans-unit>
 			<trans-unit id="filemount.create">
 			    <source>Create new filemount</source>
