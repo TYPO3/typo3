@@ -17,8 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -34,9 +38,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FormProtectionFactoryTest extends UnitTestCase
 {
     protected FormProtectionFactory $subject;
+    protected FrontendInterface $runtimeCacheMock;
 
     protected function setUp(): void
     {
+        $this->runtimeCacheMock = new VariableFrontend('null', new TransientMemoryBackend('null', ['logger' => new NullLogger()]));
         $this->subject = new FormProtectionFactory(
             new FlashMessageService(),
             new LanguageServiceFactory(
@@ -44,102 +50,16 @@ class FormProtectionFactoryTest extends UnitTestCase
                 $this->createMock(LocalizationFactory::class),
                 new NullFrontend('null')
             ),
-            new Registry()
+            new Registry(),
+            $this->runtimeCacheMock
         );
         parent::setUp();
     }
 
     protected function tearDown(): void
     {
-        FormProtectionFactory::purgeInstances();
+        $this->runtimeCacheMock->flush();
         parent::tearDown();
-    }
-
-    /////////////////////////
-    // Tests concerning get
-    /////////////////////////
-    /**
-     * @test
-     */
-    public function getForNotExistingClassThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1285352962);
-
-        FormProtectionFactory::get('noSuchClass');
-    }
-
-    /**
-     * @test
-     */
-    public function getForClassThatIsNoFormProtectionSubclassThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1285353026);
-
-        FormProtectionFactory::get(self::class);
-    }
-
-    /**
-     * @test
-     */
-    public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection(): void
-    {
-        $userMock = $this->createMock(BackendUserAuthentication::class);
-        $userMock->user = ['uid' => 4711];
-        self::assertInstanceOf(
-            BackendFormProtection::class,
-            FormProtectionFactory::get(
-                BackendFormProtection::class,
-                $userMock,
-                $this->createMock(Registry::class)
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance(): void
-    {
-        $userMock = $this->createMock(BackendUserAuthentication::class);
-        $userMock->user = ['uid' => 4711];
-        $arguments = [
-            BackendFormProtection::class,
-            $userMock,
-            $this->createMock(Registry::class),
-        ];
-        self::assertSame(
-            FormProtectionFactory::get(...$arguments),
-            FormProtectionFactory::get(...$arguments)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function getForTypeInstallToolReturnsInstallToolFormProtection(): void
-    {
-        self::assertInstanceOf(
-            InstallToolFormProtection::class,
-            FormProtectionFactory::get(InstallToolFormProtection::class)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function getForTypeInstallToolCalledTwoTimesReturnsTheSameInstance(): void
-    {
-        self::assertSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(InstallToolFormProtection::class));
-    }
-
-    /**
-     * @test
-     */
-    public function getForTypesInstallToolAndDisabledReturnsDifferentInstances(): void
-    {
-        self::assertNotSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(DisabledFormProtection::class));
     }
 
     /**
@@ -225,7 +145,8 @@ class FormProtectionFactoryTest extends UnitTestCase
         $formProtection = $this->subject->createForType('backend');
         // User is now logged in, but we still get the disabled form protection due to the "singleton" concept
         self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
-        $this->subject->clearInstances();
+        // we need to manually flush this here, aas next test should expect a cleared state.
+        $this->runtimeCacheMock->flush();
         $formProtection = $this->subject->createForType('backend');
         // User is now logged in, now we get a backend form protection, due to the "purge instance" concept.
         self::assertInstanceOf(BackendFormProtection::class, $formProtection);

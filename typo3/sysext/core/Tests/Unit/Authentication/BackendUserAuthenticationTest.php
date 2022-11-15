@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
+use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -40,12 +42,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendUserAuthenticationTest extends UnitTestCase
 {
-    public function tearDown(): void
-    {
-        FormProtectionFactory::purgeInstances();
-        parent::tearDown();
-    }
-
     /**
      * @test
      */
@@ -63,10 +59,12 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $formProtectionMock = $this->createMock(BackendFormProtection::class);
         $formProtectionMock->expects(self::once())->method('clean');
 
+        $runtimeCache = new VariableFrontend('null', new TransientMemoryBackend('null', ['logger' => new NullLogger()]));
         $formProtectionFactory = new FormProtectionFactory(
             $this->createMock(FlashMessageService::class),
             $this->createMock(LanguageServiceFactory::class),
-            $this->createMock(Registry::class)
+            $this->createMock(Registry::class),
+            $runtimeCache
         );
         GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
         GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionMock);

@@ -23,6 +23,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -512,6 +513,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $container->get(Messaging\FlashMessageService::class),
                 $container->get(Localization\LanguageServiceFactory::class),
                 $container->get(Registry::class),
+                $container->get(CacheManager::class)->getCache('runtime'),
             ]
         );
     }

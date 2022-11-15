@@ -1408,4 +1408,18 @@ return [
             'Feature-98487-TCAOptionCtrlsecurityignorePageTypeRestriction.rst',
         ],
     ],
+    'TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 99,
+        'restFiles' => [
+            'Deprecation-99098-StaticUsageOfFormProtectionFactory.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 99,
+        'restFiles' => [
+            'Deprecation-99098-StaticUsageOfFormProtectionFactory.rst',
+        ],
+    ],
 ];
