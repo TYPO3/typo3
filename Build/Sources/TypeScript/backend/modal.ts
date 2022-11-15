@@ -82,6 +82,7 @@ export interface Configuration {
   additionalCssClasses: Array<string>;
   callback: ModalCallbackFunction | null;
   ajaxCallback: ModalCallbackFunction | null;
+  staticBackdrop: boolean;
 }
 
 type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>
@@ -95,6 +96,7 @@ export class ModalElement extends LitElement {
   @property({type: String, reflect: true}) variant: Styles = Styles.default;
   @property({type: String, reflect: true}) size: Sizes = Sizes.default;
   @property({type: Number, reflect: true}) zindex: Number = 5000;
+  @property({type: Boolean}) staticBackdrop: boolean = false;
   @property({type: Array}) additionalCssClasses: Array<string> = [];
   @property({type: Array, attribute: false}) buttons: Array<Button> = [];
 
@@ -141,6 +143,7 @@ export class ModalElement extends LitElement {
           tabindex="-1"
           class="modal fade t3js-modal ${classMap(classes)}"
           style=${styleMap(styles)}
+          data-bs-backdrop="${ifDefined(this.staticBackdrop) ? 'static' : true}"
           @show.bs.modal=${() => this.trigger('typo3-modal-show')}
           @shown.bs.modal=${() => this.trigger('typo3-modal-shown')}
           @hide.bs.modal=${() => this.trigger('typo3-modal-hide')}
@@ -277,6 +280,7 @@ class Modal {
     additionalCssClasses: [],
     callback: null,
     ajaxCallback: null,
+    staticBackdrop: false
   };
 
   private static createModalResponseEventFromElement(element: HTMLElement, result: boolean): ModalResponseEvent | null {
@@ -445,6 +449,7 @@ class Modal {
     configuration.ajaxCallback = typeof configuration.ajaxCallback === 'function'
       ? configuration.ajaxCallback
       : this.defaultConfiguration.ajaxCallback;
+    configuration.staticBackdrop = configuration.staticBackdrop || this.defaultConfiguration.staticBackdrop;
 
     return this.generate(configuration);
   }
@@ -479,6 +484,7 @@ class Modal {
         title: triggerElement.dataset.title || 'Alert',
         content: url !== null ? url : content,
         severity,
+        staticBackdrop: triggerElement.dataset.staticBackdrop !== undefined,
         buttons: [
           {
             text: triggerElement.dataset.buttonCloseText || TYPO3.lang['button.close'] || 'Close',
@@ -546,6 +552,7 @@ class Modal {
     currentModal.modalTitle = configuration.title;
     currentModal.additionalCssClasses = configuration.additionalCssClasses;
     currentModal.buttons = <Array<Button>>configuration.buttons;
+    currentModal.staticBackdrop = configuration.staticBackdrop;
     if (configuration.callback) {
       currentModal.callback = configuration.callback;
     }

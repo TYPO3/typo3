@@ -230,6 +230,7 @@ class ImageManipulation {
       size: Modal.sizes.full,
       style: Modal.styles.dark,
       title: modalTitle,
+      staticBackdrop: true
     });
 
     this.currentModal.addEventListener('typo3-modal-shown', (): void => {
@@ -243,8 +244,6 @@ class ImageManipulation {
     this.currentModal.addEventListener('typo3-modal-hide', (): void => {
       this.destroy();
     });
-    // do not dismiss the modal when clicking beside it to avoid data loss
-    this.currentModal.style.pointerEvents = 'none';
   }
 
   /**
