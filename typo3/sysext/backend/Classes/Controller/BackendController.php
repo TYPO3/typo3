@@ -82,6 +82,10 @@ class BackendController
         $this->setUpBasicPageRendererForBackend($pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
 
         $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
+        $javaScriptRenderer->addGlobalAssignment(['window' => [
+            'name' => 'typo3-backend', // reset window name to a standardized value
+            'opener' => null, // remove any previously set opener value
+        ]]);
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/backend/login-refresh.js')
                 ->invoke('initialize', [

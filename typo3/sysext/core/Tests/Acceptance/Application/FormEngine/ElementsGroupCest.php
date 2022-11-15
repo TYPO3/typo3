@@ -104,13 +104,13 @@ class ElementsGroupCest
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
         $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
 
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
 
         $I->amGoingTo('click + button to select record and close DB-Browser');
         $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 5);
     }
@@ -126,7 +126,7 @@ class ElementsGroupCest
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
         $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
 
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
 
         $I->amGoingTo('click record + in DB-Browser');
@@ -134,7 +134,7 @@ class ElementsGroupCest
         $I->amGoingTo('click + button to select record and close DB-Browser');
         $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 6);
     }
@@ -150,7 +150,7 @@ class ElementsGroupCest
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
         $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
 
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
 
         $I->amGoingTo('search record foo in DB-Browser');
@@ -166,7 +166,7 @@ class ElementsGroupCest
 
         $I->amGoingTo('click + button to select record and close DB-Browser');
         $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->click('.t3js-modal-close');
 
         $I->switchToContentFrame();

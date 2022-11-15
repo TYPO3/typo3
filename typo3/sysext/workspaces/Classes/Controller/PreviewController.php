@@ -95,7 +95,6 @@ class PreviewController
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;
         }
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
         $this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);
 

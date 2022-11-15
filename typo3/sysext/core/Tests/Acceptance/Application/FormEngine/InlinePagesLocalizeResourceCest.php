@@ -43,7 +43,7 @@ class InlinePagesLocalizeResourceCest
         // Inline add record in Resources tab
         $I->click('Resources');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
         $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
@@ -55,10 +55,10 @@ class InlinePagesLocalizeResourceCest
         $I->waitForElementVisible('#typo3-filelist a[data-file-name="telephone_box.jpg"]');
         $I->click('#typo3-filelist a[data-file-name="telephone_box.jpg"]');
         // Save, go back to list
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->waitForText('Save and close');
         $I->click('Save and close');
         // Edit the page translation and see if that resource has been added.

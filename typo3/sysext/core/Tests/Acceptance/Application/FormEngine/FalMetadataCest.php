@@ -66,13 +66,13 @@ class FalMetadataCest
 
         $I->click('Images');
         $I->click('Add image');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
         $I->waitForElement('.svg-tree-wrapper .nodes .node', 5);
         $I->click('.node[title="styleguide"]');
         $I->waitForText('fileadmin: /styleguide/', 5);
         $I->click('bus_lane.jpg');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->waitForText('bus_lane.jpg');
 
@@ -108,7 +108,7 @@ class FalMetadataCest
 
         $I->amGoingTo('Check metadata of sys_file_reference displayed in tt_content');
         $this->goToPageModule($I, $pageTree);
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->click('tt_content with image');
         $I->waitForElementNotVisible('#t3js-ui-block');
@@ -158,13 +158,13 @@ class FalMetadataCest
 
         $I->click('Images');
         $I->click('Add image');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
         $I->waitForElement('.svg-tree-wrapper .nodes .node', 5);
         $I->click('.node[title="styleguide"]');
         $I->waitForText('fileadmin: /styleguide/', 5);
         $I->click('bus_lane.jpg');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->waitForText('bus_lane.jpg');
 
@@ -207,7 +207,7 @@ class FalMetadataCest
     {
         $I->amGoingTo('Check if deactivating null checkboxes focuses text fields');
         $this->goToPageModule($I, $pageTree);
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->click('tt_content with image');
         $I->waitForElementNotVisible('#t3js-ui-block');

@@ -39,7 +39,7 @@ class InlineContentElementLocalizeSynchronizeCest
     {
         // Add a content element type images and localize it
         $I->click('.module-body td[data-language-uid="0"] span[data-identifier="actions-add"]');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->waitForText('Images Only');
         $I->click('Images Only');
         $I->switchToContentFrame();
@@ -48,7 +48,7 @@ class InlineContentElementLocalizeSynchronizeCest
         // Inline add record in Resources tab
         $I->click('Images');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
         $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
@@ -60,10 +60,10 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElementVisible('#typo3-filelist a[data-file-name="telephone_box.jpg"]');
         $I->click('#typo3-filelist a[data-file-name="telephone_box.jpg"]');
         // Save, go back to page
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->waitForText('Save and close');
         $I->click('Save and close');
         // Switch to "All languages" view and localize content element
@@ -74,7 +74,7 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->selectOption('select[name=languageMenu]', 'All languages');
         $I->waitForText('Translate');
         $I->click('Translate');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->waitForText('Localize page "staticdata - language 1" into styleguide demo language danish');
         $I->click('span[data-identifier="actions-localize"]');
         $I->click('Next');
@@ -87,7 +87,7 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->waitForText('Edit Page Content on page "staticdata"', 3, 'h1');
         $I->click('Images');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
         $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
@@ -99,10 +99,10 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElementVisible('#typo3-filelist a[data-file-name="underground.jpg"]');
         $I->click('#typo3-filelist a[data-file-name="underground.jpg"]');
         // Save, go back to page
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
-        $I->switchToWindow();
+        $I->switchToWindow('typo3-backend');
         $I->waitForText('Save and close');
         $I->click('Save and close');
         // Open the localized element and see that the second image can be synchronized
