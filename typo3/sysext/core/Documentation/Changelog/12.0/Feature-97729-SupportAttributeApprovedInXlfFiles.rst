@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-97729-1654626734
+.. _feature-97729-1654626734:
 
 =========================================================
 Feature: #97729 - Respect attribute approved in XLF files

@@ -39,6 +39,7 @@ Before
 ------
 
 .. code-block:: html
+
     <a href="#"
         class="t3js-contextmenutrigger"
         data-table="pages"
@@ -50,6 +51,7 @@ After
 -----
 
 .. code-block:: html
+
     <a href="#"
         data-contextmenu-trigger="click"
         data-contextmenu-table="pages"

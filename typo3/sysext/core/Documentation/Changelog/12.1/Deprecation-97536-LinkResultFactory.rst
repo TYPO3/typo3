@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _deprecation-97536-1651523804
+.. _deprecation-97536-1651523804:
 
 =======================================
 Deprecation: #97536 - LinkResultFactory

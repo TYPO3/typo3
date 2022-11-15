@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-97747-1654691279
+.. _feature-97747-1654691279:
 
 ===========================================
 Feature: #97747 - Introduce MailerInterface

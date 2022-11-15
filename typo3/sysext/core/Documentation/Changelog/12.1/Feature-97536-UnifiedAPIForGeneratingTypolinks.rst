@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-97536-1651523601
+.. _feature-97536-1651523601:
 
 ======================================================
 Feature: #97536 - Unified API for generating typolinks

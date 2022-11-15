@@ -27,6 +27,7 @@ Examples
 --------
 
 .. code-block:: html
+
     <a href="#"
         data-contextmenu-trigger="click"
         data-contextmenu-table="pages"
@@ -34,6 +35,7 @@ Examples
     >Click and Contextmenu</a>
 
 .. code-block:: html
+
     <a href="#"
         data-contextmenu-trigger="contextmenu"
         data-contextmenu-table="pages"
