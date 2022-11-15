@@ -7,14 +7,14 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'stable',
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
-    'version' => '11.5.19',
+    'version' => '11.5.20',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.19',
+            'typo3' => '11.5.20',
         ],
         'conflicts' => [],
         'suggests' => [
-            'setup' => '11.5.19',
+            'setup' => '11.5.20',
         ],
     ],
 ];
