@@ -144,7 +144,7 @@ class ConditionMatcher extends AbstractConditionMatcher
                 $pageId = $id;
             } else {
                 $record = BackendUtility::getRecordWSOL($table, abs($id), '*', '', false);
-                $pageId = (int)$record['pid'];
+                $pageId = (int)($record['pid'] ?? 0);
             }
         }
         return $pageId;
