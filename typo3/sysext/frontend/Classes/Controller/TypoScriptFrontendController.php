@@ -60,9 +60,9 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionIncludeListAccumulatorVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
@@ -1191,7 +1191,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->tmpl->rootLine = $localRootline;
 
         $tokenizer = new LossyTokenizer();
-        $treeBuilder = GeneralUtility::makeInstance(TreeBuilder::class);
+        $treeBuilder = GeneralUtility::makeInstance(SysTemplateTreeBuilder::class);
         $includeTreeTraverser = new IncludeTreeTraverser();
         $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
         $frontendConditionMatcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $this->id, $this->rootLine);

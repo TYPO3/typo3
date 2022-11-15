@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Fetch relevant sys_template records from database by given page rootline.
  *
- * The result sys_template rows are fed to the TreeBuilder for processing.
+ * The result sys_template rows are fed to the SysTemplateTreeBuilder for processing.
  *
  * @internal: Internal structure. There is optimization potential and especially getSysTemplateRowsByRootline() will probably vanish later.
  */

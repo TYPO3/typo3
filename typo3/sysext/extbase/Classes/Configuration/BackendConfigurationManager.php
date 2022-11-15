@@ -30,8 +30,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
@@ -97,7 +97,7 @@ class BackendConfigurationManager implements SingletonInterface
         private readonly PhpFrontend $typoScriptCache,
         private readonly FrontendInterface $runtimeCache,
         private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly TreeBuilder $treeBuilder,
+        private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LossyTokenizer $lossyTokenizer,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $includeTreeTraverserConditionVerdictAware,
         private readonly Context $context,

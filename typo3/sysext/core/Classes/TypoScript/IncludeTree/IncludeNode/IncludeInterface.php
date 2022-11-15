@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 /**
  * General interface of IncludeTree tree nodes.
  *
- * The TreeBuilder returns a tree of these nodes, with the root node being
+ * The TreeBuilder classes return a tree of these nodes, with the root node being
  * a RootInclude. Each "include type" is represented by an own class: There
  * is for instance "SysTemplateInclude" for a node that represents a sys_template
  * row, and DefaultTypoScriptInclude for the default TypoScript string included from

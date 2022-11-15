@@ -68,7 +68,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal: Internal tree structure.
  */
-final class TreeBuilder
+final class SysTemplateTreeBuilder
 {
     /**
      * Used in 'basedOn' includes to prevent endless loop: Each sys_template row can
@@ -78,9 +78,7 @@ final class TreeBuilder
      */
     private array $includedSysTemplateUids = [];
 
-    /**
-     * @param 'constants'|'setup' $type
-     */
+    /** @var 'constants'|'setup' */
     private string $type;
 
     private TokenizerInterface $tokenizer;
@@ -104,7 +102,7 @@ final class TreeBuilder
         ?SiteInterface $site = null,
         PhpFrontend $cache = null
     ): RootInclude {
-        if (!in_array($type, ['constants', 'setup'])) {
+        if (!in_array($type, ['constants', 'setup'], true)) {
             throw new \RuntimeException('type must be either constants or setup', 1653737656);
         }
         $this->tokenizer = $tokenizer;

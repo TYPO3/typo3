@@ -24,8 +24,8 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,7 +40,7 @@ class CodeCompletionController
 {
     public function __construct(
         private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly TreeBuilder $treeBuilder,
+        private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LossyTokenizer $lossyTokenizer,
         private readonly IncludeTreeTraverser $treeTraverser,
     ) {

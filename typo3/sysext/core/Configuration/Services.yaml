@@ -312,7 +312,7 @@ services:
   TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository:
     public: true
 
-  TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder:
+  TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder:
     public: true
 
   TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor:

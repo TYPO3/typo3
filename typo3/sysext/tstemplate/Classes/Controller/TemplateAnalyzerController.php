@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -55,7 +55,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly IncludeTreeTraverser $treeTraverser,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
-        private readonly TreeBuilder $treeBuilder,
+        private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LosslessTokenizer $losslessTokenizer,
     ) {
     }

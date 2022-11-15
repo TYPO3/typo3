@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstConstantCommentVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeBuilder;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -48,7 +48,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly TreeBuilder $treeBuilder,
+        private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly IncludeTreeTraverser $treeTraverser,
         private readonly AstTraverser $astTraverser,
         private readonly AstBuilderInterface $astBuilder,
