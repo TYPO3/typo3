@@ -134,6 +134,7 @@ class MultiStepWizard {
       title: firstSlide.title,
       content: $slides,
       severity: firstSlide.severity,
+      staticBackdrop: true,
       buttons: [{
         text: top.TYPO3.lang['wizard.button.cancel'],
         active: true,
