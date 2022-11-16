@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
@@ -113,6 +114,16 @@ class ButtonBar
     public function makeSplitButton()
     {
         return GeneralUtility::makeInstance(SplitButton::class);
+    }
+
+    /**
+     * Creates a new DropDownButton
+     *
+     * @return DropDownButton
+     */
+    public function makeDropDownButton()
+    {
+        return GeneralUtility::makeInstance(DropDownButton::class);
     }
 
     /**

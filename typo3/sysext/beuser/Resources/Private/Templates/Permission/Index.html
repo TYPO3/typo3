@@ -19,17 +19,6 @@
 
     <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions" /></h1>
 
-    <div class="row row-cols-auto align-items-end g-3">
-        <div class="col">
-            <label for="depth" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" /></label>
-            <select class="form-select" id="depth" name="depth" data-global-event="change" data-action-navigate="$data=~s/$value/" data-navigate-value="{depthBaseUrl}">
-                <f:for each="{depthOptions}" key="value" as="option">
-                    <option value="{value}" {f:if(condition: '{value} == {depth}', then: 'selected')}>{option}</option>
-                </f:for>
-            </select>
-        </div>
-    </div>
-
     <div class="panel panel-default mt-3">
         <div class="table-fit">
             <table class="table table-striped table-hover" id="typo3-permissionList">

@@ -21,6 +21,9 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -287,7 +290,6 @@ class PermissionController
             'beUsers' => BackendUtility::getUserNames(),
             'beGroups' => BackendUtility::getGroupNames(),
             'depth' => $this->depth,
-            'depthOptions' => $this->getDepthOptions(),
             'depthBaseUrl' => $this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', [
                 'id' => $this->id,
                 'depth' => '${value}',
@@ -409,6 +411,24 @@ class PermissionController
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
             $buttonBar->addButton($saveButton);
+        }
+
+        if ($action === 'index' && count($this->getDepthOptions()) > 0) {
+            $viewModeItems = [];
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownHeader::class)
+                ->setLabel($lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth'));
+            foreach ($this->getDepthOptions() as $value => $label) {
+                $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                    ->setActive($this->depth === $value)
+                    ->setLabel($label)
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', ['depth' => $value]));
+            }
+            $viewModeButton = $buttonBar->makeDropDownButton()
+                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'));
+            foreach ($viewModeItems as $viewModeItem) {
+                $viewModeButton->addItem($viewModeItem);
+            }
+            $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         }
 
         $shortcutButton = $buttonBar->makeShortcutButton()

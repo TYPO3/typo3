@@ -24,9 +24,6 @@
 			<trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning">
 				<source>Are you sure you want to delete all marked files from this folder?</source>
 			</trans-unit>
-			<trans-unit id="displayThumbs" resname="displayThumbs">
-				<source>Display thumbnails</source>
-			</trans-unit>
 			<trans-unit id="c_name" resname="c_name">
 				<source>Name</source>
 			</trans-unit>

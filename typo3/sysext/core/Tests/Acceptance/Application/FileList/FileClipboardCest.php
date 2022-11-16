@@ -71,7 +71,7 @@ class FileClipboardCest extends AbstractFileCest
 
         $I->amGoingTo('add multiple elements to clipboard');
         $I->click('Clipboard #1 (multi-selection mode)');
-        $I->click('.dropdown-toggle');
+        $I->click('.t3js-multi-record-selection-check-actions-toggle');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');
         $I->click('button[data-multi-record-selection-action="copyMarked"]');
 

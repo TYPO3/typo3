@@ -175,6 +175,18 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.reload" resname="labels.reload">
 				<source>Reload</source>
 			</trans-unit>
+			<trans-unit id="labels.view" resname="labels.view">
+				<source>View</source>
+			</trans-unit>
+			<trans-unit id="labels.view.showThumbnails" resname="labels.view.showThumbnails">
+				<source>Show thumbnails</source>
+			</trans-unit>
+			<trans-unit id="labels.view.showClipboard" resname="labels.view.showClipboard">
+				<source>Show clipboard</source>
+			</trans-unit>
+			<trans-unit id="labels.view.selectColumns" resname="labels.view.selectColumns">
+				<source>Select columns</source>
+			</trans-unit>
 			<trans-unit id="labels.share" resname="labels.share">
 				<source>Share</source>
 			</trans-unit>

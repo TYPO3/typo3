@@ -138,55 +138,12 @@
                         </div>
                     </f:if>
                 </div>
-                <f:if condition="{listHtml}">
-                    <div class="col-auto">
-                        <f:if condition="{columnSelector} || {displayThumbs.enabled}">
-                            <div class="row row-cols-auto align-items-center gx-3">
-                                <f:if condition="{columnSelector}">
-                                    <div class="col">
-                                        <typo3-backend-column-selector-button
-                                            class="btn btn-default btn-sm"
-                                            url="{columnSelector.url}"
-                                            target="{listUrl}"
-                                            title="{columnSelector.title}"
-                                            ok="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')}"
-                                            close="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
-                                            error="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')}">
-                                                <core:icon identifier="actions-options" size="small" />
-                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns" />
-                                        </typo3-backend-column-selector-button>
-                                    </div>
-                                </f:if>
-                                <f:if condition="{displayThumbs.enabled}">
-                                    <div class="col">
-                                        <div class="form-check form-switch mb-0">
-                                            {displayThumbs.html -> f:format.raw()}
-                                            <label for="checkDisplayThumbs" class="form-check-label">
-                                                {displayThumbs.label}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </f:if>
-                            </div>
-                        </f:if>
-                    </div>
-                </f:if>
             </div>
             {listHtml -> f:format.raw()}
         </div>
     </form>
 
     <f:if condition="{listHtml}">
-        <div class="mb-3">
-            <f:if condition="{enableClipBoard.enabled}">
-                <div class="form-check form-switch">
-                    {enableClipBoard.html -> f:format.raw()}
-                    <label for="checkClipBoard" class="form-check-label">
-                        {enableClipBoard.label}
-                    </label>
-                </div>
-            </f:if>
-        </div>
         <f:if condition="{showClipboardPanel}">
             <typo3-backend-clipboard-panel return-url="{listUrl}" table="_FILE"></typo3-backend-clipboard-panel>
         </f:if>

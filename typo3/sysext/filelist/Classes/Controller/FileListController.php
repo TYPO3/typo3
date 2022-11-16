@@ -26,9 +26,11 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -362,20 +364,6 @@ class FileListController implements LoggerAwareInterface
                     ], true)
                 );
             }
-
-            // Add column selector information if enabled
-            if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
-                $this->view->assign('columnSelector', [
-                    'url' => $this->uriBuilder->buildUriFromRoute(
-                        'ajax_show_columns_selector',
-                        ['id' => $this->id, 'table' => '_FILE']
-                    ),
-                    'title' => sprintf(
-                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
-                        $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
-                    ),
-                ]);
-            }
         } else {
             $this->addFlashMessage(
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:storageNotBrowsableMessage'),
@@ -411,39 +399,11 @@ class FileListController implements LoggerAwareInterface
     {
         $lang = $this->getLanguageService();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
-        $addParams = '';
 
-        if ($this->searchTerm) {
-            $addParams .= '&searchTerm=' . htmlspecialchars($this->searchTerm);
-        }
-        if ($this->pointer) {
-            $addParams .= '&pointer=' . $this->pointer;
-        }
-
-        $this->view->assign('displayThumbs', [
-            'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable',
-            'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')),
-            'html' => BackendUtility::getFuncCheck(
-                $this->id,
-                'displayThumbs',
-                (bool)$this->moduleData->get('displayThumbs'),
-                '',
-                $addParams,
-                'id="checkDisplayThumbs"'
-            ),
-        ]);
         $this->view->assign('enableClipBoard', [
             'enabled' => ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'selectable',
             'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clipBoard')),
             'mode' => $this->filelist->clipObj->current,
-            'html' => BackendUtility::getFuncCheck(
-                $this->id,
-                'clipBoard',
-                (bool)$this->moduleData->get('clipBoard'),
-                '',
-                $addParams,
-                'id="checkClipBoard"'
-            ),
         ]);
     }
 
@@ -461,6 +421,48 @@ class FileListController implements LoggerAwareInterface
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        // ViewMode
+        $viewModeItems = [];
+        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable') {
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+                ->setActive((bool)$this->moduleData->get('displayThumbs'))
+                ->setHref($this->filelist->listURL(['displayThumbs' => $this->moduleData->get('displayThumbs') ? 0 : 1]))
+                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
+                ->setIcon($this->iconFactory->getIcon('actions-image'));
+        }
+        $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+            ->setActive((bool)$this->moduleData->get('clipBoard'))
+            ->setHref($this->filelist->listURL(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
+            ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
+        if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownItem::class)
+                ->setTag('typo3-backend-column-selector-button')
+                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
+                ->setAttributes([
+                    'url' => $this->uriBuilder->buildUriFromRoute(
+                        'ajax_show_columns_selector',
+                        ['id' => $this->id, 'table' => '_FILE']
+                    ),
+                    'target' => $this->filelist->listURL(),
+                    'title' => sprintf(
+                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
+                        $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
+                    ),
+                    'ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
+                    'close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                    'error' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error'),
+                ])
+                ->setIcon($this->iconFactory->getIcon('actions-options'));
+        }
+        $viewModeButton = $buttonBar->makeDropDownButton()
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'));
+        foreach ($viewModeItems as $viewModeItem) {
+            $viewModeButton->addItem($viewModeItem);
+        }
+        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
         // Level up
         try {
