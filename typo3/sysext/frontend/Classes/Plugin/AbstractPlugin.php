@@ -1233,7 +1233,7 @@ class AbstractPlugin
         $fList = GeneralUtility::trimExplode(',', $fList, true);
         $tempPiVars = $this->piVars;
         foreach ($fList as $k) {
-            if (!MathUtility::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k] < $lowerThan) {
+            if (isset($tempPiVars[$k]) && (!MathUtility::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k] < $lowerThan)) {
                 unset($tempPiVars[$k]);
             }
         }
