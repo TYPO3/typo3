@@ -578,7 +578,7 @@ class AbstractPlugin
         'activeLinkWrap' => '<span class="activeLinkWrap">|</span>'
         );*/
         // Initializing variables:
-        $pointer = (int)$this->piVars[$pointerName];
+        $pointer = (int)($this->piVars[$pointerName] ?? 0);
         $count = (int)$this->internal['res_count'];
         $results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
         $totalPages = (int)ceil($count / $results_at_a_time);
