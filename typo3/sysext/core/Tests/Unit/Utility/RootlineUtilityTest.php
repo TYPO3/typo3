@@ -52,6 +52,7 @@ class RootlineUtilityTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('rootline')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
 
         $this->subject = $this->getAccessibleMock(
             RootlineUtility::class,
@@ -64,7 +65,6 @@ class RootlineUtilityTest extends UnitTestCase
 
     protected function tearDown(): void
     {
-        RootlineUtility::purgeCaches();
         GeneralUtility::purgeInstances();
         parent::tearDown();
     }

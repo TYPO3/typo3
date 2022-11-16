@@ -73,8 +73,9 @@ class SiteMatcher implements SingletonInterface
     public function refresh()
     {
         /** Ensure root line caches are flushed */
-        RootlineUtility::purgeCaches();
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline')->flush();
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        $cacheManager->getCache('runtime')->flushByTag(RootlineUtility::RUNTIME_CACHE_TAG);
+        $cacheManager->getCache('rootline')->flush();
     }
 
     /**

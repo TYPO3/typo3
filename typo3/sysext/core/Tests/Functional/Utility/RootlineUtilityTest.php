@@ -44,7 +44,6 @@ class RootlineUtilityTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        RootlineUtility::purgeCaches();
 
         $this->writeSiteConfiguration(
             'main',
@@ -64,11 +63,6 @@ class RootlineUtilityTest extends FunctionalTestCase
             $writer->invokeFactory($factory);
             static::failIfArrayIsNotEmpty($writer->getErrors());
         });
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        RootlineUtility::purgeCaches();
     }
 
     /**

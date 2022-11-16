@@ -367,8 +367,9 @@ class SlugHelper
      */
     protected function flushRootLineCaches(): void
     {
-        RootlineUtility::purgeCaches();
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline')->flush();
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        $cacheManager->getCache('runtime')->flushByTag(RootlineUtility::RUNTIME_CACHE_TAG);
+        $cacheManager->getCache('rootline')->flush();
     }
 
     /**

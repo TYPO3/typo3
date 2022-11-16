@@ -38,29 +38,31 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class RootlineUtility
 {
+    /** @internal */
+    public const RUNTIME_CACHE_TAG = 'rootline-utility';
+
     protected int $pageUid;
 
     protected string $mountPointParameter;
 
-    /**
-     * @var int[]
-     */
+    /** @var int[] */
     protected array $parsedMountPointParameters = [];
 
     protected int $languageUid = 0;
 
     protected int $workspaceUid = 0;
 
-    protected static FrontendInterface $cache;
-
-    protected static array $localCache = [];
+    protected FrontendInterface $cache;
+    protected FrontendInterface $runtimeCache;
 
     /**
-     * Fields to fetch when populating rootline data
+     * Default fields to fetch when populating rootline data, will be merged dynamically
+     * with $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] in getRecordArray().
      *
+     * @see self::getRecordArray()
      * @var string[]
      */
-    protected static array $rootlineFields = [
+    protected array $rootlineFields = [
         'pid',
         'uid',
         't3ver_oid',
@@ -96,8 +98,6 @@ class RootlineUtility
 
     protected string $cacheIdentifier;
 
-    protected static array $pageRecordCache = [];
-
     /**
      * @throws MountPointsDisabledException
      */
@@ -117,23 +117,10 @@ class RootlineUtility
         }
 
         $this->pageUid = $this->resolvePageId($uid);
-        self::$cache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
-
-        self::$rootlineFields = array_merge(self::$rootlineFields, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], true));
-        self::$rootlineFields = array_unique(self::$rootlineFields);
+        $this->cache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
+        $this->runtimeCache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
 
         $this->cacheIdentifier = $this->getCacheIdentifier();
-    }
-
-    /**
-     * Purges all rootline caches.
-     *
-     * @internal only used in EXT:core, no public API
-     */
-    public static function purgeCaches(): void
-    {
-        self::$localCache = [];
-        self::$pageRecordCache = [];
     }
 
     /**
@@ -164,12 +151,12 @@ class RootlineUtility
             // pageUid 0 has no root line, return empty array right away
             return [];
         }
-        if (!isset(static::$localCache[$this->cacheIdentifier])) {
-            $entry = static::$cache->get($this->cacheIdentifier);
+        if (!$this->runtimeCache->has('rootline-localcache-' . $this->cacheIdentifier)) {
+            $entry = $this->cache->get($this->cacheIdentifier);
             if (!$entry) {
                 $this->generateRootlineCache();
             } else {
-                static::$localCache[$this->cacheIdentifier] = $entry;
+                $this->runtimeCache->set('rootline-localcache-' . $this->cacheIdentifier, $entry, [self::RUNTIME_CACHE_TAG]);
                 $depth = count($entry);
                 // Populate the root-lines for parent pages as well
                 // since they are part of the current root-line
@@ -178,17 +165,17 @@ class RootlineUtility
                     $parentCacheIdentifier = $this->getCacheIdentifier($entry[$depth - 1]['uid']);
                     // Abort if the root-line of the parent page is
                     // already in the local cache data
-                    if (isset(static::$localCache[$parentCacheIdentifier])) {
+                    if ($this->runtimeCache->has('rootline-localcache-' . $parentCacheIdentifier)) {
                         break;
                     }
                     // Behaves similar to array_shift(), but preserves
                     // the array keys - which contain the page ids here
                     $entry = array_slice($entry, 1, null, true);
-                    static::$localCache[$parentCacheIdentifier] = $entry;
+                    $this->runtimeCache->set('rootline-localcache-' . $parentCacheIdentifier, $entry, [self::RUNTIME_CACHE_TAG]);
                 }
             }
         }
-        return static::$localCache[$this->cacheIdentifier];
+        return $this->runtimeCache->get('rootline-localcache-' . $this->cacheIdentifier);
     }
 
     /**
@@ -201,11 +188,13 @@ class RootlineUtility
      */
     protected function getRecordArray(int $uid): array
     {
+        $rootlineFields = array_merge($this->rootlineFields, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], true));
+        $rootlineFields = array_unique($rootlineFields);
         $currentCacheIdentifier = $this->getCacheIdentifier($uid);
-        if (!isset(self::$pageRecordCache[$currentCacheIdentifier])) {
+        if (!$this->runtimeCache->has('rootline-recordcache-' . $currentCacheIdentifier)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $row = $queryBuilder->select(...self::$rootlineFields)
+            $row = $queryBuilder->select(...$rootlineFields)
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
@@ -220,13 +209,13 @@ class RootlineUtility
             if (is_array($row)) {
                 $row = $this->pageRepository->getLanguageOverlay('pages', $row, $this->context->getAspect('language'));
                 $row = $this->enrichWithRelationFields($row['_PAGES_OVERLAY_UID'] ??  $uid, $row);
-                self::$pageRecordCache[$currentCacheIdentifier] = $row;
+                $this->runtimeCache->set('rootline-recordcache-' . $currentCacheIdentifier, $row, [self::RUNTIME_CACHE_TAG]);
             }
         }
-        if (!is_array(self::$pageRecordCache[$currentCacheIdentifier] ?? false)) {
+        if (!is_array($this->runtimeCache->get('rootline-recordcache-' . $currentCacheIdentifier) ?? false)) {
             throw new PageNotFoundException('Broken rootline. Could not resolve page with uid ' . $uid . '.', 1343464101);
         }
-        return self::$pageRecordCache[$currentCacheIdentifier];
+        return $this->runtimeCache->get('rootline-recordcache-' . $currentCacheIdentifier);
     }
 
     /**
@@ -331,8 +320,8 @@ class RootlineUtility
         }
         $rootline[] = $page;
         krsort($rootline);
-        static::$cache->set($this->cacheIdentifier, $rootline, $cacheTags);
-        static::$localCache[$this->cacheIdentifier] = $rootline;
+        $this->cache->set($this->cacheIdentifier, $rootline, $cacheTags);
+        $this->runtimeCache->set('rootline-localcache-' . $this->cacheIdentifier, $rootline, [self::RUNTIME_CACHE_TAG]);
     }
 
     /**
