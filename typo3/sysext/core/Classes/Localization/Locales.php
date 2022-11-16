@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +23,11 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Locales. Used to define TYPO3- system languages
+ * Defines all available TYPO3 system languages, as they differ from actual ISO 639-1 codes.
+ * User-defined system languages can be added to $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']
+ *
+ * These system languages are used for determining the proper language labels of XLF files.
+ *
  * When adding new keys, remember to:
  * - Update 'setup' extension labels (sysext/setup/Resources/Private/Language/locallang.xlf)
  * That's it!
@@ -31,9 +37,9 @@ class Locales implements SingletonInterface
     /**
      * Supported TYPO3 languages with locales
      *
-     * @var array
+     * @var array<non-empty-string, non-empty-string>
      */
-    protected $languages = [
+    protected array $languages = [
         'default' => 'English',
         'af' => 'Afrikaans',
         'ar' => 'Arabic',
@@ -97,9 +103,16 @@ class Locales implements SingletonInterface
     /**
      * Reversed mapping for backward compatibility codes
      *
-     * @var array
+     * Key => real ISO code
+     * value => the value that TYPO3 understands (which is wrong, obviously)
+     *
+     * Example:
+     * "da" => official ISO 639-1 code
+     * "dk" (wrong)" => the shortcut that TYPO3 uses for danish within the system for labels.
+     *
+     * @var array<non-empty-string, non-empty-string>
      */
-    protected $isoReverseMapping = [
+    protected array $isoReverseMapping = [
         'bs' => 'ba', // Bosnian
         'cs' => 'cz', // Czech
         'da' => 'dk', // Danish
@@ -126,9 +139,9 @@ class Locales implements SingletonInterface
      * Dependencies for locales
      * This is a reverse mapping for the built-in languages within $this->languages that contain 5-letter codes.
      *
-     * @var array
+     * If "pt_BR" is chosen, but no label was found, a fallback to the label in "pt" is used.
      */
-    protected $localeDependencies = [
+    protected array $localeDependencies = [
         'pt_BR' => ['pt'],
         'fr_CA' => ['fr'],
         'lb'    => ['de'],
@@ -138,6 +151,10 @@ class Locales implements SingletonInterface
     {
         // Allow user-defined locales
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] ?? [] as $locale => $name) {
+            if (!is_string($locale) || $locale === '') {
+                continue;
+            }
+
             if (!isset($this->languages[$locale])) {
                 $this->languages[$locale] = $name;
             }
@@ -157,20 +174,18 @@ class Locales implements SingletonInterface
 
     /**
      * Returns the locales.
-     *
-     * @return array
+     * @return array<int, non-empty-string>
      */
-    public function getLocales()
+    public function getLocales(): array
     {
         return array_keys($this->languages);
     }
 
     /**
      * Returns the supported languages indexed by their corresponding locale.
-     *
-     * @return array
+     * @return array<non-empty-string, non-empty-string>
      */
-    public function getLanguages()
+    public function getLanguages(): array
     {
         return $this->languages;
     }
@@ -178,9 +193,9 @@ class Locales implements SingletonInterface
     /**
      * Returns the mapping between TYPO3 (old) language codes and ISO codes.
      *
-     * @return array
+     * @return array<non-empty-string, non-empty-string>
      */
-    public function getIsoMapping()
+    public function getIsoMapping(): array
     {
         return array_flip($this->isoReverseMapping);
     }
@@ -189,9 +204,9 @@ class Locales implements SingletonInterface
      * Returns the dependencies of a given locale, if any.
      *
      * @param string $locale
-     * @return array
+     * @return array<int, non-empty-string>
      */
-    public function getLocaleDependencies($locale)
+    public function getLocaleDependencies(string $locale): array
     {
         $dependencies = [];
         if (isset($this->localeDependencies[$locale])) {
@@ -212,9 +227,9 @@ class Locales implements SingletonInterface
      * into a TYPO3-readable language code
      *
      * @param string $languageCodesList List of language codes. something like 'de,en-us;q=0.9,de-de;q=0.7,es-cl;q=0.6,en;q=0.4,es;q=0.3,zh;q=0.1'
-     * @return string A preferred language that TYPO3 supports, or "default" if none found
+     * @return non-empty-string A preferred language that TYPO3 supports, or "default" if none found
      */
-    public function getPreferredClientLanguage($languageCodesList)
+    public function getPreferredClientLanguage(string $languageCodesList): string
     {
         $allLanguageCodesFromLocales = ['en' => 'default'];
         foreach ($this->isoReverseMapping as $isoLang => $typo3Lang) {
