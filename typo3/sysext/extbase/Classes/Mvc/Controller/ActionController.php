@@ -840,6 +840,7 @@ abstract class ActionController implements ControllerInterface
      * @param int $statusCode The HTTP status code
      * @param string $statusMessage A custom HTTP status message
      * @param string $content Body content which further explains the status
+     * @return never
      * @throws PropagateResponseException
      */
     public function throwStatus($statusCode, $statusMessage = null, $content = null)
