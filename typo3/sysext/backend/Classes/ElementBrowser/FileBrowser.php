@@ -15,13 +15,20 @@
 
 namespace TYPO3\CMS\Backend\ElementBrowser;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -69,6 +76,23 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      * @var array
      */
     protected $thumbnailConfiguration = [];
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ExtensionConfiguration $extensionConfiguration,
+        BackendViewFactory $backendViewFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+        parent::__construct(
+            $iconFactory,
+            $pageRenderer,
+            $uriBuilder,
+            $extensionConfiguration,
+            $backendViewFactory,
+        );
+    }
 
     /**
      * Loads additional JavaScript
@@ -431,7 +455,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * Checks if the given file is selectable in the filelist.
      *
-     * By default all files are selectable. This method may be overwritten in child classes.
+     * By default, all files are selectable. This method may be overwritten in child classes.
      *
      * @param FileInterface $file
      * @param mixed[] $imgInfo Image dimensions from \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageDimensions()
@@ -439,7 +463,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     protected function fileIsSelectableInFileList(FileInterface $file, array $imgInfo)
     {
-        return true;
+        return $this->eventDispatcher->dispatch(new IsFileSelectableEvent($file))->isFileSelectable();
     }
 
     /**
