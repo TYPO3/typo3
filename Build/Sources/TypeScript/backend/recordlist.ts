@@ -21,6 +21,7 @@ import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-reco
 import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
+import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 
 interface IconIdentifier {
   collapse: string;
@@ -166,7 +167,7 @@ class Recordlist {
       }
       // Evaluate all checked records and if valid, add their uid to the list
       eventDetails.checkboxes.forEach((checkbox: HTMLInputElement): void => {
-        const checkboxContainer: HTMLElement = checkbox.closest('tr');
+        const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
         if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
           entityIdentifiers.push(checkboxContainer.dataset[configuration.idField]);
         }

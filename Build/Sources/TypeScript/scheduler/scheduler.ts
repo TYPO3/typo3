@@ -21,6 +21,7 @@ import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import {ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import DateTimePicker from '@typo3/backend/date-time-picker';
+import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -259,7 +260,7 @@ class Scheduler {
     }
     const taskIds: Array<string> = [];
     ((e.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
-      const checkboxContainer: HTMLElement = checkbox.closest('tr');
+      const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
         taskIds.push(checkboxContainer.dataset.taskId);
       }

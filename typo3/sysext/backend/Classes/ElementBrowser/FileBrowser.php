@@ -335,15 +335,15 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $filenameAndIcon = $ATag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
             // Show element:
             $lines[] = '
-					<tr>
-						<td>' . $bulkCheckBox . '</td>
-						<td class="col-title nowrap">' . $filenameAndIcon . '</td>
-						<td class="nowrap">' . ($pDim ? $ATag_alt . $clickIcon . $ATag_e . $pDim : '') . '</td>
-						<td class="col-control">
-							<div class="btn-group">' . $ATag . $ATag_e . '
-							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
-						</td>
-					</tr>';
+                <tr data-multi-record-selection-element="true">
+                    <td>' . $bulkCheckBox . '</td>
+                    <td class="col-title nowrap">' . $filenameAndIcon . '</td>
+                    <td class="nowrap">' . ($pDim ? $ATag_alt . $clickIcon . $ATag_e . $pDim : '') . '</td>
+                    <td class="col-control">
+                        <div class="btn-group">' . $ATag . $ATag_e . '
+                        <a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
+                    </td>
+                </tr>';
         }
 
         $formUrl = $this->getScriptUrl() . HttpUtility::buildQueryString($this->getUrlParameters([]), '&');

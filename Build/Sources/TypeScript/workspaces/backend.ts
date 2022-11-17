@@ -681,6 +681,7 @@ class Backend extends Workspaces {
         'data-next-stage': item.value_nextStage,
         'data-prev-stage': item.value_prevStage,
         'data-stage': item.stage,
+        'data-multi-record-selection-element': 'true',
       };
 
       if (item.Workspaces_CollectionParent !== '') {

@@ -529,6 +529,7 @@ class FileList
                 'data-type' => 'folder',
                 'data-folder-identifier' => $folderObject->getIdentifier(),
                 'data-combined-identifier' => $folderObject->getCombinedIdentifier(),
+                'data-multi-record-selection-element' => 'true',
             ];
             if ($isLocked) {
                 foreach ($this->fieldArray as $field) {
@@ -666,6 +667,7 @@ class FileList
             $attributes = [
                 'data-type' => 'file',
                 'data-file-uid' => $fileUid,
+                'data-multi-record-selection-element' => 'true',
             ];
             if ($this->isEditMetadataAllowed($fileObject)
                 && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))

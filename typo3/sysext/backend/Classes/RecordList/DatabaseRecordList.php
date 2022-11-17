@@ -761,7 +761,7 @@ class DatabaseRecordList
             } elseif ($totalItems > $itemsLimitPerTable) {
                 // Show that there are more records than shown
                 $rowOutput .= '
-                    <tr>
+                    <tr data-multi-record-selection-element="true">
                         <td colspan="' . (count($this->fieldArray)) . '">
                             <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">
                                 ' . $this->iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL)->render() . '
@@ -2870,7 +2870,7 @@ class DatabaseRecordList
         $colType = ($colType === 'th') ? 'th' : 'td';
         $dataUid = ($colType === 'td') ? ($data['uid'] ?? 0) : 0;
         $l10nParent = $data['_l10nparent_'] ?? 0;
-        $out = '<tr ' . $rowParams . ' data-uid="' . $dataUid . '" data-l10nparent="' . $l10nParent . '">';
+        $out = '<tr ' . $rowParams . ' data-uid="' . $dataUid . '" data-l10nparent="' . $l10nParent . '" data-multi-record-selection-element="true">';
 
         // Init rendering.
         $colsp = '';

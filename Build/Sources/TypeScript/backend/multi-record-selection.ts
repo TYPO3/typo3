@@ -16,12 +16,12 @@ import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
 
-enum Selectors {
+export enum MultiRecordSelectionSelectors {
   actionsSelector = '.t3js-multi-record-selection-actions',
   checkboxSelector = '.t3js-multi-record-selection-check',
   checkboxActionsSelector = '.t3js-multi-record-selection-check-actions',
   checkboxActionsToggleSelector = '.t3js-multi-record-selection-check-actions-toggle',
-  rowSelectionSelector = '[data-multi-record-selection-row-selection] tr'
+  elementSelector = '[data-multi-record-selection-element]',
 }
 
 enum Buttons {
@@ -46,10 +46,11 @@ enum CheckboxState {
  */
 class MultiRecordSelection {
   static activeClass: string = 'active';
+  static disabledClass: string = 'disabled';
   private lastChecked: HTMLInputElement = null;
 
   private static getCheckboxes(state: CheckboxState = CheckboxState.any, identifier: string = ''): NodeListOf<HTMLInputElement> {
-    return document.querySelectorAll(MultiRecordSelection.getCombinedSelector(Selectors.checkboxSelector + state, identifier));
+    return document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.checkboxSelector + state, identifier));
   }
 
   private static getCombinedSelector(selector: string, identifier: string): string {
@@ -89,7 +90,7 @@ class MultiRecordSelection {
     let actionsToggled: boolean = false;
     let identifiers: Array<string> = [];
     checked.forEach((checkbox: HTMLInputElement) => {
-      checkbox.closest('tr').classList.add(MultiRecordSelection.activeClass);
+      (checkbox.closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.classList.add(MultiRecordSelection.activeClass);
       const identifier: string = MultiRecordSelection.getIdentifier(checkbox);
       if (identifier !== '' && !identifiers.includes(identifier)) {
         identifiers.push(identifier);
@@ -109,7 +110,7 @@ class MultiRecordSelection {
    */
   private static toggleActionsState(identifier: string = ''): void {
     const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(
-      MultiRecordSelection.getCombinedSelector(Selectors.actionsSelector, identifier)
+      MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier)
     );
 
     if (!actionContainers.length) {
@@ -127,7 +128,7 @@ class MultiRecordSelection {
     actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container));
 
     const actions: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
-      [MultiRecordSelection.getCombinedSelector(Selectors.actionsSelector, identifier), Buttons.actionButton].join(' ')
+      [MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier), Buttons.actionButton].join(' ')
     );
 
     if (!actions.length) {
@@ -146,15 +147,15 @@ class MultiRecordSelection {
         return;
       }
       // Start the evaluation by disabling the action
-      action.classList.add('disabled');
+      action.classList.add(this.disabledClass);
       // Get all currently checked elements
       const checked: NodeListOf<HTMLInputElement> = MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier);
       for (let i=0; i < checked.length; i++) {
         // Evaluate each checked element if it contains the specified idField
-        if (checked[i].closest('tr').dataset[configuration.idField]) {
+        if ((checked[i].closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.dataset[configuration.idField]) {
           // If a checked element contains the idField, remove the "disabled"
           // state and end the search since the action can be performed.
-          action.classList.remove('disabled');
+          action.classList.remove(this.disabledClass);
           break;
         }
       }
@@ -241,7 +242,7 @@ class MultiRecordSelection {
           cancelable: false
         }
       ));
-    }).delegateTo(document, [Selectors.actionsSelector, Buttons.actionButton].join(' '));
+    }).delegateTo(document, [MultiRecordSelectionSelectors.actionsSelector, Buttons.actionButton].join(' '));
   }
 
   /**
@@ -251,12 +252,12 @@ class MultiRecordSelection {
   private registerActionsEventHandlers(): void {
     new RegularEvent('multiRecordSelection:actions:show', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
-      const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(Selectors.actionsSelector, identifier));
+      const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
       actionContainers.length && actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container));
     }).bindTo(document);
     new RegularEvent('multiRecordSelection:actions:hide', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
-      const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(Selectors.actionsSelector, identifier));
+      const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
       actionContainers.length && actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
     }).bindTo(document);
   }
@@ -307,12 +308,12 @@ class MultiRecordSelection {
 
       // To prevent possible side effects we simply clean up and unset the attribute here again
       MultiRecordSelection.unsetManuallyChangedAttribute(identifier);
-    }).delegateTo(document, [Selectors.checkboxActionsSelector, Buttons.checkboxActionButton].join(' '));
+    }).delegateTo(document, [MultiRecordSelectionSelectors.checkboxActionsSelector, Buttons.checkboxActionButton].join(' '));
   }
 
   private registerCheckboxKeyboardActions(): void {
     new RegularEvent('click', (e: PointerEvent, target: HTMLInputElement): void => this.handleCheckboxKeyboardActions(e, target))
-      .delegateTo(document, Selectors.checkboxSelector);
+      .delegateTo(document, MultiRecordSelectionSelectors.checkboxSelector);
   }
 
   private registerCheckboxTableRowSelectionAction(): void {
@@ -322,7 +323,7 @@ class MultiRecordSelection {
         // Only change checkbox state if the target is the row itself
         return;
       }
-      const checkbox: HTMLInputElement = target.querySelector(Selectors.checkboxSelector);
+      const checkbox: HTMLInputElement = target.querySelector(MultiRecordSelectionSelectors.checkboxSelector);
       if (checkbox === null) {
         // Return in case the table row does not contain a checkbox, handled by this component
         return;
@@ -335,11 +336,11 @@ class MultiRecordSelection {
       // any state, e.g. the "manually changed flag", as this might have been set by any
       // component triggered by the above checkbox state change operation.
       this.handleCheckboxKeyboardActions(e, checkbox, false)
-    }).delegateTo(document, Selectors.rowSelectionSelector);
+    }).delegateTo(document, MultiRecordSelectionSelectors.elementSelector);
 
     // In case row selection is enabled and a keyboard "shortcut" is used, prevent text selection on the rows
     new RegularEvent('mousedown', (e: PointerEvent): void => (e.shiftKey || e.altKey || e.ctrlKey) && e.preventDefault())
-      .delegateTo(document, Selectors.rowSelectionSelector);
+      .delegateTo(document, MultiRecordSelectionSelectors.elementSelector);
   }
 
   private registerDispatchCheckboxStateChangedEvent(): void {
@@ -347,7 +348,7 @@ class MultiRecordSelection {
       target.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed',{
         detail: { identifier: MultiRecordSelection.getIdentifier(target) }, bubbles: true, cancelable: false
       }));
-    }).delegateTo(document, Selectors.checkboxSelector);
+    }).delegateTo(document, MultiRecordSelectionSelectors.checkboxSelector);
   }
 
   private registerCheckboxStateChangedEventHandler(): void {
@@ -356,9 +357,9 @@ class MultiRecordSelection {
       const identifier: string = e.detail?.identifier || '';
 
       if (checkbox.checked) {
-        checkbox.closest('tr').classList.add(MultiRecordSelection.activeClass);
+        checkbox.closest(MultiRecordSelectionSelectors.elementSelector).classList.add(MultiRecordSelection.activeClass);
       } else {
-        checkbox.closest('tr').classList.remove(MultiRecordSelection.activeClass);
+        checkbox.closest(MultiRecordSelectionSelectors.elementSelector).classList.remove(MultiRecordSelection.activeClass);
       }
 
       // Toggle actions for changed checkbox state
@@ -371,7 +372,7 @@ class MultiRecordSelection {
       const identifier: string = MultiRecordSelection.getIdentifier(target);
 
       const checkAll: HTMLButtonElement = document.querySelector([
-        MultiRecordSelection.getCombinedSelector(Selectors.checkboxActionsSelector, identifier),
+        MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.checkboxActionsSelector, identifier),
         'button[data-multi-record-selection-check-action="' + CheckboxActions.checkAll + '"]'
       ].join(' '));
 
@@ -380,7 +381,7 @@ class MultiRecordSelection {
       }
 
       const checkNone: HTMLButtonElement = document.querySelector([
-        MultiRecordSelection.getCombinedSelector(Selectors.checkboxActionsSelector, identifier),
+        MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.checkboxActionsSelector, identifier),
         'button[data-multi-record-selection-check-action="' + CheckboxActions.checkNone + '"]'
       ].join(' '));
 
@@ -389,14 +390,14 @@ class MultiRecordSelection {
       }
 
       const toggle: HTMLButtonElement = document.querySelector([
-        MultiRecordSelection.getCombinedSelector(Selectors.checkboxActionsSelector, identifier),
+        MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.checkboxActionsSelector, identifier),
         'button[data-multi-record-selection-check-action="' + CheckboxActions.toggle + '"]'
       ].join(' '));
 
       if (toggle !== null) {
         toggle.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).length);
       }
-    }).delegateTo(document, Selectors.checkboxActionsToggleSelector);
+    }).delegateTo(document, MultiRecordSelectionSelectors.checkboxActionsToggleSelector);
   }
 
   private handleCheckboxKeyboardActions(e: PointerEvent, target: HTMLInputElement, cleanUpState: boolean = true): void {
