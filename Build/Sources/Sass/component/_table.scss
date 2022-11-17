@@ -1,48 +1,4 @@
 //
-// Tables
-//
-
-//
-// used in the admin tools => DB check
-//
-.t3-overview-list dt {
-    padding: 0 0 2px 20px;
-
-    img {
-        vertical-align: middle;
-        margin-right: 5px;
-    }
-}
-
-.t3-overview-list dd {
-    margin: 2px 0 15px 20px;
-    padding-left: 22px;
-}
-
-//
-// Common style for tables
-//
-// <table class="table table-striped table-hover>
-//   <thead>
-//     <tr>
-//       <th>...</th>
-//       <th>...</th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     <tr>
-//       <td>...</td>
-//     </tr>
-//   </tbody>
-// </table>
-//
-
-// Revert Bootstrap $table-bg in order to allow DateTimePicker and dataTable <table>
-table {
-    background: transparent;
-}
-
-//
 // Default table styling
 //
 .table {
@@ -51,12 +7,6 @@ table {
             margin-top: 6px;
         }
         margin: 0;
-    }
-    background-color: $table-bg;
-    border: 1px solid $table-border-color;
-
-    * {
-        box-sizing: border-box;
     }
 
     > thead,
@@ -75,10 +25,6 @@ table {
     }
 
     > thead > tr {
-        th {
-            background-color: $gray-200;
-        }
-
         th.col-checkbox {
             + th.col-title {
                 label {
@@ -89,8 +35,6 @@ table {
 
         th,
         td {
-            border-bottom: 1px solid $table-border-color;
-
             i {
                 font-weight: normal;
             }
@@ -134,7 +78,7 @@ table {
     }
 
     .col-border-left {
-        border-left: 1px solid $table-border-color;
+        border-left: 1px solid var(--bs-table-border-color);
     }
 
     .col-min {
@@ -156,34 +100,31 @@ table {
     }
 }
 
-.table-fixed {
-    word-wrap: break-word;
-    word-break: break-all;
-    table-layout: fixed;
-}
-
 //
-// Sets the background to white
+// States
 //
-.table-white {
-    background-color: #fff;
-}
-
-//
-// Sets the background to transparent
-//
-.table-transparent {
-    background-color: transparent;
-
-    th,
-    td {
-        background-color: transparent;
+@each $state, $value in $table-variants {
+    table.#{$state},
+    tr.#{$state},
+    td.#{$state} {
+        @extend .table-#{$state};
     }
 }
 
 //
-// Centers the text in all cells of the table
+// Options
 //
+.table-transparent {
+    --bs-table-bg: transparent;
+}
+
+.table-vertical-top {
+    th,
+    td {
+        vertical-align: top;
+    }
+}
+
 .table-center {
     th,
     td {
@@ -192,61 +133,14 @@ table {
 }
 
 //
-// Sets a rudimentary table styling
+// Map active state
 //
-.table-basic {
-    width: 100%;
-
-    th,
-    td {
-        vertical-align: middle;
-    }
+tr.active,
+td.active {
+    @extend .table-primary;
+    @extend .table-active;
 }
 
-//
-// Table cell vertical alignment
-//
-.table-vertical-top {
-    > thead,
-    > tbody,
-    > tfoot {
-        > tr {
-            > th,
-            > td {
-                vertical-align: top;
-            }
-        }
-    }
-}
-
-.table-vertical-bottom {
-    > thead,
-    > tbody,
-    > tfoot {
-        > tr {
-            > th,
-            > td {
-                vertical-align: bottom;
-            }
-        }
-    }
-}
-
-.table-no-borders {
-    border: none;
-
-    > thead,
-    > tbody,
-    > tfoot {
-        > tr {
-            > th,
-            > td {
-                border: none;
-                padding: 2px;
-            }
-        }
-    }
-}
 //
 // Fits the table in the viewport and makes overflow possible
 //
@@ -257,12 +151,11 @@ table {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #ddd;
+    border: 1px solid $table-border-color;
 
     > .table {
         margin-top: 0;
         margin-bottom: 0;
-        border: 0;
 
         colgroup:first-child + tbody,
         tbody:first-child {
@@ -306,13 +199,9 @@ table {
 }
 
 .table-fit-wrap {
-    > .table {
-        tr {
-            > th,
-            > td {
-                white-space: normal;
-            }
-        }
+    th,
+    td {
+        white-space: normal;
     }
 }
 
@@ -325,20 +214,4 @@ table {
     > .table {
         width: auto;
     }
-}
-
-.table-fit-block {
-    max-width: 100%;
-    width: auto;
-    display: block;
-    margin: 0;
-
-    > .table {
-        width: auto;
-    }
-}
-
-.table-spacer-wrap {
-    margin-top: 10px;
-    margin-bottom: 10px;
 }

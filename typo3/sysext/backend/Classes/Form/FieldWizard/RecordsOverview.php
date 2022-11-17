@@ -80,7 +80,7 @@ class RecordsOverview extends AbstractNode
         $html = [];
         if (!empty($recordsOverviewHtml)) {
             $html[] = '<div class="table-fit">';
-            $html[] =   '<table class="table table-white">';
+            $html[] =   '<table class="table">';
             $html[] =       '<tbody>';
             $html[] =           implode(LF, $recordsOverviewHtml);
             $html[] =       '</tbody>';

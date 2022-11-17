@@ -45,6 +45,7 @@ enum CheckboxState {
  * Module: @typo3/backend/multi-record-selection
  */
 class MultiRecordSelection {
+  static activeClass: string = 'active';
   private lastChecked: HTMLInputElement = null;
 
   private static getCheckboxes(state: CheckboxState = CheckboxState.any, identifier: string = ''): NodeListOf<HTMLInputElement> {
@@ -88,7 +89,7 @@ class MultiRecordSelection {
     let actionsToggled: boolean = false;
     let identifiers: Array<string> = [];
     checked.forEach((checkbox: HTMLInputElement) => {
-      checkbox.closest('tr').classList.add('success');
+      checkbox.closest('tr').classList.add(MultiRecordSelection.activeClass);
       const identifier: string = MultiRecordSelection.getIdentifier(checkbox);
       if (identifier !== '' && !identifiers.includes(identifier)) {
         identifiers.push(identifier);
@@ -355,9 +356,9 @@ class MultiRecordSelection {
       const identifier: string = e.detail?.identifier || '';
 
       if (checkbox.checked) {
-        checkbox.closest('tr').classList.add('success');
+        checkbox.closest('tr').classList.add(MultiRecordSelection.activeClass);
       } else {
-        checkbox.closest('tr').classList.remove('success');
+        checkbox.closest('tr').classList.remove(MultiRecordSelection.activeClass);
       }
 
       // Toggle actions for changed checkbox state

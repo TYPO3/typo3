@@ -132,36 +132,22 @@ label {
     @extend .input-group-text !optional;
 }
 
-// scss-docs-start table-variant
-// provide bootstrap v3 fallback for <tr class="{themeColor}"> markup
-// bootstrap v5 uses new class syntax -> .table-{themeColor}
-@mixin table-variant($state, $background) {
-    // Remove accent background to keep striped table and its hover state
-    .table-hover {
-        --bs-table-accent-bg: unset;
-    }
+//
+// used in the admin tools => DB check
+//
+.t3-overview-list dt {
+    padding: 0 0 2px 20px;
 
-    .#{$state} {
-        $color: color-contrast(opaque($body-bg, $background));
-        $hover-bg: mix($color, $background, percentage($table-hover-bg-factor));
-        $striped-bg: mix($color, $background, percentage($table-striped-bg-factor));
-        $active-bg: mix($color, $background, percentage($table-active-bg-factor));
-        --bs-table-bg: #{$background};
-        --bs-table-striped-bg: #{$striped-bg};
-        --bs-table-striped-color: #{color-contrast($striped-bg)};
-        --bs-table-active-bg: #{$active-bg};
-        --bs-table-active-color: #{color-contrast($active-bg)};
-        --bs-table-hover-bg: #{$hover-bg};
-        --bs-table-hover-color: #{color-contrast($hover-bg)};
-        color: $color;
-        border-color: mix($color, $background, percentage($table-border-factor));
+    img {
+        vertical-align: middle;
+        margin-right: 5px;
     }
 }
 
-@each $color, $value in $table-variants {
-    @include table-variant($color, $value);
+.t3-overview-list dd {
+    margin: 2px 0 15px 20px;
+    padding-left: 22px;
 }
-// scss-docs-end table-variant
 
 // nav fallback
 // todo add ".nav-item" and ".nav-link" classes to markup

@@ -219,7 +219,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse ' . $expandAll . '" role="tabpanel">';
                 }
 
-                $html[] =    '<div class="table-responsive">';
+                $html[] =    '<div class="table-fit">';
                 $html[] =        '<table class="table table-transparent table-hover">';
                 if (!$readOnly) {
                     $checkboxId = StringUtility::getUniqueId($groupId);

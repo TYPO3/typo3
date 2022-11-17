@@ -242,7 +242,7 @@ class PageInformationController extends InfoModuleController
                 }
             }
             $out = '
-                <div class="table-responsive">
+                <div class="table-fit">
                     <table class="table table-striped table-hover mb-0">
                         <thead>
                             ' . $this->addElement($headerCells) . '

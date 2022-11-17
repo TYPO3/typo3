@@ -134,7 +134,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
     }
 
     .active {
-        background-color: $table-bg-active;
+        background-color: mix(#fff, $primary, 85%);
         border-left: 1px solid $table-border-color;
         border-right: 1px solid $table-border-color;
     }

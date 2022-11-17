@@ -46,7 +46,7 @@ $notice: $gray-800;
 $dark: $gray-900;
 $min-contrast-ratio: 3;
 
-//
+// Theme colors
 $theme-colors: (
     "primary": $primary,
     "secondary": $secondary,
@@ -127,13 +127,12 @@ $border-radius-lg: $border-radius;
 
 // Tables
 $table-bg: $white;
-$table-bg-accent: darken($table-bg, 1%);
-$table-bg-hover: darken($table-bg, 5%);
-$table-bg-active: $table-bg-hover;
 $table-border-color: $gray-400;
+$table-bg-scale: -85%;
 $table-striped-bg-factor: .025;
-$table-bg-level: -7;
-$table-group-separator-color: $table-border-color;
+$table-hover-bg-factor: .035;
+$table-active-bg-factor: .045;
+$table-border-factor: .1;
 
 // Pill
 $rounded-pill: .625rem;
