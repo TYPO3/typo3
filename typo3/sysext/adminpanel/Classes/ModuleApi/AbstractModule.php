@@ -57,8 +57,6 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
      * -> or any setting is overridden
      * override is a way to use functionality of the admin panel without displaying the admin panel to users
      * for example: hidden records or pages can be displayed by default
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
@@ -107,8 +105,6 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
 
     /**
      * Returns true if TSConfig admPanel.enable is set for this module (or all modules)
-     *
-     * @return bool
      */
     protected function isEnabledViaTsConfig(): bool
     {

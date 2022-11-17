@@ -29,9 +29,6 @@ interface OnSubmitActorInterface
      * Executed on saving / submit of the configuration form
      * Can be used to react to changed settings
      * (for example: clearing a specific cache)
-     *
-     * @param array $configurationToSave
-     * @param ServerRequestInterface $request
      */
     public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void;
 }

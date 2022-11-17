@@ -30,15 +30,11 @@ interface ShortInfoProviderInterface
 {
     /**
      * Displayed directly in the bar
-     *
-     * @return string
      */
     public function getShortInfo(): string;
 
     /**
      * Icon identifier - needs to be registered in iconRegistry
-     *
-     * @return string
      */
     public function getIconIdentifier(): string;
 }

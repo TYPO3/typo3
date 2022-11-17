@@ -53,9 +53,6 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
      */
     protected $currentQuery = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function startQuery($sql, array $params = null, array $types = null)
     {
         if ($this->enabled && MemoryUtility::isMemoryConsumptionTooHigh()) {
@@ -81,9 +78,6 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function stopQuery()
     {
         if ($this->enabled) {
@@ -91,9 +85,6 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
         }
     }
 
-    /**
-     * @return array
-     */
     public function getQueries(): array
     {
         return $this->queries;

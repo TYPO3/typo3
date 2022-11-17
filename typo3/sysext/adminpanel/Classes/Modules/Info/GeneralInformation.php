@@ -69,7 +69,6 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     /**
      * Creates the content for the "info" section ("module") of the Admin Panel
      *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
      * @return string HTML content for the section. Consists of a string with table-rows with four columns.
      * @see display()
      */
@@ -89,8 +88,6 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -106,9 +103,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
 
     /**
      * Collects images from TypoScriptFrontendController and calculates the total size.
-     * Returns human readable image sizes for fluid template output
-     *
-     * @return array
+     * Returns human-readable image sizes for fluid template output
      */
     protected function collectImagesOnPage(): array
     {
@@ -142,8 +137,6 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
 
     /**
      * Gets the document size from the current page in a human readable format
-     *
-     * @return string
      */
     protected function collectDocumentSize(): string
     {
@@ -155,25 +148,16 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         return GeneralUtility::formatSize($documentSize);
     }
 
-    /**
-     * @return bool
-     */
     protected function isNoCacheEnabled(): bool
     {
         return (bool)$this->getTypoScriptFrontendController()->no_cache;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }
 
-    /**
-     * @return TimeTracker
-     */
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);

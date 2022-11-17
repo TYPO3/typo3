@@ -52,9 +52,6 @@ class InfoModule extends AbstractModule implements ShortInfoProviderInterface
         ), $parseTime);
     }
 
-    /**
-     * @return TimeTracker
-     */
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);

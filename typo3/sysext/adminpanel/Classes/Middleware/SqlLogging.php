@@ -45,9 +45,6 @@ class SqlLogging implements MiddlewareInterface
 
     /**
      * Enable SQL Logging as early as possible to catch all queries if the admin panel is active
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

@@ -66,9 +66,6 @@ class UserIntInformation extends AbstractSubModule implements DataProviderInterf
         return $view->render();
     }
 
-    /**
-     * @return array
-     */
     protected function getUserIntInfo(): array
     {
         $userIntInfo = [];

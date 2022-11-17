@@ -33,8 +33,6 @@ interface ConfigurableInterface
      * A module may be enabled but not shown
      * -> only the initializeModule() method
      * will be called
-     *
-     * @return bool
      */
     public function isEnabled(): bool;
 }

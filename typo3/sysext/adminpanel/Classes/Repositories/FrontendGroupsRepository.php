@@ -31,8 +31,6 @@ class FrontendGroupsRepository
 {
     /**
      * returns an array of all available frontend user groups including hidden ones.
-     *
-     * @return array
      */
     public function getAvailableFrontendUserGroups(): array
     {
@@ -48,9 +46,6 @@ class FrontendGroupsRepository
 
     /**
      * fetches the amount of user groups
-     *
-     * @param FrontendBackendUserAuthentication $beUser
-     * @return int
      */
     protected function getUserGroupOptionCountByBackendUser(FrontendBackendUserAuthentication $beUser): int
     {
@@ -76,9 +71,6 @@ class FrontendGroupsRepository
 
     /**
      * fetches all frontend user groups, except deleted, for pages
-     *
-     * @param FrontendBackendUserAuthentication $beUser
-     * @return array
      */
     protected function getUserGroupsForPagesByBackendUser(FrontendBackendUserAuthentication $beUser): array
     {

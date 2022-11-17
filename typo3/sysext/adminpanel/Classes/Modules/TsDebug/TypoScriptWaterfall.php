@@ -36,10 +36,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherInterface, ModuleSettingsProviderInterface
 {
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
+    protected ConfigurationService $configurationService;
 
     public function __construct()
     {
@@ -70,9 +67,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
 
     /**
      * Creates the content for the "tsdebug" section ("module") of the Admin Panel
-     *
-     * @param ModuleData $data
-     * @return string HTML
      */
     public function getContent(ModuleData $data): string
     {
@@ -123,10 +117,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         return $view->render();
     }
 
-    /**
-     * @param string $option
-     * @return bool
-     */
     protected function getConfigurationOption(string $option): bool
     {
         return (bool)$this->configurationService->getConfigurationOption('tsdebug', $option);
@@ -134,8 +124,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
 
     /**
      * Renders the TypoScript log as string
-     *
-     * @return string
      */
     protected function renderTypoScriptLog(): string
     {
@@ -153,9 +141,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         return $timeTracker->printTSlog();
     }
 
-    /**
-     * @return TimeTracker
-     */
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);

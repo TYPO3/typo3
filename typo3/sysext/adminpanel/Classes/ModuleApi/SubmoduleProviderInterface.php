@@ -31,22 +31,20 @@ interface SubmoduleProviderInterface
     /**
      * Sets array of module instances (instances of `ModuleInterface`) as submodules
      *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $subModules
+     * @param ModuleInterface[] $subModules
      */
     public function setSubModules(array $subModules): void;
 
     /**
      * Returns an array of module instances
      *
-     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[]
+     * @return ModuleInterface[]
      */
     public function getSubModules(): array;
 
     /**
      * Return true if any of the submodules has settings to be rendered
      * (can be used to render settings in a central place)
-     *
-     * @return bool
      */
     public function hasSubmoduleSettings(): bool;
 }

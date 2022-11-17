@@ -30,8 +30,5 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
  */
 interface PageSettingsProviderInterface
 {
-    /**
-     * @return string
-     */
     public function getPageSettings(): string;
 }

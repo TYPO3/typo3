@@ -28,8 +28,6 @@ class StateUtility
 {
     /**
      * Checks if adminPanel was configured to be shown
-     *
-     * @return bool
      */
     public static function isActivatedForUser(): bool
     {
@@ -47,8 +45,6 @@ class StateUtility
     /**
      * Returns true if admin panel was activated
      * (switched "on" via GUI)
-     *
-     * @return bool
      */
     public static function isOpen(): bool
     {

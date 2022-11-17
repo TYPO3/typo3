@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Adminpanel\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,10 +32,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class ConfigurationService implements SingletonInterface
 {
-    /**
-     * @var array
-     */
-    protected $mainConfiguration;
+    protected array $mainConfiguration;
 
     public function __construct()
     {
@@ -43,8 +41,6 @@ class ConfigurationService implements SingletonInterface
 
     /**
      * Get MainConfiguration (User TSConfig admPanel)
-     *
-     * @return array
      */
     public function getMainConfiguration(): array
     {
@@ -54,10 +50,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Helper method to return configuration options
      * Checks User TSConfig overrides and current backend user session
-     *
-     * @param string $identifier
-     * @param string $option
-     * @return string
      */
     public function getConfigurationOption(string $identifier, string $option): string
     {
@@ -79,8 +71,7 @@ class ConfigurationService implements SingletonInterface
      * triggers onSubmit method of modules to enable each module
      * to enhance the save action
      *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
-     * @param ServerRequestInterface $request
+     * @param ModuleInterface[] $modules
      */
     public function saveConfiguration(array $modules, ServerRequestInterface $request): void
     {
@@ -104,8 +95,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param array $modules
-     * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param array $configurationToSave
      */
     protected function triggerOnSubmitActors(

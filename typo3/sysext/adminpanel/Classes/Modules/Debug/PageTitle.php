@@ -40,8 +40,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -50,8 +48,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
 
     /**
      * Sub-Module label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -60,10 +56,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
         );
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
-     */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         $data = [
@@ -94,7 +86,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
      * @return string Returns content of admin panel
      */
     public function getContent(ModuleData $data): string
@@ -109,17 +100,11 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
         return $view->render();
     }
 
-    /**
-     * @return bool
-     */
     protected function isNoCacheEnabled(): bool
     {
         return (bool)$this->getTypoScriptFrontendController()->no_cache;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];

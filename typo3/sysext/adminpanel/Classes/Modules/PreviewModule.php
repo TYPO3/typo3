@@ -133,10 +133,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         return $view->render();
     }
 
-    /**
-     * @param string $option
-     * @return string
-     */
     protected function getConfigOptionForModule(string $option): string
     {
         return $this->configurationService->getConfigurationOption(
@@ -149,12 +145,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      * Initialize frontend preview functionality incl.
      * simulation of users or time
      *
-     * @param bool $showHiddenPages
-     * @param bool $showHiddenRecords
-     * @param bool $showScheduledRecords
-     * @param int $simulateDate
-     * @param int $simulateUserGroup UID of the fe_group to simulate
-     * @param \Psr\Http\Message\ServerRequestInterface $request
      * @throws \Exception
      */
     protected function initializeFrontendPreview(
@@ -215,9 +205,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         $context->setAspect('frontend.preview', $previewAspect);
     }
 
-    /**
-     * @return array
-     */
     public function getJavaScriptFiles(): array
     {
         return ['EXT:adminpanel/Resources/Public/JavaScript/modules/preview.js'];
@@ -228,9 +215,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      *
      * Simulation date is either set via configuration of AdminPanel (Date and Time Fields) or via ADMCMD_ $_GET
      * parameter from backend previews
-     *
-     * @param int $simulateDate
-     * @return int
      */
     protected function parseDate(int $simulateDate): ?int
     {
@@ -253,8 +237,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
 
     /**
      * Returns a string array with css files that will be rendered after the module
-     *
-     * @return array
      */
     public function getCssFiles(): array
     {

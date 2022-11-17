@@ -46,8 +46,6 @@ class InMemoryLogWriter extends AbstractWriter
      * Writes the log record
      *
      * @param LogRecord $record Log record
-     * @return self
-     * @throws \RuntimeException
      */
     public function writeLog(LogRecord $record): self
     {

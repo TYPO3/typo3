@@ -29,8 +29,6 @@ interface ResourceProviderInterface
      * Returns a string array with javascript files that will be rendered after the module
      *
      * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
-     *
-     * @return array
      */
     public function getJavaScriptFiles(): array;
 
@@ -38,8 +36,6 @@ interface ResourceProviderInterface
      * Returns a string array with css files that will be rendered after the module
      *
      * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
-     *
-     * @return array
      */
     public function getCssFiles(): array;
 }

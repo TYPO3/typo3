@@ -33,8 +33,6 @@ class MemoryUtility
      * but should prevent memory exhaustion due to the admin panel in most cases.
      * The loggers will stop logging once the amount of free memory falls below the threshold (see
      * MINIMAL_PERCENT_OF_FREE_MEMORY const).
-     *
-     * @return bool
      */
     public static function isMemoryConsumptionTooHigh(): bool
     {

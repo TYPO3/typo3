@@ -32,8 +32,5 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
  */
 interface ModuleSettingsProviderInterface
 {
-    /**
-     * @return string
-     */
     public function getSettings(): string;
 }

@@ -36,9 +36,6 @@ class AdminPanelRenderer implements MiddlewareInterface
 {
     /**
      * Render the admin panel if activated
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

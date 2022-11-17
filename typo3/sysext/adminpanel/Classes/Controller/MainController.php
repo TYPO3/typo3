@@ -151,8 +151,6 @@ class MainController implements SingletonInterface
      * Stores data for admin panel in cache - Called in PSR-15 Middleware
      *
      * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelDataPersister
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function storeData(ServerRequestInterface $request): void
     {

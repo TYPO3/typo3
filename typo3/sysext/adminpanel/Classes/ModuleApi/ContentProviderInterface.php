@@ -33,9 +33,6 @@ interface ContentProviderInterface
      * Return content as HTML. For modules implementing the DataProviderInterface
      * the "ModuleData" object is automatically filled with the stored data - if
      * no data is given a "fresh" ModuleData object is injected.
-     *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
-     * @return string
      */
     public function getContent(ModuleData $data): string;
 }

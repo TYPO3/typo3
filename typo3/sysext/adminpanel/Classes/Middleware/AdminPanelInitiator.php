@@ -38,10 +38,6 @@ class AdminPanelInitiator implements MiddlewareInterface
      * - backend user is logged in
      * - at least one adminpanel functionality is enabled
      * - admin panel is open
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

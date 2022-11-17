@@ -29,17 +29,11 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class CacheModule extends AbstractModule implements PageSettingsProviderInterface, RequestEnricherInterface, ResourceProviderInterface
 {
-    /**
-     * @return string
-     */
     public function getIconIdentifier(): string
     {
         return 'apps-toolbar-menu-cache';
     }
 
-    /**
-     * @return string
-     */
     public function getPageSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -95,9 +89,6 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
         return $request;
     }
 
-    /**
-     * @return array
-     */
     public function getJavaScriptFiles(): array
     {
         return ['EXT:adminpanel/Resources/Public/JavaScript/modules/cache.js'];
@@ -107,8 +98,6 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
      * Returns a string array with css files that will be rendered after the module
      *
      * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
-     *
-     * @return array
      */
     public function getCssFiles(): array
     {

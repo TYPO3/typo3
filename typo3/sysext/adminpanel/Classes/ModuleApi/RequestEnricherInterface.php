@@ -38,9 +38,6 @@ interface RequestEnricherInterface
     /**
      * Initialize the module - runs in the TYPO3 middleware stack at an early point
      * may manipulate the current request
-     *
-     * @param ServerRequestInterface $request
-     * @return \Psr\Http\Message\ServerRequestInterface
      */
     public function enrich(ServerRequestInterface $request): ServerRequestInterface;
 }

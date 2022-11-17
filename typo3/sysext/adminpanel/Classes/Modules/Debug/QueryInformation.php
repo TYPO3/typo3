@@ -36,8 +36,6 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -46,8 +44,6 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
 
     /**
      * Sub-Module label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -56,11 +52,6 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         );
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
-     * @throws \Doctrine\DBAL\Exception
-     */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -76,10 +67,6 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         return new ModuleData($data);
     }
 
-    /**
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
-     * @return string Returns content of admin panel
-     */
     public function getContent(ModuleData $data): string
     {
         $view = new StandaloneView();
@@ -92,10 +79,6 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         return $view->render();
     }
 
-    /**
-     * @param array $queries
-     * @return array
-     */
     protected function groupQueries(array $queries): array
     {
         $groupedQueries = [];

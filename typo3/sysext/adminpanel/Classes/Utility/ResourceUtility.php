@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Utility;
 
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,7 +29,7 @@ class ResourceUtility
      * Get additional resources (css, js) from modules and merge it to
      * one array - returns an array of full html tags
      *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
+     * @param ModuleInterface[] $modules
      * @return array{js: string, css: string}
      */
     public static function getAdditionalResourcesForModules(array $modules): array
@@ -73,8 +74,6 @@ class ResourceUtility
     /**
      * Returns a link tag with the admin panel stylesheet
      * defined using TBE_STYLES
-     *
-     * @return string
      */
     protected static function getAdminPanelStylesheet(): string
     {
@@ -89,9 +88,6 @@ class ResourceUtility
 
     /**
      * Get a css tag for file - with absolute web path resolving
-     *
-     * @param string $cssFileLocation
-     * @return string
      */
     protected static function getCssTag(string $cssFileLocation): string
     {
@@ -106,9 +102,6 @@ class ResourceUtility
 
     /**
      * Get a script tag for JavaScript with absolute paths
-     *
-     * @param string $jsFileLocation
-     * @return string
      */
     protected static function getJsTag(string $jsFileLocation): string
     {
@@ -123,8 +116,6 @@ class ResourceUtility
 
     /**
      * Return a string with tags for main admin panel resources
-     *
-     * @return array
      */
     public static function getResources(): array
     {

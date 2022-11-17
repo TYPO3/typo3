@@ -35,12 +35,7 @@ final class SubModuleRenderViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument(
-            'module',
-            ContentProviderInterface::class,
-            'SubModule instance to be rendered',
-            true
-        );
+        $this->registerArgument('module', ContentProviderInterface::class, 'SubModule instance to be rendered', true);
         $this->registerArgument('data', ModuleDataStorageCollection::class, 'Data to be used for rendering', true);
     }
 

@@ -27,15 +27,11 @@ interface ModuleInterface
     /**
      * Identifier for this module,
      * for example "preview" or "cache"
-     *
-     * @return string
      */
     public function getIdentifier(): string;
 
     /**
      * Module label
-     *
-     * @return string
      */
     public function getLabel(): string;
 }

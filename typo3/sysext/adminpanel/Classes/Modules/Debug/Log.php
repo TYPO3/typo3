@@ -45,9 +45,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return 'debug_log';
@@ -55,8 +52,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
 
     /**
      * Sub-Module label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -124,9 +119,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
 
     /**
      * Sub-Module content as rendered HTML
-     *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
-     * @return string
      */
     public function getContent(ModuleData $data): string
     {
@@ -190,10 +182,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         return $logConfig;
     }
 
-    /**
-     * @param string $option
-     * @return string
-     */
     protected function getConfigOption(string $option): string
     {
         return $this->configurationService->getConfigurationOption('debug_log', $option);

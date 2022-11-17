@@ -58,9 +58,6 @@ class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
         );
     }
 
-    /**
-     * @return TimeTracker
-     */
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
