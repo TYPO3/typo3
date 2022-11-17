@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67654:
+
 ===========================================================
 Breaking: #67654 - Remove $GLOBALS[FILEICONS] functionality
 ===========================================================

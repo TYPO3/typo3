@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94218:
+
 =============================================================
 Feature: #94218 - Selectable columns per table in record list
 =============================================================

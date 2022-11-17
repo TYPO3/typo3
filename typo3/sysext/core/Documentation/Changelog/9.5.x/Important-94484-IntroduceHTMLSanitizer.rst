@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-94484:
+
 ============================================
 Important: #94484 - Introduce HTML Sanitizer
 ============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85247:
+
 ===========================================================
 Feature: #85247 - Trait to detect public deprecated methods
 ===========================================================

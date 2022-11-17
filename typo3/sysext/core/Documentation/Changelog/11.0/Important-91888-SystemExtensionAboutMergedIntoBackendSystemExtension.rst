@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-91888:
+
 ===================================================================================
 Important: #91888 - System extension "about" merged into "backend" system extension
 ===================================================================================

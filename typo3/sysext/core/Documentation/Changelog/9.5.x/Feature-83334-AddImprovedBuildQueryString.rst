@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83334:
+
 ========================================================
 Feature: #83334 - Add improved building of query strings
 ========================================================

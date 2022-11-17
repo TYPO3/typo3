@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83965:
+
 =========================================================
 Feature: #83965 - Make position of sys notes configurable
 =========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90266:
+
 ==============================================
 Feature: #90266 - Fluid-based email templating
 ==============================================

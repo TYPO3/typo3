@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-86994:
+
 ======================================================================
 Important: #86994 - Indexed Search indexes pages using route enhancers
 ======================================================================

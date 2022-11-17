@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80512:
+
 ==========================================================
 Deprecation: #80512 - DocumentTemplate->extJScode property
 ==========================================================

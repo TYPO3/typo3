@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75942:
+
 ====================================================
 Breaking: #75942 - BigDocumentTemplate class removed
 ====================================================

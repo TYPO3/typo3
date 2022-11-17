@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62415:
+
 ===========================================================================
 Breaking: #62415 - Remove deprecated disable_autocreate field in workspaces
 ===========================================================================

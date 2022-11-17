@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83889:
+
 =============================================
 Breaking: #83889 - E_NOTICE free unit testing
 =============================================

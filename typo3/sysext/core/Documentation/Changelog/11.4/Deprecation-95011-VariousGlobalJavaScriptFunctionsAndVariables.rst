@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95011:
+
 =======================================================================
 Deprecation: #95011 - Various global JavaScript functions and variables
 =======================================================================

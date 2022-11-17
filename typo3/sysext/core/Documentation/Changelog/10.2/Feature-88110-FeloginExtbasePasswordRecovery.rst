@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88110:
+
 ===================================================
 Feature: #88110 - Felogin extbase password recovery
 ===================================================

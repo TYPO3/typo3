@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75237:
+
 =======================================================================
 Breaking: #75237 - Removal of div ce-bodytext might cause layout issues
 =======================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88902:
+
 =========================================================================================
 Feature: #88902 - Feature Switch: Redirect and Base Redirect Middlewares can be reordered
 =========================================================================================

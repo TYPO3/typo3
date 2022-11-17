@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72493:
+
 =========================================================
 Breaking: #72493 - Removed TypoScript property page.bgImg
 =========================================================

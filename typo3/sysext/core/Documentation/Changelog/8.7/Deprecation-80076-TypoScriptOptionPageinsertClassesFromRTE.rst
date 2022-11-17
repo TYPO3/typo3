@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80076:
+
 =================================================================
 Deprecation: #80076 - TypoScript option page.insertClassesFromRTE
 =================================================================

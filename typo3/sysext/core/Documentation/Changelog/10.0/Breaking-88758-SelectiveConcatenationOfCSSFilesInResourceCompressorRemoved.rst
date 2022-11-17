@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88758:
+
 =====================================================================================
 Breaking: #88758 - Selective Concatenation of CSS files in ResourceCompressor removed
 =====================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90692:
+
 ===========================================
 Deprecation: #90692 - FileCollection models
 ===========================================

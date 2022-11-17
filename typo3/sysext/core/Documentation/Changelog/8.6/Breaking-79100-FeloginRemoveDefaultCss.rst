@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79100:
+
 ==================================================
 Breaking: #79100 - ext:felogin: Remove default CSS
 ==================================================

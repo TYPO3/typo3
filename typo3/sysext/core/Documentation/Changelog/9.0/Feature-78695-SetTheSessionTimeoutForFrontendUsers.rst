@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78695:
+
 ============================================================
 Feature: #78695 - Set the session timeout for frontend users
 ============================================================

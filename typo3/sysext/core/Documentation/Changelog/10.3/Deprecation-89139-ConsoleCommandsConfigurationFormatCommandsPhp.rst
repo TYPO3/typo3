@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89139:
+
 ========================================================================
 Deprecation: #89139 - Console Commands configuration format Commands.php
 ========================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77502:
+
 ==========================================================
 Breaking: #77502 - Extbase: pre-parsing of queries removed
 ==========================================================

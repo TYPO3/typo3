@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62038:
+
 ============================================================
 Breaking: #62038 - Deprecated DocumentTemplate functionality
 ============================================================

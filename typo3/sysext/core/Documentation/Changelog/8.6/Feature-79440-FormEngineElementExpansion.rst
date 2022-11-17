@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79440:
+
 ==============================================
 Feature: #79440 - FormEngine Element Expansion
 ==============================================

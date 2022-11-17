@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88527:
+
 ==============================================================================
 Breaking: #88527 - Overriding custom values in User Authentication derivatives
 ==============================================================================

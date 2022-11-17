@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-90264:
+
 =============================================================
 Important: #90264 - Initialize datepicker JS in external file
 =============================================================

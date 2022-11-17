@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85793:
+
 =====================================================================
 Deprecation: #85793 - Several constants from SystemEnvironmentBuilder
 =====================================================================

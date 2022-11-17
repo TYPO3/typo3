@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73763:
+
 =====================================================
 Breaking: #73763 - Removed backPath from PageRenderer
 =====================================================

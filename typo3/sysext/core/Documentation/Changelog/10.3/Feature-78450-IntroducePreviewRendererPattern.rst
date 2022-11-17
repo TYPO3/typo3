@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78450:
+
 ===================================================
 Feature: #78450 - Introduce PreviewRenderer pattern
 ===================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72117:
+
 ==========================================================
 Breaking: #72117 - API change in ExceptionHandlerInterface
 ==========================================================

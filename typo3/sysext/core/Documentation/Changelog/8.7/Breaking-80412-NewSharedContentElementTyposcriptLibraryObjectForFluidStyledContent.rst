@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-80412:
+
 ================================================================================================
 Breaking: #80412 - New shared content element TypoScript library object for Fluid Styled Content
 ================================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97480:
+
 =========================================================================================
 Feature: #97480 - Symfony Expression Language providers available in configuration module
 =========================================================================================

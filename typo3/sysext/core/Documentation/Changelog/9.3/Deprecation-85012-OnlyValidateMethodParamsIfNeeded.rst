@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85012:
+
 =================================================================================
 Deprecation: #85012 - GetValidationResults of Argument:class and Arguments::class
 =================================================================================

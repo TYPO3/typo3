@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60561:
+
 =======================================================
 Breaking: #60561 - Default TypoScript Constants Removed
 =======================================================

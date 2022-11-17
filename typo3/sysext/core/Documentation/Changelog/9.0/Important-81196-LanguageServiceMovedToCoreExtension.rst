@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-81196:
+
 ===========================================================
 Important: #81196 - LanguageService moved to core extension
 ===========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78552:
+
 ===============================================================
 Breaking: #78552 - Lowlevel LostFilesCommand parameters changed
 ===============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88583:
+
 ==========================================================================
 Breaking: #88583 - Database field sys_language.static_lang_isocode removed
 ==========================================================================

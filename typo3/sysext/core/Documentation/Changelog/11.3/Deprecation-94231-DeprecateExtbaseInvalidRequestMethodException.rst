@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94231:
+
 ===========================================================
 Deprecation: #94231 - Extbase InvalidRequestMethodException
 ===========================================================

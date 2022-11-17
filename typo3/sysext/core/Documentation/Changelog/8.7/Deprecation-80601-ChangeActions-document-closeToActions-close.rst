@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80601:
+
 ========================================================================
 Deprecation: #80601 - Change duplicate icon identifiers to actions-close
 ========================================================================

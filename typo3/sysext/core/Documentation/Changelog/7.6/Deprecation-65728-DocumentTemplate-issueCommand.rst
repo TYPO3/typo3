@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65728:
+
 ======================================================
 Deprecation: #65728 - DocumentTemplate->issueCommand()
 ======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-47135:
+
 =============================================================================
 Feature: #47135 - Paste icons available at pasting position and use modal now
 =============================================================================

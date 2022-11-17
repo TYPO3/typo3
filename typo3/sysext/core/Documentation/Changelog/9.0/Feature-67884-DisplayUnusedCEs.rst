@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-67884:
+
 ======================================
 Feature: #67884 - Display 'unused' CEs
 ======================================

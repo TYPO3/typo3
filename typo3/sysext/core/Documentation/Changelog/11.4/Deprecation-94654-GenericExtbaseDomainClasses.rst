@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94654:
+
 ====================================================
 Deprecation: #94654 - Generic Extbase domain classes
 ====================================================

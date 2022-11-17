@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-90660:
+
 ============================================================
 Breaking: #90660 - Registration of dashboard widgets changed
 ============================================================

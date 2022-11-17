@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-82363:
+
 ================================================================================
 Important: #82363 - Make Extbase translation handling consistent with TypoScript
 ================================================================================

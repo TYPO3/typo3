@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73655:
+
 =================================
 Breaking: #73655 - PHP 7 required
 =================================

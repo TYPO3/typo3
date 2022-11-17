@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94819:
+
 ============================================
 Feature: #94819 - Improved Workspaces module
 ============================================

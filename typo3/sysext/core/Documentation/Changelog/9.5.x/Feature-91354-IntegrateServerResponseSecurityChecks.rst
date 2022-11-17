@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91354:
+
 ===========================================================
 Feature: #91354 - Integrate server response security checks
 ===========================================================

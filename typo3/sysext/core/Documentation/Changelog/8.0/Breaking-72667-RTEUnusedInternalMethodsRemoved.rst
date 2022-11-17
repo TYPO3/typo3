@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72667:
+
 =======================================================
 Breaking: #72667 - RTE: Unused internal methods removed
 =======================================================

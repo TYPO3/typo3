@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-59606:
+
 ==================================================================
 Feature: #59606 - Integrate Symfony/Console into CommandController
 ==================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-81787:
+
 ================================
 Breaking: #81787 - Drop EXT:func
 ================================

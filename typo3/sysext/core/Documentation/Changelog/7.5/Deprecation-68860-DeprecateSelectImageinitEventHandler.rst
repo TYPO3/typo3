@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-68860:
+
 ============================================================
 Deprecation: #68860 - Deprecate SelectImage.initEventHandler
 ============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84545:
+
 ==============================================================================
 Feature: #84545 - Allow temporary files to be stored outside the document root
 ==============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94411:
+
 ===============================================
 Feature: #94411 - Record list download settings
 ===============================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68804:
+
 ================================================================
 Feature: #68804 - Colored output for CLI-relevant error messages
 ================================================================

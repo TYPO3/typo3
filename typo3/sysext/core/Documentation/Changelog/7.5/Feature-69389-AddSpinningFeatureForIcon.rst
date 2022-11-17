@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69389:
+
 ===============================================
 Feature: #69389 - Add spinning feature for icon
 ===============================================

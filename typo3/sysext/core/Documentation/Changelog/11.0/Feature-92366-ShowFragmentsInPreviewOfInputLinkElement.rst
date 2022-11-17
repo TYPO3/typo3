@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92366:
+
 ===============================================================
 Feature: #92366 - Show fragments in preview of InputLinkElement
 ===============================================================

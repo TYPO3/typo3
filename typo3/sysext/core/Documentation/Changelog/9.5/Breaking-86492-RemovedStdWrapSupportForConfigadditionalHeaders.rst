@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-86492:
+
 =======================================================================
 Breaking: #86492 - Removed stdWrap support for config.additionalHeaders
 =======================================================================

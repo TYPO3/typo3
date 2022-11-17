@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60582:
+
 =================================================
 Breaking: #60582 - Rsaauth Javascript Files Moved
 =================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-82692:
+
 =======================================================================
 Important: #82692 - Guidelines for ext_localconf.php and ext_tables.php
 =======================================================================

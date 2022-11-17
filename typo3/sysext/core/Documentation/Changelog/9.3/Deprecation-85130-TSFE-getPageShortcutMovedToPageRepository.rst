@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85130:
+
 ======================================================================
 Deprecation: #85130 - $TSFE->getPageShortcut() moved to PageRepository
 ======================================================================

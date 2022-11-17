@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84775:
+
 ============================================================================================
 Feature: #84775 - Extend HMENU to support auto filling of special.value for special=language
 ============================================================================================

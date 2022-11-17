@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82252:
+
 =========================================================================================
 Breaking: #82252 - Override TypoScript configuration formDefinitionOverrides by FlexForms
 =========================================================================================

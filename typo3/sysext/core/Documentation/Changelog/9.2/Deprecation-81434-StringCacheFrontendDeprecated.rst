@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-81434:
+
 ======================================================
 Deprecation: #81434 - String Cache Frontend Deprecated
 ======================================================

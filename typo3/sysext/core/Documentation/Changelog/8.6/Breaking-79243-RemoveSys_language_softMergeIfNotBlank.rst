@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79243-1668719172:
+
 ==========================================================
 Breaking: #79243 - Remove sys_language_softMergeIfNotBlank
 ==========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-80876:
+
 =============================================================
 Breaking: #80876 - Remove system extension css_styled_content
 =============================================================

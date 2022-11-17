@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92238:
+
 ==========================================================
 Breaking: #92238 - Service injection in Extbase validators
 ==========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-80700:
+
 ===================================================
 Breaking: #80700 - Deprecated functionality removed
 ===================================================

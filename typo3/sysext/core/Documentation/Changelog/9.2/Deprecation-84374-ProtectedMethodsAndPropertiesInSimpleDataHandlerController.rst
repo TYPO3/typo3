@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84374:
+
 ======================================================================================
 Deprecation: #84374 - Protected methods and properties in SimpleDataHandlerController
 ======================================================================================

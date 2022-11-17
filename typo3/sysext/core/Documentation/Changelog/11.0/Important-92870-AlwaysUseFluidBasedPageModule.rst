@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92870:
+
 ======================================================
 Important: #92870 - Always use Fluid based page module
 ======================================================

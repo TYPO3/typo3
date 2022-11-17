@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89215:
+
 ======================================
 Deprecation: #89215 - jQuery.clearable
 ======================================

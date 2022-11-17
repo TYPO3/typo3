@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67574:
+
 ============================================================
 Feature: #67574 - Display online status in backend user list
 ============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92616:
+
 ==============================
 Feature: #92616 - Bootstrap v5
 ==============================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72866:
+
 ==================================================================================
 Breaking: #72866 - Removed RTE processing option to use div tags instead of p tags
 ==================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85801:
+
 ============================================================================
 Deprecation: #85801 - GeneralUtility::explodeUrl2Array - 2nd method argument
 ============================================================================

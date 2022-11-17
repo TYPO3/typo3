@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77342:
+
 ============================================================================
 Breaking: #77342 - Removed templateFile override via FlexForm in EXT:felogin
 ============================================================================

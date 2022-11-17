@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-59712:
+
 ===========================================================
 Feature: #59712 - Additional params for HTMLparser userFunc
 ===========================================================

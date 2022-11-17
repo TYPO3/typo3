@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94402:
+
 =====================================================================
 Feature: #94402 - Generate error pages via TYPO3-internal sub-request
 =====================================================================

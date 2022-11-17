@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-74029:
+
 =========================================================
 Breaking: #74029 - Remove ModuleLoader->getRelativePath()
 =========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82926:
+
 ===========================================================
 Breaking: #82926 - Removed database field sys_domain.forced
 ===========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84749:
+
 ====================================================
 Feature: #84749 - Hide "duplicate" button by default
 ====================================================

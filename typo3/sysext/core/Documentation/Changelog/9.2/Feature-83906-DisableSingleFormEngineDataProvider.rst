@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83906:
+
 =========================================================
 Feature: #83906 - Disable single FormEngine data provider
 =========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82640:
+
 ======================================================
 Breaking: #82640 - Re-arranging global debug functions
 ======================================================

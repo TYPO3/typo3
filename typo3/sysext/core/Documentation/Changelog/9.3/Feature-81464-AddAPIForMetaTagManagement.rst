@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81464:
+
 =================================================
 Feature: #81464 - Add API for meta tag management
 =================================================

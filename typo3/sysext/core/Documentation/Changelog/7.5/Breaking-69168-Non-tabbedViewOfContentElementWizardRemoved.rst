@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69168:
+
 ====================================================================
 Breaking: #69168 - Removed non-tabbed view of Content Element Wizard
 ====================================================================

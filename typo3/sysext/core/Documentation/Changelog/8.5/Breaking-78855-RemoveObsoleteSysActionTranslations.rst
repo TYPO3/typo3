@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78855:
+
 ==========================================================
 Breaking: #78855 - Remove obsolete sys_action translations
 ==========================================================

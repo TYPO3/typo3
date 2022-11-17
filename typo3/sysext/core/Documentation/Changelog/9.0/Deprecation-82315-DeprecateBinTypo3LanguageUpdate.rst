@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82315:
+
 ==============================================================
 Deprecation: #82315 - Deprecate bin/typo3 lang:language:update
 ==============================================================

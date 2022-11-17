@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-75581:
+
 =========================================
 Feature: #75581 - Simplify cache clearing
 =========================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85196:
+
 ===================================================
 Deprecation: #85196 - Protect SetupModuleController
 ===================================================

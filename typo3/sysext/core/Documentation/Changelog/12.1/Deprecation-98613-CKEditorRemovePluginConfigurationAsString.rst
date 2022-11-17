@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-98613:
+
 ===================================================================
 Deprecation: #98613 - CKEditor removePlugin configuration as string
 ===================================================================

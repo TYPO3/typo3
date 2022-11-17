@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60609:
+
 =======================================================
 Breaking: #60609 - Configuration Manager Signal Changed
 =======================================================

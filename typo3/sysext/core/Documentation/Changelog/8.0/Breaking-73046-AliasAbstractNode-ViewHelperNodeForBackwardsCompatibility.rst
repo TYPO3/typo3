@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73046:
+
 ===================================================================================
 Breaking: #73046 - Alias AbstractNode -> ViewHelperNode for backwards compatibility
 ===================================================================================

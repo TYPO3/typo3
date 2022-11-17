@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-63703:
+
 ====================================================================
 Feature: #63703 - Add option to stop a running task in the scheduler
 ====================================================================

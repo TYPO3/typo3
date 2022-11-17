@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-47613:
+
 =========================================================================================================
 Feature: #47613 - Indexed Search: make no_cache parameter for forwardSearchWordsInResultLink configurable
 =========================================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92423:
+
 ========================================================
 Feature: #92423 - Enable placeholder config for ckeditor
 ========================================================

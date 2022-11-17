@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84637:
+
 ========================================================================================
 Deprecation: #84637 - TemplateService->linkData() functionality moved in PageLinkBuilder
 ========================================================================================

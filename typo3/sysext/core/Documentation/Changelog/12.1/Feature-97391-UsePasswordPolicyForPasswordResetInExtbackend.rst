@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97391:
+
 =======================================================================
 Feature: #97391 - Use password policy for password reset in ext:backend
 =======================================================================

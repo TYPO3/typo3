@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85164:
+
 ======================================================
 Feature: #85164 - Enable Languages on a per-site basis
 ======================================================

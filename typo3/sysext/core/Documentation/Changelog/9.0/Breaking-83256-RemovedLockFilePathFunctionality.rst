@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83256:
+
 =====================================================
 Breaking: #83256 - Removed lockFilePath functionality
 =====================================================

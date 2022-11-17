@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63406:
+
 =====================================================================
 Breaking: #63406 - Respect rootLevel configuration in extbase queries
 =====================================================================

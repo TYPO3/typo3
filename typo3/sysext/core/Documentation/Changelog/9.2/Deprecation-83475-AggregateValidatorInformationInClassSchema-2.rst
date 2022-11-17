@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83475-1668719171:
+
 =====================================================================
 Deprecation: #83475 - Aggregate validator information in class schema
 =====================================================================

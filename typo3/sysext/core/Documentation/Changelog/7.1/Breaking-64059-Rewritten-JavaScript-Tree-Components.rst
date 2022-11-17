@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64059:
+
 =======================================================
 Breaking: #64059 - Rewritten Javascript Tree Components
 =======================================================

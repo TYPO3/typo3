@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67792:
+
 ==========================================================
 Breaking: #67792 - Class aliases of Indexed Search removed
 ==========================================================

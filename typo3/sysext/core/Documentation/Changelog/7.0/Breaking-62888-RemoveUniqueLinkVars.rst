@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62888:
+
 ===============================================
 Breaking: #62888 - Remove config.uniqueLinkVars
 ===============================================

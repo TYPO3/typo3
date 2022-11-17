@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83016:
+
 =============================================================
 Feature: #83016 - Listing of page translations in list module
 =============================================================

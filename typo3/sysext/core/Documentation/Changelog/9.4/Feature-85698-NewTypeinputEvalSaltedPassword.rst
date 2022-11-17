@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85698:
+
 ====================================================
 Feature: #85698 - New type=input eval saltedPassword
 ====================================================

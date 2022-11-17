@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84525:
+
 =============================
 Feature: #84525 - XML Sitemap
 =============================

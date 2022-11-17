@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88540:
+
 =================================================================
 Breaking: #88540 - Changed Request Workflow for Frontend Requests
 =================================================================

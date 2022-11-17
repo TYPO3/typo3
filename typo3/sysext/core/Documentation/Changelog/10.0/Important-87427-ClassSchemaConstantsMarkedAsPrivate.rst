@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-87427:
+
 ===========================================================
 Important: #87427 - ClassSchema constants marked as private
 ===========================================================

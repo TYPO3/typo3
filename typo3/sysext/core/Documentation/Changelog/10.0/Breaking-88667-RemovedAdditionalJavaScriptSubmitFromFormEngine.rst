@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88667:
+
 =====================================================================
 Breaking: #88667 - Removed additionalJavaScriptSubmit from FormEngine
 =====================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95343:
+
 ================================================================
 Deprecation: #95343 - Legacy hook for new content element wizard
 ================================================================

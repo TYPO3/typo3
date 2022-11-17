@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-80553:
+
 ==============================================================
 Important: #80553 - Simplify important actions in Install Tool
 ==============================================================

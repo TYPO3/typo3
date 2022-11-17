@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60135:
+
 ============================================================
 Breaking: #60135 - Recursive stdWrap is now only called once
 ============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86457:
+
 =======================================================
 Feature: #86457 - TCA Type Slug adds a prepending slash
 =======================================================

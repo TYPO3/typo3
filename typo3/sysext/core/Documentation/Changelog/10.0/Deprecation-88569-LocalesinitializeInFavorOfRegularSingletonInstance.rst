@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88569:
+
 ==================================================================================
 Deprecation: #88569 - Locales::initialize() in favor of regular singleton instance
 ==================================================================================

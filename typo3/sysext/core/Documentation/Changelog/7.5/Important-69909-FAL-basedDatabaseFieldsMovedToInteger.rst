@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-69909:
+
 ==============================================================
 Important: #69909 - FAL-based Database Fields moved to integer
 ==============================================================

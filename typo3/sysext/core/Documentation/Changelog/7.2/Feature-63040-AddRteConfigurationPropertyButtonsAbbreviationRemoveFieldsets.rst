@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-63040:
+
 =====================================================================================
 Feature: #63040 - Add RTE configuration property buttons.abbreviation.removeFieldsets
 =====================================================================================

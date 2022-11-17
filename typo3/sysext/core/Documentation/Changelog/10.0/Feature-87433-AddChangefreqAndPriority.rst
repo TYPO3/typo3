@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87433:
+
 =============================================================
 Feature: #87433 - Add changefreq and priority for XML sitemap
 =============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78279:
+
 =========================================================================
 Deprecation: #78279 - Deprecate top.TYPO3.Backend.ContentContainer.iframe
 =========================================================================

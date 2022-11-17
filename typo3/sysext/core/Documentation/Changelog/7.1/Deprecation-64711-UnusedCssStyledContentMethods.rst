@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-64711:
+
 ==========================================================================
 Deprecation: #64711 - Various methods within CSS Styled Content Controller
 ==========================================================================

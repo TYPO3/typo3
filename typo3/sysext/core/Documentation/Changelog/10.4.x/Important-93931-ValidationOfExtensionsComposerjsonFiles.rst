@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-93931:
+
 =================================================================
 Important: #93931 - Validation of Extensions' composer.json files
 =================================================================

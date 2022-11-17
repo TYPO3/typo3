@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82903:
+
 =============================================
 Deprecation: #82903 - Deprecate ClientUtility
 =============================================

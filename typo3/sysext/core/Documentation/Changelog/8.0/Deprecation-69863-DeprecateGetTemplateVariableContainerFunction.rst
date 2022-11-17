@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69863:
+
 =====================================================================
 Deprecation: #69863 - Deprecate getTemplateVariableContainer function
 =====================================================================

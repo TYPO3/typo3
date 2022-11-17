@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84757:
+
 ==============================================================
 Feature: #84757 - Double click in structure tree changes label
 ==============================================================

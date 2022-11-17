@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-58621:
+
 ======================================
 Feature: #58621 - FormatCaseViewHelper
 ======================================

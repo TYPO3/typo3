@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-76370:
+
 ============================================
 Deprecation: #76370 - Deprecate CacheFactory
 ============================================

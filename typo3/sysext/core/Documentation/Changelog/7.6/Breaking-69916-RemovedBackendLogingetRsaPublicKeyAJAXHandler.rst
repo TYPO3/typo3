@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69916:
+
 =====================================================================
 Breaking: #69916 - Removed BackendLogin::getRsaPublicKey AJAX handler
 =====================================================================

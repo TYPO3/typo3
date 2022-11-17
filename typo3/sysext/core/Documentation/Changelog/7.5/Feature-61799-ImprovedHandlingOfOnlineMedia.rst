@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-61799:
+
 ===================================================
 Feature: #61799 - Improved handling of online media
 ===================================================

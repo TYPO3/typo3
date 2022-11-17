@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91578:
+
 ===========================================================
 Breaking: #91578 - IRRE related JavaScript has been removed
 ===========================================================

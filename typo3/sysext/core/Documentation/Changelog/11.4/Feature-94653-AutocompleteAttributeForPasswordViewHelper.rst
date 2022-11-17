@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94653:
+
 ===============================================================
 Feature: #94653 - Autocomplete attribute for PasswordViewHelper
 ===============================================================

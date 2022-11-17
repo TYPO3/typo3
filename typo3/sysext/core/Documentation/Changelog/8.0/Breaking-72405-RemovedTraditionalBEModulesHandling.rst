@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72405:
+
 ==========================================================
 Breaking: #72405 - Removed traditional BE modules handling
 ==========================================================

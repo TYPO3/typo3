@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82926:
+
 =======================================================
 Deprecation: #82926 - Domain-related API method in TSFE
 =======================================================

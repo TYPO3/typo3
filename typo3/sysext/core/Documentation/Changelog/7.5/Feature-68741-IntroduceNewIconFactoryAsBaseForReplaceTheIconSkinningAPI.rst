@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68741:
+
 ====================================================================================
 Feature: #68741 - Introduce new IconFactory as base to replace the icon skinning API
 ====================================================================================

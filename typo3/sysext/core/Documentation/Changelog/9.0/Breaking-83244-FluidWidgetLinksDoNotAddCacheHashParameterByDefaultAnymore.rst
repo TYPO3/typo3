@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83244:
+
 =======================================================================================
 Breaking: #83244 - Fluid Widget Links do not add cacheHash parameter by default anymore
 =======================================================================================

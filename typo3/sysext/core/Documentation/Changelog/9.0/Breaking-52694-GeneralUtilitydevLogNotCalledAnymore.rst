@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-52694:
+
 ==============================================================
 Breaking: #52694 - GeneralUtility::devLog() not called anymore
 ==============================================================

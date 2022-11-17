@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92337:
+
 ===============================================================
 Feature: #92337 - Allow translatable labels for bookmark groups
 ===============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82768:
+
 =======================================================================
 Breaking: #82768 - Configuration Options for Image Manipulation PHP API
 =======================================================================

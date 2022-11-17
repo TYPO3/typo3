@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88901:
+
 ===================================================================
 Feature: #88901 - Render all fields in ElementInformationController
 ===================================================================

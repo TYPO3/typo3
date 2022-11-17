@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88791:
+
 ====================================================
 Feature: #88791 - Introduce PreviewAspect in Context
 ====================================================

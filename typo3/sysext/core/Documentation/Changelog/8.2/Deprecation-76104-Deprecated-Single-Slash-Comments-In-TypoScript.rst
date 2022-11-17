@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-76104:
+
 ====================================================================
 Deprecation: #76104 - Deprecated single slash comments in TypoScript
 ====================================================================

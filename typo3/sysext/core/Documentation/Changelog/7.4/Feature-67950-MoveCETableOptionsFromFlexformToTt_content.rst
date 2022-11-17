@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67950:
+
 ===================================================================
 Feature: #67950 - Move CE table options from flexform to tt_content
 ===================================================================

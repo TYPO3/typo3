@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82572:
+
 =============================================
 Breaking: #82572 - RDCT functionality removed
 =============================================

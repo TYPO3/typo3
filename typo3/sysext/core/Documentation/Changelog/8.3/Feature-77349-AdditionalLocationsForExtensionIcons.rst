@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-77349:
+
 ==========================================================
 Feature: #77349 - Additional locations for extension icons
 ==========================================================

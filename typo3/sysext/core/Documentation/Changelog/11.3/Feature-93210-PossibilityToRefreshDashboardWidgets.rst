@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93210:
+
 ==========================================================
 Feature: #93210 - Possibility to refresh dashboard widgets
 ==========================================================

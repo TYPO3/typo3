@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-72045:
+
 ====================================================
 Feature: #72045 - HTMLparser.stripEmptyTags.keepTags
 ====================================================

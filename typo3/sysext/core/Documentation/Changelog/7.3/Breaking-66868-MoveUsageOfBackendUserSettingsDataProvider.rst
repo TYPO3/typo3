@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66868:
+
 ================================================================
 Breaking: #66868 - Move usage of BackendUserSettingsDataProvider
 ================================================================

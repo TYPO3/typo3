@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85550:
+
 ========================================================================
 Feature: #85550 - Introduce context for TypoScript data getText property
 ========================================================================

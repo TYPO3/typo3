@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94223:
+
 ===================================================
 Deprecation: #94223 - Extbase Request->getBaseUri()
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-71911:
+
 ==============================================================================
 Feature: #71911 - Add constraint hook in  DatabaseRecordList->makeSearchString
 ==============================================================================

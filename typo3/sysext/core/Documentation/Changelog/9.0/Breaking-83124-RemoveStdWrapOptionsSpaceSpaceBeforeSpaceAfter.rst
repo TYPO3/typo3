@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83124:
+
 ========================================================================
 Breaking: #83124 - Remove stdWrap options space, spaceBefore, spaceAfter
 ========================================================================

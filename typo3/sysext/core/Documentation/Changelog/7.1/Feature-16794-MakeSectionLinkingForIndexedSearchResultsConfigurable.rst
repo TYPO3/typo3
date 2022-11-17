@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-16794:
+
 ===========================================================
 Feature: #16794 - Linking of Indexed Search result sections
 ===========================================================

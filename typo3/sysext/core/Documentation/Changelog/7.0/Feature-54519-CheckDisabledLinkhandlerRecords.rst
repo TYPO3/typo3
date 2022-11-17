@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-54519:
+
 ==============================================================
 Feature: #54519 - Report links to disabled linkhandler records
 ==============================================================

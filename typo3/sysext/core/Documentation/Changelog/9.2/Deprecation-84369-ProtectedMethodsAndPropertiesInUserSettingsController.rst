@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84369:
+
 =================================================================================
 Deprecation: #84369 - Protected methods and properties in UserSettingsController
 =================================================================================

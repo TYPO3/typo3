@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-68074:
+
 =========================================================
 Deprecation: #68074 - Deprecate getPageRenderer() methods
 =========================================================

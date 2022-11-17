@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79263:
+
 ============================================================
 Feature: #79263 - Scheduler CLI available as Symfony Command
 ============================================================

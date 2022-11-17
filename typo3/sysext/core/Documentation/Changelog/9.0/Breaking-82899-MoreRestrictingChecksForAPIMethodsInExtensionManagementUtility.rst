@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82899:
+
 ========================================================================================
 Breaking: #82899 - More restricting checks for API methods in ExtensionManagementUtility
 ========================================================================================

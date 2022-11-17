@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-77814:
+
 ===============================================================
 Breaking: #77814 - Remove feature subsearch from indexed search
 ===============================================================

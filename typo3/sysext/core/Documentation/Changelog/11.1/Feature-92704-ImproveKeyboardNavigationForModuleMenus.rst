@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92704:
+
 ==============================================================
 Feature: #92704 - Improve keyboard navigation for module menus
 ==============================================================

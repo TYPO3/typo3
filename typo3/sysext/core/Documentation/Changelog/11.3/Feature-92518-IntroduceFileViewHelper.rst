@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92518-1668719172:
+
 ==========================================
 Feature: #92518 - Introduce FileViewHelper
 ==========================================

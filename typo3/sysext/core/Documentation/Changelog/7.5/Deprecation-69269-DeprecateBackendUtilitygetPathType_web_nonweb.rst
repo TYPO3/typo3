@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69269:
+
 ======================================================================
 Deprecation: #69269 - Deprecate BackendUtility::getPathType_web_nonweb
 ======================================================================

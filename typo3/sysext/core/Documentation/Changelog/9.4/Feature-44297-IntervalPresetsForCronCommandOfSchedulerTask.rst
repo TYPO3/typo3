@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-44297:
+
 =====================================================================
 Feature: #44297 - Interval presets for cron command of scheduler task
 =====================================================================

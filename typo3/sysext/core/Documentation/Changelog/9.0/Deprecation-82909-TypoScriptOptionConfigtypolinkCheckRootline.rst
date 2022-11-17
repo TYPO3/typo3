@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82909:
+
 ====================================================================
 Deprecation: #82909 - TypoScript option config.typolinkCheckRootline
 ====================================================================

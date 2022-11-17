@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85147:
+
 ==================================================
 Feature: #85147 - Render SEO meta tags in frontend
 ==================================================

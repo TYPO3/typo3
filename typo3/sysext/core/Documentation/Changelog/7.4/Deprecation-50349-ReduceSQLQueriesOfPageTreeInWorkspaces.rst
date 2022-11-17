@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-50349:
+
 ===================================================================
 Deprecation: #50349 - Reduce SQL queries of page tree in workspaces
 ===================================================================

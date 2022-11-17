@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83983:
+
 ===============================================
 Feature: #83983 - Improved ModuleLinkViewHelper
 ===============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91859:
+
 ======================================================================
 Feature: #91859 - Allow SelectCheckBox groups to be initially expanded
 ======================================================================

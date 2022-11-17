@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-91012:
+
 ===========================================================================
 Deprecation: #91012 - Various hooks related to TypoScriptFrontendController
 ===========================================================================

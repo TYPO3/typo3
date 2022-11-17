@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65578:
+
 =====================================================================
 Deprecation: #65578 - config.concatenateJsAndCss and concatenateFiles
 =====================================================================

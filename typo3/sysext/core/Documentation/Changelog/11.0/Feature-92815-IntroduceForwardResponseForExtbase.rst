@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92815:
+
 =======================================================
 Feature: #92815 - Introduce ForwardResponse for extbase
 =======================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-70170:
+
 ==================================================================
 Feature: #70170 - ViewHelper to strip whitespace between HTML tags
 ==================================================================

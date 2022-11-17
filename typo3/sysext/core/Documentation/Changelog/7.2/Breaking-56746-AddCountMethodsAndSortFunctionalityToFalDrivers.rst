@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-56746:
+
 ==========================================================================
 Breaking: #56746 - Add count methods and sort functionality to FAL drivers
 ==========================================================================

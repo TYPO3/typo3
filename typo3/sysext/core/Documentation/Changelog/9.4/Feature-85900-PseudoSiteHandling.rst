@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85900:
+
 ======================================
 Feature: #85900 - Pseudo Site Handling
 ======================================

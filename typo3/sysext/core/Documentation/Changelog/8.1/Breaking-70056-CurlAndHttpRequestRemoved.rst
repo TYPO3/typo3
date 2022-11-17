@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-70056:
+
 =====================================================================
 Breaking: #70056 - Http-related options and HttpRequest class removed
 =====================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88807:
+
 =========================================================================
 Feature: #88807 - AdminPanel RequestEnricherInterface has been introduced
 =========================================================================

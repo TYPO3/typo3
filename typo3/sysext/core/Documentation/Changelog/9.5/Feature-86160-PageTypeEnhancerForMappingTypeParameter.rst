@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86160:
+
 ==============================================================
 Feature: #86160 - PageTypeEnhancer for mapping &type parameter
 ==============================================================

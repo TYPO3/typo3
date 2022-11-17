@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-45537:
+
 ==============================================================
 Feature: #45537 - Run manually executed tasks on next cron-run
 ==============================================================

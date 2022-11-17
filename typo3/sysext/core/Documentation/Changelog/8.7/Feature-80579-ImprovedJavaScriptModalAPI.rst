@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-80579:
+
 ===============================================
 Feature: #80579 - Improved JavaScript Modal API
 ===============================================

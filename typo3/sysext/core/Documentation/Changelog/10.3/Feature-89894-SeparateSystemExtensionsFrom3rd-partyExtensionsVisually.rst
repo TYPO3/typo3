@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89894:
+
 ===============================================================================
 Feature: #89894 - Separate system extensions from 3rd-party extensions visually
 ===============================================================================

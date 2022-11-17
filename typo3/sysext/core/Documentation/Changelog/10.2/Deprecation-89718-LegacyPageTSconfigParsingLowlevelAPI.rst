@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89718:
+
 ==============================================================
 Deprecation: #89718 - Legacy PageTSconfig parsing lowlevel API
 ==============================================================

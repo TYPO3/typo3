@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-77765:
+
 ==========================================================
 Breaking: #77765 - ExtJS notifications and dialogs removed
 ==========================================================

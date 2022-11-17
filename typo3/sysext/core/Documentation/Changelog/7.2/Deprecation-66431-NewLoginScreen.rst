@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-66431:
+
 ======================================
 Deprecation: #66431 - New Login Screen
 ======================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78383:
+
 =======================================================================================================
 Breaking: #78383 - pages, tt_content, sys_file_metadata have been removed from defaultCategorizedTables
 =======================================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88646:
+
 ============================================================================================
 Breaking: #88646 - Removed inheritance of AbstractService from AbstractAuthenticationService
 ============================================================================================

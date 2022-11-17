@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69535:
+
 ======================================================================================
 Deprecation: #69535 - Deprecate \TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\IconViewHelper
 ======================================================================================

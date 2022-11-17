@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79580:
+
 ====================================================================================
 Deprecation: #79580 - Deprecate methods in DataHandler related to page delete access
 ====================================================================================

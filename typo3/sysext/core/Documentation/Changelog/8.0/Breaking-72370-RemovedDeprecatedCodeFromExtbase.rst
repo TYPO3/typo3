@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72370:
+
 =======================================================
 Breaking: #72370 - Removed deprecated code from extbase
 =======================================================

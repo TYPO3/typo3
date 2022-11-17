@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-84744:
+
 ==============================================
 Breaking: #84744 - Raise doctrine/dbal-version
 ==============================================

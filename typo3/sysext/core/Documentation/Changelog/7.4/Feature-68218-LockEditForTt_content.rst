@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68218:
+
 ==========================================
 Feature: #68218 - Lock edit for tt_content
 ==========================================

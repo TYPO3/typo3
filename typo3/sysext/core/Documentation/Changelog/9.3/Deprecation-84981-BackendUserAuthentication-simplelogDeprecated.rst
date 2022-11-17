@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84981:
+
 ============================================================
 Deprecation: #84981 - BackendUserAuthentication->simplelog()
 ============================================================

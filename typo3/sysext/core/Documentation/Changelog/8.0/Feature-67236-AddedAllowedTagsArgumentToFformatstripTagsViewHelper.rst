@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67236:
+
 ===============================================================================
 Feature: #67236 - Added "allowedTags" argument to f:format.stripTags ViewHelper
 ===============================================================================

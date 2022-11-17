@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75323:
+
 ==========================================================================
 Breaking: #75323 - Removed parameter entryPointPath from main applications
 ==========================================================================

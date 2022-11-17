@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65290-1668719172:
+
 =================================
 Deprecation: #65290 - TCA changes
 =================================

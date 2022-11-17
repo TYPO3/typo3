@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88657:
+
 ============================================================
 Breaking: #88657 - Popup configuration in FormEngine dropped
 ============================================================

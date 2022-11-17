@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89738:
+
 =======================================
 Feature: #89738 - API for AJAX Requests
 =======================================

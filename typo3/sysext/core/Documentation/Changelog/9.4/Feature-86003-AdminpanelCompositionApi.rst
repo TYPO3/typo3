@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86003:
+
 ==========================================================
 Feature: #86003 - Composition based API for the Adminpanel
 ==========================================================

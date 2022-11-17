@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86366:
+
 ===============================================
 Deprecation: #86366 - Methods in AbstractUpdate
 ===============================================

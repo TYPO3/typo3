@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92836:
+
 =============================================================================
 Important: #92836 - Introduce sudo mode for Install Tool accessed via backend
 =============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-89992:
+
 ==============================================
 Important: #89992 - Use new Translation Server
 ==============================================

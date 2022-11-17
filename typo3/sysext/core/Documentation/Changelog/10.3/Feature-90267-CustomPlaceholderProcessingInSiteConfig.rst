@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90267:
+
 ==============================================================
 Feature: #90267 - Custom placeholder processing in site config
 ==============================================================

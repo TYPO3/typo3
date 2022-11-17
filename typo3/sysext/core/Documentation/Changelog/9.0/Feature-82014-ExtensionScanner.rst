@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82014:
+
 ===================================
 Feature: #82014 - Extension scanner
 ===================================

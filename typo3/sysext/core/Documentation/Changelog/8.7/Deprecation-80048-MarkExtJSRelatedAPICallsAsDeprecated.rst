@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80048:
+
 ================================================================
 Deprecation: #80048 - Mark ExtJS related API calls as deprecated
 ================================================================

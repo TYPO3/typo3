@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73044:
+
 ================================================
 Breaking: #73044 - JSON for ClickMenu in Backend
 ================================================

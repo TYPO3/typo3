@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-77693:
+
 =========================================
 Breaking: #77693 - Move icons from t3skin
 =========================================

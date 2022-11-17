@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81651:
+
 ======================================================================
 Feature: #81651 - Query builder object as argument in list module hook
 ======================================================================

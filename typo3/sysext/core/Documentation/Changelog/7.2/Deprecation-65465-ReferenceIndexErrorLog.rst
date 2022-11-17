@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65465:
+
 ==========================================================
 Deprecation: #65465 - Deprecate errorLog in ReferenceIndex
 ==========================================================

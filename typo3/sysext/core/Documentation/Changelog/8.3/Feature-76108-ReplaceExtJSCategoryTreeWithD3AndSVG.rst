@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-76108:
+
 =============================================================
 Feature: #76108 - Replace ExtJS category tree with D3 and SVG
 =============================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62416:
+
 ============================================================
 Breaking: #62416 - Removal of deprecated code in sysext core
 ============================================================

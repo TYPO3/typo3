@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76879-1668719172:
+
 ===================================================================================
 Breaking: #76879 - Remove unused property pidSelect from AbstractDatabaseRecordList
 ===================================================================================

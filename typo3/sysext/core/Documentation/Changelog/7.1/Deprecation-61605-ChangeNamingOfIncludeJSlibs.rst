@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-61605:
+
 =============================================================================
 Deprecation: #61605 - Change naming of TypoScript property page.includeJSlibs
 =============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95139:
+
 ===============================================
 Deprecation: #95139 - Extbase ControllerContext
 ===============================================

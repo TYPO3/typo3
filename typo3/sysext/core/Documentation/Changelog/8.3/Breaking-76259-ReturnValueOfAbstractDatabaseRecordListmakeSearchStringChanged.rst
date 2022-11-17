@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76259-1668719184:
+
 =======================================================================================
 Breaking: #76259 - Return value of AbstractDatabaseRecordList::makeSearchString changed
 =======================================================================================

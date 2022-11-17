@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94316:
+
 =======================================================================
 Deprecation: #94316 - HTTP header manipulating methods from HttpUtility
 =======================================================================

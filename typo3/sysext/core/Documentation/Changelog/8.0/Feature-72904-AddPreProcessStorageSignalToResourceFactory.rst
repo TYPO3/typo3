@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-72904:
+
 =================================================================
 Feature: #72904 - Add preProcessStorage signal to ResourceFactory
 =================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67293:
+
 =============================================
 Feature: #67293 - Dependency ordering service
 =============================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62339:
+
 ====================================================================
 Breaking: #62339 - Move EXT:perm into EXT:beuser and remove EXT:perm
 ====================================================================

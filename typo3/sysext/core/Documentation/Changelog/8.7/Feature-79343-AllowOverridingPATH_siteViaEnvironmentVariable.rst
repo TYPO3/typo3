@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79343:
+
 =====================================================================
 Feature: #79343 - Allow overriding PATH_site via environment variable
 =====================================================================

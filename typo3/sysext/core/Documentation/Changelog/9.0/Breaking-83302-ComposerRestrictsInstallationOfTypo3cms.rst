@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83302:
+
 ===============================================================
 Breaking: #83302 - Composer restricts installation of typo3/cms
 ===============================================================

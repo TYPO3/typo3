@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89171:
+
 =============================================================
 Feature: #89171 - Added possibility to have multiple sitemaps
 =============================================================

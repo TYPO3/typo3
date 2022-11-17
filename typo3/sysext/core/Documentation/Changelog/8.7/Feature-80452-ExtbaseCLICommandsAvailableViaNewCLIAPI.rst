@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-80452:
+
 ================================================================
 Feature: #80452 - Extbase CLI commands available via new CLI API
 ================================================================

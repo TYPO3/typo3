@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-81950:
+
 ========================================================================
 Breaking: #81950 - Remove leftover workspaces unpublishing functionality
 ========================================================================

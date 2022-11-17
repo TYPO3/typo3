@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87937:
+
 ==========================================================
 Breaking: #87937 - TCA option "selicon_field_path" removed
 ==========================================================

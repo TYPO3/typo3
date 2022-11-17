@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69095:
+
 ======================================================
 Feature: #69095 - Introduce icon state for IconFactory
 ======================================================

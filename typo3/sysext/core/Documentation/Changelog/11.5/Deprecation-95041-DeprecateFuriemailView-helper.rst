@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95041:
+
 ===============================================
 Deprecation: #95041 - <f:uri.email> view-helper
 ===============================================

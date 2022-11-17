@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-88302:
+
 ===================================================================
 Important: #88302 - Prevent overriding CKEditor config from plugins
 ===================================================================

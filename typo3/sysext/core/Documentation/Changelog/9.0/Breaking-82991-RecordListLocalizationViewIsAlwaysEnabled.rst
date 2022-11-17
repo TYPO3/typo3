@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82991:
+
 ====================================================================
 Breaking: #82991 - Record list "Localization View" is always enabled
 ====================================================================

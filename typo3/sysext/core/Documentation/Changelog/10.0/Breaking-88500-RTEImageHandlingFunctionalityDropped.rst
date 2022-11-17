@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88500:
+
 ===========================================================
 Breaking: #88500 - RTE image handling functionality dropped
 ===========================================================

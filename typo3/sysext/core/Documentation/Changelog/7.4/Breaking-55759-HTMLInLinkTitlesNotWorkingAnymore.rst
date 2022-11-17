@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-55759:
+
 ==========================================================
 Breaking: #55759 - HTML in link titles not working anymore
 ==========================================================

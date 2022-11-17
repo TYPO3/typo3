@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77062:
+
 =====================================================================
 Breaking: #77062 - Example image in TS constants descriptions removed
 =====================================================================

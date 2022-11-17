@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94272:
+
 ===============================================
 Deprecation: #94272 - Application->run callback
 ===============================================

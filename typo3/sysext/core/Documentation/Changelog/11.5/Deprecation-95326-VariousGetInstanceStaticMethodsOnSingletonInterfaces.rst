@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95326:
+
 ====================================================================================
 Deprecation: #95326 - Various "getInstance()" static methods on singleton interfaces
 ====================================================================================

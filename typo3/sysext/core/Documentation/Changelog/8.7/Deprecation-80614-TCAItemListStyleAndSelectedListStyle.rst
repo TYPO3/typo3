@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80614:
+
 =============================================================
 Deprecation: #80614 - TCA itemListStyle and selectedListStyle
 =============================================================

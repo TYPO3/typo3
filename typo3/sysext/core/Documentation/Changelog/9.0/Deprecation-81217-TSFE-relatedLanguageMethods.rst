@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-81217:
+
 ===================================================
 Deprecation: #81217 - TSFE-related language methods
 ===================================================

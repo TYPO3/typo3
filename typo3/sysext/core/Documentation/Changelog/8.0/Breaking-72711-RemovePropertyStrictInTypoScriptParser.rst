@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72711:
+
 =============================================================
 Breaking: #72711 - Remove property strict in TypoScriptParser
 =============================================================

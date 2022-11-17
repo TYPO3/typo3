@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-65403:
+
 ======================================================================
 Feature: #65403 - Add file links sorting by date and sorting direction
 ======================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-62864:
+
 =============================================================
 Deprecation: #62864 - BackendUtility->helpTextIcon deprecated
 =============================================================

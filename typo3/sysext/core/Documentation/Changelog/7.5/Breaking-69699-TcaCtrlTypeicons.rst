@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69699:
+
 =============================================
 Breaking: #69699 - TCA ctrl typeicons removed
 =============================================

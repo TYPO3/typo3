@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85828:
+
 =========================================================================
 Feature: #85828 - Move symfony expression language handling into EXT:core
 =========================================================================

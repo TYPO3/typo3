@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67360:
+
 =========================================================================
 Feature: #67360 - Custom attribute name and multiple values for meta tags
 =========================================================================

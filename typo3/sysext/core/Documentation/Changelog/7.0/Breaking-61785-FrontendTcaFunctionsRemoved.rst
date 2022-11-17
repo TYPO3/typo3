@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61785-1668719172:
+
 ================================================================================================
 Breaking: #61785 - getCompressedTCarray and includeTCA from TypoScriptFrontendController removed
 ================================================================================================

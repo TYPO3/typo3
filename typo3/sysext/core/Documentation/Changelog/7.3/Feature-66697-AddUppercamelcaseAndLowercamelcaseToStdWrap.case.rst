@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66697:
+
 =======================================================================
 Feature: #66697 - Add uppercamelcase and lowercamelcase to stdWrap.case
 =======================================================================

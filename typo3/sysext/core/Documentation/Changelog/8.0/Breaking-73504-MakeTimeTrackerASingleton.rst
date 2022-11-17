@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73504:
+
 ===============================================
 Breaking: #73504 - Make TimeTracker a singleton
 ===============================================

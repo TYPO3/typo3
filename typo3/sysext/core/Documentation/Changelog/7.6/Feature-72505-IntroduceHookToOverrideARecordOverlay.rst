@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-72505:
+
 =============================================================
 Feature: #72505 - Introduce hook to override a record overlay
 =============================================================

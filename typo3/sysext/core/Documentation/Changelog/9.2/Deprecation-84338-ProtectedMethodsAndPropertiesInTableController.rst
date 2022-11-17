@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84338:
+
 ================================================================================
 Deprecation: #84338 - Protected methods and properties in TableController
 ================================================================================

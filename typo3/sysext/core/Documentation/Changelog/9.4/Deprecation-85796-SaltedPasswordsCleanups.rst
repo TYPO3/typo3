@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85796:
+
 ===============================================
 Deprecation: #85796 - Salted passwords cleanups
 ===============================================

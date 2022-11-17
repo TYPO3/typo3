@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79025:
+
 ======================================================
 Breaking: #79025 - Extract testing framework for TYPO3
 ======================================================

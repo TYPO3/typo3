@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72701:
+
 ===============================================================
 Breaking: #72701 - Remove unused properties in DocumentTemplate
 ===============================================================

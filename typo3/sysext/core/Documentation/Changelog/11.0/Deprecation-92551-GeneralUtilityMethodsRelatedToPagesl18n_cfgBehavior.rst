@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92551:
+
 ===============================================================================
 Deprecation: #92551 - GeneralUtility methods related to pages.l18n_cfg behavior
 ===============================================================================

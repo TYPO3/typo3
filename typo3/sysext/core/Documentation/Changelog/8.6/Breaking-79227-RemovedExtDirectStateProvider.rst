@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79227:
+
 ===================================================
 Breaking: #79227 - Removed ExtDirect State Provider
 ===================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-76590:
+
 ====================================================
 Feature: #76590 - Introduce UnitTests for JavaScript
 ====================================================

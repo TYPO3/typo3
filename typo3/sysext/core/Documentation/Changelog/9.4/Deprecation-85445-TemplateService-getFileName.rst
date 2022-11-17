@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85445:
+
 ==================================================
 Deprecation: #85445 - TemplateService->getFileName
 ==================================================

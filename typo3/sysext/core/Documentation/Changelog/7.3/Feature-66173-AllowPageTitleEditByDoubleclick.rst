@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66173:
+
 ======================================================
 Feature: #66173 - Allow page title edit by doubleclick
 ======================================================

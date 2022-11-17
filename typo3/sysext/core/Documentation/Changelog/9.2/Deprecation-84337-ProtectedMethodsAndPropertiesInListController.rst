@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84337:
+
 ================================================================================
 Deprecation: #84337 - Protected methods and properties in ListController
 ================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92693:
+
 ===============================================================
 Breaking: #92693 - Remove LinkHandler Linktype in Linkvalidator
 ===============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84195:
+
 ================================================================================
 Deprecation: #84195 - Protected methods and properties in EditDocumentController
 ================================================================================

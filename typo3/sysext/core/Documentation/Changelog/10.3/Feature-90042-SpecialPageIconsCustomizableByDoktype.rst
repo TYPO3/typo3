@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90042:
+
 =========================================================
 Feature: #90042 - Customize special page icons by doktype
 =========================================================

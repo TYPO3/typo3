@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84798:
+
 =============================================
 Feature: #84798 - Add SEO fields to Pages TCA
 =============================================

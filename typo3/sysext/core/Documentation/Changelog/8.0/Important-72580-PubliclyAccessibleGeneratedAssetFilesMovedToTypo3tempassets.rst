@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-72580:
+
 ========================================================================================
 Important: #72580 - Publicly accessible generated asset files moved to typo3temp/assets/
 ========================================================================================

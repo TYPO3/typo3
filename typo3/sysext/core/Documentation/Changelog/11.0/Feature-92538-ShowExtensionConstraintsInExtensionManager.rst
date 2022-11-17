@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92538:
+
 =================================================================
 Feature: #92538 - Show extension constraints in extension manager
 =================================================================

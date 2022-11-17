@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-48013:
+
 ====================================================
 Feature: #48013 - Add support for progressive images
 ====================================================

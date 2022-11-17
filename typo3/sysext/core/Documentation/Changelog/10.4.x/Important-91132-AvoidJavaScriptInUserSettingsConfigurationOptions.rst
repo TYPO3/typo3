@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-91132:
+
 ===========================================================================
 Important: #91132 - Avoid JavaScript in User Settings Configuration options
 ===========================================================================

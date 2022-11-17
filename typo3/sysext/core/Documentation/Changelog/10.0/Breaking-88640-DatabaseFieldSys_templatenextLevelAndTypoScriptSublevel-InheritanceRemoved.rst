@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88640:
+
 ========================================================================================================
 Breaking: #88640 - Database field "sys_template.nextLevel" and TypoScript sublevel - inheritance removed
 ========================================================================================================

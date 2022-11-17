@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79462:
+
 =====================================================================
 Feature: #79462 - Introduce scheduler task to execute console command
 =====================================================================

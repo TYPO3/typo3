@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80486:
+
 ======================================================================================
 Deprecation: #80486 - Setting charset via LocalizationParserInterface->getParsedData()
 ======================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-77728:
+
 ====================================================================
 Breaking: #77728 - Remove obsolete page tree and click menu settings
 ====================================================================

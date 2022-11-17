@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78415:
+
 =================================================================================
 Feature: #78415 - Global Fluid ViewHelper namespaces moved to TYPO3 configuration
 =================================================================================

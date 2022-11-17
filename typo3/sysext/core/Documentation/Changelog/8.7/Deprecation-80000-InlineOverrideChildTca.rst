@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80000:
+
 ============================================
 Deprecation: #80000 - InlineOverrideChildTca
 ============================================

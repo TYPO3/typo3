@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82062:
+
 ============================================================
 Feature: #82062 - Progress for Reference Index update on CLI
 ============================================================

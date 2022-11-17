@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85761:
+
 ===========================================
 Deprecation: #85761 - SaltedPasswordService
 ===========================================

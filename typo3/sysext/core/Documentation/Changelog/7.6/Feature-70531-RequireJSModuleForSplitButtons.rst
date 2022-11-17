@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-70531:
+
 ====================================================
 Feature: #70531 - RequireJS module for split buttons
 ====================================================

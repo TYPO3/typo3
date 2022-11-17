@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-75834:
+
 =========================================================
 Breaking: #75834 - Reorder processing of TCA Select items
 =========================================================

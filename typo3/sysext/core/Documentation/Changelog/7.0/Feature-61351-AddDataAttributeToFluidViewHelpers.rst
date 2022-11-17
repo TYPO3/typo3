@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-61351:
+
 =========================================================
 Feature: #61351 - Add data attribute to Fluid ViewHelpers
 =========================================================

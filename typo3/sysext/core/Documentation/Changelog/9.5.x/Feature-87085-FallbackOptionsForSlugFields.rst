@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87085:
+
 ==================================================
 Feature: #87085 - Fallback options for slug fields
 ==================================================

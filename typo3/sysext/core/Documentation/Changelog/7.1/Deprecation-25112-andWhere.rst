@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-25112:
+
 ==============================================================
 Deprecation: #25112 - Deprecate TypoScript property "andWhere"
 ==============================================================

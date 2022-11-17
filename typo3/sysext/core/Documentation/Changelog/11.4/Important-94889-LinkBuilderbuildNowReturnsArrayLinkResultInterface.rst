@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-94889:
+
 ========================================================================================
 Important: #94889 - AbstractTypoLinkBuilder::build now returns array|LinkResultInterface
 ========================================================================================

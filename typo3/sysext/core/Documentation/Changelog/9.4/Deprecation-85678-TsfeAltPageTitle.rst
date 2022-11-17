@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85678:
+
 ====================================================
 Deprecation: #85678 - $GLOBALS['TSFE']->altPageTitle
 ====================================================

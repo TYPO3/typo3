@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-90897:
+
 ===========================================
 Important: #90897 - Remove bootstrap-slider
 ===========================================

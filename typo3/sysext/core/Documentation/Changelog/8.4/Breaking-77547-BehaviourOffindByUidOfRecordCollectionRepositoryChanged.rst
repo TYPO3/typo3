@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-77547:
+
 =============================================================================
 Breaking: #77547 - Behaviour of RecordCollectionRepository::findByUid changed
 =============================================================================

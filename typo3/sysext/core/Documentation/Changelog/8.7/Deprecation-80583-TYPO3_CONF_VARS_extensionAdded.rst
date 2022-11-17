@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80583:
+
 ====================================================
 Deprecation: #80583 - TYPO3_CONF_VARS_extensionAdded
 ====================================================

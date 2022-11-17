@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91562:
+
 ===========================================
 Breaking: #91562 - cObject TEMPLATE removed
 ===========================================

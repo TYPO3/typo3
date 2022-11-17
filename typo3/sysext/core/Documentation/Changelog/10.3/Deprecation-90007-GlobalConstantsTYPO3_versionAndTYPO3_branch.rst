@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90007:
+
 =====================================================================
 Deprecation: #90007 - Global constants TYPO3_version and TYPO3_branch
 =====================================================================

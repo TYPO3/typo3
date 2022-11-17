@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83121:
+
 ===========================================================
 Deprecation: #83121 - Logging method DataHandler->newlog2()
 ===========================================================

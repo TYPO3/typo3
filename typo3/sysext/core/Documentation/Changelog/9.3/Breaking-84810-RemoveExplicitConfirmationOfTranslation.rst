@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-84810:
+
 ===========================================================
 Breaking: #84810 - Remove explicitConfirmationOfTranslation
 ===========================================================

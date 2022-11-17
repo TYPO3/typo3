@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83711:
+
 =============================================================
 Feature: #83711 - FeatureFlag: unifiedPageTranslationHandling
 =============================================================

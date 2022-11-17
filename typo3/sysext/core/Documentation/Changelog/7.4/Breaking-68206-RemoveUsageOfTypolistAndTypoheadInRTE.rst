@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-68206:
+
 ===============================================================
 Breaking: #68206 - Remove usage of typolist and typohead in RTE
 ===============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-87894:
+
 ================================================
 Deprecation: #87894 - GeneralUtility::idnaEncode
 ================================================

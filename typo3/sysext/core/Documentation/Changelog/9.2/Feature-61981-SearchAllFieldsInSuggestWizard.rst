@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-61981:
+
 =====================================================
 Feature: #61981 - Search all fields in Suggest Wizard
 =====================================================

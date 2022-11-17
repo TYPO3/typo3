@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89573:
+
 =======================================================================
 Feature: #89573 - Allow flexible base url for slug fields in FormEngine
 =======================================================================

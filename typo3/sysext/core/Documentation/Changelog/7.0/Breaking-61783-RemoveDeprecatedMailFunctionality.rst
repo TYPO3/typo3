@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61783:
+
 =================================================
 Breaking: #61783 - Removed deprecated mailing API
 =================================================

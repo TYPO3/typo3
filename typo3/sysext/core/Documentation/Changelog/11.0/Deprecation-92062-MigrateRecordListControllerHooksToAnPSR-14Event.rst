@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92062:
+
 ========================================================================
 Deprecation: #92062 - Migrate RecordListController hooks to PSR-14 event
 ========================================================================

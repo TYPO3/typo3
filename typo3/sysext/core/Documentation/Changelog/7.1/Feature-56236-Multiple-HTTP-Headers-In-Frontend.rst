@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-56236:
+
 ===========================================================================
 Feature: #56236 - Multiple HTTP headers of the same type in Frontend Output
 ===========================================================================

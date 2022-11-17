@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-70033:
+
 =============================================================================
 Feature: #70033 - Introduced TCA option showIconTable for selectSingle fields
 =============================================================================

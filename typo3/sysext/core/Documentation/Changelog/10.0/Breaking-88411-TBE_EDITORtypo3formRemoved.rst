@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88411:
+
 ===============================================
 Breaking: #88411 - TBE_EDITOR.typo3form removed
 ===============================================

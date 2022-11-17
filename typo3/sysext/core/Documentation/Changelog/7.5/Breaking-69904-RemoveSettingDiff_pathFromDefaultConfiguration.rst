@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69904:
+
 =====================================================================
 Breaking: #69904 - Remove Setting diff_path from DefaultConfiguration
 =====================================================================

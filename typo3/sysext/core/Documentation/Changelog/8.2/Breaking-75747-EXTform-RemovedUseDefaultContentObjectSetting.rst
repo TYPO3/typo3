@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75747:
+
 =====================================================================
 Breaking: #75747 - EXT:form - Removed useDefaultContentObject setting
 =====================================================================

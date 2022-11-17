@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90265:
+
 =======================================================
 Feature: #90265 - Show dispatched Events in Admin Panel
 =======================================================

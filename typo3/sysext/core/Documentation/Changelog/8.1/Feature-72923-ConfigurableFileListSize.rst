@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-72923:
+
 ==================================================================================
 Feature: #72923 - Configure the number of files shown per page in file list module
 ==================================================================================

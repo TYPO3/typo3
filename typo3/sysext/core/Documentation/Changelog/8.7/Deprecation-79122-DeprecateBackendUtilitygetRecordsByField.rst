@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79122:
+
 ========================================================
 Deprecation: #79122 - Deprecate method getRecordsByField
 ========================================================

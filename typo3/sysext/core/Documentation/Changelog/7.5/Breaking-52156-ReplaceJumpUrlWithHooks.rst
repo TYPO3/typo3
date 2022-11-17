@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-52156:
+
 =======================================================
 Breaking: #52156 - Replaced JumpURL features with hooks
 =======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-70316:
+
 ===============================================
 Deprecation: #70316 - Frontend basket with recs
 ===============================================

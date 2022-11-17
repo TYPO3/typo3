@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73514:
+
 ============================================
 Deprecation: #73514 - IncludeLibrary Methods
 ============================================

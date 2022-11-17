@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88854:
+
 =======================================================
 Deprecation: #88854 - jumpExt() of RecordListController
 =======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82419:
+
 =========================================================================
 Feature: #82419 - Send Frontend Debug Information as HTTP Response Header
 =========================================================================

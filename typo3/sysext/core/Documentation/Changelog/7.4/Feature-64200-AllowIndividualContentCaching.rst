@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-64200:
+
 ==================================================
 Feature: #64200 - Allow individual content caching
 ==================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86210:
+
 ==============================================
 Deprecation: #86210 - Protected info extension
 ==============================================

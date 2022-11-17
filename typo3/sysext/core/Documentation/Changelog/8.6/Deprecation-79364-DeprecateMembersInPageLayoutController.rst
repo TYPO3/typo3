@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79364:
+
 ===============================================================
 Deprecation: #79364 - Deprecate members in PageLayoutController
 ===============================================================

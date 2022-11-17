@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69459:
+
 ==================================================================
 Feature: #69459 - Show tt_content preview in page module via Fluid
 ==================================================================

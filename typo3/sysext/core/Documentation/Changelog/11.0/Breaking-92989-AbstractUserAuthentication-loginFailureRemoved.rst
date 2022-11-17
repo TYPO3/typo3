@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92989:
+
 ===================================================================
 Breaking: #92989 - AbstractUserAuthentication->loginFailure removed
 ===================================================================

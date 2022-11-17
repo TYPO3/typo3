@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79316:
+
 =======================================================
 Deprecation: #79316 - Deprecate ArrayUtility::inArray()
 =======================================================

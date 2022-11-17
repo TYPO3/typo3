@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92060:
+
 ====================================================================
 Breaking: #92060 - Dropped class TYPO3\CMS\Backend\View\PageTreeView
 ====================================================================

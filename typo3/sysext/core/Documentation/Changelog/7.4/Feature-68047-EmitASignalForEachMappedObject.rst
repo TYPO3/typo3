@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68047:
+
 ======================================================
 Feature: #68047 - Emit a signal for each mapped object
 ======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89579:
+
 ==============================================================================
 Deprecation: #89579 - ServiceChains require an array for excluded Service keys
 ==============================================================================

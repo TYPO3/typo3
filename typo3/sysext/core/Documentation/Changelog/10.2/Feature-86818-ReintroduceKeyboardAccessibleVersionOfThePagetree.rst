@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86818:
+
 =========================================================================
 Feature: #86818 - Reintroduce keyboard accessible version of the pagetree
 =========================================================================

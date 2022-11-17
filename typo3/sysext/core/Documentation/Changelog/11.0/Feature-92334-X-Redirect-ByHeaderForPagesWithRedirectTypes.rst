@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92334:
+
 ====================================================================
 Feature: #92334 - X-Redirect-By Header for pages with redirect types
 ====================================================================

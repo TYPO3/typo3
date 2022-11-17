@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79273:
+
 =====================================================
 Breaking: #79273 - Removed RteHtmlParser proc options
 =====================================================

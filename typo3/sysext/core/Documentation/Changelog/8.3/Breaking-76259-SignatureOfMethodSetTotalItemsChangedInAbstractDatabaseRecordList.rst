@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76259-1668719172:
+
 =====================================================================================
 Breaking: #76259 - Signature of setTotalItems() in AbstractDatabaseRecordList changed
 =====================================================================================

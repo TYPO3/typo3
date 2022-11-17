@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-38496:
+
 ===============================================================
 Breaking: #38496 - Shortcut redirects append all URL parameters
 ===============================================================

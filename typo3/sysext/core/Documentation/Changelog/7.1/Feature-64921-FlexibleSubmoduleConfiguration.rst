@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-64921:
+
 =========================================================================
 Feature: #64921 - Needed changes for flexible configuration of submodules
 =========================================================================

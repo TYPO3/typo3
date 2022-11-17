@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-47712:
+
 ===============================================
 Deprecation: #47712 - Deprecate old Locking API
 ===============================================

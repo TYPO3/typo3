@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88433:
+
 ===================================================
 Deprecation: #88433 - Deprecate top.openUrlInWindow
 ===================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-65698:
+
 ===========================================================================
 Feature: #65698 - Additional localization files in backend workspace module
 ===========================================================================

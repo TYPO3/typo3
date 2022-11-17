@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-70503:
+
 ====================================================================
 Breaking: #70503 - EXT:form - Remove breakOnError option from wizard
 ====================================================================

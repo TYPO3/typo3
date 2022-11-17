@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85408:
+
 =======================================================
 Deprecation: #85408 - TemplateService init() deprecated
 =======================================================

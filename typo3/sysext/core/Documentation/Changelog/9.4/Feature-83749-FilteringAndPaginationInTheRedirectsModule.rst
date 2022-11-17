@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83749:
+
 ==================================================================
 Feature: #83749 - Filtering and Pagination in the redirects module
 ==================================================================

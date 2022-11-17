@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87610:
+
 ===========================================================================
 Feature: #87610 - New FAL API to search for files including their meta data
 ===========================================================================

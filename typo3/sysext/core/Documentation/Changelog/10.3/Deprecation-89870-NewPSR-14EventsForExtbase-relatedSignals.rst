@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89870:
+
 ===================================================================
 Deprecation: #89870 - New PSR-14 Events for Extbase-related signals
 ===================================================================

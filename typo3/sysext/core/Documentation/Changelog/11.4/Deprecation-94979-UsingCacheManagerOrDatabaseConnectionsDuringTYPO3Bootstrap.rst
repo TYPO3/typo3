@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94979:
+
 =======================================================================================
 Deprecation: #94979 - Using CacheManager or Database Connections during TYPO3 bootstrap
 =======================================================================================

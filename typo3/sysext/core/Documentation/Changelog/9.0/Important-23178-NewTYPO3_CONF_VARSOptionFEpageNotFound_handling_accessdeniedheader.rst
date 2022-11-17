@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-23178:
+
 ==========================================================================================
 Important: #23178 - New TYPO3_CONF_VARS option FE|pageNotFound_handling_accessdeniedheader
 ==========================================================================================

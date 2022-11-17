@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60063:
+
 =========================================
 Breaking: #60063 - Felogin Plugin Removed
 =========================================

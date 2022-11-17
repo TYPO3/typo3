@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-80420:
+
 =============================================================
 Feature: #80420 - Allow multiple recipients in email finisher
 =============================================================

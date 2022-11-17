@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92336:
+
 ============================================================================
 Important: #92336 - Discarding records in workspace module hard deletes them
 ============================================================================

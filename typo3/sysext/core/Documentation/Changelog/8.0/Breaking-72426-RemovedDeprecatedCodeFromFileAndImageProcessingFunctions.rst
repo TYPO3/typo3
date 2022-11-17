@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72426:
+
 ===================================================================================
 Breaking: #72426 - Removed deprecated code from file and image processing functions
 ===================================================================================

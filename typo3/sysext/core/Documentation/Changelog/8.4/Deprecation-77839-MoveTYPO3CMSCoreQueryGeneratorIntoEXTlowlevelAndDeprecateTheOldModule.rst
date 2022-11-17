@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-77839:
+
 =======================================================================================================
 Deprecation: #77839 - Move TYPO3/CMS/Core/QueryGenerator into EXT:lowlevel and deprecate the old module
 =======================================================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-76072:
+
 ============================================
 Feature: #76072 - Ogg, flac and opus support
 ============================================

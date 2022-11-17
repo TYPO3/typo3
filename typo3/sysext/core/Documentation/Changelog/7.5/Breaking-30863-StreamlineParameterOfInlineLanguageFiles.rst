@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-30863:
+
 ==========================================================================
 Breaking: #30863 - Streamlined parameters for adding inline language files
 ==========================================================================

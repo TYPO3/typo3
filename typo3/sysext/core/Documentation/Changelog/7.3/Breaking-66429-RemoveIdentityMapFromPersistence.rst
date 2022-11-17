@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66429:
+
 ======================================================
 Breaking: #66429 - Remove IdentityMap from persistence
 ======================================================

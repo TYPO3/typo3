@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90686:
+
 =====================================
 Deprecation: #90686 - Model FileMount
 =====================================

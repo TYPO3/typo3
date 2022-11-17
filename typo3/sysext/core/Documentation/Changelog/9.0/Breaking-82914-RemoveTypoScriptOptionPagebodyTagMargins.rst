@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82914:
+
 ===============================================================
 Breaking: #82914 - Remove TypoScript option page.bodyTagMargins
 ===============================================================

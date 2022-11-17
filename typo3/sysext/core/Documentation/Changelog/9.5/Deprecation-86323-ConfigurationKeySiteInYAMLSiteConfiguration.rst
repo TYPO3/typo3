@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86323:
+
 =========================================================================
 Deprecation: #86323 - Configuration key "site" in YAML site configuration
 =========================================================================

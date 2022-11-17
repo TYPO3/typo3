@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-84843:
+
 ==============================================================
 Breaking: #84843 - Use no-cookie domain for youtube by default
 ==============================================================

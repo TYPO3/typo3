@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65381:
+
 ==========================================================================
 Deprecation: #65381 - Deprecate DataHandler property "stripslashes_values"
 ==========================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93056:
+
 ====================================================================
 Feature: #93056 - New Event after retrieving user groups recursively
 ====================================================================

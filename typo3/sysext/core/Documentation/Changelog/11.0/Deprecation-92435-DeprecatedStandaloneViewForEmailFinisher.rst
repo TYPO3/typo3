@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92435:
+
 ======================================================
 Deprecation: #92435 - StandaloneView for EmailFinisher
 ======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-57594:
+
 =======================================================================
 Deprecation: #57594 - Optimize extbase ReflectionService Cache handling
 =======================================================================

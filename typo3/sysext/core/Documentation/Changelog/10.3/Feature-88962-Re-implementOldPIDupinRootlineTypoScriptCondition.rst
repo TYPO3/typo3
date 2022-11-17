@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88962:
+
 =======================================================================
 Feature: #88962 - Re-implement old PIDupinRootline TypoScript condition
 =======================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64719:
+
 ====================================================================================================
 Breaking: #64719 - Multimedia and Media cObjects and Content Types are moved to new system extension
 ====================================================================================================

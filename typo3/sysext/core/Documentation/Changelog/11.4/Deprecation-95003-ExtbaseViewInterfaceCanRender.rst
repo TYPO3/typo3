@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95003:
+
 =======================================================
 Deprecation: #95003 - Extbase ViewInterface canRender()
 =======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88406:
+
 ====================================================================================
 Deprecation: #88406 - setCacheHash/noCacheHash options in ViewHelpers and UriBuilder
 ====================================================================================

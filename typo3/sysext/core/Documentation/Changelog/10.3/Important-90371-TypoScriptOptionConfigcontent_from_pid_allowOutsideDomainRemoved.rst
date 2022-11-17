@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-90371:
+
 ========================================================================================
 Important: #90371 - TypoScript option config.content_from_pid_allowOutsideDomain removed
 ========================================================================================

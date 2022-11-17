@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-71110:
+
 ======================================================
 Breaking: #71110 - TYPO3-specific Upload Limit removed
 ======================================================

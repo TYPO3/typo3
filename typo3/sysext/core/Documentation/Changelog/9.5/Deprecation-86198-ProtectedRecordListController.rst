@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86198:
+
 ====================================================
 Deprecation: #86198 - Protected RecordListController
 ====================================================

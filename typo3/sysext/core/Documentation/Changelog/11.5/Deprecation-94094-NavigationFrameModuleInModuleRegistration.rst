@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94094:
+
 ==================================================================
 Deprecation: #94094 - navigationFrameModule in Module Registration
 ==================================================================

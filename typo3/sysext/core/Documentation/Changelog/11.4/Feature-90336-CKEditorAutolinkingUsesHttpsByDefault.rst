@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90336:
+
 ============================================================
 Feature: #90336 - CKEditor Autolinking uses https by default
 ============================================================

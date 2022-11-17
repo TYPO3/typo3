@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83460:
+
 ========================================================
 Feature: #83460 - Hide restricted columns in page module
 ========================================================

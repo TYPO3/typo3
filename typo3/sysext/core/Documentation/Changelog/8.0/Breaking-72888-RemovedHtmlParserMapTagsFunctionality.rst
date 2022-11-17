@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72888:
+
 ===========================================================
 Breaking: #72888 - Removed HtmlParser mapTags functionality
 ===========================================================

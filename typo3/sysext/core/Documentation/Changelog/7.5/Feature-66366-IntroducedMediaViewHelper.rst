@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66366:
+
 ============================================
 Feature: #66366 - Introduced MediaViewHelper
 ============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-81600:
+
 ===============================================
 Deprecation: #81600 - Unused Extbase Exceptions
 ===============================================

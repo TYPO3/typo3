@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93041:
+
 =================================================================
 Breaking: #93041 - Remove TypoScript option addQueryString.method
 =================================================================

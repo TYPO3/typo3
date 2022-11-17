@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87451:
+
 =====================================================================
 Feature: #87451 - scheduler:run command accepts multiple task options
 =====================================================================

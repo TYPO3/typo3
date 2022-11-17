@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-71153-1668719172:
+
 =================================================================
 Deprecation: #71153 - Several DocumentTemplate methods deprecated
 =================================================================

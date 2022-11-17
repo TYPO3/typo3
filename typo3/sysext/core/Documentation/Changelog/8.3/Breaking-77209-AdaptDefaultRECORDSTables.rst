@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77209:
+
 ===============================================
 Breaking: #77209 - Adapt default RECORDS tables
 ===============================================

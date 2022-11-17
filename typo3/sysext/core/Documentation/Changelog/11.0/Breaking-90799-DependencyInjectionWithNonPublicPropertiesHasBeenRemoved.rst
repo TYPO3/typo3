@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-90799:
+
 ===================================================================================
 Breaking: #90799 - Dependency injection with non-public properties has been removed
 ===================================================================================

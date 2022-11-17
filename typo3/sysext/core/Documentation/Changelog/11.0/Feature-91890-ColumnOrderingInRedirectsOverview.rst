@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91890:
+
 ===========================================================================
 Feature: #91890 - Allow ordering of displayed columns in redirects overview
 ===========================================================================

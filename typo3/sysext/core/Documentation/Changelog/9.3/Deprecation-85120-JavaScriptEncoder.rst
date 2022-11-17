@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85120:
+
 =======================================
 Deprecation: #85120 - JavaScriptEncoder
 =======================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-91117:
+
 ====================================================================================
 Important: #91117 - Use GlobalEventHandler and ActionDispatcher instead of inline JS
 ====================================================================================

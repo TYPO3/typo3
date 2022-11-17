@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90956:
+
 ========================================================================================
 Deprecation: #90956 - Alternative fetch methods and reports for GeneralUtility::getUrl()
 ========================================================================================

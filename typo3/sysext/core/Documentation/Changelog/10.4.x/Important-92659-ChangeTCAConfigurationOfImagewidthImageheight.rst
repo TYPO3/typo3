@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92659:
+
 ========================================================================
 Important: #92659 - Change TCA configuration of imagewidth & imageheight
 ========================================================================

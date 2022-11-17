@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-56282:
+
 =======================================================
 Feature: #56282 - Language selector for pageview module
 =======================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89032:
+
 =============================================================
 Feature: #89032 - Render fieldControl for SelectSingleElement
 =============================================================

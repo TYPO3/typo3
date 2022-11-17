@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94687:
+
 ==================================================
 Deprecation: #94687 - Deprecate SoftReferenceIndex
 ==================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83429:
+
 =================================
 Feature: #83429 - Feature Toggles
 =================================

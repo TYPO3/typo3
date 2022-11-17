@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79243:
+
 ===================================================
 Breaking: #79243 - Remove l10n_mode mergeIfNotBlank
 ===================================================

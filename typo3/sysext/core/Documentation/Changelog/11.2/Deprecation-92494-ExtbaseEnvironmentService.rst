@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92494:
+
 ================================================
 Deprecation: #92494 - Extbase EnvironmentService
 ================================================

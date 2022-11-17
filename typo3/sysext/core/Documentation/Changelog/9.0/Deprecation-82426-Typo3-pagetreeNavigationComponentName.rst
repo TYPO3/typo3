@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82426:
+
 ==============================================================
 Deprecation: #82426 - typo3-pagetree navigation component name
 ==============================================================

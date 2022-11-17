@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91066-1668719172:
+
 ========================================
 Breaking: #91066 - Removed ButtonUtility
 ========================================

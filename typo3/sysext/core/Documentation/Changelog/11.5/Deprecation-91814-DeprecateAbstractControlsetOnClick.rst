@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-91814:
+
 =================================================
 Deprecation: #91814 - AbstractControl::setOnClick
 =================================================

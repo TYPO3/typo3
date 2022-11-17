@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62925:
+
 ======================================================
 Breaking: #62925 - ExtJS Ext.ux.DateTimePicker removed
 ======================================================

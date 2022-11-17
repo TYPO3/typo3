@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-71126:
+
 ===============================================================================
 Important: #71126 - Allow to define multiple inlineLocalizeSynchronize commands
 ===============================================================================

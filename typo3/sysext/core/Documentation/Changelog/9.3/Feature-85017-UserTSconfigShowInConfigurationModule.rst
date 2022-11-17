@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85017:
+
 =============================================================
 Feature: #85017 - User TSconfig shown in Configuration module
 =============================================================

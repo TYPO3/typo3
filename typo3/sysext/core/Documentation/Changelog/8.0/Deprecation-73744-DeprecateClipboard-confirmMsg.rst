@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73744:
+
 =======================================================
 Deprecation: #73744 - Deprecate Clipboard->confirmMsg()
 =======================================================

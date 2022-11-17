@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-95083:
+
 =========================================================
 Feature: #95083 - New PSR-14 ModifyClearCacheActionsEvent
 =========================================================

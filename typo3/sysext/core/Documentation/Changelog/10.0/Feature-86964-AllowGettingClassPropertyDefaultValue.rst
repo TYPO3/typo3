@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86964:
+
 ============================================================
 Feature: #86964 - Allow getting class property default value
 ============================================================

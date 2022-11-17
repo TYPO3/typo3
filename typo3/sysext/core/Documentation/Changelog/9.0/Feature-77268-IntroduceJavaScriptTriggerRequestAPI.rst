@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-77268:
+
 ==========================================================
 Feature: #77268 - Introduce JavaScript trigger request API
 ==========================================================

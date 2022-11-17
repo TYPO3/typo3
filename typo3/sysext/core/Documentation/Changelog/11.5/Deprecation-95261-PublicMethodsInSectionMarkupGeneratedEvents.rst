@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95261:
+
 =====================================================================
 Deprecation: #95261 - Public methods in SectionMarkupGenerated events
 =====================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-88824:
+
 =====================================================
 Important: #88824 - Add cache for error page handling
 =====================================================

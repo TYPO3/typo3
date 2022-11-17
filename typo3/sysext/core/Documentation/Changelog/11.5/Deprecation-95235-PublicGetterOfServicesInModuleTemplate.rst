@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95235:
+
 =================================================================
 Deprecation: #95235 - Public getter of services in ModuleTemplate
 =================================================================

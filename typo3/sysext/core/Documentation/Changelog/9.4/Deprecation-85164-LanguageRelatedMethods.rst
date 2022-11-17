@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85164:
+
 ==============================================
 Deprecation: #85164 - Language related methods
 ==============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88559:
+
 =================================================
 Deprecation: #88559 - $TSFE->sys_language_isocode
 =================================================

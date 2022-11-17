@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87009:
+
 ========================================================================
 Breaking: #87009 - Use multiple translation files by default in EXT:form
 ========================================================================

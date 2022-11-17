@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-80266:
+
 ===========================================================================
 Important: #80266 - Moved config.sys_language_softExclude to compatibility7
 ===========================================================================

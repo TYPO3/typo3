@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-70033:
+
 =====================================================
 Breaking: #70033 - TCA icon options have been removed
 =====================================================

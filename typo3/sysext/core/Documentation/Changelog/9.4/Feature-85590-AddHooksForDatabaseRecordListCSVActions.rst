@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85590:
+
 ==============================================================
 Feature: #85590 - Add hooks for DatabaseRecordList CSV actions
 ==============================================================

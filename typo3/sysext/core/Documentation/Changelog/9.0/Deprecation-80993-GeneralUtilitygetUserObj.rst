@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80993:
+
 ================================================
 Deprecation: #80993 - GeneralUtility::getUserObj
 ================================================

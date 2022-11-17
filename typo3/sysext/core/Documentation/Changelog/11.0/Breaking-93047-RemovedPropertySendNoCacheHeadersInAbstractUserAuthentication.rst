@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93047:
+
 ====================================================================================
 Breaking: #93047 - Removed property sendNoCacheHeaders in AbstractUserAuthentication
 ====================================================================================

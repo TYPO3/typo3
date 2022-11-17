@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92807:
+
 ===================================================================================
 Breaking: #92807 - Removed feature for keeping session data on frontend user logout
 ===================================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72416:
+
 =========================================================
 Breaking: #72416 - Remove EXT:t3skin/stylesheets/sprites/
 =========================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-60123:
+
 ========================================================
 Feature: #60123 - Unit base test case removes test files
 ========================================================

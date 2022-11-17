@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-20446:
+
 ===================================================
 Feature: #20446 - Clear cache entry in context menu
 ===================================================

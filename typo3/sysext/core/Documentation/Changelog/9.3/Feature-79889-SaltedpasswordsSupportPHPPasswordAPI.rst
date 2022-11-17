@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79889:
+
 ===========================================================
 Feature: #79889 - Saltedpasswords supports PHP password API
 ===========================================================

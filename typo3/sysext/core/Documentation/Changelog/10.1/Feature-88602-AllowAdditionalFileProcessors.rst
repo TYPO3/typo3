@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88602:
+
 ==============================================================
 Feature: #88602 - Allow registering additional file processors
 ==============================================================

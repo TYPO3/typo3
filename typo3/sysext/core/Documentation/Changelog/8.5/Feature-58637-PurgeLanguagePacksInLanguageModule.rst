@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-58637:
+
 =========================================================
 Feature: #58637 - Purge language packs in language module
 =========================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66185:
+
 ===================================================
 Feature: #66185 - Allow Svg Files as Extension icon
 ===================================================

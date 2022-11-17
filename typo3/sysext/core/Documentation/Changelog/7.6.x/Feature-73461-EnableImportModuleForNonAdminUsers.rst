@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-73461:
+
 ==========================================================
 Feature: #73461 - Enable import module for non admin users
 ==========================================================

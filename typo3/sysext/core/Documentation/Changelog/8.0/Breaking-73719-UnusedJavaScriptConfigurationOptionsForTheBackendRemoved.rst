@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73719:
+
 ==================================================================================
 Breaking: #73719 - Unused JavaScript configuration options for the Backend removed
 ==================================================================================

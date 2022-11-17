@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84993:
+
 =============================================================
 Deprecation: #84993 - Deprecate some TSconfig related methods
 =============================================================

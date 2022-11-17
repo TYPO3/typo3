@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-74533:
+
 ==================================================================
 Breaking: #74533 - Throw exception if user function does not exist
 ==================================================================

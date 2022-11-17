@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84112:
+
 ===================================================================
 Feature: #84112 - Symfony dependency injection for core and extbase
 ===================================================================

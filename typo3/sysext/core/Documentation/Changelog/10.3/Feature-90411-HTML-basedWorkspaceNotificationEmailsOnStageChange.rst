@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90411:
+
 ==========================================================================
 Feature: #90411 - HTML-based workspace notification emails on stage change
 ==========================================================================

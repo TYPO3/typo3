@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92518:
+
 ===========================================================================
 Feature: #92518 - Download and filename options added to FileDumpController
 ===========================================================================

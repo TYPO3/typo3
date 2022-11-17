@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84196:
+
 =================================================================================
 Deprecation: #84196 - Backend controller actions do not receive prepared response
 =================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94996:
+
 ======================================================================
 Feature: #94996 - Consider all Composer installed extensions as active
 ======================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-71255:
+
 =================================================================================
 Deprecation: #71255 - ExtendedFileUtility::pushErrorMessagesToFlashMessageQueue()
 =================================================================================

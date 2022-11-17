@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92462:
+
 ================================================================================
 Feature: #92462 - Add optional "defaultValues" argument to newRecord ViewHelpers
 ================================================================================

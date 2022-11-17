@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87072:
+
 =========================================================
 Feature: #87072 - Added Configuration Options for Locking
 =========================================================

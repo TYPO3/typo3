@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-91070:
+
 =====================================================================================
 Important: #91070 - SMTP transport option 'transport_smtp_encrypt' changed to boolean
 =====================================================================================

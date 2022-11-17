@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-57632:
+
 =====================================================================
 Feature: #57632 - Include inline language label files with TypoScript
 =====================================================================

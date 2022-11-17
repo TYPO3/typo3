@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72826:
+
 ===================================================================
 Breaking: #72826 - Removed custom charset configuration for locales
 ===================================================================

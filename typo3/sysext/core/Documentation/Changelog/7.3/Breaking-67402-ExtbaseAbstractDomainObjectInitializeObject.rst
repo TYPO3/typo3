@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67402-1668719172:
+
 ================================================================
 Breaking: #67402 - Extbase AbstractDomainObject initializeObject
 ================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61471:
+
 =====================================================
 Breaking: #61471 - EXT:t3skin CSS files moved to less
 =====================================================

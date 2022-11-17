@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84407:
+
 ==================================================================
 Deprecation: #84407 - AJAX request methods in RsaEncryptionEncoder
 ==================================================================

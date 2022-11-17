@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85160:
+
 ================================================================
 Feature: #85160 - Auto create management DB fields from TCA ctrl
 ================================================================

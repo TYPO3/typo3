@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78384:
+
 =========================================================
 Breaking: #78384 - Frontend ignores TCA in ext_tables.php
 =========================================================

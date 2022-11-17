@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84120:
+
 ========================================================
 Feature: #84120 - Absolute URLs for typolink ViewHelpers
 ========================================================

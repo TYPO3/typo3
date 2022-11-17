@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-62855:
+
 ==============================================================================
 Deprecation: #62855 - "XHTML cleaning" functionality moved to legacy extension
 ==============================================================================

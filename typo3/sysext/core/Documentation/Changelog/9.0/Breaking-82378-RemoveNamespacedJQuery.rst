@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82378:
+
 ===========================================
 Breaking: #82378 - Remove namespaced jQuery
 ===========================================

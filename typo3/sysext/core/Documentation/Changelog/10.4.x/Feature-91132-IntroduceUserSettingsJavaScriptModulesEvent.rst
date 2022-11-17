@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91132:
+
 ==================================================================
 Feature: #91132 - Introduce User Settings JavaScript Modules Event
 ==================================================================

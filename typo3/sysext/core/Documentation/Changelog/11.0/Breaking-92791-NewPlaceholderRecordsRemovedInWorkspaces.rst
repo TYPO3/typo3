@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92791:
+
 ==================================================================
 Breaking: #92791 - "New Placeholder" records removed in Workspaces
 ==================================================================

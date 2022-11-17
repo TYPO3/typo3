@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-61725:
+
 =========================================================================
 Feature: #61725 - Hook for BackendUtility::countVersionsOfRecordsOnPage()
 =========================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-77592:
+
 =============================================================
 Breaking: #77592 - Dropped TCA option showIfRTE in type=check
 =============================================================

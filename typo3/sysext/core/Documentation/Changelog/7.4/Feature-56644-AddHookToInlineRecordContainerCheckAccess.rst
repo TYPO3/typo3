@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-56644:
+
 ===============================================================
 Feature: #56644 - Hook for InlineRecordContainer::checkAccess()
 ===============================================================

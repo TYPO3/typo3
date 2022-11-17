@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83461:
+
 ============================================================
 Feature: #83461 - Show fieldname next to title in debug mode
 ============================================================

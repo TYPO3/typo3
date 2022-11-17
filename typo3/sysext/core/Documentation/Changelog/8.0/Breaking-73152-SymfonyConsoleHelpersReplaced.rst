@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73152:
+
 ===================================================
 Breaking: #73152 - Symfony console helpers replaced
 ===================================================

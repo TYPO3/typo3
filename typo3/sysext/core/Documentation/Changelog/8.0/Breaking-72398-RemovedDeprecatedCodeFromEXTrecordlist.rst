@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72398:
+
 ==============================================================
 Breaking: #72398 - Removed deprecated code from EXT:recordlist
 ==============================================================

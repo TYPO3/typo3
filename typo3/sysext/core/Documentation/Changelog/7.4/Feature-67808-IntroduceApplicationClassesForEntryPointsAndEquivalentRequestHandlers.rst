@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67808:
+
 ===============================================================================================
 Feature: #67808 - Introduce Application classes for entry points and equivalent RequestHandlers
 ===============================================================================================

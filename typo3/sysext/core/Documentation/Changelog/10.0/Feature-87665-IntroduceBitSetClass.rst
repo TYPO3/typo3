@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87665:
+
 ========================================
 Feature: #87665 - Introduce BitSet class
 ========================================

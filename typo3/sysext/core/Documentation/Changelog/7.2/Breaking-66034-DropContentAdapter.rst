@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66034:
+
 =======================================
 Breaking: #66034 - Drop Content Adapter
 =======================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82110:
+
 ===================================================================================
 Deprecation: #82110 - Deprecate option "value" and "noscript" in SVG content object
 ===================================================================================

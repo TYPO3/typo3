@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-68081:
+
 ==========================================
 Breaking: #68081 - Ext:openid moved to TER
 ==========================================

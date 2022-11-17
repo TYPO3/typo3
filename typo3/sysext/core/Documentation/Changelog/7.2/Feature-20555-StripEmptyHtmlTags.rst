@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-20555:
+
 =====================================================
 Feature: #20555 - Strip empty HTML tags in HtmlParser
 =====================================================

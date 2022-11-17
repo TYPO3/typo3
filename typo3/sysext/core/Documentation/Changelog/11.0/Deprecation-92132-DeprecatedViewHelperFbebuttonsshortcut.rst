@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92132:
+
 ======================================================
 Deprecation: #92132 - ViewHelper f:be.buttons.shortcut
 ======================================================

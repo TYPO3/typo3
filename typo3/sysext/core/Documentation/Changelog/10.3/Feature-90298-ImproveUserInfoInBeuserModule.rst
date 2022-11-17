@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90298:
+
 =====================================================
 Feature: #90298 - Improve user info in BE User module
 =====================================================

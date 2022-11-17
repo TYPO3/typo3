@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-87200-1668719172:
+
 ======================================================
 Deprecation: #87200 - EmailFinisher FORMAT_* constants
 ======================================================

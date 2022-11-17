@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69227:
+
 ============================================================
 Breaking: #69227 - Strings for like are not properly escaped
 ============================================================

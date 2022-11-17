@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67737:
+
 ==================================================
 Deprecation: #67737 - TCA: Drop additional palette
 ==================================================

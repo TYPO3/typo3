@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75355:
+
 ===================================================
 Breaking: #75355 - FlexForm-related options removed
 ===================================================

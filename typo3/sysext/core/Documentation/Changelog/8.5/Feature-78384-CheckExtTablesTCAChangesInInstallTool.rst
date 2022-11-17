@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78384:
+
 ==============================================================
 Feature: #78384 - Check ext tables TCA changes in install tool
 ==============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95322:
+
 ==================================================
 Deprecation: #95322 - Legacy Element Browser logic
 ==================================================

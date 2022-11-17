@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94137:
+
 ================================================================================
 Deprecation: #94137 - Switch behavior of ArrayUtility::arrayDiffAssocRecursive()
 ================================================================================

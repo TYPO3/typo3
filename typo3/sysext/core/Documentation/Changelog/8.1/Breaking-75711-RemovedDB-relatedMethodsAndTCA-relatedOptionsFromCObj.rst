@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75711:
+
 ===============================================================================
 Breaking: #75711 - Removed DB-related methods and TCA-related options from cObj
 ===============================================================================

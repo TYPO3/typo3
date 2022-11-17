@@ -1,6 +1,8 @@
 .. include:: /Includes.rst.txt
 .. highlight:: yaml
 
+.. _feature-86365:
+
 ===============================================
 Feature: #86365 - Routing Enhancers and Aspects
 ===============================================

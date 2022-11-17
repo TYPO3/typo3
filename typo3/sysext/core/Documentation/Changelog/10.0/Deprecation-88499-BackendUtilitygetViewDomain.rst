@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88499:
+
 ===================================================
 Deprecation: #88499 - BackendUtility::getViewDomain
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90203:
+
 ===================================================================
 Feature: #90203 - Make workspace available in TypoScript conditions
 ===================================================================

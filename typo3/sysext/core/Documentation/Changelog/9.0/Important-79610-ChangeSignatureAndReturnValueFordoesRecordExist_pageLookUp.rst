@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-79610:
+
 ====================================================================================
 Important: #79610 - Change Signature And Return Value For doesRecordExist_pageLookUp
 ====================================================================================

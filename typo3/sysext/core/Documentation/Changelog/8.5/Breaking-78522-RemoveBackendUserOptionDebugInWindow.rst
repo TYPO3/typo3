@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78522:
+
 ============================================================
 Breaking: #78522 - Removed backend user option debugInWindow
 ============================================================

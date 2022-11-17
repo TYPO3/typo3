@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-64388:
+
 ===============================================================================
 Deprecation: #64388 - Direct ContentObject methods within ContentObjectRenderer
 ===============================================================================

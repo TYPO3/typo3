@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86066:
+
 ============================================================
 Feature: #86066 - CLI Commands for listing and showing sites
 ============================================================

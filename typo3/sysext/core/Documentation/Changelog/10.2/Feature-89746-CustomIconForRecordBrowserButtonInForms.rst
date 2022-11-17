@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89746:
+
 ================================================================
 Feature: #89746 - Custom icon for record browser button in forms
 ================================================================

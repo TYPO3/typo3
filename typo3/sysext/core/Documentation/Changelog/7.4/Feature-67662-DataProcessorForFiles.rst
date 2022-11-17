@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67662:
+
 =========================================
 Feature: #67662 - DataProcessor for files
 =========================================

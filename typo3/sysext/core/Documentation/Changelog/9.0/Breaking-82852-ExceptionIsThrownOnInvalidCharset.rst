@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82852:
+
 =========================================================
 Breaking: #82852 - Exception is thrown on invalid charset
 =========================================================

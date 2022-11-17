@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78410:
+
 ===============================================================================
 Deprecation: #78410 - Deprecate popover member instance in TYPO3 global object.
 ===============================================================================

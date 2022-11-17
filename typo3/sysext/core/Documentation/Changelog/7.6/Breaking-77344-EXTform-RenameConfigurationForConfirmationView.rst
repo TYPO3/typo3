@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77344:
+
 ========================================================================
 Breaking: #77344 - EXT:form - Rename configuration for confirmation view
 ========================================================================

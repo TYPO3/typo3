@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87776:
+
 ==============================================================
 Feature: #87776 - Limit Restriction to table/s in QueryBuilder
 ==============================================================

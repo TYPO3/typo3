@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85977:
+
 ========================================================================================
 Deprecation: #85977 - Extbase CLI functionality, Command Controllers and @cli Annotation
 ========================================================================================

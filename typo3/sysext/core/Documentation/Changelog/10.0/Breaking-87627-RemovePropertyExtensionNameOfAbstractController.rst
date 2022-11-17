@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87627:
+
 ======================================================================
 Breaking: #87627 - Remove Property extensionName of AbstractController
 ======================================================================

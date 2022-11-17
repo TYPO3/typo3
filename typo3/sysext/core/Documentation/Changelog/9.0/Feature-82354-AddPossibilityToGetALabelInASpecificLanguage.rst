@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82354:
+
 =======================================================================
 Feature: #82354 - Add possibility to get a label in a specific language
 =======================================================================

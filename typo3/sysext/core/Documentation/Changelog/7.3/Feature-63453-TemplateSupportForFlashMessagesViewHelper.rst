@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-63453:
+
 ==============================================================
 Feature: #63453 - Template support for FlashMessagesViewHelper
 ==============================================================

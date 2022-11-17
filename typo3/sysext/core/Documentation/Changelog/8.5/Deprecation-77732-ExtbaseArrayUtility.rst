@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-77732:
+
 =================================================================
 Deprecation: #77732 - Deprecate methods of Extbase's ArrayUtility
 =================================================================

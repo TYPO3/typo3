@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92628:
+
 =================================================
 Deprecation: #92628 - Login Logo without Alt-Text
 =================================================

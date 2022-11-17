@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-19494:
+
 ================================================================
 Feature: #19494 - Add SELECTmmQuery method to DatabaseConnection
 ================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84780:
+
 ==============================================================
 Feature: #84780 - Remove entries in localStorage by key prefix
 ==============================================================

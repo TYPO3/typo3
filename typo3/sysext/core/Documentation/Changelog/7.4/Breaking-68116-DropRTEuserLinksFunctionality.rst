@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-68116:
+
 ===================================================
 Breaking: #68116 - Drop RTE.userLinks functionality
 ===================================================

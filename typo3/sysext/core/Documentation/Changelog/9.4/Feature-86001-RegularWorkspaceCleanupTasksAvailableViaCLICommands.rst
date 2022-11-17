@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86001:
+
 ============================================================================
 Feature: #86001 - Regular Workspace cleanup tasks available via CLI commands
 ============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84341:
+
 =============================================================================
 Deprecation: #84341 - Protected methods and properties in NewRecordController
 =============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88638:
+
 =============================================================
 Breaking: #88638 - Streamlined SoftRefParser reference lookup
 =============================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-44127:
+
 =====================================================
 Feature: #44127 - Introduced two new Hooks for OpenID
 =====================================================

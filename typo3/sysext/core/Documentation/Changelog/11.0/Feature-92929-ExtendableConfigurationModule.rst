@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92929:
+
 =================================================
 Feature: #92929 - Extendable configuration module
 =================================================

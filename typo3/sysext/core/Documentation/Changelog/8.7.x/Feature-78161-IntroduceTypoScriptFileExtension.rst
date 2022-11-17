@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78161:
+
 ======================================================
 Feature: #78161 - Introduce .typoscript file extension
 ======================================================

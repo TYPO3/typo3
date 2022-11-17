@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-81568:
+
 ===============================================
 Important: #81568 - Migrate cHash configuration
 ===============================================

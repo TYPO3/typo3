@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-76748:
+
 ==================================================================
 Feature: #76748 - Configure the availability of the elementbrowser
 ==================================================================

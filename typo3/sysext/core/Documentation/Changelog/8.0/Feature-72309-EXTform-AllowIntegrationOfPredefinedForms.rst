@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-72309:
+
 ============================================================
 Feature: #72309 - EXT:form - Integration of Predefined Forms
 ============================================================

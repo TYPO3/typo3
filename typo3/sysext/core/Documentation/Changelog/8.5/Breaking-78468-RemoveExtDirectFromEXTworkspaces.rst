@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78468:
+
 =======================================================
 Breaking: #78468 - Remove ExtDirect from EXT:workspaces
 =======================================================

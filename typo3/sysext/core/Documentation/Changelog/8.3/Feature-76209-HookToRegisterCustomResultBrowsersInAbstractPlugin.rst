@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-76209:
+
 ===========================================================================
 Feature: #76209 - Hook to register custom result browsers in AbstractPlugin
 ===========================================================================

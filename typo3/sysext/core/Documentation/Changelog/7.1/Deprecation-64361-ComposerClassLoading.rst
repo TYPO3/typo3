@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-64361:
+
 ============================================
 Deprecation: #64361 - Composer Class Loading
 ============================================

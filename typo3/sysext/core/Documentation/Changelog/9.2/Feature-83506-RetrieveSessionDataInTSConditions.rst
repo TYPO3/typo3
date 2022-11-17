@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83506:
+
 ========================================================
 Feature: #83506 - Retrieve session data in TS conditions
 ========================================================

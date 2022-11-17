@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84184:
+
 ====================================================
 Feature: #84184 - Show columns selection in filelist
 ====================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84463:
+
 =========================================================================
 Deprecation: #84463 - PageTsConfig option mod.web_list.newWizards dropped
 =========================================================================

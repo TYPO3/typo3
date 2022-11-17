@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79445:
+
 ======================================
 Feature: #79445 - Add Multistep Wizard
 ======================================

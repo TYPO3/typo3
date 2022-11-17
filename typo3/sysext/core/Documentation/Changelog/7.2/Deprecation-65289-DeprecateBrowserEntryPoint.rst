@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65289:
+
 ===================================================
 Deprecation: #65289 - Deprecate browser entry point
 ===================================================

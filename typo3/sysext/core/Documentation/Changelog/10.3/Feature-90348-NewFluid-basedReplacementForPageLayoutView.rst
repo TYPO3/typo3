@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90348:
+
 ============================================================
 Feature: #90348 - Fluid-based replacement for PageLayoutView
 ============================================================

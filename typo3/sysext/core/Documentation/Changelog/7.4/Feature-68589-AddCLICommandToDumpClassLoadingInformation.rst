@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68589:
+
 ===================================================================
 Feature: #68589 - Add CLI command to dump class loading information
 ===================================================================

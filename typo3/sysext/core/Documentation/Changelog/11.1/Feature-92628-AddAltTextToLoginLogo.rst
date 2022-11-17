@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92628:
+
 ============================================
 Feature: #92628 - Add Alt-Text To Login Logo
 ============================================

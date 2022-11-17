@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-7098:
+
 =========================================================
 Feature: #7098 - Severity-filtering for FlashMessageQueue
 =========================================================

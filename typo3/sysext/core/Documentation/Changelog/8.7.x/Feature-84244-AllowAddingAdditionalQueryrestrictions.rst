@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84244:
+
 ============================================================
 Feature: #84244 - Allow adding additional query restrictions
 ============================================================

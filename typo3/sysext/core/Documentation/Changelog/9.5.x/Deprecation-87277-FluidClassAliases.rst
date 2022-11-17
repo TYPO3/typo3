@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-87277:
+
 =========================================
 Deprecation: #87277 - Fluid Class Aliases
 =========================================

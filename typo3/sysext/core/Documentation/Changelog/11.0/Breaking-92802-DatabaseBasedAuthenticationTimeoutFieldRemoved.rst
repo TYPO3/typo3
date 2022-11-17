@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92802:
+
 ===========================================================================
 Breaking: #92802 - User-database-based authentication timeout field removed
 ===========================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62859:
+
 =========================================================
 Breaking: #62859 - Removal of doc:link.action view helper
 =========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88276:
+
 ======================================================
 Feature: #88276 - TypoScript Condition for page layout
 ======================================================

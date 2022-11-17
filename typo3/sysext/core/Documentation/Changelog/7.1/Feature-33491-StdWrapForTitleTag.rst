@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-33491:
+
 ==========================================================
 Feature: #33491 - Add stdWrap functionality to <title> tag
 ==========================================================

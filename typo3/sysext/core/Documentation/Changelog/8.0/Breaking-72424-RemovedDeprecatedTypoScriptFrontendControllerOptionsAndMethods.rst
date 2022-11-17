@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72424:
+
 ======================================================================================
 Breaking: #72424 - Removed deprecated TypoScriptFrontendController options and methods
 ======================================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67875:
+
 ===================================================
 Feature: #67875 - Override CategoryRegistry entries
 ===================================================

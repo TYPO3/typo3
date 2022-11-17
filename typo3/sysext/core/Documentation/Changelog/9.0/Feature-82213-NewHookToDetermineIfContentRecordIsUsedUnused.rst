@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82213:
+
 ========================================================================
 Feature: #82213 - New hook to determine if content record is used/unused
 ========================================================================

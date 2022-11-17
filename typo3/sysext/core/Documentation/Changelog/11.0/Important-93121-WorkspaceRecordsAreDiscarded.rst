@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-93121:
+
 ===================================================
 Important: #93121 - Workspace records are discarded
 ===================================================

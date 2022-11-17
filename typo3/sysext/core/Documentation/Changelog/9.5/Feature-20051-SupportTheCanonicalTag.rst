@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-20051:
+
 =============================================
 Feature: #20051 - Support the "canonical" tag
 =============================================

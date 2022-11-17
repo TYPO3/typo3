@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93668:
+
 =========================================================
 Feature: #93668 - Possibility to configure Symfony mailer
 =========================================================

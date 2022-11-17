@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66997:
+
 =============================================================
 Breaking: #66997 - Remove super-/challenged password security
 =============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89603:
+
 =======================================================
 Feature: #89603 - Introduce native pagination for lists
 =======================================================

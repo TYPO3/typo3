@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84045:
+
 ===========================================
 Feature: #84045 - new AdminPanel module API
 ===========================================

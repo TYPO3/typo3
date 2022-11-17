@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92837:
+
 =================================================================
 Breaking: #92837 - Removed setting mod.web_layout.disableAdvanced
 =================================================================

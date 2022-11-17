@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88741:
+
 ==============================================================
 Breaking: #88741 - cHash calculation in indexed search removed
 ==============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79387:
+
 ==================================================================
 Feature: #79387 - Add signal to exclude tables from ReferenceIndex
 ==================================================================

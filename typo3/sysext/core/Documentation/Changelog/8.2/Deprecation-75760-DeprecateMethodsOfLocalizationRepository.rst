@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-75760:
+
 =================================================================
 Deprecation: #75760 - Deprecate methods of LocalizationRepository
 =================================================================

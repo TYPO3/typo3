@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90625:
+
 ===================================================
 Deprecation: #90625 - Extbase SignalSlot Dispatcher
 ===================================================

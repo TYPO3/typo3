@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-65778:
+
 ===================================================================================
 Breaking: #65778 - MediaWizard functionality is moved to system extension "mediace"
 ===================================================================================

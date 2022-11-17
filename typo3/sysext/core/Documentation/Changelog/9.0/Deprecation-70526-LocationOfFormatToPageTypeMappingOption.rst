@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-70526:
+
 ================================================================
 Deprecation: #70526 - Location of formatToPageTypeMapping option
 ================================================================

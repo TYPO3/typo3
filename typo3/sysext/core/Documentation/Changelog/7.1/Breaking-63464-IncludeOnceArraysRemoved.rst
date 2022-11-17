@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63464:
+
 ========================================================================
 Breaking: #63464 - Remove include_once inclusions inside ModuleFunctions
 ========================================================================

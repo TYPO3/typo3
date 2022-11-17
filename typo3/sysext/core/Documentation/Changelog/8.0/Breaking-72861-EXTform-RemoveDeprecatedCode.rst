@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72861:
+
 ====================================================
 Breaking: #72861 - EXT:form - Remove deprecated code
 ====================================================

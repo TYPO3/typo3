@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91563:
+
 =====================================================================
 Breaking: #91563 - PHP-based JS + CSS inclusions for Frontend removed
 =====================================================================

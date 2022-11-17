@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89978:
+
 =================================================================================
 Feature: #89978 - Introduce Status Report for insecure exception handler settings
 =================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-80050:
+
 ==========================================================================
 Breaking: #80050 - Remove option cHashIncludePageId from cHash calculation
 ==========================================================================

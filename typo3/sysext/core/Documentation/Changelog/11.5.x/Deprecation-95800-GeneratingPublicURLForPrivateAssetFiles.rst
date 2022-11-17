@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95800:
+
 =============================================================================
 Deprecation: #95800 - Deprecate generating public URL for private asset files
 =============================================================================

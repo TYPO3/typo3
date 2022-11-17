@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90026:
+
 =====================================================================
 Feature: #90026 - Expose internal typoLinkParts in TypolinkViewHelper
 =====================================================================

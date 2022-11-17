@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78169:
+
 =====================================================================
 Feature: #78169 - Introduce "Translation Source" field for tt_content
 =====================================================================

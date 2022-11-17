@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94406:
+
 =====================================================================
 Feature: #94406 - Override fileFolder TCA configuration with TSconfig
 =====================================================================

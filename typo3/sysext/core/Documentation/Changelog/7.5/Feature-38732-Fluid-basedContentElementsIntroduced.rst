@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-38732:
+
 =========================================================
 Feature: #38732 - Fluid-based Content Elements Introduced
 =========================================================

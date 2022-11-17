@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-18586:
+
 =====================================================================
 Feature: #18586 - Configurable width & height for editpanel in feedit
 =====================================================================

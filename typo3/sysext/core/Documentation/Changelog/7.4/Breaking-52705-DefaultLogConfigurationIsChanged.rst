@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-52705:
+
 =======================================================
 Breaking: #52705 - Default log configuration is changed
 =======================================================

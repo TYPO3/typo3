@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79270:
+
 =======================================================================
 Breaking: #79270 - Removed RTE processing option disableUnifyLineBreaks
 =======================================================================

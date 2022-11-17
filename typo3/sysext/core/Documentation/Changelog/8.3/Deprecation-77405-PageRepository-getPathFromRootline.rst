@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-77405:
+
 =========================================================
 Deprecation: #77405 - PageRepository->getPathFromRootline
 =========================================================

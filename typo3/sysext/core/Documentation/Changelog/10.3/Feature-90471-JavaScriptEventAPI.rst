@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90471:
+
 ======================================
 Feature: #90471 - JavaScript Event API
 ======================================

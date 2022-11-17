@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-61489:
+
 ================================================================
 Feature: #61489 - Allow own TypoScript Condition implementations
 ================================================================

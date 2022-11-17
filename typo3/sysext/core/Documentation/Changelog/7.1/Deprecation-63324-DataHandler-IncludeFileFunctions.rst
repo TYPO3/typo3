@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-62864-1668719172:
+
 ===================================================================
 Deprecation: #62864 - DataHandler->include_filefunctions deprecated
 ===================================================================

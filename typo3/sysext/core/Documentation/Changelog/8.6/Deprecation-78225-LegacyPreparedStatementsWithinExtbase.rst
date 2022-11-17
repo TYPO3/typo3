@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78225:
+
 ==============================================================
 Deprecation: #78225 - Legacy PreparedStatements within Extbase
 ==============================================================

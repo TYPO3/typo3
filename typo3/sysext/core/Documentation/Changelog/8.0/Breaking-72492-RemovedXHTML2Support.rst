@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72492:
+
 =========================================
 Breaking: #72492 - Removed XHTML2 support
 =========================================

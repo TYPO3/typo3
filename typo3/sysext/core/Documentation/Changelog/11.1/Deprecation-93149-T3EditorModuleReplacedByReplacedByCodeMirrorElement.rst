@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-93149:
+
 ==============================================================================
 Deprecation: #93149 - T3Editor JavaScript module replaced by CodeMirrorElement
 ==============================================================================

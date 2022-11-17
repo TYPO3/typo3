@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87200:
+
 ================================================================
 Feature: #87200 - Send plaintext and HTML mails in EmailFinisher
 ================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92132-1668719172:
+
 ======================================
 Deprecation: #92132 - Shortcut PHP API
 ======================================

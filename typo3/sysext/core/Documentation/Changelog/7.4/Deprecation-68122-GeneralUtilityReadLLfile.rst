@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-68122:
+
 ==========================================================
 Deprecation: #68122 - Deprecate GeneralUtility::readLLfile
 ==========================================================

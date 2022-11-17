@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-73176:
+
 =======================================================================
 Feature: #73176 - Filterable Trees in Record Selectors and Link Pickers
 =======================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84581:
+
 =========================================
 Feature: #84581 - Introduce Site Handling
 =========================================

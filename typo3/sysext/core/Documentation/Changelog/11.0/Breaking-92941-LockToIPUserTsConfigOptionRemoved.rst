@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92941:
+
 =========================================================
 Breaking: #92941 - "lockToIP" UserTsConfig option removed
 =========================================================

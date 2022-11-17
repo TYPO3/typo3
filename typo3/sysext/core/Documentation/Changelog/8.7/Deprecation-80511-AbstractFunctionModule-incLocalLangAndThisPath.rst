@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80511:
+
 ========================================================================
 Deprecation: #80511 - AbstractFunctionModule->incLocalLang and $thisPath
 ========================================================================

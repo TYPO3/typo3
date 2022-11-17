@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89127:
+
 ====================================================
 Deprecation: #89127 - Cleanup RecordHistory handling
 ====================================================

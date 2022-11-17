@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81363:
+
 =======================================================================
 Feature: #81363 - EXT:form - support form element translation arguments
 =======================================================================

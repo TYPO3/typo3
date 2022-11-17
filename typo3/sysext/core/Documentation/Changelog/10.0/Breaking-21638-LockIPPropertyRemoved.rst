@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-21638:
+
 ======================================================================
 Breaking: #21638 - AbstractUserAuthentication::lockIP property removed
 ======================================================================

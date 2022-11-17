@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-65939:
+
 ============================================
 Breaking: #65939 - Backend Login Refactoring
 ============================================

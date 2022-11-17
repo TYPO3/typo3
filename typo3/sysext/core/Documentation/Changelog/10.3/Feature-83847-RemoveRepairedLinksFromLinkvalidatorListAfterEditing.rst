@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83847:
+
 =============================================================================
 Feature: #83847 - Remove repaired links from Linkvalidator list after editing
 =============================================================================

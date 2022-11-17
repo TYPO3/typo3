@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89650:
+
 =======================================================
 Feature: #89650 - Allow line breaks in TCA descriptions
 =======================================================

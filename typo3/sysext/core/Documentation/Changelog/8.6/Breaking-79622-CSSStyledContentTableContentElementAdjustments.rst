@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79622-1668719233:
+
 =======================================================================
 Breaking: #79622 - CSS Styled Content table content element adjustments
 =======================================================================

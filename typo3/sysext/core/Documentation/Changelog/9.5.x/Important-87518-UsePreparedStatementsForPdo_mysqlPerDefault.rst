@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-87518:
+
 =====================================================================
 Important: #87518 - Use prepared statements for pdo_mysql per default
 =====================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-77900:
+
 ===================================================
 Feature: #77900 - Introduce TypeScript for the core
 ===================================================

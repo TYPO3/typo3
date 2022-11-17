@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82609:
+
 =============================================
 Deprecation: #82609 - Deprecate TYPO3.Utility
 =============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89143:
+
 ====================================================================
 Feature: #89143 - Allow rollback for a set of record history entries
 ====================================================================

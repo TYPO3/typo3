@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-80628:
+
 ====================================================
 Breaking: #80628 - Extension rtehmlarea moved to TER
 ====================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-67243:
+
 ============================================================
 Feature: #67243 - Implement folding of scheduler task groups
 ============================================================

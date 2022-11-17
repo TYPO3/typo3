@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91606:
+
 =============================================================
 Breaking: #91606 - Date/time operations in FormEngine removed
 =============================================================

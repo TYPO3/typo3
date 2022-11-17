@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94143:
+
 ====================================================
 Feature: #94143 - Display creation date of redirects
 ====================================================

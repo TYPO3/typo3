@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82426:
+
 ==============================================
 Breaking: #82426 - ExtJS and ExtDirect removal
 ==============================================

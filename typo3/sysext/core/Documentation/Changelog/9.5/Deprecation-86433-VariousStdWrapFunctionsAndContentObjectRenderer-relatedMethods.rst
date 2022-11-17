@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86433:
+
 =========================================================================================
 Deprecation: #86433 - Various stdWrap functions and ContentObjectRenderer-related methods
 =========================================================================================

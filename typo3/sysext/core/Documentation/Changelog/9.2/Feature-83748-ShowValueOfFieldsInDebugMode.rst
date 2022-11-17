@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83748:
+
 ====================================================
 Feature: #83748 - Show value of fields in debug mode
 ====================================================

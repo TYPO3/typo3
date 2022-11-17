@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84409:
+
 ====================================================================================
 Deprecation: #84409 - ImageManipulationWizard renamed to ImageManipulationController
 ====================================================================================

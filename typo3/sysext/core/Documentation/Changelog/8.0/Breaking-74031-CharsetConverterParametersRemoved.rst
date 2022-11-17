@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-74031:
+
 ======================================================
 Breaking: #74031 - CharsetConverter parameters removed
 ======================================================

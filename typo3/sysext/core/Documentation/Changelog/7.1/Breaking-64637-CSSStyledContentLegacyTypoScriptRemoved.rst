@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64637:
+
 ================================================================================
 Breaking: #64637 - Compatibility CSS Styled Content TypoScript templates removed
 ================================================================================

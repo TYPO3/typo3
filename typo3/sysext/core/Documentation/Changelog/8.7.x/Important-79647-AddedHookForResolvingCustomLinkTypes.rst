@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-79647:
+
 ==============================================================
 Important: #79647 - Added Hook for resolving custom link types
 ==============================================================

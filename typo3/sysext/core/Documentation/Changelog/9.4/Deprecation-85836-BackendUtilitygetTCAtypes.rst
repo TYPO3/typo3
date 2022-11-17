@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85836:
+
 =================================================
 Deprecation: #85836 - BackendUtility::getTCAtypes
 =================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86047:
+
 =====================================================================
 Deprecation: #86047 - TSFE properties / methods and change visibility
 =====================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85833:
+
 ==========================================================================
 Deprecation: #85833 - Extension saltedpasswords merged into core extension
 ==========================================================================

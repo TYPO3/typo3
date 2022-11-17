@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93081:
+
 ==========================================================================
 Breaking: #93081 - Removed fetching translation file mirror from typo3.org
 ==========================================================================

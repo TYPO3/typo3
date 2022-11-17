@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86918:
+
 =======================================================================================
 Feature: #86918 - Add additional configuration for external link types in Linkvalidator
 =======================================================================================

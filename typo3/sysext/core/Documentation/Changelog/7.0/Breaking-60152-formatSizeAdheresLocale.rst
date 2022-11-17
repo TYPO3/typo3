@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60152:
+
 =================================================================
 Breaking: #60152 - GeneralUtility::formatSize is now locale aware
 =================================================================

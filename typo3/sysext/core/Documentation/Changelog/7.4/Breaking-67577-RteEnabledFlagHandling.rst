@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67577:
+
 ================================================
 Breaking: #67577 - rte_enabled and flag handling
 ================================================

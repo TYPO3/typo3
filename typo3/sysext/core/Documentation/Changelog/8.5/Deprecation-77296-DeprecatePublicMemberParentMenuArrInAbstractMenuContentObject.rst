@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-77296:
+
 ========================================================================================
 Deprecation: #77296 - Deprecate public member parentMenuArr in AbstractMenuContentObject
 ========================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87623:
+
 ==============================================================================
 Breaking: #87623 - Replace config.persistence.classes typoscript configuration
 ==============================================================================

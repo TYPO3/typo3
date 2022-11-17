@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69795:
+
 ==================================================
 Breaking: #69795 - Unused DTM Tabmenu code removed
 ==================================================

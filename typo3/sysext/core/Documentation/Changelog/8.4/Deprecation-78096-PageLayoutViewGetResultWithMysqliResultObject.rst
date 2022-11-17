@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78096:
+
 =====================================================================================
 Deprecation: #78096 - Deprecated PageLayoutView::getResult with mysqli_result objects
 =====================================================================================

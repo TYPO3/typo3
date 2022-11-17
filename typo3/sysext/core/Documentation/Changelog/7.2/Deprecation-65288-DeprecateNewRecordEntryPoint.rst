@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65288:
+
 ========================================================
 Deprecation: #65288 - Deprecate "new record" entry point
 ========================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68197:
+
 ============================================================
 Feature: #68197 - Show a dialog for existing files on upload
 ============================================================

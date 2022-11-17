@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-45535:
+
 ============================================
 Feature: #45535 - Sorting for scheduler-list
 ============================================

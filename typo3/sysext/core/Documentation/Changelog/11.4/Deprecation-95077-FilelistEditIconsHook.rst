@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95077-1668719172:
+
 ============================================
 Deprecation: #95077 - Filelist editIconsHook
 ============================================

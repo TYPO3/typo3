@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86422:
+
 ==================================================
 Feature: #86422 - TypoScript getText property site
 ==================================================

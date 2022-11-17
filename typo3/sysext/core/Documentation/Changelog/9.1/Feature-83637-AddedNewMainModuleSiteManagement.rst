@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83637:
+
 =========================================================
 Feature: #83637 - Added new main module "Site Management"
 =========================================================

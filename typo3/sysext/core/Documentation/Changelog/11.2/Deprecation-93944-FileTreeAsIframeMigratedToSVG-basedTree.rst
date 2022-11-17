@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-93944:
+
 ====================================================================
 Deprecation: #93944 - File Tree as iframe migrated to SVG-based tree
 ====================================================================

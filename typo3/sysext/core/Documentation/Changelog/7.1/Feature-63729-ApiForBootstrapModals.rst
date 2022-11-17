@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-63729:
+
 ==================================================
 Feature: #63729 - API for Twitter Bootstrap modals
 ==================================================

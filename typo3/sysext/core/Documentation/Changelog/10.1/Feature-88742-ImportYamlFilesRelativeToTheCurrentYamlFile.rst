@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88742:
+
 =====================================================================
 Feature: #88742 - Import Yaml files relative to the current yaml file
 =====================================================================

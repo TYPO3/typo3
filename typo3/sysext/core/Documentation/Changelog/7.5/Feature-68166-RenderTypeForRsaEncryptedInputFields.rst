@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67932:
+
 ===========================================================
 Feature: #67932 - RenderType for rsa encrypted input fields
 ===========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82902:
+
 ================================================================
 Deprecation: #82902 - Custom Backend Module registration methods
 ================================================================

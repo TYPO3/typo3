@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-71095:
+
 ================================================================
 Important: #71095 - Add language debug mode to All Configuration
 ================================================================

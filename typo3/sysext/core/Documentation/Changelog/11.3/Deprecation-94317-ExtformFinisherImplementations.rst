@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94317:
+
 =======================================================
 Deprecation: #94317 - ext:form Finisher implementations
 =======================================================

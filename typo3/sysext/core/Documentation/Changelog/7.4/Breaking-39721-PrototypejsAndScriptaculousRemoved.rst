@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-39721:
+
 =========================================================
 Breaking: #39721 - Prototype.js and Scriptaculous removed
 =========================================================

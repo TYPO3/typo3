@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-69274:
+
 ====================================================================
 Feature: #69274 - Preserve image rotation if orient is saved in exif
 ====================================================================

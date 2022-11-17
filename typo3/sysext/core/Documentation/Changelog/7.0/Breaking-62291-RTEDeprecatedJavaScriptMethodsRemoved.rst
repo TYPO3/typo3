@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62291-1668719172:
+
 ============================================================
 Breaking: #62291 - RTE Deprecated JavaScript methods removed
 ============================================================

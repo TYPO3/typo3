@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90348:
+
 ==========================================
 Deprecation: #90348 - PageLayoutView class
 ==========================================

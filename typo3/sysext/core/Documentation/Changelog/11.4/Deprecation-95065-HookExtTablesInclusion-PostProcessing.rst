@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95065:
+
 ============================================================
 Deprecation: #95065 - Hook extTablesInclusion-PostProcessing
 ============================================================

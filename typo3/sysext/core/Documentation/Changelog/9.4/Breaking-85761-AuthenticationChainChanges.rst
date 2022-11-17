@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-85761:
+
 ===============================================
 Breaking: #85761 - Authentication chain changes
 ===============================================

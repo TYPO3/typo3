@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-65996:
+
 ===================================================================================
 Feature: #65996 - Show confirm message on closing an edit form with unsaved changes
 ===================================================================================

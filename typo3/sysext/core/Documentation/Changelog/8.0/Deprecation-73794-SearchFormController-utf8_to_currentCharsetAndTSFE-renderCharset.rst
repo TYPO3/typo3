@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73794:
+
 ==========================================================================================
 Deprecation: #73794 - SearchFormController->utf8_to_currentCharset and TSFE->renderCharset
 ==========================================================================================

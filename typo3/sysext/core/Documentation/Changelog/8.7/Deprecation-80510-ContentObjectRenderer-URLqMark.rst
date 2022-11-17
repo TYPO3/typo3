@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80510:
+
 =====================================================
 Deprecation: #80510 - ContentObjectRenderer->URLqMark
 =====================================================

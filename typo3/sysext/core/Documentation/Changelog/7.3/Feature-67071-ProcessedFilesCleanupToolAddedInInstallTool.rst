@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67071:
+
 ====================================================================
 Feature: #67071 - Processed files cleanup tool added in Install Tool
 ====================================================================

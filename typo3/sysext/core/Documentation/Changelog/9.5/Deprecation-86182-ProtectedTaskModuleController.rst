@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86182:
+
 ====================================================
 Deprecation: #86182 - Protected TaskModuleController
 ====================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88799:
+
 ==========================================================
 Breaking: #88799 - Introduced PSR-3 compatible Logging API
 ==========================================================

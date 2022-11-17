@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86192:
+
 ===================================================================
 Deprecation: #86192 - Protected methods in ElementBrowserController
 ===================================================================

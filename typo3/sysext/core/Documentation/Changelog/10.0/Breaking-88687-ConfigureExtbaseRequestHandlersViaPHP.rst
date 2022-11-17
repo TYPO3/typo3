@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88687:
+
 =============================================================
 Breaking: #88687 - Configure extbase request handlers via PHP
 =============================================================

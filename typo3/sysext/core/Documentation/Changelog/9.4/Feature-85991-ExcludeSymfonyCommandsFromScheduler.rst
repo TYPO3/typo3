@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85991:
+
 =========================================================
 Feature: #85991 - Exclude Symfony Commands from Scheduler
 =========================================================

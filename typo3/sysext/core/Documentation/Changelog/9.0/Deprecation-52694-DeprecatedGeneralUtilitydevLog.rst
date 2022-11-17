@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-52694:
+
 =========================================================
 Deprecation: #52694 - Deprecated GeneralUtility::devLog()
 =========================================================

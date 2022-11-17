@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-68010:
+
 ================================================================================
 Breaking: #68010 - T3Editor - Plugin registration for codecompletion has changed
 ================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92118:
+
 =====================================================
 Breaking: #92118 - TCA ctrl thumbnail setting dropped
 =====================================================

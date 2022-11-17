@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-74109:
+
 ========================================================================
 Feature: #74109 - Set the alternative Backend Logo via Extension Manager
 ========================================================================

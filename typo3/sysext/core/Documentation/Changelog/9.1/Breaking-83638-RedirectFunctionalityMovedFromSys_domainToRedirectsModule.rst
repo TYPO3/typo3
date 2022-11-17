@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83638:
+
 ===================================================================================
 Breaking: #83638 - Redirect functionality moved from sys_domain to redirects module
 ===================================================================================

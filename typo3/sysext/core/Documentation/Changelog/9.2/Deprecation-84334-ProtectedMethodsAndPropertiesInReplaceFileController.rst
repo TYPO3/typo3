@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84334:
+
 ===============================================================================
 Deprecation: #84334 - Protected methods and properties in ReplaceFileController
 ===============================================================================

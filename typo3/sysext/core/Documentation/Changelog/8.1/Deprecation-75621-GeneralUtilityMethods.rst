@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-75621:
+
 ============================================
 Deprecation: #75621 - GeneralUtility methods
 ============================================

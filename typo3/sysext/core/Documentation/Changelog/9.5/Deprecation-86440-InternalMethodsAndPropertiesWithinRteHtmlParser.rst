@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86440:
+
 ==========================================================================
 Deprecation: #86440 - Internal Methods and properties within RteHtmlParser
 ==========================================================================

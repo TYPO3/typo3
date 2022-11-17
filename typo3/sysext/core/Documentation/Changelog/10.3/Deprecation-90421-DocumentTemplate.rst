@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90421:
+
 ======================================
 Deprecation: #90421 - DocumentTemplate
 ======================================

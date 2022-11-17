@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-59659:
+
 ===============================================================
 Breaking: #59659 - Removal of deprecated code in sysext backend
 ===============================================================

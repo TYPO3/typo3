@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76285:
+
 =================================================================
 Breaking: #76285 - Popup configuration is moved to TYPO3.settings
 =================================================================

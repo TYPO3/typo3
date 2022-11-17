@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67288:
+
 ==========================================================================
 Deprecation: #67288 - Deprecate Dbal\DatabaseConnection::MetaType() method
 ==========================================================================

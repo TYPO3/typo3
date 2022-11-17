@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93083:
+
 ========================================================
 Breaking: #93083 - class.ext_update.php handling removed
 ========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95367:
+
 =================================================
 Deprecation: #95367 - GeneralUtility::isAbsPath()
 =================================================

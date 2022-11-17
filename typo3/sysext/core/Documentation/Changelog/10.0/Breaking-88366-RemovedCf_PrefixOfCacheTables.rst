@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88366:
+
 =================================================
 Breaking: #88366 - Removed prefix of cache tables
 =================================================

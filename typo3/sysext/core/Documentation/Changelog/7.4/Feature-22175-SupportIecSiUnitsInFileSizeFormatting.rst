@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-22175:
+
 ==============================================================
 Feature: #22175 - Support IEC/SI units in file size formatting
 ==============================================================

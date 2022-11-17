@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86389:
+
 ==============================================================================
 Deprecation: #86389 - GeneralUtility::_GETset() and TSFE->mergingWithGetVars()
 ==============================================================================

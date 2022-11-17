@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82162:
+
 =================================================
 Breaking: #82162 - Global error constants removed
 =================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78581-1668719184:
+
 ==========================================================
 Breaking: #78581 - FlexFormTools public properties dropped
 ==========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94390:
+
 ==================================================================================
 Feature: #94390 - Dropdown for record list and file list in favor of Extended View
 ==================================================================================

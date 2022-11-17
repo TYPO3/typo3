@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-71251:
+
 ================================================================
 Feature: #71251 - Add FlashMessage support in ModuleTemplate API
 ================================================================

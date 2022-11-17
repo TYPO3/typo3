@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72464:
+
 ==============================================================
 Breaking: #72464 - Removed deprecated code from EXT:workspaces
 ==============================================================

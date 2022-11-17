@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-65584:
+
 ====================================
 Feature: #65584 - Add image cropping
 ====================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66754:
+
 ========================================================
 Breaking: #66754 - Remove RenderingContextAwareInterface
 ========================================================

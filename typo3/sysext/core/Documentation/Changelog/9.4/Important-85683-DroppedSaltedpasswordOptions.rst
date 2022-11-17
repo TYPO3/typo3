@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-85683:
+
 ====================================================
 Important: #85683 - Dropped salted passwords options
 ====================================================

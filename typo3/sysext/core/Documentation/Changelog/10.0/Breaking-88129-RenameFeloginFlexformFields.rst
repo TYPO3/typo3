@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88129:
+
 ==================================================
 Breaking: #88129 - Renamed felogin flexform fields
 ==================================================

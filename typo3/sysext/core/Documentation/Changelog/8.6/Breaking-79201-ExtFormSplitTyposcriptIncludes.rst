@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79201:
+
 ======================================================
 Breaking: #79201 - EXT:form: Split TypoScript Includes
 ======================================================

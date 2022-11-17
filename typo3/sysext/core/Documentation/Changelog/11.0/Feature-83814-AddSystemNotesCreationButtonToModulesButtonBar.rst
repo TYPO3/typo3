@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83814:
+
 ========================================================================
 Feature: #83814 - Add system notes creation button to modules button bar
 ========================================================================

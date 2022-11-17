@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64714:
+
 =============================================================
 Breaking: #64714 - Catch exceptions for inaccessible storages
 =============================================================

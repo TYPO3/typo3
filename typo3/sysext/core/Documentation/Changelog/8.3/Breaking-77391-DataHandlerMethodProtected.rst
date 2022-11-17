@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77391:
+
 ===============================================
 Breaking: #77391 - DataHandler method protected
 ===============================================

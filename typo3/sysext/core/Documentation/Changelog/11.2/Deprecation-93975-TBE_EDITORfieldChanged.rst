@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-93975:
+
 ===============================================
 Deprecation: #93975 - TBE_EDITOR.fieldChanged()
 ===============================================

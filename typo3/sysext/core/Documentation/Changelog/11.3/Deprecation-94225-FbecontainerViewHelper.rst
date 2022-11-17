@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94225:
+
 ===============================================
 Deprecation: #94225 - f:be.container ViewHelper
 ===============================================

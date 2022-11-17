@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-22858:
+
 ========================================================================================
 Important: #22858 - Filelist: Creating a new file and opening it immediately for editing
 ========================================================================================

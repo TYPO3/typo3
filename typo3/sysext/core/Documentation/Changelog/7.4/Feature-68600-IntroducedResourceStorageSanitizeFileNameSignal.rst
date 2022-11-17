@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68600:
+
 ====================================================================
 Feature: #68600 - Introduced ResourceStorage SanitizeFileName signal
 ====================================================================

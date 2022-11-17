@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90333:
+
 ===========================
 Feature: #90333 - Dashboard
 ===========================

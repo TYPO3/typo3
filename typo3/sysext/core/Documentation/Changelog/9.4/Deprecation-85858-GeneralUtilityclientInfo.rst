@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85858:
+
 ==================================================
 Deprecation: #85858 - GeneralUtility::clientInfo()
 ==================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69730:
+
 ==============================================
 Feature: #69730 - Introduce uniqueId generator
 ==============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83556:
+
 ===================================================
 Feature: #83556 - Add toggle switches to FormEngine
 ===================================================

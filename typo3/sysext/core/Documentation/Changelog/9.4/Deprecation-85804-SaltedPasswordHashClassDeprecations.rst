@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85804:
+
 =============================================================
 Deprecation: #85804 - Salted password hash class deprecations
 =============================================================

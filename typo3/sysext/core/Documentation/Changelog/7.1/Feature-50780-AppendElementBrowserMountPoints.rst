@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-50780:
+
 =====================================================
 Feature: #50780 - Append element browser mount points
 =====================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-24449:
+
 =================================================================
 Breaking: #24449 - Use move placeholders as default in workspaces
 =================================================================

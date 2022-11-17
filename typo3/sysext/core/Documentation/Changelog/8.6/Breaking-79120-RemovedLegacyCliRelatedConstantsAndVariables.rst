@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79120:
+
 ====================================================================
 Breaking: #79120 - Remove legacy CLI-related constants and variables
 ====================================================================

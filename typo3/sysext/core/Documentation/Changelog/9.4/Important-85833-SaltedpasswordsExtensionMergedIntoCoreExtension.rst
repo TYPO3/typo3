@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-85833:
+
 ========================================================================
 Important: #85833 - saltedpasswords extension merged into core extension
 ========================================================================

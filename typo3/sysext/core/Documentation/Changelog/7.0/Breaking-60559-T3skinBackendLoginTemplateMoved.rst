@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-60559:
+
 ===========================================================
 Breaking: #60559 - T3skin Backend Login Template File Moved
 ===========================================================

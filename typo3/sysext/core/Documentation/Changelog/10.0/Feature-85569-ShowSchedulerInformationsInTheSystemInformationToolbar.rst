@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85569:
+
 ==============================================================================
 Feature: #85569 - Show scheduler information in the system information toolbar
 ==============================================================================

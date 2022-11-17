@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89526-1668719171:
+
 ====================================================
 Feature: #89526 - FeatureFlag: betaTranslationServer
 ====================================================

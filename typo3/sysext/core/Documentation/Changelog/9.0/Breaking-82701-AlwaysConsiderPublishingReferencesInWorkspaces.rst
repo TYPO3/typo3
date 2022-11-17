@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82701:
+
 ======================================================================
 Breaking: #82701 - Always consider publishing references in workspaces
 ======================================================================

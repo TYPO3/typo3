@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65293:
+
 =================================================================
 Deprecation: #65293 - Deprecate file navigation frame entry point
 =================================================================

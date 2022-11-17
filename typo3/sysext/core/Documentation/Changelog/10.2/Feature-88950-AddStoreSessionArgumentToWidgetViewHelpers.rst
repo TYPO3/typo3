@@ -1,6 +1,8 @@
 .. include:: /Includes.rst.txt
 .. highlight:: xml
 
+.. _feature-88950:
+
 ===================================================================
 Feature: #88950 - Add "storeSession" argument to Widget ViewHelpers
 ===================================================================

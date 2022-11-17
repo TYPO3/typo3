@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72889:
+
 ==================================================================================
 Breaking: #72889 - Removed RteHtmlParser htmlspecialchars() transformation options
 ==================================================================================

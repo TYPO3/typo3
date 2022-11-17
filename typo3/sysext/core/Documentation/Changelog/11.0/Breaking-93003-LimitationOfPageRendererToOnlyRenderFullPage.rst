@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93003:
+
 ======================================================
 Breaking: #93003 - PageRenderer renders only full page
 ======================================================

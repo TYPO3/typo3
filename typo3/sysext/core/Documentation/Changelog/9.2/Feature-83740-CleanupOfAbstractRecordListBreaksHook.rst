@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83740:
+
 ===========================================================
 Feature: #83740 - Cleanup of AbstractRecordList breaks hook
 ===========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84965:
+
 ==================================================================
 Deprecation: #84965 - Various TypoScriptFrontendController methods
 ==================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89061:
+
 ================================================
 Feature: #89061 - Introduce Notification Actions
 ================================================

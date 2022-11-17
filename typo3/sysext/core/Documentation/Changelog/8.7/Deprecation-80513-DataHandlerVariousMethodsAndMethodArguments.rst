@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80513:
+
 =======================================================================
 Deprecation: #80513 - DataHandler: Various methods and method arguments
 =======================================================================

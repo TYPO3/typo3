@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-53681:
+
 ===================================================================================================
 Important: #53681 - Change wording for User Settings "Reset Configuration and Clear Temporary Data"
 ===================================================================================================

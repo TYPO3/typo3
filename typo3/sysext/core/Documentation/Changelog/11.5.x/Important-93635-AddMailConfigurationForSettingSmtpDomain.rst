@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-93635:
+
 ==================================================================
 Important: #93635 - Add mail configuration for setting smtp domain
 ==================================================================

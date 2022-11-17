@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77481:
+
 =================================================
 Breaking: #77481 - Remove favicon from TBE_STYLES
 =================================================

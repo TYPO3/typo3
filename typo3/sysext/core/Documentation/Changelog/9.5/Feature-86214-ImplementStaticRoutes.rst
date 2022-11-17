@@ -1,6 +1,8 @@
 .. include:: /Includes.rst.txt
 .. highlight:: yaml
 
+.. _feature-86214:
+
 =========================================
 Feature: #86214 - Implement static routes
 =========================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90168:
+
 =========================================
 Feature: #90168 - Introduce Modal Actions
 =========================================

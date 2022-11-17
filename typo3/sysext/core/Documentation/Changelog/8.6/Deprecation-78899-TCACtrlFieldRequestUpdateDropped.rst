@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78899:
+
 ==========================================================
 Deprecation: #78899 - TCA ctrl field requestUpdate dropped
 ==========================================================

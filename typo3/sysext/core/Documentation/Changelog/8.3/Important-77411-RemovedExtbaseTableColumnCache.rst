@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-77411-1668719172:
+
 ======================================================
 Important: #77411 - Removed extbase table column cache
 ======================================================

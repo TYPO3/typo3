@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88428:
+
 ==========================================================
 Deprecation: #88428 - top.rawurlencode and top.str_replace
 ==========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83806:
+
 ==================================================================================
 Deprecation: #83806 - Deprecate page.javascriptLibs and page.javascriptLibs.jQuery
 ==================================================================================

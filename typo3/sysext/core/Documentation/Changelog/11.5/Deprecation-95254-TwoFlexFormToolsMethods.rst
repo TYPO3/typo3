@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95254:
+
 ===============================================
 Deprecation: #95254 - Two FlexFormTools methods
 ===============================================

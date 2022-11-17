@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68773:
+
 ======================================================================================
 Feature: #68773 - Show a special image for official distributions in Extension Manager
 ======================================================================================

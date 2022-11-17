@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89398:
+
 =====================================================================================
 Feature: #89398 - Support for environment variables in imports in site configurations
 =====================================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-75209:
+
 ==========================================================
 Deprecation: #75209 - Code cleanup for MenuViewHelperTrait
 ==========================================================

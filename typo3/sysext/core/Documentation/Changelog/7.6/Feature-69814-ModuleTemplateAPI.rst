@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69814:
+
 ====================================
 Feature: #69814 - ModuleTemplate API
 ====================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79626:
+
 ===============================================
 Feature: #79626 - Integrate record link handler
 ===============================================

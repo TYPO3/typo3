@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77460:
+
 ==============================================
 Breaking: #77460 - Extbase query cache removed
 ==============================================

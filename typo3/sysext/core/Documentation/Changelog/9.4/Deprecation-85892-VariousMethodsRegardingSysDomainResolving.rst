@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85892:
+
 ====================================================================
 Deprecation: #85892 - Various methods regarding sys_domain-resolving
 ====================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72572:
+
 =============================================================================
 Breaking: #72572 - Remove more deprecated miscellaneous functions and options
 =============================================================================

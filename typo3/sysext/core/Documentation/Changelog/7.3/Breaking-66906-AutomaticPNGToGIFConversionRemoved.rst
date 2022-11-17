@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66906:
+
 ==========================================================
 Breaking: #66906 - Automatic PNG to GIF conversion removed
 ==========================================================

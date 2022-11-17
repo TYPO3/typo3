@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72360:
+
 ==========================================================
 Breaking: #72360 - Removed deprecated entry point fallback
 ==========================================================

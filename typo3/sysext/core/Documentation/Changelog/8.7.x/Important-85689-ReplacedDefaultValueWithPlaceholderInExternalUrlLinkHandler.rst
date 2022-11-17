@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-85689:
+
 ========================================================================================
 Important: #85689 - Replaced default value with placeholder in external url link handler
 ========================================================================================

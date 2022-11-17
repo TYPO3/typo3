@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84983:
+
 ==========================================================
 Feature: #84983 - BE ViewHelper for EditDocumentController
 ==========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87380:
+
 ========================================================================================
 Feature: #87380 - Introduce SiteLanguageAwareInterface to denote site language awareness
 ========================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-93398:
+
 ==============================================================================
 Important: #93398 - Possibility to ignore submitted values in HiddenViewHelper
 ==============================================================================

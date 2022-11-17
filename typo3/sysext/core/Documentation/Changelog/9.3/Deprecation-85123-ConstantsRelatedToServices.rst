@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85123:
+
 ===================================================
 Deprecation: #85123 - Constants related to Services
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80516:
+
 ================================================================================
 Deprecation: #80516 - TypoScript config.setJS_mouseOver and config.setJS_openPic
 ================================================================================

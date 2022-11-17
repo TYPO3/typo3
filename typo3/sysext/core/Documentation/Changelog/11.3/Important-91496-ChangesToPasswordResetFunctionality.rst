@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-91496:
+
 ===========================================================
 Important: #91496 - Changes to password reset functionality
 ===========================================================

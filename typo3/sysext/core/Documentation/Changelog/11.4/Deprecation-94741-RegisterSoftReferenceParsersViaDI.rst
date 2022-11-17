@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94741:
+
 ===========================================================
 Deprecation: #94741 - Register SoftReference parsers via DI
 ===========================================================

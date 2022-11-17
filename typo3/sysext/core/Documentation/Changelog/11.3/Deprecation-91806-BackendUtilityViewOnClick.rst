@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-91806:
+
 ================================================
 Deprecation: #91806 - BackendUtility viewOnClick
 ================================================

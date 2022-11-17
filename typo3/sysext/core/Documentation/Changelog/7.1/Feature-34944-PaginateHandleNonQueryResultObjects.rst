@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-34944:
+
 =====================================================================
 Feature: #34944 - PaginateViewHelper handles non-query-result objects
 =====================================================================

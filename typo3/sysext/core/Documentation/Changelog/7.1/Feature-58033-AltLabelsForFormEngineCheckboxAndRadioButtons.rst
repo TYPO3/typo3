@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-58033:
+
 =================================================================================
 Feature: #58033 - Enable label override of checkbox and radio buttons by TSconfig
 =================================================================================

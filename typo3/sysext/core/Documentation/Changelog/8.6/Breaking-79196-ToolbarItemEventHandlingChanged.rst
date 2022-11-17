@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79196:
+
 ======================================================
 Breaking: #79196 - Toolbar item event handling changed
 ======================================================

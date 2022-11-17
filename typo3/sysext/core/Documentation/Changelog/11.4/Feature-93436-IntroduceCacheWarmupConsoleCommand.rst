@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93436:
+
 ========================================================
 Feature: #93436 - Introduce cache:warmup console command
 ========================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-67401:
+
 ==============================================================================
 Important: #67401 - Dependency Injection is now done before initializeObject()
 ==============================================================================

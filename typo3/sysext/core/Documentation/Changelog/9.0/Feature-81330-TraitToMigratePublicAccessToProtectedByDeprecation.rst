@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81330:
+
 ============================================================================
 Feature: #81330 - Trait to migrate public access to protected by deprecation
 ============================================================================

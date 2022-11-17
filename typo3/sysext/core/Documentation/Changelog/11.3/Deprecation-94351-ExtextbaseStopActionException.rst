@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94351:
+
 =====================================================
 Deprecation: #94351 - ext:extbase StopActionException
 =====================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85113:
+
 ===========================================================
 Deprecation: #85113 - Legacy Backend Module Routing methods
 ===========================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67027:
+
 =================================================================
 Breaking: #67027 - Removed FLOW-compatibility from PackageManager
 =================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93062:
+
 =============================================================================
 Breaking: #93062 - Various group-related public properties in BE_USER removed
 =============================================================================

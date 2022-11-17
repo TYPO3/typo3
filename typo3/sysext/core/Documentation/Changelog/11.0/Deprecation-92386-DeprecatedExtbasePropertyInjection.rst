@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92386:
+
 ================================================
 Deprecation: #92386 - Extbase property injection
 ================================================

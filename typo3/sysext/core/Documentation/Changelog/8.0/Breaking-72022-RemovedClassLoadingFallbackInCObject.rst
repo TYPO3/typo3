@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72022:
+
 ============================================================
 Breaking: #72022 - Removed class loading fallback in cObject
 ============================================================

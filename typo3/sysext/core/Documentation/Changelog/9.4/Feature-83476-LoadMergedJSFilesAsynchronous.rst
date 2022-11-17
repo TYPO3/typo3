@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83476:
+
 ===================================================
 Feature: #83476 - Load merged JS files asynchronous
 ===================================================

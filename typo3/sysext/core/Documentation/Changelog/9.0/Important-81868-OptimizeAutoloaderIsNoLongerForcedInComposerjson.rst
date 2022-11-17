@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-81868:
+
 ==============================================================================
 Important: #81868 - "Optimize autoloader" is no longer forced in composer.json
 ==============================================================================

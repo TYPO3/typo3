@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76802:
+
 ============================================
 Breaking: #76802 - Drop xcache cache backend
 ============================================

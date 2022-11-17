@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66369:
+
 ===============================================
 Feature: #66369 - Added new element browser API
 ===============================================

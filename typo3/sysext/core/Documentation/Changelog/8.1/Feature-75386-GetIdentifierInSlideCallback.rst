@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-75386:
+
 ==================================================
 Feature: #75386 - Get identifier in slide callback
 ==================================================

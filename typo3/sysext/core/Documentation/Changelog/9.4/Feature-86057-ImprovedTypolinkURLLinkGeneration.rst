@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86057:
+
 =========================================================
 Feature: #86057 - Improved typolink / URL link generation
 =========================================================

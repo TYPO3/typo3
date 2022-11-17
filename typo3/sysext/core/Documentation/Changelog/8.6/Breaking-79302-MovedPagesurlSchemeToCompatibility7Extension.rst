@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79302:
+
 =====================================================================
 Breaking: #79302 - Moved pages.url_scheme to compatibility7 extension
 =====================================================================

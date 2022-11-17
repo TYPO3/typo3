@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-63395:
+
 ==================================================
 Feature: #63395 - HTML5 video poster preview image
 ==================================================

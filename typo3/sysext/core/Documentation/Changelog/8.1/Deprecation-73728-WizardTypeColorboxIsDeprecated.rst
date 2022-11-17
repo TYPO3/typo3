@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73728:
+
 ========================================================
 Deprecation: #73728 - Wizard type colorbox is deprecated
 ========================================================

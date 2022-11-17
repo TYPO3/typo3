@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-88045:
+
 ======================================================
 Important: #88045 - Locales dependencies configuration
 ======================================================

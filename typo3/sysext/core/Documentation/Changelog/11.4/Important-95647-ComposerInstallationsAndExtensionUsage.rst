@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-95647:
+
 ==============================================================
 Important: #95647 - Composer installations and extension usage
 ==============================================================

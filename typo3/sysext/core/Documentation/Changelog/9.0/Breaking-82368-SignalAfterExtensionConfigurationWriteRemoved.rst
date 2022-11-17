@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82368:
+
 ====================================================================
 Breaking: #82368 - Signal 'afterExtensionConfigurationWrite' removed
 ====================================================================

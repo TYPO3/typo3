@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-68141:
+
 ====================================
 Deprecation: #68141 - typo3/ajax.php
 ====================================

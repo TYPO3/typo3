@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-59144:
+
 ==================================================================
 Feature: #59144 - Previewing workspace records using Page TSconfig
 ==================================================================

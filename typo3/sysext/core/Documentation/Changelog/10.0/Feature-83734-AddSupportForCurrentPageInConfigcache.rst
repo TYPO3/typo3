@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83734:
+
 ==============================================================
 Feature: #83734 - Add support for current page in config.cache
 ==============================================================

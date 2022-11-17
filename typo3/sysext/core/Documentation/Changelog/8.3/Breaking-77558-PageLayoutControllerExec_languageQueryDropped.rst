@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77558:
+
 =======================================================
 Breaking: #77558 - PageLayoutController removed methods
 =======================================================

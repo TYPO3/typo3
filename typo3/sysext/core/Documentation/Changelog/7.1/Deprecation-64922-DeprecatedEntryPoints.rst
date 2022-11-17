@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-64922:
+
 =============================================
 Deprecation: #64922 - Deprecated entry points
 =============================================

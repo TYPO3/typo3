@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86051:
+
 =========================================
 Feature: #86051 - Show extensions via CLI
 =========================================

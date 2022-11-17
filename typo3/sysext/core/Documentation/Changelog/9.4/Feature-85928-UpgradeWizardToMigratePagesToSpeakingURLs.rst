@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85928:
+
 ==================================================================
 Feature: #85928 - Upgrade wizard to migrate pages to speaking URLs
 ==================================================================

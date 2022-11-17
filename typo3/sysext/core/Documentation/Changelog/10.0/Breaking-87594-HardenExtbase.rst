@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87594:
+
 =================================
 Breaking: #87594 - Harden extbase
 =================================

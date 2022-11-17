@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78002:
+
 =============================================================
 Breaking: #78002 - Enforce cHash argument for Extbase actions
 =============================================================

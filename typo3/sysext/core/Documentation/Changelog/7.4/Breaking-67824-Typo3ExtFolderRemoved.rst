@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67824:
+
 ===========================================
 Breaking: #67824 - typo3/ext folder removed
 ===========================================

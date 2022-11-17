@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84994:
+
 ============================================================
 Deprecation: #84994 - BackendUtility::getPidForModTSconfig()
 ============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78521:
+
 =========================================================
 Breaking: #78521 - Drop unused JavaScript from backend.js
 =========================================================

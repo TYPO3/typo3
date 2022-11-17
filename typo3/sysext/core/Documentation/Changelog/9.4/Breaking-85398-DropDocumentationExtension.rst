@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-85398:
+
 ===============================================
 Breaking: #85398 - Drop documentation extension
 ===============================================

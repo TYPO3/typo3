@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67646:
+
 ============================================================
 Breaking: #67646 - PHP library inclusion in frontend removed
 ============================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-73041:
+
 ===============================================================
 Important: #73041 - PackageStates Includes Only Active Packages
 ===============================================================

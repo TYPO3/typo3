@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61959:
+
 ======================================================
 Breaking: #61959 - Move flash message output to alerts
 ======================================================

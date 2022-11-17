@@ -1,6 +1,8 @@
 .. include:: /Includes.rst.txt
 
 
+.. _important-87516:
+
 ============================================================
 Important: #87516 - Remove core HTTP RequestHandlerInterface
 ============================================================

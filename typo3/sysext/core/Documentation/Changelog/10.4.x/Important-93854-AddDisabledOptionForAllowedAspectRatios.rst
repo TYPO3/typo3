@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-93854:
+
 =================================================================
 Important: #93854 - Add disabled option for allowed aspect ratios
 =================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88818:
+
 ===================================================================
 Feature: #88818 - Introduce events to modify CKEditor configuration
 ===================================================================

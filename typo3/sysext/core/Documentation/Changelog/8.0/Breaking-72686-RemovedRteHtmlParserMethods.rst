@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72686:
+
 ================================================
 Breaking: #72686 - Removed RteHtmlParser methods
 ================================================

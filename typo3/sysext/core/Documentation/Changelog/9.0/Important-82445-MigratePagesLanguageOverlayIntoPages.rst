@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-82445:
+
 =============================================================
 Important: #82445 - Migrate pages_language_overlay into pages
 =============================================================

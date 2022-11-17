@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90052:
+
 ===========================================================================
 Feature: #90052 - Form YAML configuration available in configuration module
 ===========================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-77576:
+
 =======================================================================
 Feature: #77576 - Introduce device presets and redesign the view module
 =======================================================================

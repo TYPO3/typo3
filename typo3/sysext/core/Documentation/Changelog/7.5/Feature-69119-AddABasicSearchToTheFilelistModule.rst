@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69119:
+
 ===========================================================
 Feature: #69119 - Add a basic search to the filelist module
 ===========================================================

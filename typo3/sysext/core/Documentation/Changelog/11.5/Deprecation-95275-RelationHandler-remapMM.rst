@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95275:
+
 ================================================
 Deprecation: #95275 - RelationHandler->remapMM()
 ================================================

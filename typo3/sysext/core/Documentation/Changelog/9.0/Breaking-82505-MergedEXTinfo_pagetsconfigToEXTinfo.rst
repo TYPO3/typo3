@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82505:
+
 ===========================================================
 Breaking: #82505 - Merged EXT:info_pagetsconfig to EXT:info
 ===========================================================

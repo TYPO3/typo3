@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-65727:
+
 =================================================================
 Breaking: #65727 - Don't provide access to localPath of FAL files
 =================================================================

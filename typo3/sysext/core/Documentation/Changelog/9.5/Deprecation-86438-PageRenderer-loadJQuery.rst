@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86438:
+
 ================================================
 Deprecation: #86438 - PageRenderer->loadJQuery()
 ================================================

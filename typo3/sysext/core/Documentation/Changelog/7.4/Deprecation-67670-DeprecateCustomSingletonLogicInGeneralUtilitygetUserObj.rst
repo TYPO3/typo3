@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67670:
+
 ====================================================================================
 Deprecation: #67670 - Deprecate custom singleton logic in GeneralUtility::getUserObj
 ====================================================================================

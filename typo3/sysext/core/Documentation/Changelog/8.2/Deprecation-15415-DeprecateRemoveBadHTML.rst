@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-15415:
+
 =============================================
 Deprecation: #15415 - Deprecate removeBadHTML
 =============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78192:
+
 =====================================================
 Breaking: #78192 - Refactor click menu (context menu)
 =====================================================

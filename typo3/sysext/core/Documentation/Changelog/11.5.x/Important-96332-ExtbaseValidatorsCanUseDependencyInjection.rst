@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-96332:
+
 ===================================================================
 Important: #96332 - Extbase Validators can use dependency injection
 ===================================================================

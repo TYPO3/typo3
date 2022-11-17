@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62291:
+
 =============================================
 Breaking: #62291 - RTE wizard classes renamed
 =============================================

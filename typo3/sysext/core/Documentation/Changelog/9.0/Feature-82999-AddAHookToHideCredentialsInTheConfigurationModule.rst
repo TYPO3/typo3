@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82999:
+
 ============================================================================
 Feature: #82999 - Add a hook to hide credentials in the Configuration module
 ============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-95261:
+
 =======================================================================
 Important: #95261 - New public methods in SectionMarkupGenerated events
 =======================================================================

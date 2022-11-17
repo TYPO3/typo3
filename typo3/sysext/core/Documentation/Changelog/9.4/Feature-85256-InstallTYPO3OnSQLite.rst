@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85256:
+
 =========================================
 Feature: #85256 - Install TYPO3 on SQLite
 =========================================

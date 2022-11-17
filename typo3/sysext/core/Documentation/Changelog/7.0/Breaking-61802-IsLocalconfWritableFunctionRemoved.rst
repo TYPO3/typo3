@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61802:
+
 ==================================================================
 Breaking: #61802 - deprecated isLocalconfWritable function removed
 ==================================================================

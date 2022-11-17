@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-93331:
+
 =======================================================
 Important: #93331 - Description of SelectCheckBox items
 =======================================================

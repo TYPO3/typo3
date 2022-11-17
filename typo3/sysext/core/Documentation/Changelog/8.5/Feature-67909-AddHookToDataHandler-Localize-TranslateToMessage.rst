@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-67909:
+
 =========================================================================
 Feature: #67909 - Add hook to DataHandler - localize - translateToMessage
 =========================================================================

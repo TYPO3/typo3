@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-73565:
+
 ==================================================================================
 Important: #73565 - AbstractConditionViewHelper no longer automatically compilable
 ==================================================================================

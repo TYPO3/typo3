@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67471:
+
 ========================================
 Deprecation: #67471 - Deprecate init.php
 ========================================

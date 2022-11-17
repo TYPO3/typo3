@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-64535:
+
 =====================================================================================
 Feature: #64535 - IRRE: Suppress and override useCombination warning via TCA settings
 =====================================================================================

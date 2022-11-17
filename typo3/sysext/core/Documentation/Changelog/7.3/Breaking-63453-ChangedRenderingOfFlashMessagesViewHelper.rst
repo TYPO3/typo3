@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63453:
+
 ===============================================================
 Breaking: #63453 - Changed rendering of FlashMessagesViewHelper
 ===============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84650:
+
 ===================================================================
 Feature: #84650 - Introduce fluid data processor for language menus
 ===================================================================

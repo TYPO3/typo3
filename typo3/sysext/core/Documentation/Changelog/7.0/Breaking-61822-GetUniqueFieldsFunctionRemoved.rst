@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61822:
+
 ================================================================
 Breaking: #61822 - deprecated function getUniqueFields() removed
 ================================================================

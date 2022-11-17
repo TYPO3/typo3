@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80440:
+
 ==========================================================
 Deprecation: #80440 - EXT:lowlevel ArrayBrowser->wrapValue
 ==========================================================

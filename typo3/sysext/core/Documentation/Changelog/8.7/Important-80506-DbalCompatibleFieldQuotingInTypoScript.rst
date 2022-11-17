@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-80506:
+
 ===============================================================
 Important: #80506 - Dbal compatible field quoting in TypoScript
 ===============================================================

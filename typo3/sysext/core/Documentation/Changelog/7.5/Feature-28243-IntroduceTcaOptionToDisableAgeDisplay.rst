@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-28243:
+
 ================================================================================
 Feature: #28243 - Introduce TCA option to disable age display of dates per field
 ================================================================================

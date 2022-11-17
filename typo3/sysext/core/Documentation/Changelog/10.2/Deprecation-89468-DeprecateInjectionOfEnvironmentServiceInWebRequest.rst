@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89468:
+
 ==============================================================================
 Deprecation: #89468 - Deprecate injection of EnvironmentService in Web Request
 ==============================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-68276:
+
 =====================================================
 Breaking: #68276 - Remove ExtJS Quicktips if possible
 =====================================================

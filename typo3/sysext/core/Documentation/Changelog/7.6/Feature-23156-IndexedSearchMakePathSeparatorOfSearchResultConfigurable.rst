@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-23156:
+
 ===================================================================================
 Feature: #23156 - Indexed search: Make path separator of search result configurable
 ===================================================================================

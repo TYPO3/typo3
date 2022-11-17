@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-88655:
+
 ==============================================================
 Important: #88655 - Changed loading order of RTE Configuration
 ==============================================================

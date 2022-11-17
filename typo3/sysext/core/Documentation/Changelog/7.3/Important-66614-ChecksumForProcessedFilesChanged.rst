@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-66614:
+
 ===================================================================
 Important: #66614 - Checksums for processed files have been changed
 ===================================================================

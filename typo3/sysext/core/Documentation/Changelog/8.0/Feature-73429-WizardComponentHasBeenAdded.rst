@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-73429:
+
 =================================================
 Feature: #73429 - Wizard component has been added
 =================================================

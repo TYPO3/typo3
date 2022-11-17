@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88871:
+
 =============================================================
 Feature: #88871 - Handle middleware handler in RequestFactory
 =============================================================

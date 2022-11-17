@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-80581:
+
 =====================================================================
 Feature: #80581 - Render list of recently users that were switched to
 =====================================================================

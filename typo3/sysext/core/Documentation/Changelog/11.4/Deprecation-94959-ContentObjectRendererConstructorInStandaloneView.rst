@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94959:
+
 =========================================================================
 Deprecation: #94959 - ContentObjectRenderer constructor in StandaloneView
 =========================================================================

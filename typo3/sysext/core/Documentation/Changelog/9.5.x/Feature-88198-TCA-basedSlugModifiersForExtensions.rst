@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88198:
+
 =========================================================
 Feature: #88198 - TCA-based Slug modifiers for extensions
 =========================================================

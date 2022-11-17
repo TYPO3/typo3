@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65360:
+
 ====================================================================================
 Deprecation: #65360 - Deprecate wrong class name used in PostProcessTree Signal call
 ====================================================================================

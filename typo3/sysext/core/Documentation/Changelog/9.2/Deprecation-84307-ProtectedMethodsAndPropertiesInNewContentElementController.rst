@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84307:
+
 =====================================================================================
 Deprecation: #84307 - Protected methods and properties in NewContentElementController
 =====================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78347:
+
 ==========================================================
 Feature: #78347 - Add StdWrap properties to FilesProcessor
 ==========================================================

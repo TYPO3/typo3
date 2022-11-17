@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82709:
+
 ============================================================================
 Breaking: #82709 - TCA option "localizeChildrenAtParentLocalization" removed
 ============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86163:
+
 ========================================================
 Deprecation: #86163 - TCA type="user" without renderType
 ========================================================

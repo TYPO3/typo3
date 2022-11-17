@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88744:
+
 ========================================================================
 Breaking: #88744 - Database fields related to CSS Styled Content removed
 ========================================================================

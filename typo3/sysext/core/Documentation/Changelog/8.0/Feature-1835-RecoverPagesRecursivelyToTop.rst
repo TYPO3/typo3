@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-1835:
+
 =============================================================
 Feature: #1835 - Recover pages recursively to top of rootline
 =============================================================

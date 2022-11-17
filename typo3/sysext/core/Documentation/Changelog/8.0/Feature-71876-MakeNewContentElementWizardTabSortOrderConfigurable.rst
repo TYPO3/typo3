@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-71876:
+
 =============================================================================
 Feature: #71876 - Make new content element wizard tab sort order configurable
 =============================================================================

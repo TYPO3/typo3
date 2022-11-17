@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85146:
+
 ==========================================================
 Feature: #85146 - Read environment variables in TypoScript
 ==========================================================

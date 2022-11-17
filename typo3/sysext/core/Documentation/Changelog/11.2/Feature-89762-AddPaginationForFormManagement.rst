@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89762:
+
 ===================================================
 Feature: #89762 - Add pagination for FormManagement
 ===================================================

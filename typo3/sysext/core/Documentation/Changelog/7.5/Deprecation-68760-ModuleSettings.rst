@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-68760:
+
 ====================================================
 Deprecation: #68760 - Deprecate class ModuleSettings
 ====================================================

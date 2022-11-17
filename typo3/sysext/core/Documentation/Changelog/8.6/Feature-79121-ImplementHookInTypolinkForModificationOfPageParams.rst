@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79121:
+
 ============================================================================
 Feature: #79121 - Implement hook in typolink for modification of page params
 ============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86288:
+
 ===============================================================
 Deprecation: #86288 - FrontendBackendUserAuthentication methods
 ===============================================================

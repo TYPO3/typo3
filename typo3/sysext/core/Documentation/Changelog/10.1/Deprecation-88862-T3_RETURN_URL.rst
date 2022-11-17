@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88862:
+
 ===================================
 Deprecation: #88862 - T3_RETURN_URL
 ===================================

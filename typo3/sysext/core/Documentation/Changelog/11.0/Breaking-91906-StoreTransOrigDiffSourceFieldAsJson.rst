@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91906:
+
 ================================================================
 Breaking: #91906 - Store TransOrigDiffSourceField as json string
 ================================================================

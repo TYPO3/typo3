@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93921:
+
 =======================================
 Feature: #93921 - Sharing backend links
 =======================================

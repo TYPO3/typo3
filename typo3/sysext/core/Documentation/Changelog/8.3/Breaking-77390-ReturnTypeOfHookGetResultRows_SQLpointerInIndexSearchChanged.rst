@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77390:
+
 ==================================================================================================
 Breaking: #77390 - Expected return type of hook getResultRows_SQLpointer in Indexed Search changed
 ==================================================================================================

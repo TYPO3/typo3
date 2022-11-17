@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94252:
+
 =====================================================================
 Deprecation: #94252 - GeneralUtility::compileSelectedGetVarsFromArray
 =====================================================================

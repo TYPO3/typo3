@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-77432:
+
 ==============================================================
 Deprecation: #77432 - Extbase: Prepared Statement Query Option
 ==============================================================

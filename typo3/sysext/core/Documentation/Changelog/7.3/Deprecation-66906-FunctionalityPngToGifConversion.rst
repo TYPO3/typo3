@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-66906:
+
 =============================================================
 Deprecation: #66906 - Functionality for png_to_gif conversion
 =============================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63687:
+
 ====================================================================
 Breaking: #63687 - Outdated ContentObjects moved to legacy extension
 ====================================================================

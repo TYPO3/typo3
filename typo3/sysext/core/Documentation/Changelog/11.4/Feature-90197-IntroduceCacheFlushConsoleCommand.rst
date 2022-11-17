@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90197:
+
 =======================================================
 Feature: #90197 - Introduce cache:flush console command
 =======================================================

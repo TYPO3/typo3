@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82915:
+
 ===========================================================
 Breaking: #82915 - Remove TypoScript option page.stylesheet
 ===========================================================

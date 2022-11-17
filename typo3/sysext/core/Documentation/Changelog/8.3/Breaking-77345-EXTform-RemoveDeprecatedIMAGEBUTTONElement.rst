@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77345:
+
 ===================================================================
 Breaking: #77345 - EXT:form - Remove deprecated IMAGEBUTTON element
 ===================================================================

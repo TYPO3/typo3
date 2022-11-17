@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-33805:
+
 ====================================
 Breaking: #33805 - ClickMenu Rewrite
 ====================================

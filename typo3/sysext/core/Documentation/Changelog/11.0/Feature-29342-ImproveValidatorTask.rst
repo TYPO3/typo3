@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-29342:
+
 =======================================
 Feature: #29342 - Improve ValidatorTask
 =======================================

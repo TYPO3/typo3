@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69028:
+
 =====================================================
 Deprecation: #69028 - RelationHandler convertPosNeg()
 =====================================================

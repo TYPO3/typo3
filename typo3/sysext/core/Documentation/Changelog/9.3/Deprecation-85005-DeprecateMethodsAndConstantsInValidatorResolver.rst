@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85005:
+
 ==========================================================================
 Deprecation: #85005 - Deprecate methods and constants in ValidatorResolver
 ==========================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-90911:
+
 ================================================================
 Important: #90911 - Package algo26-matthias/idna-convert removed
 ================================================================

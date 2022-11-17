@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79259:
+
 =====================================
 Breaking: #79259 - EXT:t3skin removed
 =====================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67991:
+
 =====================================
 Deprecation: #67991 - Removed ext:cms
 =====================================

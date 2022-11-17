@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95083:
+
 =======================================================
 Deprecation: #95083 - Backend toolbar CacheActions hook
 =======================================================

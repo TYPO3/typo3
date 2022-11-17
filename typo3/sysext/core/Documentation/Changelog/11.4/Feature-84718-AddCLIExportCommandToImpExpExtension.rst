@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84718:
+
 ======================================================
 Feature: #84718 - Add CLI export command to EXT:impexp
 ======================================================

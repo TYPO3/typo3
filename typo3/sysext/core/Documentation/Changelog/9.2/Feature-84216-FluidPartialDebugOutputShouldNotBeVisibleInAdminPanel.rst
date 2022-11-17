@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84216:
+
 ===========================================================
 Feature: #84216 - New attribute "debug" in RenderViewHelper
 ===========================================================

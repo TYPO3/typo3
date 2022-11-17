@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92502:
+
 ===========================================================
 Breaking: #92502 - Make Extbase handle PSR-7 responses only
 ===========================================================

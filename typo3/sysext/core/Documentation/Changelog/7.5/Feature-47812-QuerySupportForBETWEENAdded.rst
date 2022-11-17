@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-47812:
+
 =================================================
 Feature: #47812 - Query support for BETWEEN added
 =================================================

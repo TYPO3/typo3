@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89229:
+
 ===============================================================
 Feature: #89229 - Cache Preset for Settings in Maintenance Area
 ===============================================================

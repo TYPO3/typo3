@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92529:
+
 =========================================================
 Breaking: #92529 - All Fluid widget functionality removed
 =========================================================

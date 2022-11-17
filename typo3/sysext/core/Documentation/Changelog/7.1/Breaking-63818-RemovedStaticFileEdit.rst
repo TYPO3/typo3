@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63818:
+
 =========================================================
 Breaking: #63818 - Removed Static file edit functionality
 =========================================================

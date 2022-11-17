@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79770:
+
 =======================================================
 Deprecation: #79770 - Deprecate inline localizationMode
 =======================================================

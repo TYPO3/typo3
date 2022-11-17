@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79513:
+
 =============================================================
 Breaking: #79513 - Removed session locking based on useragent
 =============================================================

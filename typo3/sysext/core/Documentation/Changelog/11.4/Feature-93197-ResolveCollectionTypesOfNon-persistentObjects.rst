@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93197:
+
 ====================================================================
 Feature: #93197 - Resolve collection types of non-persistent objects
 ====================================================================

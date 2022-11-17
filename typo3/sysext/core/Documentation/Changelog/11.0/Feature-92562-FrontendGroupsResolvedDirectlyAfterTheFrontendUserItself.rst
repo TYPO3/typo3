@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92562:
+
 ==================================================================================
 Feature: #92562 - Frontend groups resolved directly after the Frontend User itself
 ==================================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-46624:
+
 ==========================================================
 Feature: #46624 - HMENU item selection via additionalWhere
 ==========================================================

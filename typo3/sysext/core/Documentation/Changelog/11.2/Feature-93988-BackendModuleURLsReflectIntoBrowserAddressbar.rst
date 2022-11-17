@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93988:
+
 ======================================================================
 Feature: #93988 - Backend module URLs reflect into browser address bar
 ======================================================================

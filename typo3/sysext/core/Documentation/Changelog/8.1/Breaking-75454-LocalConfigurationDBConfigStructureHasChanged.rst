@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75454:
+
 =====================================================================
 Breaking: #75454 - LocalConfiguration DB config structure has changed
 =====================================================================

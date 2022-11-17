@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83506:
+
 ===============================================================================
 Deprecation: #83506 - Deprecated usage of TSFE:fe_user|sesData in TS conditions
 ===============================================================================

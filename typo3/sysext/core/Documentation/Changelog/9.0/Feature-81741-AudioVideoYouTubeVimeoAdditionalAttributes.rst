@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81741:
+
 ===============================================================================================
 Feature: #81741 - Render additional and data-* attributes in media renderer for MediaViewHelper
 ===============================================================================================

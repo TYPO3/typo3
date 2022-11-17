@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72421:
+
 ============================================================================
 Breaking: #72421 - Removed deprecated code from database and query functions
 ============================================================================

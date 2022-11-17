@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61782:
+
 ==============================================================
 Breaking: #61782 - deprecated DocumentTemplate classes removed
 ==============================================================

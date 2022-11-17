@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75349:
+
 ========================================================================
 Breaking: #75349 - Move Indexed Search pi-based plugin to compatibility7
 ========================================================================

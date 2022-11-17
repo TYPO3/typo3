@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82603:
+
 ==============================================
 Deprecation: #82603 - Deprecate Storage module
 ==============================================

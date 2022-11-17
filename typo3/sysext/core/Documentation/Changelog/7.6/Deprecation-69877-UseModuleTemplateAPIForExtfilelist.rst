@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69877:
+
 =============================================================
 Deprecation: #69877 - Use ModuleTemplate API for ext:filelist
 =============================================================

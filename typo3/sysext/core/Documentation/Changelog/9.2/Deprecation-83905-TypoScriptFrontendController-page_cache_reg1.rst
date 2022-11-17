@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83905:
+
 ===================================================================
 Deprecation: #83905 - TypoScriptFrontendController->page_cache_reg1
 ===================================================================

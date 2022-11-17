@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-72585:
+
 =============================================================================================================
 Deprecation: #72585 - Deprecate TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile
 =============================================================================================================

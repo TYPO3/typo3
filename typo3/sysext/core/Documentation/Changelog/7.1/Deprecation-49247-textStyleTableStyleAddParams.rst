@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-49247:
+
 =================================================================================
 Deprecation: #49247 - Deprecate TypoScript functions "textStyle" and "tableStyle"
 =================================================================================

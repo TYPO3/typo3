@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73050:
+
 ===========================================================================
 Deprecation: #73050 - Deprecated random generator methods in GeneralUtility
 ===========================================================================

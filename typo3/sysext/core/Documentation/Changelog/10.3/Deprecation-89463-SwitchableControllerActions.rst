@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89463:
+
 ===================================================
 Deprecation: #89463 - Switchable Controller Actions
 ===================================================

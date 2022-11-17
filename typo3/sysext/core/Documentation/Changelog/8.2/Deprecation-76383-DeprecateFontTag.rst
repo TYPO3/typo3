@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-76383:
+
 =======================================
 Deprecation: #76383 - Deprecate fontTag
 =======================================

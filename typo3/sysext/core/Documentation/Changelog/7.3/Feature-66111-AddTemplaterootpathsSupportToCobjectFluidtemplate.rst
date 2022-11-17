@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66111:
+
 ========================================================================
 Feature: #66111 - Add TemplateRootPaths support to cObject FLUIDTEMPLATE
 ========================================================================

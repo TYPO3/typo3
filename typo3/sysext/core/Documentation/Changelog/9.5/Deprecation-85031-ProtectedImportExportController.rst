@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85031:
+
 ======================================================
 Deprecation: #85031 - Protected ImportExportController
 ======================================================

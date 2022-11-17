@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82899:
+
 ========================================================
 Deprecation: #82899 - ExtensionManagementUtility methods
 ========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84410:
+
 ========================================================================
 Deprecation: #84410 - CodeCompletion renamed to CodeCompletionController
 ========================================================================

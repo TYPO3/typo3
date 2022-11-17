@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78477:
+
 ===========================================================
 Deprecation: #78477 - Refactoring of FlashMessage rendering
 ===========================================================

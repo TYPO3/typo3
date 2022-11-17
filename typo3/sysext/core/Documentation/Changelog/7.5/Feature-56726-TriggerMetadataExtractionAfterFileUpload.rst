@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-56726:
+
 ===============================================================
 Feature: #56726 - Trigger metadata extraction after file upload
 ===============================================================

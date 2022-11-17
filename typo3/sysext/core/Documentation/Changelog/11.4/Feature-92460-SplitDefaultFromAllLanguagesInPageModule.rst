@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92460:
+
 =================================================================
 Feature: #92460 - Split default from all languages in page module
 =================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86320:
+
 =================================================================
 Deprecation: #86320 - Mark internal $TSFE properties as protected
 =================================================================

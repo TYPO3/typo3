@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76155:
+
 =============================================================================
 Breaking: #76155 - ViewHelper Namespace imports with `xmlns` are now singular
 =============================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-60064:
+
 ===========================================================
 Feature: #60064 - Logging Framework Introspection Processor
 ===========================================================

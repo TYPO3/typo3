@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85678-1668719172:
+
 =============================================
 Deprecation: #85678 - config.titleTagFunction
 =============================================

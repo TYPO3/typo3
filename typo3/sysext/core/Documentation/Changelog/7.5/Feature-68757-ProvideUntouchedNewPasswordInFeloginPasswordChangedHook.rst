@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68757:
+
 ================================================================================
 Feature: #68757 - Provide untouched newPassword in felogin password_changed hook
 ================================================================================

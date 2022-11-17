@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82430:
+
 ===================================================================
 Breaking: #82430 - Replaced GeneralUtility::sysLog with Logging API
 ===================================================================

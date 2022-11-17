@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88740:
+
 =============================================================
 Deprecation: #88740 - ext:felogin pibase plugin related hooks
 =============================================================

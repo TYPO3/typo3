@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-97309:
+
 ================================================================
 Feature: #97309 - Differentiate redirects based on creation type
 ================================================================

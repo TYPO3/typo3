@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77416:
+
 ===============================================================
 Breaking: #77416 - Removed property from DatabaseIntegrityCheck
 ===============================================================

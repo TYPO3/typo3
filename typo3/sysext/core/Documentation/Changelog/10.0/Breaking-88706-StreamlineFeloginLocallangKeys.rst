@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88706:
+
 ====================================================
 Breaking: #88706 - Streamline felogin locallang keys
 ====================================================

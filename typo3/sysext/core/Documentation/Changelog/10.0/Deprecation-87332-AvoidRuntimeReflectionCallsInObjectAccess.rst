@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-87332:
+
 ====================================================================
 Deprecation: #87332 - Avoid runtime reflection calls in ObjectAccess
 ====================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72418:
+
 =========================================================
 Breaking: #72418 - Deprecated backend-related PHP classes
 =========================================================

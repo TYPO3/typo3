@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72412:
+
 =============================================================================
 Breaking: #72412 - Removed deprecated code from language processing functions
 =============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83081:
+
 ==========================================================================
 Breaking: #83081 - Removed configuration option BE/fileExtensions/webspace
 ==========================================================================

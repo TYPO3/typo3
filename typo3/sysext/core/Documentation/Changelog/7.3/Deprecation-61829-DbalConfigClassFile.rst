@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-61829:
+
 ============================================================
 Deprecation: #61829 - Deprecate config.classFile DBAL option
 ============================================================

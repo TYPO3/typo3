@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64668:
+
 =====================================================================
 Breaking: #64668 - Content Element mailform moved to legacy extension
 =====================================================================

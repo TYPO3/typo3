@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86907:
+
 ========================================================================================
 Deprecation: #86907 - Deprecate usage of dependency injection with non public properties
 ========================================================================================

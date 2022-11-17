@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93029:
+
 ==========================================================
 Breaking: #93029 - Dropped deleted field from sys_refindex
 ==========================================================

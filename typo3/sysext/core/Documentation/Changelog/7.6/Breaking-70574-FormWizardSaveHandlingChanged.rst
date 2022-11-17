@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-70574:
+
 ================================================================
 Breaking: #70574 - Form Wizard Save Handling Changed in ext:form
 ================================================================

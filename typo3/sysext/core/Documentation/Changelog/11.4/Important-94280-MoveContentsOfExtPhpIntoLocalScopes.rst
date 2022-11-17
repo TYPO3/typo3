@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-94280:
+
 ====================================================================
 Important: #94280 - Move contents of ext_*.php into global namespace
 ====================================================================

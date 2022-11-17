@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84133:
+
 ====================================
 Feature: #84133 - Introduce variants
 ====================================

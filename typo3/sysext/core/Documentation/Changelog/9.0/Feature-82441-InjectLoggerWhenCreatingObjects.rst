@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82441:
+
 =====================================================
 Feature: #82441 - Inject logger when creating objects
 =====================================================

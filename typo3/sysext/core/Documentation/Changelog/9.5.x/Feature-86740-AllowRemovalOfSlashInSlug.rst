@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86740:
+
 ============================================
 Feature: #86740 - Replace characters in slug
 ============================================

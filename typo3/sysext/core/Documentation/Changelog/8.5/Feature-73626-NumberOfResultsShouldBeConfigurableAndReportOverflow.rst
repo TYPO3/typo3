@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-73626:
+
 ============================================================================
 Feature: #73626 - numberOfResults should be configurable and report overflow
 ============================================================================

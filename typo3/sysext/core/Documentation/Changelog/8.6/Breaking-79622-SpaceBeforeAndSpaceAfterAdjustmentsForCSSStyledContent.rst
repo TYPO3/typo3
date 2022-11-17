@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79622-1668719355:
+
 ================================================================================
 Breaking: #79622 - SpaceBefore and SpaceAfter adjustments for CSS Styled Content
 ================================================================================

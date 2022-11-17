@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-93077:
+
 ====================================================================
 Breaking: #93077 - Removed unneeded configurations in PageLayoutView
 ====================================================================

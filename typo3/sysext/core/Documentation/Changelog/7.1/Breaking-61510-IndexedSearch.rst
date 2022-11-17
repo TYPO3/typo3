@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61510:
+
 ================================================
 Breaking: #61510 - Improvement of indexed_search
 ================================================

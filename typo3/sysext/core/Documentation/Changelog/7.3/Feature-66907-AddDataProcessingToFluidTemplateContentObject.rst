@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66907:
+
 =====================================================================
 Feature: #66907 - Add Data Processing to FLUIDTEMPLATE content object
 =====================================================================

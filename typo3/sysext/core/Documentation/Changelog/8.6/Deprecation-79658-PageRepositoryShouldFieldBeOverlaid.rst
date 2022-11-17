@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79658:
+
 ============================================================
 Deprecation: #79658 - PageRepository shouldFieldBeOverlaid()
 ============================================================

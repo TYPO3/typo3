@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65290:
+
 =================================================
 Deprecation: #65290 - Deprecate dummy entry point
 =================================================

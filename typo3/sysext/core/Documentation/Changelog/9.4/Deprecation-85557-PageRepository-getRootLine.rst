@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85557:
+
 =================================================
 Deprecation: #85557 - PageRepository->getRootLine
 =================================================

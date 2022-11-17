@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94957:
+
 =======================================================================
 Deprecation: #94957 - TypoScriptFrontendController->cObjectDepthCounter
 =======================================================================

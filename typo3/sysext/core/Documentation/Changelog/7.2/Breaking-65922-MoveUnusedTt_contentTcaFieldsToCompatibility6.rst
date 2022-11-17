@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-65922:
+
 ======================================================================
 Breaking: #65922 - Move unused tt_content TCA fields to compatibility6
 ======================================================================

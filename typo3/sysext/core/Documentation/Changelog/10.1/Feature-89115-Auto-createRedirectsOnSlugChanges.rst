@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89115:
+
 =======================================================================
 Feature: #89115 - Auto slug update and redirect creation on slug change
 =======================================================================

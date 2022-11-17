@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89644:
+
 ==========================================================================
 Feature: #89644 - Add optional argument "fields" to editRecord ViewHelpers
 ==========================================================================

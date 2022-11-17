@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93426:
+
 ==================================================================
 Feature: #93426 - SVG-based Tree for Folder Navigation with Filter
 ==================================================================

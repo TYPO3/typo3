@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-65585:
+
 ================================================
 Feature: #65585 - Add TCA type imageManipulation
 ================================================

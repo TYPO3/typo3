@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85902:
+
 ===================================
 Deprecation: #85902 - IMGMENU/GMENU
 ===================================

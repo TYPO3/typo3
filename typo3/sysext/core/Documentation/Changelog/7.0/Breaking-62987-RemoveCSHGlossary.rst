@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-62987:
+
 ======================================
 Breaking: #62987 - Remove CSH Glossary
 ======================================

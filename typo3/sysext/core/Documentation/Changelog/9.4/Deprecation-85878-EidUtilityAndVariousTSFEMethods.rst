@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85878:
+
 =========================================================
 Deprecation: #85878 - EidUtility and various TSFE methods
 =========================================================

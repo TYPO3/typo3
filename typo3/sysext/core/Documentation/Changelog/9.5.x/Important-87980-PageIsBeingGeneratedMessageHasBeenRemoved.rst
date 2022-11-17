@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-87980:
+
 ======================================================================
 Important: #87980 - "Page is being generated" message has been removed
 ======================================================================

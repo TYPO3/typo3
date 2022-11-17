@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92559:
+
 ================================================================
 Breaking: #92559 - Removed per-user IP locking for backend users
 ================================================================

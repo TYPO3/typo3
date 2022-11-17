@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85607:
+
 =======================================================================
 Feature: #85607 - New ThumbnailViewHelper to render thumbnails deferred
 =======================================================================

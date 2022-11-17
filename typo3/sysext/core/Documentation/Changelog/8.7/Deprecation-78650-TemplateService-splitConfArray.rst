@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78650:
+
 =====================================================
 Deprecation: #78650 - TemplateService->splitConfArray
 =====================================================

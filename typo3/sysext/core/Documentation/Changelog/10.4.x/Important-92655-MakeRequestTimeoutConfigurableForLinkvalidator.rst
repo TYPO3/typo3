@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92655:
+
 =======================================================================
 Important: #92655 - Make request timeout configurable for linkvalidator
 =======================================================================

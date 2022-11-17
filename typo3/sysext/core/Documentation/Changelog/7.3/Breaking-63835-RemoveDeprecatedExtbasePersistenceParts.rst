@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63835:
+
 =======================================================================
 Breaking: #63835 - Remove Deprecated Parts in Extbase Persistence Layer
 =======================================================================

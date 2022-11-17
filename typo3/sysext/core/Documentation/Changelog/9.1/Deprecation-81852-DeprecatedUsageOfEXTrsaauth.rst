@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-81852:
+
 =====================================================
 Deprecation: #81852 - Deprecated Usage of EXT:rsaauth
 =====================================================

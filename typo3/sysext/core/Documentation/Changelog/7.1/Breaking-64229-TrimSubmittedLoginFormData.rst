@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64229:
+
 ==============================================================
 Breaking: #64229 - Trim submitted login-form-data before usage
 ==============================================================

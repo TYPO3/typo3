@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90461:
+
 ===========================================================================
 Feature: #90461 - Quick-Create Content Elements via NewContentElementWizard
 ===========================================================================

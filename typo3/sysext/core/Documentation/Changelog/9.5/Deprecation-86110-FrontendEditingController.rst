@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86110:
+
 ===============================================
 Deprecation: #86110 - FrontendEditingController
 ===============================================

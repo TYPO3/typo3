@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85592:
+
 ==============================================================
 Feature: #85592 - Add site title configuration to sites module
 ==============================================================

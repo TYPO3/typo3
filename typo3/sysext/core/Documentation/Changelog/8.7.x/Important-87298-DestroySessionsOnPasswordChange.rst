@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-87298:
+
 ==================================================================
 Important: #87298 - [SECURITY] Destroy sessions on password change
 ==================================================================

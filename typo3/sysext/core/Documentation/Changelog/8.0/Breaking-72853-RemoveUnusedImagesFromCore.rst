@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72853:
+
 =================================================
 Breaking: #72853 - Remove unused Images from core
 =================================================

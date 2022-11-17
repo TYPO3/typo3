@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94906:
+
 ====================================================
 Feature: #94906 - Multi record selection in filelist
 ====================================================

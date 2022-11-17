@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-54152:
+
 =============================================================================
 Deprecation: #54152 - Deprecate arguments of BackendUtility::getPagesTSconfig
 =============================================================================

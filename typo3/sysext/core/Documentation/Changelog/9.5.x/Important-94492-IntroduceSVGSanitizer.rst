@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-94492:
+
 ===========================================
 Important: #94492 - Introduce SVG Sanitizer
 ===========================================

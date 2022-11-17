@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92678:
+
 ====================================================
 Breaking: #92678 - CSS class checkbox-invert removed
 ====================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77557:
+
 =======================================================================
 Breaking: #77557 - Signature of QueryView->getQueryResultCode() changed
 =======================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88182:
+
 ====================================================
 Breaking: #88182 - jsfunc.inline.js has been dropped
 ====================================================

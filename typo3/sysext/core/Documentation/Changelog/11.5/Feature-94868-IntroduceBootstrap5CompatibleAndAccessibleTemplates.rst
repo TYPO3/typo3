@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94868:
+
 ===========================================================================
 Feature: #94868 - Introduce Bootstrap 5 compatible and accessible templates
 ===========================================================================

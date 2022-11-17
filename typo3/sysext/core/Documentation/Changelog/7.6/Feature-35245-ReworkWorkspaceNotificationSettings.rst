@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-35245:
+
 ========================================================
 Feature: #35245 - Rework workspace notification settings
 ========================================================

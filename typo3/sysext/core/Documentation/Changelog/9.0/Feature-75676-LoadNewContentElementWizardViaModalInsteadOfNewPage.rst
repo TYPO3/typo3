@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-75676:
+
 ===============================================================================
 Feature: #75676 - Load new content element wizard via modal instead of new page
 ===============================================================================

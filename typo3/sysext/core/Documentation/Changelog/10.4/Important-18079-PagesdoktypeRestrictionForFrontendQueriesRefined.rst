@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-18079:
+
 ==========================================================================
 Important: #18079 - pages.doktype restriction for frontend queries refined
 ==========================================================================

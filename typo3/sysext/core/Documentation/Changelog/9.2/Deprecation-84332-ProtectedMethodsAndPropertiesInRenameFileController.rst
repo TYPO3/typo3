@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84332:
+
 ==============================================================================
 Deprecation: #84332 - Protected methods and properties in RenameFileController
 ==============================================================================

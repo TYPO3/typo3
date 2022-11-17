@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67402:
+
 =============================================================
 Deprecation: #67402 - Extbase AbstractDomainObject __wakeup()
 =============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94953:
+
 ===============================================================
 Deprecation: #94953 - Edit panel related frontend functionality
 ===============================================================

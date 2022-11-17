@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94058:
+
 =============================================
 Deprecation: #94058 - JavaScript goToModule()
 =============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-83971:
+
 ====================================================================================
 Important: #83971 - Browser Notification API only works on SSL encrypted connections
 ====================================================================================

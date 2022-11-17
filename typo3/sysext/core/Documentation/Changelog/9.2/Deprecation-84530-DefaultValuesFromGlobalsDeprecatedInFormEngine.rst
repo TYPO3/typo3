@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84530:
+
 ==========================================================================
 Deprecation: #84530 - Default values from globals deprecated in FormEngine
 ==========================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82398:
+
 =============================================================
 Breaking: #82398 - Remove special constant "TSConstantEditor"
 =============================================================

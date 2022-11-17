@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81601:
+
 ==============================================================
 Feature: #81601 - Add possibility to write tests in typeScript
 ==============================================================

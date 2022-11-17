@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69562:
+
 ============================================================================
 Deprecation: #69562 - Deprecate helper methods for redundant CSRF protection
 ============================================================================

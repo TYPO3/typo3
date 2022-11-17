@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-58122:
+
 =======================================================================
 Feature: #58122 - Configure class as non-selectable in Rich Text Editor
 =======================================================================

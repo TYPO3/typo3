@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66190:
+
 ====================================================
 Breaking: #66190 - Remove flash and chart from ExtJS
 ====================================================

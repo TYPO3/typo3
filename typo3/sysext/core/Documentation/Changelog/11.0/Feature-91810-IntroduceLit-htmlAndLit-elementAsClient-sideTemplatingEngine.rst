@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91810:
+
 =====================================================================================
 Feature: #91810 - Introduce lit-html and lit-element as client-side templating engine
 =====================================================================================

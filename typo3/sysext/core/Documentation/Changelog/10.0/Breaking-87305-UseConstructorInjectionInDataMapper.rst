@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87305:
+
 ==========================================================
 Breaking: #87305 - Use constructor injection in DataMapper
 ==========================================================

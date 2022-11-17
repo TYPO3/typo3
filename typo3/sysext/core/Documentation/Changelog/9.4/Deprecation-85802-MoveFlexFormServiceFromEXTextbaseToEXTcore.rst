@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85802:
+
 =======================================================================
 Deprecation: #85802 - Move FlexFormService from EXT:extbase to EXT:core
 =======================================================================

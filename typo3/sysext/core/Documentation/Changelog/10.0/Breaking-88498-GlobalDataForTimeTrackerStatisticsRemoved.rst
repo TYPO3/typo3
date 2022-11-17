@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88498:
+
 =================================================================
 Breaking: #88498 - Global data for TimeTracker statistics removed
 =================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92128:
+
 =======================================================================
 Breaking: #92128 - DatabaseRecordList: Drop hook to modify searchFields
 =======================================================================

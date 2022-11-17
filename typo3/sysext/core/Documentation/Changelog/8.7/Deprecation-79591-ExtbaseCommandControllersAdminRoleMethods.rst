@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79591:
+
 ====================================================================
 Deprecation: #79591 - Extbase command controllers admin role methods
 ====================================================================

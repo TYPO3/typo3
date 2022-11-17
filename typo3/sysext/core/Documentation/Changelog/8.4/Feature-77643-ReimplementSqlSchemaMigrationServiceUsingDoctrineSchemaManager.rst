@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-77643:
+
 ====================================================================================
 Feature: #77643 - Reimplement SqlSchemaMigrationService using Doctrine SchemaManager
 ====================================================================================

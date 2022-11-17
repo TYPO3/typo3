@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-62800:
+
 ==========================================================
 Deprecation: #62800 - Workspaces ToolbarItem via ExtDirect
 ==========================================================

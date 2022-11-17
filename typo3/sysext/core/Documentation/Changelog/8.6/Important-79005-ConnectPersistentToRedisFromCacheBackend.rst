@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-79005:
+
 =============================================================================================
 Important: #79005 - Included missing support for persistent connection in Redis cache backend
 =============================================================================================

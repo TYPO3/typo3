@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-80450:
+
 ======================================================
 Important: #80450 - MonitorUtilityMovedToCompatibility
 ======================================================

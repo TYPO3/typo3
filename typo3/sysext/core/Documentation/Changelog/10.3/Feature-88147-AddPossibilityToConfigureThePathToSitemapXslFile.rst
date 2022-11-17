@@ -2,6 +2,8 @@
 
 .. highlight:: typoscript
 
+.. _feature-88147:
+
 ==========================================================================
 Feature: #88147 - Add possibility to configure the path to sitemap xslFile
 ==========================================================================

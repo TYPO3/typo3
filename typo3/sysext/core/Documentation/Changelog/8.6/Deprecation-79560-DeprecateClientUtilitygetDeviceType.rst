@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79560:
+
 ============================================================
 Deprecation: #79560 - Deprecate ClientUtility::getDeviceType
 ============================================================

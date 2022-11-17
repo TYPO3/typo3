@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-65432:
+
 ============================================================================
 Breaking: #65432 - Storage of module URI in global variable has been removed
 ============================================================================

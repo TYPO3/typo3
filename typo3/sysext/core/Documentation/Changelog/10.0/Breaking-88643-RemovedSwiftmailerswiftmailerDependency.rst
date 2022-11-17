@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88643:
+
 =============================================================
 Breaking: #88643 - Removed swiftmailer/swiftmailer dependency
 =============================================================

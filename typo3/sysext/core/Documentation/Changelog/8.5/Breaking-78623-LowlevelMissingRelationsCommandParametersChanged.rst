@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78623:
+
 ======================================================================
 Breaking: #78623 - Lowlevel MissingRelationsCommand parameters changed
 ======================================================================

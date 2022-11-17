@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-34922:
+
 ==========================================================================
 Feature: #34922 - Allow .ts file extension for static TypoScript templates
 ==========================================================================

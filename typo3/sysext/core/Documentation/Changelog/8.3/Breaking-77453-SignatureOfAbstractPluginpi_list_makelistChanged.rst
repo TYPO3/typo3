@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77453:
+
 ========================================================================
 Breaking: #77453 - Signature of AbstractPlugin::pi_list_makelist changed
 ========================================================================

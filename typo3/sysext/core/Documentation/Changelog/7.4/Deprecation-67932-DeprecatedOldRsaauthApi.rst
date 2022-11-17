@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-67932:
+
 ===========================================================
 Deprecation: #67932 - Deprecated old rsaauth encryption API
 ===========================================================

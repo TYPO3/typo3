@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83449:
+
 ======================================================================================
 Feature: #83449 - Make list of fields configurable in Pagetree overview in Info module
 ======================================================================================

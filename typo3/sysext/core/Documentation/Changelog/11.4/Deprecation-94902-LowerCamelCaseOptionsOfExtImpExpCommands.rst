@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94902:
+
 =============================================================================
 Deprecation: #94902 - Deprecate lowerCamelCase options of EXT:impexp commands
 =============================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89526:
+
 ===================================================
 Feature: #89526 - FeatureFlag: newTranslationServer
 ===================================================

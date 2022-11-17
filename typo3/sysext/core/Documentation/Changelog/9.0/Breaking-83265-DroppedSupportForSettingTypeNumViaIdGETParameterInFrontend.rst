@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83265:
+
 =========================================================================================
 Breaking: #83265 - Dropped support for setting "typeNum" via id GET Parameter in Frontend
 =========================================================================================

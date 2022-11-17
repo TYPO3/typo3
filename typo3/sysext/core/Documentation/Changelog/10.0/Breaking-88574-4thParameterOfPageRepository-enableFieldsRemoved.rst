@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88574:
+
 ========================================================================
 Breaking: #88574 - 4th parameter of PageRepository->enableFields removed
 ========================================================================

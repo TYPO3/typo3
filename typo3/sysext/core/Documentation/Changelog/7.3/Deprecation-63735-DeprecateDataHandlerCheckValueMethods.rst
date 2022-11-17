@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-63735:
+
 =================================================================
 Deprecation: #63735 - Deprecate DataHandler->checkValue_*-methods
 =================================================================

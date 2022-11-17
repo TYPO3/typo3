@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92940:
+
 ===============================================================
 Breaking: #92940 - Global option "lockBeUserToDBmounts" removed
 ===============================================================

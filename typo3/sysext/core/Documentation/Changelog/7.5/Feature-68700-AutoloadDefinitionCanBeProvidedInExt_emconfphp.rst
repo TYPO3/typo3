@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-68700:
+
 =======================================================================
 Feature: #68700 - Autoload definition can be provided in ext_emconf.php
 =======================================================================

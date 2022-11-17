@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94377:
+
 ===========================================================
 Deprecation: #94377 - Extbase ObjectManager->getEmptyObject
 ===========================================================

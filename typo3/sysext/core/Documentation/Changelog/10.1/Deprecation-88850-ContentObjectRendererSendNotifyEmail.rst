@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88850:
+
 ============================================================
 Deprecation: #88850 - ContentObjectRenderer::sendNotifyEmail
 ============================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76879:
+
 =============================================================
 Breaking: #76879 - Remove unused properties from PageTreeView
 =============================================================

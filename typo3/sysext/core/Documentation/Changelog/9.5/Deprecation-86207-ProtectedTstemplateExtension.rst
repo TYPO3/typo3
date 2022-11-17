@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86207:
+
 ====================================================
 Deprecation: #86207 - Protected tstemplate extension
 ====================================================

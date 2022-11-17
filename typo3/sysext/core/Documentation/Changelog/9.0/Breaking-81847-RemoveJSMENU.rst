@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-81847:
+
 ================================
 Breaking: #81847 - Remove JSMENU
 ================================

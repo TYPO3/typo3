@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-70477:
+
 ==================================================
 Deprecation: #70477 - Deprecate SpriteIcon classes
 ==================================================

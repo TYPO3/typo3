@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66822:
+
 ===================================================
 Feature: #66822 - Allow Sprites For Backend Modules
 ===================================================

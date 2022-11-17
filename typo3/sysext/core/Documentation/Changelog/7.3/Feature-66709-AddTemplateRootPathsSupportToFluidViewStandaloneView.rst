@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66709:
+
 ============================================================================
 Feature: #66709 - Add TemplateRootPaths support to Fluid/View/StandaloneView
 ============================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-71458:
+
 ==========================================================================
 Breaking: #71458 - FullQuoteArray can't handle boolean values for $noQuote
 ==========================================================================

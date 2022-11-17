@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-76459:
+
 ==============================================================
 Feature: #76459 - Add crossorigin property to JavaScript files
 ==============================================================

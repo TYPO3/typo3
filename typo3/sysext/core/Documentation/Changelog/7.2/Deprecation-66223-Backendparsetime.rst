@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-66223:
+
 ==================================================
 Deprecation: #66223 - Backend parseTime deprecated
 ==================================================

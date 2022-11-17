@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92992:
+
 ==================================================================
 Deprecation: #92992 - Hook t3lib_parsehtml_proc.php:transformation
 ==================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-56951:
+
 ===========================================================
 Breaking: #56951 - Remove unused methods in PagePositionMap
 ===========================================================

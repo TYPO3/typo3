@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82975:
+
 ===========================================================================
 Deprecation: #82975 - Deprecate usage of @inject with non-public properties
 ===========================================================================

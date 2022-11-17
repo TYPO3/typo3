@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94623:
+
 ==================================================================================
 Feature: #94623 - tt_content images, assets, media showPossibleLocalizationRecords
 ==================================================================================

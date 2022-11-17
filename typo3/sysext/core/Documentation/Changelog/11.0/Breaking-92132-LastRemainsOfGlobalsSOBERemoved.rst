@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92132:
+
 =======================================================
 Breaking: #92132 - Last remains of globals SOBE removed
 =======================================================

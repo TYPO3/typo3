@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-91001:
+
 ===========================================================
 Deprecation: #91001 - Various methods within GeneralUtility
 ===========================================================

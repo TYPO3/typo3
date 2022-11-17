@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82303:
+
 ===========================================================
 Feature: #82303 - Add configurable footnote to login screen
 ===========================================================

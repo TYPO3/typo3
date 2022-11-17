@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91974:
+
 =================================================================
 Breaking: #91974 - Configuration Option IPmaskMountGroups removed
 =================================================================

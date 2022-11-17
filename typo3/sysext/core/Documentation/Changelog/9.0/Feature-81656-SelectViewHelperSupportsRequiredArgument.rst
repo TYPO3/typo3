@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81656:
+
 ===============================================================
 Feature: #81656 - Select view helper supports required argument
 ===============================================================

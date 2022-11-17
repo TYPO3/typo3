@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63780:
+
 ======================================================================================
 Breaking: #63780 - Remove public properties words and word_strings from ReferenceIndex
 ======================================================================================

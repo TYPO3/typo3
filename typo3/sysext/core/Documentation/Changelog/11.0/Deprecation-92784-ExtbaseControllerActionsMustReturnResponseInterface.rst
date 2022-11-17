@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92784:
+
 ==============================================================================
 Deprecation: #92784 - Extbase controller actions must return ResponseInterface
 ==============================================================================

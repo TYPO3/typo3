@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73068:
+
 =============================================================
 Deprecation: #73068 - Deprecated "default" argument on f:case
 =============================================================

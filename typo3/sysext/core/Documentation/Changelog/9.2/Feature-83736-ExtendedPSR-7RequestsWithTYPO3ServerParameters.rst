@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83736:
+
 =================================================================================
 Feature: #83736 - Extended PSR-7 requests with TYPO3 normalized server parameters
 =================================================================================

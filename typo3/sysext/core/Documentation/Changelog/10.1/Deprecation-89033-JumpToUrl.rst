@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-89033:
+
 ===============================
 Deprecation: #89033 - jumpToUrl
 ===============================

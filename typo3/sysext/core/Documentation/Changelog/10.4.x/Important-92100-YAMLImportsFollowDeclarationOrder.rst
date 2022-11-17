@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92100:
+
 =========================================================
 Important: #92100 - YAML imports follow declaration order
 =========================================================

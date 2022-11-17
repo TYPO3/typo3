@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69276:
+
 =============================================================
 Breaking: #69276 - ElementBrowserController::$browser removed
 =============================================================

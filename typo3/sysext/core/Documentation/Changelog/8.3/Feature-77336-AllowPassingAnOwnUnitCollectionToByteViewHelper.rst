@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-77336:
+
 =========================================================================
 Feature: #77336 - Allow passing an own unit collection to BytesViewHelper
 =========================================================================

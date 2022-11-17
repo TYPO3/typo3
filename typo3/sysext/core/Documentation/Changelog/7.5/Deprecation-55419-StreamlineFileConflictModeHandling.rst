@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-55419:
+
 ============================================================
 Deprecation: #55419 - Streamline file conflict mode handling
 ============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82919:
+
 =============================================================
 Breaking: #82919 - Removed pagetree-related TSconfig settings
 =============================================================

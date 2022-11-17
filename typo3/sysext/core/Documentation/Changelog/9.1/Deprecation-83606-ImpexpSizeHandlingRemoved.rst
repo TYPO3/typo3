@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83606:
+
 ===================================================
 Deprecation: #83606 - impexp: Size handling removed
 ===================================================

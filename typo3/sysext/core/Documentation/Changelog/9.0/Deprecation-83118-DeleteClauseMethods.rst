@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83118:
+
 =====================================================
 Deprecation: #83118 - DeleteClause methods deprecated
 =====================================================

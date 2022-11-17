@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78224:
+
 ==========================================
 Deprecation: #78224 - TYPO3_DB occurrences
 ==========================================

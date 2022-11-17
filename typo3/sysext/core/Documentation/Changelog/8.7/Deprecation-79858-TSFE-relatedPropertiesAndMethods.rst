@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79858:
+
 =========================================================
 Deprecation: #79858 - TSFE-related properties and methods
 =========================================================

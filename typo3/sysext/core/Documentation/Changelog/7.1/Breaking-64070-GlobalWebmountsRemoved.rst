@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-64070:
+
 ====================================================
 Breaking: #64070 - Removed global variable WEBMOUNTS
 ====================================================

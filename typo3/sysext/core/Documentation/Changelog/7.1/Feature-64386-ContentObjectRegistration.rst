@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-64386:
+
 ====================================================
 Feature: #64386 - Public Content Object Registration
 ====================================================

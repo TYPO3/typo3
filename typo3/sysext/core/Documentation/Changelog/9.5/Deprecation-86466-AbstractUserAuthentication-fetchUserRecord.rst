@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86466:
+
 =================================================================
 Deprecation: #86466 - AbstractUserAuthentication->fetchUserRecord
 =================================================================

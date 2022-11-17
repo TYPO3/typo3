@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90019:
+
 ==========================================================
 Deprecation: #90019 - Page permission logic by DataHandler
 ==========================================================

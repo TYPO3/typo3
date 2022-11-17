@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-42543:
+
 =============================================
 Breaking: #42543 - Default TypoScript Removed
 =============================================

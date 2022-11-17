@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86068:
+
 ==========================================
 Deprecation: #86068 - old condition syntax
 ==========================================

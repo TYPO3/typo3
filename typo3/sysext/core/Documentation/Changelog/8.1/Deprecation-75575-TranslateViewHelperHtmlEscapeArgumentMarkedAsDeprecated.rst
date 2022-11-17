@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-75575:
+
 ==================================================================================
 Deprecation: #75575 - TranslateViewHelper htmlEscape argument marked as deprecated
 ==================================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75150:
+
 ==========================================================
 Breaking: #75150 - Removed TypoScript option includeJSlibs
 ==========================================================

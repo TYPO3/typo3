@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82725:
+
 =================================================
 Deprecation: #82725 - Deprecate ConfigurationForm
 =================================================

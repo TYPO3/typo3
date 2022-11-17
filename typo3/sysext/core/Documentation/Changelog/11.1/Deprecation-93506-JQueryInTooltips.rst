@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-93506:
+
 ========================================
 Deprecation: #93506 - jQuery in tooltips
 ========================================

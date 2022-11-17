@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78549:
+
 ======================================================================
 Breaking: #78549 - Override New Page Creation Wizard via page TSconfig
 ======================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-12211:
+
 ================================================================================
 Feature: #12211 - Usability: Scheduler provide page browser to choose start page
 ================================================================================

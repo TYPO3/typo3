@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95105:
+
 ==============================================
 Deprecation: #95105 - DatabaseRecordList hooks
 ==============================================

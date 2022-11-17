@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72438:
+
 ===========================================================
 Breaking: #72438 - Remove deprecated code from FlashMessage
 ===========================================================

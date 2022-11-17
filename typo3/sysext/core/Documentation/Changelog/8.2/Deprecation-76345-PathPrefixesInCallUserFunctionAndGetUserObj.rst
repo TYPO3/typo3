@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-76345:
+
 ======================================================================
 Deprecation: #76345 - Path prefixes in callUserFunction and getUserObj
 ======================================================================

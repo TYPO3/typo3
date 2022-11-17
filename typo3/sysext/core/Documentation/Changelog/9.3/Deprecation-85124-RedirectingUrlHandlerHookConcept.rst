@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85124:
+
 =========================================================
 Deprecation: #85124 - Redirecting urlHandler Hook Concept
 =========================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-69340:
+
 ======================================================
 Feature: #69340 - Show backend user who deleted record
 ======================================================

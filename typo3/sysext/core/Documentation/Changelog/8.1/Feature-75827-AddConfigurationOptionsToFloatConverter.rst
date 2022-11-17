@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-75827:
+
 =======================================================================================================
 Feature: #75827 - Add configuration options to \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter
 =======================================================================================================

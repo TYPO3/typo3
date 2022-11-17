@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93825:
+
 =================================================
 Feature: #93825 - Rate limiting for failed logins
 =================================================

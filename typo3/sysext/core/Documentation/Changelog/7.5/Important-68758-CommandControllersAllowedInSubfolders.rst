@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-68758:
+
 =============================================================
 Important: #68758 - Command controllers allowed in subfolders
 =============================================================

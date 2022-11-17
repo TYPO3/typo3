@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-22439:
+
 ============================================================
 Feature: #22439 - Allow nested GET-params in config.linkVars
 ============================================================

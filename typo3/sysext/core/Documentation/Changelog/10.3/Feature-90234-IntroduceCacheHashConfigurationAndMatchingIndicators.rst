@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90234:
+
 ==========================================================================
 Feature: #90234 - Introduce CacheHashConfiguration and matching indicators
 ==========================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79565:
+
 =================================================================
 Breaking: #79565 - Removed "usergroup_cached_list" database field
 =================================================================

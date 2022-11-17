@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-92356:
+
 ========================================================
 Important: #92356 - DataHandler performance improvements
 ========================================================

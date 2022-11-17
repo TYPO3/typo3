@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78525:
+
 ======================================================================
 Breaking: #78525 - Removed unused configuration options for JavaScript
 ======================================================================

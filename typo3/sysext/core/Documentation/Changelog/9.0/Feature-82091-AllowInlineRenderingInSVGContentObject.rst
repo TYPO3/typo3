@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82091:
+
 ==============================================================
 Feature: #82091 - Allow inline rendering in SVG content object
 ==============================================================

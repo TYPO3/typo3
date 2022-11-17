@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-70138:
+
 =================================================
 Deprecation: #70138 - Flex form language handling
 =================================================

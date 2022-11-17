@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-77477:
+
 ==================================================
 Deprecation: #77477 - TemplateService->fileContent
 ==================================================

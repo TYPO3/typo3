@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85102:
+
 =======================================
 Deprecation: #85102 - PhpOptionsUtility
 =======================================

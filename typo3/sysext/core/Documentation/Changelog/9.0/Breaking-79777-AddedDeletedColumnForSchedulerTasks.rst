@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79777:
+
 =================================================================
 Breaking: #79777 - EXT:scheduler - Deleted column for tasks added
 =================================================================

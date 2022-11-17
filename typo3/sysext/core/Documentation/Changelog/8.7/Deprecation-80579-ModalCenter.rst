@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80579:
+
 ================================================================
 Deprecation: #80579 - Modal.center has been marked as deprecated
 ================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78520:
+
 ======================================================================
 Breaking: #78520 - Lowlevel Orphan Records Cleaning parameters changed
 ======================================================================

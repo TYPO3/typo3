@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93174:
+
 ===========================================
 Feature: #93174 - Lazy console command list
 ===========================================

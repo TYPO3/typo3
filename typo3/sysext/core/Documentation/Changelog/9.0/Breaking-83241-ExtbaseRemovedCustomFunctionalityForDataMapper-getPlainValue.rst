@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83241:
+
 ======================================================================================
 Breaking: #83241 - Extbase: Removed custom functionality for DataMapper->getPlainValue
 ======================================================================================

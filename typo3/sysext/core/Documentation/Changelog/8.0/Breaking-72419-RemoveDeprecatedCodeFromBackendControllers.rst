@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72419:
+
 ==================================================================
 Breaking: #72419 - Remove deprecated code from backend controllers
 ==================================================================

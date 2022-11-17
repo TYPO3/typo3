@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87525:
+
 ===================================================
 Feature: #87525 - Add api=1 option in VimeoRenderer
 ===================================================

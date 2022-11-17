@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82669:
+
 ===================================================================
 Deprecation: #82669 - Streamline Backend route path inconsistencies
 ===================================================================

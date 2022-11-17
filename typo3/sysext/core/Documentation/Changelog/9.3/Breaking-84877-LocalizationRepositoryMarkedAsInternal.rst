@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-84877-1668719195:
+
 ============================================================
 Breaking: #84877 - LocalizationRepository marked as internal
 ============================================================

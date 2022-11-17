@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-92531:
+
 ===========================================
 Feature: #92531 - Improved Email Validation
 ===========================================

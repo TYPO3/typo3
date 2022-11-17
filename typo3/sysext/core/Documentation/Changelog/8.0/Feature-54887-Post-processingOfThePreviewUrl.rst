@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-54887:
+
 ===================================================
 Feature: #54887 - Post-processing of the previewUrl
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89929:
+
 ===============================
 Feature: #89929 - Galician flag
 ===============================

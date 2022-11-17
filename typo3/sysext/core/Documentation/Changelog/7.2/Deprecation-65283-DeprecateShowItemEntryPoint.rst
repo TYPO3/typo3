@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65283-1668719172:
+
 =====================================================
 Deprecation: #65283 - Deprecate show item entry point
 =====================================================

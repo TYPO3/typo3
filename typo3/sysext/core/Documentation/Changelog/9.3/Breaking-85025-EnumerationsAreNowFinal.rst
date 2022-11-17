@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-85025:
+
 =============================================
 Breaking: #85025 - Enumerations are now final
 =============================================

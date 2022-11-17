@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-80246:
+
 =====================================================
 Important: #80246 - MemcachedBackend marked transient
 =====================================================

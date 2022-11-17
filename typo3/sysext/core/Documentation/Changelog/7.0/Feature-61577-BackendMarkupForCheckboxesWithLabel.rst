@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-61577:
+
 ===========================================================
 Feature: #61577 - Backend markup for checkboxes with labels
 ===========================================================

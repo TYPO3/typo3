@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83793:
+
 =============================================================
 Deprecation: #83793 - FAL ResourceStorage->dumpFileContents()
 =============================================================

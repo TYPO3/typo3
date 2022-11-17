@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-73042:
+
 ==============================================================
 Feature: #73042 - Introduce native support for Symfony Console
 ==============================================================

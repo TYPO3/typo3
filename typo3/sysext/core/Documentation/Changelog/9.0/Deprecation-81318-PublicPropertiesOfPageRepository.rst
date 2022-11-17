@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-81318:
+
 =========================================================
 Deprecation: #81318 - Public properties of PageRepository
 =========================================================

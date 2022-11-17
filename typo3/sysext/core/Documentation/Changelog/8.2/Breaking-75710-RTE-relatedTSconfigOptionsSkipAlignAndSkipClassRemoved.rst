@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-75710:
+
 ===============================================================================
 Breaking: #75710 - RTE-related TSconfig options skipAlign and skipClass removed
 ===============================================================================

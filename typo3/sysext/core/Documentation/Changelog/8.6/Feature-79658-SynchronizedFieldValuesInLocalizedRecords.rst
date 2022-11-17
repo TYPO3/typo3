@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79658:
+
 ================================================================
 Feature: #79658 - Synchronized field values in localized records
 ================================================================

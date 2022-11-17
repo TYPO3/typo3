@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69568:
+
 =============================================
 Breaking: #69568 - FormEngine related classes
 =============================================

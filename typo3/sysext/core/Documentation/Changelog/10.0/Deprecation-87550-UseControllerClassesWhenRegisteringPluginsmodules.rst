@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-87550:
+
 =============================================================================
 Deprecation: #87550 - Use controller classes when registering plugins/modules
 =============================================================================

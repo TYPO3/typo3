@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69706:
+
 ==================================================================
 Feature: #69706 - Add support for alternative (inline) icon markup
 ==================================================================

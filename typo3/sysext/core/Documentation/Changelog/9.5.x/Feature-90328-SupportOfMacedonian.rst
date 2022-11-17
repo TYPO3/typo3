@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90328:
+
 ============================================
 Feature: #90328 - Support of Macedonian (MK)
 ============================================

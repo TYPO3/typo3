@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84295:
+
 ===========================================================================
 Deprecation: #84295 - Use ServerRequestInterface in File/EditFileController
 ===========================================================================

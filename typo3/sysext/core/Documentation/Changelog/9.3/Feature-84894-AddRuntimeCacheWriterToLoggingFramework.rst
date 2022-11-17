@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84894:
+
 =============================================================
 Feature: #84894 - Add RuntimeCacheWriter to Logging Framework
 =============================================================

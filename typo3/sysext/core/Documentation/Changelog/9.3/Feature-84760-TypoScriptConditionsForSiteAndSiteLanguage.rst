@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84760:
+
 =================================================================
 Feature: #84760 - TypoScript conditions for site and siteLanguage
 =================================================================

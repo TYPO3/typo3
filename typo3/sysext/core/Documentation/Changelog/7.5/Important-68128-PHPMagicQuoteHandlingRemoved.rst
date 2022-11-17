@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-68128:
+
 ====================================================
 Important: #68128 - PHP Magic Quote Handling removed
 ====================================================

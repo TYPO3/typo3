@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93908:
+
 ==================================================
 Feature: #93908 - Add decoding attribute to images
 ==================================================

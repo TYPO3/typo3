@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78759:
+
 =======================================================
 Breaking: #78759 - Fluidification of EditFileController
 =======================================================

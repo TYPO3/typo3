@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-82177:
+
 =========================================
 Feature: #82177 - add file size validator
 =========================================

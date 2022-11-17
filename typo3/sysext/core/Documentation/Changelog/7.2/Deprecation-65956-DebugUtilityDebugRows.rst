@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65956:
+
 ========================================================================
 Deprecation: #65956 - $returnHTML parameter of DebugUtility::debugRows()
 ========================================================================

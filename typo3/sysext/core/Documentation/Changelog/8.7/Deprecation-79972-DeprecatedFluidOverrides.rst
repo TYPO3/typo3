@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79972:
+
 ================================================
 Deprecation: #79972 - Deprecated Fluid Overrides
 ================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86002:
+
 =============================================================
 Deprecation: #86002 - TSFE constructor with no_cache argument
 =============================================================

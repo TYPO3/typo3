@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-70849:
+
 ================================================================================
 Important: #70849 - Make search levels in live search and list search consistent
 ================================================================================

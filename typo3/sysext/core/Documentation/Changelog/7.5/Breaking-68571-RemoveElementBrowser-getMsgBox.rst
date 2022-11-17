@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-68571:
+
 ===========================================================
 Breaking: #68571 - Removed method ElementBrowser->getMsgBox
 ===========================================================

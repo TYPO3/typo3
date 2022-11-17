@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92499:
+
 ==========================================================================
 Breaking: #92499 - AdminPanel does not preview hidden Frontend User Groups
 ==========================================================================

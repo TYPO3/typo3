@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-71521:
+
 =========================================================
 Important: #71521 - Internal changes in CommandController
 =========================================================

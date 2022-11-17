@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94577:
+
 ========================================================================
 Feature: #94577 - Clear indexed_search documents when content is changed
 ========================================================================

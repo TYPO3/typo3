@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-64726:
+
 ================================================================
 Feature: #64726 - Added support for multiple FlashMessage queues
 ================================================================

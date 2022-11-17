@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78217:
+
 ========================================
 Deprecation: #78217 - frameset and frame
 ========================================

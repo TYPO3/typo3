@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-65250:
+
 ===================================================
 Feature: #65250 - TypoScript condition add GPmerged
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-87511-1668719172:
+
 ===================================================================
 Breaking: #87511 - Remove $namespacesViewObjectNamePattern property
 ===================================================================

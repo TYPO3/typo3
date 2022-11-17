@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66070:
+
 ========================================================
 Feature: #66070 - Configure anchor for pagination widget
 ========================================================

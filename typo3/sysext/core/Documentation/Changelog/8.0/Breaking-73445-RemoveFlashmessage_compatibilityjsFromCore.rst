@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73445:
+
 =================================================================
 Breaking: #73445 - Remove flashmessage_compatibility.js from core
 =================================================================

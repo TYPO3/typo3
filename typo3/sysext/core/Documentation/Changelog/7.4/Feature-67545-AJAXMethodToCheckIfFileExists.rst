@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67545:
+
 ========================================================
 Feature: #67545 - AJAX call to check whether file exists
 ========================================================

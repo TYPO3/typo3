@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-86076:
+
 ============================================
 Feature: #86076 - New API for UpgradeWizards
 ============================================

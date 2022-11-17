@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85394:
+
 ==============================================================
 Deprecation: #85394 - Class Core\Database\PdoHelper deprecated
 ==============================================================

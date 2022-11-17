@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79124:
+
 ============================================================================
 Feature: #79124 - Allow overwriting of template paths in BackendTemplateView
 ============================================================================

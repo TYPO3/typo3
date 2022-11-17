@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78672:
+
 ==========================================================
 Feature: #78672 - Introduce fluid data processor for menus
 ==========================================================

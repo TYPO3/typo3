@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-83243:
+
 ============================================================
 Breaking: #83243 - Removed cache_phpcode cache configuration
 ============================================================

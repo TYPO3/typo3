@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94665:
+
 ============================================
 Deprecation: #94665 - Wincache cache backend
 ============================================

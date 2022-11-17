@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-75904:
+
 ============================================================================
 Deprecation: #75904 - Category Model has icon property but no database field
 ============================================================================

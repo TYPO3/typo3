@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80444:
+
 ======================================================================
 Deprecation: #80444 - TypoScriptFrontendController-> beLoginLinkIPList
 ======================================================================

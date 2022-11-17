@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-78222:
+
 ==============================================================================
 Breaking: #78222 - Extension autoload information is now in typo3conf/autoload
 ==============================================================================

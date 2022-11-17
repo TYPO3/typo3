@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78036:
+
 ===========================================================
 Feature: #78036 - Synchronize folder relations after rename
 ===========================================================

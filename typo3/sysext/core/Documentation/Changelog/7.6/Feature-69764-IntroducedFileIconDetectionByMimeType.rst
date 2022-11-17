@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69764:
+
 =============================================================
 Feature: #69764 - Introduced file icon detection by mime-type
 =============================================================

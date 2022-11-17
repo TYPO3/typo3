@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89139:
+
 =======================================================================
 Feature: #89139 - Add dependency injection support for console commands
 =======================================================================

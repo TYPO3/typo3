@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84275:
+
 ==========================================================================
 Deprecation: #84275 - Protected methods and properties in LogoutController
 ==========================================================================

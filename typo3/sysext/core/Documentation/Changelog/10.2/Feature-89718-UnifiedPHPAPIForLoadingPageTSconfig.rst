@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89718:
+
 ==========================================================
 Feature: #89718 - Unified PHP API for loading PageTSconfig
 ==========================================================

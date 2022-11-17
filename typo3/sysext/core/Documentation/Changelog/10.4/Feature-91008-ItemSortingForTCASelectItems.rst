@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91008:
+
 ===================================================
 Feature: #91008 - Item sorting for TCA select items
 ===================================================

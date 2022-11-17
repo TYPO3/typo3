@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78575:
+
 =================================================================
 Feature: #78575 - Enumeration constants don't provide their names
 =================================================================

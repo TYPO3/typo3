@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-72827:
+
 ==============================================================================
 Deprecation: #72827 - Module Icon configuration via [labels][tabs_images][tab]
 ==============================================================================

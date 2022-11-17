@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79531:
+
 =============================================================
 Feature: #79531 - EXT:form - Add multiselect inspector editor
 =============================================================

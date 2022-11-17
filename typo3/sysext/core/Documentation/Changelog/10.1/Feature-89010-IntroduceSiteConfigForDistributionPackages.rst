@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-89010:
+
 ========================================================================
 Feature: #89010 - Introduce Site Configuration for Distribution Packages
 ========================================================================

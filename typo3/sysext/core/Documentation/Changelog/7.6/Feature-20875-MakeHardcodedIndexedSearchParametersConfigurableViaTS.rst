@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-20875:
+
 ==============================================================================
 Feature: #20875 - Make hardcoded indexed_search parameters configurable via TS
 ==============================================================================

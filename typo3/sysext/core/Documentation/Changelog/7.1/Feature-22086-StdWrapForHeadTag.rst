@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-22086:
+
 =====================================================
 Feature: #22086 - Add .stdWrap to page.headTag option
 =====================================================

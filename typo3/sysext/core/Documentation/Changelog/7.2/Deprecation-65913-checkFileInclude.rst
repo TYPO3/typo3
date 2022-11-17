@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65913:
+
 =======================================================
 Deprecation: #65913 - Deprecate $TSFE->checkFileInclude
 =======================================================

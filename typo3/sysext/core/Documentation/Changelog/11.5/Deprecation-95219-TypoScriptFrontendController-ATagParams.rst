@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95219:
+
 ==============================================================
 Deprecation: #95219 - TypoScriptFrontendController->ATagParams
 ==============================================================

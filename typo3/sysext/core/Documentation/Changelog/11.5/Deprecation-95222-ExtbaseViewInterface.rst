@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-95222:
+
 ===========================================
 Deprecation: #95222 - Extbase ViewInterface
 ===========================================

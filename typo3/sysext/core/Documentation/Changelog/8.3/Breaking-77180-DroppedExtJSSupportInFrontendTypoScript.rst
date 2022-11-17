@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77180:
+
 ===============================================================
 Breaking: #77180 - Dropped ExtJS support in Frontend TypoScript
 ===============================================================

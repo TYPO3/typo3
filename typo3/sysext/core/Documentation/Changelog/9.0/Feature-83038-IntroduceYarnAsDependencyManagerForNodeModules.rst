@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-83038:
+
 =======================================================================
 Feature: #83038 - Introduce Yarn as dependency manager for node modules
 =======================================================================

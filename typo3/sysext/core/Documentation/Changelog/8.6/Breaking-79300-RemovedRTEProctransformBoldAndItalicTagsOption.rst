@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79300:
+
 =====================================================================
 Breaking: #79300 - Removed RTE proc.transformBoldAndItalicTags option
 =====================================================================

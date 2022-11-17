@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-66286:
+
 =========================================================================
 Breaking: #66286 - Page TSconfig options to hide Web Info modules renamed
 =========================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-46770:
+
 ==============================================================================
 Deprecation: #46770 - Deprecate LocalImageProcessor::getTemporaryImageWithText
 ==============================================================================

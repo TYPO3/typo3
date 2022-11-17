@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76469:
+
 ===============================================
 Breaking: #76469 - Doctrine: migrate ext:ImpExp
 ===============================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78332:
+
 ======================================================================================
 Feature: #78332 - Allow setting a default replyTo-email-address for notification-mails
 ======================================================================================

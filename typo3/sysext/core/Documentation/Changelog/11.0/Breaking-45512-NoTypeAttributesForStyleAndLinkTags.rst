@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-45512:
+
 =============================================================
 Breaking: #45512 - No type attributes for style and link tags
 =============================================================

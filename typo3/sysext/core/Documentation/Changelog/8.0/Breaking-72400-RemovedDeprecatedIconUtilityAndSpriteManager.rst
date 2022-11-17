@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72400:
+
 ===================================================================
 Breaking: #72400 - Removed deprecated IconUtility and SpriteManager
 ===================================================================

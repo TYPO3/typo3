@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-94889:
+
 ======================================================================
 Feature: #94889 - Add "result" option to typolink returnLast parameter
 ======================================================================

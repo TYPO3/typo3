@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84980:
+
 ===============================================================
 Deprecation: #84980 - BackendUserAuthentication->addTScomment()
 ===============================================================

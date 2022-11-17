@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88441:
+
 ======================================================================
 Feature: #88441 - Show configuration of USER_INT objects in adminpanel
 ======================================================================

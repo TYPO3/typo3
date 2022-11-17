@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-97131:
+
 ===========================================================================
 Breaking: #97131 - Removed CLI commands related to files in uploads/ folder
 ===========================================================================

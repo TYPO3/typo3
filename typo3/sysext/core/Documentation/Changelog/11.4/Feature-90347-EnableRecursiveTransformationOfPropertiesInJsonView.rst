@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90347:
+
 ===========================================================================
 Feature: #90347 - Enable recursive transformation of properties in JsonView
 ===========================================================================

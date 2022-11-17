@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84584:
+
 ===========================================
 Feature: #84584 - Re-Design the admin panel
 ===========================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-84414:
+
 ====================================================
 Deprecation: #84414 - BackendUtility::shortcutExists
 ====================================================

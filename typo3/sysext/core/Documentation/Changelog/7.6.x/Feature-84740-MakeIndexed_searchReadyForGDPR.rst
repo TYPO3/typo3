@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84740:
+
 ====================================================
 Feature: #84740 - Make indexed_search ready for GDPR
 ====================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-65636:
+
 ==========================================================================
 Important: #65636 - File meta data can now be edited on read only storages
 ==========================================================================

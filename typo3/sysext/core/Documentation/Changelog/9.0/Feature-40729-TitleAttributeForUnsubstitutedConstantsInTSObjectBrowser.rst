@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-40729:
+
 ====================================================================================
 Feature: #40729 - Title attribute for (un)substituted constants in TS object browser
 ====================================================================================

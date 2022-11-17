@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78192:
+
 ====================================================
 Feature: #78192 - Refactor click menu (context menu)
 ====================================================

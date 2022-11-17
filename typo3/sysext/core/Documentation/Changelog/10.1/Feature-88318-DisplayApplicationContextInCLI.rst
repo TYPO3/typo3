@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88318:
+
 ====================================================
 Feature: #88318 - Display Application Context in CLI
 ====================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-72851:
+
 =============================================================================
 Deprecation: #72851 - Deprecate some functions not in use anymore in the core
 =============================================================================

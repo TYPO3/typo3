@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72399:
+
 ==============================================================
 Breaking: #72399 - Removed deprecated code from BackendUtility
 ==============================================================

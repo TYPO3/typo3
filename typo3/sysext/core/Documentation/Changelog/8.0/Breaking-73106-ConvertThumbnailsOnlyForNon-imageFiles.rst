@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73106:
+
 ==============================================================
 Breaking: #73106 - Convert thumbnails only for non-image files
 ==============================================================

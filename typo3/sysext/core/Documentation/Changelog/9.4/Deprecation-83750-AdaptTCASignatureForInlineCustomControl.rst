@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83750:
+
 ============================================================
 Deprecation: #83750 - Adapt TCA signature for customControls
 ============================================================

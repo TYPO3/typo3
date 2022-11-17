@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73793:
+
 =============================================================
 Breaking: #73793 - Removed AbstractPlugin->LOCAL_LANG_charset
 =============================================================

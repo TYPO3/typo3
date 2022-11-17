@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-47006:
+
 =================================================================
 Feature: #47006 - Extend the widget identifier with custom string
 =================================================================

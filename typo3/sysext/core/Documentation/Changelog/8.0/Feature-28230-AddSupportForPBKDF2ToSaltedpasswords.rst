@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-28230:
+
 ===========================================================
 Feature: #28230 - Add support for PBKDF2 to saltedpasswords
 ===========================================================

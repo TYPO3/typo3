@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61785:
+
 =============================================================
 Breaking: #61785 - loadTCA function in GeneralUtility removed
 =============================================================

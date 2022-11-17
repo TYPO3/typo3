@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84713:
+
 ========================================================
 Feature: #84713 - Access single values in form templates
 ========================================================

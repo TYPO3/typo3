@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83116:
+
 =========================================================================
 Deprecation: #83116 - Caching framework wrapper methods in BackendUtility
 =========================================================================

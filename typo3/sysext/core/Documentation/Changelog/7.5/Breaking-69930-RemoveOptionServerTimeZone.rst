@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69930:
+
 =================================================
 Breaking: #69930 - Remove option "serverTimeZone"
 =================================================

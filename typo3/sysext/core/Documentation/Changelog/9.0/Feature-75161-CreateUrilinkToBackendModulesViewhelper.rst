@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-75161:
+
 ===============================================================
 Feature: #75161 - Create uri/link to backend modules viewhelper
 ===============================================================

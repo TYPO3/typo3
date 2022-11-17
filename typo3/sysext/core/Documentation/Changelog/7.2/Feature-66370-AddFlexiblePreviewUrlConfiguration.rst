@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66370:
+
 ========================================================
 Feature: #66370 - Add flexible Preview URL configuration
 ========================================================

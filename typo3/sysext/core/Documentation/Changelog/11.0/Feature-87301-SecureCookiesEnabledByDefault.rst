@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-87301:
+
 ===================================================
 Feature: #87301 - Secure cookies enabled by default
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-85719:
+
 =======================================================================================
 Important: #85719 - PHP Packages: Symfony Components requirements raised to Symfony 4.1
 =======================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-86486:
+
 ===================================================================
 Deprecation: #86486 - TypoScriptFrontendController->processOutput()
 ===================================================================

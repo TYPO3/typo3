@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-91782:
+
 ======================================================================================================
 Breaking: #91782 - lockToDomain feature for frontend users / groups and backend users / groups removed
 ======================================================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85613:
+
 =======================================
 Deprecation: #85613 - Category Registry
 =======================================

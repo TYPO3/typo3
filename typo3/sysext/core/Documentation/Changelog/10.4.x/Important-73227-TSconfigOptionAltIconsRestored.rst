@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-73227:
+
 =====================================================
 Important: #73227 - TSconfig option altIcons restored
 =====================================================

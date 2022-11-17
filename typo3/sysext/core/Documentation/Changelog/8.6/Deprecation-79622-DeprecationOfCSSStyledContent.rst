@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-79622:
+
 =======================================================
 Deprecation: #79622 - Deprecation of CSS Styled Content
 =======================================================

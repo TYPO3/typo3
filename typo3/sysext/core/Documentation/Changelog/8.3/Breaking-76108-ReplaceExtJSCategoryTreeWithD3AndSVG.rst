@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76108:
+
 ==============================================================
 Breaking: #76108 - Replace ExtJS category tree with D3 and SVG
 ==============================================================

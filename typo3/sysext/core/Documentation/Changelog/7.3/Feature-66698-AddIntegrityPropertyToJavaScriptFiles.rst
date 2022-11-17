@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-66698:
+
 ============================================================
 Feature: #66698 - Add integrity property to JavaScript files
 ============================================================

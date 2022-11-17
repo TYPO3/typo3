@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93455:
+
 =====================================================================
 Feature: #93455 - Backend Routes restricted to specified HTTP methods
 =====================================================================

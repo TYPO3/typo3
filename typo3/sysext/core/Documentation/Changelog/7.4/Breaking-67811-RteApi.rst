@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-67811:
+
 ==========================
 Breaking: #67811 - Rte API
 ==========================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-76259:
+
 ========================================================
 Breaking: #76259 - Value passed to hook getTable changed
 ========================================================

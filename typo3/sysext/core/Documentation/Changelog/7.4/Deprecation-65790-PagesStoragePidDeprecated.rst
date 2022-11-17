@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65790:
+
 ========================================================
 Deprecation: #65790 - Remove pages.storage_pid and logic
 ========================================================

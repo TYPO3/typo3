@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-69863:
+
 =================================================================================
 Breaking: #69863 - Fluid escaping behaviour changed from ENT_COMPAT to ENT_QUOTES
 =================================================================================

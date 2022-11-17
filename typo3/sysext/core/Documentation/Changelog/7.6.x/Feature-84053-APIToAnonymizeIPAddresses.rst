@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84053:
+
 ===============================================
 Feature: #84053 - API to anonymize IP addresses
 ===============================================

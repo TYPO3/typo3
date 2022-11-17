@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67765:
+
 ================================================
 Feature: #67765 - Introduce TypoLinkCodecService
 ================================================

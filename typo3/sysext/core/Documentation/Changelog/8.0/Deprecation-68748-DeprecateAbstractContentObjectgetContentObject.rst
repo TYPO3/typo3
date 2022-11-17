@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-68748:
+
 =========================================================================
 Deprecation: #68748 - Deprecate AbstractContentObject::getContentObject()
 =========================================================================

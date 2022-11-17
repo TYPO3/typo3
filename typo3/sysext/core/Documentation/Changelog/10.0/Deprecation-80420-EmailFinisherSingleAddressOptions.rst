@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-80420:
+
 ==========================================================
 Deprecation: #80420 - EmailFinisher single address options
 ==========================================================

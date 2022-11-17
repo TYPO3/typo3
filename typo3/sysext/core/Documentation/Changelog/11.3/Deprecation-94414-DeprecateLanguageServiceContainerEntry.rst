@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94414:
+
 =====================================================
 Deprecation: #94414 - LanguageService container entry
 =====================================================

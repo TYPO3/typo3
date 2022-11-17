@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-64068:
+
 ============================================================
 Deprecation: #64068 - Deprecate thumbs.php and ThumbnailView
 ============================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-84877:
+
 =============================================================
 Breaking: #84877 - Methods of localization repository changed
 =============================================================

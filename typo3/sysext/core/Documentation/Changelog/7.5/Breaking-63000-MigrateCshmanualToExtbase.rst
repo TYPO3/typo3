@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-63000:
+
 ===================================================
 Breaking: #63000 - Migrate EXT:cshmanual to Extbase
 ===================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-90426:
+
 ========================================================
 Feature: #90426 - Browser-native lazy loading for images
 ========================================================

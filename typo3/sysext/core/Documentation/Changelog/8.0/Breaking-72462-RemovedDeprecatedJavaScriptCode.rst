@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72462:
+
 =====================================================
 Breaking: #72462 - Removed deprecated JavaScript code
 =====================================================

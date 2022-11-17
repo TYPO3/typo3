@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-74022:
+
 ===============================================================
 Deprecation: #74022 - GraphicalFunctions->prependAbsolutePath()
 ===============================================================

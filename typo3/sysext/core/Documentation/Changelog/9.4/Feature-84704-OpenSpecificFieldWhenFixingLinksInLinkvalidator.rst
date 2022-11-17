@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-84704:
+
 ========================================================================
 Feature: #84704 - Open specific field when fixing links in Linkvalidator
 ========================================================================

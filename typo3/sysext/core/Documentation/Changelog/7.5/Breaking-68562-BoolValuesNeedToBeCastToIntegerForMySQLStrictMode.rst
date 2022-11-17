@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-68562:
+
 ===============================================================================
 Breaking: #68562 - Bool values need to be cast to integer for MySQL strict mode
 ===============================================================================

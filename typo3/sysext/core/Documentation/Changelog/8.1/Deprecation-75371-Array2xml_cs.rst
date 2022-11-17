@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-75371:
+
 ==================================
 Deprecation: #75371 - array2xml_cs
 ==================================

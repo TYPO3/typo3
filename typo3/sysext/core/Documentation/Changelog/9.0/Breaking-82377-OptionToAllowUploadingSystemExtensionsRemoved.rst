@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-82377:
+
 ======================================================================
 Breaking: #82377 - Option to allow uploading system extensions removed
 ======================================================================

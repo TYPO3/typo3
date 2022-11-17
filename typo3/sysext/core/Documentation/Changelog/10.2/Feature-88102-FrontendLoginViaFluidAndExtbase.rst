@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-88102:
+
 ===========================================================
 Feature: #88102 - Frontend Login Form Via Fluid And Extbase
 ===========================================================

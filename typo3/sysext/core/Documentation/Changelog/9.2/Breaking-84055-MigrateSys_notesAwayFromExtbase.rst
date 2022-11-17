@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-84055:
+
 ======================================================
 Breaking: #84055 - Migrate sys_notes away from extbase
 ======================================================

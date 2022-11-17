@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-81775:
+
 ======================================================================
 Breaking: #81775 - suffix form identifier with the content element uid
 ======================================================================

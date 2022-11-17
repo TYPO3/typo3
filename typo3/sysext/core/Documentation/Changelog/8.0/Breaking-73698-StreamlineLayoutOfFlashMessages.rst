@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73698:
+
 =====================================================
 Breaking: #73698 - Streamline layout of FlashMessages
 =====================================================

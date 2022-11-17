@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-78733:
+
 ======================================================================
 Deprecation: #78733 - CallUserFunction "&" token for singleton objects
 ======================================================================

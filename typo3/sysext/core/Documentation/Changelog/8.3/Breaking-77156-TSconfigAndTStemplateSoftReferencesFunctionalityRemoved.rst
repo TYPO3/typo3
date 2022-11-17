@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-77156:
+
 ================================================================================
 Breaking: #77156 - TSconfig and TStemplate soft references functionality removed
 ================================================================================

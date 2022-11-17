@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-90147:
+
 =================================================
 Deprecation: #90147 - Unified File Name Validator
 =================================================

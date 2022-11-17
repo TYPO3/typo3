@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-59591:
+
 ==============================================================
 Feature: #59591 - Image quality definable per sourceCollection
 ==============================================================

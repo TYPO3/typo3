@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-67603:
+
 ==========================================================
 Feature: #67603 - Introduce TCA > ctrl > descriptionColumn
 ==========================================================

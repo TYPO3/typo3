@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-92947:
+
 ================================================================
 Deprecation: #92947 - TYPO3_MODE and TYPO3_REQUESTTYPE constants
 ================================================================

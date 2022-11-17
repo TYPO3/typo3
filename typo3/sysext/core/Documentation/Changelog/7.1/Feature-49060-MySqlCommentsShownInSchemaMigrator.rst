@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-49060:
+
 ============================================================
 Feature: #49060 - MySql Comments reflected in SchemaMigrator
 ============================================================

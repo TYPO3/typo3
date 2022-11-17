@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-88376:
+
 ====================================================================
 Breaking: #88376 - Removed obsolete "pageNotFound_handling" settings
 ====================================================================

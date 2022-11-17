@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78222:
+
 ===================================================================
 Feature: #78222 - Dump Class Loading Information UI in Install Tool
 ===================================================================

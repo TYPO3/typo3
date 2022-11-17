@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-73442:
+
 ==================================================================================
 Deprecation: #73442 - Modal.getSeverityClass has been moved to the Severity module
 ==================================================================================

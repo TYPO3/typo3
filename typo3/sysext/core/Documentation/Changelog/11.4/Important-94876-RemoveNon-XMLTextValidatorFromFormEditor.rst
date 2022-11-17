@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-94876:
+
 ====================================================================
 Important: #94876 - Remove "Non-XML text" validator from form editor
 ====================================================================

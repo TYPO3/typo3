@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-56633:
+
 ========================================================
 Feature: #56633 - Form protection API for frontend usage
 ========================================================

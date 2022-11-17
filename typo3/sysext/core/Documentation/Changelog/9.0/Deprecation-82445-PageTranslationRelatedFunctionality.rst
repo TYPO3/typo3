@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-82445:
+
 ============================================================
 Deprecation: #82445 - Page translation related functionality
 ============================================================

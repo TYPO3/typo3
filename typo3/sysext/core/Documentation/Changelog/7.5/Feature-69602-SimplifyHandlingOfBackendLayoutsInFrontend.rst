@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-69602:
+
 ==================================================================
 Feature: #69602 - Simplify handling of backend layouts in frontend
 ==================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94309:
+
 =================================================
 Deprecation: #94309 - GeneralUtility::stdAuthCode
 =================================================

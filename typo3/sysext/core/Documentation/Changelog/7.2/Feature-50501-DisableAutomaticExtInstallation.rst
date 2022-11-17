@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _feature-50501:
+
 ===================================================================
 Feature: #50501 - Extension Manager: Disable automatic installation
 ===================================================================

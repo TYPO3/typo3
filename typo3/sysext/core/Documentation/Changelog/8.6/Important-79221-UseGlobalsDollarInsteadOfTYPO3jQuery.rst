@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-79221:
+
 =================================================
 Important: #79221 - Use $ instead of TYPO3.jQuery
 =================================================

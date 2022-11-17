@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-72427:
+
 ====================================================================
 Breaking: #72427 - Removed TypoScript-related methods and properties
 ====================================================================

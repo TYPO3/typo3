@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-65934:
+
 ====================================================================================
 Deprecation: #65934 - "Prefix Local Anchors" functionality moved to legacy extension
 ====================================================================================

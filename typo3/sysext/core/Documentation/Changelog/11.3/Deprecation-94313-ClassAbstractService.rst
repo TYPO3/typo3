@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-94313:
+
 ===========================================
 Deprecation: #94313 - AbstractService class
 ===========================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-81901:
+
 =================================
 Feature: #81901 - Extend T3editor
 =================================

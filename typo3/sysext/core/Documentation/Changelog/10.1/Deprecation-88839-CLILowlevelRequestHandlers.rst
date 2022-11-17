@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-88839:
+
 ===================================================
 Deprecation: #88839 - CLI lowlevel request handlers
 ===================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-44879:
+
 =======================================================================
 Breaking: #44879 - TypoScript inline styles from blockquote tag removed
 =======================================================================

@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-76259:
+
 ===================================================================================
 Deprecation: #76259 - Deprecate method makeQueryArray of AbstractDatabaseRecordList
 ===================================================================================

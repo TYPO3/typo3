@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83740:
+
 ===============================================================
 Deprecation: #83740 - Cleanup of AbstractRecordList breaks hook
 ===============================================================

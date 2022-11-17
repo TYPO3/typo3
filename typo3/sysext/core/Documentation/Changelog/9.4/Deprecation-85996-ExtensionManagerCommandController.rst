@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-85996:
+
 ========================================================
 Deprecation: #85996 - ExtensionManager CommandController
 ========================================================

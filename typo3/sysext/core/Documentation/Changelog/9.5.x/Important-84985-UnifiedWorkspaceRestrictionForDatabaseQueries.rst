@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-84985:
+
 ======================================================================
 Important: #84985 - Unified Workspace Restriction for Database Queries
 ======================================================================

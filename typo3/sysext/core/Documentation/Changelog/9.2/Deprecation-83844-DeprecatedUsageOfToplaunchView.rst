@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-83844:
+
 ========================================================
 Deprecation: #83844 - Deprecated usage of top.launchView
 ========================================================

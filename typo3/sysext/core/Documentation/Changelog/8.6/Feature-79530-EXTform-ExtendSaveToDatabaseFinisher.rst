@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-79530:
+
 ============================================================
 Feature: #79530 - EXT:form -  Extend SaveToDatabase finisher
 ============================================================

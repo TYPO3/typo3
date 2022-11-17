@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-93663:
+
 =========================================================================
 Feature: #93663 - Backend user's preferred UI language stored as DB field
 =========================================================================

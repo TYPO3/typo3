@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-91712:
+
 ======================================================================
 Feature: #91712 - Cleanup scheduler task and CLI command for redirects
 ======================================================================

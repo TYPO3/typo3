@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-69078:
+
 ================================================
 Deprecation: #69078 - TemplateService::$tempPath
 ================================================

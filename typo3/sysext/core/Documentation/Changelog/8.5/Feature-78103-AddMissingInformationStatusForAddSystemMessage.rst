@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-78103:
+
 =====================================================================
 Feature: #78103 - Add missing information status for addSystemMessage
 =====================================================================

@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-80186:
+
 ================================================================
 Feature: #80186 - Add HTML5 elements and improve the form editor
 ================================================================

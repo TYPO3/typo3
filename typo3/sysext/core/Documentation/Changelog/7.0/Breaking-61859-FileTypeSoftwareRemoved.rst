@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-61859:
+
 =================================================================
 Breaking: #61859 - deprecated file type FILETYPE_SOFTWARE removed
 =================================================================

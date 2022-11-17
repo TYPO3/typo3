@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-79109:
+
 ==============================================================
 Breaking: #79109 - Lowlevel VersionsCommand parameters changed
 ==============================================================

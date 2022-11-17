@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _deprecation-72856:
+
 ================================================
 Deprecation: #72856 - Removed RTE "modes" option
 ================================================

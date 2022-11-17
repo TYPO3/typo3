@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _important-69846:
+
 ====================================================================
 Important: #69846 - Have eIDs with PSR-7 without ControllerInterface
 ====================================================================

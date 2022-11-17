@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _important-86577:
+
 ===========================================================================
 Important: #86577 - Query parameters are now included in canonicalized URLs
 ===========================================================================

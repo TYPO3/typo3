@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _feature-85691:
+
 ==============================================================
 Feature: #85691 - Show page path for references in record info
 ==============================================================

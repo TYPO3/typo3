@@ -1,6 +1,8 @@
 
 .. include:: /Includes.rst.txt
 
+.. _breaking-73514:
+
 ============================================================
 Breaking: #73514 - TypoScript property "includeLibs" removed
 ============================================================

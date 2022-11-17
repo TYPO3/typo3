@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _breaking-92532:
+
 ===============================================================================================
 Breaking: #92532 - Support for extension-in-extension installation in Extension Manager removed
 ===============================================================================================
