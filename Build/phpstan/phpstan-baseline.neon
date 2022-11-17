@@ -3411,11 +3411,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/EmConfUtilityTest.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\FrontendLogin\\\\Controller\\\\PasswordRecoveryController\\:\\:changePasswordAction\\(\\) should return Psr\\\\Http\\\\Message\\\\ResponseInterface\\|string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Classes/Controller/PasswordRecoveryController.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/Controller/File/CreateFolderController.php

@@ -917,6 +917,7 @@ abstract class ActionController implements ControllerInterface
      * @param string|null $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
      * @param string|null $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
      * @param array|null $arguments Arguments to pass to the target action
+     * @return never
      * @throws StopActionException
      * @see redirect()
      * @deprecated since TYPO3 11.0, will be removed in 12.0
@@ -957,6 +958,7 @@ abstract class ActionController implements ControllerInterface
      * @param int|null $pageUid Target page uid. If NULL, the current page uid is used
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
+     * @return never
      * @throws StopActionException deprecated since TYPO3 11.0, method will RETURN a Core\Http\RedirectResponse instead of throwing in v12
      * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
@@ -982,6 +984,7 @@ abstract class ActionController implements ControllerInterface
      * @param mixed $uri A string representation of a URI
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
+     * @return never
      * @throws StopActionException deprecated since TYPO3 11.0, will be removed in 12.0
      * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
@@ -1013,6 +1016,7 @@ abstract class ActionController implements ControllerInterface
      * @param int $statusCode The HTTP status code
      * @param string $statusMessage A custom HTTP status message
      * @param string $content Body content which further explains the status
+     * @return never
      * @throws PropagateResponseException
      */
     public function throwStatus($statusCode, $statusMessage = null, $content = null)
