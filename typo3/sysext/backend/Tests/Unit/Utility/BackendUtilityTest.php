@@ -17,21 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
-use TYPO3\CMS\Core\Configuration\PageTsConfig;
-use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -1074,44 +1064,6 @@ class BackendUtilityTest extends UnitTestCase
     {
         $result = BackendUtility::splitTable_Uid($input);
         self::assertSame($expected, $result);
-    }
-
-    /**
-     * Tests if the method getPagesTSconfig can be called without having a GLOBAL['BE_USER'] object.
-     * However, this test also shows all the various other dependencies this method has.
-     *
-     * @test
-     */
-    public function getPagesTSconfigWorksWithoutInitializedBackendUser(): void
-    {
-        $expected = ['called.' => ['config']];
-        $pageId = 13;
-        $eventDispatcher = new NoopEventDispatcher();
-        $loader = new PageTsConfigLoader($eventDispatcher);
-        $parserMock = $this->createMock(PageTsConfigParser::class);
-        $parserMock->method('parse')->willReturn($expected);
-        $configuration = new PageTsConfig(new NullFrontend('runtimeCache'), $loader, $parserMock);
-        GeneralUtility::addInstance(PageTsConfig::class, $configuration);
-
-        GeneralUtility::addInstance(ConditionMatcher::class, $this->createMock(ConditionMatcher::class));
-
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteFinderMock->method('getSiteByPageId')->willReturn(
-            new Site('dummy', $pageId, ['base' => 'https://example.com'])
-        )->with($pageId);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
-
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->willReturn($cacheMock)->with('runtime');
-        $cacheMock->method('has')->willReturn(false);
-        $cacheMock->method('set')->willReturn(false);
-        $cacheMock->method('get')->willReturn(['13--1' => []])->with('backendUtilityBeGetRootLine');
-        $cacheMock->method('get')->willReturn(false)->withAnyParameters();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-
-        $result = BackendUtility::getPagesTSconfig($pageId);
-        self::assertEquals($expected, $result);
     }
 
     /**
