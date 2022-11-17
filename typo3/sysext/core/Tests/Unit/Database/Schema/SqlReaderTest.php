@@ -17,16 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SqlReaderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -34,7 +31,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getStatementArraySplitsStatements(): void
     {
-        $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -50,7 +47,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getStatementArrayFiltersStatements(): void
     {
-        $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -66,7 +63,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getInsertStatementArrayResult(): void
     {
-        $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -82,7 +79,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getInsertStatementArrayResultWithNewline(): void
     {
-        $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -100,7 +97,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getCreateTableStatementArrayResult(): void
     {
-        $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $result = $subject->getCreateTableStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -117,7 +114,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getCreateTableStatementArrayResultWithComment(string $comment): void
     {
-        $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $result = $subject->getCreateTableStatementArray(
             $comment . LF . 'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .

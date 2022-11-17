@@ -22,7 +22,6 @@ use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Result;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -32,8 +31,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConnectionTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var Connection|\PHPUnit\Framework\MockObject\MockObject
      */
@@ -62,7 +59,7 @@ class ConnectionTest extends UnitTestCase
                     'getWrappedConnection',
                 ]
             )
-            ->setConstructorArgs([['platform' => $this->prophesize(MySQLPlatform::class)->reveal()], $this->prophesize(AbstractMySQLDriver::class)->reveal(), new Configuration(), null])
+            ->setConstructorArgs([['platform' => $this->createMock(MySQLPlatform::class)], $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
             ->getMock();
 
         $this->connection
@@ -512,12 +509,12 @@ class ConnectionTest extends UnitTestCase
      */
     public function getServerVersionReportsPlatformVersion(): void
     {
-        $wrappedConnectionProphet = $this->prophesize(Connection::class);
-        $wrappedConnectionProphet->getServerVersion()->willReturn('5.7.11');
+        $wrappedConnectionMock = $this->createMock(Connection::class);
+        $wrappedConnectionMock->method('getServerVersion')->willReturn('5.7.11');
 
         $this->connection
             ->method('getWrappedConnection')
-            ->willReturn($wrappedConnectionProphet->reveal());
+            ->willReturn($wrappedConnectionMock);
 
         self::assertSame('mock 5.7.11', $this->connection->getServerVersion());
     }

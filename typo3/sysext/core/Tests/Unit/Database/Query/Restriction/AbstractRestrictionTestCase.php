@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
@@ -27,12 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractRestrictionTestCase extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ExpressionBuilder
-     */
-    protected $expressionBuilder;
+    protected ExpressionBuilder $expressionBuilder;
 
     /**
      * Create a new database connection mock object for every test.
@@ -40,15 +33,15 @@ class AbstractRestrictionTestCase extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $connection = $this->prophesize(Connection::class);
-        $connection->quoteIdentifier(Argument::cetera())->will(static function ($args) {
-            return '"' . implode('"."', explode('.', $args[0])) . '"';
+        $connection = $this->createMock(Connection::class);
+        $connection->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
+            return '"' . implode('"."', explode('.', $args)) . '"';
         });
-        $connection->quote(Argument::cetera())->will(static function ($args) {
-            return '\'' . $args[0] . '\'';
+        $connection->method('quote')->with(self::anything())->willReturnCallback(static function ($args) {
+            return '\'' . $args . '\'';
         });
-        $connection->getDatabasePlatform()->willReturn(new MockPlatform());
+        $connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
 
-        $this->expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $connection->reveal());
+        $this->expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $connection);
     }
 }

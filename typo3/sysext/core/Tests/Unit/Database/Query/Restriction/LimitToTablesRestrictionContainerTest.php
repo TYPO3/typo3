@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -26,8 +25,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 
 class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -78,10 +75,11 @@ class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
         $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
         $GLOBALS['TCA']['bTable']['ctrl']['delete'] = 'deleted';
         $subject = new LimitToTablesRestrictionContainer();
-        $containerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $containerProphecy->removeByType(DeletedRestriction::class)->shouldBeCalled();
-        $containerProphecy->buildExpression(['bt' => 'bTable'], $this->expressionBuilder)->willReturn($this->expressionBuilder->and(...[]))->shouldBeCalled();
-        $subject->addForTables($containerProphecy->reveal(), ['bt']);
+        $containerMock = $this->createMock(QueryRestrictionContainerInterface::class);
+        $containerMock->expects(self::atLeastOnce())->method('removeByType')->with(DeletedRestriction::class);
+        $containerMock->expects(self::atLeastOnce())->method('buildExpression')->with(['bt' => 'bTable'], $this->expressionBuilder)
+            ->willReturn($this->expressionBuilder->and(...[]));
+        $subject->addForTables($containerMock, ['bt']);
         $subject->removeByType(DeletedRestriction::class);
         $subject->buildExpression(['aTable' => 'aTable', 'bTable' => 'bTable', 'bt' => 'bTable'], $this->expressionBuilder);
     }

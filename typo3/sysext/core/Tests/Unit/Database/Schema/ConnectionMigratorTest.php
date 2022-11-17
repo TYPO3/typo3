@@ -23,27 +23,17 @@ use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Tests for ConnectionMigrator
- */
 class ConnectionMigratorTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected MySQLPlatform $platform;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
-
+    protected AccessibleObjectInterface&MockObject $subject;
     protected int $maxIdentifierLength = -1;
 
     /**
@@ -53,18 +43,18 @@ class ConnectionMigratorTest extends UnitTestCase
     {
         parent::setUp();
 
-        $platformMock = $this->prophesize(MySQLPlatform::class);
-        $platformMock->quoteIdentifier(Argument::any())->willReturnArgument(0);
-        $this->platform = $platformMock->reveal();
+        $platformMock = $this->createMock(MySQLPlatform::class);
+        $platformMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
+        $this->platform = $platformMock;
 
-        $connectionMock = $this->prophesize(Connection::class);
-        $connectionMock->getDatabasePlatform()->willReturn($this->platform);
-        $connectionMock->quoteIdentifier(Argument::any())->willReturnArgument(0);
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('getDatabasePlatform')->willReturn($this->platform);
+        $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
 
         $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($this->platform);
 
         $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, [], '', false);
-        $this->subject->_set('connection', $connectionMock->reveal());
+        $this->subject->_set('connection', $connectionMock);
     }
 
     /**

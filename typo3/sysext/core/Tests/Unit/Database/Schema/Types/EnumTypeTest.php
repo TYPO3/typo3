@@ -19,18 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test for EnumType
- */
 class EnumTypeTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * Set up the test subject
      */
@@ -60,17 +53,17 @@ class EnumTypeTest extends UnitTestCase
             'unquotedValues' => ['aValue', 'anotherValue'],
         ];
 
-        $databaseProphet = $this->prophesize(AbstractPlatform::class);
-        $databaseProphet->quoteStringLiteral(Argument::cetera())->will(
+        $databaseMock = $this->createMock(AbstractPlatform::class);
+        $databaseMock->method('quoteStringLiteral')->with(self::anything())->willReturnCallback(
             static function ($args) {
-                return "'" . $args[0] . "'";
+                return "'" . $args . "'";
             }
         );
 
         $subject = Type::getType(EnumType::TYPE);
         self::assertSame(
             "ENUM('aValue', 'anotherValue')",
-            $subject->getSQLDeclaration($fieldDeclaration, $databaseProphet->reveal())
+            $subject->getSQLDeclaration($fieldDeclaration, $databaseMock)
         );
     }
 }

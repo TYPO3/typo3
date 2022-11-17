@@ -17,16 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class QueryHelperTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * Test cases for stripping of leading logical operators in where constraints.
      *
@@ -484,18 +480,18 @@ class QueryHelperTest extends UnitTestCase
      */
     public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
             $parts = array_map(
                 static function ($identifier) {
                     return '"' . $identifier . '"';
                 },
-                explode('.', $args[0])
+                explode('.', $args)
             );
 
             return implode('.', $parts);
         });
 
-        self::assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionProphet->reveal(), $input));
+        self::assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionMock, $input));
     }
 }

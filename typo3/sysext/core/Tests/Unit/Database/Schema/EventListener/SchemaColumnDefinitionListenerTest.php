@@ -21,8 +21,7 @@ use Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
@@ -32,15 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SchemaColumnDefinitionListenerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var SchemaColumnDefinitionListener
-     */
-    protected $subject;
-
-    /** @var ObjectProphecy<Connection> */
-    protected ObjectProphecy $connectionProphecy;
+    protected SchemaColumnDefinitionListener $subject;
+    protected Connection&MockObject $connectionMock;
 
     /**
      * Set up the test subject
@@ -49,7 +41,7 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class);
-        $this->connectionProphecy = $this->prophesize(Connection::class);
+        $this->connectionMock = $this->createMock(Connection::class);
     }
 
     /**
@@ -61,7 +53,7 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
             ['Type' => 'int(11)'],
             'aTestTable',
             'aTestDatabase',
-            $this->connectionProphecy->reveal()
+            $this->connectionMock
         );
 
         $this->subject->onSchemaColumnDefinition($event);
@@ -79,15 +71,15 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         } else {
             Type::addType('enum', EnumType::class);
         }
-        $databasePlatformProphet = $this->prophesize(AbstractPlatform::class);
-        $databasePlatformProphet->getDoctrineTypeMapping('enum')->willReturn('enum');
-        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
+        $databasePlatformMock = $this->createMock(AbstractPlatform::class);
+        $databasePlatformMock->method('getDoctrineTypeMapping')->with('enum')->willReturn('enum');
+        $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatformMock);
 
         $event = new SchemaColumnDefinitionEventArgs(
             ['Type' => "enum('value1', 'value2','value3')"],
             'aTestTable',
             'aTestDatabase',
-            $this->connectionProphecy->reveal()
+            $this->connectionMock
         );
 
         $this->subject->onSchemaColumnDefinition($event);
@@ -107,15 +99,15 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         } else {
             Type::addType('set', SetType::class);
         }
-        $databasePlatformProphet = $this->prophesize(AbstractPlatform::class);
-        $databasePlatformProphet->getDoctrineTypeMapping('set')->willReturn('set');
-        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
+        $databasePlatformMock = $this->createMock(AbstractPlatform::class);
+        $databasePlatformMock->method('getDoctrineTypeMapping')->with('set')->willReturn('set');
+        $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatformMock);
 
         $event = new SchemaColumnDefinitionEventArgs(
             ['Type' => "set('value1', 'value3')"],
             'aTestTable',
             'aTestDatabase',
-            $this->connectionProphecy->reveal()
+            $this->connectionMock
         );
 
         $this->subject->onSchemaColumnDefinition($event);

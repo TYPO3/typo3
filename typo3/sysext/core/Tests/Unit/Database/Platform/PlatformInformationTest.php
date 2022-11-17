@@ -21,32 +21,26 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PlatformInformationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * Test cases for stripping of leading logical operators in where constraints.
-     *
-     * @return array
      */
     public function platformDataProvider(): array
     {
         return [
-            'mysql' => [$this->prophesize(MySQLPlatform::class)->reveal()],
-            'postgresql' => [$this->prophesize(PostgreSQLPlatform::class)->reveal()],
-            'sqlite' => [$this->prophesize(SqlitePlatform::class)->reveal()],
+            'mysql' => [$this->createMock(MySQLPlatform::class)],
+            'postgresql' => [$this->createMock(PostgreSQLPlatform::class)],
+            'sqlite' => [$this->createMock(SqlitePlatform::class)],
         ];
     }
 
     /**
      * @test
      * @dataProvider platformDataProvider
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
     public function maxBindParameters(AbstractPlatform $platform): void
     {
@@ -60,7 +54,7 @@ class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+        $platform = $this->createMock(AbstractPlatform::class);
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
     }
 
@@ -81,7 +75,7 @@ class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+        $platform = $this->createMock(AbstractPlatform::class);
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
     }
 }
