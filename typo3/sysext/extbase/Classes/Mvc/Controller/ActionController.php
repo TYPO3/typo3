@@ -913,7 +913,7 @@ abstract class ActionController implements ControllerInterface
      * Request is directly transferred to the other action / controller
      * without the need for a new request.
      *
-     * @param string $actionName Name of the action to forward to
+     * @param string|null $actionName Name of the action to forward to
      * @param string|null $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
      * @param string|null $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
      * @param array|null $arguments Arguments to pass to the target action
@@ -951,7 +951,7 @@ abstract class ActionController implements ControllerInterface
      *
      * Redirect will be sent to the client which then performs another request to the new URI.
      *
-     * @param string $actionName Name of the action to forward to
+     * @param string|null $actionName Name of the action to forward to
      * @param string|null $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
      * @param string|null $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
      * @param array|null $arguments Arguments to pass to the target action
