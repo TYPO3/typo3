@@ -36,6 +36,9 @@ final class IfHasStateViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('provider', MfaProviderManifestInterface::class, 'The provider in question', true);
     }
 
+    /**
+     * @param array{state: string, provider: MfaProviderManifestInterface} $arguments
+     */
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         $stateMethod = 'is' . ucfirst($arguments['state']);

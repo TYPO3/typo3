@@ -83,6 +83,8 @@ final class AvatarViewHelper extends AbstractViewHelper
 
     /**
      * Resolve user avatar from a given backend user id.
+     *
+     * @param array{backendUser: int, size: int, showIcon: bool} $arguments
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {

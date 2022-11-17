@@ -46,6 +46,8 @@ final class ArrayBrowserViewHelper extends AbstractViewHelper
 
     /**
      * Render unordered list for pages
+     *
+     * @param array{data: array} $arguments
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {

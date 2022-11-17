@@ -58,6 +58,8 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
 
     /**
      * Render module link with arguments
+     *
+     * @param array<string, mixed> $arguments
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {

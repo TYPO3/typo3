@@ -85,6 +85,8 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
+     * @param array<string, mixed> $arguments
+     *
      * @throws \InvalidArgumentException
      * @throws RouteNotFoundException
      */

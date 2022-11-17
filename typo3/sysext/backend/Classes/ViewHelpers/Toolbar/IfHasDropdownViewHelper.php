@@ -34,6 +34,9 @@ class IfHasDropdownViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('class', ToolbarItemInterface::class, 'The toolbar item class to be checked for providing a drop down', true);
     }
 
+    /**
+     * @param array{class: object} $arguments
+     */
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         return $arguments['class'] instanceof ToolbarItemInterface && $arguments['class']->hasDropDown();
