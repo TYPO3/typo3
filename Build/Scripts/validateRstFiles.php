@@ -39,6 +39,8 @@ class validateRstFiles
      */
     protected $messages;
 
+    protected array $linkTargets = [];
+
     /**
      * @var bool
      */
@@ -83,14 +85,10 @@ class validateRstFiles
                     $this->messages['index']['title'],
                     $shortPath
                 );
-                if ($this->messages['include']['message']) {
-                    printf($this->messages['include']['message'] . chr(10));
-                }
-                if ($this->messages['reference']['message']) {
-                    printf($this->messages['reference']['message'] . chr(10));
-                }
-                if ($this->messages['index']['message']) {
-                    printf($this->messages['index']['message'] . chr(10));
+                foreach ($this->messages as $message) {
+                    if ($message['message']) {
+                        printf($message['message'] . chr(10));
+                    }
                 }
             }
         }
@@ -145,7 +143,20 @@ class validateRstFiles
                 'message' => 'insert \'.. include:: /Includes.rst.txt\' in first line of the file',
             ],
             [
-                'type' => 'reference',
+                'type' => 'title',
+                'regex' => '#\={2,}\n.*\n\={2,}#m',
+                'title' => 'no title',
+                'message' => 'Each document must have a title with multiple === above and below',
+            ],
+            [
+                'type' => 'titleinvalid',
+                'regex' => '#(\={2,}\n)(Deprecation|Feature|Breaking|Important)(\:\s+\#)([0-9]{4,8})(=?.*\n\={2,})#m',
+                'title' => 'invalid title format',
+                'message' => 'A changelog entry title must have the following format: '
+                    . '\'(Breaking|Feature|Deprecation|Important) #<issue nr>: <title>\'',
+            ],
+            [
+                'type' => 'titleformat',
                 'regex' => '#^See :issue:`[0-9]{4,6}`#m',
                 'title' => 'no reference',
                 'message' => 'insert \'See :issue:`<issuenumber>`\' after headline',
@@ -154,10 +165,43 @@ class validateRstFiles
 
         foreach ($checkFor as $values) {
             if (preg_match($values['regex'], $fileContent) !== 1) {
-                $this->messages[$values['type']]['title'] = $values['title'];
-                $this->messages[$values['type']]['message'] = $values['message'];
-                $this->isError = true;
+                $this->setError($values);
             }
+        }
+        $this->validateLinkTarget($fileContent);
+    }
+
+    private function setError(array $config)
+    {
+        $this->messages[$config['type']]['title'] = $config['title'];
+        $this->messages[$config['type']]['message'] = $config['message'];
+        $this->isError = true;
+    }
+
+    private function validateLinkTarget(string $fileContent)
+    {
+        $linkTargetConfig = [
+            'type' => 'linktarget',
+            'regex' => '#(\.\.\s+\_)([a-zA-Z0-9-_]*)(\:\s*)(\={2,}\n.*\n\={2,})#m',
+            'title' => 'no link target',
+            'message' => 'Each document must have a unique link target right before the main headline. '
+                . ' \'.. _deprecation-issuenumber:\' or \'.. _feature-issuenumber-currenttimestamp:\' are good choices.',
+        ];
+        $result = preg_match($linkTargetConfig['regex'], $fileContent, $matches);
+        if ($result === 1 && count($matches) > 2) {
+            $linkTarget = $matches[2];
+            if (in_array($linkTarget, $this->linkTargets)) {
+                $this->setError([
+                    'type' => 'linktarget',
+                    'title' => 'linktarget',
+                    'message' => 'Link target _' . $linkTarget . ': is not unique. '
+                        . 'Try adding a timestamp for uniqueness. i.e. _' . $linkTarget . '-' . time() . ':',
+                ]);
+            } else {
+                $this->linkTargets[] = $linkTarget;
+            }
+        } else {
+            $this->setError($linkTargetConfig);
         }
     }
 

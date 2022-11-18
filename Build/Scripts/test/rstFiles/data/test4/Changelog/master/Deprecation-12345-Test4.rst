@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _deprecation-12345-4:
+
 ============================
 Deprecation: #12345 - Test 4
 ============================
