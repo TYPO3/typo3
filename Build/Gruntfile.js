@@ -498,17 +498,12 @@ module.exports = function (grunt) {
         report: false,
         srcPrefix: "node_modules/"
       },
-      dashboard: {
+      dashboardToEs6: {
         options: {
           destPrefix: "<%= paths.dashboard %>Public",
           copyOptions: {
             process: (source, srcpath) => {
               if (srcpath.match(/.*\.js$/)) {
-                const imports = [];
-
-                if (srcpath === 'node_modules/chart.js/dist/Chart.min.js') {
-                  imports.push('moment');
-                }
                 return require('./util/cjs-to-esm.js').cjsToEsm(source);
               }
 
@@ -517,9 +512,16 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js',
-          'JavaScript/Contrib/chartjs.js': 'chart.js/dist/Chart.min.js',
-          'Css/Contrib/chart.css': 'chart.js/dist/Chart.min.css'
+          'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js'
+        }
+      },
+      dashboard: {
+        options: {
+          destPrefix: "<%= paths.dashboard %>Public",
+        },
+        files: {
+          'JavaScript/Contrib/chartjs.js': 'chart.js/dist/chart.js',
+          'JavaScript/Contrib/chunks/helpers.segment.js': 'chart.js/dist/chunks/helpers.segment.js'
         }
       },
       umdToEs6: {
@@ -661,6 +663,8 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
+          "<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js": ["<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js"],
+          "<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js": ["<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js"],
           "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.install %>Public/JavaScript/chosen.jquery.min.js"]
         }
       },

@@ -75,18 +75,14 @@ class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface, Ev
                         'display' => false,
                     ],
                     'scales' => [
-                        'yAxes' => [
-                            [
-                                'ticks' => [
-                                    'beginAtZero' => true,
-                                ],
+                        'y' => [
+                            'ticks' => [
+                                'beginAtZero' => true,
                             ],
                         ],
-                        'xAxes' => [
-                            [
-                                'ticks' => [
-                                    'maxTicksLimit' => 15,
-                                ],
+                        'x' => [
+                            'ticks' => [
+                                'maxTicksLimit' => 15,
                             ],
                         ],
                     ],
@@ -98,7 +94,7 @@ class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface, Ev
 
     public function getCssFiles(): array
     {
-        return ['EXT:dashboard/Resources/Public/Css/Contrib/chart.css'];
+        return [];
     }
 
     public function getJavaScriptModuleInstructions(): array

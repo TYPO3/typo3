@@ -64,7 +64,7 @@ An example would be :file:`Classes/Widgets/BarChartWidget.php`::
 
        public function getCssFiles(): array
        {
-           return ['EXT:dashboard/Resources/Public/Css/Contrib/chart.css'];
+           return [];
        }
 
        public function getRequireJsModules(): array

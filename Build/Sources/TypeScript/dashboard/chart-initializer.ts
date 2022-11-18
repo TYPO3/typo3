@@ -11,7 +11,32 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import Chart from '@typo3/dashboard/contrib/chartjs';
+// @todo: offload import and registration of components into separated widgets in TYPO3 v13
+import {Chart,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Decimation,
+  Filler,
+  Legend,
+  Title,
+  Tooltip,
+  SubTitle} from '@typo3/dashboard/contrib/chartjs';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 class ChartInitializer {
@@ -23,6 +48,34 @@ class ChartInitializer {
   }
 
   public initialize(): void {
+    // @todo: offload import and registration of components into separated widgets in TYPO3 v13
+    Chart.register(
+      ArcElement,
+      LineElement,
+      BarElement,
+      PointElement,
+      BarController,
+      BubbleController,
+      DoughnutController,
+      LineController,
+      PieController,
+      PolarAreaController,
+      RadarController,
+      ScatterController,
+      CategoryScale,
+      LinearScale,
+      LogarithmicScale,
+      RadialLinearScale,
+      TimeScale,
+      TimeSeriesScale,
+      Decimation,
+      Filler,
+      Legend,
+      Title,
+      Tooltip,
+      SubTitle
+    );
+
     new RegularEvent('widgetContentRendered', function (this: HTMLElement, e: CustomEvent): void {
       e.preventDefault();
       const config: any = e.detail;

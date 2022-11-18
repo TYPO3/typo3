@@ -49,10 +49,17 @@ class WidgetAjaxController
         if (!$widgetObject instanceof WidgetInterface) {
             return new JsonResponse(['error' => 'Widget doesn\'t have a valid widget class']);
         }
+
+        if ($widgetObject instanceof EventDataInterface) {
+            $eventData = $this->migrateData($widgetObject);
+        } else {
+            $eventData = [];
+        }
+
         $data = [
             'widget' => $widget,
             'content' => $widgetObject->renderWidgetContent(),
-            'eventdata' => $widgetObject instanceof EventDataInterface ? $widgetObject->getEventData() : [],
+            'eventdata' => $eventData,
         ];
         return new JsonResponse($data);
     }
@@ -76,6 +83,34 @@ class WidgetAjaxController
             $this->dashboardRepository->updateWidgetConfig($currentDashboard, $widgets);
         }
         return new JsonResponse(['status' => 'saved']);
+    }
+
+    /**
+     * This method performs some runtime migrations necessary due to the update of chart.js v2 > v4
+     *
+     * @deprecated this method will be gone in TYPO3 v13
+     */
+    protected function migrateData(EventDataInterface $widget): array
+    {
+        $eventData = $widget->getEventData();
+
+        if (!isset($eventData['graphConfig']['options']['scales']['x']) && count($eventData['graphConfig']['options']['scales']['xAxes'] ?? []) === 1) {
+            trigger_error(sprintf(
+                'The widget %s implements only one scale for the x-axis, graphConfig/options/scales/xAxes is migrated to graphConfig/options/scales/x. This migration will be removed in TYPO3 v13.',
+                get_class($widget)
+            ), E_USER_DEPRECATED);
+            $eventData['graphConfig']['options']['scales']['x'] = current($eventData['graphConfig']['options']['scales']['xAxes']);
+        }
+
+        if (!isset($eventData['graphConfig']['options']['scales']['y']) && count($eventData['graphConfig']['options']['scales']['yAxes'] ?? []) === 1) {
+            trigger_error(sprintf(
+                'The widget %s implements only one scale for the y-axis, graphConfig/options/scales/yAxes is migrated to graphConfig/options/scales/y. This migration will be removed in TYPO3 v13.',
+                get_class($widget)
+            ), E_USER_DEPRECATED);
+            $eventData['graphConfig']['options']['scales']['y'] = current($eventData['graphConfig']['options']['scales']['yAxes']);
+        }
+
+        return $eventData;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

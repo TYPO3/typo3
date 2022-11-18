@@ -159,7 +159,7 @@
     "autosize": "^4.0.2",
     "bootstrap": "^5.2.2",
     "broadcastchannel-polyfill": "^1.0.0",
-    "chart.js": "^2.9.3",
+    "chart.js": "^4.0.1",
     "chosen-js": "^1.8.7",
     "cropperjs": "^1.5.9",
     "d3-dispatch": "^2.0.0",

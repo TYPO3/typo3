@@ -84,7 +84,7 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
 
     public function getCssFiles(): array
     {
-        return ['EXT:dashboard/Resources/Public/Css/Contrib/chart.css'];
+        return [];
     }
 
     public function getJavaScriptModuleInstructions(): array
