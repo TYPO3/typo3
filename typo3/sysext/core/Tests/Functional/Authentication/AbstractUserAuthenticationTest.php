@@ -17,26 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class AbstractUserAuthenticationTest extends FunctionalTestCase
 {
-    /**
-     * @var string
-     */
-    private $sessionId;
-
-    /**
-     * @var AnyUserAuthentication
-     */
-    private $subject;
-
-    /**
-     * @var UserSession
-     */
-    private $userSession;
+    private string $sessionId;
+    private AnyUserAuthentication $subject;
+    private UserSession $userSession;
 
     protected function setUp(): void
     {
@@ -80,5 +70,20 @@ class AbstractUserAuthenticationTest extends FunctionalTestCase
         $this->subject->uc['moduleData'][self::class] = true;
         $this->subject->uc['moduleSessionID'][self::class] = $this->sessionId;
         self::assertTrue($this->subject->getModuleData(self::class));
+    }
+
+    /**
+     * @test
+     */
+    public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven(): void
+    {
+        $this->subject->user_table = 'be_users';
+        $this->subject->checkPid_value = null;
+
+        $authInfoArray = $this->subject->getAuthInfoArray();
+
+        $enableClause = $authInfoArray['db_user']['enable_clause'];
+        self::assertInstanceOf(CompositeExpression::class, $enableClause);
+        self::assertSame('', (string)$enableClause);
     }
 }
