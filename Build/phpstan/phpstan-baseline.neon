@@ -1356,11 +1356,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedPatternMapperTest.php
 
 		-
-			message: "#^Parameter \\#4 \\$pObj of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:initAuth\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication, null given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Backend\\\\Fixtures\\\\ConcreteBackendFixture\\:\\:has\\(\\) should return bool but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Fixtures/ConcreteBackendFixture.php

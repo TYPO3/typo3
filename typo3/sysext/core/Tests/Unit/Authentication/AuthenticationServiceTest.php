@@ -17,23 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
-use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Session\UserSession;
+use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AuthenticationServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Date provider for processLoginReturnsCorrectData
-     *
-     * @return array
-     */
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+        parent::tearDown();
+    }
+
     public function processLoginDataProvider(): array
     {
         return [
@@ -86,7 +85,7 @@ class AuthenticationServiceTest extends UnitTestCase
      * @test
      * @dataProvider processLoginDataProvider
      */
-    public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData): void
+    public function processLoginReturnsCorrectData(string $passwordSubmissionStrategy, array $loginData, array $expectedProcessedData): void
     {
         $subject = new AuthenticationService();
         // Login data is modified by reference
@@ -99,8 +98,13 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function authUserReturns100IfSubmittedPasswordIsEmpty(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
+        $userSession = UserSession::createNonFixated($sessionId);
+        $anyUserAuthentication = new AnyUserAuthentication($userSession);
+        $anyUserAuthentication->loginType = 'BE';
         $subject = new AuthenticationService();
-        $subject->initAuth('mode', ['uident_text' => '', 'uname' => 'user'], [], null);
+        $subject->initAuth('mode', ['uident_text' => '', 'uname' => 'user'], [], $anyUserAuthentication);
         self::assertSame(100, $subject->authUser([]));
     }
 
@@ -109,8 +113,13 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function authUserReturns100IfUserSubmittedUsernameIsEmpty(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
+        $userSession = UserSession::createNonFixated($sessionId);
+        $anyUserAuthentication = new AnyUserAuthentication($userSession);
+        $anyUserAuthentication->loginType = 'BE';
         $subject = new AuthenticationService();
-        $subject->initAuth('mode', ['uident_text' => 'foo', 'uname' => ''], [], null);
+        $subject->initAuth('mode', ['uident_text' => 'foo', 'uname' => ''], [], $anyUserAuthentication);
         self::assertSame(100, $subject->authUser([]));
     }
 
@@ -119,8 +128,13 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function authUserThrowsExceptionIfUserTableIsNotSet(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
+        $userSession = UserSession::createNonFixated($sessionId);
+        $anyUserAuthentication = new AnyUserAuthentication($userSession);
+        $anyUserAuthentication->loginType = 'BE';
         $subject = new AuthenticationService();
-        $subject->initAuth('mode', ['uident_text' => 'password', 'uname' => 'user'], [], null);
+        $subject->initAuth('mode', ['uident_text' => 'password', 'uname' => 'user'], [], $anyUserAuthentication);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1533159150);
         $subject->authUser([]);
@@ -131,12 +145,13 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function authUserThrowsExceptionIfPasswordInDbDoesNotResolveToAValidHash(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
+        $userSession = UserSession::createNonFixated($sessionId);
+        $anyUserAuthentication = new AnyUserAuthentication($userSession);
+        $anyUserAuthentication->loginType = 'BE';
         $subject = new AuthenticationService();
-        $userAuthenticationProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $userAuthentication = $userAuthenticationProphecy->reveal();
-        $userAuthentication->loginType = 'BE';
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $subject->setLogger(new NullLogger());
         $subject->initAuth(
             'authUserBE',
             [
@@ -147,7 +162,7 @@ class AuthenticationServiceTest extends UnitTestCase
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
             ],
-            $userAuthentication
+            $anyUserAuthentication
         );
         $dbUser = [
             'password' => 'aPlainTextPassword',
@@ -160,12 +175,13 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function authUserReturns0IfPasswordDoesNotMatch(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
+        $userSession = UserSession::createNonFixated($sessionId);
+        $anyUserAuthentication = new AnyUserAuthentication($userSession);
+        $anyUserAuthentication->loginType = 'BE';
         $subject = new AuthenticationService();
-        $userAuthenticationProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $userAuthentication = $userAuthenticationProphecy->reveal();
-        $userAuthentication->loginType = 'BE';
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $subject->setLogger(new NullLogger());
         $subject->initAuth(
             'authUserBE',
             [
@@ -176,7 +192,7 @@ class AuthenticationServiceTest extends UnitTestCase
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
             ],
-            $userAuthentication
+            $anyUserAuthentication
         );
         $dbUser = [
             // a phpass hash of 'myPassword'
@@ -190,12 +206,13 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function authUserReturns200IfPasswordMatch(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
+        $userSession = UserSession::createNonFixated($sessionId);
+        $anyUserAuthentication = new AnyUserAuthentication($userSession);
+        $anyUserAuthentication->loginType = 'BE';
         $subject = new AuthenticationService();
-        $userAuthenticationProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $userAuthentication = $userAuthenticationProphecy->reveal();
-        $userAuthentication->loginType = 'BE';
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $subject->setLogger(new NullLogger());
         $subject->initAuth(
             'authUserBE',
             [
@@ -206,7 +223,7 @@ class AuthenticationServiceTest extends UnitTestCase
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
             ],
-            $userAuthentication
+            $anyUserAuthentication
         );
         $dbUser = [
             // an argon2i hash of 'myPassword'
