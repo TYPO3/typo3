@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A file object (File Abstraction Layer)
- *
- * @internal experimental! This class is experimental and subject to change!
  */
 class File extends AbstractFileFolder
 {
