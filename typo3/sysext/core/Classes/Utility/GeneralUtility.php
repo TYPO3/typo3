@@ -2203,7 +2203,7 @@ class GeneralUtility
      * - Otherwise prefixed with TYPO3_REQUEST_DIR (relative to current dir / TYPO3_REQUEST_DIR)
      *
      * @param string $path URL / path to prepend full URL addressing to.
-     * @return string
+     * @return ($path is non-empty-string ? non-empty-string : string)
      */
     public static function locationHeaderUrl($path)
     {
