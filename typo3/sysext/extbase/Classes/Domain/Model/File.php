@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A file object (File Abstraction Layer)
- *
- * @internal
  */
 class File extends AbstractFileFolder
 {

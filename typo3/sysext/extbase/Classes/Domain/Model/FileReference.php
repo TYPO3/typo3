@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A file reference object (File Abstraction Layer)
- *
- * @internal
  */
 class FileReference extends AbstractFileFolder
 {
