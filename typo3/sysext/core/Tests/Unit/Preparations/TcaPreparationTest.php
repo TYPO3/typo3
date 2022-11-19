@@ -17,20 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Preparations;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaPreparationTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      * @dataProvider configureCategoryRelationsDataProvider
-     *
-     * @param array $input
-     * @param array $expected
      */
     public function configureCategoryRelations(array $input, array $expected): void
     {
@@ -249,13 +243,10 @@ class TcaPreparationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider
-     *
-     * @param array $input
-     * @param int $excpetionCode
      */
-    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitems(array $input, int $excpetionCode): void
+    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitems(array $input, int $exceptionCode): void
     {
-        $this->expectExceptionCode($excpetionCode);
+        $this->expectExceptionCode($exceptionCode);
         $this->expectException(\RuntimeException::class);
         (new TcaPreparation())->prepare($input);
     }
