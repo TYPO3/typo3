@@ -4108,15 +4108,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Must render mask images and include in hash-calculating
                     // - otherwise we cannot be sure the filename is unique for the setup!
                     if (is_array($maskArray)) {
-                        $mask = $this->getImgResource($maskArray['mask'], $maskArray['mask.']);
-                        $bgImg = $this->getImgResource($maskArray['bgImg'], $maskArray['bgImg.']);
-                        $bottomImg = $this->getImgResource($maskArray['bottomImg'], $maskArray['bottomImg.']);
-                        $bottomImg_mask = $this->getImgResource($maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
-
-                        $processingConfiguration['maskImages']['maskImage'] = $mask['processedFile'];
-                        $processingConfiguration['maskImages']['backgroundImage'] = $bgImg['processedFile'];
-                        $processingConfiguration['maskImages']['maskBottomImage'] = $bottomImg['processedFile'];
-                        $processingConfiguration['maskImages']['maskBottomImageMask'] = $bottomImg_mask['processedFile'];
+                        $processingConfiguration['maskImages']['maskImage'] = $this->getImgResource($maskArray['mask'] ?? '', $maskArray['mask.'] ?? [])['processedFile'] ?? null;
+                        $processingConfiguration['maskImages']['backgroundImage'] = $this->getImgResource($maskArray['bgImg'] ?? '', $maskArray['bgImg.'] ?? [])['processedFile'] ?? null;
+                        $processingConfiguration['maskImages']['maskBottomImage'] = $this->getImgResource($maskArray['bottomImg'] ?? '', $maskArray['bottomImg.'] ?? [])['processedFile'] ?? null;
+                        $processingConfiguration['maskImages']['maskBottomImageMask'] = $this->getImgResource($maskArray['bottomImg_mask'] ?? '', $maskArray['bottomImg_mask.'] ?? [])['processedFile'] ?? null;
                     }
                     $processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
                     if ($processedFileObject->isProcessed()) {
