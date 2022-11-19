@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -42,8 +41,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     public function tearDown(): void
     {
         parent::tearDown();
@@ -170,8 +167,7 @@ class SiteTest extends UnitTestCase
             ],
         ]);
 
-        $fluidProphecy = $this->prophesize(FluidPageErrorHandler::class);
-        GeneralUtility::addInstance(FluidPageErrorHandler::class, $fluidProphecy->reveal());
+        GeneralUtility::addInstance(FluidPageErrorHandler::class, $this->createMock(FluidPageErrorHandler::class));
 
         $app = new class () extends Application {
             // This is ugly but php-cs-fixer insists.
@@ -212,9 +208,9 @@ class SiteTest extends UnitTestCase
         $container->set(CacheManager::class, $cacheManager);
         GeneralUtility::setContainer($container);
 
-        self::assertInstanceOf(PageErrorHandlerInterface::class, $subject->getErrorHandler(123));
-        self::assertInstanceOf(PageErrorHandlerInterface::class, $subject->getErrorHandler(124));
-        self::assertInstanceOf(PageErrorHandlerInterface::class, $subject->getErrorHandler(125));
+        self::assertInstanceOf(FluidPageErrorHandler::class, $subject->getErrorHandler(123));
+        self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(124));
+        self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(125));
     }
 
     /**
