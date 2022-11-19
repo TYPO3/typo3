@@ -34,7 +34,7 @@ class Cascade
     public $value;
 
     /**
-     * @param array $values
+     * @param array{value?: mixed} $values
      */
     public function __construct(array $values)
     {

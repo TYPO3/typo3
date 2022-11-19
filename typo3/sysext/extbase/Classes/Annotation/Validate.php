@@ -37,12 +37,12 @@ class Validate
     public $param = '';
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     public $options = [];
 
     /**
-     * @param array $values
+     * @param array{value?: mixed, validator?: string, options?: array<string, mixed>, param?: string} $values
      */
     public function __construct(array $values)
     {
