@@ -1328,8 +1328,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                 }
                 // Check if key is still containing something, since it might have been changed by next level stdWrap before
-                if ((isset($conf[$functionName]) || $conf[$functionProperties])
-                    && ($functionType !== 'boolean' || $conf[$functionName])
+                if ((isset($conf[$functionName]) || ($conf[$functionProperties] ?? null))
+                    && ($functionType !== 'boolean' || ($conf[$functionName] ?? null))
                 ) {
                     // Get just that part of $conf that is needed for the particular function
                     $singleConf = [
@@ -1346,7 +1346,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
                     $functionName = 'stdWrap_' . $functionName;
                     $content = $this->{$functionName}($content, $singleConf);
-                } elseif ($functionType === 'boolean' && !$conf[$functionName]) {
+                } elseif ($functionType === 'boolean' && !($conf[$functionName] ?? null)) {
                     $isExecuted[$functionName] = true;
                     $isExecuted[$functionProperties] = true;
                 }
