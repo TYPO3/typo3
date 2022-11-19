@@ -22,7 +22,6 @@ use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Admin Panel Ajax Controller - Route endpoint for ajax actions
@@ -32,16 +31,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AjaxController
 {
     protected array $adminPanelModuleConfiguration;
-    protected ModuleLoader $moduleLoader;
-    private ConfigurationService $configurationService;
 
-    public function __construct(?ConfigurationService $configurationService = null, ?ModuleLoader $moduleLoader = null)
-    {
-        $this->configurationService = $configurationService
-                                      ??
-                                      GeneralUtility::makeInstance(ConfigurationService::class);
+    public function __construct(
+        private readonly ConfigurationService $configurationService,
+        private readonly ModuleLoader $moduleLoader,
+    ) {
         $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-        $this->moduleLoader = $moduleLoader ?? GeneralUtility::makeInstance(ModuleLoader::class);
     }
 
     /**

@@ -21,9 +21,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
- * Abstract SubModule - Base class for sub modules in the admin panel
+ * Abstract SubModule - Base class for submodules in the admin panel
  *
- * Extend this class when writing own sub modules
+ * Extend this class when writing own submodules
  */
 abstract class AbstractSubModule implements ModuleInterface, ContentProviderInterface
 {

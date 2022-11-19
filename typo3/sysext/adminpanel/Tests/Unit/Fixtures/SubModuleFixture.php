@@ -30,8 +30,6 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -40,8 +38,6 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
 
     /**
      * Sub-Module label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -50,9 +46,6 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
 
     /**
      * Sub-Module content as rendered HTML
-     *
-     * @param ModuleData $data
-     * @return string
      */
     public function getContent(ModuleData $data): string
     {
@@ -61,8 +54,6 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
 
     /**
      * Settings as HTML form elements (without wrapping form tag or save button)
-     *
-     * @return string
      */
     public function getSettings(): string
     {
@@ -73,18 +64,11 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
      * Executed on saving / submit of the configuration form
      * Can be used to react to changed settings
      * (for example: clearing a specific cache)
-     *
-     * @param array $configurationToSave
-     * @param ServerRequestInterface $request
      */
     public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
     {
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ModuleData
-     */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         return new ModuleData(['foo' => 'bar']);

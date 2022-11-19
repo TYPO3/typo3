@@ -71,7 +71,6 @@ class StateUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider tsConfigEnabledDataProvider
-     * @param array $tsConfig
      */
     public function isEnabledReturnsTrueIfAtLeastOneModuleIsEnabled(array $tsConfig): void
     {
@@ -108,7 +107,6 @@ class StateUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider tsConfigDisabledDataProvider
-     * @param array $tsConfig
      */
     public function isEnabledReturnsFalseIfNoModulesEnabled(array $tsConfig): void
     {
@@ -148,8 +146,6 @@ class StateUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider tsConfigHideDataProvider
-     * @param array $tsConfig
-     * @param bool $expected
      */
     public function isHiddenForUserReturnsCorrectValue(array $tsConfig, bool $expected): void
     {
@@ -199,8 +195,6 @@ class StateUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider ucDisplayOpenDataProvider
-     * @param array $uc
-     * @param bool $expected
      */
     public function isOpenForUserReturnsCorrectValue(array $uc, bool $expected): void
     {
@@ -250,8 +244,6 @@ class StateUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider typoScriptDataProvider
-     * @param array $typoScript
-     * @param bool $expected
      */
     public function isActivatedInTypoScriptReturnsCorrectValue(array $typoScript, bool $expected): void
     {

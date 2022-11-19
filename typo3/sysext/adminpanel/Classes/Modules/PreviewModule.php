@@ -49,7 +49,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      *     showFluidDebug?: bool
      * }
      */
-    protected $config;
+    protected array $config;
 
     public function getIconIdentifier(): string
     {
@@ -198,6 +198,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         }
         $isPreview = $simulateUserGroup || $simTime || $showHiddenPages || $showHiddenRecords || $showScheduledRecords;
         if ($context->hasAspect('frontend.preview')) {
+            /** @var PreviewAspect $existingPreviewAspect */
             $existingPreviewAspect = $context->getAspect('frontend.preview');
             $isPreview = $existingPreviewAspect->isPreview() || $isPreview;
         }

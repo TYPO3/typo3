@@ -22,6 +22,7 @@ use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -68,8 +69,8 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
                 'skippedProviders' => [],
             ];
 
-            $log = InMemoryLogWriter::$log;
-            foreach ($log as $logEntry) {
+            $logRecords = GeneralUtility::makeInstance(InMemoryLogWriter::class)->getLogEntries();
+            foreach ($logRecords as $logEntry) {
                 if ($logEntry->getComponent() === self::LOG_COMPONENT) {
                     $logEntryData = $logEntry->getData();
                     if (isset($logEntryData['orderedTitleProviders'])) {

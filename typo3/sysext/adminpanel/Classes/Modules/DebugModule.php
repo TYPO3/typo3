@@ -22,6 +22,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Debug Module of the AdminPanel
@@ -47,7 +48,8 @@ class DebugModule extends AbstractModule implements ShortInfoProviderInterface
 
     public function getShortInfo(): string
     {
-        $errorsAndWarnings = array_filter(InMemoryLogWriter::$log, static function (LogRecord $entry) {
+        $logRecords = GeneralUtility::makeInstance(InMemoryLogWriter::class)->getLogEntries();
+        $errorsAndWarnings = array_filter($logRecords, static function (LogRecord $entry) {
             return LogLevel::normalizeLevel($entry->getLevel()) <= 4;
         });
         return sprintf($this->getLanguageService()->sL(

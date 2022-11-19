@@ -27,10 +27,7 @@ class ModuleDataStorageCollection extends \SplObjectStorage
         $this->attach($module, $moduleData);
     }
 
-    /**
-     * @param object $object
-     */
-    public function getHash($object): string
+    public function getHash(object $object): string
     {
         if ($object instanceof ModuleInterface) {
             return $object->getIdentifier();

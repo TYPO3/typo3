@@ -37,12 +37,11 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class Log extends AbstractSubModule implements DataProviderInterface, ModuleSettingsProviderInterface, RequestEnricherInterface
 {
     protected int $logLevel;
-    protected ConfigurationService $configurationService;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly ConfigurationService $configurationService,
+    ) {
         $this->logLevel = LogLevel::normalizeLevel(\Psr\Log\LogLevel::INFO);
-        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
     public function getIdentifier(): string
@@ -71,10 +70,10 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
             ];
         }
 
-        $log = InMemoryLogWriter::$log;
+        $logRecords = GeneralUtility::makeInstance(InMemoryLogWriter::class)->getLogEntries();
 
         $logArray = [];
-        foreach ($log as $logRecord) {
+        foreach ($logRecords as $logRecord) {
             $entry = $logRecord->toArray();
             // store only necessary info
             unset($entry['data']);

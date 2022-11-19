@@ -127,8 +127,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getConfigurationOptionEmptyArgumentDataProvider
-     * @param string $identifier
-     * @param string $option
      */
     public function getConfigurationOptionThrowsExceptionOnEmptyArgument(string $identifier, string $option): void
     {
@@ -216,9 +214,6 @@ class ConfigurationServiceTest extends UnitTestCase
         self::assertSame($expected, $this->beUser->uc);
     }
 
-    /**
-     * @param array $userTsAdmPanelConfig
-     */
     private function setUpUserTsConfigForAdmPanel(array $userTsAdmPanelConfig): void
     {
         $this->beUser->method('getTSConfig')->willReturn(

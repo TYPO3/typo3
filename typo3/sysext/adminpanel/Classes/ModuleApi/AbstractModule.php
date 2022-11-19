@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract base class for Admin Panel Modules containing helper methods and default interface implementations
@@ -28,34 +27,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractModule implements ModuleInterface, ConfigurableInterface, SubmoduleProviderInterface
 {
-    /**
-     * @var ModuleInterface[]
-     */
-    protected $subModules = [];
+    /** @var ModuleInterface[] */
+    protected array $subModules = [];
+    /** Main Configuration (from UserTSConfig, admPanel) */
+    protected array $mainConfiguration;
+    protected ConfigurationService $configurationService;
 
-    /**
-     * Main Configuration (from UserTSConfig, admPanel)
-     *
-     * @var array
-     */
-    protected $mainConfiguration;
-
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
-
-    public function __construct()
+    public function injectConfigurationService(ConfigurationService $configurationService): void
     {
-        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->configurationService = $configurationService;
         $this->mainConfiguration = $this->configurationService->getMainConfiguration();
     }
 
     /**
      * Returns true if the module is
-     * -> either enabled via TSConfig admPanel.enable
-     * -> or any setting is overridden
-     * override is a way to use functionality of the admin panel without displaying the admin panel to users
+     * -> either enabled via TSConfig "admPanel.enable"
+     * -> or any setting is overridden.
+     * Override is a way to use functionality of the admin panel without displaying the admin panel to users
      * for example: hidden records or pages can be displayed by default
      */
     public function isEnabled(): bool
@@ -104,7 +92,7 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
     }
 
     /**
-     * Returns true if TSConfig admPanel.enable is set for this module (or all modules)
+     * Returns true if TSConfig "admPanel.enable" is set for this module (or all modules)
      */
     protected function isEnabledViaTsConfig(): bool
     {

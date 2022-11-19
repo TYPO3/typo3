@@ -63,9 +63,8 @@ class PreviewModuleTest extends UnitTestCase
         ];
         $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
 
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
-
         $previewModule = new PreviewModule();
+        $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich(new ServerRequest());
 
         self::assertSame($GLOBALS['SIM_EXEC_TIME'], $expectedExecTime, 'EXEC_TIME');
@@ -90,7 +89,6 @@ class PreviewModuleTest extends UnitTestCase
             ['preview', 'showFluidDebug', '0'],
         ];
         $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
 
         $context = $this->getMockBuilder(Context::class)->getMock();
         $context->method('hasAspect')->with('frontend.preview')->willReturn(false);
@@ -105,6 +103,7 @@ class PreviewModuleTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
         $previewModule = new PreviewModule();
+        $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich($request);
     }
 }

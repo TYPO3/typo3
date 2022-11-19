@@ -29,8 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AdminPanelInitiatorTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     /**
      * @test
      */
@@ -54,7 +52,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $userAuthentication;
 
         $controller = $this->getMockBuilder(MainController::class)->disableOriginalConstructor()->getMock();
-        GeneralUtility::setSingletonInstance(MainController::class, $controller);
+        GeneralUtility::addInstance(MainController::class, $controller);
         $handler = $this->getHandlerMock();
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
         $request->expects(self::any())->method('withAttribute')->withAnyParameters()->willReturn($request);
@@ -100,10 +98,6 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc);
     }
 
-    /**
-     * @param array $tsConfig
-     * @param array $uc
-     */
     protected function checkAdminPanelDoesNotCallInitialize(array $tsConfig, array $uc): void
     {
         $userAuthentication = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->getMock();
@@ -112,14 +106,16 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $userAuthentication;
 
         $controller = $this->getMockBuilder(MainController::class)->disableOriginalConstructor()->getMock();
-        GeneralUtility::setSingletonInstance(MainController::class, $controller);
+        GeneralUtility::addInstance(MainController::class, $controller);
         $handler = $this->getHandlerMock();
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $controller->expects(self::never())->method('initialize');
 
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process($request, $handler);
 
-        $controller->expects(self::never())->method('initialize');
+        /** @var MainController&MockObject $controller */
+        $controller = GeneralUtility::makeInstance(MainController::class);
     }
 
     protected function getHandlerMock(): RequestHandlerInterface&MockObject

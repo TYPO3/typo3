@@ -94,13 +94,10 @@ class ConfigurationService implements SingletonInterface
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @param array $configurationToSave
-     */
     protected function triggerOnSubmitActors(
         array $modules,
         ServerRequestInterface $request,
-        $configurationToSave
+        array $configurationToSave
     ): void {
         foreach ($modules as $module) {
             if (

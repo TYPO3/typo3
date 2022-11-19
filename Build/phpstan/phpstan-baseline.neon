@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Context\\\\AspectInterface\\:\\:isPreview\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/adminpanel/Classes/Modules/PreviewModule.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php

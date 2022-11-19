@@ -26,46 +26,35 @@ use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
-use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Utility\ResourceUtility;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Main controller for the admin panel
+ * Main controller for the admin panel.
+ *
+ * Note this is a "shared" / singleton object: Middleware AdminPanelInitiator
+ * instantiates the object and eventually calls initialize(). Later,
+ * AdminPanelRenderer calls render() on the same object.
  *
  * @internal
  */
-class MainController implements SingletonInterface
+class MainController
 {
-    /**
-     * @var array<string, ModuleInterface>
-     */
+    /** @var array<string, ModuleInterface> */
     protected array $modules = [];
-
-    protected ModuleLoader $moduleLoader;
-    protected UriBuilder $uriBuilder;
-    protected ConfigurationService $configurationService;
     protected array $adminPanelModuleConfiguration;
 
     public function __construct(
-        ?ModuleLoader $moduleLoader = null,
-        ?UriBuilder $uriBuilder = null,
-        ?ConfigurationService $configurationService = null
+        private readonly ModuleLoader $moduleLoader,
+        private readonly UriBuilder $uriBuilder,
     ) {
-        $this->moduleLoader = $moduleLoader ?? GeneralUtility::makeInstance(ModuleLoader::class);
-        $this->uriBuilder = $uriBuilder ?? GeneralUtility::makeInstance(UriBuilder::class);
-        $this->configurationService = $configurationService
-                                      ?? GeneralUtility::makeInstance(ConfigurationService::class);
-        $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-        $this->adminPanelModuleConfiguration = is_array($adminPanelModuleConfiguration)
-            ? $adminPanelModuleConfiguration : [];
+        $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
     }
 
     /**
@@ -76,7 +65,6 @@ class MainController implements SingletonInterface
         $this->modules = $this->moduleLoader->validateSortAndInitializeModules(
             $this->adminPanelModuleConfiguration
         );
-
         if (StateUtility::isActivatedForUser()) {
             $request = $this->initializeModules($request, $this->modules);
         }

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
-use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\DisabledMainModuleFixture;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\MainModuleFixture;
@@ -49,11 +48,10 @@ class ModuleLoaderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider missingConfigurationDataProvider
-     * @param array $configuration
      */
     public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasMissingConfiguration(array $configuration): void
     {
-        $this->expectException(InvalidConfigurationException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1519490105);
 
         $moduleLoader = new ModuleLoader();
@@ -88,12 +86,11 @@ class ModuleLoaderTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider  invalidConfigurationDataProvider
-     * @param array $configuration
+     * @dataProvider invalidConfigurationDataProvider
      */
     public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasInvalidConfiguration(array $configuration): void
     {
-        $this->expectException(InvalidConfigurationException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1519490112);
 
         $moduleLoader = new ModuleLoader();

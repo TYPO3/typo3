@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
  * ModuleData is a simple wrapper object which extends ArrayObject
  * which is used to hold Adminpanel module data
  *
- * It's a separate class to add semantic meaning to its' usage
+ * It's a separate class to add semantic meaning to its usage
  */
 class ModuleData extends \ArrayObject
 {

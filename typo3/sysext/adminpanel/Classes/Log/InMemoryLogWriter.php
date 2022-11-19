@@ -24,28 +24,24 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\AbstractWriter;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Log writer that writes the log records into a static public class variable
- * for InMemory processing
+ * for InMemory processing. Note this implements SingletonInterface so multiple
+ * calls to this class can accumulate log records in the same instance.
+ *
+ * @internal
  */
-class InMemoryLogWriter extends AbstractWriter
+final class InMemoryLogWriter extends AbstractWriter implements SingletonInterface
 {
-    /**
-     * @var LogRecord[]
-     */
-    public static $log = [];
-
-    /**
-     * @var bool
-     */
-    private static $memoryLock = false;
+    /** @var LogRecord[] */
+    private array $log = [];
+    private bool $memoryLock = false;
 
     /**
      * Writes the log record
-     *
-     * @param LogRecord $record Log record
      */
     public function writeLog(LogRecord $record): self
     {
@@ -53,7 +49,7 @@ class InMemoryLogWriter extends AbstractWriter
         if (Environment::isCli()
             || !(($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof  ServerRequestInterface)
             || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-            || self::$memoryLock === true
+            || $this->memoryLock === true
         ) {
             return $this;
         }
@@ -64,23 +60,31 @@ class InMemoryLogWriter extends AbstractWriter
             return $this;
         }
 
-        self::$log[] = (clone $record)->setMessage($this->interpolate($record->getMessage(), $record->getData()));
+        $this->log[] = (clone $record)->setMessage($this->interpolate($record->getMessage(), $record->getData()));
 
         return $this;
     }
 
     /**
+     * @return LogRecord[]
+     */
+    public function getLogEntries(): array
+    {
+        return $this->log;
+    }
+
+    /**
      * Lock writer and add an info message that there may potentially be more entries.
      */
-    protected function lockWriter(): void
+    private function lockWriter(): void
     {
-        self::$memoryLock = true;
+        $this->memoryLock = true;
         $record = GeneralUtility::makeInstance(
             LogRecord::class,
             'TYPO3.CMS.AdminPanel.Log.InMemoryLogWriter',
             LogLevel::INFO,
             '... Further log entries omitted, memory usage too high.'
         );
-        self::$log[] = $record;
+        $this->log[] = $record;
     }
 }

@@ -29,31 +29,14 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * Executed SQL queries.
-     *
-     * @var array
-     */
-    protected $queries = [];
+    /** Executed SQL queries. */
+    protected array $queries = [];
+    /** If Debug Stack is enabled (log queries) or not. */
+    protected bool $enabled = true;
+    protected float $start;
+    protected int $currentQuery = 0;
 
-    /**
-     * If Debug Stack is enabled (log queries) or not.
-     *
-     * @var bool
-     */
-    protected $enabled = true;
-
-    /**
-     * @var float
-     */
-    protected $start;
-
-    /**
-     * @var int
-     */
-    protected $currentQuery = 0;
-
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, array $params = null, array $types = null): void
     {
         if ($this->enabled && MemoryUtility::isMemoryConsumptionTooHigh()) {
             $this->enabled = false;
@@ -78,7 +61,7 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
         }
     }
 
-    public function stopQuery()
+    public function stopQuery(): void
     {
         if ($this->enabled) {
             $this->queries[$this->currentQuery]['executionMS'] = microtime(true) - $this->start;

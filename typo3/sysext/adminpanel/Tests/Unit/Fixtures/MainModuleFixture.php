@@ -40,8 +40,6 @@ class MainModuleFixture implements
     /**
      * Identifier for this module,
      * for example "preview" or "cache"
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -50,8 +48,6 @@ class MainModuleFixture implements
 
     /**
      * Module label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -60,8 +56,6 @@ class MainModuleFixture implements
 
     /**
      * Module Icon identifier - needs to be registered in iconRegistry
-     *
-     * @return string
      */
     public function getIconIdentifier(): string
     {
@@ -70,17 +64,12 @@ class MainModuleFixture implements
 
     /**
      * Displayed directly in the bar if module has content
-     *
-     * @return string
      */
     public function getShortInfo(): string
     {
         return 'short info';
     }
 
-    /**
-     * @return string
-     */
     public function getPageSettings(): string
     {
         return 'example settings';
@@ -92,8 +81,6 @@ class MainModuleFixture implements
      * A module may be enabled but not shown
      * -> only the initializeModule() method
      * will be called
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
@@ -104,9 +91,6 @@ class MainModuleFixture implements
      * Executed on saving / submit of the configuration form
      * Can be used to react to changed settings
      * (for example: clearing a specific cache)
-     *
-     * @param array $configurationToSave
-     * @param ServerRequestInterface $request
      */
     public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
     {
@@ -114,8 +98,6 @@ class MainModuleFixture implements
 
     /**
      * Returns a string array with javascript files that will be rendered after the module
-     *
-     * @return array
      */
     public function getJavaScriptFiles(): array
     {
@@ -124,8 +106,6 @@ class MainModuleFixture implements
 
     /**
      * Returns a string array with css files that will be rendered after the module
-     *
-     * @return array
      */
     public function getCssFiles(): array
     {
@@ -159,9 +139,6 @@ class MainModuleFixture implements
     /**
      * Initialize the module - runs in the TYPO3 middleware stack at an early point
      * may manipulate the current request
-     *
-     * @param ServerRequestInterface $request
-     * @return ServerRequestInterface
      */
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {

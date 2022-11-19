@@ -36,11 +36,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherInterface, ModuleSettingsProviderInterface
 {
-    protected ConfigurationService $configurationService;
-
-    public function __construct()
-    {
-        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+    public function __construct(
+        private readonly ConfigurationService $configurationService,
+    ) {
     }
 
     public function getIdentifier(): string

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Service;
 
-use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
@@ -45,7 +44,7 @@ class ModuleLoader
         }
         foreach ($modules as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
-                throw new InvalidConfigurationException(
+                throw new \RuntimeException(
                     'Missing configuration for module "' . $identifier . '".',
                     1519490105
                 );
@@ -59,7 +58,7 @@ class ModuleLoader
                     true
                 )
             ) {
-                throw new InvalidConfigurationException(
+                throw new \RuntimeException(
                     'The module "' .
                     $identifier .
                     '" defines an invalid module class. Ensure the class exists and implements the "' .

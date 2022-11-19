@@ -33,14 +33,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SqlLogging implements MiddlewareInterface
 {
-    /**
-     * @var ConnectionPool
-     */
-    protected $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
-    {
-        $this->connectionPool = $connectionPool;
+    public function __construct(
+        private readonly ConnectionPool $connectionPool
+    ) {
     }
 
     /**
