@@ -25,12 +25,12 @@ namespace TYPO3\CMS\Extbase\Annotation;
 class IgnoreValidation
 {
     /**
-     * @var string
+     * @var non-empty-string|null
      */
     public $argumentName;
 
     /**
-     * @param array $values
+     * @param array{value?: mixed, argumentName?: non-empty-string} $values
      * @throws \InvalidArgumentException
      */
     public function __construct(array $values)
