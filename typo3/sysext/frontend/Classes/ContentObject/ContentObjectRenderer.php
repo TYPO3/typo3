@@ -1193,7 +1193,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             continue;
                         }
 
-                        $conf[$functionName] = $this->stdWrap($conf[$functionName] ?? '', $conf[$functionProperties] ?? []);
+                        $conf[$functionName] = $this->stdWrap($conf[$functionName] ?? '', $conf[$functionProperties]);
                     }
                 }
                 // Check if key is still containing something, since it might have been changed by next level stdWrap before
