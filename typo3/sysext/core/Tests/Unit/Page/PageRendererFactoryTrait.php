@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ResponseFactory;
+use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -38,17 +37,17 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @internal Only for core internal testing.
+ */
 trait PageRendererFactoryTrait
 {
-    use ProphecyTrait;
-
     protected function getPageRendererConstructorArgs(
         PackageManager $packageManager = null,
         CacheManager $cacheManager = null,
     ): array {
         $packageManager ??= new PackageManager(new DependencyOrderingService());
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManager ??= $cacheManagerProphecy->reveal();
+        $cacheManager ??= $this->createMock(CacheManager::class);
 
         /**
          * prepare an EventDispatcher for ::makeInstance(AssetRenderer)
@@ -76,8 +75,8 @@ trait PageRendererFactoryTrait
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
             new LocalizationFactory(new LanguageStore($packageManager), $cacheManager),
-            $this->prophesize(ResponseFactoryInterface::class)->reveal(),
-            $this->prophesize(StreamFactoryInterface::class)->reveal(),
+            new ResponseFactory(),
+            new StreamFactory(),
         ];
     }
 }

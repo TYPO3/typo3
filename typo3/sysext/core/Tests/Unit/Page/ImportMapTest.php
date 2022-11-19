@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -29,13 +27,38 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ImportMapTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected array $packages = [];
 
     protected bool $backupEnvironment = true;
 
     protected ?PackageManager $backupPackageManager = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Environment::initialize(
+            Environment::getContext(),
+            Environment::isCli(),
+            Environment::isComposerMode(),
+            Environment::getProjectPath(),
+            __DIR__,
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $this->backupPackageManager = \Closure::bind(fn (): PackageManager => ExtensionManagementUtility::$packageManager, null, ExtensionManagementUtility::class)();
+        ExtensionManagementUtility::setPackageManager($this->mockPackageManager());
+    }
+
+    protected function tearDown(): void
+    {
+        ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
+        $this->backupPackageManager = null;
+        $this->packages = [];
+        parent::tearDown();
+    }
 
     /**
      * @test
@@ -92,7 +115,7 @@ class ImportMapTest extends UnitTestCase
         self::assertStringStartsWith('Fixtures/ImportMap/core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
         self::assertStringContainsString('"lit/":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Contrib/lit/"', $output);
         self::assertStringContainsString('"@typo3/core/Module1.js":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Module1.js?bust=', $output);
-        ExtensionManagementUtility::setPackageManager($this->prophesize(PackageManager::class)->reveal());
+        ExtensionManagementUtility::setPackageManager($this->createMock(PackageManager::class));
     }
 
     /**
@@ -123,7 +146,7 @@ class ImportMapTest extends UnitTestCase
 
         self::assertStringContainsString('"@typo3/core/":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/', $output);
         self::assertStringContainsString('"@typo3/core/Module1.js":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Module1.js?bust=', $output);
-        ExtensionManagementUtility::setPackageManager($this->prophesize(PackageManager::class)->reveal());
+        ExtensionManagementUtility::setPackageManager($this->createMock(PackageManager::class));
     }
 
     /**
@@ -196,13 +219,13 @@ class ImportMapTest extends UnitTestCase
     {
         $packageInstances = [];
         foreach ($this->packages as $key) {
-            $packageProphecy = $this->prophesize(PackageInterface::class);
-            $packageProphecy->getPackagePath()->willReturn(__DIR__ . '/Fixtures/ImportMap/' . $key . '/');
-            $packageProphecy->getPackageKey()->willReturn($key);
-            $packageMetadataProphecy = $this->prophesize(MetaData::class);
-            $packageMetadataProphecy->getVersion()->willReturn('1.0.0');
-            $packageProphecy->getPackageMetadata()->willReturn($packageMetadataProphecy->reveal());
-            $packageInstances[$key] = $packageProphecy->reveal();
+            $packageMock = $this->createMock(PackageInterface::class);
+            $packageMock->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/ImportMap/' . $key . '/');
+            $packageMock->method('getPackageKey')->willReturn($key);
+            $packageMetadataMock = $this->createMock(MetaData::class);
+            $packageMetadataMock->method('getVersion')->willReturn('1.0.0');
+            $packageMock->method('getPackageMetadata')->willReturn($packageMetadataMock);
+            $packageInstances[$key] = $packageMock;
         }
 
         return $packageInstances;
@@ -211,41 +234,14 @@ class ImportMapTest extends UnitTestCase
     protected function mockPackageManager(): PackageManager
     {
         $test = $this;
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $packageManagerProphecy->resolvePackagePath(Argument::type('string'))->will(
-            fn (array $args): string => str_replace(
+        $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock->method('resolvePackagePath')->with(self::isType('string'))->willReturnCallback(
+            fn (string $args): string => str_replace(
                 array_map(fn (PackageInterface $package): string => 'EXT:' . $package->getPackageKey() . '/', $test->getPackages()),
                 array_map(fn (PackageInterface $package): string => $package->getPackagePath(), $test->getPackages()),
-                $args[0]
+                $args
             )
         );
-        return $packageManagerProphecy->reveal();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Environment::initialize(
-            Environment::getContext(),
-            Environment::isCli(),
-            Environment::isComposerMode(),
-            Environment::getProjectPath(),
-            __DIR__,
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $this->backupPackageManager = \Closure::bind(fn (): PackageManager => ExtensionManagementUtility::$packageManager, null, ExtensionManagementUtility::class)();
-        ExtensionManagementUtility::setPackageManager($this->mockPackageManager());
-    }
-
-    protected function tearDown(): void
-    {
-        ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
-        $this->backupPackageManager = null;
-        $this->packages = [];
-        parent::tearDown();
+        return $packageManagerMock;
     }
 }

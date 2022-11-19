@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -28,7 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageRendererTest extends UnitTestCase
 {
-    use ProphecyTrait;
     use PageRendererFactoryTrait;
 
     protected bool $resetSingletonInstances = true;
@@ -36,11 +33,11 @@ class PageRendererTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $importMapProphecy = $this->prophesize(ImportMap::class);
-        $importMapProphecy->render(Argument::type('string'), Argument::type('string'))->willReturn('');
-        $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
-        $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
-        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+        $importMapMock = $this->createMock(ImportMap::class);
+        $importMapMock->method('render')->with(self::isType('string'), self::isType('string'))->willReturn('');
+        $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
+        $importMapFactoryMock->method('create')->willReturn($importMapMock);
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
     }
 
     /**
