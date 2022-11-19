@@ -978,4 +978,14 @@ return [
             'Deprecation-97866-VariousPublicTSFEProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlDoctype' => [
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlVersion' => [
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
 ];

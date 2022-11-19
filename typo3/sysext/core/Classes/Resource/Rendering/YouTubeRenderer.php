@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Rendering;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -198,7 +199,7 @@ class YouTubeRenderer implements FileRendererInterface
         if ((int)$height > 0) {
             $attributes['height'] = (int)$height;
         }
-        if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && (isset($GLOBALS['TSFE']->config['config']['doctype']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5')) {
+        if ($this->shouldIncludeFrameBorderAttribute()) {
             $attributes['frameborder'] = 0;
         }
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'poster', 'preload', 'allow'] as $key) {
@@ -225,5 +226,13 @@ class YouTubeRenderer implements FileRendererInterface
             }
         }
         return implode(' ', $attributeList);
+    }
+
+    /**
+     * HTML5 deprecated the "frameborder" attribute as everything should be done via styling.
+     */
+    protected function shouldIncludeFrameBorderAttribute(): bool
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class)->getDocType()->shouldIncludeFrameBorderAttribute();
     }
 }

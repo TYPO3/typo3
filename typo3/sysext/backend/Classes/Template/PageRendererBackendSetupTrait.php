@@ -52,13 +52,9 @@ trait PageRendererBackendSetupTrait
         ServerRequestInterface $request,
         LanguageService $languageService,
     ): void {
-        // Yes, hardcoded on purpose
-        $pageRenderer->setXmlPrologAndDocType('<!DOCTYPE html>');
         $pageRenderer->setLanguage($languageService->lang);
         $pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $pageRenderer->setFavIcon($this->getBackendFavicon($extensionConfiguration, $request));
-        $languageCode = $pageRenderer->getLanguage() === 'default' ? 'en' : $pageRenderer->getLanguage();
-        $pageRenderer->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $pageRenderer->enableDebugMode();
         }

@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -239,92 +240,40 @@ class RequestHandler implements RequestHandlerInterface
         if ($siteLanguage->getDirection()) {
             $htmlTagAttributes['dir'] = htmlspecialchars($siteLanguage->getDirection());
         }
+        $docType = $pageRenderer->getDocType();
         // Setting document type:
         $docTypeParts = [];
         $xmlDocument = true;
         // Part 1: XML prologue
-        switch ((string)($controller->config['config']['xmlprologue'] ?? '')) {
+        $xmlPrologue = (string)($controller->config['config']['xmlprologue'] ?? '');
+        switch ($xmlPrologue) {
             case 'none':
                 $xmlDocument = false;
                 break;
             case 'xml_10':
-                $docTypeParts[] = '<?xml version="1.0" encoding="utf-8"?>';
-                break;
             case 'xml_11':
-                $docTypeParts[] = '<?xml version="1.1" encoding="utf-8"?>';
-                break;
             case '':
-                if ($controller->xhtmlVersion) {
-                    $docTypeParts[] = '<?xml version="1.0" encoding="utf-8"?>';
+                if ($docType->isXmlCompliant()) {
+                    $docTypeParts[] = $docType->getXmlPrologue();
                 } else {
                     $xmlDocument = false;
                 }
                 break;
             default:
-                $docTypeParts[] = $controller->config['config']['xmlprologue'];
+                $docTypeParts[] = $xmlPrologue;
         }
         // Part 2: DTD
-        $doctype = $controller->config['config']['doctype'] ?? null;
-        $defaultTypeAttributeForJavaScript = 'text/javascript';
-        if ($doctype) {
-            switch ($doctype) {
-                case 'xhtml_trans':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-                    break;
-                case 'xhtml_strict':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-                    break;
-                case 'xhtml_basic':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
-    "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">';
-                    break;
-                case 'xhtml_11':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
-                    break;
-                case 'xhtml+rdfa_10':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
-    "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">';
-                    break;
-                case 'html5':
-                    $defaultTypeAttributeForJavaScript = '';
-                    $docTypeParts[] = '<!DOCTYPE html>';
-                    if ($xmlDocument) {
-                        $pageRenderer->setMetaCharsetTag('<meta charset="|" />');
-                    } else {
-                        $pageRenderer->setMetaCharsetTag('<meta charset="|">');
-                    }
-                    break;
-                case 'none':
-                    break;
-                default:
-                    $docTypeParts[] = $doctype;
-            }
-        } else {
-            $docTypeParts[] = '<!DOCTYPE html>';
-            if ($xmlDocument) {
-                $pageRenderer->setMetaCharsetTag('<meta charset="|" />');
-            } else {
-                $pageRenderer->setMetaCharsetTag('<meta charset="|">');
-            }
-            $defaultTypeAttributeForJavaScript = '';
+        if ($docType->getDoctypeDeclaration() !== '') {
+            $docTypeParts[] = $docType->getDoctypeDeclaration();
+        }
+        if (!empty($docTypeParts)) {
+            $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         if ($htmlLang) {
-            if ($controller->xhtmlVersion) {
-                $htmlTagAttributes['xml:lang'] = $htmlLang;
-            }
-            if ($controller->xhtmlVersion < 110 || $doctype === 'html5') {
-                $htmlTagAttributes['lang'] = $htmlLang;
-            }
+            // See https://www.w3.org/International/questions/qa-html-language-declarations.en.html#attributes
+            $htmlTagAttributes[$docType->isXmlCompliant() ? 'xml:lang' : 'lang'] = $htmlLang;
         }
-        if ($controller->xhtmlVersion || $doctype === 'html5' && $xmlDocument) {
+        if ($docType->isXmlCompliant() || $docType === DocType::html5 && $xmlDocument) {
             // We add this to HTML5 to achieve a slightly better backwards compatibility
             $htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
             if (is_array($controller->config['config']['namespaces.'] ?? null)) {
@@ -333,9 +282,6 @@ class RequestHandler implements RequestHandlerInterface
                     $htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri;
                 }
             }
-        }
-        if (!empty($docTypeParts)) {
-            $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         // Begin header section:
         $htmlTag = $this->generateHtmlTag($htmlTagAttributes, $controller->config['config'] ?? [], $controller->cObj);
@@ -527,7 +473,6 @@ class RequestHandler implements RequestHandlerInterface
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSLibs.'][$key . '.'];
                         $additionalAttributes = $jsFileConfig ?? [];
-                        $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = (string)($jsFileConfig['crossorigin'] ?? '');
                         if ($crossOrigin === '' && ($jsFileConfig['integrity'] ?? false) && ($jsFileConfig['external'] ?? false)) {
                             $crossOrigin = 'anonymous';
@@ -549,7 +494,7 @@ class RequestHandler implements RequestHandlerInterface
                         $pageRenderer->addJsLibrary(
                             $key,
                             $ss,
-                            $type,
+                            $jsFileConfig['type'] ?? null,
                             empty($jsFileConfig['external']) && empty($jsFileConfig['disableCompression']),
                             (bool)($jsFileConfig['forceOnTop'] ?? false),
                             $jsFileConfig['allWrap'] ?? '',
@@ -585,7 +530,6 @@ class RequestHandler implements RequestHandlerInterface
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSFooterlibs.'][$key . '.'];
                         $additionalAttributes = $jsFileConfig ?? [];
-                        $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = (string)($jsFileConfig['crossorigin'] ?? '');
                         if ($crossOrigin === '' && ($jsFileConfig['integrity'] ?? false) && ($jsFileConfig['external'] ?? false)) {
                             $crossOrigin = 'anonymous';
@@ -607,7 +551,7 @@ class RequestHandler implements RequestHandlerInterface
                         $pageRenderer->addJsFooterLibrary(
                             $key,
                             $ss,
-                            $type,
+                            $jsFileConfig['type'] ?? null,
                             empty($jsFileConfig['external']) && empty($jsFileConfig['disableCompression']),
                             (bool)($jsFileConfig['forceOnTop'] ?? false),
                             $jsFileConfig['allWrap'] ?? '',
@@ -643,14 +587,13 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsConfig = &$controller->pSetup['includeJS.'][$key . '.'];
-                        $type = $jsConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = (string)($jsConfig['crossorigin'] ?? '');
                         if ($crossOrigin === '' && ($jsConfig['integrity'] ?? false) && ($jsConfig['external'] ?? false)) {
                             $crossOrigin = 'anonymous';
                         }
                         $pageRenderer->addJsFile(
                             $ss,
-                            $type,
+                            $jsConfig['type'] ?? null,
                             empty($jsConfig['external']) && empty($jsConfig['disableCompression']),
                             (bool)($jsConfig['forceOnTop'] ?? false),
                             $jsConfig['allWrap'] ?? '',
@@ -685,14 +628,13 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsConfig = &$controller->pSetup['includeJSFooter.'][$key . '.'];
-                        $type = $jsConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = (string)($jsConfig['crossorigin'] ?? '');
                         if ($crossOrigin === '' && ($jsConfig['integrity'] ?? false) && ($jsConfig['external'] ?? false)) {
                             $crossOrigin = 'anonymous';
                         }
                         $pageRenderer->addJsFooterFile(
                             $ss,
-                            $type,
+                            $jsConfig['type'] ?? null,
                             empty($jsConfig['external']) && empty($jsConfig['disableCompression']),
                             (bool)($jsConfig['forceOnTop'] ?? false),
                             $jsConfig['allWrap'] ?? '',
@@ -757,7 +699,7 @@ class RequestHandler implements RequestHandlerInterface
                 $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $compressJs);
             }
             if (trim($inlineJS)) {
-                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineJS), $defaultTypeAttributeForJavaScript, $compressJs);
+                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineJS), null, $compressJs);
             }
             if ($inlineFooterJs) {
                 $inlineFooterJSint = '';
@@ -765,7 +707,7 @@ class RequestHandler implements RequestHandlerInterface
                 if ($inlineFooterJSint) {
                     $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $compressJs);
                 }
-                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), $defaultTypeAttributeForJavaScript, $compressJs);
+                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), null, $compressJs);
             }
         } else {
             // Include only inlineJS

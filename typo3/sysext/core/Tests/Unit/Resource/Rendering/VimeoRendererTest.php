@@ -41,7 +41,8 @@ class VimeoRendererTest extends UnitTestCase
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->method('getOnlineMediaId')->willReturn('7331');
 
-        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
+        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $this->subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $this->subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
     }
 
@@ -222,7 +223,8 @@ class VimeoRendererTest extends UnitTestCase
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->method('getOnlineMediaId')->willReturn('7331/private0123');
 
-        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
         $fileResourceMock = $this->createMock(File::class);
@@ -241,7 +243,8 @@ class VimeoRendererTest extends UnitTestCase
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
-        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
         $fileResourceMock = $this->createMock(File::class);

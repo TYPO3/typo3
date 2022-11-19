@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -156,6 +157,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var bool
+     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
      */
     protected $renderXhtml = true;
 
@@ -192,6 +194,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0
      */
     protected $metaCharsetTag = '<meta http-equiv="Content-Type" content="text/html; charset=|" />';
 
@@ -326,6 +329,7 @@ class PageRenderer implements SingletonInterface
     protected $endingSlash = '';
 
     protected JavaScriptRenderer $javaScriptRenderer;
+    protected DocType $docType = DocType::html5;
 
     public function __construct(
         protected readonly FrontendInterface $assetsCache,
@@ -419,6 +423,7 @@ class PageRenderer implements SingletonInterface
      */
     protected function reset()
     {
+        $this->setDocType(DocType::html5);
         $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
         $this->jsFiles = [];
         $this->jsFooterFiles = [];
@@ -456,9 +461,11 @@ class PageRenderer implements SingletonInterface
      * Enables/disables rendering of XHTML code
      *
      * @param bool $enable Enable XHTML
+     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
      */
     public function setRenderXhtml($enable)
     {
+        trigger_error('PageRenderer->setRenderXhtml() will be removed in TYPO3 v13.0. Use PageRenderer->setDocType() instead.', E_USER_DEPRECATED);
         $this->renderXhtml = $enable;
 
         // Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
@@ -483,9 +490,11 @@ class PageRenderer implements SingletonInterface
      * Sets meta charset
      *
      * @param string $charSet Used charset
+     * @deprecated will be removed in TYPO3 v13.0
      */
     public function setCharSet($charSet)
     {
+        trigger_error('PageRenderer->setCharSet() will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $this->charSet = $charSet;
     }
 
@@ -504,15 +513,21 @@ class PageRenderer implements SingletonInterface
             $this->languageDependencies = array_merge([$this->lang], $this->locales->getLocaleDependencies($this->lang));
             $this->languageDependencies = array_reverse($this->languageDependencies);
         }
+        if ($this->docType === DocType::html5) {
+            $languageCode = $lang === 'default' ? 'en' : $lang;
+            $this->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
+        }
     }
 
     /**
      * Set the meta charset tag
      *
      * @param string $metaCharsetTag
+     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
      */
     public function setMetaCharsetTag($metaCharsetTag)
     {
+        trigger_error('PageRenderer->setMetaCharsetTag() will be removed in TYPO3 v13.0. Use PageRenderer->setDocType() instead.', E_USER_DEPRECATED);
         $this->metaCharsetTag = $metaCharsetTag;
     }
 
@@ -760,9 +775,11 @@ class PageRenderer implements SingletonInterface
      * Gets the charSet
      *
      * @return string $charSet
+     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
      */
     public function getCharSet()
     {
+        trigger_error('PageRenderer->getCharSet() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
         return $this->charSet;
     }
 
@@ -780,10 +797,36 @@ class PageRenderer implements SingletonInterface
      * Returns rendering mode XHTML or HTML
      *
      * @return bool TRUE if XHTML, FALSE if HTML
+     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
      */
     public function getRenderXhtml()
     {
+        trigger_error('PageRenderer->getRenderXhtml() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
         return $this->renderXhtml;
+    }
+
+    public function setDocType(DocType $docType): void
+    {
+        $this->docType = $docType;
+        $this->renderXhtml = $docType->isXmlCompliant();
+        $this->xmlPrologAndDocType = $docType->getDoctypeDeclaration();
+        $this->metaCharsetTag = str_replace('utf-8', '|', $docType->getMetaCharsetTag());
+        if ($this->getLanguage()) {
+            $languageCode = $this->getLanguage() === 'default' ? 'en' : $this->getLanguage();
+            $this->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
+        }
+
+        // Whenever HTML5 is used, remove the "text/javascript" type from the wrap
+        // since this is not needed and may lead to validation errors in the future.
+        $this->inlineJavascriptWrap = [
+            '<script' . ($docType !== DocType::html5 ? ' type="text/javascript" ' : '') . '>' . LF . '/*<![CDATA[*/' . LF,
+            '/*]]>*/' . LF . '</script>' . LF,
+        ];
+    }
+
+    public function getDocType(): DocType
+    {
+        return $this->docType;
     }
 
     /**
@@ -800,9 +843,11 @@ class PageRenderer implements SingletonInterface
      * Get meta charset
      *
      * @return string
+     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
      */
     public function getMetaCharsetTag()
     {
+        trigger_error('PageRenderer->getMetaCharsetTag() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
         return $this->metaCharsetTag;
     }
 
@@ -1056,7 +1101,7 @@ class PageRenderer implements SingletonInterface
      *
      * @param string $name Arbitrary identifier
      * @param string $file File name
-     * @param string $type Content Type
+     * @param string|null $type Content Type
      * @param bool $compress Flag if library should be compressed
      * @param bool $forceOnTop Flag if added library should be inserted at begin of this block
      * @param string $allWrap
@@ -1071,6 +1116,9 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        if ($type === null) {
+            $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
+        }
         if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
@@ -1096,7 +1144,7 @@ class PageRenderer implements SingletonInterface
      *
      * @param string $name Arbitrary identifier
      * @param string $file File name
-     * @param string $type Content Type
+     * @param string|null $type Content Type
      * @param bool $compress Flag if library should be compressed
      * @param bool $forceOnTop Flag if added library should be inserted at begin of this block
      * @param string $allWrap
@@ -1111,6 +1159,9 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsFooterLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        if ($type === null) {
+            $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
+        }
         $name .= '_jsFooterLibrary';
         if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
@@ -1136,7 +1187,7 @@ class PageRenderer implements SingletonInterface
      * Adds JS file
      *
      * @param string $file File name
-     * @param string $type Content Type
+     * @param string|null $type Content Type
      * @param bool $compress
      * @param bool $forceOnTop
      * @param string $allWrap
@@ -1151,6 +1202,9 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        if ($type === null) {
+            $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
+        }
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
                 'file' => $file,
@@ -1175,7 +1229,7 @@ class PageRenderer implements SingletonInterface
      * Adds JS file to footer
      *
      * @param string $file File name
-     * @param string $type Content Type
+     * @param string|null $type Content Type
      * @param bool $compress
      * @param bool $forceOnTop
      * @param string $allWrap
@@ -1190,6 +1244,9 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsFooterFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        if ($type === null) {
+            $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
+        }
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
                 'file' => $file,
@@ -1849,7 +1906,7 @@ class PageRenderer implements SingletonInterface
      */
     protected function prepareRendering()
     {
-        if ($this->getRenderXhtml()) {
+        if ($this->docType->isXmlCompliant()) {
             $this->endingSlash = ' /';
         } else {
             $this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);

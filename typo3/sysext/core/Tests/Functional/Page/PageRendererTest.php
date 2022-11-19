@@ -69,7 +69,6 @@ class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
-        $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
         $prologueString = $expectedPrologueString = '<?xml version="1.0" encoding="utf-8" ?>';
@@ -79,13 +78,11 @@ class PageRendererTest extends FunctionalTestCase
         $subject->setTitle($title);
         $expectedTitleString = '<title>' . $title . '</title>';
 
-        $charset = 'utf-8';
-        $subject->setCharSet($charset);
-        $expectedCharsetString = '<meta http-equiv="Content-Type" content="text/html; charset=' . $charset . '" />';
+        $expectedCharsetString = '<meta charset="utf-8">';
 
-        $favouriteIcon = 'http://google.com/favicon.ico';
+        $favouriteIcon = 'http://example.com/favicon.ico';
         $subject->setFavIcon($favouriteIcon);
-        $expectedFavouriteIconPartOne = '<link rel="icon" href="' . $favouriteIcon . '" />';
+        $expectedFavouriteIconPartOne = '<link rel="icon" href="' . $favouriteIcon . '">';
 
         $subject->setMetaTag('property', 'og:type', 'foobar');
         $subject->setMetaTag('name', 'author', 'husel');
@@ -131,7 +128,7 @@ class PageRendererTest extends FunctionalTestCase
         $subject->addJsInlineCode(StringUtility::getUniqueId(), $jsInlineCode);
 
         $cssFile = StringUtility::getUniqueId('/cssFile-');
-        $expectedCssFileString = 'wrapBefore<link rel="stylesheet" href="' . $cssFile . '" media="print" />wrapAfter';
+        $expectedCssFileString = 'wrapBefore<link rel="stylesheet" href="' . $cssFile . '" media="print">wrapAfter';
         $subject->addCssFile($cssFile, 'stylesheet', 'print', '', true, false, 'wrapBeforeXwrapAfter', false, 'X');
 
         $expectedCssInlineBlockOnTopString = '/*general3*/' . LF . 'h1 {margin:20px;}' . LF . '/*general2*/' . LF . 'body {margin:20px;}';
@@ -505,7 +502,7 @@ class PageRendererTest extends FunctionalTestCase
                 'data-bar' => 'baz',
             ]
         );
-        $expectedCssFile = '<link rel="stylesheet" href="/fileadmin/test.css" media="all" data-foo="CssFile" data-bar="baz" />';
+        $expectedCssFile = '<link rel="stylesheet" href="/fileadmin/test.css" media="all" data-foo="CssFile" data-bar="baz">';
 
         $subject->addCssLibrary(
             '/fileadmin/test.css',
@@ -514,7 +511,7 @@ class PageRendererTest extends FunctionalTestCase
                 'data-bar' => 'baz',
             ]
         );
-        $expectedCssLibrary = '<link rel="stylesheet" href="/fileadmin/test.css" media="all" data-foo="CssLibrary" data-bar="baz" />';
+        $expectedCssLibrary = '<link rel="stylesheet" href="/fileadmin/test.css" media="all" data-foo="CssLibrary" data-bar="baz">';
 
         $renderedString = $subject->render();
 

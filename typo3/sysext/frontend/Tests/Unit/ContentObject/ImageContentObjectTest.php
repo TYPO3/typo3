@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface;
@@ -52,6 +54,8 @@ class ImageContentObjectTest extends UnitTestCase
             ),
         ]);
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $this->subject->_set('pageRenderer', $pageRenderer);
     }
 
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider(): array
@@ -358,8 +362,9 @@ class ImageContentObjectTest extends UnitTestCase
         $cObj->start([], 'tt_content');
 
         $file = 'testImageName';
-
-        $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer->setDocType(DocType::createFromConfigurationKey($xhtmlDoctype));
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 
         // Avoid calling of stdWrap
         $cObj
@@ -379,6 +384,7 @@ class ImageContentObjectTest extends UnitTestCase
                 new NullFrontend('runtime'),
             ),
         ]);
+        $subject->_set('pageRenderer', $pageRenderer);
         $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 

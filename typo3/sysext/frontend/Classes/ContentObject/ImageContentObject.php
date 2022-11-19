@@ -98,7 +98,7 @@ class ImageContentObject extends AbstractContentObject
             'params' => $params,
             'altParams' => $altParam,
             'sourceCollection' => $sourceCollection,
-            'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
+            'selfClosingTagSlash' => $this->getPageRenderer()->getDocType()->isXmlCompliant() ? ' /' : '',
         ];
 
         $theValue = $this->markerTemplateService->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
@@ -222,7 +222,7 @@ class ImageContentObject extends AbstractContentObject
                     }
 
                     $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
-                    $sourceConfiguration['selfClosingTagSlash'] = !empty($tsfe->xhtmlDoctype) ? ' /' : '';
+                    $sourceConfiguration['selfClosingTagSlash'] = $this->getPageRenderer()->getDocType()->isXmlCompliant() ? ' /' : '';
 
                     $oneSourceCollection = $this->markerTemplateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
 

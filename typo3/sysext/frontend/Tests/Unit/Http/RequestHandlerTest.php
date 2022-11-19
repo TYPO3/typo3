@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -137,6 +138,7 @@ class RequestHandlerTest extends UnitTestCase
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
@@ -292,6 +294,7 @@ class RequestHandlerTest extends UnitTestCase
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::once())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);
@@ -343,6 +346,7 @@ class RequestHandlerTest extends UnitTestCase
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::never())->method('setMetaTag');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);
@@ -444,6 +448,7 @@ class RequestHandlerTest extends UnitTestCase
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::exactly(2))->method('setMetaTag')->withConsecutive(
             [$expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false],
             [$expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false]

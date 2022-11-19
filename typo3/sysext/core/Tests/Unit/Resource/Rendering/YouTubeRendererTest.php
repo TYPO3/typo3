@@ -42,7 +42,8 @@ class YouTubeRendererTest extends UnitTestCase
         $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youTubeHelper->method('getOnlineMediaId')->willReturn('7331');
 
-        $this->subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
+        $this->subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $this->subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $this->subject->method('getOnlineMediaHelper')->willReturn($youTubeHelper);
     }
 
@@ -333,7 +334,8 @@ class YouTubeRendererTest extends UnitTestCase
         $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youtubeHelper->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
-        $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($youtubeHelper);
 
         $fileResourceMock = $this->createMock(File::class);

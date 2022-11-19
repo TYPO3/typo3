@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -110,6 +111,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         'fileTarget' => '$TSFE->fileTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'fileTarget\'] instead.',
         'spamProtectEmailAddresses' => '$TSFE->spamProtectEmailAddresses will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'spamProtectEmailAddresses\'] instead.',
         'baseUrl' => '$TSFE->baseUrl will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'baseURL\'] instead.',
+        'xhtmlDoctype' => '$TSFE->xhtmlDoctype will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.',
+        'xhtmlVersion' => '$TSFE->xhtmlVersion will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.',
     ];
 
     /**
@@ -472,13 +475,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Doctype to use
      *
      * @var string
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Use PageRenderer->getDocType() instead.
      */
-    public $xhtmlDoctype = '';
+    protected $xhtmlDoctype = '';
 
     /**
      * @var int
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Use PageRenderer->getDocType() instead.
      */
-    public $xhtmlVersion;
+    protected $xhtmlVersion;
 
     /**
      * Originally requested id from PageArguments
@@ -2018,29 +2023,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->calculateLinkVars($request->getQueryParams());
         // Setting XHTML-doctype from doctype
         $this->config['config']['xhtmlDoctype'] = $this->config['config']['xhtmlDoctype'] ?? $this->config['config']['doctype'] ?? '';
-        if ($this->config['config']['xhtmlDoctype']) {
-            $this->xhtmlDoctype = $this->config['config']['xhtmlDoctype'];
-            // Checking XHTML-docytpe
-            switch ((string)$this->config['config']['xhtmlDoctype']) {
-                case 'xhtml_trans':
-                case 'xhtml_strict':
-                    $this->xhtmlVersion = 100;
-                    break;
-                case 'xhtml_basic':
-                    $this->xhtmlVersion = 105;
-                    break;
-                case 'xhtml_11':
-                case 'xhtml+rdfa_10':
-                    $this->xhtmlVersion = 110;
-                    break;
-                default:
-                    $this->pageRenderer->setRenderXhtml(false);
-                    $this->xhtmlDoctype = '';
-                    $this->xhtmlVersion = 0;
-            }
-        } else {
-            $this->pageRenderer->setRenderXhtml(false);
-        }
+        $docType = DocType::createFromConfigurationKey($this->config['config']['xhtmlDoctype']);
+        $this->xhtmlDoctype = $docType->getXhtmlDocType();
+        $this->xhtmlVersion = $docType->getXhtmlVersion();
+        $this->pageRenderer->setDocType($docType);
 
         // Global content object
         $this->newCObj($request);

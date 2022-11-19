@@ -5414,4 +5414,46 @@ return [
             'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->setRenderXhtml' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getRenderXhtml' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->setCharSet' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getCharSet' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->setMetaCharsetTag' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getMetaCharsetTag' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+        ],
+    ],
 ];

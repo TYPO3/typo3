@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -3700,6 +3702,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $linkFactory = $this->getMockBuilder(LinkFactory::class)->disableOriginalConstructor()->getMock();
         $linkFactory->expects(self::atLeastOnce())->method('create')->with(self::anything())->willReturn(new LinkResult('', ''));
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
+        $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererMock);
 
         $expectExceptions = ['numRows'];
         $count = 0;
@@ -4023,7 +4028,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_br(string $expected, string $input, ?string $xhtmlDoctype): void
     {
-        $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer->setDocType(DocType::createFromConfigurationKey($xhtmlDoctype));
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
         self::assertSame($expected, $this->subject->stdWrap_br($input));
     }
 

@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -2055,7 +2056,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_br($content = '')
     {
-        return nl2br($content, !empty($this->getTypoScriptFrontendController()->xhtmlDoctype));
+        $docType = GeneralUtility::makeInstance(PageRenderer::class)->getDocType();
+        return nl2br($content, $docType->isXmlCompliant());
     }
 
     /**
