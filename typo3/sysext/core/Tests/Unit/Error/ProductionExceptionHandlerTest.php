@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\ProductionExceptionHandler;
@@ -26,19 +25,10 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * testcase for the \TYPO3\CMS\Core\Error\ProductionExceptionHandler class.
- */
 class ProductionExceptionHandlerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|MockObject
-     */
-    protected $subject;
+    protected ProductionExceptionHandler&MockObject $subject;
 
     /**
      * Sets up this test case.
@@ -69,9 +59,9 @@ class ProductionExceptionHandlerTest extends UnitTestCase
      */
     public function echoExceptionWebEscapesExceptionMessage(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->createMock(Typo3Information::class);
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $message = '<b>b</b><script>alert(1);</script>';
         $exception = new \Exception($message, 1476049364);
         ob_start();
@@ -87,9 +77,9 @@ class ProductionExceptionHandlerTest extends UnitTestCase
      */
     public function echoExceptionWebEscapesExceptionTitle(): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->createMock(Typo3Information::class);
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $title = '<b>b</b><script>alert(1);</script>';
         $exception = $this->getMockBuilder(\Exception::class)
             ->addMethods(['getTitle'])
@@ -142,14 +132,12 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider exampleUrlsForTokenAnonymization
-     * @param string $originalUrl
-     * @param string $expectedUrl
      */
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
-        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
-        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $typo3InformationMock = $this->createMock(Typo3Information::class);
+        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $subject = new ProductionExceptionHandler();
         $logger = new class () implements LoggerInterface {
             use LoggerTrait;
