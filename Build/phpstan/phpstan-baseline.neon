@@ -241,11 +241,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$pageId of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getLabelFromItemListMerged\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$newId \\(string\\) does not accept default value of type int\\.$#"
 			count: 1
 			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
@@ -299,26 +294,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/IpLocker.php
-
-		-
-			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, array given\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/RecoveryCodesProvider.php
-
-		-
-			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, int given\\.$#"
-			count: 5
-			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/RecoveryCodesProvider.php
-
-		-
-			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, int given\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/TotpProvider.php
-
-		-
-			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, string given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/TotpProvider.php
 
 		-
 			message: "#^Parameter \\#1 \\$key1 of method Redis\\:\\:sUnion\\(\\) expects string, array\\<int, string\\> given\\.$#"
@@ -1259,11 +1234,6 @@ parameters:
 			message: "#^Binary operation \"&\" between string and string\\|false results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php
-
-		-
-			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Authentication/Mfa/MfaProviderPropertyManagerTest.php
 
 		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\FileBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"

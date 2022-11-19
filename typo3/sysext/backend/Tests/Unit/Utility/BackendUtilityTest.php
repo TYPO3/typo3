@@ -796,7 +796,7 @@ class BackendUtilityTest extends UnitTestCase
     {
         return [
             'no field found' => [
-                'pageId' => '123',
+                'pageId' => 123,
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '10',
@@ -816,7 +816,7 @@ class BackendUtilityTest extends UnitTestCase
                 'expectedLabel' => '',
             ],
             'no tsconfig set' => [
-                'pageId' => '123',
+                'pageId' => 123,
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '1',
@@ -843,7 +843,7 @@ class BackendUtilityTest extends UnitTestCase
      * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
      */
     public function getLabelFromItemListMergedReturnsCorrectFields(
-        string $pageId,
+        int $pageId,
         string $table,
         string $column,
         string $key,

@@ -73,12 +73,8 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
     /**
      * Get a provider specific property value or the defined
      * default value if the requested property was not found.
-     *
-     * @param string $key
-     * @param null $default
-     * @return mixed|null
      */
-    public function getProperty(string $key, $default = null)
+    public function getProperty(string $key, mixed $default = null): mixed
     {
         return $this->providerProperties[$key] ?? $default;
     }

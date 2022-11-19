@@ -1279,13 +1279,12 @@ class BackendUtility
     /**
      * Return the label of a field by additionally checking TsConfig values
      *
-     * @param int $pageId Page id
      * @param string $table Table name
      * @param string $column Field Name
      * @param string $key item value
      * @return string Label for item entry
      */
-    public static function getLabelFromItemListMerged($pageId, $table, $column, $key)
+    public static function getLabelFromItemListMerged(int $pageId, $table, $column, $key)
     {
         $pageTsConfig = static::getPagesTSconfig($pageId);
         $label = '';
