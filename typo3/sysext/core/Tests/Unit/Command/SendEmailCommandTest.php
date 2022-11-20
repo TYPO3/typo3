@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Command;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Command\SendEmailCommand;
@@ -28,35 +26,24 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SendEmailCommandTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function executeWillFlushTheQueue(): void
     {
-        $delayedTransportProphecy = $this->prophesize(DelayedTransportInterface::class);
-        $delayedTransportProphecy->flushQueue(Argument::any())->willReturn(5);
-        $realTransportProphecy = $this->prophesize(TransportInterface::class);
+        $delayedTransportMock = $this->createMock(DelayedTransportInterface::class);
+        $delayedTransportMock->method('flushQueue')->with(self::anything())->willReturn(5);
+        $realTransportMock = $this->createMock(TransportInterface::class);
 
         $mailer = $this->createMock(MailerInterface::class);
-
-        $mailer
-            ->method('getTransport')
-            ->willReturn($delayedTransportProphecy->reveal());
-
-        $mailer
-            ->method('getRealTransport')
-            ->willReturn($realTransportProphecy->reveal());
+        $mailer->method('getTransport')->willReturn($delayedTransportMock);
+        $mailer->method('getRealTransport')->willReturn($realTransportMock);
 
         $command = $this->getMockBuilder(SendEmailCommand::class)
             ->setConstructorArgs(['mailer:spool:send'])
             ->onlyMethods(['getMailer'])
             ->getMock();
-
-        $command
-            ->method('getMailer')
-            ->willReturn($mailer);
+        $command->method('getMailer')->willReturn($mailer);
 
         $tester = new CommandTester($command);
         $tester->execute([], []);
