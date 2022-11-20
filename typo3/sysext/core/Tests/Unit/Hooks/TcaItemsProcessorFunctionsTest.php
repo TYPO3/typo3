@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Hooks;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -35,23 +34,21 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaItemsProcessorFunctionsTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Default LANG prophecy just returns incoming value as label if calling ->sL()
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        // Default LANG mock just returns incoming value as label if calling ->sL()
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceMock;
 
-        $iconRegistryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconRegistryProphecy->reveal());
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        $iconRegistryMock = $this->createMock(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconRegistryMock);
+        $iconFactoryMock = $this->createMock(IconFactory::class);
         // Two instances are needed due to the push/pop behavior of addInstance()
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
     }
 
     /**
@@ -150,17 +147,12 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
      */
     public function populateAvailableUserModulesTest(): void
     {
-        $moduleProviderProphecy = $this->prophesize(ModuleProvider::class);
-        GeneralUtility::addInstance(ModuleProvider::class, $moduleProviderProphecy->reveal());
-        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcherProphecy->dispatch(Argument::any())->willReturnArgument();
+        $moduleProviderMock = $this->createMock(ModuleProvider::class);
+        GeneralUtility::addInstance(ModuleProvider::class, $moduleProviderMock);
 
-        $moduleFactory = new ModuleFactory(
-            $this->prophesize(IconRegistry::class)->reveal(),
-            $eventDispatcherProphecy->reveal()
-        );
+        $moduleFactory = new ModuleFactory($this->createMock(IconRegistry::class), new NoopEventDispatcher());
 
-        $moduleProviderProphecy->getUserModules()->willReturn([
+        $moduleProviderMock->method('getUserModules')->willReturn([
             'aModule' => $moduleFactory->createModule('aModule', [
                 'iconIdentifier' => 'a-module',
                 'labels' => 'LLL:EXT:a-module/locallang',
@@ -389,10 +381,10 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             ],
         ];
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $eventDispatcher = new MockEventDispatcher();
         GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
