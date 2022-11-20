@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -27,8 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MarkerBasedTemplateServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected ?MarkerBasedTemplateService $templateService;
 
     protected bool $resetSingletonInstances = true;
@@ -39,11 +36,8 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $this->templateService = new MarkerBasedTemplateService(
-            $cacheFrontendProphecy->reveal(),
-            $cacheFrontendProphecy->reveal(),
-        );
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $this->templateService = new MarkerBasedTemplateService($cacheFrontendMock, $cacheFrontendMock);
     }
 
     /**
