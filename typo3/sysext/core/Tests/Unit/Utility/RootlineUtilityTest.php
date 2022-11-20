@@ -18,10 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
@@ -34,25 +33,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RootlineUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
+    protected RootlineUtility&MockObject&AccessibleObjectInterface $subject;
 
-    /**
-     * @var RootlineUtility|AccessibleObjectInterface|MockObject
-     */
-    protected $subject;
-
-    /**
-     * @throws \ReflectionException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('rootline')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('rootline'));
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
 
         $this->subject = $this->getAccessibleMock(
             RootlineUtility::class,
@@ -326,7 +315,6 @@ class RootlineUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @throws \ReflectionException
      */
     public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
