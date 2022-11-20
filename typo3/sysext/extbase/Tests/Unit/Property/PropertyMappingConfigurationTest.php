@@ -36,7 +36,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::getTargetPropertyName
      */
     public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration(): void
     {
@@ -46,7 +45,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsFalseByDefault(): void
     {
@@ -56,7 +54,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsTrueIfConfigured(): void
     {
@@ -67,7 +64,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsTrueForAllowedProperties(): void
     {
@@ -78,7 +74,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsFalseForBlacklistedProperties(): void
     {
@@ -91,7 +86,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldSkip
      */
     public function shouldSkipReturnsFalseByDefault(): void
     {
@@ -101,7 +95,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldSkip
      */
     public function shouldSkipReturnsTrueIfConfigured(): void
     {

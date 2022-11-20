@@ -24,7 +24,6 @@ class CategoryCollectionTest extends UnitTestCase
 {
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
      */
     public function missingTableNameArgumentForObjectCategoryCollection(): void
     {

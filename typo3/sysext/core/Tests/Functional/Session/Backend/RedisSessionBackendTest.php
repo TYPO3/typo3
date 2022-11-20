@@ -109,7 +109,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::set
      */
     public function sessionDataIsStoredProperly(): void
     {
@@ -137,7 +136,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::get
      */
     public function throwExceptionOnNonExistingSessionId(): void
     {
@@ -148,7 +146,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::update
      */
     public function mergeSessionDataWithNewData(): void
     {
@@ -166,7 +163,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::set
      */
     public function existingSessionMustNotBeOverridden(): void
     {
@@ -181,7 +177,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::update
      */
     public function cannotChangeSessionId(): void
     {
@@ -204,7 +199,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::remove
      */
     public function sessionGetsDestroyed(): void
     {
@@ -221,7 +215,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::getAll
      */
     public function canLoadAllSessions(): void
     {

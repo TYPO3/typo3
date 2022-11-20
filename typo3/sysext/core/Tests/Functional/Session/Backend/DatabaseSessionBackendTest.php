@@ -65,7 +65,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::set
      */
     public function sessionDataIsStoredProperly(): void
     {
@@ -94,7 +93,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::get
      */
     public function throwExceptionOnNonExistingSessionId(): void
     {
@@ -105,7 +103,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::update
      */
     public function mergeSessionDataWithNewData(): void
     {
@@ -124,7 +121,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::set
      */
     public function existingSessionMustNotBeOverridden(): void
     {
@@ -139,7 +135,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::update
      */
     public function cannotChangeSessionId(): void
     {
@@ -163,7 +158,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::remove
      */
     public function sessionGetsDestroyed(): void
     {
@@ -180,7 +174,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::getAll
      */
     public function canLoadAllSessions(): void
     {

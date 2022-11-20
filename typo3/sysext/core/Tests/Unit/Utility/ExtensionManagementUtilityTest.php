@@ -34,9 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \TYPO3\CMS\Core\Utility\ExtensionManagementUtility
- */
 class ExtensionManagementUtilityTest extends UnitTestCase
 {
     use ProphecyTrait;

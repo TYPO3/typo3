@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Imaging;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \TYPO3\CMS\Frontend\Imaging\GifBuilder
- */
 class GifBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

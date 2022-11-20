@@ -51,7 +51,6 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::fromArray
      */
     public function checkIfFromArrayMethodSetCorrectProperties(): void
     {
@@ -66,7 +65,6 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
      */
     public function canCreateDummyCollection(): void
     {
@@ -76,7 +74,6 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
      */
     public function canCreateDummyCollectionAndFillItems(): void
     {
@@ -86,7 +83,6 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getCollectedRecords
      */
     public function getCollectedRecordsReturnsEmptyRecordSet(): void
     {
@@ -100,7 +96,6 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageTableName
      */
     public function isStorageTableNameEqualsToSysCategory(): void
     {
@@ -109,7 +104,6 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageItemsField
      */
     public function isStorageItemsFieldEqualsToItems(): void
     {
