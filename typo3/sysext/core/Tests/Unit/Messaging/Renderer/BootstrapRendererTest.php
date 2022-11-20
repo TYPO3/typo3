@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -29,18 +27,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BootstrapRendererTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconProphecy->render()->willReturn('');
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->willReturn('');
 
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        $iconFactoryProphecy->getIcon(Argument::cetera())->willReturn($iconProphecy->reveal());
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
     }
 
     protected function tearDown(): void
