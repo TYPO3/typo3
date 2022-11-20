@@ -36,8 +36,10 @@ class FrontendFixture implements FrontendInterface
         return $this->identifier;
     }
 
-    public function getBackend()
+    public function getBackend(): never
     {
+        // This method is only there to implement the interface and must not be called.
+        throw new \RuntimeException('testing', 1668942244);
     }
 
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
@@ -50,10 +52,12 @@ class FrontendFixture implements FrontendInterface
 
     public function has($entryIdentifier)
     {
+        return false;
     }
 
     public function remove($entryIdentifier)
     {
+        return false;
     }
 
     public function flush(): void
@@ -74,9 +78,11 @@ class FrontendFixture implements FrontendInterface
 
     public function isValidEntryIdentifier($identifier)
     {
+        return true;
     }
 
     public function isValidTag($tag)
     {
+        return true;
     }
 }

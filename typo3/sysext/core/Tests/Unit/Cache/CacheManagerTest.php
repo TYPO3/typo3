@@ -308,7 +308,7 @@ class CacheManagerTest extends UnitTestCase
             ],
         ];
         $manager->setCacheConfigurations($configuration);
-        // BackendInitializeObjectFixture throws exception if initializeObject() is called, so expect this
+        // BackendConfigurationOptionFixture throws exception if initializeObject() is called, so expect this
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1464555007);
         $manager->getCache($cacheIdentifier);

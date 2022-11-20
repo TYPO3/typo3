@@ -91,11 +91,8 @@ class BcryptPasswordHash implements PasswordHashInterface
 
     /**
      * Extend parent method to workaround bcrypt limitations.
-     *
-     * @param string $password Plaintext password to create a salted hash from
-     * @return string Salted hashed password
      */
-    public function getHashedPassword(string $password)
+    public function getHashedPassword(string $password): ?string
     {
         $hashedPassword = null;
         if ($password !== '') {

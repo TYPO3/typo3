@@ -66,7 +66,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     {
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
             GeneralUtility::makeInstance(PackageManager::class),
-            GeneralUtility::makeInstance(CacheManager::class)->getCache('core'),
+            new NullFrontend('testing'),
             'ExpressionLanguageProviders'
         ));
         // test the abstract methods via the backend condition matcher

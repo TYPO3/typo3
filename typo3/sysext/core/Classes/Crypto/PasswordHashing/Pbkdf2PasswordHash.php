@@ -79,13 +79,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
         return function_exists('hash_pbkdf2');
     }
 
-    /**
-     * Method creates a salted hash for a given plaintext password
-     *
-     * @param string $password plaintext password to create a salted hash from
-     * @return string|null Salted hashed password
-     */
-    public function getHashedPassword(string $password)
+    public function getHashedPassword(string $password): ?string
     {
         return $this->getHashedPasswordInternal($password);
     }

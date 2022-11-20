@@ -115,13 +115,7 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
         return defined($this->getPasswordAlgorithmName()) && $this->getPasswordAlgorithm();
     }
 
-    /**
-     * Creates a salted hash for a given plaintext password
-     *
-     * @param string $password Plaintext password to create a salted hash from
-     * @return string|null Salted hashed password
-     */
-    public function getHashedPassword(string $password)
+    public function getHashedPassword(string $password): ?string
     {
         $hashedPassword = null;
         if ($password !== '') {
@@ -146,7 +140,7 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
     }
 
     /**
-     * Determines if a given string is a valid salted hashed password.
+     * Determines if a given string is a valid password hash.
      *
      * @param string $saltedPW String to check
      * @return bool TRUE if it's valid salted hashed password, otherwise FALSE

@@ -140,7 +140,7 @@ class PageRendererTest extends FunctionalTestCase
 
         $expectedCssInlineBlockOnTopString = '/*general3*/' . LF . 'h1 {margin:20px;}' . LF . '/*general2*/' . LF . 'body {margin:20px;}';
         $subject->addCssInlineBlock('general2', 'body {margin:20px;}');
-        $subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', null, true);
+        $subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', false, true);
 
         $expectedBodyContent = StringUtility::getUniqueId('ABCDE-');
         $subject->setBodyContent($expectedBodyContent);

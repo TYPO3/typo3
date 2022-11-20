@@ -256,12 +256,8 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider autoloadFilesAreBuildCorrectlyDataProvider
-     *
-     * @param string $packageManifest
-     * @param array $expectedPsr4Files
-     * @param array $expectedClassMapFiles
      */
-    public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles): void
+    public function autoloadFilesAreBuildCorrectly(array $packageManifest, array $expectedPsr4Files, array $expectedClassMapFiles): void
     {
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__);

@@ -215,8 +215,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
             $this->sites[$identifier]
         );
         if ($expectation !== null) {
-            $expectation += self::SITE_ADDITION[$identifier];
-            $expectation = (string)$expectation;
+            $expectation = (string)((int)$expectation + self::SITE_ADDITION[$identifier]);
         }
         self::assertSame($expectation, $this->subject->resolve($requestValue));
     }

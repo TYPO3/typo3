@@ -39,10 +39,12 @@ class BackendFixture implements BackendInterface
 
     public function has($entryIdentifier)
     {
+        return false;
     }
 
     public function remove($entryIdentifier)
     {
+        return false;
     }
 
     public function flush(): void

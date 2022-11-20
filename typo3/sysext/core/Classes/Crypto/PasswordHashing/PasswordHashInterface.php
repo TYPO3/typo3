@@ -41,10 +41,10 @@ interface PasswordHashInterface
     public function isAvailable(): bool;
 
     /**
-     * Method creates a salted hash for a given plaintext password
+     * Method creates a hash for a given plaintext password
      *
-     * @param string $password Plaintext password to create a salted hash from
-     * @return string Salted hashed password
+     * @param string $password Plaintext password to create a hash from
+     * @return string|null Hashed password or null on empty password
      */
     public function getHashedPassword(string $password);
 

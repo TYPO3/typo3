@@ -23,7 +23,8 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 /**
  * This class only acts as shortcut to construct a cache frontend with a null backend.
  * It extends PhpFrontend to be sure it can also be used for all types of caches (also the one requiring a PhpFrontend like "core").
- * TODO: Instead a factory class should be introduced that replaces this class and \TYPO3\CMS\Core\Core\Bootstrap::createCache
+ *
+ * @todo: Instead a factory class should be introduced that replaces this class and \TYPO3\CMS\Core\Core\Bootstrap::createCache
  */
 class NullFrontend extends PhpFrontend
 {

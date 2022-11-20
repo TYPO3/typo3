@@ -27,20 +27,11 @@ use TYPO3\CMS\Core\Http\JsonResponse;
  */
 class PhpError implements PageErrorHandlerInterface
 {
-    /**
-     * @var int
-     */
-    private $statusCode;
+    private int $statusCode;
 
-    /**
-     * @var array
-     */
-    private $configuration;
-
-    public function __construct(int $statusCode, array $configuration)
+    public function __construct(int $statusCode)
     {
         $this->statusCode = $statusCode;
-        $this->configuration = $configuration;
     }
 
     public function handlePageError(

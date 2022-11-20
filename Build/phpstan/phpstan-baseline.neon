@@ -1281,11 +1281,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\:\\:add\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, TYPO3\\\\TestIrreForeignfield\\\\Domain\\\\Model\\\\Content given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
@@ -1294,41 +1289,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Fixtures\\\\Frontend\\\\PhpError\\:\\:\\$configuration is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PhpError.php
-
-		-
-			message: "#^Parameter \\#3 \\$compress of method TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:addCssInlineBlock\\(\\) expects bool, null given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Page/PageRendererTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Resource\\\\StorageRepositoryTest\\:\\:mapToDataSet\\(\\) should return array\\<string, array\\<string\\>\\> but returns array\\<string, string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Resource/StorageRepositoryTest.php
-
-		-
-			message: "#^Binary operation \"\\+\\=\" between string and 0\\|4000 results in an error\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedAliasMapperTest.php
-
-		-
-			message: "#^Binary operation \"\\+\\=\" between string and 0\\|4000 results in an error\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedPatternMapperTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Backend\\\\Fixtures\\\\ConcreteBackendFixture\\:\\:has\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Fixtures/ConcreteBackendFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Backend\\\\Fixtures\\\\ConcreteBackendFixture\\:\\:remove\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Fixtures/ConcreteBackendFixture.php
 
 		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\Typo3DatabaseBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
@@ -1341,44 +1301,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/BackendConfigurationOptionFixture.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\BackendFixture\\:\\:has\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/BackendFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\BackendFixture\\:\\:remove\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/BackendFixture.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\FrontendBackendInstanceFixture has an unused parameter \\$_\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendBackendInstanceFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\FrontendFixture\\:\\:getBackend\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\BackendInterface but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\FrontendFixture\\:\\:has\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\FrontendFixture\\:\\:isValidEntryIdentifier\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\FrontendFixture\\:\\:isValidTag\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendFixture.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Cache\\\\Fixtures\\\\FrontendFixture\\:\\:remove\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendFixture.php
 
 		-
 			message: "#^Parameter \\#2 \\$sourceCode of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\:\\:set\\(\\) expects string, array given\\.$#"
@@ -1386,39 +1311,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\ProviderConfigurationLoader constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend, TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$packageManifest of method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Core\\\\ClassLoadingInformationGeneratorTest\\:\\:createPackageMock\\(\\) expects array, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Core/ClassLoadingInformationGeneratorTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Crypto/PasswordHashing/BcryptPasswordHashTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Crypto/PasswordHashing/BlowfishPasswordHashTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Crypto/PasswordHashing/Md5PasswordHashTest.php
-
-		-
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Database\\\\RelationHandler\\:\\:expects\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/RelationHandlerTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 0 and string\\|null will always evaluate to false\\.$#"
@@ -1429,11 +1324,6 @@ parameters:
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Log\\\\Logger\\:\\:\\$records\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\FormProtection\\\\BackendFormProtectionTest\\:\\:\\$subject \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/FormProtection/BackendFormProtectionTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Html\\\\Parser\\\\ParserTest\\:\\:nodesAreResolvedDataProvider\\(\\) should return array\\<string\\> but returns array\\<int, array\\<int, array\\<int, string\\>\\|string\\>\\>\\.$#"

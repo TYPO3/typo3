@@ -42,56 +42,56 @@ class StorageRepositoryTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    public function bestStorageIsResolvedDataProvider(): array
+    public function bestStorageIsResolvedDataProvider(): iterable
     {
         // `{public}` will be replaced by public project path (not having trailing slash)
         // double slashes `//` are used on purpose for given file identifiers
-        return $this->mapToDataSet([
-            // legacy storage
-            '/favicon.ico' => '0:/favicon.ico',
-            'favicon.ico' => '0:/favicon.ico',
 
-            '{public}//favicon.ico' => '0:/favicon.ico',
-            '{public}/favicon.ico' => '0:/favicon.ico',
+        // legacy storage
+        yield ['/favicon.ico', '0:/favicon.ico'];
+        yield ['/favicon.ico', '0:/favicon.ico'];
 
-            // using storages with relative path
-            '/fileadmin/img.png' => '1:/img.png',
-            'fileadmin/img.png' => '1:/img.png',
-            '/fileadmin/images/img.png' => '1:/images/img.png',
-            'fileadmin/images/img.png' => '1:/images/img.png',
-            '/documents/doc.pdf' => '2:/doc.pdf',
-            'documents/doc.pdf' => '2:/doc.pdf',
-            '/fileadmin/nested/images/img.png' => '3:/images/img.png',
-            'fileadmin/nested/images/img.png' => '3:/images/img.png',
+        yield ['favicon.ico', '0:/favicon.ico'];
+        yield ['{public}//favicon.ico', '0:/favicon.ico'];
+        yield ['{public}/favicon.ico', '0:/favicon.ico'];
 
-            '{public}//fileadmin/img.png' => '1:/img.png',
-            '{public}/fileadmin/img.png' => '1:/img.png',
-            '{public}//fileadmin/images/img.png' => '1:/images/img.png',
-            '{public}/fileadmin/images/img.png' => '1:/images/img.png',
-            '{public}//documents/doc.pdf' => '2:/doc.pdf',
-            '{public}/documents/doc.pdf' => '2:/doc.pdf',
-            '{public}//fileadmin/nested/images/img.png' => '3:/images/img.png',
-            '{public}/fileadmin/nested/images/img.png' => '3:/images/img.png',
+        // using storages with relative path
+        yield ['/fileadmin/img.png', '1:/img.png'];
+        yield ['fileadmin/img.png', '1:/img.png'];
+        yield ['/fileadmin/images/img.png', '1:/images/img.png'];
+        yield ['fileadmin/images/img.png', '1:/images/img.png'];
+        yield ['/documents/doc.pdf', '2:/doc.pdf'];
+        yield ['documents/doc.pdf', '2:/doc.pdf'];
+        yield ['/fileadmin/nested/images/img.png', '3:/images/img.png'];
+        yield ['fileadmin/nested/images/img.png', '3:/images/img.png'];
 
-            // using storages with absolute path
-            '/files/img.png' => '4:/img.png',
-            'files/img.png' => '4:/img.png',
-            '/files/images/img.png' => '4:/images/img.png',
-            'files/images/img.png' => '4:/images/img.png',
-            '/docs/doc.pdf' => '5:/doc.pdf',
-            'docs/doc.pdf' => '5:/doc.pdf',
-            '/files/nested/images/img.png' => '6:/images/img.png',
-            'files/nested/images/img.png' => '6:/images/img.png',
+        yield ['{public}//fileadmin/img.png', '1:/img.png'];
+        yield ['{public}/fileadmin/img.png', '1:/img.png'];
+        yield ['{public}//fileadmin/images/img.png', '1:/images/img.png'];
+        yield ['{public}/fileadmin/images/img.png', '1:/images/img.png'];
+        yield ['{public}//documents/doc.pdf', '2:/doc.pdf'];
+        yield ['{public}/documents/doc.pdf', '2:/doc.pdf'];
+        yield ['{public}//fileadmin/nested/images/img.png', '3:/images/img.png'];
+        yield ['{public}/fileadmin/nested/images/img.png', '3:/images/img.png'];
 
-            '{public}//files/img.png' => '4:/img.png',
-            '{public}/files/img.png' => '4:/img.png',
-            '{public}//files/images/img.png' => '4:/images/img.png',
-            '{public}/files/images/img.png' => '4:/images/img.png',
-            '{public}//docs/doc.pdf' => '5:/doc.pdf',
-            '{public}/docs/doc.pdf' => '5:/doc.pdf',
-            '{public}//files/nested/images/img.png' => '6:/images/img.png',
-            '{public}/files/nested/images/img.png' => '6:/images/img.png',
-        ]);
+        // using storages with absolute path
+        yield ['/files/img.png', '4:/img.png'];
+        yield ['files/img.png', '4:/img.png'];
+        yield ['/files/images/img.png', '4:/images/img.png'];
+        yield ['files/images/img.png', '4:/images/img.png'];
+        yield ['/docs/doc.pdf', '5:/doc.pdf'];
+        yield ['docs/doc.pdf', '5:/doc.pdf'];
+        yield ['/files/nested/images/img.png', '6:/images/img.png'];
+        yield ['files/nested/images/img.png', '6:/images/img.png'];
+
+        yield ['{public}//files/img.png', '4:/img.png'];
+        yield ['{public}/files/img.png', '4:/img.png'];
+        yield ['{public}//files/images/img.png', '4:/images/img.png'];
+        yield ['{public}/files/images/img.png', '4:/images/img.png'];
+        yield ['{public}//docs/doc.pdf', '5:/doc.pdf'];
+        yield ['{public}/docs/doc.pdf', '5:/doc.pdf'];
+        yield ['{public}//files/nested/images/img.png', '6:/images/img.png'];
+        yield ['{public}/files/nested/images/img.png', '6:/images/img.png'];
     }
 
     /**
@@ -134,18 +134,6 @@ class StorageRepositoryTest extends FunctionalTestCase
             $combinedIdentifier,
             sprintf('Given identifier "%s"', $sourceIdentifier)
         );
-    }
-
-    /**
-     * @param array<string, string> $map
-     * @return array<string, string[]>
-     */
-    private function mapToDataSet(array $map): array
-    {
-        array_walk($map, static function (&$item, string $key) {
-            $item = [$key, $item];
-        });
-        return $map;
     }
 
     /**

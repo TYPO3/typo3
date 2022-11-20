@@ -49,7 +49,7 @@ class NoopPasswordHash implements PasswordHashInterface
         return true;
     }
 
-    public function getHashedPassword(string $password)
+    public function getHashedPassword(string $password): string
     {
         return self::PREFIX . sha1($password);
     }

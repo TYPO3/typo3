@@ -36,10 +36,12 @@ class ConcreteBackendFixture extends AbstractBackend
 
     public function has($entryIdentifier)
     {
+        return false;
     }
 
     public function remove($entryIdentifier)
     {
+        return false;
     }
 
     public function flush(): void

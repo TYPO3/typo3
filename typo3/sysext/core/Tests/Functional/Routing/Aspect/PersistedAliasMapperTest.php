@@ -61,15 +61,10 @@ class PersistedAliasMapperTest extends FunctionalTestCase
         'other' => 4000,
     ];
 
-    /**
-     * @var PersistedAliasMapper
-     */
-    private $subject;
+    private PersistedAliasMapper $subject;
 
-    /**
-     * @var Site[]
-     */
-    private $sites;
+    /** @var Site[] */
+    private array $sites;
 
     protected function setUp(): void
     {
@@ -212,8 +207,7 @@ class PersistedAliasMapperTest extends FunctionalTestCase
             $this->sites[$identifier]
         );
         if ($expectation !== null) {
-            $expectation += self::SITE_ADDITION[$identifier];
-            $expectation = (string)$expectation;
+            $expectation = (string)((int)$expectation + self::SITE_ADDITION[$identifier]);
         }
         self::assertSame($expectation, $this->subject->resolve($requestValue));
     }

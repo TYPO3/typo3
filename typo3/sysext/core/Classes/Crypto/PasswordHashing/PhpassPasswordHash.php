@@ -87,13 +87,7 @@ class PhpassPasswordHash implements PasswordHashInterface
         return true;
     }
 
-    /**
-     * Method creates a salted hash for a given plaintext password
-     *
-     * @param string $password Plaintext password to create a salted hash from
-     * @return string|null salted hashed password
-     */
-    public function getHashedPassword(string $password)
+    public function getHashedPassword(string $password): ?string
     {
         $saltedPW = null;
         if (!empty($password)) {

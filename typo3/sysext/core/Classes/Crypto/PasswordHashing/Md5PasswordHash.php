@@ -61,13 +61,7 @@ class Md5PasswordHash implements PasswordHashInterface
         return (bool)CRYPT_MD5;
     }
 
-    /**
-     * Method creates a salted hash for a given plaintext password
-     *
-     * @param string $password plaintext password to create a salted hash from
-     * @return string Salted hashed password
-     */
-    public function getHashedPassword(string $password)
+    public function getHashedPassword(string $password): ?string
     {
         $saltedPW = null;
         if (!empty($password)) {

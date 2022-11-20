@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\Category\Collection;
 
+use TYPO3\CMS\Core\Category\Collection\CategoryCollection as CoreCategoryCollection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -28,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCollection
+class CategoryCollection extends CoreCategoryCollection
 {
     /**
      * Creates a new collection objects and reconstitutes the
@@ -38,7 +39,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
      *
      * @param array $collectionRecord Database record
      * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
-     * @return \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection
+     * @return CategoryCollection
      */
     public static function create(array $collectionRecord, $fillItems = false)
     {
@@ -66,7 +67,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
      * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
      * @param string $tableName the table name
      * @param string $fieldName Name of the categories relation field
-     * @return \TYPO3\CMS\Core\Collection\CollectionInterface
+     * @return CategoryCollection
      */
     public static function load($id, $fillItems = false, $tableName = '', $fieldName = '')
     {

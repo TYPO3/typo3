@@ -35,13 +35,10 @@ class TableBuilderTest extends UnitTestCase
 
     protected ?Table $table;
 
-    /**
-     * Setup test subject
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $sqlFile = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'tablebuilder.sql']));
+        $sqlFile = file_get_contents(__DIR__ . '/../Fixtures/tablebuilder.sql');
         $sqlReader = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $statements = $sqlReader->getCreateTableStatementArray($sqlFile);
 

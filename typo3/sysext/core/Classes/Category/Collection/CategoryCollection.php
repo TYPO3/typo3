@@ -96,7 +96,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
      * @param string $tableName Name of table from which entries should be loaded
      * @param string $fieldName Name of the categories relation field
-     * @return CollectionInterface
+     * @return CategoryCollection
      */
     public static function load($id, $fillItems = false, $tableName = '', $fieldName = '')
     {

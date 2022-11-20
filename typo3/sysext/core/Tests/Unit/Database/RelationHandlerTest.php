@@ -17,15 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RelationHandlerTest extends UnitTestCase
 {
-    /**
-     * @var RelationHandler
-     */
-    protected $subject;
+    protected RelationHandler&MockObject $subject;
 
     protected function setUp(): void
     {

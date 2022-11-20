@@ -17,44 +17,26 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class BackendFormProtectionTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
+    protected BackendFormProtection $subject;
+    protected BackendUserAuthentication&MockObject $backendUserMock;
 
-    /**
-     * @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $backendUserMock;
-
-    /**
-     * @var Registry|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registryMock;
-
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $this->backendUserMock->user['uid'] = 1;
-        $this->registryMock = $this->createMock(Registry::class);
         $this->subject = new BackendFormProtection(
             $this->backendUserMock,
-            $this->registryMock,
+            $this->createMock(Registry::class),
             static function () {
                 throw new \Exception('Closure called', 1442592030);
             }
