@@ -17,11 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TypoScriptParserTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var TypoScriptParser|AccessibleObjectInterface
      */
@@ -360,8 +356,8 @@ class TypoScriptParserTest extends UnitTestCase
      */
     public function invalidCharactersInObjectNamesAreReported(): void
     {
-        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
-        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+        $timeTrackerMock = $this->createMock(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerMock);
 
         $typoScript = '$.10 = invalid';
         $this->typoScriptParser->parse($typoScript);
@@ -384,8 +380,8 @@ class TypoScriptParserTest extends UnitTestCase
      */
     public function invalidConditionsAreReported(string $condition, bool $isValid): void
     {
-        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
-        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+        $timeTrackerMock = $this->createMock(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerMock);
 
         $this->typoScriptParser->parse($condition);
         if (!$isValid) {
@@ -399,8 +395,8 @@ class TypoScriptParserTest extends UnitTestCase
      */
     public function emptyConditionIsReported(): void
     {
-        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
-        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+        $timeTrackerMock = $this->createMock(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerMock);
 
         $typoScript = '[]';
         $this->typoScriptParser->parse($typoScript);
@@ -452,16 +448,13 @@ class TypoScriptParserTest extends UnitTestCase
     public function includeFilesWithConditions(string $typoScript): void
     {
         // This test triggers a BackendUtility::BEgetRootLine() down below, we need to suppress the cache call
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheProphecy->set(Argument::cetera())->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
 
-        $p = $this->prophesize(ConditionMatcher::class);
-        $p->match(Argument::cetera())->willReturn(false);
-        GeneralUtility::addInstance(ConditionMatcher::class, $p->reveal());
+        $p = $this->createMock(ConditionMatcher::class);
+        $p->method('match')->with(self::anything())->willReturn(false);
+        GeneralUtility::addInstance(ConditionMatcher::class, $p);
 
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
         self::assertStringContainsString('foo = bar', $resolvedIncludeLines);
