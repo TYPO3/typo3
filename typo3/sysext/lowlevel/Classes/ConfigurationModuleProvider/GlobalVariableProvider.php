@@ -25,8 +25,6 @@ class GlobalVariableProvider extends AbstractProvider
 {
     /**
      * Blind configurations which should not be visible to mortal admins
-     *
-     * @var array
      */
     protected array $blindedConfigurationOptions = [
         'TYPO3_CONF_VARS' => [
@@ -70,8 +68,6 @@ class GlobalVariableProvider extends AbstractProvider
 
     /**
      * The $GLOBALS key to be processed
-     *
-     * @var string
      */
     protected string $globalVariableKey;
 

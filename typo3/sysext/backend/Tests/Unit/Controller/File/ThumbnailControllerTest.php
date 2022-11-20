@@ -34,9 +34,6 @@ class ThumbnailControllerTest extends UnitTestCase
      */
     protected MockObject $subject;
 
-    /**
-     * @var array
-     */
     protected static array $parameters = [
         'fileId' => 123,
         'configuration' => [

@@ -27,8 +27,6 @@ class SetupCest
 {
     /**
      * Selector for the user module container in the topbar
-     *
-     * @var string
      */
     public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
 

@@ -35,30 +35,22 @@ class ComposerPackageArtifact implements PackageCacheInterface
 
     /**
      * Full filesystem path to the file
-     *
-     * @var string
      */
     private string $packageArtifactsFile;
 
     /**
      * The cache entry generated from the artifact
-     *
-     * @var PackageCacheEntry
      */
     private PackageCacheEntry $cacheEntry;
 
     /**
      * Composer filesystem, provided during Composer build time
-     *
-     * @var Filesystem|null
      */
     private ?Filesystem $filesystem;
 
     /**
      * The cache identifier that is stored alongside the artifact
      * and used as part of TYPO3 cache identifiers
-     *
-     * @var string|null
      */
     private ?string $cacheIdentifier;
 

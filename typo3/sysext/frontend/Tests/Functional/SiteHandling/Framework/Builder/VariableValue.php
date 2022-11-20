@@ -21,9 +21,6 @@ class VariableValue
 {
     use VariablesTrait;
 
-    /**
-     * @var string
-     */
     private string $value;
 
     /**
@@ -31,9 +28,6 @@ class VariableValue
      */
     private array $variableNames;
 
-    /**
-     * @var Variables|null
-     */
     private ?Variables $defaultVariables;
 
     /**

@@ -63,8 +63,6 @@ class EditController extends AbstractWizardController
 
     /**
      * HTML markup to close the open window.
-     *
-     * @var string
      */
     protected string $closeWindow;
 

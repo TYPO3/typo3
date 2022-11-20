@@ -29,9 +29,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 class LinkHandlingController
 {
-    /**
-     * @var ContentObjectRenderer|null
-     */
     protected ?ContentObjectRenderer $cObj = null;
 
     /**

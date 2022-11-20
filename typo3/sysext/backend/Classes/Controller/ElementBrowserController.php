@@ -38,8 +38,6 @@ class ElementBrowserController
      *  - "file" will allow you to browse for files in the folder mounts for FormEngine file selections
      *  - "folder" will allow you to browse for folders in the folder mounts for FormEngine folder selections
      *  - Other options may be registered via extensions
-     *
-     * @var string
      */
     protected string $mode = '';
 

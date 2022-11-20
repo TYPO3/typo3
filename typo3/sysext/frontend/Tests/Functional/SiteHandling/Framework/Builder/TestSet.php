@@ -19,14 +19,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class TestSet
 {
-    /**
-     * @var VariableValue|null
-     */
     private ?VariableValue $url;
 
-    /**
-     * @var int|null
-     */
     private ?int $targetPageId;
 
     /**
@@ -34,9 +28,6 @@ class TestSet
      */
     private array $applicables;
 
-    /**
-     * @var Variables|null
-     */
     private ?Variables $variables = null;
 
     public static function create($parentSet = null): self

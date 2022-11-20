@@ -23,9 +23,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LocalizationRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @var LocalizationRepository
-     */
     protected LocalizationRepository $subject;
 
     /**

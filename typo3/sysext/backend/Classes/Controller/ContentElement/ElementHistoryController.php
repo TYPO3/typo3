@@ -61,9 +61,6 @@ class ElementHistoryController
 
     protected ModuleTemplate $view;
 
-    /**
-     * @var string
-     */
     protected string $returnUrl = '';
 
     public function __construct(

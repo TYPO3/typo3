@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 final class RequestId
 {
-    /**
-     * @var string
-     */
     private string $requestId;
 
     public function __construct()

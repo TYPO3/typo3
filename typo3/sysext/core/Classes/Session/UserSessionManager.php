@@ -53,8 +53,6 @@ class UserSessionManager implements LoggerAwareInterface
      *
      * If >0: session-timeout in seconds.
      * If =0: Instant logout after login.
-     *
-     * @var int
      */
     protected int $sessionLifetime;
 

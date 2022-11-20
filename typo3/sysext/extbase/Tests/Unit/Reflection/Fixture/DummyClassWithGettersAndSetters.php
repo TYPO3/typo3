@@ -37,9 +37,6 @@ class DummyClassWithGettersAndSetters
      */
     protected $property2;
 
-    /**
-     * @var bool
-     */
     protected bool $booleanProperty = true;
 
     /**
@@ -47,9 +44,6 @@ class DummyClassWithGettersAndSetters
      */
     protected $protectedProperty;
 
-    /**
-     * @var string
-     */
     protected string $unexposedProperty = 'unexposed';
 
     /**
@@ -57,14 +51,8 @@ class DummyClassWithGettersAndSetters
      */
     public $publicProperty;
 
-    /**
-     * @var int
-     */
     public int $publicProperty2 = 42;
 
-    /**
-     * @var bool
-     */
     protected bool $anotherBooleanProperty = true;
 
     /**

@@ -389,8 +389,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * Request pointer, if injected. Use getRequest() instead of reading this property directly.
-     *
-     * @var ServerRequestInterface|null
      */
     private ?ServerRequestInterface $request = null;
 

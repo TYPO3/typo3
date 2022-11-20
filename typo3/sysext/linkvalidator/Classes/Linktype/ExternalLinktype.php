@@ -83,8 +83,6 @@ class ExternalLinktype extends AbstractLinktype
     /**
      *  Total timeout of the request in seconds. Using 0 (which is usually the default) may
      *  cause the request to take indefinitely, which means the scheduler task never ends.
-     *
-     * @var int
      */
     protected int $timeout = 0;
 

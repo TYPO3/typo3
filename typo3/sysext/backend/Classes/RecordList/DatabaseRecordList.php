@@ -100,8 +100,6 @@ class DatabaseRecordList
 
     /**
      * Space icon used for alignment
-     *
-     * @var string
      */
     protected string $spaceIcon;
 
@@ -177,8 +175,6 @@ class DatabaseRecordList
 
     /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
-     *
-     * @var array
      */
     protected array $addElement_tdCssClass = [];
 
@@ -191,8 +187,6 @@ class DatabaseRecordList
 
     /**
      * Number of records to show
-     *
-     * @var int
      */
     public int $showLimit = 0;
 
@@ -247,8 +241,6 @@ class DatabaseRecordList
 
     /**
      * Levels to search down.
-     *
-     * @var int
      */
     protected int $searchLevels = 0;
 
@@ -318,7 +310,6 @@ class DatabaseRecordList
     /**
      * Whether the column selector should be displayed in the tables' header
      *
-     * @var bool
      * @internal
      */
     public bool $displayColumnSelector = true;
@@ -326,7 +317,6 @@ class DatabaseRecordList
     /**
      * Whether the record download should be displayed in the tables' header
      *
-     * @var bool
      * @internal
      */
     public bool $displayRecordDownload = true;
@@ -340,8 +330,6 @@ class DatabaseRecordList
 
     /**
      * If defined the records are editable
-     *
-     * @var bool
      */
     protected bool $editable = true;
 
@@ -359,8 +347,6 @@ class DatabaseRecordList
 
     /**
      * Override the page ids taken into account by getPageIdConstraint()
-     *
-     * @var array
      */
     protected array $overridePageIdList = [];
 

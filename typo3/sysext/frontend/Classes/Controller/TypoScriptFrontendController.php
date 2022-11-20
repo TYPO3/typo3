@@ -266,7 +266,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Is set to the time-to-live time of cached pages. Default is 60*60*24, which is 24 hours.
      *
-     * @var int
      * @internal
      */
     protected int $cacheTimeOutDefault = 0;

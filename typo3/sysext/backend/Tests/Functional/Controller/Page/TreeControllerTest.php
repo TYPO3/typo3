@@ -49,9 +49,6 @@ class TreeControllerTest extends FunctionalTestCase
      */
     private $subject;
 
-    /**
-     * @var BackendUserAuthentication
-     */
     private BackendUserAuthentication $backendUser;
 
     /**

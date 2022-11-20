@@ -26,13 +26,8 @@ class Entity3 extends AbstractEntity
 {
     /**
      * Just a normal string
-     *
-     * @var string
      */
     public string $someString;
 
-    /**
-     * @var int
-     */
     public int $someInteger;
 }

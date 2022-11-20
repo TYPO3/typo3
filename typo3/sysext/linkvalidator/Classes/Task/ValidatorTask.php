@@ -94,8 +94,6 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Only send an email, if new broken links were found
-     *
-     * @var bool
      */
     protected bool $emailOnBrokenLinkOnly = true;
 

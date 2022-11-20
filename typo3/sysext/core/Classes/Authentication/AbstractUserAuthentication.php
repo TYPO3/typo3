@@ -211,8 +211,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * If set, this cookie will be set to the response.
-     *
-     * @var Cookie|null
      */
     protected ?Cookie $setCookie = null;
 

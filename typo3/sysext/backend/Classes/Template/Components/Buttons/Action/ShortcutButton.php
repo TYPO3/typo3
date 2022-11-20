@@ -63,9 +63,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      */
     protected $arguments = [];
 
-    /**
-     * @var bool
-     */
     protected bool $copyUrlToClipboard = true;
 
     /**

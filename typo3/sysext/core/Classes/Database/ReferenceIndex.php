@@ -52,7 +52,6 @@ class ReferenceIndex implements LoggerAwareInterface
      *
      * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
      *
-     * @var array
      * @see updateRefIndexTable()
      * @see shouldExcludeTableFromReferenceIndex()
      */
@@ -66,7 +65,6 @@ class ReferenceIndex implements LoggerAwareInterface
      *
      * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
      *
-     * @var array
      * @see getRelations()
      * @see fetchTableRelationFields()
      * @see shouldExcludeTableColumnFromReferenceIndex()

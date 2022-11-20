@@ -31,8 +31,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
 
     /**
      * Flag if the storage page should be respected for the query.
-     *
-     * @var bool
      */
     protected bool $respectStoragePage = true;
 

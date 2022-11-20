@@ -31,9 +31,6 @@ class Permutation
      */
     private array $applicableSets;
 
-    /**
-     * @var Variables
-     */
     private Variables $variables;
 
     /**

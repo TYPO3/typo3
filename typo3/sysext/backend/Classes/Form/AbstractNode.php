@@ -38,8 +38,6 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
 
     /**
      * Main data array to work on, given from parent to child elements
-     *
-     * @var array
      */
     protected array $data = [];
 

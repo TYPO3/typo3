@@ -26,23 +26,12 @@ class Entity2 extends AbstractEntity
 {
     /**
      * Just a normal string
-     *
-     * @var string
      */
     public string $someString;
 
-    /**
-     * @var int
-     */
     public int $someInteger;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity3
-     */
     public Entity3 $someReference;
 
-    /**
-     * @var array
-     */
     public array $someReferenceArray = [];
 }

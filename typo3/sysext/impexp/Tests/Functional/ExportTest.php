@@ -36,9 +36,6 @@ class ExportTest extends AbstractImportExportTestCase
      */
     protected $exportMock;
 
-    /**
-     * @var array
-     */
     protected array $recordTypesIncludeFields =
         [
             'pages' => [

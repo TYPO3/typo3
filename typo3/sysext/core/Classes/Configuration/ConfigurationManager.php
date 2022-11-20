@@ -61,8 +61,6 @@ class ConfigurationManager
     /**
      * Writing to these configuration paths is always allowed,
      * even if the requested sub path does not exist yet.
-     *
-     * @var array
      */
     protected array $allowedSettingsPaths = [
         'EXTCONF',

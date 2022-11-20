@@ -64,8 +64,6 @@ class Clipboard
      *
      * The virtual tablename '_FILE' will always indicate files/folders. When checking for elements from eg. 'all tables'
      * (by using an empty string) '_FILE' entries are excluded (so in effect only DB elements are counted)
-     *
-     * @var array
      */
     public array $clipData = [];
 

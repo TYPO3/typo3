@@ -43,9 +43,6 @@ class SetupExtensionsCommand extends Command
      */
     private $installUtility;
 
-    /**
-     * @var PackageManager
-     */
     private PackageManager $packageManager;
 
     public function __construct(

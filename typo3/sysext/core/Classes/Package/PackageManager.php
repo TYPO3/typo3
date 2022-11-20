@@ -107,8 +107,6 @@ class PackageManager implements SingletonInterface
 
     /**
      * The regex to match paths with EXT:{package/key}
-     *
-     * @var ?string
      */
     protected ?string $packagePathMatchRegex;
 

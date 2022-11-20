@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 
 class StringValue
 {
-    /**
-     * @var string
-     */
     private string $value;
 
     public function __construct(string $value)

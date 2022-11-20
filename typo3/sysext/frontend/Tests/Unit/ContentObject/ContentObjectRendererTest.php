@@ -102,8 +102,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * Default content object name -> class name map, shipped with TYPO3 CMS
-     *
-     * @var array
      */
     protected array $contentObjectMap = [
         'TEXT' => TextContentObject::class,

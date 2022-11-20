@@ -28,8 +28,6 @@ class PublicUrlPrefixer
      * Static property to avoid an infinite loop, because this listener is called when
      * public URLs are generated, but also calls public URL generation to obtain the
      * URL without prefix from the driver and possibly other listeners
-     *
-     * @var bool
      */
     private static bool $isProcessingUrl = false;
 

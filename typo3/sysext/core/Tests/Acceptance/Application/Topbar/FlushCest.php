@@ -27,8 +27,6 @@ class FlushCest
 {
     /**
      * Selector for the module container in the topbar
-     *
-     * @var string
      */
     protected static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem';
 

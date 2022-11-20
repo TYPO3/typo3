@@ -48,8 +48,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
     /**
      * The content object renderer
-     *
-     * @var ContentObjectRenderer
      */
     protected ?ContentObjectRenderer $cObj = null;
 

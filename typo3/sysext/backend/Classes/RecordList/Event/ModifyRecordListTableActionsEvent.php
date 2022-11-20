@@ -38,8 +38,6 @@ final class ModifyRecordListTableActionsEvent
     /**
      * The label, which will be displayed in case
      * no action is available for current the user.
-     *
-     * @var string
      */
     private string $noActionLabel = '';
 

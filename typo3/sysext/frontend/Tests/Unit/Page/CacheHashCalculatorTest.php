@@ -26,14 +26,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CacheHashCalculatorTest extends UnitTestCase
 {
-    /**
-     * @var CacheHashCalculator
-     */
     protected CacheHashCalculator $subject;
 
-    /**
-     * @var array
-     */
     protected array $configuration = [
         'excludedParameters' => ['exclude1', 'exclude2'],
         'cachedParametersWhiteList' => [],

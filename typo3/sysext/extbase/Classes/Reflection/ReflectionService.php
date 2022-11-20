@@ -26,9 +26,6 @@ use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
  */
 class ReflectionService implements SingletonInterface
 {
-    /**
-     * @var string
-     */
     private string $cacheIdentifier;
 
     /**

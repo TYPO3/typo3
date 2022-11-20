@@ -24,8 +24,5 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class DummyParentEntity extends AbstractEntity
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper\Fixture\DummyChildEntity
-     */
     public DummyChildEntity $relationProperty;
 }

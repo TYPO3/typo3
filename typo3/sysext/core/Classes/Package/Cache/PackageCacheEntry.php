@@ -58,8 +58,6 @@ class PackageCacheEntry
      * stored in the cache entry or artifact.
      * Currently, only used in Composer mode, where the identifier
      * is comprised from the composer.lock file and stored alongside the artifact.
-     *
-     * @var string|null
      */
     private ?string $identifier = null;
 

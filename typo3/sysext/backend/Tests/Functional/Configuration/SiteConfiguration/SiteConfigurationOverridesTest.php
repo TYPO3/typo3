@@ -24,7 +24,6 @@ class SiteConfigurationOverridesTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /** @var array */
     protected array $subject;
 
     protected array $testExtensionsToLoad = [
