@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -46,7 +44,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class GeneralUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
     public const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
 
     protected bool $resetSingletonInstances = true;
@@ -3644,12 +3641,13 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function xml2arrayUsesCache(): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheMock->method('getIdentifier')->willReturn('runtime');
+        $cacheMock->expects(self::atLeastOnce())->method('get')->with('generalUtilityXml2Array')->willReturn(false);
+        $cacheMock->expects(self::atLeastOnce())->method('set')->with('generalUtilityXml2Array', self::anything());
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache($cacheMock);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
         GeneralUtility::xml2array('<?xml version="1.0" encoding="utf-8" standalone="yes"?>', 'T3:');
     }
 
